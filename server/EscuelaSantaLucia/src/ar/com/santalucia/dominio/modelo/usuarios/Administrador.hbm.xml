@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!-- Trabajar online 
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"> -->
+
+<!-- Trabajar offline -->
+<!DOCTYPE hibernate-mapping SYSTEM "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
+
+<!-- Generated 15/08/2015 11:41:17 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <joined-subclass name="ar.com.santalucia.dominio.modelo.usuarios.Administrador" extends="ar.com.santalucia.dominio.modelo.usuarios.Usuario" table="ADMINISTRADOR" lazy="false">
+        <key>
+            <column name="IDUSUARIO" />
+        </key>
+        <property name="descripcion" type="java.lang.String">
+            <column name="DESCRIPCION" />
+        </property>
+    </joined-subclass>
+</hibernate-mapping>

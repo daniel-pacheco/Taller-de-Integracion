@@ -1,0 +1,8 @@
+15/08/2015 13:13
+
+En el archivo de hibernate mapear el ID con:
+
+<column name="IDUSUARIO" unique="true"/>
+            <generator class="identity" />
+            
+De esta mera indicamos que es clave única y el identity nos autogenera el id.

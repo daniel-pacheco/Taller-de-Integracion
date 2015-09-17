@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!-- Trabajar online 
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"> -->
+
+<!-- Trabajar offline -->
+<!DOCTYPE hibernate-mapping SYSTEM "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
+
+<!-- Generated 15/08/2015 11:41:17 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="ar.com.santalucia.dominio.modelo.usuarios.info.Mail" table="MAIL">
+        <id name="idMail" type="java.lang.Long">
+            <column name="IDMAIL" unique="true"/>
+            <generator class="identity"/>
+        </id>
+        <property name="direccionMail" type="java.lang.String">
+            <column name="DIRECCIONMAIL" />
+        </property>
+        <property name="tipoMail" type="java.lang.String">
+            <column name="TIPOMAIL" />
+        </property>
+    </class>
+</hibernate-mapping>

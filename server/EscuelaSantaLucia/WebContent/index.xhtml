@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+	<head>
+	
+	</head>
+	
+	<body>
+		<h:form>
+		<h:outputLabel value="Nombre" /><h:inputText value="#{alumnoBean.nombres}" /><br/>
+		<h:outputLabel value="Apellido" /><h:inputText value="#{alumnoBean.apellidos}" /><br/>
+		<h:outputLabel value="Nro Documento" /><h:inputText value="#{alumnoBean.numeroDni}" /><br/>
+ 		<h:outputLabel value="Fecha de nacimiento" /><input for="#{alumnoBean.fechaNacimiento}" type="date" required="true" /><br/>
+		<h:outputLabel value="Tipo de documento" /><h:inputText value="#{alumnoBean.tipoDni}" /><br/>
+		<h:outputLabel value="Mail" /><h:inputText value="#{alumnoBean.correoElectronico}" /><br/>
+		<h:outputLabel value="Domicilio" /><h:inputText value="Autocargado" /><br/>
+		<h:outputLabel value="Matricula" /><h:inputText value="#{alumnoBean.matricula}" /><br/>
+		<h:outputLabel value="Nombre de usuario" /><h:inputText value="#{alumnoBean.nombreUsuario}" /><br/>
+		<h:commandButton value="Hacé clic aca " action="#{alumnoBean.setAlumnoBean()}"/>
+		
+		</h:form>
+	
+	</body>
+	
+</html>

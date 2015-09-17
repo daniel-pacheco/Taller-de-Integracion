@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!-- Trabajar online 
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"> -->
+
+<!-- Trabajar offline -->
+<!DOCTYPE hibernate-mapping SYSTEM "classpath://org/hibernate/hibernate-mapping-3.0.dtd"> 
+
+<!-- Generated 15/08/2015 11:41:17 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="ar.com.santalucia.dominio.modelo.usuarios.Usuario" table="USUARIO" >
+        <id name="idUsuario" type="java.lang.Long" >
+            <column name="IDUSUARIO" unique="true"/>
+            <generator class="identity" />
+        </id>
+        <property name="nroDocumento" type="java.lang.Long">
+            <column name="NRODOCUMENTO" />
+        </property>
+        <property name="tipoDocumento" type="java.lang.String">
+            <column name="TIPODOCUMENTO" />
+        </property>
+        <property name="nombre" type="java.lang.String">
+            <column name="NOMBRE" />
+        </property>
+        <property name="apellido" type="java.lang.String">
+            <column name="APELLIDO" />
+        </property>
+        <set name="listaTelefonos" table="TELEFONO" inverse="false" lazy="true" cascade="all">
+            <key>
+                <column name="IDUSUARIO" />
+            </key>
+            <one-to-many class="ar.com.santalucia.dominio.modelo.usuarios.info.Telefono" />
+        </set>
+        <set name="listaMails" table="MAIL" inverse="false" lazy="true" cascade="all">
+            <key>
+                <column name="IDUSUARIO" />
+            </key>
+            <one-to-many class="ar.com.santalucia.dominio.modelo.usuarios.info.Mail" />
+        </set>
+        <many-to-one name="domicilio" class="ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio" 
+        	fetch="join" cascade="delete">
+            <column name="DOMICILIO" />
+        </many-to-one>
+        <property name="sexo" type="char">
+            <column name="SEXO" />
+        </property>
+        <property name="nombreUsuario" type="java.lang.String">
+            <column name="NOMBREUSUARIO" />
+        </property>
+        <property name="fechaNacimiento" type="java.util.Date">
+            <column name="FECHANACIMIENTO" />
+        </property>
+        <property name="activo" type="java.lang.Boolean">
+            <column name="ACTIVO" />
+        </property>
+    </class>
+</hibernate-mapping>

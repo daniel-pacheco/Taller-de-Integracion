@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!-- Trabajar online 
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"> -->
+
+<!-- Trabajar offline -->
+<!DOCTYPE hibernate-mapping SYSTEM "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
+
+<!-- Generated 15/08/2015 11:41:17 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio" table="DOMICILIO">
+        <id name="idDomicilio" type="java.lang.Long">
+            <column name="IDDOMICILIO" unique="true"/>
+            <generator class="identity" />
+        </id>
+        <property name="calle" type="java.lang.String">
+            <column name="CALLE" />
+        </property>
+        <property name="numero" type="java.lang.Integer">
+            <column name="NUMERO" />
+        </property>
+        <property name="piso" type="java.lang.Integer">
+            <column name="PISO" />
+        </property>
+        <property name="localidad" type="java.lang.String">
+            <column name="LOCALIDAD" />
+        </property>
+        <property name="dpto" type="java.lang.String">
+            <column name="DPTO" />
+        </property>
+        <property name="departamento" type="java.lang.String">
+            <column name="DEPARTAMENTO" />
+        </property>
+        <property name="provincia" type="java.lang.String">
+            <column name="PROVINCIA" />
+        </property>
+        <property name="codigoPostal" type="java.lang.Integer">
+            <column name="CODIGOPOSTAL" />
+        </property>
+        <property name="barrio" type="java.lang.String">
+            <column name="BARRIO" />
+        </property>
+    </class>
+</hibernate-mapping>
