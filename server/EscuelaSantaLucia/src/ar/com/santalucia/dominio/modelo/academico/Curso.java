@@ -1,62 +1,69 @@
 package ar.com.santalucia.dominio.modelo.academico;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-import ar.com.santalucia.dominio.modelo.Entidad;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 
 /**
- * Clase Curso: contiene su lista de alumnos
- * @author EricDaniel
- * @version 1.0
+ * 
+ * @author Ariel Ramirez
  *
+ * @version 1.0 
  */
-public class Curso extends Entidad {
 
-	private char division;
-	private int cicloLectivo;
-	private List<Alumno> listaAlumnos;
+// Último modificador: Eric Pennachini @ 19-09-15 16:02
 
+public class Curso {
+	private Long idCurso;
+	private Character division;
+	private Integer cicloLectivo;
+	private Set<Alumno> listaAlumnos;
+	
 	public Curso() {
 		super();
+		listaAlumnos = new HashSet<Alumno>();
 	}
-
-	public Curso(char division, int cicloLectivo, List<Alumno> listaAlumnos) {
+	
+	public Curso(Long idCurso, Character division, Integer cicloLectivo, Set<Alumno> listaAlumnos) {
 		super();
+		this.idCurso = idCurso;
 		this.division = division;
 		this.cicloLectivo = cicloLectivo;
-		this.listaAlumnos = listaAlumnos;
+		this.setListaAlumnos(listaAlumnos);
 	}
 
-	public char getDivision() {
+	public Long getIdCurso() {
+		return idCurso;
+	}
+
+	public void setIdCurso(Long idCurso) {
+		this.idCurso = idCurso;
+	}
+
+	public Character getDivision() {
 		return division;
 	}
 
-	public void setDivision(char division) {
+	public void setDivision(Character division) {
 		this.division = division;
 	}
 
-	public int getCicloLectivo() {
+	public Integer getCicloLectivo() {
 		return cicloLectivo;
 	}
 
-	public void setCicloLectivo(int cicloLectivo) {
+	public void setCicloLectivo(Integer cicloLectivo) {
 		this.cicloLectivo = cicloLectivo;
 	}
 
-	public List<Alumno> getListaAlumnos() {
+	public Set<Alumno> getListaAlumnos() {
 		return listaAlumnos;
 	}
 
-	public void setListaAlumnos(List<Alumno> listaAlumnos) {
+	public void setListaAlumnos(Set<Alumno> listaAlumnos) {
 		this.listaAlumnos = listaAlumnos;
 	}
 	
-	public void agregarAlumno(Alumno alumno) {
-		this.listaAlumnos.add(alumno);
-	}
-
-	public void quitarAlumno(Alumno alumno) {
-		this.listaAlumnos.add(alumno);
-	}
+	
 }

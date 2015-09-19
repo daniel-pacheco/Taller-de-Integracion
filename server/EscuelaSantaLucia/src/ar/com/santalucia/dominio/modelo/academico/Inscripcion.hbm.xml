@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 19/09/2015 17:26:28 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="ar.com.santalucia.dominio.modelo.academico.Inscripcion" table="INSCRIPCION">
+        <id name="idInscripcion" type="java.lang.Long">
+            <column name="IDINSCRIPCION" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="mesa" class="ar.com.santalucia.dominio.modelo.academico.Mesa" fetch="join">
+            <column name="MESA" />
+        </many-to-one>
+        <property name="fecha" type="java.util.Date">
+            <column name="FECHA" />
+        </property>
+        <many-to-one name="alumno" class="ar.com.santalucia.dominio.modelo.usuarios.Alumno" fetch="join">
+            <column name="ALUMNO" />
+        </many-to-one>
+        <property name="asistencia" type="java.lang.Boolean">
+            <column name="ASISTENCIA" />
+        </property>
+    </class>
+</hibernate-mapping>

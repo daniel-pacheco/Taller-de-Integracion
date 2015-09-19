@@ -1,40 +1,51 @@
 package ar.com.santalucia.dominio.modelo.academico;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
-import ar.com.santalucia.dominio.modelo.Entidad;
 import ar.com.santalucia.dominio.modelo.usuarios.Docente;
 
 /**
- * Clase Mesa (mesas de examen)
- * @author EricDaniel
- *
+ * 
+ * @author Ariel Ramirez
+ * @version 1.0
+ * 
  */
-public class Mesa extends Entidad {
 
+// Último modificador: Eric Pennachini @ 19-09-15 16:00
+
+public class Mesa {
+	private Long idMesa;
 	private Date fecha;
-	private int diasPermitirInscripcion;
+	private Long plazoInscripcion;
 	private Materia materia;
-	private List<Docente> listaIntegrantesTribunal;
-	private List<Inscripcion> listaInscripciones;
+	private Set<Docente> integrantesTribunal;
+	private Set<Inscripcion> listaInscripciones;
 
 	public Mesa() {
 		super();
-		listaIntegrantesTribunal = new ArrayList<Docente>();
-		listaInscripciones = new ArrayList<Inscripcion>();
+		integrantesTribunal = new HashSet<Docente>();
+		listaInscripciones = new HashSet<Inscripcion>();
 	}
 
-	public Mesa(Date fecha, int diasPermitirInscripcion, Materia materia,
-			List<Docente> listaIntegrantesTribunal,
-			List<Inscripcion> listaInscripciones) {
+	public Mesa(Long idMesa, Date fecha, Long plazoInscripcion, Materia materia, Set<Docente> integrantesTribunal,
+			Set<Inscripcion> listaInscripciones) {
 		super();
+		this.idMesa = idMesa;
 		this.fecha = fecha;
-		this.diasPermitirInscripcion = diasPermitirInscripcion;
+		this.plazoInscripcion = plazoInscripcion;
 		this.materia = materia;
-		this.listaIntegrantesTribunal = listaIntegrantesTribunal;
-		this.listaInscripciones = listaInscripciones;
+		this.setIntegrantesTribunal(integrantesTribunal);
+		this.setListaInscripciones(listaInscripciones);
+	}
+
+	public Long getIdMesa() {
+		return idMesa;
+	}
+
+	public void setIdMesa(Long idMesa) {
+		this.idMesa = idMesa;
 	}
 
 	public Date getFecha() {
@@ -45,12 +56,12 @@ public class Mesa extends Entidad {
 		this.fecha = fecha;
 	}
 
-	public int getDiasPermitirInscripcion() {
-		return diasPermitirInscripcion;
+	public Long getPlazoInscripcion() {
+		return plazoInscripcion;
 	}
 
-	public void setDiasPermitirInscripcion(int diasPermitirInscripcion) {
-		this.diasPermitirInscripcion = diasPermitirInscripcion;
+	public void setPlazoInscripcion(Long plazoInscripcion) {
+		this.plazoInscripcion = plazoInscripcion;
 	}
 
 	public Materia getMateria() {
@@ -61,33 +72,20 @@ public class Mesa extends Entidad {
 		this.materia = materia;
 	}
 
-	public List<Docente> getListaIntegrantesTribunal() {
-		return listaIntegrantesTribunal;
+	public Set<Docente> getIntegrantesTribunal() {
+		return integrantesTribunal;
 	}
 
-	public void setListaIntegrantesTribunal(
-			List<Docente> listaIntegrantesTribunal) {
-		this.listaIntegrantesTribunal = listaIntegrantesTribunal;
+	public void setIntegrantesTribunal(Set<Docente> integrantesTribunal) {
+		this.integrantesTribunal = integrantesTribunal;
 	}
 
-	public List<Inscripcion> getListaInscripciones() {
+	public Set<Inscripcion> getListaInscripciones() {
 		return listaInscripciones;
 	}
 
-	public void setListaInscripciones(List<Inscripcion> listaInscripciones) {
+	public void setListaInscripciones(Set<Inscripcion> listaInscripciones) {
 		this.listaInscripciones = listaInscripciones;
 	}
 
-	public void agregarDocenteATribunal(Docente integranteTribunal) {
-		this.listaIntegrantesTribunal.add(integranteTribunal);
-	}
-	public void quitarDocenteDeTribunal(Docente integranteTribunal) {
-		this.listaIntegrantesTribunal.remove(integranteTribunal);
-	}
-	public void agregarInscripcion(Inscripcion inscripcion) {
-		this.listaInscripciones.add(inscripcion);
-	}
-	public void quitarInscripcion(Inscripcion inscripcion) {
-		this.listaInscripciones.remove(inscripcion);
-	}
 }

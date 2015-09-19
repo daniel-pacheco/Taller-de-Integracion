@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 19/09/2015 17:26:57 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="ar.com.santalucia.dominio.modelo.desempe&#195;&#177;o.Trimestre" table="TRIMESTRE">
+        <id name="idTrimestre" type="java.lang.Long">
+            <column name="IDTRIMESTRE" />
+            <generator class="assigned" />
+        </id>
+        <property name="cicloLectivo" type="java.lang.Integer">
+            <column name="CICLOLECTIVO" />
+        </property>
+        <set name="listaNotas" table="NOTA" inverse="false" lazy="true">
+            <key>
+                <column name="IDTRIMESTRE" />
+            </key>
+            <one-to-many class="ar.com.santalucia.dominio.modelo.desempe&#195;&#177;o.Nota" />
+        </set>
+        <many-to-one name="materia" class="ar.com.santalucia.dominio.modelo.academico.Materia" fetch="join">
+            <column name="MATERIA" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

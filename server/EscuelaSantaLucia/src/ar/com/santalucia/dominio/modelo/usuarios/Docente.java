@@ -17,7 +17,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
  *
  */
 
-//UltimoModificador: Eric Pennachini @ 16-08-15 16:20
+//UltimoModificador: Eric Pennachini @ 19-09-15 16:07
 
 public class Docente extends Usuario {
 
@@ -34,7 +34,7 @@ public class Docente extends Usuario {
 			Date fechaNacimiento, Boolean activo, Set<Titulo> listaTitulos, Long cuil) {
 		super(nroDocumento, tipoDocumento, nombre, apellido, listaTelefonos, listaMails, domicilio, sexo,
 				nombreUsuario, fechaNacimiento, activo);
-		this.listaTitulos = listaTitulos;
+		this.setListaTitulos(listaTitulos);
 		this.cuil = cuil;
 	}
 

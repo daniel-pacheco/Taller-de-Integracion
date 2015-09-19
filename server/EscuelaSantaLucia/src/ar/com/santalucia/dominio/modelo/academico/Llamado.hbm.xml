@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 19/09/2015 17:26:28 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="ar.com.santalucia.dominio.modelo.academico.Llamado" table="LLAMADO">
+        <id name="idLlamado" type="java.lang.Long">
+            <column name="IDLLAMADO" />
+            <generator class="assigned" />
+        </id>
+        <set name="listaMesas" table="MESA" inverse="false" lazy="true">
+            <key>
+                <column name="IDLLAMADO" />
+            </key>
+            <one-to-many class="ar.com.santalucia.dominio.modelo.academico.Mesa" />
+        </set>
+        <property name="fechaInicio" type="java.util.Date">
+            <column name="FECHAINICIO" />
+        </property>
+        <property name="fechaFin" type="java.util.Date">
+            <column name="FECHAFIN" />
+        </property>
+    </class>
+</hibernate-mapping>

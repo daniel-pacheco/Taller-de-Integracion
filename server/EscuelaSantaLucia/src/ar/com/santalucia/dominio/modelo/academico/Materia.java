@@ -1,29 +1,38 @@
 package ar.com.santalucia.dominio.modelo.academico;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import ar.com.santalucia.dominio.modelo.Entidad;
-import ar.com.santalucia.dominio.modelo.desempeño.Trimestre;
 import ar.com.santalucia.dominio.modelo.usuarios.Docente;
 
-public class Materia extends Entidad {
+/**
+ * 
+ * @author Ariel Ramirez
+ *
+ * @version 1.0
+ */
 
+public class Materia {
+	private Long idMateria;
 	private String nombre;
 	private Docente docenteTitular;
-	private List<Trimestre> listaTrimestres;
-
+	private String tipoDocente;
+	
 	public Materia() {
 		super();
-		listaTrimestres = new ArrayList<Trimestre>();
 	}
 
-	public Materia(String nombre, Docente docenteTitular,
-			List<Trimestre> listaTrimestres) {
+	public Materia(Long idMateria, String nombre, Docente docenteTitular, String tipoDocente) {
 		super();
+		this.idMateria = idMateria;
 		this.nombre = nombre;
 		this.docenteTitular = docenteTitular;
-		this.listaTrimestres = listaTrimestres;
+		this.tipoDocente = tipoDocente;
+	}
+
+	public Long getIdMateria() {
+		return idMateria;
+	}
+
+	public void setIdMateria(Long idMateria) {
+		this.idMateria = idMateria;
 	}
 
 	public String getNombre() {
@@ -42,18 +51,13 @@ public class Materia extends Entidad {
 		this.docenteTitular = docenteTitular;
 	}
 
-	public List<Trimestre> getListaTrimestres() {
-		return listaTrimestres;
+	public String getTipoDocente() {
+		return tipoDocente;
 	}
 
-	public void setListaTrimestres(List<Trimestre> listaTrimestres) {
-		this.listaTrimestres = listaTrimestres;
+	public void setTipoDocente(String tipoDocente) {
+		this.tipoDocente = tipoDocente;
 	}
-
-	public void agregarTrimestre(Trimestre trimestre) {
-		this.listaTrimestres.add(trimestre);
-	}
-	public void quitarTrimestre(Trimestre trimestre) {
-		this.listaTrimestres.remove(trimestre);
-	}
+	
+	
 }

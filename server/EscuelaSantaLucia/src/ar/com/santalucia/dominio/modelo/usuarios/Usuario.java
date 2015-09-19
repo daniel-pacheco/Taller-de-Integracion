@@ -15,11 +15,12 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
  * Clase Usuario
  * 
  * @author EricDaniel
- * @version 1.4
+ * @version 1.5
  * 
  */
 
-//UltimoModificador: Ariel Ramirez @ 24-08-15 18:03
+//UltimoModificador: Eric Pennachini @ 19-09-15 16:05
+
 @XmlRootElement
 public class Usuario {
 	protected Long idUsuario;
@@ -49,8 +50,8 @@ public class Usuario {
 		this.tipoDocumento = tipoDocumento;
 		this.nombre = nombre;
 		this.apellido = apellido;
-		this.listaTelefonos = listaTelefonos;
-		this.listaMails = listaMails;
+		this.setListaTelefonos(listaTelefonos);
+		this.setListaMails(listaMails);
 		this.domicilio = domicilio;
 		this.sexo = sexo;
 		this.nombreUsuario = nombreUsuario;

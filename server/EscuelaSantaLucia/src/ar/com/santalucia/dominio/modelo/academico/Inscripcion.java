@@ -2,32 +2,41 @@ package ar.com.santalucia.dominio.modelo.academico;
 
 import java.util.Date;
 
-import ar.com.santalucia.dominio.modelo.Entidad;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 
-public class Inscripcion extends Entidad {
-
-	private Date fecha;
+/**
+ * 
+ * @author Ariel Ramirez
+ *
+ * @version 1.0
+ */
+public class Inscripcion {
+	
+	private Long idInscripcion;
 	private Mesa mesa;
+	private Date fecha;
 	private Alumno alumno;
-
+	private Boolean asistencia;
+	
 	public Inscripcion() {
 		super();
 	}
 
-	public Inscripcion(Date fecha, Mesa mesa, Alumno alumno) {
+	public Inscripcion(Long idInscripcion, Mesa mesa, Date fecha, Alumno alumno, Boolean asistencia) {
 		super();
-		this.fecha = fecha;
+		this.idInscripcion = idInscripcion;
 		this.mesa = mesa;
-		this.alumno = alumno;
-	}
-
-	public Date getFecha() {
-		return fecha;
-	}
-
-	public void setFecha(Date fecha) {
 		this.fecha = fecha;
+		this.alumno = alumno;
+		this.asistencia = asistencia;
+	}
+
+	public Long getIdInscripcion() {
+		return idInscripcion;
+	}
+
+	public void setIdInscripcion(Long idInscripcion) {
+		this.idInscripcion = idInscripcion;
 	}
 
 	public Mesa getMesa() {
@@ -38,6 +47,14 @@ public class Inscripcion extends Entidad {
 		this.mesa = mesa;
 	}
 
+	public Date getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+
 	public Alumno getAlumno() {
 		return alumno;
 	}
@@ -46,4 +63,13 @@ public class Inscripcion extends Entidad {
 		this.alumno = alumno;
 	}
 
+	public Boolean getAsistencia() {
+		return asistencia;
+	}
+
+	public void setAsistencia(Boolean asistencia) {
+		this.asistencia = asistencia;
+	}
+	
+	
 }

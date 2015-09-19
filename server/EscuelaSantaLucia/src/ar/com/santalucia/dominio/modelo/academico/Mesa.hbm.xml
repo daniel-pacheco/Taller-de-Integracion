@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 19/09/2015 17:26:28 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="ar.com.santalucia.dominio.modelo.academico.Mesa" table="MESA">
+        <id name="idMesa" type="java.lang.Long">
+            <column name="IDMESA" />
+            <generator class="assigned" />
+        </id>
+        <property name="fecha" type="java.sql.Date">
+            <column name="FECHA" />
+        </property>
+        <property name="plazoInscripcion" type="java.lang.Long">
+            <column name="PLAZOINSCRIPCION" />
+        </property>
+        <many-to-one name="materia" class="ar.com.santalucia.dominio.modelo.academico.Materia" fetch="join">
+            <column name="MATERIA" />
+        </many-to-one>
+        <set name="integrantesTribunal" table="MESA" inverse="false" lazy="true">
+            <key>
+                <column name="IDMESA" />
+            </key>
+            <element type="ar.com.santalucia.dominio.modelo.usuarios.Docente">
+                <column name="INTEGRANTESTRIBUNAL" />
+            </element>
+        </set>
+        <set name="listaInscripciones" table="INSCRIPCION" inverse="false" lazy="true">
+            <key>
+                <column name="IDMESA" />
+            </key>
+            <one-to-many class="ar.com.santalucia.dominio.modelo.academico.Inscripcion" />
+        </set>
+    </class>
+</hibernate-mapping>

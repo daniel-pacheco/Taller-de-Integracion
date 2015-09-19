@@ -1,14 +1,20 @@
-package ar.com.santalucia.dominio.modelo.desempeño;
+package ar.com.santalucia.dominio.modelo.desempenio;
 
 import java.util.Date;
 
-import ar.com.santalucia.dominio.modelo.Entidad;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 
-public class Nota extends Entidad {
+/**
+ * 
+ * @author Eric
+ * @version 1.0
+ *
+ */
 
+public class Nota {
+	private Long idNota;
 	private Date fecha;
-	private float calificacion;
+	private Float calificacion;
 	private Materia materia;
 	private String tipo;
 	private Trimestre trimestre;
@@ -17,14 +23,22 @@ public class Nota extends Entidad {
 		super();
 	}
 
-	public Nota(Date fecha, float calificacion, Materia materia, String tipo,
-			Trimestre trimestre) {
+	public Nota(Long idNota, Date fecha, Float calificacion, Materia materia, String tipo, Trimestre trimestre) {
 		super();
+		this.idNota = idNota;
 		this.fecha = fecha;
 		this.calificacion = calificacion;
 		this.materia = materia;
 		this.tipo = tipo;
 		this.trimestre = trimestre;
+	}
+
+	public Long getIdNota() {
+		return idNota;
+	}
+
+	public void setIdNota(Long idNota) {
+		this.idNota = idNota;
 	}
 
 	public Date getFecha() {
@@ -35,11 +49,11 @@ public class Nota extends Entidad {
 		this.fecha = fecha;
 	}
 
-	public float getCalificacion() {
+	public Float getCalificacion() {
 		return calificacion;
 	}
 
-	public void setCalificacion(float calificacion) {
+	public void setCalificacion(Float calificacion) {
 		this.calificacion = calificacion;
 	}
 
