@@ -21,7 +21,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
 public interface IServicioUsuario<T> {
 	T getUsuario(Long id) throws Exception;
 	List <T> getUsuarios(T example);
-	boolean addUsuario(T usuario);
+	boolean addUsuario(T usuario) throws Exception;
 	Set<Telefono> getTelefonos(Long idUsuario) throws Exception;	// sólo pasar id del usuario nuevo
 	Set<Mail> getMails(Long idUsuario) throws Exception; 				// sólo pasar id del usuario
 	Set<Titulo> getTitulos(Long idUsuario) throws Exception; 			// sólo pasar id del usuario
@@ -29,7 +29,7 @@ public interface IServicioUsuario<T> {
 	boolean modifyMail(Mail mailModificado);
 	boolean modifyDireccion(Domicilio domicilioModificado);
 	boolean modifyTitulo(Titulo tituloModificado);
-	boolean modifyUsuario(T usuarioModificado);
+	boolean modifyUsuario(T usuarioModificado) throws Exception;
 	boolean removeTelefono(Telefono telefonoEliminar);
 	boolean removeMail(Mail mailEliminar);
 	boolean removeDomicilio(Domicilio domicilioEliminar);

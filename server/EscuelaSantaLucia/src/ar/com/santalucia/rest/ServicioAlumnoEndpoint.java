@@ -28,7 +28,7 @@ import ar.com.santalucia.servicio.ServicioAlumno;
  *@version 1.0
  */
 
-// Último modificador: Ariel Ramirez @ 17-09-2015 18:49
+// Último modificador: Ariel Ramirez @ 25-09-2015 19:28
 
 @Path("/sAlumno")
 @Produces({ /*"application/xml", */ "application/json" })
@@ -53,7 +53,7 @@ public class ServicioAlumnoEndpoint {
 	 * @return Status 200(Response: ok) e instancia de alumno o Status 404 (Response: not found) y null si no no existe. 
 	 */
 	@GET
-	@Path("/galu/{id:[0-9][0-9]*}")
+	@Path("/alu/{id:[0-9][0-9]*}")
 	public Response getById(@PathParam("id") final Long id) {
 		ServicioAlumno servicioalumno = null;
 		Alumno alumno = new Alumno();
@@ -78,7 +78,7 @@ public class ServicioAlumnoEndpoint {
 	 * @return Status 200(Response: ok) y Set de teléfonos  o Status 404 (Response: not found) y null si no existe el alumno o no hay nada.
 	 */
 	@GET
-	@Path("/gtel/{id:[0-9][0-9]*}")
+	@Path("/tel/{id:[0-9][0-9]*}") //tel
 	public Response getTelefonos(@PathParam("id") final Long id) {
 		ServicioAlumno servicioAlumno = null;
 		Set<Telefono> telefonos = new HashSet<Telefono>();
@@ -102,7 +102,7 @@ public class ServicioAlumnoEndpoint {
 	 * @return Status 200(Response: ok) y Set de mails  o Status 404 (Response: not found) y null si no existe el alumno o no hay nada.
 	 */
 	@GET
-	@Path("/gmai/{id:[0-9][0-9]*}")
+	@Path("/mai/{id:[0-9][0-9]*}")
 	public Response getMails(@PathParam("id") final Long id){
 		ServicioAlumno servicioAlumno = null;
 		Set<Mail> mails = new HashSet<Mail>();
@@ -143,27 +143,34 @@ public class ServicioAlumnoEndpoint {
 	
 
 	@PUT
-	@Path("/{id:[0-9][0-9]*}")
-	public Response update(@PathParam("id") Long id, final Alumno servicioalumno) { //Esto es sólo una prueba
-		// TODO: process the given servicioalumno
-		Alumno alumno=new Alumno();
+	@Path("/alu/")
+	public Response update(final Alumno alumno) { //Agrega o modifica un alumno
+		Long respuesta = -1L;
 		//return Response.noContent().build();
 		try {
 			ServicioAlumno servicioAlumno = new ServicioAlumno();
-			alumno = servicioAlumno.getUsuario(1L);
+			servicioAlumno.addUsuario(alumno);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+			return Response.status(Status.NOT_MODIFIED).build();
+		}
+		respuesta = alumno.getIdUsuario();
+		return Response.ok(respuesta).build();
+	}
+
+	@DELETE
+	@Path("/alu/{id:[0-9][0-9]*}")
+	public Response deleteById(@PathParam("id") final Long id) {
+		// TODO: process the servicioalumno matching by the given id
+		try {
+			ServicioAlumno servicioAlumno=new ServicioAlumno();
+			servicioAlumno.removeUsuario(servicioAlumno.getUsuario(id));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return Response.ok(alumno).build();
-	}
-
-	@DELETE
-	@Path("/{id:[0-9][0-9]*}")
-	public Response deleteById(@PathParam("id") final Long id) {
-		// TODO: process the servicioalumno matching by the given id
 		return Response.noContent().build();
 	}
-
 }

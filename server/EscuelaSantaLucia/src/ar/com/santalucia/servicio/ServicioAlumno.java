@@ -22,7 +22,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
  *
  */
 
-// Último modificador: Ariel Ramirez @ 14-09-2015 15:30
+// Último modificador: Ariel Ramirez @ 25-09-2015 19:26
 
 public class ServicioAlumno extends ServicioUsuario<Alumno> {
 
@@ -56,15 +56,17 @@ public class ServicioAlumno extends ServicioUsuario<Alumno> {
 	}
 
 	@Override
-	public boolean addUsuario(Alumno usuario) {
+	public boolean addUsuario(Alumno usuario) throws Exception {
 		try {
-			gAlumno.add(usuario);
+			if(usuario.getIdUsuario() == null){
+				gAlumno.add(usuario);}
+			else{
+				gAlumno.modify(usuario);
+			};
 			return true;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception ex) {
+			throw new Exception("Servicio add(): no se pudo completar la operacion. "+ex.getMessage());
 		}
-		return false;
 	}
 
 	@Override
@@ -198,15 +200,14 @@ public class ServicioAlumno extends ServicioUsuario<Alumno> {
 	}
 
 	@Override
-	public boolean modifyUsuario(Alumno usuarioModificado) {
+	public boolean modifyUsuario(Alumno usuarioModificado) throws Exception{
 		try {
 			gAlumno.modify(usuarioModificado);
 			return true;
-		} catch (Exception e) {
+		} catch (Exception ex) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new Exception("Servicio modify(): no se pudo completar la operacion. "+ex.getMessage());
 		}
-		return false;
 	}
 
 	@Override
@@ -227,3 +228,4 @@ public class ServicioAlumno extends ServicioUsuario<Alumno> {
 	}
 
 }
+ 
