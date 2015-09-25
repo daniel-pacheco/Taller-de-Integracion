@@ -1,12 +1,7 @@
 <?xml version="1.0"?>
-<!-- Trabajar online 
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"> -->
-
-<!-- Trabajar offline -->
-<!DOCTYPE hibernate-mapping SYSTEM "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
-
-<!-- Generated 15/08/2015 11:41:17 by Hibernate Tools 3.4.0.CR1 -->
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/09/2015 17:10:32 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <joined-subclass name="ar.com.santalucia.dominio.modelo.usuarios.Directivo" extends="ar.com.santalucia.dominio.modelo.usuarios.Usuario" table="DIRECTIVO" lazy="false">
         <key>
@@ -17,7 +12,7 @@
         </property>
         <set name="listaTitulos" table="TITULO" inverse="false" lazy="true">
             <key>
-                <column name="CUIL" />
+                <column name="IDUSUARIO" />
             </key>
             <one-to-many class="ar.com.santalucia.dominio.modelo.usuarios.info.Titulo" />
         </set>

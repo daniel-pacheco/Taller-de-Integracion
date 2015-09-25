@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 19/09/2015 17:26:57 by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 24/09/2015 15:52:31 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="ar.com.santalucia.dominio.modelo.desempe&#195;&#177;o.Nota" table="NOTA">
+    <class name="ar.com.santalucia.dominio.modelo.desempenio.Nota" table="NOTA">
         <id name="idNota" type="java.lang.Long">
             <column name="IDNOTA" />
             <generator class="assigned" />
@@ -20,7 +20,7 @@
         <property name="tipo" type="java.lang.String">
             <column name="TIPO" />
         </property>
-        <many-to-one name="trimestre" class="ar.com.santalucia.dominio.modelo.desempe&#195;&#177;o.Trimestre" fetch="join">
+        <many-to-one name="trimestre" class="ar.com.santalucia.dominio.modelo.desempenio.Trimestre" fetch="join">
             <column name="TRIMESTRE" />
         </many-to-one>
     </class>

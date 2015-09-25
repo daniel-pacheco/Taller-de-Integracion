@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 19/09/2015 17:26:28 by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 24/09/2015 16:41:55 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="ar.com.santalucia.dominio.modelo.academico.Curso" table="CURSO">
         <id name="idCurso" type="java.lang.Long">
-            <column name="IDCURSO" />
-            <generator class="assigned" />
+            <column name="IDCURSO" unique="true"/>
+            <generator class="identity" />
         </id>
         <property name="division" type="java.lang.Character">
             <column name="DIVISION" />
@@ -14,13 +14,11 @@
         <property name="cicloLectivo" type="java.lang.Integer">
             <column name="CICLOLECTIVO" />
         </property>
-        <set name="listaAlumnos" table="CURSO" inverse="false" lazy="true">
+        <set name="listaAlumnos" table="ALUMNO" inverse="false" lazy="true">
             <key>
                 <column name="IDCURSO" />
             </key>
-            <element type="ar.com.santalucia.dominio.modelo.usuarios.Alumno">
-                <column name="LISTAALUMNOS" />
-            </element>
+            <one-to-many class="ar.com.santalucia.dominio.modelo.usuarios.Alumno" />
         </set>
     </class>
 </hibernate-mapping>
