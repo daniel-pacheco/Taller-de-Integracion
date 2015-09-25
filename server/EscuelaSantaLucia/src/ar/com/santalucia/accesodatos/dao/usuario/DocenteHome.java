@@ -1,5 +1,5 @@
-package ar.com.santalucia.accesodatos.dao;
-// Generated 19/09/2015 17:43:36 by Hibernate Tools 4.3.1
+package ar.com.santalucia.accesodatos.dao.usuario;
+// Generated 04/07/2015 12:20:19 by Hibernate Tools 4.3.1
 
 import java.util.List;
 import javax.naming.InitialContext;
@@ -9,16 +9,16 @@ import org.hibernate.LockMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 
-import ar.com.santalucia.dominio.modelo.academico.Inscripcion;
+import ar.com.santalucia.dominio.modelo.usuarios.Docente;
 
 /**
- * Home object for domain model class Inscripcion.
- * @see ar.com.santalucia.dominio.modelo.academico.Inscripcion
+ * Home object for domain model class Docente.
+ * @see ar.com.santalucia.dominio.modelo.usuarios.Docente
  * @author Hibernate Tools
  */
-public class InscripcionHome {
+public class DocenteHome {
 
-	private static final Log log = LogFactory.getLog(InscripcionHome.class);
+	private static final Log log = LogFactory.getLog(DocenteHome.class);
 
 	private final SessionFactory sessionFactory = getSessionFactory();
 
@@ -31,8 +31,8 @@ public class InscripcionHome {
 		}
 	}
 
-	public void persist(Inscripcion transientInstance) {
-		log.debug("persisting Inscripcion instance");
+	public void persist(Docente transientInstance) {
+		log.debug("persisting Docente instance");
 		try {
 			sessionFactory.getCurrentSession().persist(transientInstance);
 			log.debug("persist successful");
@@ -42,8 +42,8 @@ public class InscripcionHome {
 		}
 	}
 
-	public void attachDirty(Inscripcion instance) {
-		log.debug("attaching dirty Inscripcion instance");
+	public void attachDirty(Docente instance) {
+		log.debug("attaching dirty Docente instance");
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(instance);
 			log.debug("attach successful");
@@ -53,8 +53,8 @@ public class InscripcionHome {
 		}
 	}
 
-	public void attachClean(Inscripcion instance) {
-		log.debug("attaching clean Inscripcion instance");
+	public void attachClean(Docente instance) {
+		log.debug("attaching clean Docente instance");
 		try {
 			sessionFactory.getCurrentSession().lock(instance, LockMode.NONE);
 			log.debug("attach successful");
@@ -64,8 +64,8 @@ public class InscripcionHome {
 		}
 	}
 
-	public void delete(Inscripcion persistentInstance) {
-		log.debug("deleting Inscripcion instance");
+	public void delete(Docente persistentInstance) {
+		log.debug("deleting Docente instance");
 		try {
 			sessionFactory.getCurrentSession().delete(persistentInstance);
 			log.debug("delete successful");
@@ -75,10 +75,10 @@ public class InscripcionHome {
 		}
 	}
 
-	public Inscripcion merge(Inscripcion detachedInstance) {
-		log.debug("merging Inscripcion instance");
+	public Docente merge(Docente detachedInstance) {
+		log.debug("merging Docente instance");
 		try {
-			Inscripcion result = (Inscripcion) sessionFactory.getCurrentSession().merge(detachedInstance);
+			Docente result = (Docente) sessionFactory.getCurrentSession().merge(detachedInstance);
 			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -87,11 +87,11 @@ public class InscripcionHome {
 		}
 	}
 
-	public Inscripcion findById(java.lang.Long id) {
-		log.debug("getting Inscripcion instance with id: " + id);
+	public Docente findById(java.lang.Long id) {
+		log.debug("getting Docente instance with id: " + id);
 		try {
-			Inscripcion instance = (Inscripcion) sessionFactory.getCurrentSession()
-					.get("ar.com.santalucia.dominio.modelo.academico.Inscripcion", id);
+			Docente instance = (Docente) sessionFactory.getCurrentSession()
+					.get("ar.com.santalucia.dominio.modelo.usuarios.Docente", id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {
@@ -104,12 +104,12 @@ public class InscripcionHome {
 		}
 	}
 
-	public List findByExample(Inscripcion instance) {
-		log.debug("finding Inscripcion instance by example");
+	public List findByExample(Docente instance) {
+		log.debug("finding Docente instance by example");
 		try {
 			List results = sessionFactory.getCurrentSession()
-					.createCriteria("ar.com.santalucia.dominio.modelo.academico.Inscripcion")
-					.add(Example.create(instance)).list();
+					.createCriteria("ar.com.santalucia.dominio.modelo.usuarios.Docente").add(Example.create(instance))
+					.list();
 			log.debug("find by example successful, result size: " + results.size());
 			return results;
 		} catch (RuntimeException re) {

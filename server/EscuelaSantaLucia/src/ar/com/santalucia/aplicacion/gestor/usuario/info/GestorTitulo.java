@@ -2,7 +2,7 @@ package ar.com.santalucia.aplicacion.gestor.usuario.info;
 
 import java.util.ArrayList;
 
-import ar.com.santalucia.accesodatos.dao.TituloHome;
+import ar.com.santalucia.accesodatos.dao.usuario.info.TituloHome;
 import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
 import ar.com.santalucia.aplicacion.gestor.Gestor;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;

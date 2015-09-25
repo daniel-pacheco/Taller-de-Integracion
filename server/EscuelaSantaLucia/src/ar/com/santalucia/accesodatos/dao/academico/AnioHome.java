@@ -1,4 +1,4 @@
-package ar.com.santalucia.accesodatos.dao;
+package ar.com.santalucia.accesodatos.dao.academico;
 // Generated 19/09/2015 17:43:36 by Hibernate Tools 4.3.1
 
 import java.util.List;

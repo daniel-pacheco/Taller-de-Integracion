@@ -1,5 +1,5 @@
-package ar.com.santalucia.accesodatos.dao;
-// Generated 04/07/2015 12:20:19 by Hibernate Tools 4.3.1
+package ar.com.santalucia.accesodatos.dao.academico;
+// Generated 19/09/2015 17:43:36 by Hibernate Tools 4.3.1
 
 import java.util.List;
 import javax.naming.InitialContext;
@@ -9,19 +9,18 @@ import org.hibernate.LockMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 
-import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
-import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
+import ar.com.santalucia.dominio.modelo.academico.MesaExamen;
 
 /**
- * Home object for domain model class Telefono.
- * @see ar.com.santalucia.dominio.modelo.usuarios.info.Telefono
+ * Home object for domain model class MesaExamen.
+ * @see ar.com.santalucia.dominio.modelo.academico.MesaExamen
  * @author Hibernate Tools
  */
-public class TelefonoHome {
+public class MesaExamenHome {
 
-	private static final Log log = LogFactory.getLog(TelefonoHome.class);
+	private static final Log log = LogFactory.getLog(MesaExamenHome.class);
 
-	private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+	private final SessionFactory sessionFactory = getSessionFactory();
 
 	protected SessionFactory getSessionFactory() {
 		try {
@@ -32,8 +31,8 @@ public class TelefonoHome {
 		}
 	}
 
-	public void persist(Telefono transientInstance) {
-		log.debug("persisting Telefono instance");
+	public void persist(MesaExamen transientInstance) {
+		log.debug("persisting MesaExamen instance");
 		try {
 			sessionFactory.getCurrentSession().persist(transientInstance);
 			log.debug("persist successful");
@@ -43,8 +42,8 @@ public class TelefonoHome {
 		}
 	}
 
-	public void attachDirty(Telefono instance) {
-		log.debug("attaching dirty Telefono instance");
+	public void attachDirty(MesaExamen instance) {
+		log.debug("attaching dirty MesaExamen instance");
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(instance);
 			log.debug("attach successful");
@@ -54,8 +53,8 @@ public class TelefonoHome {
 		}
 	}
 
-	public void attachClean(Telefono instance) {
-		log.debug("attaching clean Telefono instance");
+	public void attachClean(MesaExamen instance) {
+		log.debug("attaching clean MesaExamen instance");
 		try {
 			sessionFactory.getCurrentSession().lock(instance, LockMode.NONE);
 			log.debug("attach successful");
@@ -65,8 +64,8 @@ public class TelefonoHome {
 		}
 	}
 
-	public void delete(Telefono persistentInstance) {
-		log.debug("deleting Telefono instance");
+	public void delete(MesaExamen persistentInstance) {
+		log.debug("deleting MesaExamen instance");
 		try {
 			sessionFactory.getCurrentSession().delete(persistentInstance);
 			log.debug("delete successful");
@@ -76,10 +75,10 @@ public class TelefonoHome {
 		}
 	}
 
-	public Telefono merge(Telefono detachedInstance) {
-		log.debug("merging Telefono instance");
+	public MesaExamen merge(MesaExamen detachedInstance) {
+		log.debug("merging MesaExamen instance");
 		try {
-			Telefono result = (Telefono) sessionFactory.getCurrentSession().merge(detachedInstance);
+			MesaExamen result = (MesaExamen) sessionFactory.getCurrentSession().merge(detachedInstance);
 			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -88,11 +87,11 @@ public class TelefonoHome {
 		}
 	}
 
-	public Telefono findById(java.lang.Long id) {
-		log.debug("getting Telefono instance with id: " + id);
+	public MesaExamen findById(java.lang.Long id) {
+		log.debug("getting MesaExamen instance with id: " + id);
 		try {
-			Telefono instance = (Telefono) sessionFactory.getCurrentSession()
-					.get("ar.com.santalucia.dominio.modelo.usuarios.info.Telefono", id);
+			MesaExamen instance = (MesaExamen) sessionFactory.getCurrentSession()
+					.get("ar.com.santalucia.dominio.modelo.academico.MesaExamen", id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {
@@ -105,11 +104,11 @@ public class TelefonoHome {
 		}
 	}
 
-	public List findByExample(Telefono instance) {
-		log.debug("finding Telefono instance by example");
+	public List findByExample(MesaExamen instance) {
+		log.debug("finding MesaExamen instance by example");
 		try {
 			List results = sessionFactory.getCurrentSession()
-					.createCriteria("ar.com.santalucia.dominio.modelo.usuarios.info.Telefono")
+					.createCriteria("ar.com.santalucia.dominio.modelo.academico.MesaExamen")
 					.add(Example.create(instance)).list();
 			log.debug("find by example successful, result size: " + results.size());
 			return results;

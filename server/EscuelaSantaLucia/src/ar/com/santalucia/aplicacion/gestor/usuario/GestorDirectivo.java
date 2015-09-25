@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.hibernate.Session;
 
-import ar.com.santalucia.accesodatos.dao.DirectivoHome;
+import ar.com.santalucia.accesodatos.dao.usuario.DirectivoHome;
 import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
 import ar.com.santalucia.aplicacion.gestor.IGestor;
 import ar.com.santalucia.dominio.modelo.usuarios.Directivo;

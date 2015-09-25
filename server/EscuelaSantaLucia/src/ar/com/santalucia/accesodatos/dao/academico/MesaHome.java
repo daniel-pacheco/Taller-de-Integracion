@@ -1,4 +1,4 @@
-package ar.com.santalucia.accesodatos.dao;
+package ar.com.santalucia.accesodatos.dao.academico;
 // Generated 19/09/2015 17:43:36 by Hibernate Tools 4.3.1
 
 import java.util.List;
@@ -9,16 +9,16 @@ import org.hibernate.LockMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 
-import ar.com.santalucia.dominio.modelo.desempenio.Nota;
+import ar.com.santalucia.dominio.modelo.academico.Mesa;
 
 /**
- * Home object for domain model class Nota.
- * @see ar.com.santalucia.dominio.modelo.desempenio.Nota
+ * Home object for domain model class Mesa.
+ * @see ar.com.santalucia.dominio.modelo.academico.Mesa
  * @author Hibernate Tools
  */
-public class NotaHome {
+public class MesaHome {
 
-	private static final Log log = LogFactory.getLog(NotaHome.class);
+	private static final Log log = LogFactory.getLog(MesaHome.class);
 
 	private final SessionFactory sessionFactory = getSessionFactory();
 
@@ -31,8 +31,8 @@ public class NotaHome {
 		}
 	}
 
-	public void persist(Nota transientInstance) {
-		log.debug("persisting Nota instance");
+	public void persist(Mesa transientInstance) {
+		log.debug("persisting Mesa instance");
 		try {
 			sessionFactory.getCurrentSession().persist(transientInstance);
 			log.debug("persist successful");
@@ -42,8 +42,8 @@ public class NotaHome {
 		}
 	}
 
-	public void attachDirty(Nota instance) {
-		log.debug("attaching dirty Nota instance");
+	public void attachDirty(Mesa instance) {
+		log.debug("attaching dirty Mesa instance");
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(instance);
 			log.debug("attach successful");
@@ -53,8 +53,8 @@ public class NotaHome {
 		}
 	}
 
-	public void attachClean(Nota instance) {
-		log.debug("attaching clean Nota instance");
+	public void attachClean(Mesa instance) {
+		log.debug("attaching clean Mesa instance");
 		try {
 			sessionFactory.getCurrentSession().lock(instance, LockMode.NONE);
 			log.debug("attach successful");
@@ -64,8 +64,8 @@ public class NotaHome {
 		}
 	}
 
-	public void delete(Nota persistentInstance) {
-		log.debug("deleting Nota instance");
+	public void delete(Mesa persistentInstance) {
+		log.debug("deleting Mesa instance");
 		try {
 			sessionFactory.getCurrentSession().delete(persistentInstance);
 			log.debug("delete successful");
@@ -75,10 +75,10 @@ public class NotaHome {
 		}
 	}
 
-	public Nota merge(Nota detachedInstance) {
-		log.debug("merging Nota instance");
+	public Mesa merge(Mesa detachedInstance) {
+		log.debug("merging Mesa instance");
 		try {
-			Nota result = (Nota) sessionFactory.getCurrentSession().merge(detachedInstance);
+			Mesa result = (Mesa) sessionFactory.getCurrentSession().merge(detachedInstance);
 			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -87,11 +87,11 @@ public class NotaHome {
 		}
 	}
 
-	public Nota findById(java.lang.Long id) {
-		log.debug("getting Nota instance with id: " + id);
+	public Mesa findById(java.lang.Long id) {
+		log.debug("getting Mesa instance with id: " + id);
 		try {
-			Nota instance = (Nota) sessionFactory.getCurrentSession()
-					.get("ar.com.santalucia.dominio.modelo.desempenio.Nota", id);
+			Mesa instance = (Mesa) sessionFactory.getCurrentSession()
+					.get("ar.com.santalucia.dominio.modelo.academico.Mesa", id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {
@@ -104,11 +104,11 @@ public class NotaHome {
 		}
 	}
 
-	public List findByExample(Nota instance) {
-		log.debug("finding Nota instance by example");
+	public List findByExample(Mesa instance) {
+		log.debug("finding Mesa instance by example");
 		try {
 			List results = sessionFactory.getCurrentSession()
-					.createCriteria("ar.com.santalucia.dominio.modelo.desempenio.Nota").add(Example.create(instance))
+					.createCriteria("ar.com.santalucia.dominio.modelo.academico.Mesa").add(Example.create(instance))
 					.list();
 			log.debug("find by example successful, result size: " + results.size());
 			return results;

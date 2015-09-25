@@ -1,5 +1,5 @@
-package ar.com.santalucia.accesodatos.dao;
-// Generated 19/09/2015 17:43:36 by Hibernate Tools 4.3.1
+package ar.com.santalucia.accesodatos.dao.usuario;
+// Generated 04/07/2015 12:20:19 by Hibernate Tools 4.3.1
 
 import java.util.List;
 import javax.naming.InitialContext;
@@ -9,18 +9,19 @@ import org.hibernate.LockMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 
-import ar.com.santalucia.dominio.modelo.academico.Materia;
+import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
+import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 
 /**
- * Home object for domain model class Materia.
- * @see ar.com.santalucia.dominio.modelo.academico.Materia
+ * Home object for domain model class Alumno.
+ * @see ar.com.santalucia.dominio.modelo.usuarios.Alumno
  * @author Hibernate Tools
  */
-public class MateriaHome {
+public class AlumnoHome {
 
-	private static final Log log = LogFactory.getLog(MateriaHome.class);
+	private static final Log log = LogFactory.getLog(AlumnoHome.class);
 
-	private final SessionFactory sessionFactory = getSessionFactory();
+	private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
 	protected SessionFactory getSessionFactory() {
 		try {
@@ -31,8 +32,8 @@ public class MateriaHome {
 		}
 	}
 
-	public void persist(Materia transientInstance) {
-		log.debug("persisting Materia instance");
+	public void persist(Alumno transientInstance) {
+		log.debug("persisting Alumno instance");
 		try {
 			sessionFactory.getCurrentSession().persist(transientInstance);
 			log.debug("persist successful");
@@ -42,8 +43,8 @@ public class MateriaHome {
 		}
 	}
 
-	public void attachDirty(Materia instance) {
-		log.debug("attaching dirty Materia instance");
+	public void attachDirty(Alumno instance) {
+		log.debug("attaching dirty Alumno instance");
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(instance);
 			log.debug("attach successful");
@@ -53,8 +54,8 @@ public class MateriaHome {
 		}
 	}
 
-	public void attachClean(Materia instance) {
-		log.debug("attaching clean Materia instance");
+	public void attachClean(Alumno instance) {
+		log.debug("attaching clean Alumno instance");
 		try {
 			sessionFactory.getCurrentSession().lock(instance, LockMode.NONE);
 			log.debug("attach successful");
@@ -64,8 +65,8 @@ public class MateriaHome {
 		}
 	}
 
-	public void delete(Materia persistentInstance) {
-		log.debug("deleting Materia instance");
+	public void delete(Alumno persistentInstance) {
+		log.debug("deleting Alumno instance");
 		try {
 			sessionFactory.getCurrentSession().delete(persistentInstance);
 			log.debug("delete successful");
@@ -75,10 +76,10 @@ public class MateriaHome {
 		}
 	}
 
-	public Materia merge(Materia detachedInstance) {
-		log.debug("merging Materia instance");
+	public Alumno merge(Alumno detachedInstance) {
+		log.debug("merging Alumno instance");
 		try {
-			Materia result = (Materia) sessionFactory.getCurrentSession().merge(detachedInstance);
+			Alumno result = (Alumno) sessionFactory.getCurrentSession().merge(detachedInstance);
 			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -87,11 +88,11 @@ public class MateriaHome {
 		}
 	}
 
-	public Materia findById(java.lang.Long id) {
-		log.debug("getting Materia instance with id: " + id);
+	public Alumno findById(java.lang.Long id) {
+		log.debug("getting Alumno instance with id: " + id);
 		try {
-			Materia instance = (Materia) sessionFactory.getCurrentSession()
-					.get("ar.com.santalucia.dominio.modelo.academico.Materia", id);
+			Alumno instance = (Alumno) sessionFactory.getCurrentSession()
+					.get("ar.com.santalucia.dominio.modelo.usuarios.Alumno", id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {
@@ -104,11 +105,11 @@ public class MateriaHome {
 		}
 	}
 
-	public List findByExample(Materia instance) {
-		log.debug("finding Materia instance by example");
+	public List findByExample(Alumno instance) {
+		log.debug("finding Alumno instance by example");
 		try {
 			List results = sessionFactory.getCurrentSession()
-					.createCriteria("ar.com.santalucia.dominio.modelo.academico.Materia").add(Example.create(instance))
+					.createCriteria("ar.com.santalucia.dominio.modelo.usuarios.Alumno").add(Example.create(instance))
 					.list();
 			log.debug("find by example successful, result size: " + results.size());
 			return results;

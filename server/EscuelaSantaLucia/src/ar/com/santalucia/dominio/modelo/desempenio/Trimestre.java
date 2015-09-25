@@ -1,10 +1,19 @@
 package ar.com.santalucia.dominio.modelo.desempenio;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 
+/**
+ * Clase Trimestre: maneja los trimestres del boletín
+ * @author ericpennachini
+ * @version 1.0
+ *
+ */
+
 public class Trimestre {
+
 	private Long idTrimestre;
 	private Integer cicloLectivo;
 	private Set<Nota> listaNotas;
@@ -12,13 +21,14 @@ public class Trimestre {
 
 	public Trimestre() {
 		super();
+		listaNotas = new HashSet<Nota>();
 	}
 
 	public Trimestre(Long idTrimestre, Integer cicloLectivo, Set<Nota> listaNotas, Materia materia) {
 		super();
 		this.idTrimestre = idTrimestre;
 		this.cicloLectivo = cicloLectivo;
-		this.listaNotas = listaNotas;
+		this.setListaNotas(listaNotas);
 		this.materia = materia;
 	}
 

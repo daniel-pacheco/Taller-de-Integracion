@@ -1,5 +1,5 @@
-package ar.com.santalucia.accesodatos.dao;
-// Generated 18/08/2015 18:54:40 by Hibernate Tools 4.3.1
+package ar.com.santalucia.accesodatos.dao.usuario;
+// Generated 04/07/2015 12:20:19 by Hibernate Tools 4.3.1
 
 import java.util.List;
 import javax.naming.InitialContext;
@@ -9,19 +9,18 @@ import org.hibernate.LockMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 
-import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
-import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
+import ar.com.santalucia.dominio.modelo.usuarios.Directivo;
 
 /**
- * Home object for domain model class Domicilio.
- * @see ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio
+ * Home object for domain model class Directivo.
+ * @see ar.com.santalucia.dominio.modelo.usuarios.Directivo
  * @author Hibernate Tools
  */
-public class DomicilioHome {
+public class DirectivoHome {
 
-	private static final Log log = LogFactory.getLog(DomicilioHome.class);
+	private static final Log log = LogFactory.getLog(DirectivoHome.class);
 
-	private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+	private final SessionFactory sessionFactory = getSessionFactory();
 
 	protected SessionFactory getSessionFactory() {
 		try {
@@ -32,8 +31,8 @@ public class DomicilioHome {
 		}
 	}
 
-	public void persist(Domicilio transientInstance) {
-		log.debug("persisting Domicilio instance");
+	public void persist(Directivo transientInstance) {
+		log.debug("persisting Directivo instance");
 		try {
 			sessionFactory.getCurrentSession().persist(transientInstance);
 			log.debug("persist successful");
@@ -43,8 +42,8 @@ public class DomicilioHome {
 		}
 	}
 
-	public void attachDirty(Domicilio instance) {
-		log.debug("attaching dirty Domicilio instance");
+	public void attachDirty(Directivo instance) {
+		log.debug("attaching dirty Directivo instance");
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(instance);
 			log.debug("attach successful");
@@ -54,8 +53,8 @@ public class DomicilioHome {
 		}
 	}
 
-	public void attachClean(Domicilio instance) {
-		log.debug("attaching clean Domicilio instance");
+	public void attachClean(Directivo instance) {
+		log.debug("attaching clean Directivo instance");
 		try {
 			sessionFactory.getCurrentSession().lock(instance, LockMode.NONE);
 			log.debug("attach successful");
@@ -65,8 +64,8 @@ public class DomicilioHome {
 		}
 	}
 
-	public void delete(Domicilio persistentInstance) {
-		log.debug("deleting Domicilio instance");
+	public void delete(Directivo persistentInstance) {
+		log.debug("deleting Directivo instance");
 		try {
 			sessionFactory.getCurrentSession().delete(persistentInstance);
 			log.debug("delete successful");
@@ -76,10 +75,10 @@ public class DomicilioHome {
 		}
 	}
 
-	public Domicilio merge(Domicilio detachedInstance) {
-		log.debug("merging Domicilio instance");
+	public Directivo merge(Directivo detachedInstance) {
+		log.debug("merging Directivo instance");
 		try {
-			Domicilio result = (Domicilio) sessionFactory.getCurrentSession().merge(detachedInstance);
+			Directivo result = (Directivo) sessionFactory.getCurrentSession().merge(detachedInstance);
 			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -88,11 +87,11 @@ public class DomicilioHome {
 		}
 	}
 
-	public Domicilio findById(java.lang.Long id) {
-		log.debug("getting Domicilio instance with id: " + id);
+	public Directivo findById(java.lang.Long id) {
+		log.debug("getting Directivo instance with id: " + id);
 		try {
-			Domicilio instance = (Domicilio) sessionFactory.getCurrentSession()
-					.get("ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio", id);
+			Directivo instance = (Directivo) sessionFactory.getCurrentSession()
+					.get("ar.com.santalucia.dominio.modelo.usuarios.Directivo", id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {
@@ -105,12 +104,12 @@ public class DomicilioHome {
 		}
 	}
 
-	public List findByExample(Domicilio instance) {
-		log.debug("finding Domicilio instance by example");
+	public List findByExample(Directivo instance) {
+		log.debug("finding Directivo instance by example");
 		try {
 			List results = sessionFactory.getCurrentSession()
-					.createCriteria("ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio")
-					.add(Example.create(instance)).list();
+					.createCriteria("ar.com.santalucia.dominio.modelo.usuarios.Directivo").add(Example.create(instance))
+					.list();
 			log.debug("find by example successful, result size: " + results.size());
 			return results;
 		} catch (RuntimeException re) {

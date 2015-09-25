@@ -5,9 +5,9 @@
  Trabajar offline  
 <!DOCTYPE hibernate-configuration SYSTEM "classpath://org/hibernate/hibernate-configuration-3.0.dtd" > -->
 <hibernate-configuration>
- <session-factory>
+ <session-factory name="">
   <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-  <property name="hibernate.connection.password">linuxalpoder</property>
+  <property name="hibernate.connection.password">mysqldebian</property>
   <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/escuelabd</property>
   <property name="hibernate.connection.username">root</property>
   <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
@@ -22,9 +22,7 @@
   <property name="hibernate.c3p0.min_size">10</property>
   <property name="hibernate.c3p0.timeout">180</property>
   <property name="hibernate.generate_statistics">false</property>
-  
   <!-- Mapeos -->
-  
   <mapping class="ar.com.santalucia.dominio.modelo.usuarios.Usuario" resource="ar/com/santalucia/dominio/modelo/usuarios/Usuario.hbm.xml"/>
   <mapping class="ar.com.santalucia.dominio.modelo.usuarios.Alumno" resource="ar/com/santalucia/dominio/modelo/usuarios/Alumno.hbm.xml"/>
   <mapping class="ar.com.santalucia.dominio.modelo.usuarios.Docente" resource="ar/com/santalucia/dominio/modelo/usuarios/Docente.hbm.xml"/>
@@ -47,5 +45,11 @@
   <mapping class="ar.com.santalucia.dominio.modelo.academico.MesaExamen" resource="ar/com/santalucia/dominio/modelo/academico/MesaExamen.hbm.xml"/>
   <mapping class="ar.com.santalucia.dominio.modelo.desempenio.Nota" resource="ar/com/santalucia/dominio/modelo/desempenio/Nota.hbm.xml"/>
   <mapping class="ar.com.santalucia.dominio.modelo.desempenio.Trimestre" resource="ar/com/santalucia/dominio/modelo/desempenio/Trimestre.hbm.xml"/>
+  <mapping
+   class="ar.com.santalucia.dominio.modelo.desempenio.BoletinNotas" resource="ar/com/santalucia/dominio/modelo/desempenio/BoletinNotas.hbm.xml"/>
+  <mapping
+   class="ar.com.santalucia.dominio.modelo.desempenio.Inasistencia" resource="ar/com/santalucia/dominio/modelo/desempenio/Inasistencia.hbm.xml"/>
+  <mapping
+   class="ar.com.santalucia.dominio.modelo.desempenio.BoletinInasistencias" resource="ar/com/santalucia/dominio/modelo/desempenio/BoletinInasistencias.hbm.xml"/>
  </session-factory>
 </hibernate-configuration>

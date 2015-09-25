@@ -1,4 +1,4 @@
-package ar.com.santalucia.accesodatos.dao;
+package ar.com.santalucia.accesodatos.dao.usuario;
 // Generated 04/07/2015 12:20:19 by Hibernate Tools 4.3.1
 
 import java.util.List;
@@ -9,16 +9,16 @@ import org.hibernate.LockMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 
-import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
+import ar.com.santalucia.dominio.modelo.usuarios.Administrador;
 
 /**
- * Home object for domain model class Titulo.
- * @see ar.com.santalucia.dominio.modelo.usuarios.info.Titulo
+ * Home object for domain model class Administrador.
+ * @see ar.com.santalucia.dominio.modelo.usuarios.Administrador
  * @author Hibernate Tools
  */
-public class TituloHome {
+public class AdministradorHome {
 
-	private static final Log log = LogFactory.getLog(TituloHome.class);
+	private static final Log log = LogFactory.getLog(AdministradorHome.class);
 
 	private final SessionFactory sessionFactory = getSessionFactory();
 
@@ -31,8 +31,8 @@ public class TituloHome {
 		}
 	}
 
-	public void persist(Titulo transientInstance) {
-		log.debug("persisting Titulo instance");
+	public void persist(Administrador transientInstance) {
+		log.debug("persisting Administrador instance");
 		try {
 			sessionFactory.getCurrentSession().persist(transientInstance);
 			log.debug("persist successful");
@@ -42,8 +42,8 @@ public class TituloHome {
 		}
 	}
 
-	public void attachDirty(Titulo instance) {
-		log.debug("attaching dirty Titulo instance");
+	public void attachDirty(Administrador instance) {
+		log.debug("attaching dirty Administrador instance");
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(instance);
 			log.debug("attach successful");
@@ -53,8 +53,8 @@ public class TituloHome {
 		}
 	}
 
-	public void attachClean(Titulo instance) {
-		log.debug("attaching clean Titulo instance");
+	public void attachClean(Administrador instance) {
+		log.debug("attaching clean Administrador instance");
 		try {
 			sessionFactory.getCurrentSession().lock(instance, LockMode.NONE);
 			log.debug("attach successful");
@@ -64,8 +64,8 @@ public class TituloHome {
 		}
 	}
 
-	public void delete(Titulo persistentInstance) {
-		log.debug("deleting Titulo instance");
+	public void delete(Administrador persistentInstance) {
+		log.debug("deleting Administrador instance");
 		try {
 			sessionFactory.getCurrentSession().delete(persistentInstance);
 			log.debug("delete successful");
@@ -75,10 +75,10 @@ public class TituloHome {
 		}
 	}
 
-	public Titulo merge(Titulo detachedInstance) {
-		log.debug("merging Titulo instance");
+	public Administrador merge(Administrador detachedInstance) {
+		log.debug("merging Administrador instance");
 		try {
-			Titulo result = (Titulo) sessionFactory.getCurrentSession().merge(detachedInstance);
+			Administrador result = (Administrador) sessionFactory.getCurrentSession().merge(detachedInstance);
 			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -87,11 +87,11 @@ public class TituloHome {
 		}
 	}
 
-	public Titulo findById(java.lang.Long id) {
-		log.debug("getting Titulo instance with id: " + id);
+	public Administrador findById(java.lang.Long id) {
+		log.debug("getting Administrador instance with id: " + id);
 		try {
-			Titulo instance = (Titulo) sessionFactory.getCurrentSession()
-					.get("ar.com.santalucia.dominio.modelo.usuarios.info.Titulo", id);
+			Administrador instance = (Administrador) sessionFactory.getCurrentSession()
+					.get("ar.com.santalucia.dominio.modelo.usuarios.Administrador", id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {
@@ -104,11 +104,11 @@ public class TituloHome {
 		}
 	}
 
-	public List findByExample(Titulo instance) {
-		log.debug("finding Titulo instance by example");
+	public List findByExample(Administrador instance) {
+		log.debug("finding Administrador instance by example");
 		try {
 			List results = sessionFactory.getCurrentSession()
-					.createCriteria("ar.com.santalucia.dominio.modelo.usuarios.info.Titulo")
+					.createCriteria("ar.com.santalucia.dominio.modelo.usuarios.Administrador")
 					.add(Example.create(instance)).list();
 			log.debug("find by example successful, result size: " + results.size());
 			return results;

@@ -1,5 +1,5 @@
-package ar.com.santalucia.accesodatos.dao;
-// Generated 04/07/2015 12:20:19 by Hibernate Tools 4.3.1
+package ar.com.santalucia.accesodatos.dao.academico;
+// Generated 19/09/2015 17:43:36 by Hibernate Tools 4.3.1
 
 import java.util.List;
 import javax.naming.InitialContext;
@@ -9,16 +9,16 @@ import org.hibernate.LockMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 
-import ar.com.santalucia.dominio.modelo.usuarios.Administrador;
+import ar.com.santalucia.dominio.modelo.academico.Curso;
 
 /**
- * Home object for domain model class Administrador.
- * @see ar.com.santalucia.dominio.modelo.usuarios.Administrador
+ * Home object for domain model class Curso.
+ * @see ar.com.santalucia.dominio.modelo.academico.Curso
  * @author Hibernate Tools
  */
-public class AdministradorHome {
+public class CursoHome {
 
-	private static final Log log = LogFactory.getLog(AdministradorHome.class);
+	private static final Log log = LogFactory.getLog(CursoHome.class);
 
 	private final SessionFactory sessionFactory = getSessionFactory();
 
@@ -31,8 +31,8 @@ public class AdministradorHome {
 		}
 	}
 
-	public void persist(Administrador transientInstance) {
-		log.debug("persisting Administrador instance");
+	public void persist(Curso transientInstance) {
+		log.debug("persisting Curso instance");
 		try {
 			sessionFactory.getCurrentSession().persist(transientInstance);
 			log.debug("persist successful");
@@ -42,8 +42,8 @@ public class AdministradorHome {
 		}
 	}
 
-	public void attachDirty(Administrador instance) {
-		log.debug("attaching dirty Administrador instance");
+	public void attachDirty(Curso instance) {
+		log.debug("attaching dirty Curso instance");
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(instance);
 			log.debug("attach successful");
@@ -53,8 +53,8 @@ public class AdministradorHome {
 		}
 	}
 
-	public void attachClean(Administrador instance) {
-		log.debug("attaching clean Administrador instance");
+	public void attachClean(Curso instance) {
+		log.debug("attaching clean Curso instance");
 		try {
 			sessionFactory.getCurrentSession().lock(instance, LockMode.NONE);
 			log.debug("attach successful");
@@ -64,8 +64,8 @@ public class AdministradorHome {
 		}
 	}
 
-	public void delete(Administrador persistentInstance) {
-		log.debug("deleting Administrador instance");
+	public void delete(Curso persistentInstance) {
+		log.debug("deleting Curso instance");
 		try {
 			sessionFactory.getCurrentSession().delete(persistentInstance);
 			log.debug("delete successful");
@@ -75,10 +75,10 @@ public class AdministradorHome {
 		}
 	}
 
-	public Administrador merge(Administrador detachedInstance) {
-		log.debug("merging Administrador instance");
+	public Curso merge(Curso detachedInstance) {
+		log.debug("merging Curso instance");
 		try {
-			Administrador result = (Administrador) sessionFactory.getCurrentSession().merge(detachedInstance);
+			Curso result = (Curso) sessionFactory.getCurrentSession().merge(detachedInstance);
 			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -87,11 +87,11 @@ public class AdministradorHome {
 		}
 	}
 
-	public Administrador findById(java.lang.Long id) {
-		log.debug("getting Administrador instance with id: " + id);
+	public Curso findById(java.lang.Long id) {
+		log.debug("getting Curso instance with id: " + id);
 		try {
-			Administrador instance = (Administrador) sessionFactory.getCurrentSession()
-					.get("ar.com.santalucia.dominio.modelo.usuarios.Administrador", id);
+			Curso instance = (Curso) sessionFactory.getCurrentSession()
+					.get("ar.com.santalucia.dominio.modelo.academico.Curso", id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {
@@ -104,12 +104,12 @@ public class AdministradorHome {
 		}
 	}
 
-	public List findByExample(Administrador instance) {
-		log.debug("finding Administrador instance by example");
+	public List findByExample(Curso instance) {
+		log.debug("finding Curso instance by example");
 		try {
 			List results = sessionFactory.getCurrentSession()
-					.createCriteria("ar.com.santalucia.dominio.modelo.usuarios.Administrador")
-					.add(Example.create(instance)).list();
+					.createCriteria("ar.com.santalucia.dominio.modelo.academico.Curso").add(Example.create(instance))
+					.list();
 			log.debug("find by example successful, result size: " + results.size());
 			return results;
 		} catch (RuntimeException re) {
