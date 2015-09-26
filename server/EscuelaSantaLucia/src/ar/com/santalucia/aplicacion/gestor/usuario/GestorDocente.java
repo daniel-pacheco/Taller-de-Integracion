@@ -107,7 +107,7 @@ public class GestorDocente implements IGestor<Docente> {
 	}
 
 	@Override
-	public void closeTransaction() {
+	public void closeSession() {
 		// TODO Auto-generated method stub
 		
 	}

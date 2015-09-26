@@ -16,24 +16,24 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
  * @version 1.1
  * */
 
-//	Último modificador: Ariel Ramirez @ 14-09-2015 15:30
+//	Último modificador: Ariel Ramirez @ 26-09-2015 12:55
 
 public interface IServicioUsuario<T> {
-	T getUsuario(Long id) throws Exception;
-	List <T> getUsuarios(T example);
-	boolean addUsuario(T usuario) throws Exception;
-	Set<Telefono> getTelefonos(Long idUsuario) throws Exception;	// sólo pasar id del usuario nuevo
-	Set<Mail> getMails(Long idUsuario) throws Exception; 				// sólo pasar id del usuario
-	Set<Titulo> getTitulos(Long idUsuario) throws Exception; 			// sólo pasar id del usuario
-	boolean modifyTelefono(Telefono telefonoModificado);
-	boolean modifyMail(Mail mailModificado);
-	boolean modifyDireccion(Domicilio domicilioModificado);
-	boolean modifyTitulo(Titulo tituloModificado);
-	boolean modifyUsuario(T usuarioModificado) throws Exception;
-	boolean removeTelefono(Telefono telefonoEliminar);
-	boolean removeMail(Mail mailEliminar);
-	boolean removeDomicilio(Domicilio domicilioEliminar);
-	boolean removeTitulo(Titulo titulo);
-	boolean removeUsuario(T usuario);
-	void closeTransaction() throws Exception;
+	T getUsuario(Long id) throws Exception;										//  En endPoint
+	List <T> getUsuarios(T example);													//  En endPoint 
+	boolean addUsuario(T usuario) throws Exception;						//  En endPoint
+	Set<Telefono> getTelefonos(Long idUsuario) throws Exception;	//  En endPoint
+	Set<Mail> getMails(Long idUsuario) throws Exception; 				//  En endPoint 
+	Set<Titulo> getTitulos(Long idUsuario) throws Exception; 			//  En endPoint
+	boolean modifyTelefono(Telefono telefonoModificado);					//
+	boolean modifyMail(Mail mailModificado); 									//
+	boolean modifyDireccion(Domicilio domicilioModificado); 			//
+	boolean modifyTitulo(Titulo tituloModificado); 								//
+	boolean modifyUsuario(T usuarioModificado) throws Exception;	//  En endPoint
+	boolean removeTelefono(Telefono telefonoEliminar);					//
+	boolean removeMail(Mail mailEliminar);										//
+	boolean removeDomicilio(Domicilio domicilioEliminar);				//
+	boolean removeTitulo(Titulo titulo);												//
+	boolean removeUsuario(T usuario);												//  En endPoint
+	void closeSession() throws Exception;											//
 }

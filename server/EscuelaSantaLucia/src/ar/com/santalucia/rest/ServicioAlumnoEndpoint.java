@@ -25,20 +25,21 @@ import ar.com.santalucia.servicio.ServicioAlumno;
  * 
  * @author Ariel Ramirez
  *
- *@version 1.0
+ * @version 1.0
  */
 
-// Último modificador: Ariel Ramirez @ 25-09-2015 19:28
+// Último modificador: Ariel Ramirez @ 26-09-2015 12:57
 
 @Path("/sAlumno")
-@Produces({ /*"application/xml", */ "application/json" })
-@Consumes({ /*"application/xml", */ "application/json" })
+@Produces({ /* "application/xml", */ "application/json" })
+@Consumes({ /* "application/xml", */ "application/json" })
 public class ServicioAlumnoEndpoint {
 
 	@POST
 	public Response create(final ServicioAlumno servicioalumno) {
 		// TODO: process the given servicioalumno
-		// you may want to use the following return statement, assuming that texto
+		// you may want to use the following return statement, assuming that
+		// texto
 		// ServicioAlumno#getId() or a similar method
 		// would provide the identifier to retrieve the created ServicioAlumno
 		// resource:
@@ -49,8 +50,10 @@ public class ServicioAlumnoEndpoint {
 
 	/**
 	 * 
-	 * @param id Identificador del usuario a buscar.
-	 * @return Status 200(Response: ok) e instancia de alumno o Status 404 (Response: not found) y null si no no existe. 
+	 * @param id
+	 *            Identificador del usuario a buscar.
+	 * @return Status 200(Response: ok) e instancia de alumno o Status 404
+	 *         (Response: not found) y null si no no existe.
 	 */
 	@GET
 	@Path("/alu/{id:[0-9][0-9]*}")
@@ -60,7 +63,7 @@ public class ServicioAlumnoEndpoint {
 		alumno = null;
 		try {
 			servicioalumno = new ServicioAlumno();
-			alumno = servicioalumno.getUsuario(id); // estamos solicitando por parámetro!
+			alumno = servicioalumno.getUsuario(id); 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -71,14 +74,17 @@ public class ServicioAlumnoEndpoint {
 		return Response.ok(alumno).build();
 	}
 
-	
 	/**
 	 * 
-	 * @param id Identificador del usuario del cuál se desea recuperar los teléfonos.
-	 * @return Status 200(Response: ok) y Set de teléfonos  o Status 404 (Response: not found) y null si no existe el alumno o no hay nada.
+	 * @param id
+	 *            Identificador del usuario del cuál se desea recuperar los
+	 *            teléfonos.
+	 * @return Status 200(Response: ok) y Set de teléfonos o Status 404
+	 *         (Response: not found) y null si no existe el alumno o no hay
+	 *         nada.
 	 */
 	@GET
-	@Path("/tel/{id:[0-9][0-9]*}") //tel
+	@Path("/tel/{id:[0-9][0-9]*}") // tel
 	public Response getTelefonos(@PathParam("id") final Long id) {
 		ServicioAlumno servicioAlumno = null;
 		Set<Telefono> telefonos = new HashSet<Telefono>();
@@ -98,19 +104,22 @@ public class ServicioAlumnoEndpoint {
 
 	/**
 	 * 
-	 * @param id Identificador del usuario del cuál se desea recuperar los mails.
-	 * @return Status 200(Response: ok) y Set de mails  o Status 404 (Response: not found) y null si no existe el alumno o no hay nada.
+	 * @param id
+	 *            Identificador del usuario del cuál se desea recuperar los
+	 *            mails.
+	 * @return Status 200(Response: ok) y Set de mails o Status 404 (Response:
+	 *         not found) y null si no existe el alumno o no hay nada.
 	 */
 	@GET
 	@Path("/mai/{id:[0-9][0-9]*}")
-	public Response getMails(@PathParam("id") final Long id){
+	public Response getMails(@PathParam("id") final Long id) {
 		ServicioAlumno servicioAlumno = null;
 		Set<Mail> mails = new HashSet<Mail>();
-		mails=null;
-		try{
-			servicioAlumno=new ServicioAlumno();
-			mails=servicioAlumno.getMails(id);
-		}catch(Exception ex){
+		mails = null;
+		try {
+			servicioAlumno = new ServicioAlumno();
+			mails = servicioAlumno.getMails(id);
+		} catch (Exception ex) {
 			// TODO Auto-generated catch block
 			ex.printStackTrace();
 		}
@@ -119,40 +128,40 @@ public class ServicioAlumnoEndpoint {
 		}
 		return Response.ok(mails).build();
 	}
-	
+
 	/**
 	 * 
-	 * @return Status 200(Response: ok) y listado de alumnos  o Status 404 (Response: not found) y null si  no hay nada.
+	 * @return Status 200(Response: ok) y listado de alumnos o Status 404
+	 *         (Response: not found) y null si no hay nada.
 	 */
 	@GET
 	@Path("/list")
-	public Response listAll(){
+	public Response listAll() {
 		ServicioAlumno servicioAlumno = null;
 		List<Alumno> alumnos = new ArrayList<Alumno>();
 		alumnos = null;
-		try{
-			servicioAlumno=new ServicioAlumno();
-			alumnos=servicioAlumno.getUsuarios(new Alumno());
-		}catch(Exception ex){
-		if (alumnos == null) {
+		try {
+			servicioAlumno = new ServicioAlumno();
+			alumnos = servicioAlumno.getUsuarios(new Alumno());
+		} catch (Exception ex) {
+			if (alumnos == null) {
 				return Response.status(Status.NOT_FOUND).build();
 			}
 		}
 		return Response.ok(alumnos).build();
 	}
-	
 
 	@PUT
 	@Path("/alu/")
-	public Response update(final Alumno alumno) { //Agrega o modifica un alumno
+	public Response update(final Alumno alumno) { // Agrega o modifica un alumno
 		Long respuesta = -1L;
-		//return Response.noContent().build();
+		// return Response.noContent().build();
 		try {
 			ServicioAlumno servicioAlumno = new ServicioAlumno();
 			servicioAlumno.addUsuario(alumno);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			// e.printStackTrace();
 			return Response.status(Status.NOT_MODIFIED).build();
 		}
 		respuesta = alumno.getIdUsuario();
@@ -161,16 +170,16 @@ public class ServicioAlumnoEndpoint {
 
 	@DELETE
 	@Path("/alu/{id:[0-9][0-9]*}")
-	public Response deleteById(@PathParam("id") final Long id) {
+	public Response deleteAlumnoById(@PathParam("id") final Long id) {
 		// TODO: process the servicioalumno matching by the given id
 		try {
-			ServicioAlumno servicioAlumno=new ServicioAlumno();
+			ServicioAlumno servicioAlumno = new ServicioAlumno();
 			servicioAlumno.removeUsuario(servicioAlumno.getUsuario(id));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return Response.noContent().build();
 	}
 }

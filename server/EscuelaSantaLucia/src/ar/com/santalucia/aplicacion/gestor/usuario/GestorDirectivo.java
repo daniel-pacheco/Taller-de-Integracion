@@ -68,7 +68,7 @@ public class GestorDirectivo implements IGestor<Directivo> {
 	}
 
 	@Override
-	public void closeTransaction() {
+	public void closeSession() {
 		// TODO Auto-generated method stub
 		
 	}

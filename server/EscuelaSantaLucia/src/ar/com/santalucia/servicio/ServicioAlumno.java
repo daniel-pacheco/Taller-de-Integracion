@@ -22,7 +22,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
  *
  */
 
-// Último modificador: Ariel Ramirez @ 25-09-2015 19:26
+// Último modificador: Ariel Ramirez @ 26-09-2015 12:55
 
 public class ServicioAlumno extends ServicioUsuario<Alumno> {
 
@@ -59,8 +59,8 @@ public class ServicioAlumno extends ServicioUsuario<Alumno> {
 	public boolean addUsuario(Alumno usuario) throws Exception {
 		try {
 			if(usuario.getIdUsuario() == null){
-				gAlumno.add(usuario);}
-			else{
+				gAlumno.add(usuario);
+					}else{
 				gAlumno.modify(usuario);
 			};
 			return true;
@@ -223,8 +223,8 @@ public class ServicioAlumno extends ServicioUsuario<Alumno> {
 	}
 
 	@Override
-	public void closeTransaction() throws Exception {
-		gAlumno.closeTransaction();
+	public void closeSession() throws Exception {
+		gAlumno.closeSession();
 	}
 
 }

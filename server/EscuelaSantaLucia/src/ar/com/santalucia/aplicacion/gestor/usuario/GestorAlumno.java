@@ -25,7 +25,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
  * @version 2.0
  */
 
-// UltimoModificador: Ariel Ramirez @ 29-08-15 16:00
+// UltimoModificador: Ariel Ramirez @ 26-09-2015 12:55
 
 public class GestorAlumno extends Gestor<Alumno> {
 	private AlumnoHome alumnoDAO;
@@ -41,10 +41,8 @@ public class GestorAlumno extends Gestor<Alumno> {
 			GTelefono = new GestorTelefono();
 			GMail = new GestorMail();
 		} catch (Exception ex) {
-			sesionDeHilo.getTransaction().rollback();
-			throw new Exception(
-					"Ha ocurrido un problema al inicializar el gestor: "
-							+ ex.getMessage());
+			closeSession();
+			throw new Exception("Ha ocurrido un problema al inicializar el gestor: " + ex.getMessage());
 		}
 	}
 
@@ -53,37 +51,42 @@ public class GestorAlumno extends Gestor<Alumno> {
 	 *            Alumno. Este método hace efectiva la persistencia (commit),
 	 *            con la posibilidad de hacer rollback en caso de que falle
 	 *            parte de la transacción.
-	 * */
+	 */
 	@Override
 	public void add(Alumno object) throws Exception {
-		try {
-			setSession();
-			setTransaction();
-			for (Telefono t : object.getListaTelefonos()) {
-				GTelefono.add(t);
+		// para validar si existe el alumno - BUSCAR SOLUCION
+		Alumno alumnoPatron = new Alumno(object.getNroDocumento(), null, null, null, null, null, null, null, null, null,
+				null, object.getMatricula());
+		if ((getByExample(alumnoPatron)).isEmpty()) {
+			try {
+				setSession();
+				setTransaction();
+				for (Telefono t : object.getListaTelefonos()) {
+					GTelefono.add(t);
+				}
+				for (Mail m : object.getListaMails()) {
+					GMail.add(m);
+				}
+				GDomicilio.add(object.getDomicilio());
+				alumnoDAO.persist(object);
+				sesionDeHilo.getTransaction().commit();
+			} catch (Exception ex) {
+				setSession();
+				setTransaction();
+				sesionDeHilo.getTransaction().rollback();
+				throw new Exception("Ha ocurrido un problema al agregar el objeto: " + ex.getMessage());
 			}
-			for (Mail m : object.getListaMails()) {
-				GMail.add(m);
-			}
-			GDomicilio.add(object.getDomicilio());
-			alumnoDAO.persist(object);
-			sesionDeHilo.getTransaction().commit();
-		} catch (Exception ex) {
-			setSession();
-			setTransaction();
-			sesionDeHilo.getTransaction().rollback();
-			throw new Exception(
-					"Ha ocurrido un problema al agregar el objeto: "
-							+ ex.getMessage());
+		} else {
+			throw new Exception("El objeto no ha pasado la validación");
 		}
-
+		;
 	}
 
 	/**
 	 * Modifica los atributos propios del alumno, no los objetos que lo
 	 * componen. Para modificar dichos elementos use los gestores
 	 * correspondientes.
-	 * */
+	 */
 	@Override
 	public void modify(Alumno object) throws Exception {
 		try {
@@ -95,17 +98,15 @@ public class GestorAlumno extends Gestor<Alumno> {
 			setSession();
 			setTransaction();
 			sesionDeHilo.getTransaction().rollback();
-			throw new Exception(
-					"Ha ocurrido un problema al actualizar el objeto: "
-							+ ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al actualizar el objeto: " + ex.getMessage());
 		}
 	}
 
 	/**
 	 * @param object
-	 *            Borra al alumno recibido y elimina
-	 *            a todos los objetos que lo componen.
-	 * */
+	 *            Borra al alumno recibido y elimina a todos los objetos que lo
+	 *            componen.
+	 */
 	@Override
 	public void delete(Alumno object) throws Exception {
 		try {
@@ -114,9 +115,8 @@ public class GestorAlumno extends Gestor<Alumno> {
 			alumnoDAO.delete(object);
 			sesionDeHilo.getTransaction().commit();
 		} catch (Exception ex) {
-			throw new Exception(
-					"Ha ocurrido un problema al eliminar el objeto: "
-							+ ex.getMessage());
+			closeSession();
+			throw new Exception("Ha ocurrido un problema al eliminar el objeto: " + ex.getMessage());
 		}
 	}
 
@@ -134,9 +134,8 @@ public class GestorAlumno extends Gestor<Alumno> {
 			// sesionDeHilo.getTransaction().commit();
 			return alumnoDevolver;
 		} catch (Exception ex) {
-			throw new Exception(
-					"Ha ocurrido un error al buscar el objeto por su ID: "
-							+ ex.getMessage());
+			closeSession();
+			throw new Exception("Ha ocurrido un error al buscar el objeto por su ID: " + ex.getMessage());
 		}
 	}
 
@@ -145,13 +144,12 @@ public class GestorAlumno extends Gestor<Alumno> {
 		try {
 			setSession();
 			setTransaction();
-			ArrayList<Alumno> listaAlumnosDevolver = (ArrayList<Alumno>) alumnoDAO
-					.findByExample((Alumno) example);
+			ArrayList<Alumno> listaAlumnosDevolver = (ArrayList<Alumno>) alumnoDAO.findByExample((Alumno) example);
 			return listaAlumnosDevolver;
 		} catch (Exception ex) {
+			closeSession();
 			throw new Exception(
-					"Ha ocurrido un error al buscar objetos que coincidan con el ejemplo dado: "
-							+ ex.getMessage());
+					"Ha ocurrido un error al buscar objetos que coincidan con el ejemplo dado: " + ex.getMessage());
 		}
 	}
 
@@ -162,12 +160,10 @@ public class GestorAlumno extends Gestor<Alumno> {
 			setTransaction();
 			Alumno criterioVacio = new Alumno();
 			ArrayList<Alumno> listaAlumnosDevolver = new ArrayList<Alumno>();
-			listaAlumnosDevolver = (ArrayList<Alumno>) alumnoDAO
-					.findByExample(criterioVacio);
+			listaAlumnosDevolver = (ArrayList<Alumno>) alumnoDAO.findByExample(criterioVacio);
 			return listaAlumnosDevolver;
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al listar los alumnos: "
-					+ ex.getMessage());
+			throw new Exception("Ha ocurrido un error al listar los alumnos: " + ex.getMessage());
 		}
 	}
 

@@ -15,7 +15,7 @@ import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
  * @param <T>
  */
 
-// Último modificador: Ariel Ramirez @ 29-08-15 16:00
+// Último modificador: Ariel Ramirez @ 26-09-2015 12:56
 
 public abstract class Gestor<T> implements IGestor<T> {
 
@@ -44,15 +44,21 @@ public abstract class Gestor<T> implements IGestor<T> {
 				sesionDeHilo.beginTransaction();
 			}
 		} catch (Exception ex) {
+			sesionDeHilo.close();
 			throw new Exception("Ha ocurrido un problema al inicializar la transacción: " + ex.getMessage());
 		}
 	}
 
+	//Casos posibles: Sesion abierta, transaccion abierta. Sesion abierta, transaccion cerrada
 	@Override
-	public void closeTransaction() throws Exception {
+	public void closeSession() throws Exception {
 		try {
-			if (sesionDeHilo.getTransaction().isActive()) {
-				sesionDeHilo.getTransaction().commit();
+			
+			if(sesionDeHilo.isOpen()){
+				if (sesionDeHilo.getTransaction().isActive()) {
+					sesionDeHilo.getTransaction().commit();
+				}
+				sesionDeHilo.close();
 			}
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un problema al finalizar la transacción: " + ex.getMessage());

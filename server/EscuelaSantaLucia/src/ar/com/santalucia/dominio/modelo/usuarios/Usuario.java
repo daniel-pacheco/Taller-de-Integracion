@@ -43,7 +43,7 @@ public class Usuario {
 	}
 
 	public Usuario(Long nroDocumento, String tipoDocumento, String nombre, String apellido,
-			Set<Telefono> listaTelefonos, Set<Mail> listaMails, Domicilio domicilio, char sexo, String nombreUsuario,
+			Set<Telefono> listaTelefonos, Set<Mail> listaMails, Domicilio domicilio, Character sexo, String nombreUsuario,
 			Date fechaNacimiento, Boolean activo) {
 		super();
 		this.nroDocumento = nroDocumento;
