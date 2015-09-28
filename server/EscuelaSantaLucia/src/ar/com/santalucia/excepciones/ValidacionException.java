@@ -36,7 +36,7 @@ public class ValidacionException extends Exception {
 	public String getMessage() {
 		String mensaje = new String("");
 		for (String m : mensajesError) {
-			mensaje += mensaje + "\n" + m;
+			mensaje += "\n" + m;
 		}
 		return super.getMessage() + "\n" + mensaje;
 	}
