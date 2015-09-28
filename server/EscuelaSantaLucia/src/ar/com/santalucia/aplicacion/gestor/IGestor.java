@@ -22,4 +22,5 @@ public interface IGestor<T> {
 	ArrayList<T> getByExample(T example) throws Exception;
 	ArrayList<T> List() throws Exception;
 	void closeSession() throws Exception;
+	void validar(T object) throws Exception;
 }

@@ -114,4 +114,10 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 
 	}
 
+	@Override
+	public void validar(Mail object) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -103,4 +103,7 @@ public abstract class Gestor<T> implements IGestor<T> {
 	 */
 	@Override
 	public abstract ArrayList<T> List() throws Exception;
+	
+	@Override
+	public abstract void validar(T object) throws Exception;
 }

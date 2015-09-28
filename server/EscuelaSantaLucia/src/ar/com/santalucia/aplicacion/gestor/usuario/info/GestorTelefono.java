@@ -115,4 +115,10 @@ public class GestorTelefono extends Gestor<Telefono> {
 		}
 	}
 
+	@Override
+	public void validar(Telefono object) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

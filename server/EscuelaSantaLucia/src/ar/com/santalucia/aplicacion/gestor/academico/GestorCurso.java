@@ -50,4 +50,10 @@ public class GestorCurso extends Gestor<Curso> {
 		return null;
 	}
 
+	@Override
+	public void validar(Curso object) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

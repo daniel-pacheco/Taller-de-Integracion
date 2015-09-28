@@ -117,4 +117,10 @@ public class GestorDomicilio extends Gestor<Domicilio> {
 		}
 	}
 
+	@Override
+	public void validar(Domicilio object) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
