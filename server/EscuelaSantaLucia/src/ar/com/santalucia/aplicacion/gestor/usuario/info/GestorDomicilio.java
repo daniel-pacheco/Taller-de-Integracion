@@ -71,7 +71,6 @@ public class GestorDomicilio extends Gestor<Domicilio> {
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un error al eliminar el objeto: " + ex.getMessage());
 		}
-
 	}
 
 	@Override

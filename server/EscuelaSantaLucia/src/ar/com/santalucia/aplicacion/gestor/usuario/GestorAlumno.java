@@ -30,7 +30,7 @@ import ar.com.santalucia.validaciones.IValidacionUsuarioAlumno;
 
 // UltimoModificador: Ariel Ramirez @ 26-09-2015 12:55
 
-public class GestorAlumno extends Gestor<Alumno> implements IValidacionUsuarioAlumno{
+public class GestorAlumno extends Gestor<Alumno> implements IValidacionUsuarioAlumno {
 	private AlumnoHome alumnoDAO;
 	private GestorDomicilio GDomicilio;
 	private GestorTelefono GTelefono;
@@ -60,7 +60,7 @@ public class GestorAlumno extends Gestor<Alumno> implements IValidacionUsuarioAl
 		try {
 			setSession();
 			setTransaction();
-			this.validar(object);			
+			this.validar(object);
 			for (Telefono t : object.getListaTelefonos()) {
 				GTelefono.add(t);
 			}
@@ -70,7 +70,11 @@ public class GestorAlumno extends Gestor<Alumno> implements IValidacionUsuarioAl
 			GDomicilio.add(object.getDomicilio());
 			alumnoDAO.persist(object);
 			sesionDeHilo.getTransaction().commit();
-		} catch (Exception ex) {
+		} 
+		catch (ValidacionException ex) {
+			throw ex;
+		} 
+		catch (Exception ex) {
 			setSession();
 			setTransaction();
 			sesionDeHilo.getTransaction().rollback();
@@ -172,15 +176,15 @@ public class GestorAlumno extends Gestor<Alumno> implements IValidacionUsuarioAl
 		Alumno alumnoEjemplo = new Alumno();
 		alumnoEjemplo.setTipoDocumento(tipo);
 		alumnoEjemplo.setNroDocumento(numero);
-		ArrayList<Alumno> ejemplos =  this.getByExample(alumnoEjemplo);
+		ArrayList<Alumno> ejemplos = this.getByExample(alumnoEjemplo);
 		return (ejemplos.isEmpty() ? false : true);
 	}
 
 	@Override
-	public Boolean existeMail(Set<Mail> mail) throws Exception {
-		Alumno alumnoEjemplo = new Alumno();
-		alumnoEjemplo.setListaMails(mail);
-		ArrayList<Alumno> ejemplos =  this.getByExample(alumnoEjemplo);
+	public Boolean existeMail(Mail mail) throws Exception {
+		Mail mailEjemplo = new Mail();
+		mailEjemplo.setDireccionMail(mail.getDireccionMail());
+		ArrayList<Mail> ejemplos = GMail.getByExample(mailEjemplo);
 		return (ejemplos.isEmpty() ? false : true);
 	}
 
@@ -188,7 +192,7 @@ public class GestorAlumno extends Gestor<Alumno> implements IValidacionUsuarioAl
 	public Boolean existeNombreUsuario(String nombreUsuario) throws Exception {
 		Alumno alumnoEjemplo = new Alumno();
 		alumnoEjemplo.setNombreUsuario(nombreUsuario);
-		ArrayList<Alumno> ejemplos =  this.getByExample(alumnoEjemplo);
+		ArrayList<Alumno> ejemplos = this.getByExample(alumnoEjemplo);
 		return (ejemplos.isEmpty() ? false : true);
 	}
 
@@ -196,29 +200,30 @@ public class GestorAlumno extends Gestor<Alumno> implements IValidacionUsuarioAl
 	public Boolean existeMatricula(Long matricula) throws Exception {
 		Alumno alumnoEjemplo = new Alumno();
 		alumnoEjemplo.setMatricula(matricula);
-		ArrayList<Alumno> ejemplos =  this.getByExample(alumnoEjemplo);
+		ArrayList<Alumno> ejemplos = this.getByExample(alumnoEjemplo);
 		return (ejemplos.isEmpty() ? false : true);
 	}
 
 	/**
 	 * (non-Javadoc)
+	 * 
 	 * @see ar.com.santalucia.aplicacion.gestor.Gestor#validar(java.lang.Object)
 	 */
 	@Override
 	public void validar(Alumno object) throws Exception {
-		Boolean vDocumento, vMail, vMatricula, vNombreUsuario;
+		Boolean vDocumento, vMatricula, vNombreUsuario;
 		ValidacionException exception = new ValidacionException();
-		
+
 		vDocumento = this.existeDocumento(object.getTipoDocumento(), object.getNroDocumento());
-		vMail = this.existeMail(object.getListaMails());
+		for(Mail m : object.getListaMails()){
+			exception.addMensajeError((this.existeMail(m) ? "La dirección de e-mail: "+m.getDireccionMail() +" ya existe" : null));
+		}
 		vMatricula = this.existeMatricula(object.getMatricula());
 		vNombreUsuario = this.existeNombreUsuario(object.getNombreUsuario());
-		
 		exception.addMensajeError((vDocumento ? "El documento ya existe" : null));
-		exception.addMensajeError((vMail ? "La dirección del e-mail ya existe" : null));
 		exception.addMensajeError((vMatricula ? "La matrícula ya existe" : null));
 		exception.addMensajeError((vNombreUsuario ? "El nombre de usuario ya existe" : null));
-		
+
 		if (!exception.getMensajesError().isEmpty()) {
 			throw exception;
 		}

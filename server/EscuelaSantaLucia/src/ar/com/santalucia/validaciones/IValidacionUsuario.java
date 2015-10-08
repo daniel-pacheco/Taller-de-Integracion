@@ -31,7 +31,7 @@ public interface IValidacionUsuario extends IValidacion {
 	 * @return
 	 * @throws Exception
 	 */
-	Boolean existeMail(Set<Mail> mail) throws Exception;
+	Boolean existeMail(Mail mail) throws Exception;
 	
 	/**
 	 * Valida si el nombre de usuario ya existe en la base de datos

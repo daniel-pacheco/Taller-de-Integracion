@@ -25,15 +25,15 @@ public interface IServicioUsuario<T> {
 	Set<Telefono> getTelefonos(Long idUsuario) throws Exception;	//  En endPoint
 	Set<Mail> getMails(Long idUsuario) throws Exception; 				//  En endPoint 
 	Set<Titulo> getTitulos(Long idUsuario) throws Exception; 			//  En endPoint
-	boolean modifyTelefono(Telefono telefonoModificado);					//
+	boolean modifyTelefono(Telefono telefonoModificado) throws Exception;					//En endPoint
 	boolean modifyMail(Mail mailModificado); 									//
-	boolean modifyDireccion(Domicilio domicilioModificado); 			//
+	boolean modifyDomicilio(Domicilio domicilioModificado) throws Exception; 			// En endPoint
 	boolean modifyTitulo(Titulo tituloModificado); 								//
 	boolean modifyUsuario(T usuarioModificado) throws Exception;	//  En endPoint
-	boolean removeTelefono(Telefono telefonoEliminar);					//
-	boolean removeMail(Mail mailEliminar);										//
-	boolean removeDomicilio(Domicilio domicilioEliminar);				//
-	boolean removeTitulo(Titulo titulo);												//
-	boolean removeUsuario(T usuario);												//  En endPoint
+	boolean removeTelefono(Long idTelefono) throws Exception;					//
+	boolean removeMail(Long idMail) throws Exception;										//
+	boolean removeDomicilio(Long idDomicilio);				//
+	boolean removeTitulo(Long idTitulo) throws Exception;												//
+	boolean removeUsuario(T usuario) throws Exception;				//  En endPoint
 	void closeSession() throws Exception;											//
 }

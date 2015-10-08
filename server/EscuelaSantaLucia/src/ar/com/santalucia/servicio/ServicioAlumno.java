@@ -10,6 +10,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
+import ar.com.santalucia.excepciones.ValidacionException;
 
 // Esta clase es un Facade que permite acceder a todas las operaciones de ABM de alumno,
 // incorporando las ABM  para sus compuestos (telefono, mail y dirección)
@@ -46,7 +47,7 @@ public class ServicioAlumno extends ServicioUsuario<Alumno> {
 	}
 
 	@Override
-	public List<Alumno> getUsuarios(Alumno example) {
+	public List<Alumno> getUsuarios(Alumno example) {																		
 		try {
 			return gAlumno.getByExample(example);
 		} catch (Exception e) {
@@ -56,7 +57,7 @@ public class ServicioAlumno extends ServicioUsuario<Alumno> {
 	}
 
 	@Override
-	public boolean addUsuario(Alumno usuario) throws Exception {
+	public boolean addUsuario(Alumno usuario) throws Exception {															
 		try {
 			if(usuario.getIdUsuario() == null){
 				gAlumno.add(usuario);
@@ -64,13 +65,17 @@ public class ServicioAlumno extends ServicioUsuario<Alumno> {
 				gAlumno.modify(usuario);
 			};
 			return true;
-		} catch (Exception ex) {
+		}
+		catch (ValidacionException ex){
+			throw ex;
+		} 
+		catch (Exception ex) {
 			throw new Exception("Servicio add(): no se pudo completar la operacion. "+ex.getMessage());
 		}
 	}
 
 	@Override
-	public Set<Telefono> getTelefonos(/* Alumno usuario */ Long idUsuario) throws Exception {
+	public Set<Telefono> getTelefonos(/* Alumno usuario */ Long idUsuario) throws Exception {				
 		Set<Telefono> telefonos = new HashSet<Telefono>();
 		telefonos = null;
 		try {
@@ -86,7 +91,7 @@ public class ServicioAlumno extends ServicioUsuario<Alumno> {
 	}
 
 	@Override
-	public Set<Mail> getMails(Long idUsuario) throws Exception {
+	public Set<Mail> getMails(Long idUsuario) throws Exception {																																	
 		Set<Mail> mails = new HashSet<Mail>();
 		mails = null;
 		try {
@@ -108,15 +113,14 @@ public class ServicioAlumno extends ServicioUsuario<Alumno> {
 	}
 
 	@Override
-	public boolean modifyTelefono(Telefono telefonoModificado) {
+	public boolean modifyTelefono(Telefono telefonoModificado) throws Exception {
 		try {
 			gTelefono.modify(telefonoModificado);
 			return true;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception ex) {
+			throw ex;
 		}
-		return false;
+		
 	}
 
 	@Override
@@ -132,15 +136,14 @@ public class ServicioAlumno extends ServicioUsuario<Alumno> {
 	}
 
 	@Override
-	public boolean modifyDireccion(Domicilio domicilioModificado) {
+	public boolean modifyDomicilio(Domicilio domicilioModificado) throws Exception{
 		try {
 			gDomicilio.modify(domicilioModificado);
 			return true;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception ex) {
+			throw ex;
 		}
-		return false;
+
 	}
 
 	/**
@@ -154,27 +157,25 @@ public class ServicioAlumno extends ServicioUsuario<Alumno> {
 	}
 
 	@Override
-	public boolean removeTelefono(Telefono telefonoEliminar) {
+	public boolean removeTelefono(Long idTelefono)  throws Exception{
 		try {
-			gTelefono.delete(telefonoEliminar);
+			gTelefono.delete(gTelefono.getById(idTelefono));
 			return true;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception ex) {
+			//e.printStackTrace();
+			throw ex;
 		}
-		return false;
 	}
 
 	@Override
-	public boolean removeMail(Mail mailEliminar) {
+	public boolean removeMail(Long idMail) throws Exception{
 		try {
-			gMail.delete(mailEliminar);
+			gMail.delete(gMail.getById(idMail));
 			return true;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception ex) {
+			//e.printStackTrace();
+			throw ex;
 		}
-		return false;
 	}
 
 	/**
@@ -182,25 +183,24 @@ public class ServicioAlumno extends ServicioUsuario<Alumno> {
 	 *         para esta clase.
 	 */
 	@Override
-	public boolean removeTitulo(Titulo titulo) {
+	public boolean removeTitulo(Long idTitulo) throws Exception{
 		// Este método no se implementa para esta clase.
 		return true;
 	}
 
 	@Override
-	public boolean removeUsuario(Alumno usuario) {
+	public boolean removeUsuario(Alumno usuario) throws Exception {																					
 		try {
 			gAlumno.delete(usuario);
 			return true;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception ex) {
+			//e.printStackTrace();
+			throw ex;
 		}
-		return false;
 	}
 
 	@Override
-	public boolean modifyUsuario(Alumno usuarioModificado) throws Exception{
+	public boolean modifyUsuario(Alumno usuarioModificado) throws Exception{										
 		try {
 			gAlumno.modify(usuarioModificado);
 			return true;
@@ -211,13 +211,13 @@ public class ServicioAlumno extends ServicioUsuario<Alumno> {
 	}
 
 	@Override
-	public boolean removeDomicilio(Domicilio domicilioEliminar) {
+	public boolean removeDomicilio(Long idDomicilio) {
 		try {
-			gDomicilio.delete(domicilioEliminar);
+			gDomicilio.delete(gDomicilio.getById(idDomicilio));
 			return true;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		return false;
 	}
@@ -226,6 +226,9 @@ public class ServicioAlumno extends ServicioUsuario<Alumno> {
 	public void closeSession() throws Exception {
 		gAlumno.closeSession();
 	}
+
+	
+	// No se incluyen los métodos para agregar mail, o teléfono dado a que solo es necesario llamar a this.addUsuario(Alumno usuario)
 
 }
  

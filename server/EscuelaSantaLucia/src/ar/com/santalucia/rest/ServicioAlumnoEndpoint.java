@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
+import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 import ar.com.santalucia.servicio.ServicioAlumno;
@@ -25,26 +26,46 @@ import ar.com.santalucia.servicio.ServicioAlumno;
  * 
  * @author Ariel Ramirez
  *
- * @version 1.0
+ * @version 2.0
  */
 
-// Último modificador: Ariel Ramirez @ 26-09-2015 12:57
+// Último modificador: Ariel Ramirez @ 03-10-2015 21:45
 
 @Path("/sAlumno")
 @Produces({ /* "application/xml", */ "application/json" })
 @Consumes({ /* "application/xml", */ "application/json" })
 public class ServicioAlumnoEndpoint {
+	
+	private ServicioAlumno servicioAlumno = null;
+
+	private void setInstance() throws Exception {
+		if (servicioAlumno == null) {
+			try {
+				servicioAlumno = new ServicioAlumno();
+				
+			} catch (Exception ex) {
+				throw ex;
+			}
+		}
+	}
 
 	@POST
 	public Response create(final ServicioAlumno servicioalumno) {
 		// TODO: process the given servicioalumno
 		// you may want to use the following return statement, assuming that
-		// texto
 		// ServicioAlumno#getId() or a similar method
 		// would provide the identifier to retrieve the created ServicioAlumno
 		// resource:
 		// return
 		// Response.created(UriBuilder.fromResource(ServicioAlumnoEndpoint.class).path(String.valueOf(servicioalumno.getId())).build()).build();
+		// if (servicioAlumno==null){
+		// try {
+		// servicioAlumno=new ServicioAlumno();
+		// } catch (Exception ex) {
+		// //e.printStackTrace();
+		// return Response.ok(ex).build();
+		// }
+		// }
 		return Response.created(null).build();
 	}
 
@@ -57,19 +78,15 @@ public class ServicioAlumnoEndpoint {
 	 */
 	@GET
 	@Path("/alu/{id:[0-9][0-9]*}")
-	public Response getById(@PathParam("id") final Long id) {
-		ServicioAlumno servicioalumno = null;
+	public Response getAlumnoById(@PathParam("id") final Long id) {
 		Alumno alumno = new Alumno();
 		alumno = null;
 		try {
-			servicioalumno = new ServicioAlumno();
-			alumno = servicioalumno.getUsuario(id); 
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if (alumno == null) {
-			return Response.status(Status.NOT_FOUND).build();
+			setInstance();
+			alumno = servicioAlumno.getUsuario(id);
+		} catch (Exception ex) {
+			// ex.printStackTrace();
+			return Response.ok(ex).build();
 		}
 		return Response.ok(alumno).build();
 	}
@@ -86,18 +103,14 @@ public class ServicioAlumnoEndpoint {
 	@GET
 	@Path("/tel/{id:[0-9][0-9]*}") // tel
 	public Response getTelefonos(@PathParam("id") final Long id) {
-		ServicioAlumno servicioAlumno = null;
 		Set<Telefono> telefonos = new HashSet<Telefono>();
 		telefonos = null;
 		try {
-			servicioAlumno = new ServicioAlumno();
+			setInstance();
 			telefonos = servicioAlumno.getTelefonos(id);
 		} catch (Exception ex) {
-			// TODO Auto-generated catch block
-			ex.printStackTrace();
-		}
-		if (telefonos == null) {
-			return Response.status(Status.NOT_FOUND).build();
+			// ex.printStackTrace();
+			return Response.ok(ex).build();
 		}
 		return Response.ok(telefonos).build();
 	}
@@ -113,11 +126,11 @@ public class ServicioAlumnoEndpoint {
 	@GET
 	@Path("/mai/{id:[0-9][0-9]*}")
 	public Response getMails(@PathParam("id") final Long id) {
-		ServicioAlumno servicioAlumno = null;
+
 		Set<Mail> mails = new HashSet<Mail>();
 		mails = null;
 		try {
-			servicioAlumno = new ServicioAlumno();
+			setInstance();
 			mails = servicioAlumno.getMails(id);
 		} catch (Exception ex) {
 			// TODO Auto-generated catch block
@@ -137,11 +150,10 @@ public class ServicioAlumnoEndpoint {
 	@GET
 	@Path("/list")
 	public Response listAll() {
-		ServicioAlumno servicioAlumno = null;
 		List<Alumno> alumnos = new ArrayList<Alumno>();
 		alumnos = null;
 		try {
-			servicioAlumno = new ServicioAlumno();
+			setInstance();
 			alumnos = servicioAlumno.getUsuarios(new Alumno());
 		} catch (Exception ex) {
 			if (alumnos == null) {
@@ -154,32 +166,102 @@ public class ServicioAlumnoEndpoint {
 	@PUT
 	@Path("/alu/")
 	public Response update(final Alumno alumno) { // Agrega o modifica un alumno
-		Long respuesta = -1L;
-		// return Response.noContent().build();
 		try {
-			ServicioAlumno servicioAlumno = new ServicioAlumno();
 			servicioAlumno.addUsuario(alumno);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			// e.printStackTrace();
-			return Response.status(Status.NOT_MODIFIED).build();
+			return Response.ok(alumno.getIdUsuario()).build();
+		} catch (Exception ex) {
+			// ex.printStackTrace();
+			return Response.ok(ex).build();
 		}
-		respuesta = alumno.getIdUsuario();
-		return Response.ok(respuesta).build();
+	}
+
+	/**
+	 * 
+	 * @param telefono
+	 * @return
+	 */
+	@PUT
+	@Path("/tel/")
+	public Response updateTelefono(final Telefono telefono) { // Solo modifica el teléfono, para agregar use update(Alumnoalumno); y para quitar DELETE
+		Boolean exito = false;
+		try {
+			setInstance();
+			exito = servicioAlumno.modifyTelefono(telefono);
+			return Response.ok(exito).build();
+		} catch (Exception ex) {
+			// ex.printStackTrace();
+			return Response.ok(ex).build();
+		}
+	}
+
+	@PUT
+	@Path("/mai/")
+	public Response updateMail(final Mail mail) {
+		Boolean exito = false;
+		try {
+			setInstance();
+			exito = servicioAlumno.modifyMail(mail);
+			return Response.ok(exito).build();
+		} catch (Exception ex) {
+			// ex.printStackTrace();
+			return Response.ok(ex).build();
+		}
+	}
+
+	@PUT
+	@Path("/dom/")
+	public Response updateDomicilio(final Domicilio domicilio) {
+		boolean exito = false;
+		try {
+			setInstance();
+			exito = servicioAlumno.modifyDomicilio(domicilio);
+			return Response.ok(exito).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
 	}
 
 	@DELETE
 	@Path("/alu/{id:[0-9][0-9]*}")
 	public Response deleteAlumnoById(@PathParam("id") final Long id) {
-		// TODO: process the servicioalumno matching by the given id
+		Boolean exito = false;
 		try {
-			ServicioAlumno servicioAlumno = new ServicioAlumno();
-			servicioAlumno.removeUsuario(servicioAlumno.getUsuario(id));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			setInstance();
+			exito = servicioAlumno.removeUsuario(servicioAlumno.getUsuario(id));
+			return Response.ok(exito).build();
+		} catch (Exception ex) {
+			// ex.printStackTrace();
+			return Response.ok(ex).build();
 		}
 
-		return Response.noContent().build();
 	}
+	
+	@DELETE
+	@Path("/tel/{id:[0-9][0-9]*}")
+	public Response deleteTelefonoById(@PathParam("id") final Long id){
+		Boolean exito = false;
+		try {
+			setInstance();
+			exito = servicioAlumno.removeTelefono(id);
+			return Response.ok(exito).build();
+		} catch (Exception ex) {
+			//e.printStackTrace();
+			return Response.ok(ex).build();
+		}
+	}
+	
+	@DELETE
+	@Path("/dom/{id:[0-9][0-9]*}")
+	public Response deleteDomicilioById(@PathParam("id") final Long id){
+		Boolean exito = false;
+		try{
+			setInstance();
+			exito = servicioAlumno.removeDomicilio(id);
+			return Response.ok(exito).build();
+		}catch (Exception ex){
+			//e.printStackTrace();
+			return Response.ok(ex).build();
+		}
+	}
+	
 }
