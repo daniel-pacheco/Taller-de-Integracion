@@ -8,10 +8,11 @@
  * Controller of the clientAppApp
  */
 angular.module('clientAppApp')
-  .controller('MainCtrl', function () {
+  .controller('MainCtrl', function ($scope) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
       'Karma'
     ];
+    $scope.HolaMundo ='Hola mundo';
   });
