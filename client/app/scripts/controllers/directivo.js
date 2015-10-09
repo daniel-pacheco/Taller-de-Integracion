@@ -2,17 +2,16 @@
 
 /**
  * @ngdoc function
- * @name clientAppApp.controller:MainCtrl
+ * @name clientAppApp.controller:DirectivoCtrl
  * @description
- * # MainCtrl
+ * # DirectivoCtrl
  * Controller of the clientAppApp
  */
 angular.module('clientAppApp')
-  .controller('MainCtrl', function ($scope) {
+  .controller('DirectivoCtrl', function () {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
       'Karma'
     ];
-    $scope.HolaMundo ='Hola mundo';
   });
