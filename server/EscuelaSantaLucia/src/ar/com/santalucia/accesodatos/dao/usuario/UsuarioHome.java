@@ -1,4 +1,4 @@
-package ar.com.santalucia.accesodatos.dao;
+package ar.com.santalucia.accesodatos.dao.usuario;
 // Generated 04/07/2015 12:20:19 by Hibernate Tools 4.3.1
 
 import java.util.List;

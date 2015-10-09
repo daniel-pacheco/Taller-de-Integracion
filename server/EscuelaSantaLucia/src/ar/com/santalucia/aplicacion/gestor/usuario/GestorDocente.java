@@ -1,13 +1,18 @@
 package ar.com.santalucia.aplicacion.gestor.usuario;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import org.hibernate.Session;
 
-import ar.com.santalucia.accesodatos.dao.DocenteHome;
+import ar.com.santalucia.accesodatos.dao.usuario.DocenteHome;
 import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
+import ar.com.santalucia.aplicacion.gestor.Gestor;
 import ar.com.santalucia.aplicacion.gestor.IGestor;
 import ar.com.santalucia.dominio.modelo.usuarios.Docente;
+import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
+import ar.com.santalucia.validaciones.IValidacionUsuarioAlumno;
+import ar.com.santalucia.validaciones.IValidacionUsuarioDocDir;
 
 /**
  * Clase gestor de Docentes
@@ -20,7 +25,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.Docente;
 
 // UltimoModificador: Eric Pennachini @ 07-08-15 19:40
 
-public class GestorDocente implements IGestor<Docente> {
+public class GestorDocente extends Gestor<Docente> implements IValidacionUsuarioDocDir{
 	private Docente docente;
 	private DocenteHome docenteDAO;
 	private Session sesionDeHilo;
@@ -101,19 +106,31 @@ public class GestorDocente implements IGestor<Docente> {
 	}
 
 	@Override
-	public void setSession() throws Exception {
+	public void existeDocumento(String tipo, Long numero) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void closeTransaction() {
+	public void existeNombreUsuario(String nombreUsuario) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void setTransaction() throws Exception {
+	public void existeCuil(Long cuil) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void existeMail(Set<Mail> mail) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void validar(Docente object) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}

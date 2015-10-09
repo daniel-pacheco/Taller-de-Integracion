@@ -5,13 +5,14 @@ import java.util.Date;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 
 /**
- * 
- * @author Eric
+ * Clase Nota
+ * @author ericpennachini
  * @version 1.0
  *
  */
 
 public class Nota {
+
 	private Long idNota;
 	private Date fecha;
 	private Float calificacion;

@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 24/09/2015 15:52:31 by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 25/09/2015 17:22:03 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="ar.com.santalucia.dominio.modelo.desempenio.Nota" table="NOTA">
         <id name="idNota" type="java.lang.Long">
             <column name="IDNOTA" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
         <property name="fecha" type="java.util.Date">
             <column name="FECHA" />

@@ -68,7 +68,7 @@ public class Prueba3 {
 
 		//Se envia y  se  cierra la sesion y/o la transaccion 
 		
-		sAlumno.closeTransaction();
+		sAlumno.closeSession();
 		
 		// la pagina haría esto
 		elementoJson = elementoJson.replace("Academico de la Conicet", "El que usa para contactarse con menga");
@@ -177,6 +177,7 @@ public class Prueba3 {
 		ServicioAlumno sAlumno = new ServicioAlumno();
 		Alumno auxiliarAlumno = new Alumno();
 
+		auxiliarAlumno.setIdUsuario(null);
 		auxiliarAlumno.setApellido("Ramirez");
 		auxiliarAlumno.setNombre("Mauricio Ariel");
 		auxiliarAlumno.setFechaNacimiento(new Date(90, 12, 21));

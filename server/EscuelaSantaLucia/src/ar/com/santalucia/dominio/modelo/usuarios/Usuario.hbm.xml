@@ -20,19 +20,22 @@
         <property name="apellido" type="java.lang.String">
             <column name="APELLIDO" />
         </property>
-        <set name="listaTelefonos" table="TELEFONO" inverse="false" lazy="true">
+        <set name="listaTelefonos" table="TELEFONO" inverse="false" lazy="true" cascade="all">
             <key>
                 <column name="IDUSUARIO" />
             </key>
             <one-to-many class="ar.com.santalucia.dominio.modelo.usuarios.info.Telefono" />
         </set>
-        <set name="listaMails" table="MAIL" inverse="false" lazy="true">
+        <set name="listaMails" table="MAIL" inverse="false" lazy="true" cascade="all">
             <key>
                 <column name="IDUSUARIO" />
             </key>
             <one-to-many class="ar.com.santalucia.dominio.modelo.usuarios.info.Mail" />
         </set>
-        <many-to-one name="domicilio" class="ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio" fetch="join">
+        <many-to-one name="domicilio" class="ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio" 
+        	fetch="join" 
+        	not-null="false"
+        	cascade="none">
             <column name="DOMICILIO" />
         </many-to-one>
         <property name="sexo" type="java.lang.Character">

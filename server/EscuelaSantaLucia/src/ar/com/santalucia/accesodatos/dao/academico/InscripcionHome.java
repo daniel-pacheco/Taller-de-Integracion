@@ -1,4 +1,4 @@
-package ar.com.santalucia.accesodatos.dao;
+package ar.com.santalucia.accesodatos.dao.academico;
 // Generated 19/09/2015 17:43:36 by Hibernate Tools 4.3.1
 
 import java.util.List;
@@ -9,16 +9,16 @@ import org.hibernate.LockMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 
-import ar.com.santalucia.dominio.modelo.academico.Curso;
+import ar.com.santalucia.dominio.modelo.academico.Inscripcion;
 
 /**
- * Home object for domain model class Curso.
- * @see ar.com.santalucia.dominio.modelo.academico.Curso
+ * Home object for domain model class Inscripcion.
+ * @see ar.com.santalucia.dominio.modelo.academico.Inscripcion
  * @author Hibernate Tools
  */
-public class CursoHome {
+public class InscripcionHome {
 
-	private static final Log log = LogFactory.getLog(CursoHome.class);
+	private static final Log log = LogFactory.getLog(InscripcionHome.class);
 
 	private final SessionFactory sessionFactory = getSessionFactory();
 
@@ -31,8 +31,8 @@ public class CursoHome {
 		}
 	}
 
-	public void persist(Curso transientInstance) {
-		log.debug("persisting Curso instance");
+	public void persist(Inscripcion transientInstance) {
+		log.debug("persisting Inscripcion instance");
 		try {
 			sessionFactory.getCurrentSession().persist(transientInstance);
 			log.debug("persist successful");
@@ -42,8 +42,8 @@ public class CursoHome {
 		}
 	}
 
-	public void attachDirty(Curso instance) {
-		log.debug("attaching dirty Curso instance");
+	public void attachDirty(Inscripcion instance) {
+		log.debug("attaching dirty Inscripcion instance");
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(instance);
 			log.debug("attach successful");
@@ -53,8 +53,8 @@ public class CursoHome {
 		}
 	}
 
-	public void attachClean(Curso instance) {
-		log.debug("attaching clean Curso instance");
+	public void attachClean(Inscripcion instance) {
+		log.debug("attaching clean Inscripcion instance");
 		try {
 			sessionFactory.getCurrentSession().lock(instance, LockMode.NONE);
 			log.debug("attach successful");
@@ -64,8 +64,8 @@ public class CursoHome {
 		}
 	}
 
-	public void delete(Curso persistentInstance) {
-		log.debug("deleting Curso instance");
+	public void delete(Inscripcion persistentInstance) {
+		log.debug("deleting Inscripcion instance");
 		try {
 			sessionFactory.getCurrentSession().delete(persistentInstance);
 			log.debug("delete successful");
@@ -75,10 +75,10 @@ public class CursoHome {
 		}
 	}
 
-	public Curso merge(Curso detachedInstance) {
-		log.debug("merging Curso instance");
+	public Inscripcion merge(Inscripcion detachedInstance) {
+		log.debug("merging Inscripcion instance");
 		try {
-			Curso result = (Curso) sessionFactory.getCurrentSession().merge(detachedInstance);
+			Inscripcion result = (Inscripcion) sessionFactory.getCurrentSession().merge(detachedInstance);
 			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -87,11 +87,11 @@ public class CursoHome {
 		}
 	}
 
-	public Curso findById(java.lang.Long id) {
-		log.debug("getting Curso instance with id: " + id);
+	public Inscripcion findById(java.lang.Long id) {
+		log.debug("getting Inscripcion instance with id: " + id);
 		try {
-			Curso instance = (Curso) sessionFactory.getCurrentSession()
-					.get("ar.com.santalucia.dominio.modelo.academico.Curso", id);
+			Inscripcion instance = (Inscripcion) sessionFactory.getCurrentSession()
+					.get("ar.com.santalucia.dominio.modelo.academico.Inscripcion", id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {
@@ -104,12 +104,12 @@ public class CursoHome {
 		}
 	}
 
-	public List findByExample(Curso instance) {
-		log.debug("finding Curso instance by example");
+	public List findByExample(Inscripcion instance) {
+		log.debug("finding Inscripcion instance by example");
 		try {
 			List results = sessionFactory.getCurrentSession()
-					.createCriteria("ar.com.santalucia.dominio.modelo.academico.Curso").add(Example.create(instance))
-					.list();
+					.createCriteria("ar.com.santalucia.dominio.modelo.academico.Inscripcion")
+					.add(Example.create(instance)).list();
 			log.debug("find by example successful, result size: " + results.size());
 			return results;
 		} catch (RuntimeException re) {

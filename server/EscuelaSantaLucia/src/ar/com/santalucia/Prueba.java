@@ -17,15 +17,15 @@ public class Prueba {
 
 		GestorAlumno GAlumno = new GestorAlumno();
 		
-		Long dni = 36099930L;
+		Long dni = 36099931L;
 		for (int i = 0; i < 2; i++) {
 			Alumno alumnoPrueba = new Alumno();
 
 			alumnoPrueba.setApellido("Pennachini");
 			alumnoPrueba.setNombre("Eric Daniel");
 			alumnoPrueba.setFechaNacimiento(new Date(90, 11, 21));
-			alumnoPrueba.setMatricula(465488L);
-			alumnoPrueba.setNombreUsuario("EiiEricpara las turras");
+			alumnoPrueba.setMatricula(4654884L);
+			alumnoPrueba.setNombreUsuario("EiiiiiiEricpara las turras");
 			alumnoPrueba.setNroDocumento(dni);
 			alumnoPrueba.setSexo('m');
 			alumnoPrueba.setTipoDocumento("DU/DNI");
@@ -62,7 +62,7 @@ public class Prueba {
 			alumnoPrueba.setListaMails(listaMails);
 
 			GAlumno.add(alumnoPrueba);
-			dni++;
+			//dni++;
 		}
 		
 //		Alumno alumnoModificar = GAlumno.getById(3L);

@@ -1,5 +1,5 @@
-package ar.com.santalucia.accesodatos.dao;
-// Generated 04/07/2015 12:20:19 by Hibernate Tools 4.3.1
+package ar.com.santalucia.accesodatos.dao.usuario.info;
+// Generated 18/08/2015 18:54:40 by Hibernate Tools 4.3.1
 
 import java.util.List;
 import javax.naming.InitialContext;
@@ -10,16 +10,16 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 
 import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
-import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
+import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
 
 /**
- * Home object for domain model class Mail.
- * @see ar.com.santalucia.dominio.modelo.usuarios.info.Mail
+ * Home object for domain model class Domicilio.
+ * @see ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio
  * @author Hibernate Tools
  */
-public class MailHome {
+public class DomicilioHome {
 
-	private static final Log log = LogFactory.getLog(MailHome.class);
+	private static final Log log = LogFactory.getLog(DomicilioHome.class);
 
 	private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
@@ -32,8 +32,8 @@ public class MailHome {
 		}
 	}
 
-	public void persist(Mail transientInstance) {
-		log.debug("persisting Mail instance");
+	public void persist(Domicilio transientInstance) {
+		log.debug("persisting Domicilio instance");
 		try {
 			sessionFactory.getCurrentSession().persist(transientInstance);
 			log.debug("persist successful");
@@ -43,8 +43,8 @@ public class MailHome {
 		}
 	}
 
-	public void attachDirty(Mail instance) {
-		log.debug("attaching dirty Mail instance");
+	public void attachDirty(Domicilio instance) {
+		log.debug("attaching dirty Domicilio instance");
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(instance);
 			log.debug("attach successful");
@@ -54,8 +54,8 @@ public class MailHome {
 		}
 	}
 
-	public void attachClean(Mail instance) {
-		log.debug("attaching clean Mail instance");
+	public void attachClean(Domicilio instance) {
+		log.debug("attaching clean Domicilio instance");
 		try {
 			sessionFactory.getCurrentSession().lock(instance, LockMode.NONE);
 			log.debug("attach successful");
@@ -65,8 +65,8 @@ public class MailHome {
 		}
 	}
 
-	public void delete(Mail persistentInstance) {
-		log.debug("deleting Mail instance");
+	public void delete(Domicilio persistentInstance) {
+		log.debug("deleting Domicilio instance");
 		try {
 			sessionFactory.getCurrentSession().delete(persistentInstance);
 			log.debug("delete successful");
@@ -76,10 +76,10 @@ public class MailHome {
 		}
 	}
 
-	public Mail merge(Mail detachedInstance) {
-		log.debug("merging Mail instance");
+	public Domicilio merge(Domicilio detachedInstance) {
+		log.debug("merging Domicilio instance");
 		try {
-			Mail result = (Mail) sessionFactory.getCurrentSession().merge(detachedInstance);
+			Domicilio result = (Domicilio) sessionFactory.getCurrentSession().merge(detachedInstance);
 			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -88,11 +88,11 @@ public class MailHome {
 		}
 	}
 
-	public Mail findById(java.lang.Long id) {
-		log.debug("getting Mail instance with id: " + id);
+	public Domicilio findById(java.lang.Long id) {
+		log.debug("getting Domicilio instance with id: " + id);
 		try {
-			Mail instance = (Mail) sessionFactory.getCurrentSession()
-					.get("ar.com.santalucia.dominio.modelo.usuarios.info.Mail", id);
+			Domicilio instance = (Domicilio) sessionFactory.getCurrentSession()
+					.get("ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio", id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {
@@ -105,12 +105,12 @@ public class MailHome {
 		}
 	}
 
-	public List findByExample(Mail instance) {
-		log.debug("finding Mail instance by example");
+	public List findByExample(Domicilio instance) {
+		log.debug("finding Domicilio instance by example");
 		try {
 			List results = sessionFactory.getCurrentSession()
-					.createCriteria("ar.com.santalucia.dominio.modelo.usuarios.info.Mail").add(Example.create(instance))
-					.list();
+					.createCriteria("ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio")
+					.add(Example.create(instance)).list();
 			log.debug("find by example successful, result size: " + results.size());
 			return results;
 		} catch (RuntimeException re) {

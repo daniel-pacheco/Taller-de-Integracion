@@ -2,7 +2,7 @@ package ar.com.santalucia.aplicacion.gestor.usuario.info;
 
 import java.util.ArrayList;
 
-import ar.com.santalucia.accesodatos.dao.DomicilioHome;
+import ar.com.santalucia.accesodatos.dao.usuario.info.DomicilioHome;
 import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
 import ar.com.santalucia.aplicacion.gestor.Gestor;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
@@ -71,7 +71,6 @@ public class GestorDomicilio extends Gestor<Domicilio> {
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un error al eliminar el objeto: " + ex.getMessage());
 		}
-
 	}
 
 	@Override
@@ -115,6 +114,12 @@ public class GestorDomicilio extends Gestor<Domicilio> {
 			throw new Exception("Ha ocurrido un error al listar los alumnos: " + ex.getMessage());
 
 		}
+	}
+
+	@Override
+	public void validar(Domicilio object) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -1,5 +1,5 @@
-delete from telefono;
-delete from mail;
-delete from alumno;
-delete from usuario;
-delete from domicilio;
+delete from TELEFONO;
+delete from MAIL;
+delete from ALUMNO;
+delete from USUARIO;
+delete from DOMICILIO;

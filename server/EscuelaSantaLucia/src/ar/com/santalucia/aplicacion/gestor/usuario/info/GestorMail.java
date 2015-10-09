@@ -2,7 +2,7 @@ package ar.com.santalucia.aplicacion.gestor.usuario.info;
 
 import java.util.ArrayList;
 
-import ar.com.santalucia.accesodatos.dao.MailHome;
+import ar.com.santalucia.accesodatos.dao.usuario.info.MailHome;
 import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
 import ar.com.santalucia.aplicacion.gestor.Gestor;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
@@ -112,6 +112,12 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 
 		}
 
+	}
+
+	@Override
+	public void validar(Mail object) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

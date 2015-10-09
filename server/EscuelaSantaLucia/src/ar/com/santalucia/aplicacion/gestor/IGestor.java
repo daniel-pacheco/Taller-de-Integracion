@@ -21,5 +21,6 @@ public interface IGestor<T> {
 	T getById(Long id) throws Exception;
 	ArrayList<T> getByExample(T example) throws Exception;
 	ArrayList<T> List() throws Exception;
-	void closeTransaction() throws Exception;
+	void closeSession() throws Exception;
+	void validar(T object) throws Exception;
 }

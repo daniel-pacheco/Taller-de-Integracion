@@ -1,4 +1,4 @@
-package ar.com.santalucia.accesodatos.dao;
+package ar.com.santalucia.accesodatos.dao.usuario.info;
 // Generated 04/07/2015 12:20:19 by Hibernate Tools 4.3.1
 
 import java.util.List;
@@ -9,18 +9,19 @@ import org.hibernate.LockMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 
-import ar.com.santalucia.dominio.modelo.usuarios.Directivo;
+import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
+import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 
 /**
- * Home object for domain model class Directivo.
- * @see ar.com.santalucia.dominio.modelo.usuarios.Directivo
+ * Home object for domain model class Mail.
+ * @see ar.com.santalucia.dominio.modelo.usuarios.info.Mail
  * @author Hibernate Tools
  */
-public class DirectivoHome {
+public class MailHome {
 
-	private static final Log log = LogFactory.getLog(DirectivoHome.class);
+	private static final Log log = LogFactory.getLog(MailHome.class);
 
-	private final SessionFactory sessionFactory = getSessionFactory();
+	private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
 	protected SessionFactory getSessionFactory() {
 		try {
@@ -31,8 +32,8 @@ public class DirectivoHome {
 		}
 	}
 
-	public void persist(Directivo transientInstance) {
-		log.debug("persisting Directivo instance");
+	public void persist(Mail transientInstance) {
+		log.debug("persisting Mail instance");
 		try {
 			sessionFactory.getCurrentSession().persist(transientInstance);
 			log.debug("persist successful");
@@ -42,8 +43,8 @@ public class DirectivoHome {
 		}
 	}
 
-	public void attachDirty(Directivo instance) {
-		log.debug("attaching dirty Directivo instance");
+	public void attachDirty(Mail instance) {
+		log.debug("attaching dirty Mail instance");
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(instance);
 			log.debug("attach successful");
@@ -53,8 +54,8 @@ public class DirectivoHome {
 		}
 	}
 
-	public void attachClean(Directivo instance) {
-		log.debug("attaching clean Directivo instance");
+	public void attachClean(Mail instance) {
+		log.debug("attaching clean Mail instance");
 		try {
 			sessionFactory.getCurrentSession().lock(instance, LockMode.NONE);
 			log.debug("attach successful");
@@ -64,8 +65,8 @@ public class DirectivoHome {
 		}
 	}
 
-	public void delete(Directivo persistentInstance) {
-		log.debug("deleting Directivo instance");
+	public void delete(Mail persistentInstance) {
+		log.debug("deleting Mail instance");
 		try {
 			sessionFactory.getCurrentSession().delete(persistentInstance);
 			log.debug("delete successful");
@@ -75,10 +76,10 @@ public class DirectivoHome {
 		}
 	}
 
-	public Directivo merge(Directivo detachedInstance) {
-		log.debug("merging Directivo instance");
+	public Mail merge(Mail detachedInstance) {
+		log.debug("merging Mail instance");
 		try {
-			Directivo result = (Directivo) sessionFactory.getCurrentSession().merge(detachedInstance);
+			Mail result = (Mail) sessionFactory.getCurrentSession().merge(detachedInstance);
 			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -87,11 +88,11 @@ public class DirectivoHome {
 		}
 	}
 
-	public Directivo findById(java.lang.Long id) {
-		log.debug("getting Directivo instance with id: " + id);
+	public Mail findById(java.lang.Long id) {
+		log.debug("getting Mail instance with id: " + id);
 		try {
-			Directivo instance = (Directivo) sessionFactory.getCurrentSession()
-					.get("ar.com.santalucia.dominio.modelo.usuarios.Directivo", id);
+			Mail instance = (Mail) sessionFactory.getCurrentSession()
+					.get("ar.com.santalucia.dominio.modelo.usuarios.info.Mail", id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {
@@ -104,11 +105,11 @@ public class DirectivoHome {
 		}
 	}
 
-	public List findByExample(Directivo instance) {
-		log.debug("finding Directivo instance by example");
+	public List findByExample(Mail instance) {
+		log.debug("finding Mail instance by example");
 		try {
 			List results = sessionFactory.getCurrentSession()
-					.createCriteria("ar.com.santalucia.dominio.modelo.usuarios.Directivo").add(Example.create(instance))
+					.createCriteria("ar.com.santalucia.dominio.modelo.usuarios.info.Mail").add(Example.create(instance))
 					.list();
 			log.debug("find by example successful, result size: " + results.size());
 			return results;

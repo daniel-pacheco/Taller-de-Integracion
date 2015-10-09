@@ -1,5 +1,5 @@
-package ar.com.santalucia.accesodatos.dao;
-// Generated 19/09/2015 17:43:36 by Hibernate Tools 4.3.1
+package ar.com.santalucia.accesodatos.dao.desempenio;
+// Generated 25/09/2015 19:37:31 by Hibernate Tools 4.3.1
 
 import java.util.List;
 import javax.naming.InitialContext;
@@ -9,16 +9,16 @@ import org.hibernate.LockMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 
-import ar.com.santalucia.dominio.modelo.academico.Anio;
+import ar.com.santalucia.dominio.modelo.desempenio.Trimestre;
 
 /**
- * Home object for domain model class Anio.
- * @see ar.com.santalucia.dominio.modelo.academico.Anio
+ * Home object for domain model class Trimestre.
+ * @see ar.com.santalucia.dominio.modelo.desempenio.Trimestre
  * @author Hibernate Tools
  */
-public class AnioHome {
+public class TrimestreHome {
 
-	private static final Log log = LogFactory.getLog(AnioHome.class);
+	private static final Log log = LogFactory.getLog(TrimestreHome.class);
 
 	private final SessionFactory sessionFactory = getSessionFactory();
 
@@ -31,8 +31,8 @@ public class AnioHome {
 		}
 	}
 
-	public void persist(Anio transientInstance) {
-		log.debug("persisting Anio instance");
+	public void persist(Trimestre transientInstance) {
+		log.debug("persisting Trimestre instance");
 		try {
 			sessionFactory.getCurrentSession().persist(transientInstance);
 			log.debug("persist successful");
@@ -42,8 +42,8 @@ public class AnioHome {
 		}
 	}
 
-	public void attachDirty(Anio instance) {
-		log.debug("attaching dirty Anio instance");
+	public void attachDirty(Trimestre instance) {
+		log.debug("attaching dirty Trimestre instance");
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(instance);
 			log.debug("attach successful");
@@ -53,8 +53,8 @@ public class AnioHome {
 		}
 	}
 
-	public void attachClean(Anio instance) {
-		log.debug("attaching clean Anio instance");
+	public void attachClean(Trimestre instance) {
+		log.debug("attaching clean Trimestre instance");
 		try {
 			sessionFactory.getCurrentSession().lock(instance, LockMode.NONE);
 			log.debug("attach successful");
@@ -64,8 +64,8 @@ public class AnioHome {
 		}
 	}
 
-	public void delete(Anio persistentInstance) {
-		log.debug("deleting Anio instance");
+	public void delete(Trimestre persistentInstance) {
+		log.debug("deleting Trimestre instance");
 		try {
 			sessionFactory.getCurrentSession().delete(persistentInstance);
 			log.debug("delete successful");
@@ -75,10 +75,10 @@ public class AnioHome {
 		}
 	}
 
-	public Anio merge(Anio detachedInstance) {
-		log.debug("merging Anio instance");
+	public Trimestre merge(Trimestre detachedInstance) {
+		log.debug("merging Trimestre instance");
 		try {
-			Anio result = (Anio) sessionFactory.getCurrentSession().merge(detachedInstance);
+			Trimestre result = (Trimestre) sessionFactory.getCurrentSession().merge(detachedInstance);
 			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -87,11 +87,11 @@ public class AnioHome {
 		}
 	}
 
-	public Anio findById(java.lang.Long id) {
-		log.debug("getting Anio instance with id: " + id);
+	public Trimestre findById(java.lang.Long id) {
+		log.debug("getting Trimestre instance with id: " + id);
 		try {
-			Anio instance = (Anio) sessionFactory.getCurrentSession()
-					.get("ar.com.santalucia.dominio.modelo.academico.Anio", id);
+			Trimestre instance = (Trimestre) sessionFactory.getCurrentSession()
+					.get("ar.com.santalucia.dominio.modelo.desempenio.Trimestre", id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {
@@ -104,12 +104,12 @@ public class AnioHome {
 		}
 	}
 
-	public List findByExample(Anio instance) {
-		log.debug("finding Anio instance by example");
+	public List findByExample(Trimestre instance) {
+		log.debug("finding Trimestre instance by example");
 		try {
 			List results = sessionFactory.getCurrentSession()
-					.createCriteria("ar.com.santalucia.dominio.modelo.academico.Anio").add(Example.create(instance))
-					.list();
+					.createCriteria("ar.com.santalucia.dominio.modelo.desempenio.Trimestre")
+					.add(Example.create(instance)).list();
 			log.debug("find by example successful, result size: " + results.size());
 			return results;
 		} catch (RuntimeException re) {

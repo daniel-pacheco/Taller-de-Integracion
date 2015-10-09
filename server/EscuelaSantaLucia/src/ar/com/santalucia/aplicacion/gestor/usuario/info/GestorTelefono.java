@@ -2,7 +2,7 @@ package ar.com.santalucia.aplicacion.gestor.usuario.info;
 
 import java.util.ArrayList;
 
-import ar.com.santalucia.accesodatos.dao.TelefonoHome;
+import ar.com.santalucia.accesodatos.dao.usuario.info.TelefonoHome;
 import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
 import ar.com.santalucia.aplicacion.gestor.Gestor;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
@@ -113,6 +113,12 @@ public class GestorTelefono extends Gestor<Telefono> {
 			throw new Exception("Ha ocurrido un error al listar los telefonos: " + ex.getMessage());
 
 		}
+	}
+
+	@Override
+	public void validar(Telefono object) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

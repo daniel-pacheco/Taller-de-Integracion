@@ -10,7 +10,7 @@
         <property name="cuil" type="java.lang.Long">
             <column name="CUIL" />
         </property>
-        <set name="listaTitulos" table="TITULO" inverse="false" lazy="true">
+        <set name="listaTitulos" table="TITULO" inverse="false" lazy="true" cascade="all">
             <key>
                 <column name="IDUSUARIO" />
             </key>

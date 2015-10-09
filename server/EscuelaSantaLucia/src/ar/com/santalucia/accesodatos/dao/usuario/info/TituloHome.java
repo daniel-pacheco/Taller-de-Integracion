@@ -1,5 +1,5 @@
-package ar.com.santalucia.accesodatos.dao;
-// Generated 19/09/2015 17:43:36 by Hibernate Tools 4.3.1
+package ar.com.santalucia.accesodatos.dao.usuario.info;
+// Generated 04/07/2015 12:20:19 by Hibernate Tools 4.3.1
 
 import java.util.List;
 import javax.naming.InitialContext;
@@ -9,16 +9,16 @@ import org.hibernate.LockMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 
-import ar.com.santalucia.dominio.modelo.academico.Llamado;
+import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
 
 /**
- * Home object for domain model class Llamado.
- * @see ar.com.santalucia.dominio.modelo.academico.Llamado
+ * Home object for domain model class Titulo.
+ * @see ar.com.santalucia.dominio.modelo.usuarios.info.Titulo
  * @author Hibernate Tools
  */
-public class LlamadoHome {
+public class TituloHome {
 
-	private static final Log log = LogFactory.getLog(LlamadoHome.class);
+	private static final Log log = LogFactory.getLog(TituloHome.class);
 
 	private final SessionFactory sessionFactory = getSessionFactory();
 
@@ -31,8 +31,8 @@ public class LlamadoHome {
 		}
 	}
 
-	public void persist(Llamado transientInstance) {
-		log.debug("persisting Llamado instance");
+	public void persist(Titulo transientInstance) {
+		log.debug("persisting Titulo instance");
 		try {
 			sessionFactory.getCurrentSession().persist(transientInstance);
 			log.debug("persist successful");
@@ -42,8 +42,8 @@ public class LlamadoHome {
 		}
 	}
 
-	public void attachDirty(Llamado instance) {
-		log.debug("attaching dirty Llamado instance");
+	public void attachDirty(Titulo instance) {
+		log.debug("attaching dirty Titulo instance");
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(instance);
 			log.debug("attach successful");
@@ -53,8 +53,8 @@ public class LlamadoHome {
 		}
 	}
 
-	public void attachClean(Llamado instance) {
-		log.debug("attaching clean Llamado instance");
+	public void attachClean(Titulo instance) {
+		log.debug("attaching clean Titulo instance");
 		try {
 			sessionFactory.getCurrentSession().lock(instance, LockMode.NONE);
 			log.debug("attach successful");
@@ -64,8 +64,8 @@ public class LlamadoHome {
 		}
 	}
 
-	public void delete(Llamado persistentInstance) {
-		log.debug("deleting Llamado instance");
+	public void delete(Titulo persistentInstance) {
+		log.debug("deleting Titulo instance");
 		try {
 			sessionFactory.getCurrentSession().delete(persistentInstance);
 			log.debug("delete successful");
@@ -75,10 +75,10 @@ public class LlamadoHome {
 		}
 	}
 
-	public Llamado merge(Llamado detachedInstance) {
-		log.debug("merging Llamado instance");
+	public Titulo merge(Titulo detachedInstance) {
+		log.debug("merging Titulo instance");
 		try {
-			Llamado result = (Llamado) sessionFactory.getCurrentSession().merge(detachedInstance);
+			Titulo result = (Titulo) sessionFactory.getCurrentSession().merge(detachedInstance);
 			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -87,11 +87,11 @@ public class LlamadoHome {
 		}
 	}
 
-	public Llamado findById(java.lang.Long id) {
-		log.debug("getting Llamado instance with id: " + id);
+	public Titulo findById(java.lang.Long id) {
+		log.debug("getting Titulo instance with id: " + id);
 		try {
-			Llamado instance = (Llamado) sessionFactory.getCurrentSession()
-					.get("ar.com.santalucia.dominio.modelo.academico.Llamado", id);
+			Titulo instance = (Titulo) sessionFactory.getCurrentSession()
+					.get("ar.com.santalucia.dominio.modelo.usuarios.info.Titulo", id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {
@@ -104,12 +104,12 @@ public class LlamadoHome {
 		}
 	}
 
-	public List findByExample(Llamado instance) {
-		log.debug("finding Llamado instance by example");
+	public List findByExample(Titulo instance) {
+		log.debug("finding Titulo instance by example");
 		try {
 			List results = sessionFactory.getCurrentSession()
-					.createCriteria("ar.com.santalucia.dominio.modelo.academico.Llamado").add(Example.create(instance))
-					.list();
+					.createCriteria("ar.com.santalucia.dominio.modelo.usuarios.info.Titulo")
+					.add(Example.create(instance)).list();
 			log.debug("find by example successful, result size: " + results.size());
 			return results;
 		} catch (RuntimeException re) {
