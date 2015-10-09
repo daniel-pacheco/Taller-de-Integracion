@@ -29,6 +29,11 @@ angular
         controller: 'AboutCtrl',
         controllerAs: 'about'
       })
+      .when('/directivo', {
+        templateUrl: 'views/directivo.html',
+        controller: 'DirectivoCtrl',
+        controllerAs: 'directivo'
+      })
       .otherwise({
         redirectTo: '/'
       });

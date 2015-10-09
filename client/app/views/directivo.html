@@ -1,0 +1,110 @@
+
+<div class="column_center">
+
+	<form id="" action="" method="post">
+		<fieldset>
+
+			<h1>Nuevo Alumno</h1>
+			<hr>
+			<h2 class="small">Ingrese los datos para crear un nuevo perfil
+				de alumno y haga clic en guardar cuando finalice</h2>
+			<div class="cargar_imagen">
+				<img src="images/defaultUser.png" alt="" /> <span
+					class="btn btn-primary btn-file"> Examinar <input
+					type="file">
+				</span>
+			</div>
+
+			<div class="form_center">
+				<div class="formulario">
+					<label for="">Documento:</label> <input class="form-control"
+						type="text" maxlength="10" required pattern="\d{8}">
+					<!-- Valida 8 digitos -->
+					<select class="form-control" name="Tipo documento">
+						<option value="">DNI</option>
+						<option value="">LC</option>
+						<option value="">Otro</option>
+					</select>
+				</div>
+
+
+				<div class="formulario">
+					<label for="">Nombres:</label> <input class="form-control"
+						type="text" maxlength="255" required pattern="[a-zA-Z ]*">
+					<!-- Valida letras y espacios -->
+				</div>
+
+				<div class="formulario">
+					<label for="">Apellidos:</label><input class="form-control"
+						type="text" maxlength="255" required pattern="[a-zA-Z ]*">
+					<!-- Valida letras y espacios-->
+				</div>
+
+
+				<div class="formulario">
+					<label for="">Sexo:</label> <input type="radio" name="sexo"
+						value="Femenino"> Femenino <input type="radio" name="sexo"
+						value="Masculino" checked> Masculino
+				</div>
+
+				<div class="formulario">
+					<label for="">Domicilio:</label><input class="form-control"
+						type="text" maxlength="255" required pattern="[a-zA-Z 0-9]*" />
+					<!-- Valida letras, numeros y espacios-->
+				</div>
+
+				<div class="formulario">
+					<label for="">Fecha de nac:</label> <input class="form-control"
+						type="date" step="1" value="01-01-2000" />
+				</div>
+
+				<div class="formulario">
+					<label for="">Año curso:</label> <select class="form-control"
+						name="Año">
+						<option value="">elemento 1</option>
+						<option value="">elemento 2</option>
+					</select>
+				</div>
+
+				<div class="formulario">
+					<label for="">Nombre curso:</label><select class="form-control"
+						name="Curso">
+						<option value="">elemento 3</option>
+						<option value="">elemento 4</option>
+					</select>
+				</div>
+				
+				<div class="formulario">
+					<label for="">Teléfono fijo:</label><input class="form-control"
+						type="tel"/>
+				</div>
+				
+				<div class="formulario">
+					<label for="">Celular:</label><input class="form-control"
+						type="tel"/>
+				</div>
+				
+				<div class="formulario">
+					<label for="">Mail:</label><input class="form-control"
+						type="email" maxlength="255">
+				</div>
+				
+				<div class="formulario">
+					<label for="">Observaciones:</label><input class="form-control"
+						type="text" maxlength="255" required pattern="[a-zA-Z ]*">
+					<!-- Valida letras y espacios-->
+				</div>
+
+
+
+			</div>
+
+			<div class="botones_form">
+				<input class="btn btn-danger" type="button" name=""
+					onclick="cargarAlumnoPrincipal()" value="Cancelar" /> <input
+					class="btn btn-primary" type="submit" name="" value="Guardar" />
+			</div>
+
+		</fieldset>
+	</form>
+</div>
