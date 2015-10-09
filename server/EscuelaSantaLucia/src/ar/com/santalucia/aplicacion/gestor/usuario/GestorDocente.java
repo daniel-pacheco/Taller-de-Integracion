@@ -31,7 +31,7 @@ import ar.com.santalucia.validaciones.IValidacionUsuarioDocDir;
  *
  */
 
-// UltimoModificador: Eric Pennachini @ 07-08-15 19:40
+// UltimoModificador: Eric Pennachini @ 09-10-15 19:59
 
 public class GestorDocente extends Gestor<Docente> implements IValidacionUsuarioDocDir{
 	private DocenteHome docenteDAO;
