@@ -6,7 +6,6 @@ import java.util.Set;
 
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
-import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
@@ -23,7 +22,7 @@ import ar.com.santalucia.excepciones.ValidacionException;
  *
  */
 
-// Último modificador: Ariel Ramirez @ 26-09-2015 12:55
+// Último modificador: Ariel Ramirez @ 10-10-2015 10:57
 
 public class ServicioAlumno extends ServicioUsuario<Alumno> {
 
@@ -47,13 +46,12 @@ public class ServicioAlumno extends ServicioUsuario<Alumno> {
 	}
 
 	@Override
-	public List<Alumno> getUsuarios(Alumno example) {																		
+	public List<Alumno> getUsuarios(Alumno example) throws Exception {																		
 		try {
 			return gAlumno.getByExample(example);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception ex) {
+			throw new Exception("Servicio: problemas. " + ex.getMessage());
 		}
-		return null;
 	}
 
 	@Override
@@ -75,7 +73,7 @@ public class ServicioAlumno extends ServicioUsuario<Alumno> {
 	}
 
 	@Override
-	public Set<Telefono> getTelefonos(/* Alumno usuario */ Long idUsuario) throws Exception {				
+	public Set<Telefono> getTelefonos(Long idUsuario) throws Exception {				
 		Set<Telefono> telefonos = new HashSet<Telefono>();
 		telefonos = null;
 		try {
@@ -111,90 +109,13 @@ public class ServicioAlumno extends ServicioUsuario<Alumno> {
 		// Este método no se implementa para esta clase
 		return null;
 	}
-
-	@Override
-	public boolean modifyTelefono(Telefono telefonoModificado) throws Exception {
-		try {
-			gTelefono.modify(telefonoModificado);
-			return true;
-		} catch (Exception ex) {
-			throw ex;
-		}
-		
-	}
-
-	@Override
-	public boolean modifyMail(Mail mailModificado) {
-		try {
-			gMail.modify(mailModificado);
-			return true;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-	@Override
-	public boolean modifyDomicilio(Domicilio domicilioModificado) throws Exception{
-		try {
-			gDomicilio.modify(domicilioModificado);
-			return true;
-		} catch (Exception ex) {
-			throw ex;
-		}
-
-	}
-
-	/**
-	 * @return Siempre se devolverá true dado a que este método no se implementa
-	 *         para esta clase.
-	 */
-	@Override
-	public boolean modifyTitulo(Titulo tituloModifado) {
-		// Este método no se implementa para esta clase.
-		return true;
-	}
-
-	@Override
-	public boolean removeTelefono(Long idTelefono)  throws Exception{
-		try {
-			gTelefono.delete(gTelefono.getById(idTelefono));
-			return true;
-		} catch (Exception ex) {
-			//e.printStackTrace();
-			throw ex;
-		}
-	}
-
-	@Override
-	public boolean removeMail(Long idMail) throws Exception{
-		try {
-			gMail.delete(gMail.getById(idMail));
-			return true;
-		} catch (Exception ex) {
-			//e.printStackTrace();
-			throw ex;
-		}
-	}
-
-	/**
-	 * @return Siempre se devolverá true dado a que este método no se implementa
-	 *         para esta clase.
-	 */
-	@Override
-	public boolean removeTitulo(Long idTitulo) throws Exception{
-		// Este método no se implementa para esta clase.
-		return true;
-	}
-
+	
 	@Override
 	public boolean removeUsuario(Alumno usuario) throws Exception {																					
 		try {
 			gAlumno.delete(usuario);
 			return true;
 		} catch (Exception ex) {
-			//e.printStackTrace();
 			throw ex;
 		}
 	}
@@ -205,30 +126,17 @@ public class ServicioAlumno extends ServicioUsuario<Alumno> {
 			gAlumno.modify(usuarioModificado);
 			return true;
 		} catch (Exception ex) {
-			// TODO Auto-generated catch block
 			throw new Exception("Servicio modify(): no se pudo completar la operacion. "+ex.getMessage());
 		}
 	}
-
-	@Override
-	public boolean removeDomicilio(Long idDomicilio) {
-		try {
-			gDomicilio.delete(gDomicilio.getById(idDomicilio));
-			return true;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-		}
-		return false;
-	}
-
+	
 	@Override
 	public void closeSession() throws Exception {
 		gAlumno.closeSession();
 	}
 
 	
-	// No se incluyen los métodos para agregar mail, o teléfono dado a que solo es necesario llamar a this.addUsuario(Alumno usuario)
+	// No se incluyen los métodos para agregar mail, título o teléfono dado a que solo es necesario llamar a this.addUsuario(Alumno usuario)
 
 }
  

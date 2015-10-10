@@ -92,9 +92,14 @@ public class GestorAlumno extends Gestor<Alumno> implements IValidacionUsuarioAl
 		try {
 			setSession();
 			setTransaction();
+			this.validar(object);
 			alumnoDAO.attachDirty(object);
 			sesionDeHilo.getTransaction().commit();
-		} catch (Exception ex) {
+		}
+		catch (ValidacionException ex) {
+			throw ex;
+		}
+		catch (Exception ex) {
 			setSession();
 			setTransaction();
 			sesionDeHilo.getTransaction().rollback();
@@ -216,10 +221,13 @@ public class GestorAlumno extends Gestor<Alumno> implements IValidacionUsuarioAl
 
 		vDocumento = this.existeDocumento(object.getTipoDocumento(), object.getNroDocumento());
 		for(Mail m : object.getListaMails()){
-			exception.addMensajeError((this.existeMail(m) ? "La dirección de e-mail: "+m.getDireccionMail() +" ya existe" : null));
+			exception.addMensajeError((this.existeMail(m) 
+										? "La dirección de e-mail: " + m.getDireccionMail() +" ya existe" 
+										: null));
 		}
 		vMatricula = this.existeMatricula(object.getMatricula());
 		vNombreUsuario = this.existeNombreUsuario(object.getNombreUsuario());
+		
 		exception.addMensajeError((vDocumento ? "El documento ya existe" : null));
 		exception.addMensajeError((vMatricula ? "La matrícula ya existe" : null));
 		exception.addMensajeError((vNombreUsuario ? "El nombre de usuario ya existe" : null));

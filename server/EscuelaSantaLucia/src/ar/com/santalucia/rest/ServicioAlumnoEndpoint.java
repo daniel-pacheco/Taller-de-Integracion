@@ -29,15 +29,19 @@ import ar.com.santalucia.servicio.ServicioAlumno;
  * @version 2.0
  */
 
-// Último modificador: Ariel Ramirez @ 03-10-2015 21:45
+// Último modificador: Ariel Ramirez @ 09-10-2015 21:06
 
 @Path("/sAlumno")
-@Produces({ /* "application/xml", */ "application/json" })
-@Consumes({ /* "application/xml", */ "application/json" })
+@Produces({"application/json" })
+@Consumes({"application/json" })
 public class ServicioAlumnoEndpoint {
 	
 	private ServicioAlumno servicioAlumno = null;
-
+	
+	/**
+	 * Instancia un objeto ServicioAlumno si no existe
+	 * @throws Exception
+	 */
 	private void setInstance() throws Exception {
 		if (servicioAlumno == null) {
 			try {
@@ -48,7 +52,7 @@ public class ServicioAlumnoEndpoint {
 			}
 		}
 	}
-
+	
 	@POST
 	public Response create(final ServicioAlumno servicioalumno) {
 		// TODO: process the given servicioalumno
@@ -58,23 +62,15 @@ public class ServicioAlumnoEndpoint {
 		// resource:
 		// return
 		// Response.created(UriBuilder.fromResource(ServicioAlumnoEndpoint.class).path(String.valueOf(servicioalumno.getId())).build()).build();
-		// if (servicioAlumno==null){
-		// try {
-		// servicioAlumno=new ServicioAlumno();
-		// } catch (Exception ex) {
-		// //e.printStackTrace();
-		// return Response.ok(ex).build();
-		// }
-		// }
 		return Response.created(null).build();
 	}
 
 	/**
-	 * 
+	 *  
 	 * @param id
 	 *            Identificador del usuario a buscar.
-	 * @return Status 200(Response: ok) e instancia de alumno o Status 404
-	 *         (Response: not found) y null si no no existe.
+	 * @return Response ok (Status 200) e instancia de alumno, incluyendo datos de teléfono, 
+	 * mail y domicilio o null si no existe.
 	 */
 	@GET
 	@Path("/alu/{id:[0-9][0-9]*}")
@@ -96,9 +92,8 @@ public class ServicioAlumnoEndpoint {
 	 * @param id
 	 *            Identificador del usuario del cuál se desea recuperar los
 	 *            teléfonos.
-	 * @return Status 200(Response: ok) y Set de teléfonos o Status 404
-	 *         (Response: not found) y null si no existe el alumno o no hay
-	 *         nada.
+	 * @return Response ok (Status 200) y Set de teléfonos o 
+	 *  null si no existe el alumno o no hay nada.
 	 */
 	@GET
 	@Path("/tel/{id:[0-9][0-9]*}") // tel
@@ -120,8 +115,8 @@ public class ServicioAlumnoEndpoint {
 	 * @param id
 	 *            Identificador del usuario del cuál se desea recuperar los
 	 *            mails.
-	 * @return Status 200(Response: ok) y Set de mails o Status 404 (Response:
-	 *         not found) y null si no existe el alumno o no hay nada.
+	 * @return Response ok (Status 200) y Set de mails
+	 *  o null si no existe el alumno o no hay nada.
 	 */
 	@GET
 	@Path("/mai/{id:[0-9][0-9]*}")
@@ -143,9 +138,9 @@ public class ServicioAlumnoEndpoint {
 	}
 
 	/**
-	 * 
-	 * @return Status 200(Response: ok) y listado de alumnos o Status 404
-	 *         (Response: not found) y null si no hay nada.
+	 * Utilice este método para el listado de alumnos completo.
+	 * @return Response ok (Status 200) y listado de alumnos o 
+	 *  null si no hay nada.
 	 */
 	@GET
 	@Path("/list")
@@ -163,6 +158,15 @@ public class ServicioAlumnoEndpoint {
 		return Response.ok(alumnos).build();
 	}
 
+	/**
+	 * Utilice este método para:<br>
+	 * 1) Agregar un nuevo alumno con o sin datos adicionales (teléfono, mail y domicilio) de una sola vez. <br>
+	 * 2) Actualizar datos de alumno que no sean adicionales (teléfono, mail y domicilio).<br>
+	 * 3) Agregar uno o varios datos adicionales (teléfono y mail).<br>
+	 * (!) Para actualizar o eliminar datos adicionales (teléfono, mail y domicilio) use los métodos UPDATE respectivos. 
+	 * @param alumno
+	 * @return Response ok (Status 200) con el id de usuario si el resultado es exitos o la excepción generada. 
+	 */
 	@PUT
 	@Path("/alu/")
 	public Response update(final Alumno alumno) { // Agrega o modifica un alumno
@@ -176,9 +180,9 @@ public class ServicioAlumnoEndpoint {
 	}
 
 	/**
-	 * 
-	 * @param telefono
-	 * @return
+	 * Utiice este método para actualizar los datos de un teléfono existente.
+	 * @param telefono incluyendo su id
+	 * @return Response ok (Status 200) con true si el resultado es exitoso o la excepción generada.
 	 */
 	@PUT
 	@Path("/tel/")
@@ -194,6 +198,11 @@ public class ServicioAlumnoEndpoint {
 		}
 	}
 
+	/**
+	 * Utilice este método para actualizar los datos de un mail existente.
+	 * @param mail Response ok (Status 200) con true si el resultado es exitoso o la excepción generada.
+	 * @return
+	 */
 	@PUT
 	@Path("/mai/")
 	public Response updateMail(final Mail mail) {
@@ -207,7 +216,11 @@ public class ServicioAlumnoEndpoint {
 			return Response.ok(ex).build();
 		}
 	}
-
+	/**
+	 * Utilice este método para actualizar los datos de un domicilio existente.
+	 * @param domicilio
+	 * @return Response ok (Status 200) con true si el resultado es exitoso o la excepción generada.
+	 */
 	@PUT
 	@Path("/dom/")
 	public Response updateDomicilio(final Domicilio domicilio) {
@@ -221,6 +234,11 @@ public class ServicioAlumnoEndpoint {
 		}
 	}
 
+	/**
+	 * Utilice este método para eliminar un alumno. Además de eliminar el alumno, también se eliminan los datos adicionales (teléfono, mail y domicilio).
+	 * @param id
+	 * @return Response ok (Status 200) con true si el resultado es exitoso o la excepción generada.
+	 */
 	@DELETE
 	@Path("/alu/{id:[0-9][0-9]*}")
 	public Response deleteAlumnoById(@PathParam("id") final Long id) {
@@ -236,6 +254,11 @@ public class ServicioAlumnoEndpoint {
 
 	}
 	
+	/**
+	 * Utilice este método para eliminar un teléfono existente.
+	 * @param id
+	 * @return Response ok (Status 200) con true si el resultado es exitoso o la excepción generada.
+	 */
 	@DELETE
 	@Path("/tel/{id:[0-9][0-9]*}")
 	public Response deleteTelefonoById(@PathParam("id") final Long id){
@@ -250,6 +273,11 @@ public class ServicioAlumnoEndpoint {
 		}
 	}
 	
+	/**
+	 * Utilice este método para eliminar un domicilio existente.
+	 * @param id
+	 * @return Response ok (Status 200) con true si el resultado es exitoso o la excepción generada.
+	 */
 	@DELETE
 	@Path("/dom/{id:[0-9][0-9]*}")
 	public Response deleteDomicilioById(@PathParam("id") final Long id){

@@ -113,4 +113,10 @@ public class GestorTitulo extends Gestor<Titulo> {
 		}
 	}
 
+	@Override
+	public void validar(Titulo object) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
