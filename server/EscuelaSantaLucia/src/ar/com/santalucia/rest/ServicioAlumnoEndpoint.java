@@ -29,7 +29,7 @@ import ar.com.santalucia.servicio.ServicioAlumno;
  * @version 2.0
  */
 
-// Último modificador: Ariel Ramirez @ 03-10-2015 21:45
+// Último modificador: Ariel Ramirez @ 09-10-2015 21:06
 
 @Path("/sAlumno")
 @Produces({"application/json" })

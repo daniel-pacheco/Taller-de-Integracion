@@ -22,7 +22,7 @@ import ar.com.santalucia.excepciones.ValidacionException;
  *
  */
 
-// Último modificador: Ariel Ramirez @ 26-09-2015 12:55
+// Último modificador: Ariel Ramirez @ 10-10-2015 10:57
 
 public class ServicioAlumno extends ServicioUsuario<Alumno> {
 
@@ -116,7 +116,6 @@ public class ServicioAlumno extends ServicioUsuario<Alumno> {
 			gAlumno.delete(usuario);
 			return true;
 		} catch (Exception ex) {
-			//e.printStackTrace();
 			throw ex;
 		}
 	}
@@ -127,7 +126,6 @@ public class ServicioAlumno extends ServicioUsuario<Alumno> {
 			gAlumno.modify(usuarioModificado);
 			return true;
 		} catch (Exception ex) {
-			// TODO Auto-generated catch block
 			throw new Exception("Servicio modify(): no se pudo completar la operacion. "+ex.getMessage());
 		}
 	}
@@ -138,7 +136,7 @@ public class ServicioAlumno extends ServicioUsuario<Alumno> {
 	}
 
 	
-	// No se incluyen los métodos para agregar mail, o teléfono dado a que solo es necesario llamar a this.addUsuario(Alumno usuario)
+	// No se incluyen los métodos para agregar mail, título o teléfono dado a que solo es necesario llamar a this.addUsuario(Alumno usuario)
 
 }
  

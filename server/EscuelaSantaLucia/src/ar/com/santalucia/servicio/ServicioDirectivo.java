@@ -108,20 +108,27 @@ public class ServicioDirectivo extends ServicioUsuario<Directivo> {
 
 	@Override
 	public boolean modifyUsuario(Directivo usuarioModificado) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+		try {
+			gDirectivo.modify(usuarioModificado);
+			return true;
+		} catch (Exception ex) {
+			throw new Exception("Servicio modify(): no se pudo completar la operacion. "+ex.getMessage());
+		}
 	}
 
 	@Override
 	public boolean removeUsuario(Directivo usuario) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+		try {
+			gDirectivo.delete(usuario);
+			return true;
+		} catch (Exception ex) {
+			throw ex;
+		}
 	}
 
 	@Override
 	public void closeSession() throws Exception {
-		// TODO Auto-generated method stub
-		
+		gDirectivo.closeSession();
 	}
 
 }
