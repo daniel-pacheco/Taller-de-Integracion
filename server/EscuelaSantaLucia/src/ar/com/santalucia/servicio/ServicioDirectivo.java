@@ -11,20 +11,30 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
 import ar.com.santalucia.excepciones.ValidacionException;
 
+/**
+ * 
+ * @author Ariel Ramirez
+ *
+ * @version 1.0
+ */
+
+// Último modificador: Ariel Ramirez @ 12-10-2015 21:10
+
 public class ServicioDirectivo extends ServicioUsuario<Directivo> {
 
 	private GestorDirectivo gDirectivo;
+
 	public ServicioDirectivo() throws Exception {
 		super();
-		gDirectivo=new GestorDirectivo();
+		gDirectivo = new GestorDirectivo();
 	}
 
 	@Override
 	public Directivo getUsuario(Long id) throws Exception {
-		if (id>0){
-			try{
+		if (id > 0) {
+			try {
 				return gDirectivo.getById(id);
-			}catch(Exception ex){
+			} catch (Exception ex) {
 				throw new Exception("Servicio: problemas. " + ex.getMessage());
 			}
 		}
@@ -33,9 +43,9 @@ public class ServicioDirectivo extends ServicioUsuario<Directivo> {
 
 	@Override
 	public List<Directivo> getUsuarios(Directivo example) throws Exception {
-		try{
+		try {
 			return gDirectivo.getByExample(example);
-		}catch (Exception ex){
+		} catch (Exception ex) {
 			throw new Exception("Servicio: problemas. " + ex.getMessage());
 		}
 	}
@@ -43,18 +53,17 @@ public class ServicioDirectivo extends ServicioUsuario<Directivo> {
 	@Override
 	public boolean addUsuario(Directivo usuario) throws Exception {
 		try {
-			if(usuario.getIdUsuario() == null){
+			if (usuario.getIdUsuario() == null) {
 				gDirectivo.add(usuario);
-					}else{
+			} else {
 				gDirectivo.modify(usuario);
-			};
+			}
+			;
 			return true;
-		}
-		catch (ValidacionException ex){
+		} catch (ValidacionException ex) {
 			throw ex;
-		} 
-		catch (Exception ex) {
-			throw new Exception("Servicio add(): no se pudo completar la operacion. "+ex.getMessage());
+		} catch (Exception ex) {
+			throw new Exception("Servicio add(): no se pudo completar la operacion. " + ex.getMessage());
 		}
 	}
 
@@ -64,8 +73,14 @@ public class ServicioDirectivo extends ServicioUsuario<Directivo> {
 		telefonos = null;
 		try {
 			Directivo directivo = new Directivo();
-			if ((directivo = getUsuario(idUsuario)) != null) { // pruebo si el directivo existe, sino no - > Null
-				telefonos = directivo.getListaTelefonos(); // getListaTelefonos del directivo que se busc, si existe
+			if ((directivo = getUsuario(idUsuario)) != null) { // pruebo si el
+																// directivo
+																// existe, sino
+																// no - > Null
+				telefonos = directivo.getListaTelefonos(); // getListaTelefonos
+															// del directivo que
+															// se busc, si
+															// existe
 			}
 		} catch (Exception ex) {
 			throw new Exception(
@@ -112,7 +127,7 @@ public class ServicioDirectivo extends ServicioUsuario<Directivo> {
 			gDirectivo.modify(usuarioModificado);
 			return true;
 		} catch (Exception ex) {
-			throw new Exception("Servicio modify(): no se pudo completar la operacion. "+ex.getMessage());
+			throw new Exception("Servicio modify(): no se pudo completar la operacion. " + ex.getMessage());
 		}
 	}
 

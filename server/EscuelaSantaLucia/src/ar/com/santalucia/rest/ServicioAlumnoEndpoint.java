@@ -29,7 +29,7 @@ import ar.com.santalucia.servicio.ServicioAlumno;
  * @version 2.0
  */
 
-// Último modificador: Ariel Ramirez @ 09-10-2015 21:06
+// Último modificador: Ariel Ramirez @ 12-10-2015 21:24
 
 @Path("/sAlumno")
 @Produces({"application/json" })
@@ -121,7 +121,6 @@ public class ServicioAlumnoEndpoint {
 	@GET
 	@Path("/mai/{id:[0-9][0-9]*}")
 	public Response getMails(@PathParam("id") final Long id) {
-
 		Set<Mail> mails = new HashSet<Mail>();
 		mails = null;
 		try {
@@ -129,10 +128,7 @@ public class ServicioAlumnoEndpoint {
 			mails = servicioAlumno.getMails(id);
 		} catch (Exception ex) {
 			// TODO Auto-generated catch block
-			ex.printStackTrace();
-		}
-		if (mails == null) {
-			return Response.status(Status.NOT_FOUND).build();
+			return Response.ok(ex).build();
 		}
 		return Response.ok(mails).build();
 	}
@@ -140,10 +136,11 @@ public class ServicioAlumnoEndpoint {
 	/**
 	 * Utilice este método para el listado de alumnos completo.
 	 * @return Response ok (Status 200) y listado de alumnos o 
-	 *  null si no hay nada.
+	 *  null si no hay nada. <br>
+	 *  (! PRECAUCIÓN) ¡El método devuelve el listado de todos los alumnos de la base de datos!
 	 */
 	@GET
-	@Path("/list")
+	@Path("/listAll")
 	public Response listAll() {
 		List<Alumno> alumnos = new ArrayList<Alumno>();
 		alumnos = null;
@@ -163,13 +160,13 @@ public class ServicioAlumnoEndpoint {
 	 * 1) Agregar un nuevo alumno con o sin datos adicionales (teléfono, mail y domicilio) de una sola vez. <br>
 	 * 2) Actualizar datos de alumno que no sean adicionales (teléfono, mail y domicilio).<br>
 	 * 3) Agregar uno o varios datos adicionales (teléfono y mail).<br>
-	 * (!) Para actualizar o eliminar datos adicionales (teléfono, mail y domicilio) use los métodos UPDATE respectivos. 
+	 * (! - IMPORTANTE) Para actualizar o eliminar datos adicionales (teléfono, mail y domicilio) use los métodos UPDATE y DELETE respectivos. 
 	 * @param alumno
-	 * @return Response ok (Status 200) con el id de usuario si el resultado es exitos o la excepción generada. 
+	 * @return Response ok (Status 200) con el id de usuario si el resultado es exitoso o la excepción generada. 
 	 */
 	@PUT
 	@Path("/alu/")
-	public Response update(final Alumno alumno) { // Agrega o modifica un alumno
+	public Response update(final Alumno alumno) {
 		try {
 			servicioAlumno.addUsuario(alumno);
 			return Response.ok(alumno.getIdUsuario()).build();
@@ -186,7 +183,7 @@ public class ServicioAlumnoEndpoint {
 	 */
 	@PUT
 	@Path("/tel/")
-	public Response updateTelefono(final Telefono telefono) { // Solo modifica el teléfono, para agregar use update(Alumnoalumno); y para quitar DELETE
+	public Response updateTelefono(final Telefono telefono) { 
 		Boolean exito = false;
 		try {
 			setInstance();
@@ -216,6 +213,7 @@ public class ServicioAlumnoEndpoint {
 			return Response.ok(ex).build();
 		}
 	}
+	
 	/**
 	 * Utilice este método para actualizar los datos de un domicilio existente.
 	 * @param domicilio
@@ -237,7 +235,8 @@ public class ServicioAlumnoEndpoint {
 	/**
 	 * Utilice este método para eliminar un alumno. Además de eliminar el alumno, también se eliminan los datos adicionales (teléfono, mail y domicilio).
 	 * @param id
-	 * @return Response ok (Status 200) con true si el resultado es exitoso o la excepción generada.
+	 * @return Response ok (Status 200) con true si el resultado es exitoso o la excepción generada.<br>
+	 * (! PRECAUCIÓN) Se eliminan todos los datos adicionales asociados (telefono, mail y domicilio) al eliminar el usuario.
 	 */
 	@DELETE
 	@Path("/alu/{id:[0-9][0-9]*}")
