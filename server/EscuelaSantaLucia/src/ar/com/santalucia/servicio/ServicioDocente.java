@@ -4,8 +4,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ar.com.santalucia.aplicacion.gestor.usuario.GestorDirectivo;
-import ar.com.santalucia.dominio.modelo.usuarios.Directivo;
+import ar.com.santalucia.aplicacion.gestor.usuario.GestorDocente;
+import ar.com.santalucia.dominio.modelo.usuarios.Docente;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
@@ -18,22 +18,22 @@ import ar.com.santalucia.excepciones.ValidacionException;
  * @version 1.0
  */
 
-// Último modificador: Ariel Ramirez @ 12-10-2015 21:10
+// Último modificador: Ariel Ramirez @ 14-10-2015 16:58 
 
-public class ServicioDirectivo extends ServicioUsuario<Directivo> {
+public class ServicioDocente extends ServicioUsuario<Docente> {
 
-	private GestorDirectivo gDirectivo;
+	private GestorDocente gDocente;
 
-	public ServicioDirectivo() throws Exception {
+	public ServicioDocente() throws Exception {
 		super();
-		gDirectivo = new GestorDirectivo();
+		gDocente = new GestorDocente();
 	}
 
 	@Override
-	public Directivo getUsuario(Long id) throws Exception {
+	public Docente getUsuario(Long id) throws Exception {
 		if (id > 0) {
 			try {
-				return gDirectivo.getById(id);
+				return gDocente.getById(id);
 			} catch (Exception ex) {
 				throw new Exception("Servicio: problemas. " + ex.getMessage());
 			}
@@ -42,21 +42,21 @@ public class ServicioDirectivo extends ServicioUsuario<Directivo> {
 	}
 
 	@Override
-	public List<Directivo> getUsuarios(Directivo example) throws Exception {
+	public List<Docente> getUsuarios(Docente example) throws Exception {
 		try {
-			return gDirectivo.getByExample(example);
+			return gDocente.getByExample(example);
 		} catch (Exception ex) {
 			throw new Exception("Servicio: problemas. " + ex.getMessage());
 		}
 	}
 
 	@Override
-	public boolean addUsuario(Directivo usuario) throws Exception {
+	public boolean addUsuario(Docente usuario) throws Exception {
 		try {
 			if (usuario.getIdUsuario() == null) {
-				gDirectivo.add(usuario);
+				gDocente.add(usuario);
 			} else {
-				gDirectivo.modify(usuario);
+				gDocente.modify(usuario);
 			}
 			;
 			return true;
@@ -72,9 +72,9 @@ public class ServicioDirectivo extends ServicioUsuario<Directivo> {
 		Set<Telefono> telefonos = new HashSet<Telefono>();
 		telefonos = null;
 		try {
-			Directivo directivo = new Directivo();
-			if ((directivo = getUsuario(idUsuario)) != null) { 
-				telefonos = directivo.getListaTelefonos(); 
+			Docente docente = new Docente();
+			if ((docente = getUsuario(idUsuario)) != null) { 
+				telefonos = docente.getListaTelefonos(); 
 			}
 		} catch (Exception ex) {
 			throw new Exception(
@@ -88,9 +88,9 @@ public class ServicioDirectivo extends ServicioUsuario<Directivo> {
 		Set<Mail> mails = new HashSet<Mail>();
 		mails = null;
 		try {
-			Directivo directivo = new Directivo();
-			if ((directivo = getUsuario(idUsuario)) != null) {
-				mails = directivo.getListaMails();
+			Docente docente = new Docente();
+			if ((docente = getUsuario(idUsuario)) != null) {
+				mails = docente.getListaMails();
 			}
 		} catch (Exception ex) {
 			throw new Exception(
@@ -104,9 +104,9 @@ public class ServicioDirectivo extends ServicioUsuario<Directivo> {
 		Set<Titulo> titulos = new HashSet<Titulo>();
 		titulos = null;
 		try {
-			Directivo directivo = new Directivo();
-			if ((directivo = getUsuario(idUsuario)) != null) {
-				titulos = directivo.getListaTitulos();
+			Docente docente = new Docente();
+			if ((docente = getUsuario(idUsuario)) != null) {
+				titulos = docente.getListaTitulos();
 			}
 		} catch (Exception ex) {
 			throw new Exception(
@@ -116,9 +116,9 @@ public class ServicioDirectivo extends ServicioUsuario<Directivo> {
 	}
 
 	@Override
-	public boolean modifyUsuario(Directivo usuarioModificado) throws Exception {
+	public boolean modifyUsuario(Docente usuarioModificado) throws Exception {
 		try {
-			gDirectivo.modify(usuarioModificado);
+			gDocente.modify(usuarioModificado);
 			return true;
 		} catch (Exception ex) {
 			throw new Exception("Servicio modify(): no se pudo completar la operacion. " + ex.getMessage());
@@ -126,9 +126,9 @@ public class ServicioDirectivo extends ServicioUsuario<Directivo> {
 	}
 
 	@Override
-	public boolean removeUsuario(Directivo usuario) throws Exception {
+	public boolean removeUsuario(Docente usuario) throws Exception {
 		try {
-			gDirectivo.delete(usuario);
+			gDocente.delete(usuario);
 			return true;
 		} catch (Exception ex) {
 			throw ex;
@@ -137,7 +137,8 @@ public class ServicioDirectivo extends ServicioUsuario<Directivo> {
 
 	@Override
 	public void closeSession() throws Exception {
-		gDirectivo.closeSession();
+		gDocente.closeSession();
+
 	}
 
 }
