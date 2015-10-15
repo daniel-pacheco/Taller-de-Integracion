@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -13,61 +12,57 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
-
-import ar.com.santalucia.dominio.modelo.usuarios.Directivo;
+import ar.com.santalucia.dominio.modelo.usuarios.Docente;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
-
-import ar.com.santalucia.servicio.ServicioDirectivo;
+import ar.com.santalucia.servicio.ServicioDocente;
 
 /**
  * @author Ariel Ramirez
- * 
- * @version 1.0
  *
+ * @version 1.0
  */
 
-// Último modificador: Ariel Ramirez @ 12-10-2015 22:15
+// Último modificador: Ariel Ramirez @ 14-10-2015 17:22
 
-@Path("/sDirectivo")
+@Path("/sDocente")
 @Produces("application/json")
 @Consumes("application/json")
-public class ServicioDirectivoEndpoint {
+public class ServicioDocenteEndpoint {
 
-	private ServicioDirectivo servicioDirectivo = null;
-
+	private ServicioDocente servicioDocente = null;
+	
 	/**
 	 * Instancia un objeto ServicioAlumno si no existe
 	 * @throws Exception
 	 */
 	private void setInstance() throws Exception {
-		if (servicioDirectivo == null) {
+		if (servicioDocente == null) {
 			try {
-				servicioDirectivo = new ServicioDirectivo();
+				servicioDocente = new ServicioDocente();
 			} catch (Exception ex) {
 				throw ex;
 			}
 		}
 	}
-
+	
+	/**
+	* @param serviciodocente
+	* @return
+	*/
 	@POST
-	public Response create(final ServicioDirectivo serviciodirectivo) {
-		// TODO: process the given serviciodirectivo
-		// you may want to use the following return statement, assuming that
-		// ServicioDirectivo#getId() or a similar method
-		// would provide the identifier to retrieve the created
-		// ServicioDirectivo resource:
-		// return
-		// Response.created(UriBuilder.fromResource(ServicioDirectivoEndpoint.class).path(String.valueOf(serviciodirectivo.getId())).build()).build();
+	public Response create(final ServicioDocente serviciodocente) {
+		//TODO: process the given serviciodocente 
+		//you may want to use the following return statement, assuming that ServicioDocente#getId() or a similar method 
+		//would provide the identifier to retrieve the created ServicioDocente resource:
+		//return Response.created(UriBuilder.fromResource(ServicioDocenteEndpoint.class).path(String.valueOf(serviciodocente.getId())).build()).build();
 		return Response.created(null).build();
 	}
-
+	
 	/**
 	 * @param id
 	 *            identificador del usuario a buscar.
@@ -75,20 +70,20 @@ public class ServicioDirectivoEndpoint {
 	 *         datos de teléfono, mail, títulos y domicilio o null si no existe.
 	 */
 	@GET
-	@Path("/dir/{id:[0-9][0-9]*}")
+	@Path("/doc/{id:[0-9][0-9]*}")
 	public Response findById(@PathParam("id") final Long id) {
-		Directivo directivo = new Directivo();
-		directivo = null;
+		Docente docente = new Docente();
+		docente = null;
 		try {
 			setInstance();
-			directivo = servicioDirectivo.getUsuario(id);
+			docente = servicioDocente.getUsuario(id);
 		} catch (Exception ex) {
 			// ex.printStackTrace();
 			return Response.ok(ex).build();
 		}
-		return Response.ok(directivo).build();
+		return Response.ok(docente).build();
 	}
-
+	
 	/**
 	 * 
 	 * @param id
@@ -104,7 +99,7 @@ public class ServicioDirectivoEndpoint {
 		telefonos = null;
 		try {
 			setInstance();
-			telefonos = servicioDirectivo.getTelefonos(id);
+			telefonos = servicioDocente.getTelefonos(id);
 		} catch (Exception ex) {
 			// ex.printStackTrace();
 			return Response.ok(ex).build();
@@ -116,7 +111,7 @@ public class ServicioDirectivoEndpoint {
 	 * 
 	 * @param id Identificador del usuario del cuál se desea recuperar los mails.
 	 * @return Response ok (Status 200) y Set de teléfonos o null si no existe
-	 *         el directivo o no hay nada.
+	 *         el docente o no hay nada.
 	 */
 	
 	@GET
@@ -126,7 +121,7 @@ public class ServicioDirectivoEndpoint {
 		mails = null;
 		try {
 			setInstance();
-			mails = servicioDirectivo.getMails(id);
+			mails = servicioDocente.getMails(id);
 		} catch (Exception ex) {
 			// TODO Auto-generated catch block
 			return Response.ok(ex).build();
@@ -138,7 +133,7 @@ public class ServicioDirectivoEndpoint {
 	 * 
 	 * @param id Identificador del usuario del cuál se desea recuperar los títulos.
 	 * @return Response ok (Status 200) y Set de títulos o null si no existe
-	 *         el directivo o no hay nada.
+	 *         el docente o no hay nada.
 	 */
 	@GET
 	@Path("/tit/{id:[0-9][0-9]*}")
@@ -147,7 +142,7 @@ public class ServicioDirectivoEndpoint {
 		titulos = null;
 		try{
 			setInstance();
-			titulos = servicioDirectivo.getTitulos(id);
+			titulos = servicioDocente.getTitulos(id);
 		}catch (Exception ex){
 			return Response.ok(ex).build();
 		}
@@ -164,34 +159,34 @@ public class ServicioDirectivoEndpoint {
 	@GET
 	@Path("/listAll")
 	public Response listAll(){
-		List<Directivo> directivo = new ArrayList<Directivo>();
-		directivo = null;
+		List<Docente> docente = new ArrayList<Docente>();
+		docente = null;
 		try {
 			setInstance();
-			directivo = servicioDirectivo.getUsuarios(new Directivo());
+			docente = servicioDocente.getUsuarios(new Docente());
 		} catch (Exception ex) {
-			if (directivo == null) {
+			if (docente == null) {
 				return Response.status(Status.NOT_FOUND).build();
 			}
 		}
-		return Response.ok(directivo).build();
+		return Response.ok(docente).build();
 	}
-	
+
 	/**
 	 * Utilice este método para:<br>
-	 * 1) Agregar un nuevo directivo con o sin datos adicionales (teléfono, mail, título y domicilio) de una sola vez. <br>
-	 * 2) Actualizar datos de directivo que no sean adicionales (teléfono, mail, título y domicilio).<br>
+	 * 1) Agregar un nuevo docente con o sin datos adicionales (teléfono, mail, título y domicilio) de una sola vez. <br>
+	 * 2) Actualizar datos de docente que no sean adicionales (teléfono, mail, título y domicilio).<br>
 	 * 3) Agregar uno o varios datos adicionales (teléfono, título y mail).<br>
 	 * (! - IMPORTANTE) Para actualizar o eliminar datos adicionales (teléfono, mail, título y domicilio) use los métodos UPDATE y DELETE respectivos. 
-	 * @param directivo
+	 * @param docente
 	 * @return Response ok (Status 200) con el id de usuario si el resultado es exitoso o la excepción generada. 
 	 */
 	@PUT
-	@Path("/dir/")
-	public Response update(final Directivo directivo) { 
+	@Path("/doc/")
+	public Response update(final Docente docente) { 
 		try {
-			servicioDirectivo.addUsuario(directivo);
-			return Response.ok(directivo.getIdUsuario()).build();
+			servicioDocente.addUsuario(docente);
+			return Response.ok(docente.getIdUsuario()).build();
 		} catch (Exception ex) {
 			// ex.printStackTrace();
 			return Response.ok(ex).build();
@@ -209,7 +204,7 @@ public class ServicioDirectivoEndpoint {
 		Boolean exito = false;
 		try {
 			setInstance();
-			exito = servicioDirectivo.modifyTelefono(telefono);
+			exito = servicioDocente.modifyTelefono(telefono);
 			return Response.ok(exito).build();
 		} catch (Exception ex) {
 			// ex.printStackTrace();
@@ -228,7 +223,7 @@ public class ServicioDirectivoEndpoint {
 		Boolean exito = false;
 		try {
 			setInstance();
-			exito = servicioDirectivo.modifyMail(mail);
+			exito = servicioDocente.modifyMail(mail);
 			return Response.ok(exito).build();
 		} catch (Exception ex) {
 			// ex.printStackTrace();
@@ -247,7 +242,7 @@ public class ServicioDirectivoEndpoint {
 		boolean exito = false;
 		try {
 			setInstance();
-			exito = servicioDirectivo.modifyDomicilio(domicilio);
+			exito = servicioDocente.modifyDomicilio(domicilio);
 			return Response.ok(exito).build();
 		} catch (Exception ex) {
 			return Response.ok(ex).build();
@@ -265,15 +260,16 @@ public class ServicioDirectivoEndpoint {
 		boolean exito = false;
 		try {
 			setInstance();
-			exito = servicioDirectivo.modifyTitulo(titulo);
+			exito = servicioDocente.modifyTitulo(titulo);
 			return Response.ok(exito).build();
 		} catch (Exception ex) {
 			return Response.ok(ex).build();
 		}
 	}
 	
+	
 	/**
-	 * Utilice este método para eliminar un directivo. Además de eliminar el directivo, también se eliminan los datos adicionales (teléfono, mail, titulo y domicilio).
+	 * Utilice este método para eliminar un docente. Además de eliminar el docente, también se eliminan los datos adicionales (teléfono, mail, titulo y domicilio).
 	 * @param id
 	 * @return Response ok (Status 200) con true si el resultado es exitoso o la excepción generada.<br>
 	 * (! PRECAUCIÓN) Se eliminan todos los datos adicionales asociados (telefono, mail, titulos y domicilio) al eliminar el usuario.
@@ -284,7 +280,7 @@ public class ServicioDirectivoEndpoint {
 		Boolean exito = false;
 		try {
 			setInstance();
-			exito = servicioDirectivo.removeUsuario(servicioDirectivo.getUsuario(id));
+			exito = servicioDocente.removeUsuario(servicioDocente.getUsuario(id));
 			return Response.ok(exito).build();
 		} catch (Exception ex) {
 			// ex.printStackTrace();
@@ -303,7 +299,7 @@ public class ServicioDirectivoEndpoint {
 		Boolean exito = false;
 		try {
 			setInstance();
-			exito = servicioDirectivo.removeTelefono(id);
+			exito = servicioDocente.removeTelefono(id);
 			return Response.ok(exito).build();
 		} catch (Exception ex) {
 			//e.printStackTrace();
@@ -322,7 +318,7 @@ public class ServicioDirectivoEndpoint {
 		Boolean exito = false;
 		try{
 			setInstance();
-			exito = servicioDirectivo.removeDomicilio(id);
+			exito = servicioDocente.removeDomicilio(id);
 			return Response.ok(exito).build();
 		}catch (Exception ex){
 			//e.printStackTrace();
@@ -341,7 +337,7 @@ public class ServicioDirectivoEndpoint {
 		Boolean exito = false;
 		try{
 			setInstance();
-			exito = servicioDirectivo.removeTitulo(id);
+			exito = servicioDocente.removeTitulo(id);
 			return Response.ok(exito).build();
 		}catch (Exception ex){
 			//e.printStackTrace();
