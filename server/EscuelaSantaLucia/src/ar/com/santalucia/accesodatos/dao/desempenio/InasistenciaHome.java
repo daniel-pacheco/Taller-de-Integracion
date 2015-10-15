@@ -9,6 +9,7 @@ import org.hibernate.LockMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 
+import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
 import ar.com.santalucia.dominio.modelo.desempenio.Inasistencia;
 
 /**
@@ -20,7 +21,7 @@ public class InasistenciaHome {
 
 	private static final Log log = LogFactory.getLog(InasistenciaHome.class);
 
-	private final SessionFactory sessionFactory = getSessionFactory();
+	private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
 	protected SessionFactory getSessionFactory() {
 		try {

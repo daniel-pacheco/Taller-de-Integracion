@@ -27,7 +27,7 @@ import ar.com.santalucia.servicio.ServicioDocente;
  * @version 1.0
  */
 
-// Último modificador: Ariel Ramirez @ 14-10-2015 17:22
+// Último modificador: Ariel Ramirez @ 15-10-2015 17:44
 
 @Path("/sDocente")
 @Produces("application/json")
@@ -185,6 +185,7 @@ public class ServicioDocenteEndpoint {
 	@Path("/doc/")
 	public Response update(final Docente docente) { 
 		try {
+			setInstance();
 			servicioDocente.addUsuario(docente);
 			return Response.ok(docente.getIdUsuario()).build();
 		} catch (Exception ex) {

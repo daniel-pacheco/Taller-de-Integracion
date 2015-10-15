@@ -29,7 +29,7 @@ import ar.com.santalucia.servicio.ServicioAlumno;
  * @version 2.0
  */
 
-// Último modificador: Ariel Ramirez @ 12-10-2015 21:24
+// Último modificador: Ariel Ramirez @ 15-10-2015 17:44
 
 @Path("/sAlumno")
 @Produces({"application/json" })
@@ -168,6 +168,7 @@ public class ServicioAlumnoEndpoint {
 	@Path("/alu/")
 	public Response update(final Alumno alumno) {
 		try {
+			setInstance();
 			servicioAlumno.addUsuario(alumno);
 			return Response.ok(alumno.getIdUsuario()).build();
 		} catch (Exception ex) {

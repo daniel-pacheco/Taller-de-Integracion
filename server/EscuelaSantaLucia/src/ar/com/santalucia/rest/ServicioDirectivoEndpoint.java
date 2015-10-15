@@ -33,7 +33,7 @@ import ar.com.santalucia.servicio.ServicioDirectivo;
  *
  */
 
-// Último modificador: Ariel Ramirez @ 12-10-2015 22:15
+// Último modificador: Ariel Ramirez @ 15-10-2015 17:44
 
 @Path("/sDirectivo")
 @Produces("application/json")
@@ -190,6 +190,7 @@ public class ServicioDirectivoEndpoint {
 	@Path("/dir/")
 	public Response update(final Directivo directivo) { 
 		try {
+			setInstance();
 			servicioDirectivo.addUsuario(directivo);
 			return Response.ok(directivo.getIdUsuario()).build();
 		} catch (Exception ex) {
