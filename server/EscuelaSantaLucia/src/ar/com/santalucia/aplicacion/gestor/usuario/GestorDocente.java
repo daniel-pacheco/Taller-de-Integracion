@@ -160,42 +160,84 @@ public class GestorDocente extends Gestor<Docente> implements IValidacionUsuario
 		}
 	}
 
+	/*
+	 * Implementación de IValidacionDocDir
+	 */
+	
 	@Override
-	public Boolean existeDocumento(String tipo, Long numero) throws Exception {
+	public Boolean existeDocumento(String tipo, Long numero) {
 		Docente docenteEjemplo = new Docente();
 		docenteEjemplo.setTipoDocumento(tipo);
 		docenteEjemplo.setNroDocumento(numero);
-		ArrayList<Docente> ejemplos = this.getByExample(docenteEjemplo);		
+		ArrayList<Docente> ejemplos = new ArrayList<Docente>();
+		try {
+			ejemplos = this.getByExample(docenteEjemplo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
 		return (ejemplos.isEmpty() ? false : true);
 	}
 
 	@Override
-	public Boolean existeMail(Mail mail) throws Exception {
+	public Boolean existeMail(Mail mail) {
 		Mail mailEjemplo = new Mail();
 		mailEjemplo.setDireccionMail(mail.getDireccionMail());
-		ArrayList<Mail> ejemplos = GMail.getByExample(mailEjemplo);
+		ArrayList<Mail> ejemplos = new ArrayList<Mail>();
+		try {
+			ejemplos = GMail.getByExample(mailEjemplo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return (ejemplos.isEmpty() ? false : true);
 	}
 
 	@Override
-	public Boolean existeNombreUsuario(String nombreUsuario) throws Exception {
+	public Boolean existeNombreUsuario(String nombreUsuario) {
 		Docente docenteEjemplo = new Docente();
 		docenteEjemplo.setNombreUsuario(nombreUsuario);
-		ArrayList<Docente> ejemplos = this.getByExample(docenteEjemplo);		
+		ArrayList<Docente> ejemplos = new ArrayList<Docente>();
+		try {
+			ejemplos = this.getByExample(docenteEjemplo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
 		return (ejemplos.isEmpty() ? false : true);
 	}
 
 	@Override
-	public Boolean existeCuil(Long cuil) throws Exception {
+	public Boolean existeCuil(Long cuil) {
 		Docente docenteEjemplo = new Docente();
 		docenteEjemplo.setCuil(cuil);
-		ArrayList<Docente> ejemplos = this.getByExample(docenteEjemplo);		
+		ArrayList<Docente> ejemplos = new ArrayList<Docente>();
+		try {
+			ejemplos = this.getByExample(docenteEjemplo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
 		return (ejemplos.isEmpty() ? false : true);
 	}
 
 	@Override
 	public void validar(Docente object) throws Exception {
-		// TODO Auto-generated method stub
+		Boolean vDocumento, vNombreUsuario, vCuil;
+		ValidacionException exception = new ValidacionException();
+		
+		vDocumento = this.existeDocumento(object.getTipoDocumento(), object.getNroDocumento());
+		for(Mail m : object.getListaMails()){
+			exception.addMensajeError((this.existeMail(m) 
+										? "La dirección de e-mail: " + m.getDireccionMail() +" ya existe" 
+										: null));
+		}
+		vNombreUsuario = this.existeNombreUsuario(object.getNombreUsuario());
+		vCuil = this.existeCuil(object.getCuil());
+		
+		exception.addMensajeError(vDocumento ? "El documento ya existe" : null);
+		exception.addMensajeError(vNombreUsuario ? "El nombre de usuario ya existe" : null);
+		exception.addMensajeError(vCuil ? "El número de CUIL ya existe" : null);
+		
+		if (!exception.getMensajesError().isEmpty()) {
+			throw exception;
+		}
 		
 	}
 

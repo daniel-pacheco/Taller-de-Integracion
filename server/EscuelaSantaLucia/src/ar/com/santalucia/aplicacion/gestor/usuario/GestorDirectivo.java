@@ -11,6 +11,7 @@ import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorMail;
 import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorTelefono;
 import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorTitulo;
 import ar.com.santalucia.dominio.modelo.usuarios.Directivo;
+import ar.com.santalucia.dominio.modelo.usuarios.Docente;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
@@ -153,42 +154,63 @@ public class GestorDirectivo extends Gestor<Directivo> implements IValidacionUsu
 	}
 
 	/*
-	 * Implementacion de gestor
+	 * Implementación de IValidacionDocDir
 	 */
 	
 	@Override
-	public Boolean existeDocumento(String tipo, Long numero) throws Exception {
+	public Boolean existeDocumento(String tipo, Long numero) {
 		Directivo directivoEjemplo = new Directivo();
 		directivoEjemplo.setTipoDocumento(tipo);
 		directivoEjemplo.setNroDocumento(numero);
-		ArrayList<Directivo> ejemplos = this.getByExample(directivoEjemplo);		
+		ArrayList<Directivo> ejemplos = new ArrayList<Directivo>();
+		try {
+			ejemplos = this.getByExample(directivoEjemplo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
 		return (ejemplos.isEmpty() ? false : true);
 	}
 
 	@Override
-	public Boolean existeMail(Mail mail) throws Exception {
+	public Boolean existeMail(Mail mail) {
 		Mail mailEjemplo = new Mail();
 		mailEjemplo.setDireccionMail(mail.getDireccionMail());
-		ArrayList<Mail> ejemplos = GMail.getByExample(mailEjemplo);
+		ArrayList<Mail> ejemplos = new ArrayList<Mail>();
+		try {
+			ejemplos = GMail.getByExample(mailEjemplo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return (ejemplos.isEmpty() ? false : true);
 	}
 
 	@Override
-	public Boolean existeNombreUsuario(String nombreUsuario) throws Exception {
+	public Boolean existeNombreUsuario(String nombreUsuario) {
 		Directivo directivoEjemplo = new Directivo();
 		directivoEjemplo.setNombreUsuario(nombreUsuario);
-		ArrayList<Directivo> ejemplos = this.getByExample(directivoEjemplo);
+		ArrayList<Directivo> ejemplos = new ArrayList<Directivo>();
+		try {
+			ejemplos = this.getByExample(directivoEjemplo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
 		return (ejemplos.isEmpty() ? false : true);
 	}
 
 	@Override
-	public Boolean existeCuil(Long cuil) throws Exception {
+	public Boolean existeCuil(Long cuil) {
 		Directivo directivoEjemplo = new Directivo();
 		directivoEjemplo.setCuil(cuil);
-		ArrayList<Directivo> ejemplos = this.getByExample(directivoEjemplo);
+		ArrayList<Directivo> ejemplos = new ArrayList<Directivo>();
+		try {
+			ejemplos = this.getByExample(directivoEjemplo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
 		return (ejemplos.isEmpty() ? false : true);
 	}
-
+	
+	
 	@Override
 	public void validar(Directivo object) throws Exception {
 		Boolean vDocumento, vNombreUsuario, vCuil;

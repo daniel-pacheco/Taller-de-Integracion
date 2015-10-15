@@ -21,24 +21,21 @@ public interface IValidacionUsuario extends IValidacion {
 	 * @param tipo
 	 * @param numero
 	 * @return
-	 * @throws Exception
 	 */
-	Boolean existeDocumento(String tipo, Long numero) throws Exception;
+	Boolean existeDocumento(String tipo, Long numero);
 	
 	/**
 	 * Valida si el mail ya existe en la base de datos
 	 * @param mail
 	 * @return
-	 * @throws Exception
 	 */
-	Boolean existeMail(Mail mail) throws Exception;
+	Boolean existeMail(Mail mail);
 	
 	/**
 	 * Valida si el nombre de usuario ya existe en la base de datos
 	 * @param nombreUsuario
 	 * @return
-	 * @throws Exception
 	 */
-	Boolean existeNombreUsuario(String nombreUsuario) throws Exception;
+	Boolean existeNombreUsuario(String nombreUsuario);
 	
 }

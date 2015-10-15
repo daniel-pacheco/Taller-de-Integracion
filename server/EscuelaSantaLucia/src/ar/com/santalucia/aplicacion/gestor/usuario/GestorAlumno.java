@@ -177,35 +177,55 @@ public class GestorAlumno extends Gestor<Alumno> implements IValidacionUsuarioAl
 	 */
 
 	@Override
-	public Boolean existeDocumento(String tipo, Long numero) throws Exception {
+	public Boolean existeDocumento(String tipo, Long numero) {
 		Alumno alumnoEjemplo = new Alumno();
 		alumnoEjemplo.setTipoDocumento(tipo);
 		alumnoEjemplo.setNroDocumento(numero);
-		ArrayList<Alumno> ejemplos = this.getByExample(alumnoEjemplo);
+		ArrayList<Alumno> ejemplos = new ArrayList<Alumno>();
+		try {
+			ejemplos = this.getByExample(alumnoEjemplo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return (ejemplos.isEmpty() ? false : true);
 	}
 
 	@Override
-	public Boolean existeMail(Mail mail) throws Exception {
+	public Boolean existeMail(Mail mail) {
 		Mail mailEjemplo = new Mail();
 		mailEjemplo.setDireccionMail(mail.getDireccionMail());
-		ArrayList<Mail> ejemplos = GMail.getByExample(mailEjemplo);
+		ArrayList<Mail> ejemplos = new ArrayList<Mail>();
+		try {
+			ejemplos = GMail.getByExample(mailEjemplo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return (ejemplos.isEmpty() ? false : true);
 	}
 
 	@Override
-	public Boolean existeNombreUsuario(String nombreUsuario) throws Exception {
+	public Boolean existeNombreUsuario(String nombreUsuario) {
 		Alumno alumnoEjemplo = new Alumno();
 		alumnoEjemplo.setNombreUsuario(nombreUsuario);
-		ArrayList<Alumno> ejemplos = this.getByExample(alumnoEjemplo);
+		ArrayList<Alumno> ejemplos = new ArrayList<Alumno>();
+		try {
+			ejemplos = this.getByExample(alumnoEjemplo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return (ejemplos.isEmpty() ? false : true);
 	}
 
 	@Override
-	public Boolean existeMatricula(Long matricula) throws Exception {
+	public Boolean existeMatricula(Long matricula) {
 		Alumno alumnoEjemplo = new Alumno();
 		alumnoEjemplo.setMatricula(matricula);
-		ArrayList<Alumno> ejemplos = this.getByExample(alumnoEjemplo);
+		ArrayList<Alumno> ejemplos = new ArrayList<Alumno>();
+		try {
+			ejemplos = this.getByExample(alumnoEjemplo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return (ejemplos.isEmpty() ? false : true);
 	}
 
