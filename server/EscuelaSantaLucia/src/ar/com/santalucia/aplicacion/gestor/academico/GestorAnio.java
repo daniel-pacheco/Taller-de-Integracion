@@ -48,6 +48,13 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 			for (Materia m: object.getListaMaterias()) {
 				GMateria.add(m);
 			}
+			/**
+			 * Se llama otra vez a estos dos metodos porque la materia
+			 * cierra la transacción, y la tiene que cerrar porque 
+			 * se puede dar de alta individualmente, por fuera del Anio.
+			 */
+			setSession();
+			setTransaction();
 			anioDAO.persist(object);
 			sesionDeHilo.getTransaction().commit();
 		} catch (ValidacionException ex) {
@@ -63,32 +70,75 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 
 	@Override
 	public void modify(Anio object) throws Exception {
-		// TODO Auto-generated method stub
-		
+		try {
+			setSession();
+			setTransaction();
+			this.validar(object);
+			anioDAO.attachDirty(object);
+			sesionDeHilo.getTransaction().commit();
+		} catch (ValidacionException ex) {
+			throw ex;
+		} catch (Exception ex) {
+			setSession();
+			setTransaction();
+			sesionDeHilo.getTransaction().rollback();
+			throw new Exception("Ha ocurrido un problema al actualizar el objeto: " + ex.getMessage());
+		}
 	}
 
 	@Override
 	public void delete(Anio object) throws Exception {
-		// TODO Auto-generated method stub
-		
+		try {
+			setSession();
+			setTransaction();
+			anioDAO.delete(object);
+			sesionDeHilo.getTransaction().commit();
+		} catch (Exception ex) {
+			closeSession();
+			throw new Exception("Ha ocurrido un problema al eliminar el objeto: " + ex.getMessage());
+		}
 	}
 
 	@Override
 	public Anio getById(Long id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			setSession();
+			setTransaction();
+			Anio anioDevolver = new Anio();
+			anioDevolver = anioDAO.findById(id);
+			return anioDevolver;
+		} catch (Exception ex) {
+			closeSession();
+			throw new Exception("Ha ocurrido un error al buscar el objeto por su ID: " + ex.getMessage());
+		}
 	}
 
 	@Override
 	public ArrayList<Anio> getByExample(Anio example) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			setSession();
+			setTransaction();
+			ArrayList<Anio> listaAniosDevolver = (ArrayList<Anio>) anioDAO.findByExample((Anio) example);
+			return listaAniosDevolver;
+		} catch (Exception ex) {
+			closeSession();
+			throw new Exception(
+					"Ha ocurrido un error al buscar objetos que coincidan con el ejemplo dado: " + ex.getMessage());
+		}
 	}
 
 	@Override
 	public ArrayList<Anio> List() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			setSession();
+			setTransaction();
+			Anio criterioVacio = new Anio();
+			ArrayList<Anio> listaAniosDevolver = new ArrayList<Anio>();
+			listaAniosDevolver = (ArrayList<Anio>) anioDAO.findByExample(criterioVacio);
+			return listaAniosDevolver;
+		} catch (Exception ex) {
+			throw new Exception("Ha ocurrido un error al listar los alumnos: " + ex.getMessage());
+		}
 	}
 	
 	/*
@@ -111,22 +161,50 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 	}
 
 	@Override
-	public Boolean existeCurso(String nombreCurso) {
-		// TODO Auto-generated method stub
-		return null;
+	public Boolean existeCurso(Character divisionCurso, Anio anio) {
+		Boolean existeCurso = new Boolean(false);
+		for (Curso c: anio.getListaCursos()) {
+			if (c.getDivision() == divisionCurso) {
+				existeCurso = true;
+				return existeCurso;
+			}
+		} 
+		return existeCurso;
 	}
 
 	@Override
 	public Boolean existeMateria(String nombreMateria) {
-		// TODO Auto-generated method stub
-		return null;
+		Materia materiaEjemplo = new Materia();
+		materiaEjemplo.setNombre(nombreMateria);
+		ArrayList<Materia> ejemplos = new ArrayList<Materia>();
+		try {
+			ejemplos = GMateria.getByExample(materiaEjemplo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return (ejemplos.isEmpty() ? false : true);
 	}
-
 
 	@Override
 	public void validar(Anio object) throws Exception {
 		Boolean vNombre;
 		ValidacionException exception = new ValidacionException();
 		
+		vNombre = this.existeNombreAnio(object.getNombre());
+		for (Curso c: object.getListaCursos()) {
+			exception.addMensajeError((this.existeCurso(c.getDivision(), object) 
+										? "El curso: " + c.getDivision() + "ya existe en el año." 
+										: null));
+		}
+		for (Materia m: object.getListaMaterias()) {
+			exception.addMensajeError((this.existeMateria(m.getNombre()) 
+										? "La materia: " + m.getNombre() + "ya existe en la base de datos" 
+										: null));
+		}
+		exception.addMensajeError(vNombre ? "El nombre ya existe" : null);
+		
+		if (!exception.getMensajesError().isEmpty()) {
+			throw exception;
+		}
 	}
 }

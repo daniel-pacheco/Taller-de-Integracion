@@ -27,11 +27,11 @@ import ar.com.santalucia.validaciones.IValidacionUsuarioDocDir;
  * 
  * @author Eric
  * 
- * @version 1.2
+ * @version 1.3
  *
  */
 
-// UltimoModificador: Eric Pennachini @ 09-10-15 19:59
+// UltimoModificador: Eric Pennachini @ 16-10-15 16:41
 
 public class GestorDocente extends Gestor<Docente> implements IValidacionUsuarioDocDir{
 	private DocenteHome docenteDAO;
@@ -61,13 +61,13 @@ public class GestorDocente extends Gestor<Docente> implements IValidacionUsuario
 			setSession();
 			setTransaction();
 			this.validar(object);
-			for (Titulo t: object.getListaTitulos()) {
+			for (Titulo t : object.getListaTitulos()) {
 				GTitulo.add(t);
 			}
-			for (Telefono t: object.getListaTelefonos()) {
+			for (Telefono t : object.getListaTelefonos()) {
 				GTelefono.add(t);
 			}
-			for (Mail m: object.getListaMails()) {
+			for (Mail m : object.getListaMails()) {
 				GMail.add(m);
 			}
 			GDomicilio.add(object.getDomicilio());
