@@ -2,11 +2,14 @@ package ar.com.santalucia.aplicacion.gestor.academico;
 
 import java.util.ArrayList;
 
+import ar.com.santalucia.accesodatos.dao.academico.CursoHome;
 import ar.com.santalucia.aplicacion.gestor.Gestor;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
 
 public class GestorCurso extends Gestor<Curso> {
 
+	private CursoHome cursoDAO;
+	
 	public GestorCurso() throws Exception {
 		super();
 		// TODO Auto-generated constructor stub

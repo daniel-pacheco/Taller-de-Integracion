@@ -17,15 +17,15 @@ public class Prueba {
 
 		GestorAlumno GAlumno = new GestorAlumno();
 		
-		Long dni = 36099931L;
-		for (int i = 0; i < 2; i++) {
+		Long dni = 36099932L;
+		for (int i = 0; i < 1; i++) {
 			Alumno alumnoPrueba = new Alumno();
 
 			alumnoPrueba.setApellido("Pennachini");
 			alumnoPrueba.setNombre("Eric Daniel");
 			alumnoPrueba.setFechaNacimiento(new Date(90, 11, 21));
-			alumnoPrueba.setMatricula(4654884L);
-			alumnoPrueba.setNombreUsuario("EiiiiiiEricpara las turras");
+			alumnoPrueba.setMatricula(4654885L);
+			alumnoPrueba.setNombreUsuario("EiiEricpara las turras");
 			alumnoPrueba.setNroDocumento(dni);
 			alumnoPrueba.setSexo('m');
 			alumnoPrueba.setTipoDocumento("DU/DNI");
@@ -53,16 +53,16 @@ public class Prueba {
 			Set<Mail> listaMails = new HashSet<Mail>();
 			Mail mail1 = new Mail();
 			Mail mail2 = new Mail();
-			mail1.setDireccionMail("eric.pennachini@gmail.com");
+			mail1.setDireccionMail("eric.daniel.pennachini@gmail.com");
 			mail1.setTipoMail("Trabajo/Académico");
-			mail2.setDireccionMail("ericdp_0591@hotmail.com");
+			mail2.setDireccionMail("ericdpennak_0591@hotmail.com");
 			mail2.setTipoMail("Otro");
 			listaMails.add(mail1);
 			listaMails.add(mail2);
 			alumnoPrueba.setListaMails(listaMails);
 
 			GAlumno.add(alumnoPrueba);
-			//dni++;
+			dni++;
 		}
 		
 //		Alumno alumnoModificar = GAlumno.getById(3L);
