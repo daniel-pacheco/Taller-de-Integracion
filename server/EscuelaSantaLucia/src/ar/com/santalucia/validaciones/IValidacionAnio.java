@@ -25,11 +25,13 @@ public interface IValidacionAnio {
 	 */
 	Boolean existeCurso(Character divisionCurso, Anio anio);
 	
+	
 	/**
 	 * Valida si la materia ya existe en la base de datos
 	 * @param nombreMateria
 	 * @return
 	 */
 	Boolean existeMateria(String nombreMateria);
+	
 	
 }

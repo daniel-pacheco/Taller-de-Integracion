@@ -4,51 +4,143 @@ import java.util.ArrayList;
 
 import ar.com.santalucia.accesodatos.dao.academico.CursoHome;
 import ar.com.santalucia.aplicacion.gestor.Gestor;
+import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
+import ar.com.santalucia.dominio.modelo.academico.Materia;
+import ar.com.santalucia.excepciones.ValidacionException;
+
+/**
+ * Clase gestor de cursos
+ * 
+ * @author ericpennachini
+ * @version 1.1
+ *
+ */
+
+// UltimoModificador: Eric Pennachini @ 23-10-2015 16:23
 
 public class GestorCurso extends Gestor<Curso> {
 
 	private CursoHome cursoDAO;
+	private GestorAlumno GAlumno;
 	
 	public GestorCurso() throws Exception {
 		super();
-		// TODO Auto-generated constructor stub
+		try {
+			cursoDAO = new CursoHome();
+			GAlumno = new GestorAlumno();
+		} catch (Exception ex) {
+			closeSession();
+			throw new Exception("Ha ocurrido un problema al inicializar el gestor: " + ex.getMessage());
+		}
 	}
 
 	@Override
 	public void add(Curso object) throws Exception {
-		// TODO Auto-generated method stub
-		
+		try {
+			setSession();
+			setTransaction();
+			this.validar(object);
+			cursoDAO.persist(object);
+			sesionDeHilo.getTransaction().commit();
+		} catch (ValidacionException ex) {
+			throw ex;
+		} catch (Exception ex) {
+			setSession();
+			setTransaction();
+			sesionDeHilo.getTransaction().rollback();
+			throw new Exception("Ha ocurrido un problema al agregar el objeto: " + ex.getMessage());
+		}
 	}
 
 	@Override
 	public void modify(Curso object) throws Exception {
-		// TODO Auto-generated method stub
-		
+		try {
+			setSession();
+			setTransaction();
+			this.validar(object);
+			cursoDAO.attachDirty(object);
+			sesionDeHilo.getTransaction().commit();
+		} catch (ValidacionException ex) {
+			throw ex;
+		} catch (Exception ex) {
+			setSession();
+			setTransaction();
+			sesionDeHilo.getTransaction().rollback();
+			throw new Exception("Ha ocurrido un problema al actualizar el objeto: " + ex.getMessage());
+		}
 	}
 
 	@Override
 	public void delete(Curso object) throws Exception {
-		// TODO Auto-generated method stub
-		
+		try {
+			setSession();
+			setTransaction();
+			cursoDAO.delete(object);
+			sesionDeHilo.getTransaction().commit();
+		} catch (Exception ex) {
+			closeSession();
+			throw new Exception("Ha ocurrido un problema al eliminar el objeto: " + ex.getMessage());
+		}
 	}
 
 	@Override
 	public Curso getById(Long id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			setSession();
+			setTransaction();
+			Curso cursoDevolver = new Curso();
+			cursoDevolver = cursoDAO.findById(id);
+			return cursoDevolver;
+		} catch (Exception ex) {
+			closeSession();
+			throw new Exception("Ha ocurrido un error al buscar el objeto por su ID: " + ex.getMessage());
+		}
 	}
 
 	@Override
 	public ArrayList<Curso> getByExample(Curso example) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			setSession();
+			setTransaction();
+			ArrayList<Curso> listaCursosDevolver = (ArrayList<Curso>) cursoDAO.findByExample((Curso) example);
+			return listaCursosDevolver;
+		} catch (Exception ex) {
+			closeSession();
+			throw new Exception(
+					"Ha ocurrido un error al buscar objetos que coincidan con el ejemplo dado: " + ex.getMessage());
+		}
+	}
+	
+	public Curso getByDivision(Character division) throws Exception{
+		try {
+			setSession();
+			setTransaction();
+			Curso cursoEjemplo = new Curso();
+			cursoEjemplo.setDivision(division);
+			ArrayList<Curso> listaCursosDevolver = this.getByExample(cursoEjemplo);
+			for (Curso c: listaCursosDevolver) {
+				return c; //directamente return en el primero, porque va a ser el unico
+			}
+			return null;
+		} catch (Exception ex) {
+			closeSession();
+			throw new Exception("Ha ocurrido un error al buscar el curso por su división: " + ex.getMessage());
+		}
 	}
 
 	@Override
 	public ArrayList<Curso> List() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			setSession();
+			setTransaction();
+			Curso criterioVacio = new Curso();
+			ArrayList<Curso> listaCursosDevolver = new ArrayList<Curso>();
+			listaCursosDevolver = (ArrayList<Curso>) cursoDAO.findByExample(criterioVacio);
+			return listaCursosDevolver;
+		} catch (Exception ex) {
+			throw new Exception("Ha ocurrido un error al listar los alumnos: " + ex.getMessage());
+		}
 	}
 
 	@Override

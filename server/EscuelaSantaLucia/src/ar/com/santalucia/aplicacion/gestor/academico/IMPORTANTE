@@ -1,0 +1,5 @@
+IMPORTANTE:
+
+Cuando se da de alta un alumno nuevo, se va a asignar a un curso genérico, porque sino 
+no se tiene registro de los alumnos sin curso. Servirá para cuando se tiene que asignar
+alumnos a un curso, y estos alumnos no pueden estar en ningun curso.  

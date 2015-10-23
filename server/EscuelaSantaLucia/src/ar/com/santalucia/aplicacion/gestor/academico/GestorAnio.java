@@ -171,7 +171,7 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 		} 
 		return existeCurso;
 	}
-
+	
 	@Override
 	public Boolean existeMateria(String nombreMateria) {
 		Materia materiaEjemplo = new Materia();
@@ -184,6 +184,7 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 		}
 		return (ejemplos.isEmpty() ? false : true);
 	}
+	
 
 	@Override
 	public void validar(Anio object) throws Exception {
@@ -193,15 +194,18 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 		vNombre = this.existeNombreAnio(object.getNombre());
 		for (Curso c: object.getListaCursos()) {
 			exception.addMensajeError((this.existeCurso(c.getDivision(), object) 
-										? "El curso: " + c.getDivision() + "ya existe en el año." 
+										? "El curso: " + c.getDivision() + " ya existe en el año." 
 										: null));
 		}
+		
+
 		for (Materia m: object.getListaMaterias()) {
 			exception.addMensajeError((this.existeMateria(m.getNombre()) 
-										? "La materia: " + m.getNombre() + "ya existe en la base de datos" 
+										? "La materia: " + m.getNombre() + " ya existe en la base de datos" 
 										: null));
 		}
-		exception.addMensajeError(vNombre ? "El nombre ya existe" : null);
+		
+		exception.addMensajeError(vNombre ? "El nombre " + object.getNombre() +" ya existe" : null);
 		
 		if (!exception.getMensajesError().isEmpty()) {
 			throw exception;
