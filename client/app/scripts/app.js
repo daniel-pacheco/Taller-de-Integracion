@@ -36,6 +36,11 @@ angular
         controller: 'DirectivoCtrl',
         controllerAs: 'directivo'
       })
+      .when('/materias', {
+        templateUrl: 'views/materias.html',
+        controller: 'MateriasCtrl',
+        controllerAs: 'materias'
+      })
       .otherwise({
         redirectTo: '/'
       });
