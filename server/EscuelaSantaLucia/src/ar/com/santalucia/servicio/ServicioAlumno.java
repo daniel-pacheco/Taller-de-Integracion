@@ -1,10 +1,13 @@
 package ar.com.santalucia.servicio;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import ar.com.santalucia.aplicacion.gestor.academico.GestorCurso;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
+import ar.com.santalucia.dominio.modelo.academico.Curso;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
@@ -18,19 +21,21 @@ import ar.com.santalucia.excepciones.ValidacionException;
  * 
  * @author Ariel Ramirez
  * 
- * @version 1.0
+ * @version 1.1
  *
  */
 
-// Último modificador: Ariel Ramirez @ 10-10-2015 10:57
+// Último modificador: Eric Pennachini @ 23-10-2015 18:23
 
 public class ServicioAlumno extends ServicioUsuario<Alumno> {
 
 	private GestorAlumno gAlumno;
+	private GestorCurso gCurso;
 
 	public ServicioAlumno() throws Exception {
 		super();
 		gAlumno = new GestorAlumno();
+		gCurso = new GestorCurso();
 	}
 
 	@Override
@@ -46,7 +51,7 @@ public class ServicioAlumno extends ServicioUsuario<Alumno> {
 	}
 
 	@Override
-	public List<Alumno> getUsuarios(Alumno example) throws Exception {																		
+	public List<Alumno> getUsuarios(Alumno example) throws Exception {
 		try {
 			return gAlumno.getByExample(example);
 		} catch (Exception ex) {
@@ -55,31 +60,37 @@ public class ServicioAlumno extends ServicioUsuario<Alumno> {
 	}
 
 	@Override
-	public boolean addUsuario(Alumno usuario) throws Exception {															
+	public boolean addUsuario(Alumno usuario) throws Exception {
 		try {
-			if(usuario.getIdUsuario() == null){
+			if (usuario.getIdUsuario() == null) {
 				gAlumno.add(usuario);
-					}else{
+				Curso cursoGen = new Curso();
+				cursoGen = gCurso.getByDivision('0');
+				cursoGen.getListaAlumnos().add(usuario);
+				gCurso.modify(cursoGen);
+			} else {
 				gAlumno.modify(usuario);
-			};
+			}
 			return true;
-		}
-		catch (ValidacionException ex){
+		} catch (ValidacionException ex) {
 			throw ex;
-		} 
-		catch (Exception ex) {
-			throw new Exception("Servicio add(): no se pudo completar la operacion. "+ex.getMessage());
+		} catch (Exception ex) {
+			throw new Exception("Servicio add(): no se pudo completar la operacion. " + ex.getMessage());
 		}
 	}
 
 	@Override
-	public Set<Telefono> getTelefonos(Long idUsuario) throws Exception {				
+	public Set<Telefono> getTelefonos(Long idUsuario) throws Exception {
 		Set<Telefono> telefonos = new HashSet<Telefono>();
 		telefonos = null;
 		try {
 			Alumno alumno = new Alumno();
-			if ((alumno = getUsuario(idUsuario)) != null) { // pruebo si el alumno existe, sino no - > Null
-				telefonos = alumno.getListaTelefonos(); // getListaTelefonos del alumno que se buscó, si existe
+			if ((alumno = getUsuario(idUsuario)) != null) { // pruebo si el
+															// alumno existe,
+															// sino no - > Null
+				telefonos = alumno.getListaTelefonos(); // getListaTelefonos del
+														// alumno que se buscó,
+														// si existe
 			}
 		} catch (Exception ex) {
 			throw new Exception(
@@ -89,7 +100,7 @@ public class ServicioAlumno extends ServicioUsuario<Alumno> {
 	}
 
 	@Override
-	public Set<Mail> getMails(Long idUsuario) throws Exception {																																	
+	public Set<Mail> getMails(Long idUsuario) throws Exception {
 		Set<Mail> mails = new HashSet<Mail>();
 		mails = null;
 		try {
@@ -109,9 +120,9 @@ public class ServicioAlumno extends ServicioUsuario<Alumno> {
 		// Este método no se implementa para esta clase
 		return null;
 	}
-	
+
 	@Override
-	public boolean removeUsuario(Alumno usuario) throws Exception {																					
+	public boolean removeUsuario(Alumno usuario) throws Exception {
 		try {
 			gAlumno.delete(usuario);
 			return true;
@@ -121,22 +132,21 @@ public class ServicioAlumno extends ServicioUsuario<Alumno> {
 	}
 
 	@Override
-	public boolean modifyUsuario(Alumno usuarioModificado) throws Exception{										
+	public boolean modifyUsuario(Alumno usuarioModificado) throws Exception {
 		try {
 			gAlumno.modify(usuarioModificado);
 			return true;
 		} catch (Exception ex) {
-			throw new Exception("Servicio modify(): no se pudo completar la operacion. "+ex.getMessage());
+			throw new Exception("Servicio modify(): no se pudo completar la operacion. " + ex.getMessage());
 		}
 	}
-	
+
 	@Override
 	public void closeSession() throws Exception {
 		gAlumno.closeSession();
 	}
 
-	
-	// No se incluyen los métodos para agregar mail, título o teléfono dado a que solo es necesario llamar a this.addUsuario(Alumno usuario)
+	// No se incluyen los métodos para agregar mail, título o teléfono dado a
+	// que solo es necesario llamar a this.addUsuario(Alumno usuario)
 
 }
- 

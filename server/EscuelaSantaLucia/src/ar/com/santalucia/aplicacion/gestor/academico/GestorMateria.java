@@ -18,6 +18,8 @@ import ar.com.santalucia.validaciones.IValidacionMateria;
  *
  */
 
+// UltimoModificador: Eric Pennachini @ 23-10-2015 16:20
+
 public class GestorMateria extends Gestor<Materia> implements IValidacionMateria{
 
 	private MateriaHome materiaDAO;
@@ -40,7 +42,7 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 			setSession();
 			setTransaction();
 			this.validar(object);
-			if (object.getDocenteTitular() != null) {
+			if (object.getDocenteTitular() != null) { // creo que está de más...
 				if (object.getDocenteTitular().getIdUsuario() == null) {
 					GDocente.add(object.getDocenteTitular());
 				} 
@@ -61,14 +63,34 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 
 	@Override
 	public void modify(Materia object) throws Exception {
-		// TODO Auto-generated method stub
+		try {
+			setSession();
+			setTransaction();
+			this.validar(object);
+			materiaDAO.attachDirty(object);
+			sesionDeHilo.getTransaction().commit();
+		} catch (ValidacionException ex) {
+			throw ex;
+		} catch (Exception ex) {
+			setSession();
+			setTransaction();
+			sesionDeHilo.getTransaction().rollback();
+			throw new Exception("Ha ocurrido un problema al actualizar el objeto: " + ex.getMessage());
+		}
 		
 	}
 
 	@Override
 	public void delete(Materia object) throws Exception {
-		// TODO Auto-generated method stub
-		
+		try {
+			setSession();
+			setTransaction();
+			materiaDAO.delete(object);
+			sesionDeHilo.getTransaction().commit();
+		} catch (Exception ex) {
+			closeSession();
+			throw new Exception("Ha ocurrido un problema al eliminar el objeto: " + ex.getMessage());
+		}
 	}
 
 	@Override
@@ -90,8 +112,8 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 		try {
 			setSession();
 			setTransaction();
-			ArrayList<Materia> listaAniosDevolver = (ArrayList<Materia>) materiaDAO.findByExample((Materia) example);
-			return listaAniosDevolver;
+			ArrayList<Materia> listaMateriasDevolver = (ArrayList<Materia>) materiaDAO.findByExample((Materia) example);
+			return listaMateriasDevolver;
 		} catch (Exception ex) {
 			closeSession();
 			throw new Exception(
@@ -105,9 +127,9 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 			setSession();
 			setTransaction();
 			Materia criterioVacio = new Materia();
-			ArrayList<Materia> listaAniosDevolver = new ArrayList<Materia>();
-			listaAniosDevolver = (ArrayList<Materia>) materiaDAO.findByExample(criterioVacio);
-			return listaAniosDevolver;
+			ArrayList<Materia> listaMateriasDevolver = new ArrayList<Materia>();
+			listaMateriasDevolver = (ArrayList<Materia>) materiaDAO.findByExample(criterioVacio);
+			return listaMateriasDevolver;
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un error al listar los alumnos: " + ex.getMessage());
 		}

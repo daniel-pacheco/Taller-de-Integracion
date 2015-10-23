@@ -16,6 +16,9 @@
         <many-to-one name="docenteTitular" class="ar.com.santalucia.dominio.modelo.usuarios.Docente" fetch="join">
             <column name="DOCENTETITULAR" />
         </many-to-one>
+        <many-to-one name="area" class="ar.com.santalucia.dominio.modelo.academico.Area" fetch="join">
+            <column name="AREA" />
+        </many-to-one>
         <property name="tipoDocente" type="java.lang.String">
             <column name="TIPODOCENTE" />
         </property>
