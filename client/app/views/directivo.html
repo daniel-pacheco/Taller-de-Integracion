@@ -1,39 +1,57 @@
 <div class="col-md-2 hidden-sm hidden-xs">
-      <div>
-<!-- ngInclude: 'views/partials/affixed-sidebar.html' -->
-<div class="bs-sidebar hidden-print affix" role="complementary" data-offset-top="-100" bs-affix bs-scrollspy-list style="position: relative; text-align: right;">
-   <ul class="nav bs-sidenav">
-    <li bs-scrollspy data-target="#getting-started">
-      <a href="#getting-started">Men&uacute; Alumnado</a>
-    </li>
-    <hr style="margin: 2px 0;">
-    <li bs-scrollspy data-target="#modals">
-      <a href="#modals">Listado</a>
-    </li>
-    <li bs-scrollspy data-target="#nuevoPerfil">
-      <a href="#nuevoPerfil">Nuevo Perfil</a>
-    </li>
-    <li bs-scrollspy data-target="#alerts">
-      <a href="#alerts">B&uacute;squeda</a>
-    </li>    
-     <li bs-scrollspy data-target="#affix" class>
-      <a href="#affix">Listado</a>
-    </li>
-  </ul>
-</div>
-<!--/ngInclude: 'views/partials/affixed-sidebar.html' -->
-</div>
+    <div>
+		<!-- ngInclude: 'views/partials/affixed-sidebar.html' -->
+		<div class="bs-sidebar hidden-print affix" role="complementary" data-offset-top="-100" bs-affix bs-scrollspy-list style="position: relative; text-align: right;">
+		   <ul class="nav bs-sidenav">
+		    <li bs-scrollspy data-target="#getting-started">
+		      <a href="#getting-started">Men&uacute; Alumnado</a>
+		    </li>
+		    <hr style="margin: 2px 0;">
+		    <li bs-scrollspy data-target="#modals">
+		      <a href="" ng-click="seleccionar('listado')">Listado</a>
+		    </li>
+		    <li bs-scrollspy data-target="#nuevoPerfil">
+		      <a href="" ng-click="seleccionar('nuevoPerfil')">Nuevo Perfil</a>
+		    </li>
+		  </ul>
+		</div>
+		<!--/ngInclude: 'views/partials/affixed-sidebar.html' -->
+	</div>
 </div>
 
 <div class="col-md-10">
-
-	<div id="nuevoPerfil">
+	<h1>Alumnado</h1><hr>
+	<div id="listado" ng-if="listado1">
 		<fieldset>
+		<legend>Listado</legend>
+			<label for="">Año lectivo:</label> 
+			<select class="form-control-inline" name="">
+				<option value="">2014</option>
+				<option value="">2015</option>
+				<option value="">2016</option>
+				<option value="">Todos</option>
+			</select> 
+			<label for="">Curso:</label>
+			<select class="form-control-inline" name="">
+				<option value="">5 Mat</option>
+				<option value="">4 Mat</option>
+				<option value="">3 Mat</option>
+				<option value="">2 Mat</option>
+			</select> <label for="">División:</label>
+			<select class="form-control-inline" name="">
+				<option value="">U</option>
+				<option value="">A</option>
+				<option value="">B</option>
+				<option value="">C</option>
+			</select>
+		</fieldset>
+	</div>
 
-			<h1>Nuevo Alumno</h1>
-			<hr>
-			<h2 class="small">Ingrese los datos para crear un nuevo perfil
-				de alumno y haga clic en guardar cuando finalice</h2>
+	<div id="nuevoPerfil" ng-if="!listado1">
+		<fieldset>
+		<legend>Nuevo Alumno</legend>
+			<h3 class="small">Ingrese los datos para crear un nuevo perfil
+				de alumno y haga clic en guardar cuando finalice</h3>
 			<div class="cargar_imagen">
 				<img src="images/yeoman.png" alt="Usuario" width="190px" height="auto"/>
 				<span class="btn btn-primary btn-file">Examinar<input type="file"></span>
