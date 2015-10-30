@@ -1,3 +1,7 @@
+delete from CURSO;
+delete from MATERIA;
+delete from ANIO;
+
 delete from TELEFONO;
 delete from MAIL;
 delete from ALUMNO;

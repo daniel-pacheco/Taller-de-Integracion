@@ -11,6 +11,7 @@ import ar.com.santalucia.accesodatos.dao.usuario.info.MailHome;
 import ar.com.santalucia.accesodatos.dao.usuario.info.TelefonoHome;
 import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
 import ar.com.santalucia.aplicacion.gestor.Gestor;
+import ar.com.santalucia.aplicacion.gestor.academico.GestorCurso;
 import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorDomicilio;
 import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorMail;
 import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorTelefono;

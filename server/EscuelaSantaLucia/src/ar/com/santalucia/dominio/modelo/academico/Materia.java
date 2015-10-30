@@ -3,28 +3,32 @@ package ar.com.santalucia.dominio.modelo.academico;
 import ar.com.santalucia.dominio.modelo.usuarios.Docente;
 
 /**
- * 
+ * Clase Materia
  * @author Ariel Ramirez
- *
- * @version 1.0
+ * @version 2.0
+ * 
  */
+
+// Ultimo modificador: Eric Pennachini @ 23-10-2015 17:47
 
 public class Materia {
 	private Long idMateria;
 	private String nombre;
 	private Docente docenteTitular;
 	private String tipoDocente;
+	private Area area;
 	
 	public Materia() {
 		super();
-	}
+	}	
 
-	public Materia(Long idMateria, String nombre, Docente docenteTitular, String tipoDocente) {
+	public Materia(Long idMateria, String nombre, Docente docenteTitular, String tipoDocente, Area area) {
 		super();
 		this.idMateria = idMateria;
 		this.nombre = nombre;
 		this.docenteTitular = docenteTitular;
 		this.tipoDocente = tipoDocente;
+		this.area = area;
 	}
 
 	public Long getIdMateria() {
@@ -58,6 +62,13 @@ public class Materia {
 	public void setTipoDocente(String tipoDocente) {
 		this.tipoDocente = tipoDocente;
 	}
-	
+
+	public Area getArea() {
+		return area;
+	}
+
+	public void setArea(Area area) {
+		this.area = area;
+	}
 	
 }
