@@ -59,7 +59,7 @@ public class PruebaAltaAnio {
 
 		// Seteo el docente titular de la materia y la guardo en el año
 		materia1.setDocenteTitular(docente1);
-		materia1.setTipoDocente("Titular");
+	//	materia1.setTipoDocente("Titular");
 		anio.getListaMaterias().add(materia1);
 
 		// Agrego el año al gestor
