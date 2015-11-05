@@ -6,15 +6,16 @@ import java.util.Set;
 /**
  * 
  * @author Eric 
- * @version 1.0
+ * @version 1.1
  *
 */
 
-//Último modificador: Eric Pennachini @ 19-09-15 16:01
+//Último modificador: Eric Pennachini @ 05-11-15 16:36
 
 public class Anio {
 	private Long idAnio;
 	private String nombre;
+	private String descripcion;
 	private Set<Curso> listaCursos;
 	private Set<Materia> listaMaterias;
 
@@ -24,10 +25,11 @@ public class Anio {
 		listaMaterias = new HashSet<Materia>();
 	}
 
-	public Anio(Long idAnio, String nombre, Set<Curso> listaCursos, Set<Materia> listaMaterias) {
+	public Anio(Long idAnio, String nombre, String descripcion, Set<Curso> listaCursos, Set<Materia> listaMaterias) {
 		super();
 		this.idAnio = idAnio;
 		this.nombre = nombre;
+		this.descripcion = descripcion;
 		this.setListaCursos(listaCursos);
 		this.setListaMaterias(listaMaterias);
 	}
@@ -62,6 +64,14 @@ public class Anio {
 
 	public void setListaMaterias(Set<Materia> listaMaterias) {
 		this.listaMaterias = listaMaterias;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 }

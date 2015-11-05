@@ -138,15 +138,6 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 	/*
 	 * Implementación de IValidacionMateria
 	 */
-	
-	@Override
-	public Boolean validarTipoDocente(String tipoDoc) {
-		Boolean resultado = false;
-		if ((tipoDoc=="Titular")||(tipoDoc=="Suplente")) {
-			resultado = true;
-		}
-		return resultado;
-	}
 
 	@Override
 	public Boolean existeMateria(String nombreMateria) {
@@ -163,19 +154,15 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 
 	@Override
 	public void validar(Materia object) throws Exception {
-		Boolean vMateria, vTipoDoc;
+		Boolean vMateria;
 		ValidacionException exception = new ValidacionException();
 		
 		vMateria = this.existeMateria(object.getNombre());
-		vTipoDoc = this.validarTipoDocente(object.getTipoDocente());
 		
 		exception.addMensajeError(vMateria 
 									? "La materia ya existe" 
 									: null);
-		exception.addMensajeError(vTipoDoc 
-									? null 
-									: "Tipo de docente no válido! Solo puede ser \"Titular\" o \"Suplente\" ");
-		
+
 		if (!exception.getMensajesError().isEmpty()) {
 			throw exception;
 		}
