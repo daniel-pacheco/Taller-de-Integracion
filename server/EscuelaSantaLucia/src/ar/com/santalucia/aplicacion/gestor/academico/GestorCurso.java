@@ -28,6 +28,12 @@ public class GestorCurso extends Gestor<Curso> {
 		super();
 		try {
 			cursoDAO = new CursoHome();
+			if (cursoDAO.findByExample(new Curso(null,'0',null,null,null)).size() == 0) {
+				Curso cursoGen = new Curso();
+				cursoGen.setDivision('0');
+				cursoGen.setTurno("Generico");
+				cursoDAO.persist(cursoGen);
+			}
 			GAlumno = new GestorAlumno();
 		} catch (Exception ex) {
 			closeSession();

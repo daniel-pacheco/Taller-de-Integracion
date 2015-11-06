@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
                                          "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
-Trabajar online 
- Trabajar offline  -->
-<!DOCTYPE hibernate-configuration SYSTEM "classpath://org/hibernate/hibernate-configuration-3.0.dtd">
+<!--  Trabajar online 
+Trabajar offline
+<!DOCTYPE hibernate-configuration SYSTEM "classpath://org/hibernate/hibernate-configuration-3.0.dtd">  -->
 <hibernate-configuration>
  <session-factory>
   <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-  <property name="hibernate.connection.password">mysqldebian</property>
+  <property name="hibernate.connection.password">linuxalpoder</property>
   <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/escuelabd</property>
   <property name="hibernate.connection.username">root</property>
   <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
@@ -51,5 +51,6 @@ Trabajar online
    class="ar.com.santalucia.dominio.modelo.desempenio.Inasistencia" resource="ar/com/santalucia/dominio/modelo/desempenio/Inasistencia.hbm.xml"/>
   <mapping
    class="ar.com.santalucia.dominio.modelo.desempenio.BoletinInasistencias" resource="ar/com/santalucia/dominio/modelo/desempenio/BoletinInasistencias.hbm.xml"/>
+  <mapping class="ar.com.santalucia.dominio.modelo.academico.Area" resource="ar/com/santalucia/dominio/modelo/academico/Area.hbm.xml"/>
  </session-factory>
 </hibernate-configuration>

@@ -22,16 +22,18 @@ public interface IValidacionAnio {
 	 * @param divisionCurso
 	 * @param anio
 	 * @return
+	 * @throws Exception 
 	 */
-	Boolean existeCurso(Character divisionCurso, Anio anio);
+	Boolean existeCurso(Character divisionCurso, Anio anio) throws Exception;
 	
 	
 	/**
 	 * Valida si la materia ya existe en la base de datos
 	 * @param nombreMateria
 	 * @return
+	 * @throws Exception 
 	 */
-	Boolean existeMateria(String nombreMateria);
+	Boolean existeMateria(String nombreMateria) throws Exception;
 	
 	
 }

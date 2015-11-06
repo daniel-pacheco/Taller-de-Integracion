@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -32,6 +34,7 @@ import ar.com.santalucia.servicio.ServicioAlumno;
 // Último modificador: Ariel Ramirez @ 15-10-2015 17:44
 
 @Path("/sAlumno")
+@PermitAll
 @Produces({"application/json" })
 @Consumes({"application/json" })
 public class ServicioAlumnoEndpoint {
@@ -72,6 +75,8 @@ public class ServicioAlumnoEndpoint {
 	 * @return Response ok (Status 200) e instancia de alumno, incluyendo datos de teléfono, 
 	 * mail y domicilio o null si no existe.
 	 */
+	
+	@RolesAllowed({"alumno"}) //nueva Anotacion!
 	@GET
 	@Path("/alu/{id:[0-9][0-9]*}")
 	public Response getAlumnoById(@PathParam("id") final Long id) {

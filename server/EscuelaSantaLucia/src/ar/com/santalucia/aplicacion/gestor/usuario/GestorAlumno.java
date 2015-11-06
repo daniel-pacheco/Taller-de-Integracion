@@ -29,7 +29,7 @@ import ar.com.santalucia.validaciones.IValidacionUsuarioAlumno;
  * @version 2.0
  */
 
-// UltimoModificador: Ariel Ramirez @ 26-09-2015 12:55
+// UltimoModificador: Ariel Ramirez @ 06-11-2015 11:26
 
 public class GestorAlumno extends Gestor<Alumno> implements IValidacionUsuarioAlumno {
 	private AlumnoHome alumnoDAO;
@@ -62,13 +62,19 @@ public class GestorAlumno extends Gestor<Alumno> implements IValidacionUsuarioAl
 			setSession();
 			setTransaction();
 			this.validar(object);
-			for (Telefono t : object.getListaTelefonos()) {
-				GTelefono.add(t);
+			if (object.getListaTelefonos() != null) {
+				for (Telefono t : object.getListaTelefonos()) {
+					GTelefono.add(t);
+				} 
 			}
-			for (Mail m : object.getListaMails()) {
-				GMail.add(m);
+			if (object.getListaMails() != null) {
+				for (Mail m : object.getListaMails()) {
+					GMail.add(m);
+				} 
 			}
-			GDomicilio.add(object.getDomicilio());
+			if (object.getDomicilio() != null) {
+				GDomicilio.add(object.getDomicilio());
+			}
 			alumnoDAO.persist(object);
 			sesionDeHilo.getTransaction().commit();
 		} 
@@ -199,6 +205,7 @@ public class GestorAlumno extends Gestor<Alumno> implements IValidacionUsuarioAl
 		try {
 			ejemplos = GMail.getByExample(mailEjemplo);
 		} catch (Exception e) {
+			// La excepcion no está tratada!
 			e.printStackTrace();
 		}
 		return (ejemplos.isEmpty() ? false : true);
@@ -225,6 +232,7 @@ public class GestorAlumno extends Gestor<Alumno> implements IValidacionUsuarioAl
 		try {
 			ejemplos = this.getByExample(alumnoEjemplo);
 		} catch (Exception e) {
+			// La excepcion no está tratada!
 			e.printStackTrace();
 		}
 		return (ejemplos.isEmpty() ? false : true);
@@ -239,14 +247,18 @@ public class GestorAlumno extends Gestor<Alumno> implements IValidacionUsuarioAl
 	public void validar(Alumno object) throws Exception {
 		Boolean vDocumento, vMatricula, vNombreUsuario;
 		ValidacionException exception = new ValidacionException();
-
+		//Validación del documento
 		vDocumento = this.existeDocumento(object.getTipoDocumento(), object.getNroDocumento());
-		for(Mail m : object.getListaMails()){
-			exception.addMensajeError((this.existeMail(m) 
-										? "La dirección de e-mail: " + m.getDireccionMail() +" ya existe" 
-										: null));
+		//Validación de direcciones de mail
+		if (object.getListaTelefonos() != null) {
+			for (Mail m : object.getListaMails()) {
+				exception.addMensajeError(
+						(this.existeMail(m) ? "La dirección de e-mail: " + m.getDireccionMail() + " ya existe" : null));
+			} 
 		}
+		//Validación de matrícula
 		vMatricula = this.existeMatricula(object.getMatricula());
+		//Validación de nombre de usuario
 		vNombreUsuario = this.existeNombreUsuario(object.getNombreUsuario());
 		
 		exception.addMensajeError((vDocumento ? "El documento ya existe" : null));

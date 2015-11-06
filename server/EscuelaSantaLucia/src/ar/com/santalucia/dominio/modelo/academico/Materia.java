@@ -5,30 +5,35 @@ import ar.com.santalucia.dominio.modelo.usuarios.Docente;
 /**
  * Clase Materia
  * @author Ariel Ramirez
- * @version 2.0
+ * @version 2.2
  * 
  */
 
-// Ultimo modificador: Eric Pennachini @ 23-10-2015 17:47
+// Ultimo modificador: Eric Pennachini @ 05-11-2015 18:46
 
 public class Materia {
 	private Long idMateria;
 	private String nombre;
+	private String descripcion;
 	private Docente docenteTitular;
-	private String tipoDocente;
+	private Docente docenteSuplente;
 	private Area area;
+	private Boolean activo;
 	
 	public Materia() {
 		super();
-	}	
+	}
 
-	public Materia(Long idMateria, String nombre, Docente docenteTitular, String tipoDocente, Area area) {
+	public Materia(Long idMateria, String nombre, String descripcion, Docente docenteTitular, Docente docenteSuplente,
+			Area area, Boolean activo) {
 		super();
 		this.idMateria = idMateria;
 		this.nombre = nombre;
+		this.descripcion = descripcion;
 		this.docenteTitular = docenteTitular;
-		this.tipoDocente = tipoDocente;
+		this.docenteSuplente = docenteSuplente;
 		this.area = area;
+		this.activo = activo;
 	}
 
 	public Long getIdMateria() {
@@ -55,20 +60,36 @@ public class Materia {
 		this.docenteTitular = docenteTitular;
 	}
 
-	public String getTipoDocente() {
-		return tipoDocente;
-	}
-
-	public void setTipoDocente(String tipoDocente) {
-		this.tipoDocente = tipoDocente;
-	}
-
 	public Area getArea() {
 		return area;
 	}
 
 	public void setArea(Area area) {
 		this.area = area;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public Docente getDocenteSuplente() {
+		return docenteSuplente;
+	}
+
+	public void setDocenteSuplente(Docente docenteSuplente) {
+		this.docenteSuplente = docenteSuplente;
+	}
+
+	public Boolean getActivo() {
+		return activo;
+	}
+
+	public void setActivo(Boolean activo) {
+		this.activo = activo;
 	}
 	
 }

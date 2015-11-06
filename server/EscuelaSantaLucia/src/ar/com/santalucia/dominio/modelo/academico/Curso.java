@@ -9,14 +9,15 @@ import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
  * 
  * @author Ariel Ramirez
  *
- * @version 1.0 
+ * @version 1.1
  */
 
-// Último modificador: Eric Pennachini @ 19-09-15 16:02
+// Último modificador: Eric Pennachini @ 05-11-15 16:36
 
 public class Curso {
 	private Long idCurso;
 	private Character division;
+	private String turno;
 	private Integer cicloLectivo;
 	private Set<Alumno> listaAlumnos;
 	
@@ -24,11 +25,12 @@ public class Curso {
 		super();
 		listaAlumnos = new HashSet<Alumno>();
 	}
-	
-	public Curso(Long idCurso, Character division, Integer cicloLectivo, Set<Alumno> listaAlumnos) {
+
+	public Curso(Long idCurso, Character division, String turno, Integer cicloLectivo, Set<Alumno> listaAlumnos) {
 		super();
 		this.idCurso = idCurso;
 		this.division = division;
+		this.turno = turno;
 		this.cicloLectivo = cicloLectivo;
 		this.setListaAlumnos(listaAlumnos);
 	}
@@ -63,6 +65,22 @@ public class Curso {
 
 	public void setListaAlumnos(Set<Alumno> listaAlumnos) {
 		this.listaAlumnos = listaAlumnos;
+	}
+
+	public String getTurno() {
+		return turno;
+	}
+
+	public void setTurno(String turno) {
+		this.turno = turno;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this.division.equals(obj)){
+			return true;
+		}
+		return false;
 	}
 	
 	

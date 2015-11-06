@@ -23,13 +23,13 @@ import ar.com.santalucia.validaciones.IValidacionMateria;
 public class GestorMateria extends Gestor<Materia> implements IValidacionMateria{
 
 	private MateriaHome materiaDAO;
-	private GestorDocente GDocente;
+	//private GestorDocente GDocente;
 	
 	public GestorMateria() throws Exception {
 		super();
 		try {
 			materiaDAO = new MateriaHome();
-			GDocente = new GestorDocente();
+			//GDocente = new GestorDocente();
 		} catch (Exception ex) {
 			closeSession();
 			throw new Exception("Ha ocurrido un problema al inicializar el gestor: " + ex.getMessage());
@@ -42,6 +42,7 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 			setSession();
 			setTransaction();
 			this.validar(object);
+			/*
 			if (object.getDocenteTitular() != null) { // creo que está de más...
 				if (object.getDocenteTitular().getIdUsuario() == null) {
 					GDocente.add(object.getDocenteTitular());
@@ -49,6 +50,7 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 			}
 			setSession();
 			setTransaction();
+			*/
 			materiaDAO.persist(object);
 			sesionDeHilo.getTransaction().commit();
 		} catch (ValidacionException ex) {
@@ -138,15 +140,6 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 	/*
 	 * Implementación de IValidacionMateria
 	 */
-	
-	@Override
-	public Boolean validarTipoDocente(String tipoDoc) {
-		Boolean resultado = false;
-		if ((tipoDoc=="Titular")||(tipoDoc=="Suplente")) {
-			resultado = true;
-		}
-		return resultado;
-	}
 
 	@Override
 	public Boolean existeMateria(String nombreMateria) {
@@ -163,19 +156,15 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 
 	@Override
 	public void validar(Materia object) throws Exception {
-		Boolean vMateria, vTipoDoc;
+		Boolean vMateria;
 		ValidacionException exception = new ValidacionException();
 		
 		vMateria = this.existeMateria(object.getNombre());
-		vTipoDoc = this.validarTipoDocente(object.getTipoDocente());
 		
 		exception.addMensajeError(vMateria 
 									? "La materia ya existe" 
 									: null);
-		exception.addMensajeError(vTipoDoc 
-									? null 
-									: "Tipo de docente no válido! Solo puede ser \"Titular\" o \"Suplente\" ");
-		
+
 		if (!exception.getMensajesError().isEmpty()) {
 			throw exception;
 		}
