@@ -77,7 +77,7 @@ public class Curso {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this.division.equals(obj)){
+		if (this.division.equals(((Curso)obj).division)){
 			return true;
 		}
 		return false;
