@@ -22,7 +22,7 @@ public interface IValidacionUsuario extends IValidacion {
 	 * @param numero
 	 * @return
 	 */
-	Boolean existeDocumento(String tipo, Long numero);
+	Boolean existeDocumento(Long id, String tipo, Long numero);
 	
 	/**
 	 * Valida si el mail ya existe en la base de datos

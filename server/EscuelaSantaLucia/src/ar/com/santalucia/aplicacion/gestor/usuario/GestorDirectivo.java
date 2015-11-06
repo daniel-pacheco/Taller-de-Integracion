@@ -166,7 +166,7 @@ public class GestorDirectivo extends Gestor<Directivo> implements IValidacionUsu
 	 */
 	
 	@Override
-	public Boolean existeDocumento(String tipo, Long numero) {
+	public Boolean existeDocumento(Long id, String tipo, Long numero) {
 		Directivo directivoEjemplo = new Directivo();
 		directivoEjemplo.setTipoDocumento(tipo);
 		directivoEjemplo.setNroDocumento(numero);
@@ -224,7 +224,9 @@ public class GestorDirectivo extends Gestor<Directivo> implements IValidacionUsu
 		Boolean vDocumento, vNombreUsuario, vCuil;
 		ValidacionException exception = new ValidacionException();
 		
-		vDocumento = this.existeDocumento(object.getTipoDocumento(), object.getNroDocumento());
+		vDocumento = this.existeDocumento(object.getIdUsuario(), 
+											object.getTipoDocumento(), 
+											object.getNroDocumento());
 		if (object.getListaMails() != null) {
 			for (Mail m : object.getListaMails()) {
 				exception.addMensajeError(

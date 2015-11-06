@@ -159,5 +159,15 @@ public class Usuario {
 	public String toString() {
 		return this.nombre + " " + this.apellido;
 	}	
-	
+
+	@Override
+	public boolean equals(Object obj) {
+		Usuario usuario = (Usuario) obj;
+		if ((this.idUsuario == usuario.idUsuario) &&
+				(this.nroDocumento == usuario.idUsuario) &&
+				(this.tipoDocumento == usuario.tipoDocumento)){
+			return true;
+		}
+		return false;
+	}
 }
