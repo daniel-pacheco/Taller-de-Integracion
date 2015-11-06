@@ -229,8 +229,8 @@ public class PruebaAltaAnio {
 		servDocente.addUsuario(docente3);
 		servDocente.addUsuario(docente4);
 		
-		servAcademico.addMateria(materia1);
-		servAcademico.addMateria(materia2);
+		//servAcademico.addMateria(materia1);
+		//servAcademico.addMateria(materia2);
 		
 		servAcademico.addAnio(anio1);
 		

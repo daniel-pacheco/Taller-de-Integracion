@@ -1,6 +1,7 @@
 package ar.com.santalucia.aplicacion.gestor.academico;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import ar.com.santalucia.accesodatos.dao.academico.AnioHome;
 import ar.com.santalucia.aplicacion.gestor.Gestor;
@@ -55,10 +56,9 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 			 * Se llama otra vez a estos dos metodos porque la materia
 			 * cierra la transacción, y la tiene que cerrar porque 
 			 * se puede dar de alta individualmente, por fuera del Anio.
-			 
+			**/ 
 			setSession();
 			setTransaction();
-			*/
 			anioDAO.persist(object);
 			sesionDeHilo.getTransaction().commit();
 		} catch (ValidacionException ex) {
@@ -165,26 +165,48 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 	}
 
 	@Override
-	public Boolean existeCurso(Character divisionCurso, Anio anio) {
+	public Boolean existeCurso(Character divisionCurso, Anio anio) throws Exception{
+		// TODO
+		// 1 - Obtener el año al que pertenece el curso
+		// 2 - Rescatar el listado de curso
+		// 3 - Comprobar si existe el curso en el listado
+		// 4 - Devolver true si se encontro
 		Boolean existeCurso = new Boolean(false);
-		for (Curso c: anio.getListaCursos()) {
-			if (c.getDivision() == divisionCurso) {
-				existeCurso = true;
+		Curso cursoExample = new Curso();
+		cursoExample.setDivision(divisionCurso);
+		try{
+			if(anio.getIdAnio() != null) // Esto es por si el año no existe
+			{
+				Anio anioBusqueda = this.getById(anio.getIdAnio());
+				Set<Curso> cursos = anioBusqueda.getListaCursos();
+				// Se uso contains porque es un arreglo de char y se sobrecargó equals
+				existeCurso = cursos.contains(divisionCurso);
 				return existeCurso;
 			}
-		} 
+		} catch(Exception ex){
+			// La excepcion no está tratada!
+			throw new Exception("El proceso de validación de curso ha fallado. " + ex.getMessage());
+		}
 		return existeCurso;
+		//Boolean existeCurso = new Boolean(false);
+//		for (Curso c: anio.getListaCursos()) {
+//			if (c.getDivision() == divisionCurso) {
+//				existeCurso = true;
+//				return existeCurso;
+//			}
+//		} 	
 	}
 	
 	@Override
-	public Boolean existeMateria(String nombreMateria) {
+	public Boolean existeMateria(String nombreMateria) throws Exception{
+		// Este caso es diferente al de curso porque busca entidades generales, no un arreglo de char como curso
 		Materia materiaEjemplo = new Materia();
 		materiaEjemplo.setNombre(nombreMateria);
 		ArrayList<Materia> ejemplos = new ArrayList<Materia>();
 		try {
 			ejemplos = GMateria.getByExample(materiaEjemplo);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception ex) {
+			throw new Exception("El proceso de validación de materia ha fallado. " + ex.getMessage());
 		}
 		return (ejemplos.isEmpty() ? false : true);
 	}

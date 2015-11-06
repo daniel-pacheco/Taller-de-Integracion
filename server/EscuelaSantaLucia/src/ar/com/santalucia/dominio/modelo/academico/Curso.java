@@ -74,6 +74,14 @@ public class Curso {
 	public void setTurno(String turno) {
 		this.turno = turno;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this.division.equals(obj)){
+			return true;
+		}
+		return false;
+	}
 	
 	
 }
