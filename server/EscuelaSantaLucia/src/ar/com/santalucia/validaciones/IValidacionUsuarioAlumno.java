@@ -8,6 +8,6 @@ public interface IValidacionUsuarioAlumno extends IValidacionUsuario {
 	 * @return
 	 * @throws Exception
 	 */
-	Boolean existeMatricula(Long matricula) throws Exception;
+	Boolean existeMatricula(Long id, Long matricula) throws Exception;
 
 }

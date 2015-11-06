@@ -173,7 +173,7 @@ public class GestorDocente extends Gestor<Docente> implements IValidacionUsuario
 	 */
 	
 	@Override
-	public Boolean existeDocumento(String tipo, Long numero) {
+	public Boolean existeDocumento(Long id, String tipo, Long numero) {
 		Docente docenteEjemplo = new Docente();
 		docenteEjemplo.setTipoDocumento(tipo);
 		docenteEjemplo.setNroDocumento(numero);
@@ -230,7 +230,9 @@ public class GestorDocente extends Gestor<Docente> implements IValidacionUsuario
 		Boolean vDocumento, vNombreUsuario, vCuil;
 		ValidacionException exception = new ValidacionException();
 		
-		vDocumento = this.existeDocumento(object.getTipoDocumento(), object.getNroDocumento());
+		vDocumento = this.existeDocumento(object.getIdUsuario(),
+											object.getTipoDocumento(), 
+											object.getNroDocumento());
 		if (object.getListaMails() != null) {
 			for (Mail m : object.getListaMails()) {
 				exception.addMensajeError(

@@ -184,17 +184,31 @@ public class GestorAlumno extends Gestor<Alumno> implements IValidacionUsuarioAl
 	 */
 
 	@Override
-	public Boolean existeDocumento(String tipo, Long numero) {
-		Alumno alumnoEjemplo = new Alumno();
-		alumnoEjemplo.setTipoDocumento(tipo);
-		alumnoEjemplo.setNroDocumento(numero);
-		ArrayList<Alumno> ejemplos = new ArrayList<Alumno>();
+	public Boolean existeDocumento(Long id, String tipo, Long numero) {
+		Boolean resultado = false;
 		try {
-			ejemplos = this.getByExample(alumnoEjemplo);
+			if (id != null) {
+				Alumno alumnoEjemploModif = new Alumno();
+				Alumno alumnoRemover = new Alumno();
+				alumnoRemover = this.getById(id);
+				ArrayList<Alumno> lista = this.List();
+				lista.remove(alumnoRemover);
+				//alumnoEjemploModif.setIdUsuario(id);
+				alumnoEjemploModif.setTipoDocumento(tipo);
+				alumnoEjemploModif.setNroDocumento(numero);
+				resultado = lista.contains(alumnoEjemploModif);
+			} else {
+				Alumno alumnoEjemplo = new Alumno();
+				alumnoEjemplo.setTipoDocumento(tipo);
+				alumnoEjemplo.setNroDocumento(numero);
+				ArrayList<Alumno> ejemplos = new ArrayList<Alumno>();
+				ejemplos = this.getByExample(alumnoEjemplo);
+				resultado = (ejemplos.isEmpty() ? false : true);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return (ejemplos.isEmpty() ? false : true);
+		return resultado;
 	}
 
 	@Override
@@ -225,17 +239,28 @@ public class GestorAlumno extends Gestor<Alumno> implements IValidacionUsuarioAl
 	}
 
 	@Override
-	public Boolean existeMatricula(Long matricula) {
-		Alumno alumnoEjemplo = new Alumno();
-		alumnoEjemplo.setMatricula(matricula);
-		ArrayList<Alumno> ejemplos = new ArrayList<Alumno>();
+	public Boolean existeMatricula(Long id, Long matricula) {
+		Boolean resultado = false;
 		try {
-			ejemplos = this.getByExample(alumnoEjemplo);
+			if (id != null) {
+				Alumno alumnoEjemploModif = new Alumno();
+				Alumno alumnoRemover = new Alumno();
+				alumnoRemover = this.getById(id);
+				ArrayList<Alumno> lista = this.List();
+				lista.remove(alumnoRemover);
+				alumnoEjemploModif.setMatricula(matricula);
+				resultado = lista.contains(alumnoEjemploModif);
+			} else {
+				Alumno alumnoEjemplo = new Alumno();
+				alumnoEjemplo.setMatricula(matricula);
+				ArrayList<Alumno> ejemplos = new ArrayList<Alumno>();
+				ejemplos = this.getByExample(alumnoEjemplo);
+				resultado = (ejemplos.isEmpty() ? false : true);
+			}
 		} catch (Exception e) {
-			// La excepcion no está tratada!
 			e.printStackTrace();
 		}
-		return (ejemplos.isEmpty() ? false : true);
+		return resultado;
 	}
 
 	/**
@@ -248,7 +273,9 @@ public class GestorAlumno extends Gestor<Alumno> implements IValidacionUsuarioAl
 		Boolean vDocumento, vMatricula, vNombreUsuario;
 		ValidacionException exception = new ValidacionException();
 		//Validación del documento
-		vDocumento = this.existeDocumento(object.getTipoDocumento(), object.getNroDocumento());
+		vDocumento = this.existeDocumento(object.getIdUsuario(), 
+											object.getTipoDocumento(), 
+											object.getNroDocumento());
 		//Validación de direcciones de mail
 		if (object.getListaTelefonos() != null) {
 			for (Mail m : object.getListaMails()) {
@@ -257,7 +284,8 @@ public class GestorAlumno extends Gestor<Alumno> implements IValidacionUsuarioAl
 			} 
 		}
 		//Validación de matrícula
-		vMatricula = this.existeMatricula(object.getMatricula());
+		vMatricula = this.existeMatricula(object.getIdUsuario(), 
+											object.getMatricula());
 		//Validación de nombre de usuario
 		vNombreUsuario = this.existeNombreUsuario(object.getNombreUsuario());
 		

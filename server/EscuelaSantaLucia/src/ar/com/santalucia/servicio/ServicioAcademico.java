@@ -319,7 +319,10 @@ public class ServicioAcademico {
 		} catch(Exception ex){
 			throw new Exception("Servicio: no se pudo desvincular el alumno del curso. " + ex.getMessage());
 		}
-		
 		return false;
+	}
+	
+	public void closeSession() throws Exception {
+		gAnio.closeSession();
 	}
 }
