@@ -8,13 +8,17 @@
  * Controller of the clientAppApp
  */
 angular.module('clientAppApp')
-  .controller('DirectivoCtrl', function ($scope) {
+  .controller('DirectivoCtrl', function ($scope, $q, $http, alumnoService) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
       'Karma'
     ];
 $scope.listado1 = true;
+$scope.listFilterIsEnabled = false;
+
+//filters
+$scope.filterByName = '';
 
 $scope.seleccionar = function (id){
 
@@ -25,4 +29,39 @@ $scope.seleccionar = function (id){
 	};
 }
 
-  });
+$scope.search = function () {
+  if (!$scope.listFilterIsEnabled) {
+    $scope.listFilterIsEnabled = true;
+  };
+}
+/*  
+var getAll = function(){
+    var deferred = $q.defer();
+    var url = 'http://192.168.0.110:8080/EscuelaSantaLucia/rest/sAlumno/listAll';
+    $http.get(url)
+      .success(function(response){
+        $scope.answer = response.data;
+                
+        deferred.resolve(response);
+      })
+      .error(function(response){
+        alert("error");
+        deferred.reject("Error al intentar traer datos del usuario");
+      });
+      return deferred.promise;
+  };
+getAll();
+
+$scope.answer = {};
+$scope.answer = alumnoService.alumnoGetAll().succes(function(response));
+*/
+
+$scope.data = [];
+
+    $http.get('http://192.168.0.110:8080/EscuelaSantaLucia/rest/sAlumno/listAll').success(function(response){
+
+      $scope.data = response;
+
+    });
+
+});
