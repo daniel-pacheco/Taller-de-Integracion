@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
-<!--<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">  -->
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
-<!DOCTYPE hibernate-mapping SYSTEM "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
-<!-- Generated 24/09/2015 16:41:55 by Hibernate Tools 3.4.0.CR1 -->
+<!-- <!DOCTYPE hibernate-mapping SYSTEM "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
+Generated 24/09/2015 16:41:55 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="ar.com.santalucia.dominio.modelo.academico.Materia" table="MATERIA">
         <id name="idMateria" type="java.lang.Long">
@@ -13,14 +13,20 @@
         <property name="nombre" type="java.lang.String">
             <column name="NOMBRE" />
         </property>
+        <property name="descripcion" type="java.lang.String">
+            <column name="DESCRIPCION" />
+        </property>
         <many-to-one name="docenteTitular" class="ar.com.santalucia.dominio.modelo.usuarios.Docente" fetch="join">
             <column name="DOCENTETITULAR" />
+        </many-to-one>
+        <many-to-one name="docenteSuplente" class="ar.com.santalucia.dominio.modelo.usuarios.Docente" fetch="join">
+            <column name="DOCENTESUPLENTE" />
         </many-to-one>
         <many-to-one name="area" class="ar.com.santalucia.dominio.modelo.academico.Area" fetch="join">
             <column name="AREA" />
         </many-to-one>
-        <property name="tipoDocente" type="java.lang.String">
-            <column name="TIPODOCENTE" />
+        <property name="activo" type="java.lang.Boolean">
+            <column name="ACTIVO" />
         </property>
     </class>
 </hibernate-mapping>

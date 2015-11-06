@@ -23,13 +23,13 @@ import ar.com.santalucia.validaciones.IValidacionMateria;
 public class GestorMateria extends Gestor<Materia> implements IValidacionMateria{
 
 	private MateriaHome materiaDAO;
-	private GestorDocente GDocente;
+	//private GestorDocente GDocente;
 	
 	public GestorMateria() throws Exception {
 		super();
 		try {
 			materiaDAO = new MateriaHome();
-			GDocente = new GestorDocente();
+			//GDocente = new GestorDocente();
 		} catch (Exception ex) {
 			closeSession();
 			throw new Exception("Ha ocurrido un problema al inicializar el gestor: " + ex.getMessage());
@@ -42,6 +42,7 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 			setSession();
 			setTransaction();
 			this.validar(object);
+			/*
 			if (object.getDocenteTitular() != null) { // creo que está de más...
 				if (object.getDocenteTitular().getIdUsuario() == null) {
 					GDocente.add(object.getDocenteTitular());
@@ -49,6 +50,7 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 			}
 			setSession();
 			setTransaction();
+			*/
 			materiaDAO.persist(object);
 			sesionDeHilo.getTransaction().commit();
 		} catch (ValidacionException ex) {

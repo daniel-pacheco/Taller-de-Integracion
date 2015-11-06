@@ -5,11 +5,11 @@ import ar.com.santalucia.dominio.modelo.usuarios.Docente;
 /**
  * Clase Materia
  * @author Ariel Ramirez
- * @version 2.1
+ * @version 2.2
  * 
  */
 
-// Ultimo modificador: Eric Pennachini @ 05-11-2015 17:51
+// Ultimo modificador: Eric Pennachini @ 05-11-2015 18:46
 
 public class Materia {
 	private Long idMateria;
@@ -18,13 +18,14 @@ public class Materia {
 	private Docente docenteTitular;
 	private Docente docenteSuplente;
 	private Area area;
+	private Boolean activo;
 	
 	public Materia() {
 		super();
 	}
 
 	public Materia(Long idMateria, String nombre, String descripcion, Docente docenteTitular, Docente docenteSuplente,
-			Area area) {
+			Area area, Boolean activo) {
 		super();
 		this.idMateria = idMateria;
 		this.nombre = nombre;
@@ -32,6 +33,7 @@ public class Materia {
 		this.docenteTitular = docenteTitular;
 		this.docenteSuplente = docenteSuplente;
 		this.area = area;
+		this.activo = activo;
 	}
 
 	public Long getIdMateria() {
@@ -80,6 +82,14 @@ public class Materia {
 
 	public void setDocenteSuplente(Docente docenteSuplente) {
 		this.docenteSuplente = docenteSuplente;
+	}
+
+	public Boolean getActivo() {
+		return activo;
+	}
+
+	public void setActivo(Boolean activo) {
+		this.activo = activo;
 	}
 	
 }

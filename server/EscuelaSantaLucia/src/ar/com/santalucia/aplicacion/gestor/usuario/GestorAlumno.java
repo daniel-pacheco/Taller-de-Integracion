@@ -62,13 +62,19 @@ public class GestorAlumno extends Gestor<Alumno> implements IValidacionUsuarioAl
 			setSession();
 			setTransaction();
 			this.validar(object);
-			for (Telefono t : object.getListaTelefonos()) {
-				GTelefono.add(t);
+			if (object.getListaTelefonos() != null) {
+				for (Telefono t : object.getListaTelefonos()) {
+					GTelefono.add(t);
+				} 
 			}
-			for (Mail m : object.getListaMails()) {
-				GMail.add(m);
+			if (object.getListaMails() != null) {
+				for (Mail m : object.getListaMails()) {
+					GMail.add(m);
+				} 
 			}
-			GDomicilio.add(object.getDomicilio());
+			if (object.getDomicilio() != null) {
+				GDomicilio.add(object.getDomicilio());
+			}
 			alumnoDAO.persist(object);
 			sesionDeHilo.getTransaction().commit();
 		} 
@@ -241,10 +247,11 @@ public class GestorAlumno extends Gestor<Alumno> implements IValidacionUsuarioAl
 		ValidacionException exception = new ValidacionException();
 
 		vDocumento = this.existeDocumento(object.getTipoDocumento(), object.getNroDocumento());
-		for(Mail m : object.getListaMails()){
-			exception.addMensajeError((this.existeMail(m) 
-										? "La dirección de e-mail: " + m.getDireccionMail() +" ya existe" 
-										: null));
+		if (object.getListaTelefonos() != null) {
+			for (Mail m : object.getListaMails()) {
+				exception.addMensajeError(
+						(this.existeMail(m) ? "La dirección de e-mail: " + m.getDireccionMail() + " ya existe" : null));
+			} 
 		}
 		vMatricula = this.existeMatricula(object.getMatricula());
 		vNombreUsuario = this.existeNombreUsuario(object.getNombreUsuario());

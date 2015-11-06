@@ -39,7 +39,7 @@ public class GestorDocente extends Gestor<Docente> implements IValidacionUsuario
 	private GestorTelefono GTelefono;
 	private GestorMail GMail;
 	private GestorDomicilio GDomicilio;
-	private Session sesionDeHilo;
+	//private Session sesionDeHilo;
 
 	public GestorDocente() throws Exception {
 		try {
@@ -61,16 +61,24 @@ public class GestorDocente extends Gestor<Docente> implements IValidacionUsuario
 			setSession();
 			setTransaction();
 			this.validar(object);
-			for (Titulo t : object.getListaTitulos()) {
-				GTitulo.add(t);
+			if (object.getListaTitulos() != null) {
+				for (Titulo t : object.getListaTitulos()) {
+					GTitulo.add(t);
+				} 
 			}
-			for (Telefono t : object.getListaTelefonos()) {
-				GTelefono.add(t);
+			if (object.getListaTelefonos() != null) {
+				for (Telefono t : object.getListaTelefonos()) {
+					GTelefono.add(t);
+				} 
 			}
-			for (Mail m : object.getListaMails()) {
-				GMail.add(m);
+			if (object.getListaMails() != null) {
+				for (Mail m : object.getListaMails()) {
+					GMail.add(m);
+				} 
 			}
-			GDomicilio.add(object.getDomicilio());
+			if (object.getDomicilio() != null) {
+				GDomicilio.add(object.getDomicilio());
+			}
 			docenteDAO.persist(object);
 			sesionDeHilo.getTransaction().commit();
 		} 
@@ -223,10 +231,11 @@ public class GestorDocente extends Gestor<Docente> implements IValidacionUsuario
 		ValidacionException exception = new ValidacionException();
 		
 		vDocumento = this.existeDocumento(object.getTipoDocumento(), object.getNroDocumento());
-		for(Mail m : object.getListaMails()){
-			exception.addMensajeError((this.existeMail(m) 
-										? "La dirección de e-mail: " + m.getDireccionMail() +" ya existe" 
-										: null));
+		if (object.getListaMails() != null) {
+			for (Mail m : object.getListaMails()) {
+				exception.addMensajeError(
+						(this.existeMail(m) ? "La dirección de e-mail: " + m.getDireccionMail() + " ya existe" : null));
+			} 
 		}
 		vNombreUsuario = this.existeNombreUsuario(object.getNombreUsuario());
 		vCuil = this.existeCuil(object.getCuil());

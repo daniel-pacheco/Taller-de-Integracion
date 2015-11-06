@@ -42,9 +42,12 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 			setSession();
 			setTransaction();
 			this.validar(object);
-			for (Curso c: object.getListaCursos()) {
-				GCurso.add(c);
+			if (object.getListaCursos() != null) {
+				for (Curso c : object.getListaCursos()) {
+					GCurso.add(c);
+				} 
 			}
+			/*
 			for (Materia m: object.getListaMaterias()) {
 				GMateria.add(m);
 			}
@@ -52,9 +55,10 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 			 * Se llama otra vez a estos dos metodos porque la materia
 			 * cierra la transacción, y la tiene que cerrar porque 
 			 * se puede dar de alta individualmente, por fuera del Anio.
-			 */
+			 
 			setSession();
 			setTransaction();
+			*/
 			anioDAO.persist(object);
 			sesionDeHilo.getTransaction().commit();
 		} catch (ValidacionException ex) {
