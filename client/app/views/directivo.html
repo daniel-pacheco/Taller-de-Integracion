@@ -67,95 +67,136 @@
 				<span class="btn btn-primary btn-file">Examinar<input type="file"></span>
 			</div>
 
-			<div class="form_center">
+			
 				<div class="formulario">
-					<label for="">Documento:</label> <input class="form-control"
-						type="text" maxlength="10" required pattern="\d{8}">
-					<!-- Valida 8 digitos -->
-					<select class="form-control" name="Tipo documento">
-						<option value="">DNI</option>
-						<option value="">LC</option>
-						<option value="">Otro</option>
-					</select>
-				
-
-				
-					<label for="">Nombres:</label> <input class="form-control"
-						type="text" maxlength="255" required pattern="[a-zA-Z ]*">
-					<!-- Valida letras y espacios -->
-				
-
-				
-					<label for="">Apellidos:</label><input class="form-control"
-						type="text" maxlength="255" required pattern="[a-zA-Z ]*">
-					<!-- Valida letras y espacios-->
-				
+					<div class="row">
+						<div class="col-md-4">
+						<label for="">Documento:</label> <input class="form-control"
+							type="text" maxlength="10" required pattern="\d{8}">
+						</div>
+						<!-- Valida 8 digitos -->
+						<div class="col-md-2">
+							<label for="">Tipo:</label>
+							<select class="form-control" name="Tipo documento">
+							<option value="">DNI</option>
+							<option value="">LC</option>
+							<option value="">Otro</option>
+						</select>
+						</div>
+					</div> <!-- /row-->
 
 
-					<div class="formulario">
-					<label for="">Sexo:</label> <input type="radio" name="sexo"
-						value="Femenino"> Femenino <input type="radio" name="sexo"
-						value="Masculino" checked> Masculino
+					<div class="row">
+						<div class="col-md-6">
+						<label for="">Nombres:</label> <input class="form-control"
+							type="text" maxlength="255" required pattern="[a-zA-Z ]*">
+						<!-- Valida letras y espacios -->
+					</div>
+					</div> <!-- /row-->
+					
+					<div class="row">
+						<div class="col-md-6">
+						<label for="">Apellidos:</label><input class="form-control"
+							type="text" maxlength="255" required pattern="[a-zA-Z ]*">
+						<!-- Valida letras y espacios-->
+						</div>
 					</div>
 
-				
-					<label for="">Domicilio:</label><input class="form-control"
-						type="text" maxlength="255" required pattern="[a-zA-Z 0-9]*" />
-					<!-- Valida letras, numeros y espacios-->
-				
+					
 
-				
-					<label for="">Fecha de nac:</label> <input class="form-control"
-						type="date" step="1" value="01-01-2000" />
-				
+						<div class="row">
+						<div class="col-md-6">
+						<label for="">Sexo:</label> <input type="radio" name="sexo"
+							value="Femenino"> Femenino <input type="radio" name="sexo"
+							value="Masculino" checked> Masculino
+						</div>
+					</div>
 
-				
-					<label for="">Año curso:</label> <select class="form-control"
-						name="Año">
-						<option value="">elemento 1</option>
-						<option value="">elemento 2</option>
-					</select>
-				
 
-				
-					<label for="">Nombre curso:</label><select class="form-control"
-						name="Curso">
-						<option value="">elemento 3</option>
-						<option value="">elemento 4</option>
-					</select>
-				
-				
-				
-					<label for="">Teléfono fijo:</label><input class="form-control"
-						type="tel"/>
-				
-				
-				
-					<label for="">Celular:</label><input class="form-control"
-						type="tel"/>
-				
-				
-				
-					<label for="">Mail:</label><input class="form-control"
-						type="email" maxlength="255">
-				
-				
-				
-					<label for="">Observaciones:</label><input class="form-control"
-						type="text" maxlength="255" required pattern="[a-zA-Z ]*">
-					<!-- Valida letras y espacios-->
-				
+					<div class="row">
+						<div class="col-md-6">
+						<label for="">Domicilio:</label><input class="form-control"
+							type="text" maxlength="255" required pattern="[a-zA-Z 0-9]*" />
+						<!-- Valida letras, numeros y espacios-->
+					</div>
+					</div>
 
 
 
-			</div>
+					<div class="row">
+						<div class="col-md-6">
+						<label for="">Fecha de nac:</label> <input class="form-control"
+							type="date" step="1" value="01-01-2000" />
+					</div>
+					</div>
 
-			<div class="botones_form">
-				<input class="btn btn-danger" type="button" name=""
+
+						<div class="row">
+						<div class="col-md-6">
+						<label for="">Año curso:</label> <select class="form-control"
+							name="Año">
+							<option value="">elemento 1</option>
+							<option value="">elemento 2</option>
+						</select>
+						</div>
+					</div>
+
+					
+
+					<div class="row">
+						<div class="col-md-6">
+						<label for="">Nombre curso:</label><select class="form-control"
+							name="Curso">
+							<option value="">elemento 3</option>
+							<option value="">elemento 4</option>
+						</select>
+					</div>
+					</div>
+
+					
+					<div class="row">
+						<div class="col-md-6">
+						<label for="">Teléfono fijo:</label><input class="form-control"
+							type="tel"/>
+					</div>
+					</div>
+
+					
+					<div class="row">
+						<div class="col-md-6">
+						<label for="">Celular:</label><input class="form-control"
+							type="tel"/>
+					</div>
+					</div>
+					
+					
+					<div class="row">
+						<div class="col-md-6">
+						<label for="">Mail:</label><input class="form-control"
+							type="email" maxlength="255">
+					</div>
+					</div>
+
+					
+					<div class="row">
+						<div class="col-md-6">
+						<label for="">Observaciones:</label><input class="form-control"
+							type="text" maxlength="255" required pattern="[a-zA-Z ]*">
+						<!-- Valida letras y espacios-->
+					</div>
+					</div>
+
+					
+
+
+				</div> <!-- /formulario-->
+
+				<div class="botones_form">
+					<input class="btn btn-danger" type="button" name=""
 					onclick="cargarAlumnoPrincipal()" value="Cancelar" /> <input
 					class="btn btn-primary" type="submit" name="" value="Guardar" />
-			</div>
+				</div>
 
-		</fieldset>
-	</div>
+			 </fieldset>
+		
 </div>
