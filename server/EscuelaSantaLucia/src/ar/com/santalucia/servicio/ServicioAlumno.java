@@ -27,7 +27,7 @@ import ar.com.santalucia.excepciones.ValidacionException;
 
 // Último modificador: Eric Pennachini @ 23-10-2015 18:23
 
-public class ServicioAlumno extends ServicioUsuario<Alumno> {
+public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 
 	private GestorAlumno gAlumno;
 	private GestorCurso gCurso;
@@ -42,7 +42,7 @@ public class ServicioAlumno extends ServicioUsuario<Alumno> {
 	public Alumno getUsuario(Long id) throws Exception {
 		if (id > 0) {
 			try {
-				return gAlumno.getById(id);
+				return (Alumno) gAlumno.getById(id);
 			} catch (Exception ex) {
 				throw new Exception("Servicio: problemas. " + ex.getMessage());
 			}

@@ -11,11 +11,13 @@ import ar.com.santalucia.accesodatos.dao.usuario.info.MailHome;
 import ar.com.santalucia.accesodatos.dao.usuario.info.TelefonoHome;
 import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
 import ar.com.santalucia.aplicacion.gestor.Gestor;
+import ar.com.santalucia.aplicacion.gestor.IListable;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorCurso;
 import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorDomicilio;
 import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorMail;
 import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorTelefono;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
+import ar.com.santalucia.dominio.modelo.usuarios.Directivo;
 import ar.com.santalucia.dominio.modelo.usuarios.Usuario;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
@@ -32,19 +34,13 @@ import ar.com.santalucia.validaciones.IValidacionUsuarioAlumno;
 
 // UltimoModificador: Ariel Ramirez @ 09-11-2015 16:56
 
-public class GestorAlumno extends Gestor<Alumno> implements IValidacionUsuarioAlumno {
+public class GestorAlumno extends GestorUsuario implements IValidacionUsuarioAlumno, IListable {
 	private AlumnoHome alumnoDAO;
-	private GestorDomicilio GDomicilio;
-	private GestorTelefono GTelefono;
-	private GestorMail GMail;
 
 	public GestorAlumno() throws Exception {
 		super();
 		try {
 			alumnoDAO = new AlumnoHome();
-			GDomicilio = new GestorDomicilio();
-			GTelefono = new GestorTelefono();
-			GMail = new GestorMail();
 		} catch (Exception ex) {
 			closeSession();
 			throw new Exception("Ha ocurrido un problema al inicializar el gestor: " + ex.getMessage());
@@ -58,31 +54,30 @@ public class GestorAlumno extends Gestor<Alumno> implements IValidacionUsuarioAl
 	 *            parte de la transacción.
 	 */
 	@Override
-	public void add(Alumno object) throws Exception {
+	public void add(Usuario object) throws Exception {
+		Alumno alumno = (Alumno) object;
 		try {
 			setSession();
 			setTransaction();
-			this.validar(object);
-			if (object.getListaTelefonos() != null) {
-				for (Telefono t : object.getListaTelefonos()) {
+			this.validar(alumno);
+			if (alumno.getListaTelefonos() != null) {
+				for (Telefono t : alumno.getListaTelefonos()) {
 					GTelefono.add(t);
-				} 
+				}
 			}
-			if (object.getListaMails() != null) {
-				for (Mail m : object.getListaMails()) {
+			if (alumno.getListaMails() != null) {
+				for (Mail m : alumno.getListaMails()) {
 					GMail.add(m);
-				} 
+				}
 			}
-			if (object.getDomicilio() != null) {
-				GDomicilio.add(object.getDomicilio());
+			if (alumno.getDomicilio() != null) {
+				GDomicilio.add(alumno.getDomicilio());
 			}
-			alumnoDAO.persist(object);
+			alumnoDAO.persist(alumno);
 			sesionDeHilo.getTransaction().commit();
-		} 
-		catch (ValidacionException ex) {
+		} catch (ValidacionException ex) {
 			throw ex;
-		} 
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			setSession();
 			setTransaction();
 			sesionDeHilo.getTransaction().rollback();
@@ -96,89 +91,21 @@ public class GestorAlumno extends Gestor<Alumno> implements IValidacionUsuarioAl
 	 * correspondientes.
 	 */
 	@Override
-	public void modify(Alumno object) throws Exception {
+	public void modify(Usuario object) throws Exception {
+		Alumno alumno = (Alumno) object;
 		try {
-			this.validar(object);
+			this.validar(alumno);
 			setSession();
 			setTransaction();
-			alumnoDAO.attachDirty(object);
+			alumnoDAO.attachDirty(alumno);
 			sesionDeHilo.getTransaction().commit();
-		}
-		catch (ValidacionException ex) {
+		} catch (ValidacionException ex) {
 			throw ex;
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			setSession();
 			setTransaction();
 			sesionDeHilo.getTransaction().rollback();
 			throw new Exception("Ha ocurrido un problema al actualizar el objeto: " + ex.getMessage());
-		}
-	}
-
-	/**
-	 * @param object
-	 *            Borra al alumno recibido y elimina a todos los objetos que lo
-	 *            componen.
-	 */
-	@Override
-	public void delete(Alumno object) throws Exception {
-		try {
-			setSession();
-			setTransaction();
-			alumnoDAO.delete(object);
-			sesionDeHilo.getTransaction().commit();
-		} catch (Exception ex) {
-			closeSession();
-			throw new Exception("Ha ocurrido un problema al eliminar el objeto: " + ex.getMessage());
-		}
-	}
-
-	@Override
-	public Alumno getById(Long id) throws Exception {
-		try {
-			setSession();
-			setTransaction();
-			Alumno alumnoDevolver = new Alumno();
-			alumnoDevolver = alumnoDAO.findById(id);
-			// NO HACER COMMIT para poder más tarde hacer el get de la lista de
-			// teléfonos
-			// y/o mails, Hibernate no las trae de una. La transacción se cierra
-			// en el modificar.
-			// sesionDeHilo.getTransaction().commit();
-			return alumnoDevolver;
-		} catch (Exception ex) {
-			closeSession();
-			throw new Exception("Ha ocurrido un error al buscar el objeto por su ID: " + ex.getMessage());
-		}
-	}
-
-	@Override
-	public ArrayList<Alumno> getByExample(Alumno example) throws Exception {
-		try {
-			setSession();
-			setTransaction();
-			ArrayList<Alumno> listaAlumnosDevolver = (ArrayList<Alumno>) alumnoDAO.findByExample((Alumno) example);
-			sesionDeHilo.getTransaction().commit();
-			return listaAlumnosDevolver;
-		} catch (Exception ex) {
-			closeSession();
-			throw new Exception(
-					"Ha ocurrido un error al buscar objetos que coincidan con el ejemplo dado: " + ex.getMessage());
-		}
-	}
-
-	@Override
-	public ArrayList<Alumno> List() throws Exception {
-		try {
-			setSession();
-			setTransaction();
-			Alumno criterioVacio = new Alumno();
-			ArrayList<Alumno> listaAlumnosDevolver = new ArrayList<Alumno>();
-			listaAlumnosDevolver = (ArrayList<Alumno>) alumnoDAO.findByExample(criterioVacio);
-			sesionDeHilo.getTransaction().commit();
-			return listaAlumnosDevolver;
-		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al listar los alumnos: " + ex.getMessage());
 		}
 	}
 
@@ -306,23 +233,23 @@ public class GestorAlumno extends Gestor<Alumno> implements IValidacionUsuarioAl
 	 * @see ar.com.santalucia.aplicacion.gestor.Gestor#validar(java.lang.Object)
 	 */
 	@Override
-	public void validar(Alumno object) throws Exception {
+	public void validar(Object object) throws Exception {
 		Boolean vDocumento, vMatricula, vNombreUsuario;
 		ValidacionException exception = new ValidacionException();
-		//Validación del documento
-		vDocumento = this.existeDocumento(object);
-		//Validación de direcciones de mail
-		if (object.getListaTelefonos() != null) {
-			for (Mail m : object.getListaMails()) {
+		// Validación del documento
+		vDocumento = this.existeDocumento((Alumno) object);
+		// Validación de direcciones de mail
+		if (((Alumno) object).getListaTelefonos() != null) {
+			for (Mail m : ((Alumno) object).getListaMails()) {
 				exception.addMensajeError(
 						(this.existeMail(m) ? "La dirección de e-mail: " + m.getDireccionMail() + " ya existe" : null));
-			} 
+			}
 		}
-		//Validación de matrícula
-		vMatricula = this.existeMatricula(object);
-		//Validación de nombre de usuario
-		vNombreUsuario = this.existeNombreUsuario(object);
-		
+		// Validación de matrícula
+		vMatricula = this.existeMatricula((Alumno) object);
+		// Validación de nombre de usuario
+		vNombreUsuario = this.existeNombreUsuario((Alumno) object);
+
 		exception.addMensajeError((vDocumento ? "El documento ya existe" : null));
 		exception.addMensajeError((vMatricula ? "La matrícula ya existe" : null));
 		exception.addMensajeError((vNombreUsuario ? "El nombre de usuario ya existe" : null));
@@ -331,4 +258,37 @@ public class GestorAlumno extends Gestor<Alumno> implements IValidacionUsuarioAl
 			throw exception;
 		}
 	}
+
+	@Override
+	public ArrayList getByExample(Object example) throws Exception {
+		try {
+			setSession();
+			setTransaction();
+			ArrayList<Alumno> listaDirectivosDevolver = (ArrayList<Alumno>) alumnoDAO.findByExample((Alumno) example);
+			sesionDeHilo.getTransaction().commit();
+			return listaDirectivosDevolver;
+		} catch (Exception ex) {
+			closeSession();
+			throw new Exception(
+					"Ha ocurrido un error al buscar objetos que coincidan con el ejemplo dado: " + ex.getMessage());
+		}
+
+	}
+
+	@Override
+	public ArrayList List() throws Exception {
+		try {
+			setSession();
+			setTransaction();
+			Alumno criterioVacio = new Alumno();
+			ArrayList<Alumno> listadoAlumnosDevolver = new ArrayList<Alumno>();
+			listadoAlumnosDevolver = (ArrayList<Alumno>) alumnoDAO.findByExample((Alumno)criterioVacio);
+			sesionDeHilo.getTransaction().commit();
+			return listadoAlumnosDevolver;
+		} catch (Exception ex) {
+			throw new Exception("Ha ocurrido un error al listar los directivos: " + ex.getMessage());
+		}
+	}
+
+
 }
