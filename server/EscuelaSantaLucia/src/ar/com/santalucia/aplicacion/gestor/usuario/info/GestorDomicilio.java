@@ -93,6 +93,7 @@ public class GestorDomicilio extends Gestor<Domicilio> {
 			setTransaction();
 			ArrayList<Domicilio> listaDomicilioDevolver = (ArrayList<Domicilio>) domicilioDAO
 					.findByExample((Domicilio) example);
+			sesionDeHilo.getTransaction().commit();
 			return listaDomicilioDevolver;
 		} catch (Exception ex) {
 			throw new Exception(
@@ -109,6 +110,7 @@ public class GestorDomicilio extends Gestor<Domicilio> {
 			Domicilio criterioVacio = new Domicilio();
 			ArrayList<Domicilio> listaDomicilioDevolver = new ArrayList<Domicilio>();
 			listaDomicilioDevolver = (ArrayList<Domicilio>) domicilioDAO.findByExample(criterioVacio);
+			sesionDeHilo.getTransaction().commit();
 			return listaDomicilioDevolver;
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un error al listar los alumnos: " + ex.getMessage());

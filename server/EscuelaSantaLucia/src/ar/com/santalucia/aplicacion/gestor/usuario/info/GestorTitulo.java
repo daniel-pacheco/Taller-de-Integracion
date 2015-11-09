@@ -90,6 +90,7 @@ public class GestorTitulo extends Gestor<Titulo> {
 			setSession();
 			setTransaction();
 			ArrayList<Titulo> listaTituloDevolver = (ArrayList<Titulo>) tituloDAO.findByExample((Titulo) example);
+			sesionDeHilo.getTransaction().commit();
 			return listaTituloDevolver;
 		} catch (Exception ex) {
 			throw new Exception(
@@ -106,6 +107,7 @@ public class GestorTitulo extends Gestor<Titulo> {
 			Titulo criterioVacio = new Titulo();
 			ArrayList<Titulo> listaTituloDevolver = new ArrayList<Titulo>();
 			listaTituloDevolver = (ArrayList<Titulo>) tituloDAO.findByExample(criterioVacio);
+			sesionDeHilo.getTransaction().commit();
 			return listaTituloDevolver;
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un error al listar los alumnos: " + ex.getMessage());

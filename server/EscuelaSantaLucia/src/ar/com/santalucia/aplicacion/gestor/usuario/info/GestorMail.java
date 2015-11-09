@@ -90,6 +90,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 			setSession();
 			setTransaction();
 			ArrayList<Mail> listaMailDevolver = (ArrayList<Mail>) mailDAO.findByExample((Mail) example);
+			sesionDeHilo.getTransaction().commit();
 			return listaMailDevolver;
 		} catch (Exception ex) {
 			throw new Exception(
@@ -106,6 +107,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 			Mail criterioVacio = new Mail();
 			ArrayList<Mail> listaMailDevolver = new ArrayList<Mail>();
 			listaMailDevolver = (ArrayList<Mail>) mailDAO.findByExample(criterioVacio);
+			sesionDeHilo.getTransaction().commit();
 			return listaMailDevolver;
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un error al listar los alumnos: " + ex.getMessage());

@@ -2,6 +2,7 @@ package ar.com.santalucia.validaciones;
 
 import java.util.Set;
 
+import ar.com.santalucia.dominio.modelo.usuarios.Usuario;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 
 /**
@@ -21,21 +22,24 @@ public interface IValidacionUsuario extends IValidacion {
 	 * @param tipo
 	 * @param numero
 	 * @return
+	 * @throws Exception 
 	 */
-	Boolean existeDocumento(Long id, String tipo, Long numero);
+	Boolean existeDocumento(Usuario usuario) throws Exception;
 	
 	/**
 	 * Valida si el mail ya existe en la base de datos
 	 * @param mail
 	 * @return
+	 * @throws Exception 
 	 */
-	Boolean existeMail(Mail mail);
+	Boolean existeMail(Mail mail) throws Exception;
 	
 	/**
 	 * Valida si el nombre de usuario ya existe en la base de datos
 	 * @param nombreUsuario
 	 * @return
+	 * @throws Exception 
 	 */
-	Boolean existeNombreUsuario(String nombreUsuario);
+	Boolean existeNombreUsuario(Usuario usuario) throws Exception;
 	
 }

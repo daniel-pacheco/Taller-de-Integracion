@@ -92,6 +92,7 @@ public class GestorTelefono extends Gestor<Telefono> {
 			setTransaction();
 			ArrayList<Telefono> listaTelefonoDevolver = (ArrayList<Telefono>) telefonoDAO
 					.findByExample((Telefono) example);
+			sesionDeHilo.getTransaction().commit();
 			return listaTelefonoDevolver;
 		} catch (Exception ex) {
 			throw new Exception(
@@ -108,6 +109,7 @@ public class GestorTelefono extends Gestor<Telefono> {
 			Telefono criterioVacio = new Telefono();
 			ArrayList<Telefono> listaTelefonoDevolver = new ArrayList<Telefono>();
 			listaTelefonoDevolver = (ArrayList<Telefono>) telefonoDAO.findByExample(criterioVacio);
+			sesionDeHilo.getTransaction().commit();
 			return listaTelefonoDevolver;
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un error al listar los telefonos: " + ex.getMessage());
