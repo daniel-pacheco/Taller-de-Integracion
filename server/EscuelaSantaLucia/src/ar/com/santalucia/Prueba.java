@@ -3,6 +3,7 @@ package ar.com.santalucia;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Random;
 
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
 import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorTelefono;
@@ -17,15 +18,17 @@ public class Prueba {
 
 		GestorAlumno GAlumno = new GestorAlumno();
 		
-		Long dni = 36099932L;
-		for (int i = 0; i < 1; i++) {
+		Long dni = 30000000L;
+		for (int i = 0; i < 300; i++) {
 			Alumno alumnoPrueba = new Alumno();
 
-			alumnoPrueba.setApellido("Pennachini");
-			alumnoPrueba.setNombre("Eric Daniel");
+			//alumnoPrueba.setApellido("Pennachini " + i);
+			alumnoPrueba.setApellido(generarStringRandom(16));
+			//alumnoPrueba.setNombre("Eric Daniel");
+			alumnoPrueba.setNombre(generarStringRandom(8));
 			alumnoPrueba.setFechaNacimiento(new Date(90, 11, 21));
-			alumnoPrueba.setMatricula(4654885L);
-			alumnoPrueba.setNombreUsuario("EiiEricpara las turras");
+			alumnoPrueba.setMatricula(dni + 10000000L);
+			alumnoPrueba.setNombreUsuario("eric.pennachini." + i);
 			alumnoPrueba.setNroDocumento(dni);
 			alumnoPrueba.setSexo('m');
 			alumnoPrueba.setTipoDocumento("DU/DNI");
@@ -53,9 +56,9 @@ public class Prueba {
 			Set<Mail> listaMails = new HashSet<Mail>();
 			Mail mail1 = new Mail();
 			Mail mail2 = new Mail();
-			mail1.setDireccionMail("eric.daniel.pennachini@gmail.com");
+			mail1.setDireccionMail("eric.pennachini." + i + "@gmail.com");
 			mail1.setTipoMail("Trabajo/Académico");
-			mail2.setDireccionMail("ericdpennak_0591@hotmail.com");
+			mail2.setDireccionMail("ericdp_0591_" + i + "@hotmail.com");
 			mail2.setTipoMail("Otro");
 			listaMails.add(mail1);
 			listaMails.add(mail2);
@@ -124,6 +127,20 @@ public class Prueba {
 		GAlumno.closeTransaction();
 		*/
 		
+	}
+	
+	/**
+	 * Genera una cadena alfanumérica de 10 caracteres
+	 * @return
+	 */
+	public static String generarStringRandom(int cantCaract) {
+		String caracteres = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ1234567890";
+		Random rnd = new Random();
+		StringBuilder cadenaRandom = new StringBuilder();
+		for (int i = 0; i < cantCaract; i++) {
+			cadenaRandom.append(caracteres.charAt(rnd.nextInt(caracteres.length())));
+		}
+		return cadenaRandom.toString();
 	}
 
 }
