@@ -44,9 +44,9 @@ public class GestorCurso extends Gestor<Curso> {
 	@Override
 	public void add(Curso object) throws Exception {
 		try {
+			this.validar(object);
 			setSession();
 			setTransaction();
-			this.validar(object);
 			cursoDAO.persist(object);
 			sesionDeHilo.getTransaction().commit();
 		} catch (ValidacionException ex) {
@@ -62,9 +62,9 @@ public class GestorCurso extends Gestor<Curso> {
 	@Override
 	public void modify(Curso object) throws Exception {
 		try {
-			this.validar(object);
 			setSession();
 			setTransaction();
+			this.validar(object);
 			cursoDAO.attachDirty(object);
 			sesionDeHilo.getTransaction().commit();
 		} catch (ValidacionException ex) {
@@ -104,7 +104,7 @@ public class GestorCurso extends Gestor<Curso> {
 		}
 	}
 
-	@Override
+	
 	public ArrayList<Curso> getByExample(Curso example) throws Exception {
 		try {
 			setSession();
@@ -136,7 +136,7 @@ public class GestorCurso extends Gestor<Curso> {
 		}
 	}
 
-	@Override
+	
 	public ArrayList<Curso> List() throws Exception {
 		try {
 			setSession();
@@ -151,7 +151,7 @@ public class GestorCurso extends Gestor<Curso> {
 		}
 	}
 
-	@Override
+	
 	public void validar(Curso object) throws Exception {
 		// TODO Auto-generated method stub
 		

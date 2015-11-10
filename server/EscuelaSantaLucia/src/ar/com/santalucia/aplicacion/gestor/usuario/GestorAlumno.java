@@ -34,7 +34,7 @@ import ar.com.santalucia.validaciones.IValidacionUsuarioAlumno;
 
 // UltimoModificador: Ariel Ramirez @ 09-11-2015 16:56
 
-public class GestorAlumno extends GestorUsuario implements IValidacionUsuarioAlumno, IListable {
+public class GestorAlumno extends GestorUsuario implements IValidacionUsuarioAlumno {
 	private AlumnoHome alumnoDAO;
 
 	public GestorAlumno() throws Exception {
@@ -57,9 +57,9 @@ public class GestorAlumno extends GestorUsuario implements IValidacionUsuarioAlu
 	public void add(Usuario object) throws Exception {
 		Alumno alumno = (Alumno) object;
 		try {
+			this.validar(alumno);
 			setSession();
 			setTransaction();
-			this.validar(alumno);
 			if (alumno.getListaTelefonos() != null) {
 				for (Telefono t : alumno.getListaTelefonos()) {
 					GTelefono.add(t);
@@ -114,35 +114,6 @@ public class GestorAlumno extends GestorUsuario implements IValidacionUsuarioAlu
 	 */
 
 	@Override
-	public Boolean existeDocumento(Usuario usuario) throws Exception {
-		Boolean resultado = false;
-		Alumno alumno = (Alumno) usuario;
-		Alumno alumnoEjemplo = new Alumno();
-		alumnoEjemplo.setNroDocumento(alumno.getNroDocumento());
-		try {
-			ArrayList<Alumno> listaAlumnos = this.getByExample(alumnoEjemplo);
-			if (alumno.getIdUsuario() == null) {
-				resultado = (listaAlumnos.isEmpty() ? false : true);
-			} else {
-				if (!listaAlumnos.isEmpty()) {
-					Alumno alumnoTemp = new Alumno();
-					for (Alumno a : listaAlumnos) {
-						alumnoTemp = a;
-					}
-					if (alumnoTemp.getIdUsuario().equals(alumno.getIdUsuario())) {
-						resultado = false;
-					} else {
-						resultado = true;
-					}
-				}
-			}
-		} catch (Exception ex) {
-			throw ex;
-		}
-		return resultado;
-	}
-
-	@Override
 	public Boolean existeMail(Mail mail) throws Exception {
 		Boolean resultado = false;
 		Mail mailEjemplo = new Mail();
@@ -158,35 +129,6 @@ public class GestorAlumno extends GestorUsuario implements IValidacionUsuarioAlu
 						mailTemp = m;
 					}
 					if (mailTemp.getIdMail().equals(mail.getIdMail())) {
-						resultado = false;
-					} else {
-						resultado = true;
-					}
-				}
-			}
-		} catch (Exception ex) {
-			throw ex;
-		}
-		return resultado;
-	}
-
-	@Override
-	public Boolean existeNombreUsuario(Usuario usuario) throws Exception {
-		Boolean resultado = false;
-		Alumno alumno = (Alumno) usuario;
-		Alumno alumnoEjemplo = new Alumno();
-		alumnoEjemplo.setNombreUsuario(alumno.getNombreUsuario());
-		try {
-			ArrayList<Alumno> listaAlumnos = this.getByExample(alumnoEjemplo);
-			if (alumno.getIdUsuario() == null) {
-				resultado = (listaAlumnos.isEmpty() ? false : true);
-			} else {
-				if (!listaAlumnos.isEmpty()) {
-					Alumno alumnoTemp = new Alumno();
-					for (Alumno a : listaAlumnos) {
-						alumnoTemp = a;
-					}
-					if (alumnoTemp.getIdUsuario().equals(alumno.getIdUsuario())) {
 						resultado = false;
 					} else {
 						resultado = true;

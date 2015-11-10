@@ -8,6 +8,7 @@ import ar.com.santalucia.aplicacion.gestor.Gestor;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
+import ar.com.santalucia.dominio.modelo.usuarios.Usuario;
 import ar.com.santalucia.excepciones.ValidacionException;
 import ar.com.santalucia.validaciones.IValidacionAnio;
 
@@ -40,9 +41,9 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 	@Override
 	public void add(Anio object) throws Exception {
 		try {
+			this.validar(object);
 			setSession();
 			setTransaction();
-			this.validar(object);
 			if (object.getListaCursos() != null) {
 				for (Curso c : object.getListaCursos()) {
 					GCurso.add(c);
@@ -75,9 +76,9 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 	@Override
 	public void modify(Anio object) throws Exception {
 		try {
-			this.validar(object);
 			setSession();
 			setTransaction();
+			this.validar(object);
 			anioDAO.attachDirty(object);
 			sesionDeHilo.getTransaction().commit();
 		} catch (ValidacionException ex) {
@@ -117,7 +118,7 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 		}
 	}
 
-	@Override
+	
 	public ArrayList<Anio> getByExample(Anio example) throws Exception {
 		try {
 			setSession();
@@ -132,7 +133,6 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 		}
 	}
 
-	@Override
 	public ArrayList<Anio> List() throws Exception {
 		try {
 			setSession();
@@ -153,20 +153,34 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 	 * @see ar.com.santalucia.validaciones.IValidacionAnio#existeNombreAnio(java.lang.String)
 	 */
 
-	@Override
-	public Boolean existeNombreAnio(String nombreAnio) {
+	
+	public Boolean existeNombreAnio(Anio anio) throws Exception{
+		Boolean resultado = false;
 		Anio anioEjemplo = new Anio();
-		anioEjemplo.setNombre(nombreAnio);
-		ArrayList<Anio> ejemplos = new ArrayList<Anio>();
+		anioEjemplo.setNombre(anio.getNombre());
 		try {
-			ejemplos = this.getByExample(anioEjemplo);
-		} catch (Exception e) {
-			e.printStackTrace();
+			ArrayList<Anio> listaAnios = this.getByExample(anioEjemplo);
+			if (anio.getIdAnio() == null) {
+				resultado = (listaAnios.isEmpty() ? false : true);
+			} else {
+				if (!listaAnios.isEmpty()) {
+					Anio anioTemp = new Anio();
+					for (Anio a : listaAnios) {
+						anioTemp = a;
+					}
+					if (anioTemp.getIdAnio().equals(anio.getIdAnio())) {
+						resultado = false;
+					} else {
+						resultado = true;
+					}
+				}
+			}
+		} catch (Exception ex) {
+			throw ex;
 		}
-		return (ejemplos.isEmpty() ? false : true);
+		return resultado;
 	}
 
-	@Override
 	public Boolean existeCurso(Character divisionCurso, Anio anio) throws Exception{
 		// TODO
 		// 1 - Obtener el año al que pertenece el curso
@@ -213,13 +227,11 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 		return (ejemplos.isEmpty() ? false : true);
 	}
 	
-
-	@Override
 	public void validar(Anio object) throws Exception {
 		Boolean vNombre;
 		ValidacionException exception = new ValidacionException();
 		
-		vNombre = this.existeNombreAnio(object.getNombre());
+		vNombre = this.existeNombreAnio(object);
 		for (Curso c: object.getListaCursos()) {
 			exception.addMensajeError((this.existeCurso(c.getDivision(), object) 
 										? "El curso: " + c.getDivision() + " ya existe en el año." 
@@ -239,4 +251,5 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 			throw exception;
 		}
 	}
+
 }

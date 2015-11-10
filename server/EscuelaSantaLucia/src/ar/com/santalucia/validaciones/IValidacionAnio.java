@@ -14,8 +14,9 @@ public interface IValidacionAnio {
 	 * Valida si el nombre del año ya existe en la base de datos
 	 * @param nombreAnio
 	 * @return
+	 * @throws Exception 
 	 */
-	Boolean existeNombreAnio(String nombreAnio);
+	Boolean existeNombreAnio(Anio anio) throws Exception;
 	
 	/**
 	 * Valida si el curso existe en el anio

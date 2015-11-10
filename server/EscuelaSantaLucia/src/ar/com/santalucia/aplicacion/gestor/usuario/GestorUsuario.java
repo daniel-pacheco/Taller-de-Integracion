@@ -4,13 +4,14 @@ import java.util.ArrayList;
 
 import ar.com.santalucia.accesodatos.dao.usuario.UsuarioHome;
 import ar.com.santalucia.aplicacion.gestor.Gestor;
+import ar.com.santalucia.aplicacion.gestor.IListable;
 import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorDomicilio;
 import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorMail;
 import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorTelefono;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.Usuario;
 
-public abstract class GestorUsuario extends Gestor<Usuario> {
+public abstract class GestorUsuario extends Gestor<Usuario> implements IListable{
 	
 	protected UsuarioHome usuarioDAO;
 	protected GestorTelefono GTelefono;
@@ -62,5 +63,73 @@ public abstract class GestorUsuario extends Gestor<Usuario> {
 			throw new Exception("Ha ocurrido un error al buscar el objeto por su ID: " + ex.getMessage());
 		}
 	};
+	
+	public ArrayList getByExample(Usuario example) throws Exception {
+		try {
+			setSession();
+			setTransaction();
+			ArrayList<Usuario> listaDirectivosDevolver = (ArrayList<Usuario>) usuarioDAO.findByExample(example);
+			sesionDeHilo.getTransaction().commit();
+			return listaDirectivosDevolver;
+		} catch (Exception ex) {
+			closeSession();
+			throw new Exception(
+					"Ha ocurrido un error al buscar objetos que coincidan con el ejemplo dado: " + ex.getMessage());
+		}
 
+	}
+	
+	public Boolean existeDocumento(Usuario usuario) throws Exception {
+		Boolean resultado = false;
+		Usuario usuarioEjemplo = new Usuario();
+		usuarioEjemplo.setNroDocumento(usuario.getNroDocumento());
+		try {
+			ArrayList<Usuario> listaUsuarios = this.getByExample(usuarioEjemplo);
+			if (usuario.getIdUsuario() == null) {
+				resultado = (listaUsuarios.isEmpty() ? false : true);
+			} else {
+				if (!listaUsuarios.isEmpty()) {
+					Usuario usuarioTemp = new Usuario();
+					for (Usuario u : listaUsuarios) {
+						usuarioTemp = u;
+					}
+					if (usuarioTemp.getIdUsuario().equals(usuario.getIdUsuario())) {
+						resultado = false;
+					} else {
+						resultado = true;
+					}
+				}
+			}
+		} catch (Exception ex) {
+			throw ex;
+		}
+		return resultado;
+	}
+
+	public Boolean existeNombreUsuario(Usuario usuario) throws Exception {
+		Boolean resultado = false;
+		Usuario usuarioEjemplo = new Usuario();
+		usuarioEjemplo.setNombreUsuario(usuario.getNombreUsuario());
+		try {
+			ArrayList<Usuario> listaUsuarios = this.getByExample(usuarioEjemplo);
+			if (usuario.getIdUsuario() == null) {
+				resultado = (listaUsuarios.isEmpty() ? false : true);
+			} else {
+				if (!listaUsuarios.isEmpty()) {
+					Usuario usuarioTemp = new Alumno();
+					for (Usuario u : listaUsuarios) {
+						usuarioTemp = u;
+					}
+					if (usuarioTemp.getIdUsuario().equals(usuario.getIdUsuario())) {
+						resultado = false;
+					} else {
+						resultado = true;
+					}
+				}
+			}
+		} catch (Exception ex) {
+			throw ex;
+		}
+		return resultado;
+	}
 }

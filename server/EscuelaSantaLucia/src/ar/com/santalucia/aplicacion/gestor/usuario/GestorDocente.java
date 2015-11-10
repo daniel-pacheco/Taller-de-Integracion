@@ -59,9 +59,9 @@ public class GestorDocente extends Gestor<Docente> implements IValidacionUsuario
 	@Override
 	public void add(Docente object) throws Exception {
 		try {
+			this.validar(object);
 			setSession();
 			setTransaction();
-			this.validar(object);
 			if (object.getListaTitulos() != null) {
 				for (Titulo t : object.getListaTitulos()) {
 					GTitulo.add(t);
@@ -140,8 +140,7 @@ public class GestorDocente extends Gestor<Docente> implements IValidacionUsuario
 			throw new Exception("Ha ocurrido un error al buscar el objeto por su ID: " + ex.getMessage());
 		}
 	}
-
-	@Override
+	
 	public ArrayList<Docente> getByExample(Docente example) throws Exception {
 		try {
 			setSession();
@@ -156,7 +155,6 @@ public class GestorDocente extends Gestor<Docente> implements IValidacionUsuario
 		}
 	}
 
-	@Override
 	public ArrayList<Docente> List() throws Exception{
 		try {
 			setSession();
@@ -174,8 +172,7 @@ public class GestorDocente extends Gestor<Docente> implements IValidacionUsuario
 	/*
 	 * Implementación de IValidacionDocDir
 	 */
-
-	@Override
+	
 	public void validar(Docente object) throws Exception {
 		Boolean vDocumento, vNombreUsuario, vCuil;
 		ValidacionException exception = new ValidacionException();
@@ -313,6 +310,13 @@ public class GestorDocente extends Gestor<Docente> implements IValidacionUsuario
 			throw ex;
 		}
 		return resultado;
+	}
+
+	
+	@Override
+	public void validar(Object object) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
