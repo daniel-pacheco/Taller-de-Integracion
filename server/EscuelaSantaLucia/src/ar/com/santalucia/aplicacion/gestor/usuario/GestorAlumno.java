@@ -114,34 +114,6 @@ public class GestorAlumno extends GestorUsuario implements IValidacionUsuarioAlu
 	 */
 
 	@Override
-	public Boolean existeMail(Mail mail) throws Exception {
-		Boolean resultado = false;
-		Mail mailEjemplo = new Mail();
-		mailEjemplo.setDireccionMail(mail.getDireccionMail());
-		try {
-			ArrayList<Mail> listaMails = GMail.getByExample(mailEjemplo);
-			if (mail.getIdMail() == null) {
-				resultado = (listaMails.isEmpty() ? false : true);
-			} else {
-				if (!listaMails.isEmpty()) {
-					Mail mailTemp = new Mail();
-					for (Mail m : listaMails) {
-						mailTemp = m;
-					}
-					if (mailTemp.getIdMail().equals(mail.getIdMail())) {
-						resultado = false;
-					} else {
-						resultado = true;
-					}
-				}
-			}
-		} catch (Exception ex) {
-			throw ex;
-		}
-		return resultado;
-	}
-
-	@Override
 	public Boolean existeMatricula(Alumno alumno) throws Exception {
 		Boolean resultado = false;
 		Alumno alumnoEjemplo = new Alumno();
@@ -201,12 +173,12 @@ public class GestorAlumno extends GestorUsuario implements IValidacionUsuarioAlu
 		}
 	}
 
-	@Override
-	public ArrayList getByExample(Object example) throws Exception {
+	
+	public ArrayList getByExample(Alumno example) throws Exception {
 		try {
 			setSession();
 			setTransaction();
-			ArrayList<Alumno> listaDirectivosDevolver = (ArrayList<Alumno>) alumnoDAO.findByExample((Alumno) example);
+			ArrayList<Alumno> listaDirectivosDevolver = (ArrayList<Alumno>) alumnoDAO.findByExample(example);
 			sesionDeHilo.getTransaction().commit();
 			return listaDirectivosDevolver;
 		} catch (Exception ex) {
@@ -224,13 +196,19 @@ public class GestorAlumno extends GestorUsuario implements IValidacionUsuarioAlu
 			setTransaction();
 			Alumno criterioVacio = new Alumno();
 			ArrayList<Alumno> listadoAlumnosDevolver = new ArrayList<Alumno>();
-			listadoAlumnosDevolver = (ArrayList<Alumno>) alumnoDAO.findByExample((Alumno)criterioVacio);
+			listadoAlumnosDevolver = (ArrayList<Alumno>) alumnoDAO.findByExample(criterioVacio);
 			sesionDeHilo.getTransaction().commit();
 			return listadoAlumnosDevolver;
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un error al listar los directivos: " + ex.getMessage());
 		}
 	}
+	
 
+	@Override
+	public ArrayList getByExample(Object example) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

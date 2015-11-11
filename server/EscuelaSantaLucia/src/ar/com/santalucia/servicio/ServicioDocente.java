@@ -33,7 +33,7 @@ public class ServicioDocente extends ServicioUsuario<Docente> {
 	public Docente getUsuario(Long id) throws Exception {
 		if (id > 0) {
 			try {
-				return gDocente.getById(id);
+				return (Docente) gDocente.getById(id);
 			} catch (Exception ex) {
 				throw new Exception("Servicio: problemas. " + ex.getMessage());
 			}

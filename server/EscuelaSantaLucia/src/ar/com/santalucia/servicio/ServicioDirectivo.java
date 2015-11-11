@@ -33,7 +33,7 @@ public class ServicioDirectivo extends ServicioUsuario<Directivo> {
 	public Directivo getUsuario(Long id) throws Exception {
 		if (id > 0) {
 			try {
-				return gDirectivo.getById(id);
+				return (Directivo) gDirectivo.getById(id);
 			} catch (Exception ex) {
 				throw new Exception("Servicio: problemas. " + ex.getMessage());
 			}

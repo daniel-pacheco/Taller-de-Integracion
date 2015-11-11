@@ -10,8 +10,19 @@ import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorMail;
 import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorTelefono;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.Usuario;
+import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 
-public abstract class GestorUsuario extends Gestor<Usuario> implements IListable{
+/**
+ * Clase Usuario (de esta extienden Alumno, Docente, Directivo y Administrador)
+ * 
+ * @author Eric
+ * @version 1.0
+ *
+ */
+
+//Ultimo modificador: Eric Pennachini @ 10-11-2015 17:28
+
+public abstract class GestorUsuario extends Gestor<Usuario> implements IListable {
 	
 	protected UsuarioHome usuarioDAO;
 	protected GestorTelefono GTelefono;
@@ -68,9 +79,9 @@ public abstract class GestorUsuario extends Gestor<Usuario> implements IListable
 		try {
 			setSession();
 			setTransaction();
-			ArrayList<Usuario> listaDirectivosDevolver = (ArrayList<Usuario>) usuarioDAO.findByExample(example);
+			ArrayList<Usuario> listaUsuariosDevolver = (ArrayList<Usuario>) usuarioDAO.findByExample(example);
 			sesionDeHilo.getTransaction().commit();
-			return listaDirectivosDevolver;
+			return listaUsuariosDevolver;
 		} catch (Exception ex) {
 			closeSession();
 			throw new Exception(
@@ -121,6 +132,33 @@ public abstract class GestorUsuario extends Gestor<Usuario> implements IListable
 						usuarioTemp = u;
 					}
 					if (usuarioTemp.getIdUsuario().equals(usuario.getIdUsuario())) {
+						resultado = false;
+					} else {
+						resultado = true;
+					}
+				}
+			}
+		} catch (Exception ex) {
+			throw ex;
+		}
+		return resultado;
+	}
+
+	public Boolean existeMail(Mail mail) throws Exception {
+		Boolean resultado = false;
+		Mail mailEjemplo = new Mail();
+		mailEjemplo.setDireccionMail(mail.getDireccionMail());
+		try {
+			ArrayList<Mail> listaMails = GMail.getByExample(mailEjemplo);
+			if (mail.getIdMail() == null) {
+				resultado = (listaMails.isEmpty() ? false : true);
+			} else {
+				if (!listaMails.isEmpty()) {
+					Mail mailTemp = new Mail();
+					for (Mail m : listaMails) {
+						mailTemp = m;
+					}
+					if (mailTemp.getIdMail().equals(mail.getIdMail())) {
 						resultado = false;
 					} else {
 						resultado = true;

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import ar.com.santalucia.accesodatos.dao.usuario.info.TelefonoHome;
 import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
 import ar.com.santalucia.aplicacion.gestor.Gestor;
+import ar.com.santalucia.aplicacion.gestor.IListable;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 
 /**
@@ -17,7 +18,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 
 //UltimoModificador: Ariel Ramirez @ 29-08-15 16:00
 
-public class GestorTelefono extends Gestor<Telefono> {
+public class GestorTelefono extends Gestor<Telefono> implements IListable<Telefono> {
 	private TelefonoHome telefonoDAO;
 
 	public GestorTelefono() throws Exception {
@@ -116,11 +117,5 @@ public class GestorTelefono extends Gestor<Telefono> {
 
 		}
 	}
-
-	@Override
-	public void validar(Telefono object) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 }

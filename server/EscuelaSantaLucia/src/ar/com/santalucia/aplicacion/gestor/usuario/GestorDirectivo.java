@@ -28,17 +28,17 @@ import ar.com.santalucia.validaciones.IValidacionUsuarioDocDir;
  *
  */
 
-public class GestorDirectivo extends Gestor<Directivo> implements IValidacionUsuarioDocDir {
+//UltimoModificador: Eric Pennachini @ 10-11-15 17:50
+
+public class GestorDirectivo extends GestorUsuario implements IValidacionUsuarioDocDir {
 	private DirectivoHome directivoDAO;
 	private GestorTitulo GTitulo;
 	private GestorTelefono GTelefono;
 	private GestorMail GMail;
 	private GestorDomicilio GDomicilio;
-	private Session sesionDeHilo;
 	
 	public GestorDirectivo() throws Exception {
 		try {
-			sesionDeHilo = HibernateUtil.getSessionFactory().getCurrentSession();
 			directivoDAO = new DirectivoHome();
 			GTitulo = new GestorTitulo();
 			GTelefono = new GestorTelefono();
@@ -51,30 +51,31 @@ public class GestorDirectivo extends Gestor<Directivo> implements IValidacionUsu
 	}
 
 	@Override
-	public void add(Directivo object) throws Exception {
+	public void add(Usuario object) throws Exception {
+		Directivo directivo = (Directivo) object;
 		try {
+			this.validar(directivo);
 			setSession();
 			setTransaction();
-			this.validar(object);
-			if (object.getListaTitulos() != null) {
-				for (Titulo t : object.getListaTitulos()) {
+			if (directivo.getListaTitulos() != null) {
+				for (Titulo t : directivo.getListaTitulos()) {
 					GTitulo.add(t);
 				} 
 			}
-			if (object.getListaTelefonos() != null) {
-				for (Telefono t : object.getListaTelefonos()) {
+			if (directivo.getListaTelefonos() != null) {
+				for (Telefono t : directivo.getListaTelefonos()) {
 					GTelefono.add(t);
 				} 
 			}
-			if (object.getListaMails() != null) {
-				for (Mail m : object.getListaMails()) {
+			if (directivo.getListaMails() != null) {
+				for (Mail m : directivo.getListaMails()) {
 					GMail.add(m);
 				} 
 			}
-			if (object.getDomicilio() != null) {
-				GDomicilio.add(object.getDomicilio());
+			if (directivo.getDomicilio() != null) {
+				GDomicilio.add(directivo.getDomicilio());
 			}
-			directivoDAO.persist(object);
+			directivoDAO.persist(directivo);
 			sesionDeHilo.getTransaction().commit();
 		} 
 		catch (ValidacionException ex) {
@@ -89,12 +90,13 @@ public class GestorDirectivo extends Gestor<Directivo> implements IValidacionUsu
 	}
 
 	@Override
-	public void modify(Directivo object) throws Exception {
+	public void modify(Usuario object) throws Exception {
+		Directivo directivo = (Directivo) object;
 		try {
-			this.validar(object);
+			this.validar(directivo);
 			setSession();
 			setTransaction();
-			directivoDAO.attachDirty(object);
+			directivoDAO.attachDirty(directivo);
 			sesionDeHilo.getTransaction().commit();
 		} 
 		catch (ValidacionException ex) {
@@ -109,38 +111,11 @@ public class GestorDirectivo extends Gestor<Directivo> implements IValidacionUsu
 	}
 
 	@Override
-	public void delete(Directivo object) throws Exception {
+	public ArrayList<Directivo> getByExample(Object object) throws Exception {
 		try {
 			setSession();
 			setTransaction();
-			directivoDAO.delete(object);
-			sesionDeHilo.getTransaction().commit();
-		} catch (Exception ex) {
-			closeSession();
-			throw new Exception("Ha ocurrido un problema al eliminar el objeto: " + ex.getMessage());
-		}
-	}
-
-	@Override
-	public Directivo getById(Long id) throws Exception {
-		try {
-			setSession();
-			setTransaction();
-			Directivo directivoDevolver = new Directivo();
-			directivoDevolver = directivoDAO.findById(id);
-			return directivoDevolver;
-		} catch (Exception ex) {
-			closeSession();
-			throw new Exception("Ha ocurrido un error al buscar el objeto por su ID: " + ex.getMessage());
-		}
-	}
-
-	@Override
-	public ArrayList<Directivo> getByExample(Directivo example) throws Exception {
-		try {
-			setSession();
-			setTransaction();
-			ArrayList<Directivo> listaDirectivosDevolver = (ArrayList<Directivo>) directivoDAO.findByExample(example);
+			ArrayList<Directivo> listaDirectivosDevolver = (ArrayList<Directivo>) directivoDAO.findByExample((Directivo) object);
 			sesionDeHilo.getTransaction().commit();
 			return listaDirectivosDevolver;
 		} catch (Exception ex) {
@@ -170,48 +145,19 @@ public class GestorDirectivo extends Gestor<Directivo> implements IValidacionUsu
 	 */
 
 	@Override
-	public Boolean existeMail(Mail mail) throws Exception {
-		Boolean resultado = false;
-		Mail mailEjemplo = new Mail();
-		mailEjemplo.setDireccionMail(mail.getDireccionMail());
-		try {
-			ArrayList<Mail> listaMails = GMail.getByExample(mailEjemplo);
-			if (mail.getIdMail() == null) {
-				resultado = (listaMails.isEmpty() ? false : true);
-			} else {
-				if (!listaMails.isEmpty()) {
-					Mail mailTemp = new Mail();
-					for (Mail m : listaMails) {
-						mailTemp = m;
-					}
-					if (mailTemp.getIdMail().equals(mail.getIdMail())) {
-						resultado = false;
-					} else {
-						resultado = true;
-					}
-				}
-			}
-		} catch (Exception ex) {
-			throw ex;
-		}
-		return resultado;
-	}
-
-	
-	@Override
-	public void validar(Directivo object) throws Exception {
+	public void validar(Object object) throws Exception {
 		Boolean vDocumento, vNombreUsuario, vCuil;
 		ValidacionException exception = new ValidacionException();
 		
-		vDocumento = this.existeDocumento(object);
-		if (object.getListaMails() != null) {
-			for (Mail m : object.getListaMails()) {
+		vDocumento = this.existeDocumento((Directivo) object);
+		if (((Directivo) object).getListaMails() != null) {
+			for (Mail m : ((Directivo) object).getListaMails()) {
 				exception.addMensajeError(
 						(this.existeMail(m) ? "La dirección de e-mail: " + m.getDireccionMail() + " ya existe" : null));
 			} 
 		}
-		vNombreUsuario = this.existeNombreUsuario(object);
-		vCuil = this.existeCuil(object);
+		vNombreUsuario = this.existeNombreUsuario((Directivo) object);
+		vCuil = this.existeCuil((Directivo) object);
 		
 		exception.addMensajeError(vDocumento ? "El documento ya existe" : null);
 		exception.addMensajeError(vNombreUsuario ? "El nombre de usuario ya existe" : null);
@@ -221,65 +167,7 @@ public class GestorDirectivo extends Gestor<Directivo> implements IValidacionUsu
 			throw exception;
 		}
 	}
-
-	@Override
-	public Boolean existeDocumento(Usuario usuario) throws Exception {
-		Boolean resultado = false;
-		Directivo directivo = (Directivo) usuario;
-		Directivo directivoEjemplo = new Directivo();
-		directivoEjemplo.setNroDocumento(directivo.getNroDocumento());
-		try {
-			ArrayList<Directivo> listaDirectivos = this.getByExample(directivoEjemplo);
-			if (directivo.getIdUsuario() == null) {
-				resultado = (listaDirectivos.isEmpty() ? false : true);
-			} else {
-				if (!listaDirectivos.isEmpty()) {
-					Directivo directivoTemp = new Directivo();
-					for (Directivo d : listaDirectivos) {
-						directivoTemp = d;
-					}
-					if (directivoTemp.getIdUsuario().equals(directivo.getIdUsuario())) {
-						resultado = false;
-					} else {
-						resultado = true;
-					}
-				}
-			}
-		} catch (Exception ex) {
-			throw ex;
-		}
-		return resultado;
-	}
-
-	@Override
-	public Boolean existeNombreUsuario(Usuario usuario) throws Exception {
-		Boolean resultado = false;
-		Directivo directivo = (Directivo) usuario;
-		Directivo directivoEjemplo = new Directivo();
-		directivoEjemplo.setNombreUsuario(directivo.getNombreUsuario());
-		try {
-			ArrayList<Directivo> listaDirectivos = this.getByExample(directivoEjemplo);
-			if (directivo.getIdUsuario() == null) {
-				resultado = (listaDirectivos.isEmpty() ? false : true);
-			} else {
-				if (!listaDirectivos.isEmpty()) {
-					Directivo directivoTemp = new Directivo();
-					for (Directivo d : listaDirectivos) {
-						directivoTemp = d;
-					}
-					if (directivoTemp.getIdUsuario().equals(directivo.getIdUsuario())) {
-						resultado = false;
-					} else {
-						resultado = true;
-					}
-				}
-			}
-		} catch (Exception ex) {
-			throw ex;
-		}
-		return resultado;
-	}
-
+	
 	@Override
 	public Boolean existeCuil(Usuario usuario) throws Exception {
 		Boolean resultado = false;
@@ -308,4 +196,5 @@ public class GestorDirectivo extends Gestor<Directivo> implements IValidacionUsu
 		}
 		return resultado;
 	}
+
 }

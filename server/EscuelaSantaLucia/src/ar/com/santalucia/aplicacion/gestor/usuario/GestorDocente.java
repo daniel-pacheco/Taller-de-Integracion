@@ -34,17 +34,16 @@ import ar.com.santalucia.validaciones.IValidacionUsuarioDocDir;
 
 // UltimoModificador: Eric Pennachini @ 16-10-15 16:41
 
-public class GestorDocente extends Gestor<Docente> implements IValidacionUsuarioDocDir{
+public class GestorDocente extends GestorUsuario implements IValidacionUsuarioDocDir {
 	private DocenteHome docenteDAO;
 	private GestorTitulo GTitulo;
 	private GestorTelefono GTelefono;
 	private GestorMail GMail;
 	private GestorDomicilio GDomicilio;
-	//private Session sesionDeHilo;
 
 	public GestorDocente() throws Exception {
+		super();
 		try {
-			sesionDeHilo = HibernateUtil.getSessionFactory().getCurrentSession();
 			docenteDAO = new DocenteHome();
 			GTitulo = new GestorTitulo();
 			GTelefono = new GestorTelefono();
@@ -57,30 +56,31 @@ public class GestorDocente extends Gestor<Docente> implements IValidacionUsuario
 	}
 
 	@Override
-	public void add(Docente object) throws Exception {
+	public void add(Usuario object) throws Exception {
+		Docente docente = (Docente) object;
 		try {
-			this.validar(object);
+			this.validar(docente);
 			setSession();
 			setTransaction();
-			if (object.getListaTitulos() != null) {
-				for (Titulo t : object.getListaTitulos()) {
+			if (docente.getListaTitulos() != null) {
+				for (Titulo t : docente.getListaTitulos()) {
 					GTitulo.add(t);
 				} 
 			}
-			if (object.getListaTelefonos() != null) {
-				for (Telefono t : object.getListaTelefonos()) {
+			if (docente.getListaTelefonos() != null) {
+				for (Telefono t : docente.getListaTelefonos()) {
 					GTelefono.add(t);
 				} 
 			}
-			if (object.getListaMails() != null) {
-				for (Mail m : object.getListaMails()) {
+			if (docente.getListaMails() != null) {
+				for (Mail m : docente.getListaMails()) {
 					GMail.add(m);
 				} 
 			}
-			if (object.getDomicilio() != null) {
-				GDomicilio.add(object.getDomicilio());
+			if (docente.getDomicilio() != null) {
+				GDomicilio.add(docente.getDomicilio());
 			}
-			docenteDAO.persist(object);
+			docenteDAO.persist(docente);
 			sesionDeHilo.getTransaction().commit();
 		} 
 		catch (ValidacionException ex) {
@@ -95,12 +95,13 @@ public class GestorDocente extends Gestor<Docente> implements IValidacionUsuario
 	}
 
 	@Override
-	public void modify(Docente object) throws Exception {
+	public void modify(Usuario object) throws Exception {
+		Docente docente = (Docente) object;
 		try {
-			this.validar(object);
+			this.validar(docente);
 			setSession();
 			setTransaction();
-			docenteDAO.attachDirty(object);
+			docenteDAO.attachDirty(docente);
 			sesionDeHilo.getTransaction().commit();
 		} 
 		catch (ValidacionException ex) {
@@ -113,39 +114,13 @@ public class GestorDocente extends Gestor<Docente> implements IValidacionUsuario
 			throw new Exception("Ha ocurrido un problema al actualizar el objeto: " + ex.getMessage());
 		}
 	}
-
-	@Override
-	public void delete(Docente object) throws Exception {
-		try {
-			setSession();
-			setTransaction();
-			docenteDAO.delete(object);
-			sesionDeHilo.getTransaction().commit();
-		} catch (Exception ex) {
-			closeSession();
-			throw new Exception("Ha ocurrido un problema al eliminar el objeto: " + ex.getMessage());
-		}
-	}
-
-	@Override
-	public Docente getById(Long id) throws Exception {
-		try {
-			setSession();
-			setTransaction();
-			Docente docenteDevolver = new Docente();
-			docenteDevolver = docenteDAO.findById(id);
-			return docenteDevolver;
-		} catch (Exception ex) {
-			closeSession();
-			throw new Exception("Ha ocurrido un error al buscar el objeto por su ID: " + ex.getMessage());
-		}
-	}
 	
-	public ArrayList<Docente> getByExample(Docente example) throws Exception {
+	//@Override
+	public ArrayList<Docente> getByExample(Docente object) throws Exception {
 		try {
 			setSession();
 			setTransaction();
-			ArrayList<Docente> listaDocentesDevolver = (ArrayList<Docente>) docenteDAO.findByExample(example);
+			ArrayList<Docente> listaDocentesDevolver = (ArrayList<Docente>) docenteDAO.findByExample(object);
 			sesionDeHilo.getTransaction().commit();
 			return listaDocentesDevolver;
 		} catch (Exception ex) {
@@ -155,6 +130,7 @@ public class GestorDocente extends Gestor<Docente> implements IValidacionUsuario
 		}
 	}
 
+	@Override
 	public ArrayList<Docente> List() throws Exception{
 		try {
 			setSession();
@@ -173,88 +149,6 @@ public class GestorDocente extends Gestor<Docente> implements IValidacionUsuario
 	 * Implementación de IValidacionDocDir
 	 */
 	
-	public void validar(Docente object) throws Exception {
-		Boolean vDocumento, vNombreUsuario, vCuil;
-		ValidacionException exception = new ValidacionException();
-		
-		vDocumento = this.existeDocumento(object);
-		if (object.getListaMails() != null) {
-			for (Mail m : object.getListaMails()) {
-				exception.addMensajeError(
-						(this.existeMail(m) ? "La dirección de e-mail: " + m.getDireccionMail() + " ya existe" : null));
-			} 
-		}
-		vNombreUsuario = this.existeNombreUsuario(object);
-		vCuil = this.existeCuil(object);
-		
-		exception.addMensajeError(vDocumento ? "El documento ya existe" : null);
-		exception.addMensajeError(vNombreUsuario ? "El nombre de usuario ya existe" : null);
-		exception.addMensajeError(vCuil ? "El número de CUIL ya existe" : null);
-		
-		if (!exception.getMensajesError().isEmpty()) {
-			throw exception;
-		}
-		
-	}
-
-	@Override
-	public Boolean existeDocumento(Usuario usuario) throws Exception {
-		Boolean resultado = false;
-		Docente docente = (Docente) usuario;
-		Docente docenteEjemplo = new Docente();
-		docenteEjemplo.setNroDocumento(docente.getNroDocumento());
-		try {
-			ArrayList<Docente> listaDocentes = this.getByExample(docenteEjemplo);
-			if (docente.getIdUsuario() == null) {
-				resultado = (listaDocentes.isEmpty() ? false : true);
-			} else {
-				if (!listaDocentes.isEmpty()) {
-					Docente docenteTemp = new Docente();
-					for (Docente d : listaDocentes) {
-						docenteTemp = d;
-					}
-					if (docenteTemp.getIdUsuario().equals(docente.getIdUsuario())) {
-						resultado = false;
-					} else {
-						resultado = true;
-					}
-				}
-			}
-		} catch (Exception ex) {
-			throw ex;
-		}
-		return resultado;
-	}
-
-	@Override
-	public Boolean existeNombreUsuario(Usuario usuario) throws Exception {
-		Boolean resultado = false;
-		Docente docente = (Docente) usuario;
-		Docente docenteEjemplo = new Docente();
-		docenteEjemplo.setNombreUsuario(docente.getNombreUsuario());
-		try {
-			ArrayList<Docente> listaDocente = this.getByExample(docenteEjemplo);
-			if (docente.getIdUsuario() == null) {
-				resultado = (listaDocente.isEmpty() ? false : true);
-			} else {
-				if (!listaDocente.isEmpty()) {
-					Docente docenteTemp = new Docente();
-					for (Docente d : listaDocente) {
-						docenteTemp = d;
-					}
-					if (docenteTemp.getIdUsuario().equals(docente.getIdUsuario())) {
-						resultado = false;
-					} else {
-						resultado = true;
-					}
-				}
-			}
-		} catch (Exception ex) {
-			throw ex;
-		}
-		return resultado;
-	}
-
 	@Override
 	public Boolean existeCuil(Usuario usuario) throws Exception {
 		Boolean resultado = false;
@@ -285,38 +179,36 @@ public class GestorDocente extends Gestor<Docente> implements IValidacionUsuario
 	}
 
 	@Override
-	public Boolean existeMail(Mail mail) throws Exception {
-		Boolean resultado = false;
-		Mail mailEjemplo = new Mail();
-		mailEjemplo.setDireccionMail(mail.getDireccionMail());
-		try {
-			ArrayList<Mail> listaMails = GMail.getByExample(mailEjemplo);
-			if (mail.getIdMail() == null) {
-				resultado = (listaMails.isEmpty() ? false : true);
-			} else {
-				if (!listaMails.isEmpty()) {
-					Mail mailTemp = new Mail();
-					for (Mail m : listaMails) {
-						mailTemp = m;
-					}
-					if (mailTemp.getIdMail().equals(mail.getIdMail())) {
-						resultado = false;
-					} else {
-						resultado = true;
-					}
-				}
-			}
-		} catch (Exception ex) {
-			throw ex;
+	public void validar(Object object) throws Exception {
+		Boolean vDocumento, vNombreUsuario, vCuil;
+		ValidacionException exception = new ValidacionException();
+		
+		vDocumento = this.existeDocumento((Docente) object);
+		if (((Docente) object).getListaMails() != null) {
+			for (Mail m : ((Docente) object).getListaMails()) {
+				exception.addMensajeError(
+						(this.existeMail(m) ? "La dirección de e-mail: " + m.getDireccionMail() + " ya existe" : null));
+			} 
 		}
-		return resultado;
+		vNombreUsuario = this.existeNombreUsuario((Docente) object);
+		vCuil = this.existeCuil((Docente) object);
+		
+		exception.addMensajeError(vDocumento ? "El documento ya existe" : null);
+		exception.addMensajeError(vNombreUsuario ? "El nombre de usuario ya existe" : null);
+		exception.addMensajeError(vCuil ? "El número de CUIL ya existe" : null);
+		
+		if (!exception.getMensajesError().isEmpty()) {
+			throw exception;
+		}
+		
 	}
 
 	
 	@Override
-	public void validar(Object object) throws Exception {
+	public ArrayList getByExample(Object example) throws Exception {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
+
 
 }

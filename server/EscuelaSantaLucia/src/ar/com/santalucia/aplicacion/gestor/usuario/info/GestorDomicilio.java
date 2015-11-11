@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import ar.com.santalucia.accesodatos.dao.usuario.info.DomicilioHome;
 import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
 import ar.com.santalucia.aplicacion.gestor.Gestor;
+import ar.com.santalucia.aplicacion.gestor.IListable;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
+import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 
 
 /**
@@ -17,7 +19,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
 
 //UltimoModificador: Ariel Ramirez @ 29-08-15 16:00
 
-public class GestorDomicilio extends Gestor<Domicilio> {
+public class GestorDomicilio extends Gestor<Domicilio> implements IListable<Domicilio> {
 	private DomicilioHome domicilioDAO;
 
 	public GestorDomicilio() throws Exception {
@@ -116,12 +118,6 @@ public class GestorDomicilio extends Gestor<Domicilio> {
 			throw new Exception("Ha ocurrido un error al listar los alumnos: " + ex.getMessage());
 
 		}
-	}
-
-	@Override
-	public void validar(Domicilio object) throws Exception {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import ar.com.santalucia.accesodatos.dao.usuario.info.TituloHome;
 import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
 import ar.com.santalucia.aplicacion.gestor.Gestor;
+import ar.com.santalucia.aplicacion.gestor.IListable;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
 
 /**
@@ -17,12 +18,11 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
 
 //UltimoModificador: Ariel Ramirez @ 29-08-15 16:00
 
-public class GestorTitulo extends Gestor<Titulo> {
+public class GestorTitulo extends Gestor<Titulo> implements IListable<Titulo>{
 	private TituloHome tituloDAO;
 
 	public GestorTitulo() throws Exception {
 		try {
-			sesionDeHilo = HibernateUtil.getSessionFactory().getCurrentSession();
 			tituloDAO = new TituloHome();
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un problema al inicializar la persistencia: " + ex.getMessage());
@@ -85,11 +85,11 @@ public class GestorTitulo extends Gestor<Titulo> {
 	}
 
 	@Override
-	public ArrayList<Titulo> getByExample(Titulo example) throws Exception {
+	public ArrayList<Titulo> getByExample(Titulo object) throws Exception {
 		try {
 			setSession();
 			setTransaction();
-			ArrayList<Titulo> listaTituloDevolver = (ArrayList<Titulo>) tituloDAO.findByExample((Titulo) example);
+			ArrayList<Titulo> listaTituloDevolver = (ArrayList<Titulo>) tituloDAO.findByExample(object);
 			sesionDeHilo.getTransaction().commit();
 			return listaTituloDevolver;
 		} catch (Exception ex) {
@@ -113,12 +113,6 @@ public class GestorTitulo extends Gestor<Titulo> {
 			throw new Exception("Ha ocurrido un error al listar los alumnos: " + ex.getMessage());
 
 		}
-	}
-
-	@Override
-	public void validar(Titulo object) throws Exception {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
