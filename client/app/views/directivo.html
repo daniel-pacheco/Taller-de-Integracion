@@ -1,7 +1,7 @@
 <div class="col-md-2 hidden-sm hidden-xs">
     <div>
 		<!-- ngInclude: 'views/partials/affixed-sidebar.html' -->
-		<div class="bs-sidebar hidden-print affix" role="complementary" data-offset-top="-100" bs-affix bs-scrollspy-list style="position: relative; text-align: right;">
+		<div class="bs-sidebar hidden-print affix" role="complementary" data-offset-top="-100" bs-affix style="position: relative; text-align: right;">
 		   <ul class="nav bs-sidenav">
 		    <li bs-scrollspy data-target="#getting-started">
 		      <a href="#getting-started">Men&uacute; Alumnado</a>
@@ -31,7 +31,7 @@
 				<option value="">2016</option>
 				<option value="">Todos</option>
 			</select>
-			<button ng-click="search()">Buscar</button>
+			<button ng-click="search()">Buscar</button> <input type="text" ng-model="filterByName">
 			<div id="listFilters" ng-if="listFilterIsEnabled">
 				<h2>Filtros de búsqueda</h2>
 				<label for="">Nombre:</label>
@@ -58,11 +58,14 @@
 						<th>DNI</th>
 						<th>Acciones</th>
 					</tr>
-				</thead>
-				<tr ng-repeat="alumno in answer | filter:{ nombre: flterByName}">
-					<td>{{alumno.matricula}}</td>
-					<td>{{alumno.nombre}} {{alumno.apellido}}</td>
-					<td>{{alumno.nroDocumento}}</td>
+				</thead>{{answer}}
+				<tr ng-repeat="alumno in friends | filter:filterByName">
+				<!--	<td>{{alumno.matricula}}</td>
+					<td>{{alumno.nombre}}</td>
+					<td>{{alumno.nroDocumento}}</td> -->
+					<td>{{alumno.name}}</td>
+					<td>{{alumno.phone}}</td>
+					<td>{{$index}}</td>
 				</tr>
 			</table>
 		</fieldset>
