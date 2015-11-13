@@ -276,7 +276,7 @@ public class ServicioDocenteEndpoint {
 	 * (! PRECAUCIÓN) Se eliminan todos los datos adicionales asociados (telefono, mail, titulos y domicilio) al eliminar el usuario.
 	 */
 	@DELETE
-	@Path("/dir/{id:[0-9][0-9]*}")
+	@Path("/doc/{id:[0-9][0-9]*}")
 	public Response deleteDirectivoById(@PathParam("id") final Long id) {
 		Boolean exito = false;
 		try {

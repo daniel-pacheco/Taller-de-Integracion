@@ -33,17 +33,12 @@ import ar.com.santalucia.validaciones.IValidacionUsuarioDocDir;
 public class GestorDirectivo extends GestorUsuario implements IValidacionUsuarioDocDir {
 	private DirectivoHome directivoDAO;
 	private GestorTitulo GTitulo;
-	private GestorTelefono GTelefono;
-	private GestorMail GMail;
-	private GestorDomicilio GDomicilio;
 	
 	public GestorDirectivo() throws Exception {
+		super();
 		try {
 			directivoDAO = new DirectivoHome();
 			GTitulo = new GestorTitulo();
-			GTelefono = new GestorTelefono();
-			GMail = new GestorMail();
-			GDomicilio = new GestorDomicilio();
 		} catch (Exception ex) {
 			closeSession();
 			throw new Exception("Ha ocurrido un problema al inicializar el gestor: " + ex.getMessage());
@@ -55,8 +50,6 @@ public class GestorDirectivo extends GestorUsuario implements IValidacionUsuario
 		Directivo directivo = (Directivo) object;
 		try {
 			this.validar(directivo);
-			setSession();
-			setTransaction();
 			if (directivo.getListaTitulos() != null) {
 				for (Titulo t : directivo.getListaTitulos()) {
 					GTitulo.add(t);
@@ -75,6 +68,8 @@ public class GestorDirectivo extends GestorUsuario implements IValidacionUsuario
 			if (directivo.getDomicilio() != null) {
 				GDomicilio.add(directivo.getDomicilio());
 			}
+			setSession();
+			setTransaction();
 			directivoDAO.persist(directivo);
 			sesionDeHilo.getTransaction().commit();
 		} 
@@ -110,8 +105,8 @@ public class GestorDirectivo extends GestorUsuario implements IValidacionUsuario
 		}
 	}
 
-	@Override
-	public ArrayList<Directivo> getByExample(Object object) throws Exception {
+	//@Override
+	public ArrayList<Directivo> getByExample(Directivo object) throws Exception {
 		try {
 			setSession();
 			setTransaction();
@@ -196,5 +191,13 @@ public class GestorDirectivo extends GestorUsuario implements IValidacionUsuario
 		}
 		return resultado;
 	}
+
+	@Override
+	public ArrayList getByExample(Object example) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 }
