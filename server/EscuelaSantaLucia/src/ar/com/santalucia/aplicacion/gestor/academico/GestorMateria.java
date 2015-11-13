@@ -66,9 +66,9 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 	@Override
 	public void modify(Materia object) throws Exception {
 		try {
+			this.validar(object);
 			setSession();
 			setTransaction();
-			this.validar(object);
 			materiaDAO.attachDirty(object);
 			sesionDeHilo.getTransaction().commit();
 		} catch (ValidacionException ex) {
@@ -115,6 +115,7 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 			setSession();
 			setTransaction();
 			ArrayList<Materia> listaMateriasDevolver = (ArrayList<Materia>) materiaDAO.findByExample((Materia) example);
+			sesionDeHilo.getTransaction().commit();
 			return listaMateriasDevolver;
 		} catch (Exception ex) {
 			closeSession();
@@ -131,6 +132,7 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 			Materia criterioVacio = new Materia();
 			ArrayList<Materia> listaMateriasDevolver = new ArrayList<Materia>();
 			listaMateriasDevolver = (ArrayList<Materia>) materiaDAO.findByExample(criterioVacio);
+			sesionDeHilo.getTransaction().commit();
 			return listaMateriasDevolver;
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un error al listar los alumnos: " + ex.getMessage());

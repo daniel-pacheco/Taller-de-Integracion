@@ -1,5 +1,7 @@
 package ar.com.santalucia.validaciones;
 
+import ar.com.santalucia.dominio.modelo.usuarios.Usuario;
+
 public interface IValidacionUsuarioDocDir extends IValidacionUsuario {
 	
 	/**
@@ -8,6 +10,6 @@ public interface IValidacionUsuarioDocDir extends IValidacionUsuario {
 	 * @return
 	 * @throws Exception
 	 */
-	Boolean existeCuil(Long cuil) throws Exception;
+	Boolean existeCuil(Usuario usuario) throws Exception;
 
 }

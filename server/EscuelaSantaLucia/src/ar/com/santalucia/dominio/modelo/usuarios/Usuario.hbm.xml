@@ -22,13 +22,13 @@
         <property name="apellido" type="java.lang.String">
             <column name="APELLIDO" />
         </property>
-        <set name="listaTelefonos" table="TELEFONO" inverse="false" lazy="true" cascade="all">
+        <set name="listaTelefonos" table="TELEFONO" inverse="false" lazy="false" cascade="all">
             <key>
                 <column name="IDUSUARIO" />
             </key>
             <one-to-many class="ar.com.santalucia.dominio.modelo.usuarios.info.Telefono" />
         </set>
-        <set name="listaMails" table="MAIL" inverse="false" lazy="true" cascade="all">
+        <set name="listaMails" table="MAIL" inverse="false" lazy="false" cascade="all">
             <key>
                 <column name="IDUSUARIO" />
             </key>

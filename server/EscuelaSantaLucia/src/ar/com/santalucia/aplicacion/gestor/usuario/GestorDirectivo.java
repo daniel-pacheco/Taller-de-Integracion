@@ -10,8 +10,10 @@ import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorDomicilio;
 import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorMail;
 import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorTelefono;
 import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorTitulo;
+import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.Directivo;
 import ar.com.santalucia.dominio.modelo.usuarios.Docente;
+import ar.com.santalucia.dominio.modelo.usuarios.Usuario;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
@@ -89,9 +91,9 @@ public class GestorDirectivo extends Gestor<Directivo> implements IValidacionUsu
 	@Override
 	public void modify(Directivo object) throws Exception {
 		try {
+			this.validar(object);
 			setSession();
 			setTransaction();
-			this.validar(object);
 			directivoDAO.attachDirty(object);
 			sesionDeHilo.getTransaction().commit();
 		} 
@@ -139,6 +141,7 @@ public class GestorDirectivo extends Gestor<Directivo> implements IValidacionUsu
 			setSession();
 			setTransaction();
 			ArrayList<Directivo> listaDirectivosDevolver = (ArrayList<Directivo>) directivoDAO.findByExample(example);
+			sesionDeHilo.getTransaction().commit();
 			return listaDirectivosDevolver;
 		} catch (Exception ex) {
 			closeSession();
@@ -155,6 +158,7 @@ public class GestorDirectivo extends Gestor<Directivo> implements IValidacionUsu
 			Directivo criterioVacio = new Directivo();
 			ArrayList<Directivo> listaDirectivosDevolver = new ArrayList<Directivo>();
 			listaDirectivosDevolver = (ArrayList<Directivo>) directivoDAO.findByExample(criterioVacio);
+			sesionDeHilo.getTransaction().commit();
 			return listaDirectivosDevolver;
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un error al listar los directivos: " + ex.getMessage());
@@ -164,77 +168,50 @@ public class GestorDirectivo extends Gestor<Directivo> implements IValidacionUsu
 	/*
 	 * Implementación de IValidacionDocDir
 	 */
-	
-	@Override
-	public Boolean existeDocumento(Long id, String tipo, Long numero) {
-		Directivo directivoEjemplo = new Directivo();
-		directivoEjemplo.setTipoDocumento(tipo);
-		directivoEjemplo.setNroDocumento(numero);
-		ArrayList<Directivo> ejemplos = new ArrayList<Directivo>();
-		try {
-			ejemplos = this.getByExample(directivoEjemplo);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}		
-		return (ejemplos.isEmpty() ? false : true);
-	}
 
 	@Override
-	public Boolean existeMail(Mail mail) {
+	public Boolean existeMail(Mail mail) throws Exception {
+		Boolean resultado = false;
 		Mail mailEjemplo = new Mail();
 		mailEjemplo.setDireccionMail(mail.getDireccionMail());
-		ArrayList<Mail> ejemplos = new ArrayList<Mail>();
 		try {
-			ejemplos = GMail.getByExample(mailEjemplo);
-		} catch (Exception e) {
-			e.printStackTrace();
+			ArrayList<Mail> listaMails = GMail.getByExample(mailEjemplo);
+			if (mail.getIdMail() == null) {
+				resultado = (listaMails.isEmpty() ? false : true);
+			} else {
+				if (!listaMails.isEmpty()) {
+					Mail mailTemp = new Mail();
+					for (Mail m : listaMails) {
+						mailTemp = m;
+					}
+					if (mailTemp.getIdMail().equals(mail.getIdMail())) {
+						resultado = false;
+					} else {
+						resultado = true;
+					}
+				}
+			}
+		} catch (Exception ex) {
+			throw ex;
 		}
-		return (ejemplos.isEmpty() ? false : true);
+		return resultado;
 	}
 
-	@Override
-	public Boolean existeNombreUsuario(String nombreUsuario) {
-		Directivo directivoEjemplo = new Directivo();
-		directivoEjemplo.setNombreUsuario(nombreUsuario);
-		ArrayList<Directivo> ejemplos = new ArrayList<Directivo>();
-		try {
-			ejemplos = this.getByExample(directivoEjemplo);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}		
-		return (ejemplos.isEmpty() ? false : true);
-	}
-
-	@Override
-	public Boolean existeCuil(Long cuil) {
-		Directivo directivoEjemplo = new Directivo();
-		directivoEjemplo.setCuil(cuil);
-		ArrayList<Directivo> ejemplos = new ArrayList<Directivo>();
-		try {
-			ejemplos = this.getByExample(directivoEjemplo);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}		
-		return (ejemplos.isEmpty() ? false : true);
-	}
-	
 	
 	@Override
 	public void validar(Directivo object) throws Exception {
 		Boolean vDocumento, vNombreUsuario, vCuil;
 		ValidacionException exception = new ValidacionException();
 		
-		vDocumento = this.existeDocumento(object.getIdUsuario(), 
-											object.getTipoDocumento(), 
-											object.getNroDocumento());
+		vDocumento = this.existeDocumento(object);
 		if (object.getListaMails() != null) {
 			for (Mail m : object.getListaMails()) {
 				exception.addMensajeError(
 						(this.existeMail(m) ? "La dirección de e-mail: " + m.getDireccionMail() + " ya existe" : null));
 			} 
 		}
-		vNombreUsuario = this.existeNombreUsuario(object.getNombreUsuario());
-		vCuil = this.existeCuil(object.getCuil());
+		vNombreUsuario = this.existeNombreUsuario(object);
+		vCuil = this.existeCuil(object);
 		
 		exception.addMensajeError(vDocumento ? "El documento ya existe" : null);
 		exception.addMensajeError(vNombreUsuario ? "El nombre de usuario ya existe" : null);
@@ -243,5 +220,92 @@ public class GestorDirectivo extends Gestor<Directivo> implements IValidacionUsu
 		if (!exception.getMensajesError().isEmpty()) {
 			throw exception;
 		}
+	}
+
+	@Override
+	public Boolean existeDocumento(Usuario usuario) throws Exception {
+		Boolean resultado = false;
+		Directivo directivo = (Directivo) usuario;
+		Directivo directivoEjemplo = new Directivo();
+		directivoEjemplo.setNroDocumento(directivo.getNroDocumento());
+		try {
+			ArrayList<Directivo> listaDirectivos = this.getByExample(directivoEjemplo);
+			if (directivo.getIdUsuario() == null) {
+				resultado = (listaDirectivos.isEmpty() ? false : true);
+			} else {
+				if (!listaDirectivos.isEmpty()) {
+					Directivo directivoTemp = new Directivo();
+					for (Directivo d : listaDirectivos) {
+						directivoTemp = d;
+					}
+					if (directivoTemp.getIdUsuario().equals(directivo.getIdUsuario())) {
+						resultado = false;
+					} else {
+						resultado = true;
+					}
+				}
+			}
+		} catch (Exception ex) {
+			throw ex;
+		}
+		return resultado;
+	}
+
+	@Override
+	public Boolean existeNombreUsuario(Usuario usuario) throws Exception {
+		Boolean resultado = false;
+		Directivo directivo = (Directivo) usuario;
+		Directivo directivoEjemplo = new Directivo();
+		directivoEjemplo.setNombreUsuario(directivo.getNombreUsuario());
+		try {
+			ArrayList<Directivo> listaDirectivos = this.getByExample(directivoEjemplo);
+			if (directivo.getIdUsuario() == null) {
+				resultado = (listaDirectivos.isEmpty() ? false : true);
+			} else {
+				if (!listaDirectivos.isEmpty()) {
+					Directivo directivoTemp = new Directivo();
+					for (Directivo d : listaDirectivos) {
+						directivoTemp = d;
+					}
+					if (directivoTemp.getIdUsuario().equals(directivo.getIdUsuario())) {
+						resultado = false;
+					} else {
+						resultado = true;
+					}
+				}
+			}
+		} catch (Exception ex) {
+			throw ex;
+		}
+		return resultado;
+	}
+
+	@Override
+	public Boolean existeCuil(Usuario usuario) throws Exception {
+		Boolean resultado = false;
+		Directivo directivo = (Directivo) usuario;
+		Directivo directivoEjemplo = new Directivo();
+		directivoEjemplo.setCuil(directivo.getCuil());
+		try {
+			ArrayList<Directivo> listaDirectivos = this.getByExample(directivoEjemplo);
+			if (directivo.getIdUsuario() == null) {
+				resultado = (listaDirectivos.isEmpty() ? false : true);
+			} else {
+				if (!listaDirectivos.isEmpty()) {
+					Directivo directivoTemp = new Directivo();
+					for (Directivo d : listaDirectivos) {
+						directivoTemp = d;
+					}
+					if (directivoTemp.getIdUsuario().equals(directivo.getIdUsuario())) {
+						resultado = false;
+					} else {
+						resultado = true;
+					}
+				}
+			}
+		} catch (Exception ex) {
+			throw ex;
+		}
+		return resultado;
 	}
 }
