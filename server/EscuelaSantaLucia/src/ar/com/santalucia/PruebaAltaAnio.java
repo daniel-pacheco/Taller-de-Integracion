@@ -42,14 +42,10 @@ public class PruebaAltaAnio {
 		Docente docente3 = new Docente();
 		Docente docente4 = new Docente();
 		
-		
-		
 		anio1.setIdAño(null);
 		anio1.setNombre("5to año");
 		anio1.setDescripcion("5to año de Licenciatura en Sistemas de Información");
 		anio1.setActivo(true);
-		
-		
 		
 		curso1.setIdCurso(null);
 		curso1.setDivision('1');
@@ -60,8 +56,6 @@ public class PruebaAltaAnio {
 		curso2.setDivision('2');
 		curso2.setTurno("Único");
 		curso2.setCicloLectivo(2015);
-		
-		
 		
 		materia1.setIdMateria(null);
 		materia1.setNombre("Administración de Recursos");
@@ -74,7 +68,6 @@ public class PruebaAltaAnio {
 		materia2.setDescripcion("");
 		materia2.setArea(new Area(null,"Sistemas"));
 		materia2.setActivo(true);
-		
 		
 		alumno1.setIdUsuario(null);
 		alumno1.setApellido("Ramirez");
@@ -193,8 +186,6 @@ public class PruebaAltaAnio {
 		docente4.setListaTelefonos(null);
 		docente4.setListaTitulos(null);
 		
-		
-		
 		curso1.getListaAlumnos().add(alumno1);
 		curso1.getListaAlumnos().add(alumno2);
 		curso2.getListaAlumnos().add(alumno3);
@@ -209,10 +200,7 @@ public class PruebaAltaAnio {
 		
 		anio1.getListaCursos().add(curso1);
 		anio1.getListaCursos().add(curso2);
-		anio1.getListaMaterias().add(materia1);
-		anio1.getListaMaterias().add(materia2);
-		
-		
+	
 		// prueba con servicio académico
 		
 		ServicioAcademico servAcademico = new ServicioAcademico();
@@ -229,11 +217,11 @@ public class PruebaAltaAnio {
 		servDocente.addUsuario(docente3);
 		servDocente.addUsuario(docente4);
 		
-		//servAcademico.addMateria(materia1);
-		//servAcademico.addMateria(materia2);
+		servAcademico.addMateria(materia1);
+		servAcademico.addMateria(materia2);
 		
 		servAcademico.addAnio(anio1);
-		
+		//servAcademico.asignarMateriaAAnio(materia, idAnio)
 	}
 
 }

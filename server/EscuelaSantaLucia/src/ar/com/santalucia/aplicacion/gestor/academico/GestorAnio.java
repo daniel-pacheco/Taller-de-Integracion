@@ -75,9 +75,9 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 	@Override
 	public void modify(Anio object) throws Exception {
 		try {
+			this.validar(object);
 			setSession();
 			setTransaction();
-			this.validar(object);
 			anioDAO.attachDirty(object);
 			sesionDeHilo.getTransaction().commit();
 		} catch (ValidacionException ex) {
@@ -123,6 +123,7 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 			setSession();
 			setTransaction();
 			ArrayList<Anio> listaAniosDevolver = (ArrayList<Anio>) anioDAO.findByExample((Anio) example);
+			sesionDeHilo.getTransaction().commit();
 			return listaAniosDevolver;
 		} catch (Exception ex) {
 			closeSession();
@@ -139,6 +140,7 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 			Anio criterioVacio = new Anio();
 			ArrayList<Anio> listaAniosDevolver = new ArrayList<Anio>();
 			listaAniosDevolver = (ArrayList<Anio>) anioDAO.findByExample(criterioVacio);
+			sesionDeHilo.getTransaction().commit();
 			return listaAniosDevolver;
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un error al listar los alumnos: " + ex.getMessage());

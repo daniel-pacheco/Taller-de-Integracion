@@ -1,5 +1,7 @@
 package ar.com.santalucia.validaciones;
 
+import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
+
 public interface IValidacionUsuarioAlumno extends IValidacionUsuario {
 	
 	/**
@@ -8,6 +10,6 @@ public interface IValidacionUsuarioAlumno extends IValidacionUsuario {
 	 * @return
 	 * @throws Exception
 	 */
-	Boolean existeMatricula(Long matricula) throws Exception;
+	Boolean existeMatricula(Alumno alumno) throws Exception;
 
 }

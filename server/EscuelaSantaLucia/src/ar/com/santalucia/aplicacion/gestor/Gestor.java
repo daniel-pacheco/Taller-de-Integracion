@@ -52,14 +52,14 @@ public abstract class Gestor<T> implements IGestor<T> {
 	//Casos posibles: Sesion abierta, transaccion abierta. Sesion abierta, transaccion cerrada
 	@Override
 	public void closeSession() throws Exception {
-		try {
-			
+		try {	
 			if(sesionDeHilo.isOpen()){
 				if (sesionDeHilo.getTransaction().isActive()) {
-					sesionDeHilo.getTransaction().commit();
+						sesionDeHilo.getTransaction().commit();
+					}else{
+						sesionDeHilo.close();
+					}
 				}
-				sesionDeHilo.close();
-			}
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un problema al finalizar la transacción: " + ex.getMessage());
 		}

@@ -62,9 +62,9 @@ public class GestorCurso extends Gestor<Curso> {
 	@Override
 	public void modify(Curso object) throws Exception {
 		try {
+			this.validar(object);
 			setSession();
 			setTransaction();
-			this.validar(object);
 			cursoDAO.attachDirty(object);
 			sesionDeHilo.getTransaction().commit();
 		} catch (ValidacionException ex) {
@@ -110,6 +110,7 @@ public class GestorCurso extends Gestor<Curso> {
 			setSession();
 			setTransaction();
 			ArrayList<Curso> listaCursosDevolver = (ArrayList<Curso>) cursoDAO.findByExample((Curso) example);
+			sesionDeHilo.getTransaction().commit();
 			return listaCursosDevolver;
 		} catch (Exception ex) {
 			closeSession();
@@ -143,6 +144,7 @@ public class GestorCurso extends Gestor<Curso> {
 			Curso criterioVacio = new Curso();
 			ArrayList<Curso> listaCursosDevolver = new ArrayList<Curso>();
 			listaCursosDevolver = (ArrayList<Curso>) cursoDAO.findByExample(criterioVacio);
+			sesionDeHilo.getTransaction().commit();
 			return listaCursosDevolver;
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un error al listar los alumnos: " + ex.getMessage());

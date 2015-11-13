@@ -60,5 +60,7 @@
 			<attribute name="owner.project.facets" value="jst.jsf"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="con" path="org.jboss.ide.eclipse.as.classpath.core.j2ee-1.4"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/javax.faces.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
