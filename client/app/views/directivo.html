@@ -59,7 +59,7 @@
 						<th>Acciones</th>
 					</tr>
 				</thead>
-				<tr ng-repeat="alumno in data">
+				<tr ng-repeat="alumno in answer | filter:{ nombre: flterByName}">
 					<td>{{alumno.matricula}}</td>
 					<td>{{alumno.nombre}} {{alumno.apellido}}</td>
 					<td>{{alumno.nroDocumento}}</td>
