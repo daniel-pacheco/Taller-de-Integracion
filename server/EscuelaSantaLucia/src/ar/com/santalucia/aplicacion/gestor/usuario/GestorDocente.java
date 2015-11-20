@@ -180,9 +180,6 @@ public class GestorDocente extends GestorUsuario implements IValidacionUsuarioDo
 					&& (d.getCuil().equals(docente.getCuil()))
 					&& (d.getDomicilio().equals(docente.getDomicilio()))
 					&& (d.getFechaNacimiento().getTime() == docente.getFechaNacimiento().getTime() )
-					&& (d.getListaMails().contains((docente.getListaMails())))
-					&& (d.getListaTelefonos().equals(docente.getListaTelefonos()))
-					&& (d.getListaTitulos().equals(docente.getListaTitulos()))
 					&& (d.getNombre().equals(docente.getNombre()))
 					&& (d.getNombreUsuario().equals(docente.getNombreUsuario()))
 					&& (d.getNroDocumento().equals(docente.getNroDocumento()))
@@ -212,7 +209,7 @@ public class GestorDocente extends GestorUsuario implements IValidacionUsuarioDo
 					sugDirException.setMensaje("El documento ya pertenece a un directivo. ");
 					throw sugDirException;
 				}
-			}
+			}// Agregar la logica nueva para el alta por sugerencia
 		} else {
 			if (existeDocumento(docente)) {
 				exception.addMensajeError("El documento ya existe");
