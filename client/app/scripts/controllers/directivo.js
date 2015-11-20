@@ -17,6 +17,21 @@ angular.module('clientAppApp')
 $scope.listado1 = true;
 $scope.listFilterIsEnabled = false;
 
+//tooltips
+$scope.tooltip = {
+  tooltipProfile : {
+    'title' : 'Perfil'
+  }, tooltipAttendance : {
+    'title' : 'Inasistencias'
+  }, tooltipReportCard : {
+    'title' : 'Libreta de Calificaciones'
+  }, tooltipAcademicPerformance : {
+    'title' : 'Desempeño académico'
+  }
+
+
+};
+
 //filters
 $scope.filterByName = '';
 
@@ -36,7 +51,7 @@ $scope.search = function () {
 }
 
 //---Llamadas al servicio ALUMNO---
-$scope.answer = {};
+$scope.answer = [];
 alumnoService.alumnoGetAll().then(function(response){
   $scope.answer = response.data;  
 });

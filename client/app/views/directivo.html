@@ -55,18 +55,21 @@
 				<thead>
 					<tr>
 						<th>Nro</th>
-						<th>Apellido, Nombre</th>
+						<th>Apellido</th>
+						<th>Nombre</th>
 						<th>DNI</th>
 						<th>Acciones</th>
 					</tr>
-				</thead>{{answer}}
-				<tr ng-repeat="alumno in friends | filter:filterByName">
-				<!--	<td>{{alumno.matricula}}</td>
+				</thead>
+				<tr ng-repeat="alumno in answer | filter:filterByName">
+					<td>{{alumno.matricula}}</td>
 					<td>{{alumno.nombre}}</td>
-					<td>{{alumno.nroDocumento}}</td> -->
-					<td>{{alumno.name}}</td>
+					<td>{{alumno.apellido}}</td>
+					<td>{{alumno.nroDocumento}}</td>
+					<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%" class="glyphicon glyphicon-user" ></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAttendance" style="width:25%" class="glyphicon glyphicon-calendar"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipReportCard" style="width:25%" class="glyphicon glyphicon-list-alt"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAcademicPerformance" style="width:25%" class="glyphicon glyphicon-education"></span></td> 
+					<!--<td>{{alumno.name}}</td>
 					<td>{{alumno.phone}}</td>
-					<td>{{$index}}</td>
+					<td>{{$index}}</td> -->
 				</tr>
 			</table>
 		</fieldset>
