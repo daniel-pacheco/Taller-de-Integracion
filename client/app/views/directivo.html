@@ -1,31 +1,31 @@
 <div class="col-md-2 hidden-sm hidden-xs">
-    <div>
+	<div>
 		<!-- ngInclude: 'views/partials/affixed-sidebar.html' -->
-		<div class="bs-sidebar hidden-print affix" role="complementary" data-offset-top="-100" bs-affix bs-scrollspy-list style="position: relative; text-align: right;">
-		   <ul class="nav bs-sidenav">
-		    <li bs-scrollspy data-target="#getting-started">
-		      <a href="#getting-started">Men&uacute; Alumnado</a>
-		    </li>
-		    <hr style="margin: 2px 0;">
-		    <li bs-scrollspy data-target="#modals">
-		      <a href="" ng-click="seleccionar('listado')">Listado</a>
-		    </li>
-		    <li bs-scrollspy data-target="#nuevoPerfil">
-		      <a href="" ng-click="seleccionar('nuevoPerfil')">Nuevo Perfil</a>
-		    </li>
-		  </ul>
+		<div class="bs-sidebar hidden-print affix" role="complementary"
+			data-offset-top="-100" bs-affix bs-scrollspy-list
+			style="position: relative; text-align: right;">
+			<ul class="nav bs-sidenav">
+				<li bs-scrollspy data-target="#getting-started"><a
+					href="#getting-started">Men&uacute; Alumnado</a></li>
+				<hr style="margin: 2px 0;">
+				<li bs-scrollspy data-target="#modals"><a href=""
+					ng-click="seleccionar('listado')">Listado</a></li>
+				<li bs-scrollspy data-target="#nuevoPerfil"><a href=""
+					ng-click="seleccionar('nuevoPerfil')">Nuevo Perfil</a></li>
+			</ul>
 		</div>
 		<!--/ngInclude: 'views/partials/affixed-sidebar.html' -->
 	</div>
 </div>
 
 <div class="col-md-10">
-	<h1>Alumnado</h1><hr>
+	<h1>Alumnado</h1>
+	<hr>
 	<div id="listado" ng-if="listado1">
 		<fieldset class="navbar">
-		<legend>Listado</legend>
-			<label for="">Año lectivo:</label> 
-			<select class="dropdown-toggle form-control-inline" name="">
+			<legend>Listado</legend>
+			<label for="">Año lectivo:</label> <select
+				class="dropdown-toggle form-control-inline" name="">
 				<option value="">2014</option> //un-harcodear las options
 				<option value="">2015</option>
 				<option value="">2016</option>
@@ -34,16 +34,16 @@
 			<button ng-click="search()">Buscar</button>
 			<div id="listFilters" ng-if="listFilterIsEnabled">
 				<h2>Filtros de búsqueda</h2>
-				<label for="">Nombre:</label>
-				<input class="form-control-inline" type="text" maxlength="255" required pattern="[a-zA-Z 0-9]*" ng-model="filterByName">{{filterByName}}
-				<label for="">Curso:</label>
+				<label for="">Nombre:</label> <input class="form-control-inline"
+					type="text" maxlength="255" required pattern="[a-zA-Z 0-9]*"
+					ng-model="filterByName">{{filterByName}} <label for="">Curso:</label>
 				<select class="dropdown-toggle form-control-inline" name="">
 					<option value="">5 Mat</option>
 					<option value="">4 Mat</option>
 					<option value="">3 Mat</option>
 					<option value="">2 Mat</option>
-				</select> <label for="">División:</label>
-				<select class="dropdown-toggle form-control-inline" name="">
+				</select> <label for="">División:</label> <select
+					class="dropdown-toggle form-control-inline" name="">
 					<option value="">U</option>
 					<option value="">A</option>
 					<option value="">B</option>
@@ -70,7 +70,7 @@
 
 	<div id="nuevoPerfil" ng-if="!listado1">
 		<fieldset>
-		<legend>Nuevo Alumno</legend>
+			<legend>Nuevo Alumno</legend>
 			<h3 class="small">Ingrese los datos para crear un nuevo perfil
 				de alumno y haga clic en guardar cuando finalice</h3>
 			<!--<div class="cargar_imagen">
@@ -78,183 +78,194 @@
 				<span class="btn btn-primary btn-file">Examinar<input type="file"></span>
 			</div>-->
 
-			<form class="form-horizontal">
-				<div class="formulario">
+			<form class="form-horizontal media">
+				<div class="pull-right">
+					<img class="img-rounded" src="images/defaultUser.png" alt="Usuario" width="190px" height="auto"/>
+					<div class="btn btn-primary btn-file" id="boton">Examinar<input type="file"></div>
+				</div>	
+				<div class="formulario media-body">
 
 					<div class="form-group">
 						<div class="col-sm-2 control-label">
-						<label for="">Documento:</label> 
+							<label for="">Documento:</label>
 						</div>
-						<div class="col-sm-2">
-						<input class="form-control" placeholder="12332112"
-							type="text" maxlength="10" required pattern="\d{8}">
+						<div class="col-sm-3">
+							<input class="form-control" placeholder="12332112" type="text"
+								maxlength="10" required pattern="\d{8}">
 						</div>
 						<!-- Valida 8 digitos -->
 						<div class="col-sm-1 control-label">
 							<label for="">Tipo:</label>
 						</div>
 						<div class="col-sm-2">
-							
 							<select class="form-control" name="Tipo documento">
-							<option value="">DNI</option>
-							<option value="">LC</option>
-							<option value="">Otro</option>
-						</select>
-						</div>
-					</div> <!-- /form-group-->
-
-
-					<div class="form-group">
-						<div class="col-sm-2 control-label">
-						<label for="">Nombres:</label>
-						</div>
-						<div class="col-sm-4">
-						<input class="form-control" placeholder="Nombre Nombre"
-							type="text" maxlength="255" required pattern="[a-zA-Z ]*">
-						<!-- Valida letras y espacios -->
-					</div>
-					</div> <!-- /form-group-->
-					
-					<div class="form-group">
-						<div class="col-sm-2 control-label">
-						<label for="">Apellidos:</label>
-						</div>
-						<div class="col-sm-4">
-						<input class="form-control" placeholder="Apellido Apellido"
-							type="text" maxlength="255" required pattern="[a-zA-Z ]*">
-						<!-- Valida letras y espacios-->
+								<option value="">DNI</option>
+								<option value="">LC</option>
+								<option value="">Otro</option>
+							</select>
 						</div>
 					</div>
-
-					
-
-						<div class="form-group">
-						<div class="col-sm-2 control-label">
-						<label for="">Sexo:</label>
-						</div>
-						<div class="col-sm-4">
-						 <input type="radio" name="sexo"
-							value="Femenino"> Femenino <input type="radio" name="sexo"
-							value="Masculino" checked> Masculino
-						</div>
-						</div><!-- /form-group-->
+					<!-- /form-group-->
 
 
 					<div class="form-group">
 						<div class="col-sm-2 control-label">
-						<label for="">Domicilio:</label>
+							<label for="">Nombres:</label>
 						</div>
-						<div class="col-sm-4">
-						<input class="form-control" placeholder="Domicilio 123"
-							type="text" maxlength="255" required pattern="[a-zA-Z 0-9]*" />
-						<!-- Valida letras, numeros y espacios-->
+						<div class="col-sm-5">
+							<input class="form-control" placeholder="Nombre Nombre"
+								type="text" maxlength="255" required pattern="[a-zA-Z ]*">
+							<!-- Valida letras y espacios -->
+						</div>
 					</div>
-					</div><!-- /form-group-->
-
-
+					<!-- /form-group-->
 
 					<div class="form-group">
 						<div class="col-sm-2 control-label">
-						<label for="">Fecha de nac.:</label>
+							<label for="">Apellidos:</label>
 						</div>
-						<div class="col-sm-4">
-						<input class="form-control" placeholder="10/10/1010"
-							type="date" step="1" value="01-01-2000" />
+						<div class="col-sm-5">
+							<input class="form-control" placeholder="Apellido Apellido"
+								type="text" maxlength="255" required pattern="[a-zA-Z ]*">
+							<!-- Valida letras y espacios-->
+						</div>
 					</div>
-					</div><!-- /form-group-->
 
 
-						<div class="form-group">
-						<div class="col-sm-2 control-label">
-						<label for="">Año curso:</label>
-						</div>
-						<div class="col-sm-2">
-						<select class="form-control"
-							name="Año">
-							<option value="">elemento 1</option>
-							<option value="">elemento 2</option>
-						</select>
-						</div>
-					</div><!-- /form-group-->
-
-					
 
 					<div class="form-group">
 						<div class="col-sm-2 control-label">
-						<label for="">Nombre curso:</label>
+							<label for="">Sexo:</label>
 						</div>
-						<div class="col-sm-2">
-						<select class="form-control"
-							name="Curso">
-							<option value="">elemento 3</option>
-							<option value="">elemento 4</option>
-						</select>
+						<div class="col-sm-5">
+							<input type="radio" name="sexo" value="Femenino" id="Fem"><label class="text-radio" for="Fem">Femenino </label>
+							<input type="radio" name="sexo" value="Masculino"checked id="Masc"><label class="text-radio" for="Masc">Masculino </label>
+						</div>
 					</div>
-					</div><!-- /form-group-->
+					<!-- /form-group-->
 
-					
+
 					<div class="form-group">
 						<div class="col-sm-2 control-label">
-						<label for="">Teléfono fijo:</label>
+							<label for="">Domicilio:</label>
 						</div>
+						<div class="col-sm-5">
+							<input class="form-control" placeholder="Domicilio 123"
+								type="text" maxlength="255" required pattern="[a-zA-Z 0-9]*" />
+							<!-- Valida letras, numeros y espacios-->
+						</div>
+					</div>
+					<!-- /form-group-->
 
+
+
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<label for="">Fecha de nac.:</label>
+						</div>
+						<div class="col-sm-5">
+							<input class="form-control" placeholder="10/10/1010" type="date"
+								step="1" value="01-01-2000" />
+						</div>
+					</div>
+					<!-- /form-group-->
+
+
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<label for="">Año curso:</label>
+						</div>
 						<div class="col-sm-3">
-						<input class="form-control" placeholder="0343-4353535"
-							type="tel"/>
+							<select class="form-control" name="Año">
+								<option value="">elemento 1</option>
+								<option value="">elemento 2</option>
+							</select>
 						</div>
-					</div><!-- /form-group-->
+					</div>
+					<!-- /form-group-->
 
-					
+
+
 					<div class="form-group">
 						<div class="col-sm-2 control-label">
-						<label for="">Celular:</label>
+							<label for="">Nombre curso:</label>
 						</div>
-
 						<div class="col-sm-3">
-						<input class="form-control" placeholder="0343-155555555"
-							type="tel"/>
-					</div>
-					</div><!-- /form-group-->
-					
-					
-					<div class="form-group">
-						<div class="col-sm-2 control-label">
-						<label for="">Mail:</label>
+							<select class="form-control" name="Curso">
+								<option value="">elemento 3</option>
+								<option value="">elemento 4</option>
+							</select>
 						</div>
-						<div class="col-sm-4">
-						<input class="form-control" placeholder="nombre@nombre.com"
-							type="email" maxlength="255">
 					</div>
-					</div><!-- /form-group-->
+					<!-- /form-group-->
 
-					
+
 					<div class="form-group">
 						<div class="col-sm-2 control-label">
-						<label for="">Observaciones:</label>
+							<label for="">Teléfono fijo:</label>
 						</div>
-						<div class="col-sm-4">
-						<textarea class="form-control" rows="3"></textarea>
-						<!--<input class="form-control"
+
+						<div class="col-sm-5">
+							<input class="form-control" placeholder="0343-4353535" type="tel" />
+						</div>
+					</div>
+					<!-- /form-group-->
+
+
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<label for="">Celular:</label>
+						</div>
+
+						<div class="col-sm-5">
+							<input class="form-control" placeholder="0343-155555555"
+								type="tel" />
+						</div>
+					</div>
+					<!-- /form-group-->
+
+
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<label for="">Mail:</label>
+						</div>
+						<div class="col-sm-5">
+							<input class="form-control" placeholder="nombre@nombre.com"
+								type="email" maxlength="255">
+						</div>
+					</div>
+					<!-- /form-group-->
+
+
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<label for="">Observaciones:</label>
+						</div>
+						<div class="col-sm-5">
+							<textarea class="form-control" rows="3"></textarea>
+							<!--<input class="form-control"
 							type="text" maxlength="255" required pattern="[a-zA-Z ]*">-->
-						<!-- Valida letras y espacios-->
+							<!-- Valida letras y espacios-->
+						</div>
 					</div>
-					</div><!-- /form-group-->
-
-					
+					<!-- /form-group-->
 
 
-				</div> <!-- /formulario-->
+
+
+				</div><!-- /formulario-->
 				<div class="form-group">
 					<div class="col-sm-3 col-sm-offset-3">
 						<input class="btn btn-danger" type="button" name=""
-						onclick="cargarAlumnoPrincipal()" value="Cancelar" />
+							onclick="cargarAlumnoPrincipal()" value="Cancelar" />
 					</div>
 					<div class="col-sm-1">
-						 <input
-						class="btn btn-primary" type="submit" name="" value="Guardar" />
+						<input class="btn btn-primary" type="submit" name=""
+							value="Guardar" />
 					</div>
 				</div>
-</form>
-			 </fieldset>
-		
-</div>
+				
+			</form>
+		</fieldset>
+
+	</div>
