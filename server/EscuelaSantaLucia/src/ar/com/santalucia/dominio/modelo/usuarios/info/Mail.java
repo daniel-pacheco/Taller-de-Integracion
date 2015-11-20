@@ -7,7 +7,7 @@ package ar.com.santalucia.dominio.modelo.usuarios.info;
  * @version 1.3
  */
 
-//UltimoModificador: Eric Pennachini @ 16-08-15 16:19
+// UltimoModificador: Eric Pennachini @ 16-08-15 16:19
 
 public class Mail {
 
@@ -28,7 +28,7 @@ public class Mail {
 	public Long getIdMail() {
 		return idMail;
 	}
-	
+
 	public void setIdMail(Long idMail) {
 		this.idMail = idMail;
 	}
@@ -58,4 +58,16 @@ public class Mail {
 		return mailCompleto;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+
+		if ((this.direccionMail.equals(((Mail) obj).direccionMail) 
+			&& (this.tipoMail.equals(((Mail) obj).tipoMail)))) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	
 }

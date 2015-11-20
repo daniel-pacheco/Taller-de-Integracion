@@ -68,6 +68,8 @@ public class GestorDocente extends GestorUsuario implements IValidacionUsuarioDo
 			setTransaction();
 			docenteDAO.persist(docente);
 			sesionDeHilo.getTransaction().commit();
+		} catch (SugerenciaDirectivoException ex) {
+			throw ex;
 		} catch (ValidacionException ex) {
 			throw ex;
 		} catch (Exception ex) {
@@ -167,19 +169,18 @@ public class GestorDocente extends GestorUsuario implements IValidacionUsuarioDo
 		ArrayList<Directivo> listaDirectivo = gDir.getByExample(directivoEjemplo);
 		return (listaDirectivo.isEmpty() ? false : true);
 	}
-	
-	public Boolean datosIguales(Docente docente) throws Exception{
+
+	public Boolean datosIguales(Docente docente) throws Exception {
 		GestorDirectivo gDir = new GestorDirectivo();
 		Directivo directivoEjemplo = new Directivo();
 		directivoEjemplo.setNroDocumento(docente.getNroDocumento());
 		ArrayList<Directivo> listaDirectivo = gDir.getByExample(directivoEjemplo);
-		for (Directivo d: listaDirectivo) {
-			if ((d.getApellido().equals(docente.getApellido()))
+		for (Directivo d : listaDirectivo) 
+			if ((d.getApellido().equals(docente.getApellido())) 
 					&& (d.getCuil().equals(docente.getCuil()))
 					&& (d.getDomicilio().equals(docente.getDomicilio()))
-					&& (d.getFechaNacimiento().equals(docente.getFechaNacimiento()))
-					&& (d.getIdUsuario().equals(d.getIdUsuario()))
-					&& (d.getListaMails().equals(docente.getListaMails()))
+					&& (d.getFechaNacimiento().getTime() == docente.getFechaNacimiento().getTime() )
+					&& (d.getListaMails().contains((docente.getListaMails())))
 					&& (d.getListaTelefonos().equals(docente.getListaTelefonos()))
 					&& (d.getListaTitulos().equals(docente.getListaTitulos()))
 					&& (d.getNombre().equals(docente.getNombre()))
@@ -188,34 +189,31 @@ public class GestorDocente extends GestorUsuario implements IValidacionUsuarioDo
 					&& (d.getSexo().equals(docente.getSexo()))
 					&& (d.getTipoDocumento().equals(docente.getTipoDocumento()))) {
 				return true;
-			}
-			else {
+			} else {
 				return false;
 			}
-		}
 		return false;
-	}
+		}
 
 	@Override
 	public void validar(Object object) throws Exception {
 		Docente docente = (Docente) object;
 		ValidacionException exception = new ValidacionException();
 		SugerenciaDirectivoException sugDirException = new SugerenciaDirectivoException();
-		
+
 		if (existeDniEnDirectivo(docente)) {
 			if (!datosIguales(docente)) {
 				GestorDirectivo gDir = new GestorDirectivo();
 				Directivo directivo = new Directivo();
 				directivo.setNroDocumento(docente.getNroDocumento());
 				ArrayList<Directivo> listaDirectivo = gDir.getByExample(directivo);
-				for (Directivo d: listaDirectivo) {
+				for (Directivo d : listaDirectivo) {
 					sugDirException.setDirectivoSugerido(d);
 					sugDirException.setMensaje("El documento ya pertenece a un directivo. ");
 					throw sugDirException;
 				}
 			}
-		}
-		else {
+		} else {
 			if (existeDocumento(docente)) {
 				exception.addMensajeError("El documento ya existe");
 				throw exception;

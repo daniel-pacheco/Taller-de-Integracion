@@ -9,6 +9,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.Docente;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
+import ar.com.santalucia.excepciones.SugerenciaDirectivoException;
 import ar.com.santalucia.excepciones.ValidacionException;
 
 /**
@@ -18,7 +19,7 @@ import ar.com.santalucia.excepciones.ValidacionException;
  * @version 1.0
  */
 
-// Último modificador: Ariel Ramirez @ 14-10-2015 16:58 
+// Último modificador: Ariel Ramirez @ 14-10-2015 16:58
 
 public class ServicioDocente extends ServicioUsuario<Docente> {
 
@@ -60,6 +61,8 @@ public class ServicioDocente extends ServicioUsuario<Docente> {
 			}
 			;
 			return true;
+		} catch (SugerenciaDirectivoException ex) {
+			throw ex;
 		} catch (ValidacionException ex) {
 			throw ex;
 		} catch (Exception ex) {
@@ -73,8 +76,8 @@ public class ServicioDocente extends ServicioUsuario<Docente> {
 		telefonos = null;
 		try {
 			Docente docente = new Docente();
-			if ((docente = getUsuario(idUsuario)) != null) { 
-				telefonos = docente.getListaTelefonos(); 
+			if ((docente = getUsuario(idUsuario)) != null) {
+				telefonos = docente.getListaTelefonos();
 			}
 		} catch (Exception ex) {
 			throw new Exception(
