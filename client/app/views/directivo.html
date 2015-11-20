@@ -1,20 +1,6 @@
 <div class="col-md-2 hidden-sm hidden-xs">
 	<div>
 		<!-- ngInclude: 'views/partials/affixed-sidebar.html' -->
-<<<<<<< HEAD
-		<div class="bs-sidebar hidden-print affix" role="complementary"
-			data-offset-top="-100" bs-affix bs-scrollspy-list
-			style="position: relative; text-align: right;">
-			<ul class="nav bs-sidenav">
-				<li bs-scrollspy data-target="#getting-started"><a
-					href="#getting-started">Men&uacute; Alumnado</a></li>
-				<hr style="margin: 2px 0;">
-				<li bs-scrollspy data-target="#modals"><a href=""
-					ng-click="seleccionar('listado')">Listado</a></li>
-				<li bs-scrollspy data-target="#nuevoPerfil"><a href=""
-					ng-click="seleccionar('nuevoPerfil')">Nuevo Perfil</a></li>
-			</ul>
-=======
 		<div class="bs-sidebar hidden-print affix" role="complementary" data-offset-top="-100" bs-affix style="position: relative; text-align: right;">
 		   <ul class="nav bs-sidenav">
 		    <li bs-scrollspy data-target="#getting-started">
@@ -28,7 +14,6 @@
 		      <a href="" ng-click="seleccionar('nuevoPerfil')">Nuevo Perfil</a>
 		    </li>
 		  </ul>
->>>>>>> 44305f55b5e73776b3d6d10843af3f4121916cb7
 		</div>
 		<!--/ngInclude: 'views/partials/affixed-sidebar.html' -->
 	</div>
@@ -37,7 +22,7 @@
 <div class="col-md-10">
 	<h1>Alumnado</h1>
 	<hr>
-	<div id="listado" ng-if="listado1">
+	<div id="listado" ng-showi="listado1">
 		<fieldset class="navbar">
 			<legend>Listado</legend>
 			<label for="">Año lectivo:</label> <select
@@ -47,8 +32,8 @@
 				<option value="">2016</option>
 				<option value="">Todos</option>
 			</select>
-			<button ng-click="search()">Buscar</button> <input type="text" ng-model="filterByName">
-			<div id="listFilters" ng-if="listFilterIsEnabled">
+			<button ng-click="search()">Buscar</button>
+			<div id="listFilters" ng-show="listFilterIsEnabled">
 				<h2>Filtros de búsqueda</h2>
 				<label for="">Nombre:</label> <input class="form-control-inline"
 					type="text" maxlength="255" required pattern="[a-zA-Z 0-9]*"
@@ -87,7 +72,7 @@
 		</fieldset>
 	</div>
 
-	<div id="nuevoPerfil" ng-if="!listado1">
+	<div id="nuevoPerfil" ng-show="!listado1">
 		<fieldset>
 			<legend>Nuevo Alumno</legend>
 			<h3 class="small">Ingrese los datos para crear un nuevo perfil
