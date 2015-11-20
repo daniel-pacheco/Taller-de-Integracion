@@ -1,20 +1,7 @@
 <div class="col-md-2 hidden-sm hidden-xs">
 	<div>
 		<!-- ngInclude: 'views/partials/affixed-sidebar.html' -->
-<<<<<<< HEAD
-		<div class="bs-sidebar hidden-print affix" role="complementary"
-			data-offset-top="-100" bs-affix bs-scrollspy-list
-			style="position: relative; text-align: right;">
-			<ul class="nav bs-sidenav">
-				<li bs-scrollspy data-target="#getting-started"><a
-					href="#getting-started">Men&uacute; Alumnado</a></li>
-				<hr style="margin: 2px 0;">
-				<li bs-scrollspy data-target="#modals"><a href=""
-					ng-click="seleccionar('listado')">Listado</a></li>
-				<li bs-scrollspy data-target="#nuevoPerfil"><a href=""
-					ng-click="seleccionar('nuevoPerfil')">Nuevo Perfil</a></li>
-			</ul>
-=======
+
 		<div class="bs-sidebar hidden-print affix" role="complementary" data-offset-top="-100" bs-affix style="position: relative; text-align: right;">
 		   <ul class="nav bs-sidenav">
 		    <li bs-scrollspy data-target="#getting-started">
@@ -28,7 +15,6 @@
 		      <a href="" ng-click="seleccionar('nuevoPerfil')">Nuevo Perfil</a>
 		    </li>
 		  </ul>
->>>>>>> 44305f55b5e73776b3d6d10843af3f4121916cb7
 		</div>
 		<!--/ngInclude: 'views/partials/affixed-sidebar.html' -->
 	</div>
@@ -98,10 +84,11 @@
 			</div>-->
 
 			<form class="form-horizontal media">
-				<div class="pull-right">
-					<img class="img-rounded" src="images/defaultUser.png" alt="Usuario" width="190px" height="auto"/>
+				<!--<div class="pull-right">
+						<img class="img-rounded" src="images/defaultUser.png" alt="Usuario" width="220px" height="auto"/>
 					<div class="btn btn-primary btn-file" id="boton">Examinar<input type="file"></div>
-				</div>	
+				</div>	-->
+			
 				<div class="formulario media-body">
 
 					<div class="form-group">
@@ -136,8 +123,17 @@
 								type="text" maxlength="255" required pattern="[a-zA-Z ]*">
 							<!-- Valida letras y espacios -->
 						</div>
+						
 					</div>
 					<!-- /form-group-->
+
+					<div class="form-group">
+						
+						<div class="short-div">
+							<img class="img-rounded" src="images/defaultUser.png" alt="Usuario" width="220px" height="auto"/>
+							<div class="btn btn-primary btn-file" id="boton">Examinar<input type="file"></div>
+						</div>
+					</div>
 
 					<div class="form-group">
 						<div class="col-sm-2 control-label">
