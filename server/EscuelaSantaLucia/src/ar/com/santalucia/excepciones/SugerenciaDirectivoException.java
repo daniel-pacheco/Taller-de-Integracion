@@ -8,6 +8,7 @@ public class SugerenciaDirectivoException extends Exception {
 	private String mensaje;
 	
 	public SugerenciaDirectivoException() {
+		super();
 		directivoSugerido = new Directivo();
 	}
 	

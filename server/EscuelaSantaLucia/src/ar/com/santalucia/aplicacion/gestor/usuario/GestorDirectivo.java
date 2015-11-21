@@ -17,6 +17,8 @@ import ar.com.santalucia.dominio.modelo.usuarios.Usuario;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
+import ar.com.santalucia.excepciones.SugerenciaDirectivoException;
+import ar.com.santalucia.excepciones.SugerenciaDocenteException;
 import ar.com.santalucia.excepciones.ValidacionException;
 import ar.com.santalucia.validaciones.IValidacionUsuarioDocDir;
 
@@ -28,12 +30,12 @@ import ar.com.santalucia.validaciones.IValidacionUsuarioDocDir;
  *
  */
 
-//UltimoModificador: Eric Pennachini @ 10-11-15 17:50
+// UltimoModificador: Eric Pennachini @ 10-11-15 17:50
 
 public class GestorDirectivo extends GestorUsuario implements IValidacionUsuarioDocDir {
 	private DirectivoHome directivoDAO;
 	private GestorTitulo GTitulo;
-	
+
 	public GestorDirectivo() throws Exception {
 		super();
 		try {
@@ -53,17 +55,17 @@ public class GestorDirectivo extends GestorUsuario implements IValidacionUsuario
 			if (directivo.getListaTitulos() != null) {
 				for (Titulo t : directivo.getListaTitulos()) {
 					GTitulo.add(t);
-				} 
+				}
 			}
 			if (directivo.getListaTelefonos() != null) {
 				for (Telefono t : directivo.getListaTelefonos()) {
 					GTelefono.add(t);
-				} 
+				}
 			}
 			if (directivo.getListaMails() != null) {
 				for (Mail m : directivo.getListaMails()) {
 					GMail.add(m);
-				} 
+				}
 			}
 			if (directivo.getDomicilio() != null) {
 				GDomicilio.add(directivo.getDomicilio());
@@ -72,16 +74,16 @@ public class GestorDirectivo extends GestorUsuario implements IValidacionUsuario
 			setTransaction();
 			directivoDAO.persist(directivo);
 			sesionDeHilo.getTransaction().commit();
-		} 
-		catch (ValidacionException ex) {
+		} catch (SugerenciaDocenteException ex) {
 			throw ex;
-		}
-		catch (Exception ex) {
+		} catch (ValidacionException ex) {
+			throw ex;
+		} catch (Exception ex) {
 			setSession();
 			setTransaction();
 			sesionDeHilo.getTransaction().rollback();
 			throw new Exception("Ha ocurrido un problema al agregar el objeto: " + ex.getMessage());
-		}		
+		}
 	}
 
 	@Override
@@ -93,11 +95,9 @@ public class GestorDirectivo extends GestorUsuario implements IValidacionUsuario
 			setTransaction();
 			directivoDAO.attachDirty(directivo);
 			sesionDeHilo.getTransaction().commit();
-		} 
-		catch (ValidacionException ex) {
+		} catch (ValidacionException ex) {
 			throw ex;
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			setSession();
 			setTransaction();
 			sesionDeHilo.getTransaction().rollback();
@@ -105,12 +105,13 @@ public class GestorDirectivo extends GestorUsuario implements IValidacionUsuario
 		}
 	}
 
-	//@Override
+	// @Override
 	public ArrayList<Directivo> getByExample(Directivo object) throws Exception {
 		try {
 			setSession();
 			setTransaction();
-			ArrayList<Directivo> listaDirectivosDevolver = (ArrayList<Directivo>) directivoDAO.findByExample((Directivo) object);
+			ArrayList<Directivo> listaDirectivosDevolver = (ArrayList<Directivo>) directivoDAO
+					.findByExample((Directivo) object);
 			sesionDeHilo.getTransaction().commit();
 			return listaDirectivosDevolver;
 		} catch (Exception ex) {
@@ -135,34 +136,32 @@ public class GestorDirectivo extends GestorUsuario implements IValidacionUsuario
 		}
 	}
 
-	/*
-	 * Implementación de IValidacionDocDir
-	 */
-
 	@Override
 	public void validar(Object object) throws Exception {
-		Boolean vDocumento, vNombreUsuario, vCuil;
+		Directivo directivo = (Directivo) object;
 		ValidacionException exception = new ValidacionException();
+		SugerenciaDocenteException sugDocException = new SugerenciaDocenteException();
 		
-		vDocumento = this.existeDocumento((Directivo) object);
-		if (((Directivo) object).getListaMails() != null) {
-			for (Mail m : ((Directivo) object).getListaMails()) {
-				exception.addMensajeError(
-						(this.existeMail(m) ? "La dirección de e-mail: " + m.getDireccionMail() + " ya existe" : null));
-			} 
-		}
-		vNombreUsuario = this.existeNombreUsuario((Directivo) object);
-		vCuil = this.existeCuil((Directivo) object);
-		
-		exception.addMensajeError(vDocumento ? "El documento ya existe" : null);
-		exception.addMensajeError(vNombreUsuario ? "El nombre de usuario ya existe" : null);
-		exception.addMensajeError(vCuil ? "El número de CUIL ya existe" : null);
-		
-		if (!exception.getMensajesError().isEmpty()) {
-			throw exception;
+		if (existeDniEnDocente(directivo)) {
+			GestorDocente gDoc = new GestorDocente();
+			Docente docente = new Docente();
+			docente.setNroDocumento(directivo.getNroDocumento());
+			ArrayList<Docente> listaDocente = gDoc.getByExample(docente);
+			if (!datosIguales(directivo)) {
+				for (Docente d : listaDocente) {
+					sugDocException.setDocenteSugerido(d);
+					sugDocException.setMensaje("El documento ya pertenece a un docente. ");
+					throw sugDocException;
+				}
+			} //No hay else porque a validación pasó
+		} else {
+			if (existeDocumento(directivo)) {
+				exception.addMensajeError("El documento ya existe");
+				throw exception;
+			}
 		}
 	}
-	
+
 	@Override
 	public Boolean existeCuil(Usuario usuario) throws Exception {
 		Boolean resultado = false;
@@ -192,12 +191,40 @@ public class GestorDirectivo extends GestorUsuario implements IValidacionUsuario
 		return resultado;
 	}
 
+	public Boolean existeDniEnDocente(Directivo directivo) throws Exception {
+		GestorDocente gDoc = new GestorDocente();
+		Docente docenteEjemplo = new Docente();
+		docenteEjemplo.setNroDocumento(directivo.getNroDocumento());
+		ArrayList<Docente> listaDocente = gDoc.getByExample(docenteEjemplo);
+		return (listaDocente.isEmpty() ? false : true);
+	}
+
+	public Boolean datosIguales(Directivo directivo) throws Exception {
+		GestorDocente gDoc = new GestorDocente();
+		Docente docenteEjemplo = new Docente();
+		docenteEjemplo.setNroDocumento(directivo.getNroDocumento());
+		ArrayList<Docente> listaDocente = gDoc.getByExample(docenteEjemplo);
+		for (Docente d : listaDocente) {
+			if ((d.getApellido().equals(directivo.getApellido())) && (d.getCuil().equals(directivo.getCuil()))
+					&& (d.getDomicilio().equals(directivo.getDomicilio()))
+					&& (d.getFechaNacimiento().getTime() == directivo.getFechaNacimiento().getTime())
+					&& (d.getNombre().equals(directivo.getNombre()))
+					&& (d.getNombreUsuario().equals(directivo.getNombreUsuario()))
+					&& (d.getNroDocumento().equals(directivo.getNroDocumento()))
+					&& (d.getSexo().equals(directivo.getSexo()))
+					&& (d.getTipoDocumento().equals(directivo.getTipoDocumento()))) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public ArrayList getByExample(Object example) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
 
 }

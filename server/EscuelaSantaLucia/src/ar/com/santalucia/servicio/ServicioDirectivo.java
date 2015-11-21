@@ -9,6 +9,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.Directivo;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
+import ar.com.santalucia.excepciones.SugerenciaDocenteException;
 import ar.com.santalucia.excepciones.ValidacionException;
 
 /**
@@ -60,6 +61,8 @@ public class ServicioDirectivo extends ServicioUsuario<Directivo> {
 			}
 			;
 			return true;
+		} catch (SugerenciaDocenteException ex) {
+			throw ex;
 		} catch (ValidacionException ex) {
 			throw ex;
 		} catch (Exception ex) {
