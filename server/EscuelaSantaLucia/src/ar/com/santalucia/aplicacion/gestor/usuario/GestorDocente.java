@@ -24,7 +24,7 @@ import ar.com.santalucia.validaciones.IValidacionUsuarioDocDir;
  *
  */
 
-// UltimoModificador: Eric Pennachini @ 13-11-15 18:12
+// UltimoModificador: Ariel Ramirez @ 20-11-15 18:00
 
 public class GestorDocente extends GestorUsuario implements IValidacionUsuarioDocDir {
 	private DocenteHome docenteDAO;
@@ -162,6 +162,15 @@ public class GestorDocente extends GestorUsuario implements IValidacionUsuarioDo
 		return resultado;
 	}
 
+	/**
+	 * 
+	 * @param docente
+	 * @return Boolean
+	 * @throws Exception
+	 * 
+	 * Comprueba si existe del DNI cargado en el Docente en algún Directivo existente.
+	 */
+	
 	public Boolean existeDniEnDirectivo(Docente docente) throws Exception {
 		GestorDirectivo gDir = new GestorDirectivo();
 		Directivo directivoEjemplo = new Directivo();
@@ -170,6 +179,16 @@ public class GestorDocente extends GestorUsuario implements IValidacionUsuarioDo
 		return (listaDirectivo.isEmpty() ? false : true);
 	}
 
+	/**
+	 * 
+	 * @param docente
+	 * @return Boolean
+	 * @throws Exception
+	 * 
+	 * Compara los datos de un Docente con los del Directivo existente en la base de datos. Se comparan los atributos 
+	 * nombre, apellido, tipo de documento, numero de documento, cuil, fecha de nacimiento y nombre de usuario.
+	 */
+	
 	public Boolean datosIguales(Docente docente) throws Exception {
 		GestorDirectivo gDir = new GestorDirectivo();
 		Directivo directivoEjemplo = new Directivo();
@@ -179,7 +198,7 @@ public class GestorDocente extends GestorUsuario implements IValidacionUsuarioDo
 			if ((d.getApellido().equals(docente.getApellido())) 
 					&& (d.getCuil().equals(docente.getCuil()))
 					&& (d.getDomicilio().equals(docente.getDomicilio()))
-					&& (d.getFechaNacimiento().getTime() == docente.getFechaNacimiento().getTime() )
+					&& (d.getFechaNacimiento().getTime() == docente.getFechaNacimiento().getTime())
 					&& (d.getNombre().equals(docente.getNombre()))
 					&& (d.getNombreUsuario().equals(docente.getNombreUsuario()))
 					&& (d.getNroDocumento().equals(docente.getNroDocumento()))
@@ -192,24 +211,38 @@ public class GestorDocente extends GestorUsuario implements IValidacionUsuarioDo
 		return false;
 		}
 
+	/**
+	 * @param Object de tipo Docente
+	 * @exception ValidacionException
+	 * @exception sugDirException
+	 * @throws Exception 
+	 * 
+	 * El método realiza la validación y lanza una excepción si no se supera la misma:<br>
+	 * 	1) Se comprueba si el DNI ingresado para el docente que se quiere dar de alta existe en algún directivo.<br>
+	 *  2) Si se da el caso 1) se comprueba la coincidencia de los datos del directivo existente con los del docente a dar de alta
+	 *  (se compara nombre, apellido, tipo de documento, numero de documento, cuil, fecha de nacimiento y nombre de usuario)<br>
+	 *  3) Si los datos comparados en 2) no son idénticos se lanza un sugDirException con los datos del directivo encontrado como sugerencia.<br> 
+	 *  4) Si no se da el caso 1) se busca coincidencias de número de DNI en el resto de los usuarios, lanzando un ValidacionException si es encontrado.<br>
+	 *  <img src="DiagramaFlujovalidarDocente.png" width="250" height="250"></img>
+	 */
 	@Override
 	public void validar(Object object) throws Exception {
 		Docente docente = (Docente) object;
 		ValidacionException exception = new ValidacionException();
 		SugerenciaDirectivoException sugDirException = new SugerenciaDirectivoException();
-
+		
 		if (existeDniEnDirectivo(docente)) {
+			GestorDirectivo gDir = new GestorDirectivo();
+			Directivo directivo = new Directivo();
+			directivo.setNroDocumento(docente.getNroDocumento());
+			ArrayList<Directivo> listaDirectivo = gDir.getByExample(directivo);
 			if (!datosIguales(docente)) {
-				GestorDirectivo gDir = new GestorDirectivo();
-				Directivo directivo = new Directivo();
-				directivo.setNroDocumento(docente.getNroDocumento());
-				ArrayList<Directivo> listaDirectivo = gDir.getByExample(directivo);
 				for (Directivo d : listaDirectivo) {
 					sugDirException.setDirectivoSugerido(d);
 					sugDirException.setMensaje("El documento ya pertenece a un directivo. ");
 					throw sugDirException;
 				}
-			}// Agregar la logica nueva para el alta por sugerencia
+			} //No hay else porque a validación pasó
 		} else {
 			if (existeDocumento(docente)) {
 				exception.addMensajeError("El documento ya existe");
