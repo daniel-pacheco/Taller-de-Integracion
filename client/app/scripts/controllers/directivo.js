@@ -28,11 +28,18 @@ $scope.tooltip = {
   }, tooltipAcademicPerformance : {
     'title' : 'Desempeño académico'
   }
-
-
 };
 
 //filters
+$scope.dropDownOptions = ['2014', '2015', '2016', 'Todos', 'DNI/MAT'];
+$scope.dropDownValue = '';
+
+$scope.dropDownCursoOptions = ['5 Mat', '4 Mat', '3 Mat', '2 Mat'];
+$scope.dropDownCursoValue = '';
+
+$scope.dropDownDivisionOptions = ['U', 'A', 'B', 'C'];
+$scope.dropDownDivisionValue = '';
+
 $scope.filterByName = '';
 
 $scope.seleccionar = function (id){
@@ -50,11 +57,19 @@ $scope.search = function () {
   };
 }
 
+
+
 //---Llamadas al servicio ALUMNO---
 $scope.answer = [];
 alumnoService.alumnoGetAll().then(function(response){
   $scope.answer = response.data;  
 });
+
+
+//---utils
+$scope.update = function (variable, value) {
+  variable = value;
+}
 
 //---test
 $scope.friends = [{name:'John', phone:'555-1276'},

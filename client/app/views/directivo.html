@@ -22,33 +22,31 @@
 <div class="col-md-10">
 	<h1>Alumnado</h1>
 	<hr>
-	<div id="listado" ng-showi="listado1">
+	<div id="listado" ng-show="listado1">
 		<fieldset class="navbar">
 			<legend>Listado</legend>
 			<label for="">Año lectivo:</label> <select
-				class="dropdown-toggle form-control-inline" name="">
-				<option value="">2014</option> //un-harcodear las options
-				<option value="">2015</option>
-				<option value="">2016</option>
-				<option value="">Todos</option>
-			</select>
+				class="dropdown-toggle form-control-inline" name="" ng-model="dropDownValue"> <!-- ng-change="update(dropDownValue, option)"> -->
+				<option value="" disabled selected>Seleccione una opci&oacute;n</option>
+				<option ng-repeat="option in dropDownOptions" value="{{option}}">{{option}}</option>
+			</select>{{dropDownValue}}
+			<input type="text" class="form-control-inline" ng-show="dropDownValue === 'DNI/MAT'">
 			<button ng-click="search()">Buscar</button>
 			<div id="listFilters" ng-show="listFilterIsEnabled">
 				<h2>Filtros de búsqueda</h2>
-				<label for="">Nombre:</label> <input class="form-control-inline"
-					type="text" maxlength="255" required pattern="[a-zA-Z 0-9]*"
-					ng-model="filterByName">{{filterByName}} <label for="">Curso:</label>
-				<select class="dropdown-toggle form-control-inline" name="">
-					<option value="">5 Mat</option>
-					<option value="">4 Mat</option>
-					<option value="">3 Mat</option>
-					<option value="">2 Mat</option>
-				</select> <label for="">División:</label> <select
-					class="dropdown-toggle form-control-inline" name="">
-					<option value="">U</option>
-					<option value="">A</option>
-					<option value="">B</option>
-					<option value="">C</option>
+				<label for="">Nombre:</label>
+				<input class="form-control-inline" type="text" maxlength="255" required pattern="[a-zA-Z 0-9]*" ng-model="filterByName">{{filterByName}} 
+
+				<label for="">Curso:</label>
+				<select class="dropdown-toggle form-control-inline" name="" ng-model="dropDownCursoValue">
+					<option value="" disabled selected>Seleccione un curso</option>
+					<option ng-repeat="cursoOption in dropDownCursoOptions" value="{{cursoOption}}">{{cursoOption}}</option>
+				</select> 
+
+				<label for="">División:</label> <select
+					class="dropdown-toggle form-control-inline" name="" ng-model="dropDownDivisionValue">
+					<option value="" disabled selected>Seleccione una divisi&oacute;n</option>
+					<option ng-repeat="divisionOption in dropDownDivisionOptions" value="{{divisionOption}}">{{divisionOption}}</option>
 				</select>
 			</div>
 			<table class="table table-hover">

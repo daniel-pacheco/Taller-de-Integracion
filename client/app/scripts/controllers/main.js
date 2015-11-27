@@ -17,7 +17,7 @@ angular.module('clientAppApp')
     
     $scope.data = {};
 
-    $http.get('http://192.168.0.101:8080/EscuelaSantaLucia/rest/sAlumno/listAll').success(function(response){
+    $http.get('http://192.168.1.6:8080/EscuelaSantaLucia/rest/sAlumno/listAll').success(function(response){
 
       $scope.data = response;
 
