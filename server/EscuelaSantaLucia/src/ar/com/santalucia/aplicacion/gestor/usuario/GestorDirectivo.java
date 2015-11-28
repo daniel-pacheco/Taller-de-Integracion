@@ -12,7 +12,7 @@ import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorTelefono;
 import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorTitulo;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.Directivo;
-import ar.com.santalucia.dominio.modelo.usuarios.Docente;
+import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.dominio.modelo.usuarios.Usuario;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
@@ -143,12 +143,12 @@ public class GestorDirectivo extends GestorUsuario implements IValidacionUsuario
 		SugerenciaDocenteException sugDocException = new SugerenciaDocenteException();
 		
 		if (existeDniEnDocente(directivo)) {
-			GestorDocente gDoc = new GestorDocente();
-			Docente docente = new Docente();
+			GestorPersonal gDoc = new GestorPersonal();
+			Personal docente = new Personal();
 			docente.setNroDocumento(directivo.getNroDocumento());
-			ArrayList<Docente> listaDocente = gDoc.getByExample(docente);
+			ArrayList<Personal> listaDocente = gDoc.getByExample(docente);
 			if (!datosIguales(directivo)) {
-				for (Docente d : listaDocente) {
+				for (Personal d : listaDocente) {
 					sugDocException.setDocenteSugerido(d);
 					sugDocException.setMensaje("El documento ya pertenece a un docente. ");
 					throw sugDocException;
@@ -192,19 +192,19 @@ public class GestorDirectivo extends GestorUsuario implements IValidacionUsuario
 	}
 
 	public Boolean existeDniEnDocente(Directivo directivo) throws Exception {
-		GestorDocente gDoc = new GestorDocente();
-		Docente docenteEjemplo = new Docente();
+		GestorPersonal gDoc = new GestorPersonal();
+		Personal docenteEjemplo = new Personal();
 		docenteEjemplo.setNroDocumento(directivo.getNroDocumento());
-		ArrayList<Docente> listaDocente = gDoc.getByExample(docenteEjemplo);
+		ArrayList<Personal> listaDocente = gDoc.getByExample(docenteEjemplo);
 		return (listaDocente.isEmpty() ? false : true);
 	}
 
 	public Boolean datosIguales(Directivo directivo) throws Exception {
-		GestorDocente gDoc = new GestorDocente();
-		Docente docenteEjemplo = new Docente();
+		GestorPersonal gDoc = new GestorPersonal();
+		Personal docenteEjemplo = new Personal();
 		docenteEjemplo.setNroDocumento(directivo.getNroDocumento());
-		ArrayList<Docente> listaDocente = gDoc.getByExample(docenteEjemplo);
-		for (Docente d : listaDocente) {
+		ArrayList<Personal> listaDocente = gDoc.getByExample(docenteEjemplo);
+		for (Personal d : listaDocente) {
 			if ((d.getApellido().equals(directivo.getApellido())) && (d.getCuil().equals(directivo.getCuil()))
 					&& (d.getDomicilio().equals(directivo.getDomicilio()))
 					&& (d.getFechaNacimiento().getTime() == directivo.getFechaNacimiento().getTime())

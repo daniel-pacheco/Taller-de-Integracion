@@ -10,16 +10,16 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 
 import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
-import ar.com.santalucia.dominio.modelo.usuarios.Docente;
+import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 
 /**
  * Home object for domain model class Docente.
- * @see ar.com.santalucia.dominio.modelo.usuarios.Docente
+ * @see ar.com.santalucia.dominio.modelo.usuarios.Personal
  * @author Hibernate Tools
  */
-public class DocenteHome {
+public class PersonalHome {
 
-	private static final Log log = LogFactory.getLog(DocenteHome.class);
+	private static final Log log = LogFactory.getLog(PersonalHome.class);
 
 	private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
@@ -32,7 +32,7 @@ public class DocenteHome {
 		}
 	}
 
-	public void persist(Docente transientInstance) {
+	public void persist(Personal transientInstance) {
 		log.debug("persisting Docente instance");
 		try {
 			sessionFactory.getCurrentSession().persist(transientInstance);
@@ -43,8 +43,8 @@ public class DocenteHome {
 		}
 	}
 
-	public void attachDirty(Docente instance) {
-		log.debug("attaching dirty Docente instance");
+	public void attachDirty(Personal instance) {
+		log.debug("attaching dirty Personal instance");
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(instance);
 			log.debug("attach successful");
@@ -54,8 +54,8 @@ public class DocenteHome {
 		}
 	}
 
-	public void attachClean(Docente instance) {
-		log.debug("attaching clean Docente instance");
+	public void attachClean(Personal instance) {
+		log.debug("attaching clean Personal instance");
 		try {
 			sessionFactory.getCurrentSession().lock(instance, LockMode.NONE);
 			log.debug("attach successful");
@@ -65,8 +65,8 @@ public class DocenteHome {
 		}
 	}
 
-	public void delete(Docente persistentInstance) {
-		log.debug("deleting Docente instance");
+	public void delete(Personal persistentInstance) {
+		log.debug("deleting Personal instance");
 		try {
 			sessionFactory.getCurrentSession().delete(persistentInstance);
 			log.debug("delete successful");
@@ -76,10 +76,10 @@ public class DocenteHome {
 		}
 	}
 
-	public Docente merge(Docente detachedInstance) {
-		log.debug("merging Docente instance");
+	public Personal merge(Personal detachedInstance) {
+		log.debug("merging Personal instance");
 		try {
-			Docente result = (Docente) sessionFactory.getCurrentSession().merge(detachedInstance);
+			Personal result = (Personal) sessionFactory.getCurrentSession().merge(detachedInstance);
 			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -88,11 +88,11 @@ public class DocenteHome {
 		}
 	}
 
-	public Docente findById(java.lang.Long id) {
-		log.debug("getting Docente instance with id: " + id);
+	public Personal findById(java.lang.Long id) {
+		log.debug("getting Personal instance with id: " + id);
 		try {
-			Docente instance = (Docente) sessionFactory.getCurrentSession()
-					.get("ar.com.santalucia.dominio.modelo.usuarios.Docente", id);
+			Personal instance = (Personal) sessionFactory.getCurrentSession()
+					.get("ar.com.santalucia.dominio.modelo.usuarios.Personal", id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {
@@ -105,11 +105,11 @@ public class DocenteHome {
 		}
 	}
 
-	public List findByExample(Docente instance) {
-		log.debug("finding Docente instance by example");
+	public List findByExample(Personal instance) {
+		log.debug("finding Personal instance by example");
 		try {
 			List results = sessionFactory.getCurrentSession()
-					.createCriteria("ar.com.santalucia.dominio.modelo.usuarios.Docente").add(Example.create(instance))
+					.createCriteria("ar.com.santalucia.dominio.modelo.usuarios.Personal").add(Example.create(instance))
 					.list();
 			log.debug("find by example successful, result size: " + results.size());
 			return results;

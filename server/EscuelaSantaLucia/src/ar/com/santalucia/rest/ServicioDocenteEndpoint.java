@@ -14,7 +14,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import ar.com.santalucia.dominio.modelo.usuarios.Docente;
+import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
@@ -27,7 +27,7 @@ import ar.com.santalucia.servicio.ServicioDocente;
  * @version 1.0
  */
 
-// Último modificador: Ariel Ramirez @ 15-10-2015 17:44
+// Último modificador: Ariel Ramirez @ 25-11-2015 18:29
 
 @Path("/sDocente")
 @Produces("application/json")
@@ -72,7 +72,7 @@ public class ServicioDocenteEndpoint {
 	@GET
 	@Path("/doc/{id:[0-9][0-9]*}")
 	public Response findById(@PathParam("id") final Long id) {
-		Docente docente = new Docente();
+		Personal docente = new Personal();
 		docente = null;
 		try {
 			setInstance();
@@ -159,11 +159,11 @@ public class ServicioDocenteEndpoint {
 	@GET
 	@Path("/listAll")
 	public Response listAll(){
-		List<Docente> docente = new ArrayList<Docente>();
+		List<Personal> docente = new ArrayList<Personal>();
 		docente = null;
 		try {
 			setInstance();
-			docente = servicioDocente.getUsuarios(new Docente());
+			docente = servicioDocente.getUsuarios(new Personal());
 		} catch (Exception ex) {
 			if (docente == null) {
 				return Response.status(Status.NOT_FOUND).build();
@@ -183,7 +183,7 @@ public class ServicioDocenteEndpoint {
 	 */
 	@PUT
 	@Path("/doc/")
-	public Response update(final Docente docente) { 
+	public Response update(final Personal docente) { 
 		try {
 			setInstance();
 			servicioDocente.addUsuario(docente);

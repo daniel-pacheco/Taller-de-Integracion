@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import ar.com.santalucia.accesodatos.dao.academico.MateriaHome;
 import ar.com.santalucia.aplicacion.gestor.Gestor;
-import ar.com.santalucia.aplicacion.gestor.usuario.GestorDocente;
+import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.excepciones.ValidacionException;

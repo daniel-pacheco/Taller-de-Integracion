@@ -16,10 +16,10 @@ Generated 24/09/2015 16:41:55 by Hibernate Tools 3.4.0.CR1 -->
         <property name="descripcion" type="java.lang.String">
             <column name="DESCRIPCION" />
         </property>
-        <many-to-one name="docenteTitular" class="ar.com.santalucia.dominio.modelo.usuarios.Docente" fetch="join">
+        <many-to-one name="docenteTitular" class="ar.com.santalucia.dominio.modelo.usuarios.Personal" fetch="join">
             <column name="DOCENTETITULAR" />
         </many-to-one>
-        <many-to-one name="docenteSuplente" class="ar.com.santalucia.dominio.modelo.usuarios.Docente" fetch="join">
+        <many-to-one name="docenteSuplente" class="ar.com.santalucia.dominio.modelo.usuarios.Personal" fetch="join">
             <column name="DOCENTESUPLENTE" />
         </many-to-one>
         <many-to-one name="area" class="ar.com.santalucia.dominio.modelo.academico.Area" fetch="join">

@@ -1,18 +1,19 @@
 package ar.com.santalucia.aplicacion.gestor.usuario;
 
 import java.util.ArrayList;
-import ar.com.santalucia.accesodatos.dao.usuario.DocenteHome;
+import ar.com.santalucia.accesodatos.dao.usuario.PersonalHome;
 import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorDomicilio;
 import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorMail;
 import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorTelefono;
 import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorTitulo;
 import ar.com.santalucia.dominio.modelo.usuarios.Directivo;
-import ar.com.santalucia.dominio.modelo.usuarios.Docente;
+import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.dominio.modelo.usuarios.Usuario;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
 import ar.com.santalucia.excepciones.SugerenciaDirectivoException;
+import ar.com.santalucia.excepciones.SugerenciaPersonalException;
 import ar.com.santalucia.excepciones.ValidacionException;
 import ar.com.santalucia.validaciones.IValidacionUsuarioDocDir;
 
@@ -24,16 +25,16 @@ import ar.com.santalucia.validaciones.IValidacionUsuarioDocDir;
  *
  */
 
-// UltimoModificador: Ariel Ramirez @ 20-11-15 18:00
+// UltimoModificador: Ariel Ramirez @ 27-11-15 16:00
 
-public class GestorDocente extends GestorUsuario implements IValidacionUsuarioDocDir {
-	private DocenteHome docenteDAO;
+public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioDocDir {
+	private PersonalHome docenteDAO;
 	private GestorTitulo GTitulo;
 
-	public GestorDocente() throws Exception {
+	public GestorPersonal() throws Exception {
 		super();
 		try {
-			docenteDAO = new DocenteHome();
+			docenteDAO = new PersonalHome();
 			GTitulo = new GestorTitulo();
 		} catch (Exception ex) {
 			closeSession();
@@ -43,30 +44,30 @@ public class GestorDocente extends GestorUsuario implements IValidacionUsuarioDo
 
 	@Override
 	public void add(Usuario object) throws Exception {
-		Docente docente = (Docente) object;
+		Personal personal = (Personal) object;
 		try {
-			this.validar(docente);
-			if (docente.getListaTitulos() != null) {
-				for (Titulo t : docente.getListaTitulos()) {
+			this.validar(personal);
+			if (personal.getListaTitulos() != null) {
+				for (Titulo t : personal.getListaTitulos()) {
 					GTitulo.add(t);
 				}
 			}
-			if (docente.getListaTelefonos() != null) {
-				for (Telefono t : docente.getListaTelefonos()) {
+			if (personal.getListaTelefonos() != null) {
+				for (Telefono t : personal.getListaTelefonos()) {
 					GTelefono.add(t);
 				}
 			}
-			if (docente.getListaMails() != null) {
-				for (Mail m : docente.getListaMails()) {
+			if (personal.getListaMails() != null) {
+				for (Mail m : personal.getListaMails()) {
 					GMail.add(m);
 				}
 			}
-			if (docente.getDomicilio() != null) {
-				GDomicilio.add(docente.getDomicilio());
+			if (personal.getDomicilio() != null) {
+				GDomicilio.add(personal.getDomicilio());
 			}
 			setSession();
 			setTransaction();
-			docenteDAO.persist(docente);
+			docenteDAO.persist(personal);
 			sesionDeHilo.getTransaction().commit();
 		} catch (SugerenciaDirectivoException ex) {
 			throw ex;
@@ -82,12 +83,12 @@ public class GestorDocente extends GestorUsuario implements IValidacionUsuarioDo
 
 	@Override
 	public void modify(Usuario object) throws Exception {
-		Docente docente = (Docente) object;
+		Personal personal = (Personal) object;
 		try {
-			this.validar(docente);
+			//this.validar(personal);
 			setSession();
 			setTransaction();
-			docenteDAO.attachDirty(docente);
+			docenteDAO.attachDirty(personal);
 			sesionDeHilo.getTransaction().commit();
 		} catch (ValidacionException ex) {
 			throw ex;
@@ -100,13 +101,13 @@ public class GestorDocente extends GestorUsuario implements IValidacionUsuarioDo
 	}
 
 	// @Override
-	public ArrayList<Docente> getByExample(Docente object) throws Exception {
+	public ArrayList<Personal> getByExample(Personal object) throws Exception {
 		try {
 			setSession();
 			setTransaction();
-			ArrayList<Docente> listaDocentesDevolver = (ArrayList<Docente>) docenteDAO.findByExample(object);
+			ArrayList<Personal> listaPersonalDevolver = (ArrayList<Personal>) docenteDAO.findByExample(object);
 			sesionDeHilo.getTransaction().commit();
-			return listaDocentesDevolver;
+			return listaPersonalDevolver;
 		} catch (Exception ex) {
 			closeSession();
 			throw new Exception(
@@ -115,15 +116,15 @@ public class GestorDocente extends GestorUsuario implements IValidacionUsuarioDo
 	}
 
 	@Override
-	public ArrayList<Docente> List() throws Exception {
+	public ArrayList<Personal> List() throws Exception {
 		try {
 			setSession();
 			setTransaction();
-			Docente criterioVacio = new Docente();
-			ArrayList<Docente> listaDocentesDevolver = new ArrayList<Docente>();
-			listaDocentesDevolver = (ArrayList<Docente>) docenteDAO.findByExample(criterioVacio);
+			Personal criterioVacio = new Personal();
+			ArrayList<Personal> listaPersonalDevolver = new ArrayList<Personal>();
+			listaPersonalDevolver = (ArrayList<Personal>) docenteDAO.findByExample(criterioVacio);
 			sesionDeHilo.getTransaction().commit();
-			return listaDocentesDevolver;
+			return listaPersonalDevolver;
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un error al listar los docentes: " + ex.getMessage());
 		}
@@ -136,20 +137,20 @@ public class GestorDocente extends GestorUsuario implements IValidacionUsuarioDo
 	@Override
 	public Boolean existeCuil(Usuario usuario) throws Exception {
 		Boolean resultado = false;
-		Docente docente = (Docente) usuario;
-		Docente docenteEjemplo = new Docente();
-		docenteEjemplo.setCuil(docente.getCuil());
+		Personal personal = (Personal) usuario;
+		Personal personalEjemplo = new Personal();
+		personalEjemplo.setCuil(personal.getCuil());
 		try {
-			ArrayList<Docente> listaDocente = this.getByExample(docenteEjemplo);
-			if (docente.getIdUsuario() == null) {
+			ArrayList<Personal> listaDocente = this.getByExample(personalEjemplo);
+			if (personal.getIdUsuario() == null) {
 				resultado = (listaDocente.isEmpty() ? false : true);
 			} else {
 				if (!listaDocente.isEmpty()) {
-					Docente docenteTemp = new Docente();
-					for (Docente d : listaDocente) {
+					Personal docenteTemp = new Personal();
+					for (Personal d : listaDocente) {
 						docenteTemp = d;
 					}
-					if (docenteTemp.getIdUsuario().equals(docente.getIdUsuario())) {
+					if (docenteTemp.getIdUsuario().equals(personal.getIdUsuario())) {
 						resultado = false;
 					} else {
 						resultado = true;
@@ -171,14 +172,41 @@ public class GestorDocente extends GestorUsuario implements IValidacionUsuarioDo
 	 * Comprueba si existe del DNI cargado en el Docente en algún Directivo existente.
 	 */
 	
-	public Boolean existeDniEnDirectivo(Docente docente) throws Exception {
-		GestorDirectivo gDir = new GestorDirectivo();
-		Directivo directivoEjemplo = new Directivo();
-		directivoEjemplo.setNroDocumento(docente.getNroDocumento());
-		ArrayList<Directivo> listaDirectivo = gDir.getByExample(directivoEjemplo);
-		return (listaDirectivo.isEmpty() ? false : true);
+	//existe en directivo o en docente se hace aqui porque personal trae su idemtificacion cargada 
+	public Boolean existeDniEnPersonal(Personal personal) throws Exception { 
+		Personal personalTemp = new Personal();
+		personalTemp.setNroDocumento(personal.getNroDocumento());
+		//Buscar en el rol contrario
+		if (personalTemp.getRol().equals(Personal.DIRECTIVO)) {
+			personalTemp.setRol(Personal.DOCENTE);
+		}else{
+			personalTemp.setRol(Personal.DIRECTIVO);
+		}
+		ArrayList<Personal> listaPersonal = this.getByExample(personalTemp); 
+		return (listaPersonal.isEmpty() ? false : true);
+//		GestorDirectivo gDir = new GestorDirectivo();
+//		Directivo directivoEjemplo = new Directivo();
+//		directivoEjemplo.setNroDocumento(docente.getNroDocumento());
+//		ArrayList<Directivo> listaDirectivo = gDir.getByExample(directivoEjemplo);
+//		return (listaDirectivo.isEmpty() ? false : true);
 	}
 
+	public Boolean mismoUsuario(Personal personal) throws Exception{
+		Personal personalTemp = new Personal();
+		personalTemp.setNroDocumento(personal.getNroDocumento());
+		ArrayList<Personal> listadoPersonal = this.getByExample(personalTemp);
+		
+		for(Personal p : listadoPersonal){
+			personalTemp = p;
+		}
+		
+		if(personalTemp.getIdUsuario().equals(personal.getIdUsuario())){
+			return true;
+		}
+		
+		return false;
+	}
+	
 	/**
 	 * 
 	 * @param docente
@@ -189,7 +217,7 @@ public class GestorDocente extends GestorUsuario implements IValidacionUsuarioDo
 	 * nombre, apellido, tipo de documento, numero de documento, cuil, fecha de nacimiento y nombre de usuario.
 	 */
 	
-	public Boolean datosIguales(Docente docente) throws Exception {
+	public Boolean datosIguales(Personal docente) throws Exception {
 		GestorDirectivo gDir = new GestorDirectivo();
 		Directivo directivoEjemplo = new Directivo();
 		directivoEjemplo.setNroDocumento(docente.getNroDocumento());
@@ -227,28 +255,71 @@ public class GestorDocente extends GestorUsuario implements IValidacionUsuarioDo
 	 */
 	@Override
 	public void validar(Object object) throws Exception {
-		Docente docente = (Docente) object;
+		Personal personal = (Personal) object;
 		ValidacionException exception = new ValidacionException();
 		SugerenciaDirectivoException sugDirException = new SugerenciaDirectivoException();
+		SugerenciaPersonalException sugPerException = new SugerenciaPersonalException();
 		
-		if (existeDniEnDirectivo(docente)) {
-			GestorDirectivo gDir = new GestorDirectivo();
-			Directivo directivo = new Directivo();
-			directivo.setNroDocumento(docente.getNroDocumento());
-			ArrayList<Directivo> listaDirectivo = gDir.getByExample(directivo);
-			if (!datosIguales(docente)) {
-				for (Directivo d : listaDirectivo) {
-					sugDirException.setDirectivoSugerido(d);
-					sugDirException.setMensaje("El documento ya pertenece a un directivo. ");
-					throw sugDirException;
+		if(personal.getRol().equals(Personal.DIRECTIVO)){
+			if(existeDniEnPersonal(personal)){
+				if(!mismoUsuario(personal)){
+					//Lógica para localizar al docente para devolver
+					Personal personalTemp = new Personal();
+					personalTemp.setNroDocumento(personal.getNroDocumento());
+					ArrayList<Personal> listadoPersonal = this.getByExample(personalTemp);
+					for(Personal p : listadoPersonal){
+						personalTemp = p;
+					}
+					sugPerException.setPersonalSugerido(personalTemp);
+					sugPerException.setMensaje("El DNI se encuentra en por otro usuario. Se sugiere:  " + personalTemp.toString());
+					throw sugPerException;
 				}
-			} //No hay else porque a validación pasó
-		} else {
-			if (existeDocumento(docente)) {
-				exception.addMensajeError("El documento ya existe");
+			}
+		}
+		
+		if(personal.getRol().equals(Personal.DOCENTE)){
+			if(existeDniEnPersonal(personal)){
+				if(!mismoUsuario(personal)){
+					//Lógica para localizar al directivo para devolver
+					Personal personalTemp = new Personal();
+					personalTemp.setNroDocumento(personal.getNroDocumento());
+					ArrayList<Personal> listadoPersonal = this.getByExample(personalTemp);
+					for(Personal p : listadoPersonal){
+						personalTemp = p;
+					}
+					sugPerException.setPersonalSugerido(personalTemp);
+					sugPerException.setMensaje("El DNI se encuentra en uso por otro usuario. Se sugiere: " + personalTemp.toString());
+					throw sugPerException;
+				}
+			}
+		}
+
+		if(personal.getRol().equals(Personal.DOCENTE_DIRECTIVO)){
+			if(existeDocumento(personal)){
+				exception.addMensajeError("El número de DNI ya está en uso.");
 				throw exception;
 			}
 		}
+
+		
+//		if (existeDniEnDirectivo(docente)) {
+//			GestorDirectivo gDir = new GestorDirectivo();
+//			Directivo directivo = new Directivo();
+//			directivo.setNroDocumento(docente.getNroDocumento());
+//			ArrayList<Directivo> listaDirectivo = gDir.getByExample(directivo);
+//			if (!datosIguales(docente)) {
+//				for (Directivo d : listaDirectivo) {
+//					sugDirException.setDirectivoSugerido(d);
+//					sugDirException.setMensaje("El documento ya pertenece a un directivo. ");
+//					throw sugDirException;
+//				}
+//			} //No hay else porque a validación pasó
+//		} else {
+//			if (existeDocumento(docente)) {
+//				exception.addMensajeError("El documento ya existe");
+//				throw exception;
+//			}
+//		}
 	}
 
 	@Override

@@ -1,11 +1,12 @@
 package ar.com.santalucia.servicio;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ar.com.santalucia.aplicacion.gestor.usuario.GestorDirectivo;
-import ar.com.santalucia.dominio.modelo.usuarios.Directivo;
+import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
+import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
@@ -19,22 +20,34 @@ import ar.com.santalucia.excepciones.ValidacionException;
  * @version 1.0
  */
 
-// Último modificador: Ariel Ramirez @ 12-10-2015 21:10
+// Último modificador: Ariel Ramirez @ 25-11-2015 18:19
 
-public class ServicioDirectivo extends ServicioUsuario<Directivo> {
+public class ServicioDirectivo extends ServicioUsuario<Personal> {
 
-	private GestorDirectivo gDirectivo;
+	private GestorPersonal gPersonal;
 
 	public ServicioDirectivo() throws Exception {
 		super();
-		gDirectivo = new GestorDirectivo();
+		gPersonal = new GestorPersonal();
 	}
 
 	@Override
-	public Directivo getUsuario(Long id) throws Exception {
+	public Personal getUsuario(Long id) throws Exception {
 		if (id > 0) {
 			try {
-				return (Directivo) gDirectivo.getById(id);
+				Personal personal = new Personal();
+				personal = (Personal) gPersonal.getById(id);
+				if (personal != null) {
+					if ((personal.getRol().equals(Personal.DIRECTIVO))
+							|| (personal.getRol().equals(Personal.DOCENTE_DIRECTIVO))) {
+						return personal;
+					} else {
+						return null;
+					}
+				}else{
+					return null;
+				}
+				// antes de devolver comprobar que sea rol DIRECTIVO o DOCENTE/DIRECTIVO (Realizado), previamente controlando no null
 			} catch (Exception ex) {
 				throw new Exception("Servicio: problemas. " + ex.getMessage());
 			}
@@ -43,21 +56,32 @@ public class ServicioDirectivo extends ServicioUsuario<Directivo> {
 	}
 
 	@Override
-	public List<Directivo> getUsuarios(Directivo example) throws Exception {
+	public List<Personal> getUsuarios(Personal example) throws Exception {
 		try {
-			return gDirectivo.getByExample(example);
+			
+			// hacer dos llamadas al get by example
+			// la primera hacer el example con el atributo rol=DIRECTIVO
+			// la segunda hacer el example con el atributo rol=DOCENTE/DIRECTIVO
+			// unir ambas listas
+			// devolver esa lista
+			List<Personal> listaDevolver = new ArrayList<Personal>();
+			example.setRol(Personal.DIRECTIVO);
+			listaDevolver.addAll(gPersonal.getByExample(example));
+			example.setRol(Personal.DOCENTE_DIRECTIVO);
+			listaDevolver.addAll(gPersonal.getByExample(example));
+			return gPersonal.getByExample(example);
 		} catch (Exception ex) {
 			throw new Exception("Servicio: problemas. " + ex.getMessage());
 		}
 	}
 
 	@Override
-	public boolean addUsuario(Directivo usuario) throws Exception {
+	public boolean addUsuario(Personal usuario) throws Exception {
 		try {
 			if (usuario.getIdUsuario() == null) {
-				gDirectivo.add(usuario);
+				gPersonal.add(usuario);
 			} else {
-				gDirectivo.modify(usuario);
+				gPersonal.modify(usuario);
 			}
 			;
 			return true;
@@ -75,9 +99,9 @@ public class ServicioDirectivo extends ServicioUsuario<Directivo> {
 		Set<Telefono> telefonos = new HashSet<Telefono>();
 		telefonos = null;
 		try {
-			Directivo directivo = new Directivo();
-			if ((directivo = getUsuario(idUsuario)) != null) { 
-				telefonos = directivo.getListaTelefonos(); 
+			Personal personal = new Personal();
+			if ((personal = getUsuario(idUsuario)) != null) { 
+				telefonos = personal.getListaTelefonos(); 
 			}
 		} catch (Exception ex) {
 			throw new Exception(
@@ -91,9 +115,9 @@ public class ServicioDirectivo extends ServicioUsuario<Directivo> {
 		Set<Mail> mails = new HashSet<Mail>();
 		mails = null;
 		try {
-			Directivo directivo = new Directivo();
-			if ((directivo = getUsuario(idUsuario)) != null) {
-				mails = directivo.getListaMails();
+			Personal personal = new Personal();
+			if ((personal = getUsuario(idUsuario)) != null) {
+				mails = personal.getListaMails();
 			}
 		} catch (Exception ex) {
 			throw new Exception(
@@ -107,9 +131,9 @@ public class ServicioDirectivo extends ServicioUsuario<Directivo> {
 		Set<Titulo> titulos = new HashSet<Titulo>();
 		titulos = null;
 		try {
-			Directivo directivo = new Directivo();
-			if ((directivo = getUsuario(idUsuario)) != null) {
-				titulos = directivo.getListaTitulos();
+			Personal personal = new Personal();
+			if ((personal = getUsuario(idUsuario)) != null) {
+				titulos = personal.getListaTitulos();
 			}
 		} catch (Exception ex) {
 			throw new Exception(
@@ -119,9 +143,9 @@ public class ServicioDirectivo extends ServicioUsuario<Directivo> {
 	}
 
 	@Override
-	public boolean modifyUsuario(Directivo usuarioModificado) throws Exception {
+	public boolean modifyUsuario(Personal usuarioModificado) throws Exception {
 		try {
-			gDirectivo.modify(usuarioModificado);
+			gPersonal.modify(usuarioModificado);
 			return true;
 		} catch (Exception ex) {
 			throw new Exception("Servicio modify(): no se pudo completar la operacion. " + ex.getMessage());
@@ -129,9 +153,9 @@ public class ServicioDirectivo extends ServicioUsuario<Directivo> {
 	}
 
 	@Override
-	public boolean removeUsuario(Directivo usuario) throws Exception {
+	public boolean removeUsuario(Personal usuario) throws Exception {
 		try {
-			gDirectivo.delete(usuario);
+			gPersonal.delete(usuario);
 			return true;
 		} catch (Exception ex) {
 			throw ex;
@@ -140,7 +164,7 @@ public class ServicioDirectivo extends ServicioUsuario<Directivo> {
 
 	@Override
 	public void closeSession() throws Exception {
-		gDirectivo.closeSession();
+		gPersonal.closeSession();
 	}
 
 }

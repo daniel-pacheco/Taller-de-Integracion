@@ -18,32 +18,42 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
  *
  */
 
-//UltimoModificador: Eric Pennachini @ 19-09-15 16:07
+//UltimoModificador: Ariel Ramirez @ 25-11-15 17:18
 
-public class Docente extends Usuario {
+public class Personal extends Usuario {
 
 	private Set<Titulo> listaTitulos;
-	//private Set<Mesa> listaMesas;
 	private Long cuil;
+	private String rol;
+	
+	public static String DOCENTE = "DOCENTE";
+	public static String DIRECTIVO = "DIRECTIVO";
+	public static String DOCENTE_DIRECTIVO = "DOCENTE/DIRECTIVO";
 
-	public Docente() {
+	public Personal() {
 		super();
-		//setListaMesas(new HashSet<Mesa>());
 		setListaTitulos(new HashSet<Titulo>());
 	}
 
-	public Docente(Long nroDocumento, String tipoDocumento, String nombre, String apellido,
+	public Personal(Long nroDocumento, String tipoDocumento, String nombre, String apellido,
 			Set<Telefono> listaTelefonos, Set<Mail> listaMails, Domicilio domicilio, char sexo, String nombreUsuario,
-			Date fechaNacimiento, Boolean activo, Set<Titulo> listaTitulos, Set<Mesa> listaMesas, Long cuil) {
+			Date fechaNacimiento, Boolean activo, Set<Titulo> listaTitulos, Long cuil, String rol) {
 		super(nroDocumento, tipoDocumento, nombre, apellido, listaTelefonos, listaMails, domicilio, sexo,
 				nombreUsuario, fechaNacimiento, activo);
 		this.setListaTitulos(listaTitulos);
-		//this.setListaMesas(listaMesas);
 		this.cuil = cuil;
 	}
 
 	public Set<Titulo> getListaTitulos() {
 		return listaTitulos;
+	}
+
+	public String getRol() {
+		return rol;
+	}
+
+	public void setRol(String rol) {
+		this.rol = rol;
 	}
 
 	public void setListaTitulos(Set<Titulo> listaTitulos) {
@@ -57,13 +67,5 @@ public class Docente extends Usuario {
 	public void setCuil(Long cuil) {
 		this.cuil = cuil;
 	}
-
-//	public Set<Mesa> getListaMesas() {
-//		return listaMesas;
-//	}
-//
-//	public void setListaMesas(Set<Mesa> listaMesas) {
-//		this.listaMesas = listaMesas;
-//	}
 
 }

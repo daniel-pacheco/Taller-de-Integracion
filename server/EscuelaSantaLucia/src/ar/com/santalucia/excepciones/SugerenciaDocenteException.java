@@ -1,22 +1,22 @@
 package ar.com.santalucia.excepciones;
 
-import ar.com.santalucia.dominio.modelo.usuarios.Docente;
+import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 
 public class SugerenciaDocenteException extends Exception {
 	private static final long serialVersionUID = 1L;
-	private Docente docenteSugerido;
+	private Personal docenteSugerido;
 	private String mensaje;
 
 	public SugerenciaDocenteException() {
 		super();
-		docenteSugerido = new Docente();
+		docenteSugerido = new Personal();
 	}
 
-	public Docente getDocenteSugerido() {
+	public Personal getDocenteSugerido() {
 		return docenteSugerido;
 	}
 
-	public void setDocenteSugerido(Docente docenteSugerido) {
+	public void setDocenteSugerido(Personal docenteSugerido) {
 		this.docenteSugerido = docenteSugerido;
 	}
 

@@ -17,8 +17,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-
-import ar.com.santalucia.dominio.modelo.usuarios.Directivo;
+import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
@@ -33,7 +32,7 @@ import ar.com.santalucia.servicio.ServicioDirectivo;
  *
  */
 
-// Último modificador: Ariel Ramirez @ 15-10-2015 17:44
+// Último modificador: Ariel Ramirez @ 25-11-2015 18:29
 
 @Path("/sDirectivo")
 @Produces("application/json")
@@ -77,16 +76,16 @@ public class ServicioDirectivoEndpoint {
 	@GET
 	@Path("/dir/{id:[0-9][0-9]*}")
 	public Response findById(@PathParam("id") final Long id) {
-		Directivo directivo = new Directivo();
-		directivo = null;
+		Personal personal = new Personal();
+		personal = null;
 		try {
 			setInstance();
-			directivo = servicioDirectivo.getUsuario(id);
+			personal = servicioDirectivo.getUsuario(id);
 		} catch (Exception ex) {
 			// ex.printStackTrace();
 			return Response.ok(ex).build();
 		}
-		return Response.ok(directivo).build();
+		return Response.ok(personal).build();
 	}
 
 	/**
@@ -164,17 +163,17 @@ public class ServicioDirectivoEndpoint {
 	@GET
 	@Path("/listAll")
 	public Response listAll(){
-		List<Directivo> directivo = new ArrayList<Directivo>();
-		directivo = null;
+		List<Personal> personal = new ArrayList<Personal>();
+		personal = null;
 		try {
 			setInstance();
-			directivo = servicioDirectivo.getUsuarios(new Directivo());
+			personal = servicioDirectivo.getUsuarios(new Personal());
 		} catch (Exception ex) {
-			if (directivo == null) {
+			if (personal == null) {
 				return Response.status(Status.NOT_FOUND).build();
 			}
 		}
-		return Response.ok(directivo).build();
+		return Response.ok(personal).build();
 	}
 	
 	/**
@@ -183,16 +182,16 @@ public class ServicioDirectivoEndpoint {
 	 * 2) Actualizar datos de directivo que no sean adicionales (teléfono, mail, título y domicilio).<br>
 	 * 3) Agregar uno o varios datos adicionales (teléfono, título y mail).<br>
 	 * (! - IMPORTANTE) Para actualizar o eliminar datos adicionales (teléfono, mail, título y domicilio) use los métodos UPDATE y DELETE respectivos. 
-	 * @param directivo
+	 * @param personal
 	 * @return Response ok (Status 200) con el id de usuario si el resultado es exitoso o la excepción generada. 
 	 */
 	@PUT
 	@Path("/dir/")
-	public Response update(final Directivo directivo) { 
+	public Response update(final Personal personal) { 
 		try {
 			setInstance();
-			servicioDirectivo.addUsuario(directivo);
-			return Response.ok(directivo.getIdUsuario()).build();
+			servicioDirectivo.addUsuario(personal);
+			return Response.ok(personal.getIdUsuario()).build();
 		} catch (Exception ex) {
 			// ex.printStackTrace();
 			return Response.ok(ex).build();

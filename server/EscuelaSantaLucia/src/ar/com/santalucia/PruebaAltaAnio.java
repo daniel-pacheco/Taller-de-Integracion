@@ -5,13 +5,13 @@ import java.util.Date;
 import org.jvnet.hk2.internal.Creator;
 
 import ar.com.santalucia.aplicacion.gestor.academico.GestorAnio;
-import ar.com.santalucia.aplicacion.gestor.usuario.GestorDocente;
+import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Area;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
-import ar.com.santalucia.dominio.modelo.usuarios.Docente;
+import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
 import ar.com.santalucia.servicio.*;
 
@@ -37,10 +37,10 @@ public class PruebaAltaAnio {
 		Alumno alumno2 = new Alumno();
 		Alumno alumno3 = new Alumno();
 		Alumno alumno4 = new Alumno();
-		Docente docente1 = new Docente();
-		Docente docente2 = new Docente();
-		Docente docente3 = new Docente();
-		Docente docente4 = new Docente();
+		Personal docente1 = new Personal();
+		Personal docente2 = new Personal();
+		Personal docente3 = new Personal();
+		Personal docente4 = new Personal();
 		
 		anio1.setIdAño(null);
 		anio1.setNombre("5to año");
@@ -140,6 +140,7 @@ public class PruebaAltaAnio {
 		docente1.setListaMails(null);
 		docente1.setListaTelefonos(null);
 		docente1.setListaTitulos(null);
+		docente1.setRol(Personal.DOCENTE);
 		
 		docente2.setIdUsuario(null);
 		docente2.setApellido("Llorente");
@@ -155,6 +156,7 @@ public class PruebaAltaAnio {
 		docente2.setListaMails(null);
 		docente2.setListaTelefonos(null);
 		docente2.setListaTitulos(null);
+		docente2.setRol(Personal.DOCENTE);
 		
 		docente3.setIdUsuario(null);
 		docente3.setApellido("Carbó");
@@ -170,6 +172,7 @@ public class PruebaAltaAnio {
 		docente3.setListaMails(null);
 		docente3.setListaTelefonos(null);
 		docente3.setListaTitulos(null);
+		docente3.setRol(Personal.DOCENTE);
 		
 		docente4.setIdUsuario(null);
 		docente4.setApellido("Cerini");
@@ -185,6 +188,7 @@ public class PruebaAltaAnio {
 		docente4.setListaMails(null);
 		docente4.setListaTelefonos(null);
 		docente4.setListaTitulos(null);
+		docente4.setRol(Personal.DOCENTE_DIRECTIVO);
 		
 		curso1.getListaAlumnos().add(alumno1);
 		curso1.getListaAlumnos().add(alumno2);
