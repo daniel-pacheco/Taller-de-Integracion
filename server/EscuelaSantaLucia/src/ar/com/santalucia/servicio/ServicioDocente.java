@@ -11,6 +11,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
 import ar.com.santalucia.excepciones.SugerenciaDirectivoException;
+import ar.com.santalucia.excepciones.SugerenciaPersonalException;
 import ar.com.santalucia.excepciones.ValidacionException;
 
 /**
@@ -83,7 +84,7 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 			}
 			;
 			return true;
-		} catch (SugerenciaDirectivoException ex) {
+		} catch (SugerenciaPersonalException ex) {
 			throw ex;
 		} catch (ValidacionException ex) {
 			throw ex;
@@ -153,7 +154,13 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 	@Override
 	public boolean removeUsuario(Personal usuario) throws Exception {
 		try {
-			gPersonal.delete(usuario);
+			//gPersonal.delete(usuario);
+			if(usuario.getRol().equals(Personal.DOCENTE_DIRECTIVO)){
+				usuario.setRol(Personal.DIRECTIVO);
+			}else{
+				usuario.setActivo(false);
+			}
+			modifyUsuario(usuario);	
 			return true;
 		} catch (Exception ex) {
 			throw ex;
