@@ -10,7 +10,6 @@ import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
-import ar.com.santalucia.excepciones.SugerenciaDirectivoException;
 import ar.com.santalucia.excepciones.SugerenciaPersonalException;
 import ar.com.santalucia.excepciones.ValidacionException;
 

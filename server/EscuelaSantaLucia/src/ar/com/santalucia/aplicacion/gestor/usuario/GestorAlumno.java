@@ -17,7 +17,6 @@ import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorDomicilio;
 import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorMail;
 import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorTelefono;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
-import ar.com.santalucia.dominio.modelo.usuarios.Directivo;
 import ar.com.santalucia.dominio.modelo.usuarios.Usuario;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
