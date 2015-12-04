@@ -27,6 +27,7 @@
 
   $scope.dropDownOptions = ['4', '5º', '3º', 'Todos'];
 
+//Test
 $scope.friends = [{name:'John', phone:'555-1276', anio: '4º'},
                          {name:'Mary', phone:'800-BIG-MARY', anio: '4'},
                          {name:'Mike', phone:'555-4321', anio: '4'},

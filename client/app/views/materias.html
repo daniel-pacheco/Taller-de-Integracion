@@ -4,7 +4,7 @@
 		<div class="bs-sidebar hidden-print affix" role="complementary" data-offset-top="-100" bs-affix style="position: relative; text-align: right;">
 			<ul class="nav bs-sidenav">
 				<li bs-scrollspy data-target="#getting-started">
-					<a href="#getting-started">Menú materia</a>
+					<a href="#getting-started">Men&uacute; materia</a>
 				</li>
 				<hr style="margin: 2px 0;">
 				<li bs-scrollspy data-target="#modals">
@@ -25,7 +25,7 @@
 	<div id="listado" ng-show="listado1">
 		<fieldset class="navbar">
 			<legend>Listado</legend>
-			<label for="">Año:</label> <select
+			<label for="">Ano:</label> <select
 			class="dropdown-toggle form-control-inline" name="" ng-model="filterByYear"> <!-- ng-change="update(dropDownValue, option)"> -->
 			<option ng-repeat="option in dropDownOptions"  value="{{option}}">{{option}}</option>
 		</select>
@@ -37,20 +37,20 @@
 				<th>Nombre</th>
 				<th>Docente titular</th>
 				<th>Año</th>
-				<th>Área</th>
+				<th>&Aacute;rea</th>
 				<th>Acciones</th>
 			</tr>
 		</thead>
-		<tr ng-repeat="alumno in friends | filter:filterByYear">
-			<!--<td>{{alumno.matricula}}</td>
-			<td>{{alumno.nombre}}</td>
-			<td>{{alumno.apellido}}</td>
-			<td>{{alumno.nroDocumento}}</td>
-			<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%" class="glyphicon glyphicon-user" ></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAttendance" style="width:25%" class="glyphicon glyphicon-calendar"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipReportCard" style="width:25%" class="glyphicon glyphicon-list-alt"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAcademicPerformance" style="width:25%" class="glyphicon glyphicon-education"></span></td> -->
-					<td>{{alumno.name}}</td>
+		<tr ng-repeat="materia in friends | filter:filterByYear">
+			<td>{{materia.nombre}}</td>
+			<td>{{materia.docenteTitular}}</td>
+			<td>{{materia.anioPertenece}}</td>
+			<td>{{materia.area}}</td>
+			<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%" class="glyphicon glyphicon-user" ></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAttendance" style="width:25%" class="glyphicon glyphicon-calendar"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipReportCard" style="width:25%" class="glyphicon glyphicon-list-alt"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAcademicPerformance" style="width:25%" class="glyphicon glyphicon-education"></span></td> 
+					<!--<td>{{alumno.name}}</td>
 					<td>{{alumno.phone}}</td>
 					<td>{{alumno.anio}}</td>
-					<td>{{$index}}</td> 
+					<td>{{$index}}</td> -->
 				</tr>
 			</table>
 		</fieldset>
