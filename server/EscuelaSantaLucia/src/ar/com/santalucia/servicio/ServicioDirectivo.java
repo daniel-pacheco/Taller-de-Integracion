@@ -70,7 +70,7 @@ public class ServicioDirectivo extends ServicioUsuario<Personal> {
 			listaDevolver.addAll(gPersonal.getByExample(example));
 			example.setRol(Personal.DOCENTE_DIRECTIVO);
 			listaDevolver.addAll(gPersonal.getByExample(example));
-			return gPersonal.getByExample(example);
+			return listaDevolver;
 		} catch (Exception ex) {
 			throw new Exception("Servicio: problemas. " + ex.getMessage());
 		}

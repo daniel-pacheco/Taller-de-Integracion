@@ -105,7 +105,7 @@ public class PersonalHome {
 		}
 	}
 
-	public List findByExample(Personal instance) {
+	public List<Personal> findByExample(Personal instance) {
 		log.debug("finding Personal instance by example");
 		try {
 			List results = sessionFactory.getCurrentSession()

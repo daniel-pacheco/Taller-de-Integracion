@@ -121,20 +121,20 @@ public class GestorDirectivo extends GestorUsuario implements IValidacionUsuario
 		}
 	}
 
-	@Override
-	public ArrayList<Directivo> List() throws Exception {
-		try {
-			setSession();
-			setTransaction();
-			Directivo criterioVacio = new Directivo();
-			ArrayList<Directivo> listaDirectivosDevolver = new ArrayList<Directivo>();
-			listaDirectivosDevolver = (ArrayList<Directivo>) directivoDAO.findByExample(criterioVacio);
-			sesionDeHilo.getTransaction().commit();
-			return listaDirectivosDevolver;
-		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al listar los directivos: " + ex.getMessage());
-		}
-	}
+	//SUPRIMIDO
+//	public ArrayList<Directivo> List() throws Exception {
+//		try {
+//			setSession();
+//			setTransaction();
+//			Directivo criterioVacio = new Directivo();
+//			ArrayList<Directivo> listaDirectivosDevolver = new ArrayList<Directivo>();
+//			listaDirectivosDevolver = (ArrayList<Directivo>) directivoDAO.findByExample(criterioVacio);
+//			sesionDeHilo.getTransaction().commit();
+//			return listaDirectivosDevolver;
+//		} catch (Exception ex) {
+//			throw new Exception("Ha ocurrido un error al listar los directivos: " + ex.getMessage());
+//		}
+//	}
 
 	@Override
 	public void validar(Object object) throws Exception {
@@ -219,12 +219,6 @@ public class GestorDirectivo extends GestorUsuario implements IValidacionUsuario
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public ArrayList getByExample(Object example) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

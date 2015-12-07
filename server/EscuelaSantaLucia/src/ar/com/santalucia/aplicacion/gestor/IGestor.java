@@ -1,7 +1,5 @@
 package ar.com.santalucia.aplicacion.gestor;
 
-import java.util.ArrayList;
-
 /**
  * Interface para los gestores
  * 

@@ -22,7 +22,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 
 //Ultimo modificador: Eric Pennachini @ 10-11-2015 17:28
 
-public abstract class GestorUsuario extends Gestor<Usuario> implements IListable {
+public abstract class GestorUsuario extends Gestor<Usuario> implements IListable<Usuario> {
 	
 	protected UsuarioHome usuarioDAO;
 	protected GestorTelefono GTelefono;
@@ -75,7 +75,7 @@ public abstract class GestorUsuario extends Gestor<Usuario> implements IListable
 		}
 	};
 	
-	public ArrayList getByExample(Usuario example) throws Exception {
+	public ArrayList<Usuario> getByExample(Usuario example) throws Exception {
 		try {
 			setSession();
 			setTransaction();
@@ -89,6 +89,9 @@ public abstract class GestorUsuario extends Gestor<Usuario> implements IListable
 		}
 
 	}
+	
+	public ArrayList<Usuario> List() throws Exception{
+		return null;}
 	
 	public Boolean existeDocumento(Usuario usuario) throws Exception {
 		Boolean resultado = false;

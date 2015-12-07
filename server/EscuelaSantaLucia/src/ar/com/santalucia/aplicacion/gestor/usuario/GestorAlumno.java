@@ -174,13 +174,13 @@ public class GestorAlumno extends GestorUsuario implements IValidacionUsuarioAlu
 	}
 
 	
-	public ArrayList getByExample(Alumno example) throws Exception {
+	public ArrayList<Alumno> getByExample(Alumno example) throws Exception {
 		try {
 			setSession();
 			setTransaction();
-			ArrayList<Alumno> listaDirectivosDevolver = (ArrayList<Alumno>) alumnoDAO.findByExample(example);
+			ArrayList<Alumno> listaAlumnosDevolver = (ArrayList<Alumno>) alumnoDAO.findByExample(example);
 			sesionDeHilo.getTransaction().commit();
-			return listaDirectivosDevolver;
+			return listaAlumnosDevolver;
 		} catch (Exception ex) {
 			closeSession();
 			throw new Exception(
@@ -189,26 +189,20 @@ public class GestorAlumno extends GestorUsuario implements IValidacionUsuarioAlu
 
 	}
 
-	@Override
-	public ArrayList List() throws Exception {
-		try {
-			setSession();
-			setTransaction();
-			Alumno criterioVacio = new Alumno();
-			ArrayList<Alumno> listadoAlumnosDevolver = new ArrayList<Alumno>();
-			listadoAlumnosDevolver = (ArrayList<Alumno>) alumnoDAO.findByExample(criterioVacio);
-			sesionDeHilo.getTransaction().commit();
-			return listadoAlumnosDevolver;
-		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al listar los directivos: " + ex.getMessage());
-		}
-	}
+	// SUPRIMIDO
+//	public ArrayList<Alumno> List() throws Exception {
+//		try {
+//			setSession();
+//			setTransaction();
+//			Alumno criterioVacio = new Alumno();
+//			ArrayList<Alumno> listadoAlumnosDevolver = new ArrayList<Alumno>();
+//			listadoAlumnosDevolver = (ArrayList<Alumno>) alumnoDAO.findByExample(criterioVacio);
+//			sesionDeHilo.getTransaction().commit();
+//			return listadoAlumnosDevolver;
+//		} catch (Exception ex) {
+//			throw new Exception("Ha ocurrido un error al listar los directivos: " + ex.getMessage());
+//		}
+//	}
 	
-
-	@Override
-	public ArrayList getByExample(Object example) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }
