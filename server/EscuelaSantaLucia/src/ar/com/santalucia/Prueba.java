@@ -21,6 +21,7 @@ public class Prueba {
 		Long dni = 30000000L;
 		for (int i = 0; i < 300; i++) {
 			Alumno alumnoPrueba = new Alumno();
+			
 
 			//alumnoPrueba.setApellido("Pennachini " + i);
 			alumnoPrueba.setApellido(generarStringRandom(16));
