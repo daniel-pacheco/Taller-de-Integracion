@@ -3,13 +3,11 @@ package ar.com.santalucia.aplicacion.gestor.usuario;
 import java.util.ArrayList;
 import ar.com.santalucia.accesodatos.dao.usuario.PersonalHome;
 import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorTitulo;
-import ar.com.santalucia.dominio.modelo.usuarios.Directivo;
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.dominio.modelo.usuarios.Usuario;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
-import ar.com.santalucia.excepciones.SugerenciaDirectivoException;
 import ar.com.santalucia.excepciones.SugerenciaPersonalException;
 import ar.com.santalucia.excepciones.ValidacionException;
 import ar.com.santalucia.validaciones.IValidacionUsuarioDocDir;
@@ -22,7 +20,7 @@ import ar.com.santalucia.validaciones.IValidacionUsuarioDocDir;
  *
  */
 
-// UltimoModificador: Ariel Ramirez @ 27-11-15 16:00
+// UltimoModificador: Ariel Ramirez @ 1-12-15 17:14
 
 public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioDocDir {
 	private PersonalHome docenteDAO;
@@ -97,7 +95,6 @@ public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioD
 		}
 	}
 
-	// @Override
 	public ArrayList<Personal> getByExample(Personal object) throws Exception {
 		try {
 			setSession();
@@ -172,6 +169,7 @@ public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioD
 
 	// existe en directivo o en docente se hace aqui porque personal trae su
 	// idetificacion cargada
+
 	public Boolean existeDniEnPersonal(Personal personal) throws Exception {
 		Personal personalTemp = new Personal();
 		personalTemp.setNroDocumento(personal.getNroDocumento());
@@ -210,40 +208,7 @@ public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioD
 
 		return false;
 	}
-
-	/**
-	 * 
-	 * @param docente
-	 * @return Boolean
-	 * @throws Exception
-	 * 
-	 *             Compara los datos de un Docente con los del Directivo
-	 *             existente en la base de datos. Se comparan los atributos
-	 *             nombre, apellido, tipo de documento, numero de documento,
-	 *             cuil, fecha de nacimiento y nombre de usuario.
-	 */
-
-	public Boolean datosIguales(Personal docente) throws Exception {
-		GestorDirectivo gDir = new GestorDirectivo();
-		Directivo directivoEjemplo = new Directivo();
-		directivoEjemplo.setNroDocumento(docente.getNroDocumento());
-		ArrayList<Directivo> listaDirectivo = gDir.getByExample(directivoEjemplo);
-		for (Directivo d : listaDirectivo)
-			if ((d.getApellido().equals(docente.getApellido())) && (d.getCuil().equals(docente.getCuil()))
-					&& (d.getDomicilio().equals(docente.getDomicilio()))
-					&& (d.getFechaNacimiento().getTime() == docente.getFechaNacimiento().getTime())
-					&& (d.getNombre().equals(docente.getNombre()))
-					&& (d.getNombreUsuario().equals(docente.getNombreUsuario()))
-					&& (d.getNroDocumento().equals(docente.getNroDocumento()))
-					&& (d.getSexo().equals(docente.getSexo()))
-					&& (d.getTipoDocumento().equals(docente.getTipoDocumento()))) {
-				return true;
-			} else {
-				return false;
-			}
-		return false;
-	}
-
+	
 	/**
 	 * @param Object
 	 *            de tipo Docente
@@ -273,7 +238,6 @@ public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioD
 	public void validar(Object object) throws SugerenciaPersonalException, Exception {
 		Personal personal = (Personal) object;
 		ValidacionException exception = new ValidacionException();
-		SugerenciaDirectivoException sugDirException = new SugerenciaDirectivoException();
 		SugerenciaPersonalException sugPerException = new SugerenciaPersonalException();
 
 		switch (personal.getRol()) {
@@ -313,6 +277,9 @@ public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioD
 			break;
 		case "DOCENTE/DIRECTIVO":
 			if (existeDocumento(personal)) {
+				// Recomendación del 1-12-2015
+				// Agregar para buscar solo los usuarios activos
+				// personal.setActivo(true);
 				exception.addMensajeError("El número de DNI ya está en uso.");
 				throw exception;
 			}
