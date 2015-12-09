@@ -19,6 +19,12 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
 //	Último modificador: Ariel Ramirez @ 07-12-2015 19:31
 
 public interface IServicioUsuario<T> {
+	/**
+	 * Devuelve un Usuario en particular a partir de su Id
+	 * @param id Id de Usuario que se desea obtener. 
+	 * @return Una instancia de Usuario (o hijos).
+	 * @throws Exception Lanzada en caso de existir un problema.
+	 */
 	T getUsuario(Long id) throws Exception;	
 	/**
 	 * Devuelve una lista completa de usuarios en estado persistentes que correspondan con el patrón solicitado.

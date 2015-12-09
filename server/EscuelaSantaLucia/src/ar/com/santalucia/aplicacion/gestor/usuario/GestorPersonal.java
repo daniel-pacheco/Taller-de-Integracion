@@ -276,10 +276,10 @@ public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioD
 			}
 			break;
 		case "DOCENTE/DIRECTIVO":
+			// personal.setActivo(true);
 			if (existeDocumento(personal)) {
 				// Recomendación del 1-12-2015
 				// Agregar para buscar solo los usuarios activos
-				// personal.setActivo(true);
 				exception.addMensajeError("El número de DNI ya está en uso.");
 				throw exception;
 			}
