@@ -1,12 +1,16 @@
 package ar.com.santalucia.validaciones;
 
 import ar.com.santalucia.dominio.modelo.academico.Anio;
+import ar.com.santalucia.dominio.modelo.academico.Curso;
+import ar.com.santalucia.dominio.modelo.academico.Materia;
 
 /**
  * @author ericpennachini
  * @version 1.0
  *
  */
+
+//UltimoModificador: Ariel Ramirez @ 09-12-2015 19:38
 
 public interface IValidacionAnio {
 	
@@ -25,7 +29,7 @@ public interface IValidacionAnio {
 	 * @return
 	 * @throws Exception 
 	 */
-	Boolean existeCurso(Character divisionCurso, Anio anio) throws Exception;
+	Boolean existeCurso(Curso curso, Anio anio) throws Exception;
 	
 	
 	/**
@@ -34,7 +38,7 @@ public interface IValidacionAnio {
 	 * @return
 	 * @throws Exception 
 	 */
-	Boolean existeMateria(String nombreMateria) throws Exception;
+	Boolean existeMateriaEnAnio(Materia materia, Anio anio) throws Exception;
 	
 	
 }

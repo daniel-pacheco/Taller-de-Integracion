@@ -1,6 +1,7 @@
 package ar.com.santalucia.aplicacion.gestor.academico;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 import ar.com.santalucia.accesodatos.dao.academico.AnioHome;
@@ -19,6 +20,8 @@ import ar.com.santalucia.validaciones.IValidacionAnio;
  * @version 1.0
  *
  */
+
+//Último modificador: Ariel Ramirez @ 09-12-2015 19:53
 
 public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 
@@ -181,22 +184,23 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 		return resultado;
 	}
 
-	public Boolean existeCurso(Character divisionCurso, Anio anio) throws Exception{
+	@Override
+	public Boolean existeCurso(Curso curso, Anio anio) throws Exception{
 		// TODO
 		// 1 - Obtener el año al que pertenece el curso
 		// 2 - Rescatar el listado de curso
 		// 3 - Comprobar si existe el curso en el listado
 		// 4 - Devolver true si se encontro
 		Boolean existeCurso = new Boolean(false);
-		Curso cursoExample = new Curso();
-		cursoExample.setDivision(divisionCurso);
+//		Curso cursoExample = new Curso();
+//		cursoExample.setDivision(divisionCurso);
 		try{
 			if(anio.getIdAnio() != null) // Esto es por si el año no existe
 			{
-				Anio anioBusqueda = this.getById(anio.getIdAnio());
-				Set<Curso> cursos = anioBusqueda.getListaCursos();
+				//Anio anioBusqueda = this.getById(anio.getIdAnio());
+				Set<Curso> cursos = anio.getListaCursos();
 				// Se uso contains porque es un arreglo de char y se sobrecargó equals
-				existeCurso = cursos.contains(divisionCurso);
+				existeCurso = cursos.contains(curso);
 				return existeCurso;
 			}
 		} catch(Exception ex){
@@ -214,17 +218,20 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 	}
 	
 	@Override
-	public Boolean existeMateria(String nombreMateria) throws Exception{
-		// Este caso es diferente al de curso porque busca entidades generales, no un arreglo de char como curso
-		Materia materiaEjemplo = new Materia();
-		materiaEjemplo.setNombre(nombreMateria);
-		ArrayList<Materia> ejemplos = new ArrayList<Materia>();
+	public Boolean existeMateriaEnAnio(Materia materia, Anio anio) throws Exception{
+		// Modificado 09-12-2015 @ 19:44
+		Boolean existeMateriaEnAnio = false;
+		Set<Materia> listaMaterias = new HashSet<Materia>();
 		try {
-			ejemplos = GMateria.getByExample(materiaEjemplo);
+			if (anio != null) {
+				listaMaterias = anio.getListaMaterias();
+				existeMateriaEnAnio = listaMaterias.contains(materia);
+				return existeMateriaEnAnio;
+			}
 		} catch (Exception ex) {
 			throw new Exception("El proceso de validación de materia ha fallado. " + ex.getMessage());
 		}
-		return (ejemplos.isEmpty() ? false : true);
+		return existeMateriaEnAnio;
 	}
 	
 	public void validar(Anio object) throws Exception {
@@ -233,14 +240,14 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 		
 		vNombre = this.existeNombreAnio(object);
 		for (Curso c: object.getListaCursos()) {
-			exception.addMensajeError((this.existeCurso(c.getDivision(), object) 
+			exception.addMensajeError((this.existeCurso(c, object) 
 										? "El curso: " + c.getDivision() + " ya existe en el año." 
 										: null));
 		}
 		
 
 		for (Materia m: object.getListaMaterias()) {
-			exception.addMensajeError((this.existeMateria(m.getNombre()) 
+			exception.addMensajeError((this.existeMateriaEnAnio(m, object) 
 										? "La materia: " + m.getNombre() + " ya existe en la base de datos" 
 										: null));
 		}

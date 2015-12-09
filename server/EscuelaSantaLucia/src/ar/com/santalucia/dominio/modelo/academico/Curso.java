@@ -20,7 +20,7 @@ public class Curso {
 	private String turno;
 	private Integer cicloLectivo;
 	private Set<Alumno> listaAlumnos;
-	
+
 	public Curso() {
 		super();
 		listaAlumnos = new HashSet<Alumno>();
@@ -77,11 +77,12 @@ public class Curso {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this.division.equals(((Curso)obj).division)){
-			return true;
+		if (obj.getClass() == Curso.class) {
+			if (this.division.equals(((Curso) obj).division)) {
+				return true; 
+			}
 		}
 		return false;
 	}
-	
-	
+
 }
