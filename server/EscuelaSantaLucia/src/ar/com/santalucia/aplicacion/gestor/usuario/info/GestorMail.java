@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import ar.com.santalucia.accesodatos.dao.usuario.info.MailHome;
 import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
 import ar.com.santalucia.aplicacion.gestor.Gestor;
+import ar.com.santalucia.aplicacion.gestor.IListable;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
+import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 
 
 /**
@@ -17,7 +19,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 
 // UltimoModificador: Ariel Ramirez @ 29-08-15 16:00
  
- public class GestorMail extends Gestor<Mail> {
+ public class GestorMail extends Gestor<Mail> implements IListable<Mail> {
 	private MailHome mailDAO;
 
 	public GestorMail() throws Exception {
@@ -114,12 +116,6 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 
 		}
 
-	}
-
-	@Override
-	public void validar(Mail object) throws Exception {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

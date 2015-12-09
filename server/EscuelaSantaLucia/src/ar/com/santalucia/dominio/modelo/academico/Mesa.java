@@ -4,7 +4,7 @@ import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import ar.com.santalucia.dominio.modelo.usuarios.Docente;
+import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 
 /**
  * 
@@ -20,16 +20,16 @@ public class Mesa {
 	private Date fecha;
 	private Long plazoInscripcion;
 	private Materia materia;
-	private Set<Docente> integrantesTribunal;
+	private Set<Personal> integrantesTribunal;
 	private Set<Inscripcion> listaInscripciones;
 
 	public Mesa() {
 		super();
-		integrantesTribunal = new HashSet<Docente>();
+		integrantesTribunal = new HashSet<Personal>();
 		listaInscripciones = new HashSet<Inscripcion>();
 	}
 
-	public Mesa(Long idMesa, Date fecha, Long plazoInscripcion, Materia materia, Set<Docente> integrantesTribunal,
+	public Mesa(Long idMesa, Date fecha, Long plazoInscripcion, Materia materia, Set<Personal> integrantesTribunal,
 			Set<Inscripcion> listaInscripciones) {
 		super();
 		this.idMesa = idMesa;
@@ -72,11 +72,11 @@ public class Mesa {
 		this.materia = materia;
 	}
 
-	public Set<Docente> getIntegrantesTribunal() {
+	public Set<Personal> getIntegrantesTribunal() {
 		return integrantesTribunal;
 	}
 
-	public void setIntegrantesTribunal(Set<Docente> integrantesTribunal) {
+	public void setIntegrantesTribunal(Set<Personal> integrantesTribunal) {
 		this.integrantesTribunal = integrantesTribunal;
 	}
 

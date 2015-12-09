@@ -7,7 +7,7 @@ package ar.com.santalucia.dominio.modelo.usuarios.info;
  * @version 1.4
  */
 
-//UltimoModificador: Eric Pennachini @ 16-08-15 16:19
+// UltimoModificador: Eric Pennachini @ 16-08-15 16:19
 
 public class Domicilio {
 
@@ -21,14 +21,13 @@ public class Domicilio {
 	private String provincia;
 	private Integer codigoPostal;
 	private String barrio;
-	
 
 	public Domicilio() {
 		super();
 	}
 
-	public Domicilio(String calle, Integer numero, Integer piso, String localidad, String dpto,
-			String departamento, String provincia, Integer codigoPostal, String barrio) {
+	public Domicilio(String calle, Integer numero, Integer piso, String localidad, String dpto, String departamento,
+			String provincia, Integer codigoPostal, String barrio) {
 		super();
 		this.calle = calle;
 		this.numero = numero;
@@ -44,7 +43,7 @@ public class Domicilio {
 	public Long getIdDomicilio() {
 		return idDomicilio;
 	}
-	
+
 	public void setIdDomicilio(Long idDomicilio) {
 		this.idDomicilio = idDomicilio;
 	}
@@ -128,6 +127,23 @@ public class Domicilio {
 				+ " (" + codigoPostal + ") - " + provincia;
 
 		return domicilioCompleto;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if ((this.barrio.equals(((Domicilio) obj).barrio)) 
+				&& (this.calle.equals(((Domicilio) obj).calle))
+				&& (this.codigoPostal.equals(((Domicilio) obj).codigoPostal))
+				&& (this.departamento.equals(((Domicilio) obj).departamento))
+				&& (this.dpto.equals(((Domicilio) obj).dpto))
+				&& (this.localidad.equals(((Domicilio) obj).localidad))
+				&& (this.numero.equals(((Domicilio) obj).numero)) 
+				&& (this.piso.equals(((Domicilio) obj).piso))
+				&& (this.provincia.equals(((Domicilio) obj).provincia))) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }

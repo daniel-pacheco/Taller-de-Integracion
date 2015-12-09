@@ -19,7 +19,7 @@ Generated 24/09/2015 16:41:55 by Hibernate Tools 3.4.0.CR1 -->
         <property name="cicloLectivo" type="java.lang.Integer">
             <column name="CICLOLECTIVO" />
         </property>
-        <set name="listaAlumnos" table="ALUMNO" inverse="false" lazy="true">
+        <set name="listaAlumnos" table="ALUMNO" inverse="false" lazy="false">
             <key>
                 <column name="IDCURSO" />
             </key>

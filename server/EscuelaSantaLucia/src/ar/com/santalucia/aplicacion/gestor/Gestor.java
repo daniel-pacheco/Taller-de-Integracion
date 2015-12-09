@@ -1,7 +1,5 @@
 package ar.com.santalucia.aplicacion.gestor;
 
-import java.util.ArrayList;
-
 import org.hibernate.Session;
 
 import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
@@ -89,21 +87,5 @@ public abstract class Gestor<T> implements IGestor<T> {
 	 */
 	@Override
 	public abstract T getById(Long id) throws Exception;
-
-	/**
-	 * Nota: Este método intenta obtener una sesión y una transacción,
-	 * manteniéndolas abiertas.
-	 */
-	@Override
-	public abstract ArrayList<T> getByExample(T example) throws Exception;
-
-	/**
-	 * Nota: Este método intenta obtener una sesión y una transacción,
-	 * manteniéndolas abiertas.
-	 */
-	@Override
-	public abstract ArrayList<T> List() throws Exception;
 	
-	@Override
-	public abstract void validar(T object) throws Exception;
 }

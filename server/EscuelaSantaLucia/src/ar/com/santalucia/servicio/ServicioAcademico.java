@@ -7,12 +7,12 @@ import ar.com.santalucia.aplicacion.gestor.academico.GestorAnio;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorCurso;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMateria;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
-import ar.com.santalucia.aplicacion.gestor.usuario.GestorDocente;
+import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
-import ar.com.santalucia.dominio.modelo.usuarios.Docente;
+import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 
 /**
  * Clase servicio para gestión académica. Engloba Anio, Curso, alumnos y
@@ -30,7 +30,7 @@ public class ServicioAcademico {
 	private GestorCurso gCurso;
 	private GestorMateria gMateria;
 	private GestorAlumno gAlumno;
-	private GestorDocente gDocente;
+	private GestorPersonal gDocente;
 
 	public ServicioAcademico() throws Exception {
 		try {
@@ -38,7 +38,7 @@ public class ServicioAcademico {
 			gCurso = new GestorCurso();
 			gMateria = new GestorMateria();
 			gAlumno = new GestorAlumno();
-			gDocente = new GestorDocente();
+			gDocente = new GestorPersonal();
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un problema al intentar inicializar el servicio de operaciones básicas. "
 					+ ex.getMessage());
@@ -202,7 +202,7 @@ public class ServicioAcademico {
 		return false;
 	}
 
-	public Boolean asignarDocentesAMateria(Docente docenteTitular, Docente docenteSuplente, Long idMateria) throws Exception {
+	public Boolean asignarDocentesAMateria(Personal docenteTitular, Personal docenteSuplente, Long idMateria) throws Exception {
 		// TODO
 		// 1 - Obtener la materia con el gestor
 		// 2 - Asignar docente titular y suplente haciedo

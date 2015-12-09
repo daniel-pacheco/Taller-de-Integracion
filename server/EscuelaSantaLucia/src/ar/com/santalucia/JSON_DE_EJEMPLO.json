@@ -1,0 +1,405 @@
+/*DOCENTES*/
+
+[
+  {
+    "listaTitulos": [
+      {
+        "idTitulo": 3,
+        "nombreTitulo": "Ingenieria en electrónica",
+        "descripcionTitulo": "Recibido en UTN año 1970"
+      }
+    ],
+    "cuil": 20112223331,
+    "rol": "DOCENTE",
+    "idUsuario": 65,
+    "nroDocumento": 11222333,
+    "tipoDocumento": "DU/DNI",
+    "nombre": "Aldo",
+    "apellido": "Sigura",
+    "listaTelefonos": [
+      {
+        "idTelefono": 35,
+        "caracteristica": 343,
+        "nroTelefono": 4221177,
+        "tipoTelefono": "Casa"
+      }
+    ],
+    "listaMails": [
+      {
+        "idMail": 35,
+        "direccionMail": "docente1@gmail.com",
+        "tipoMail": "Personal"
+      }
+    ],
+    "domicilio": {
+      "idDomicilio": 34,
+      "calle": "El Rodeo",
+      "numero": 419,
+      "piso": 0,
+      "localidad": "Paraná",
+      "dpto": "-",
+      "departamento": "Paraná",
+      "provincia": "Entre Rios",
+      "codigoPostal": 3100,
+      "barrio": "San Agustín"
+    },
+    "sexo": "m",
+    "nombreUsuario": "aldo.sigura",
+    "fechaNacimiento": "Jan 21, 1984 12:00:00 AM",
+    "activo": true
+  },
+  {
+    "listaTitulos": [
+      {
+        "idTitulo": 4,
+        "nombreTitulo": "Ingeniería Civil",
+        "descripcionTitulo": "Recibido en UNL"
+      }
+    ],
+    "cuil": 20110007771,
+    "rol": "DOCENTE",
+    "idUsuario": 66,
+    "nroDocumento": 11000777,
+    "tipoDocumento": "DU/DNI",
+    "nombre": "Maria Emilia",
+    "apellido": "Llorente",
+    "listaTelefonos": [
+      {
+        "idTelefono": 36,
+        "caracteristica": 343,
+        "nroTelefono": 4221177,
+        "tipoTelefono": "Casa"
+      }
+    ],
+    "listaMails": [
+      {
+        "idMail": 36,
+        "direccionMail": "docente2@gmail.com",
+        "tipoMail": "Personal"
+      }
+    ],
+    "domicilio": {
+      "idDomicilio": 35,
+      "calle": "El Rodeo",
+      "numero": 419,
+      "piso": 0,
+      "localidad": "Paraná",
+      "dpto": "-",
+      "departamento": "Paraná",
+      "provincia": "Entre Rios",
+      "codigoPostal": 3100,
+      "barrio": "San Agustín"
+    },
+    "sexo": "f",
+    "nombreUsuario": "m.e.llorente",
+    "fechaNacimiento": "Jan 21, 1984 12:00:00 AM",
+    "activo": true
+  },
+  {
+    "listaTitulos": [
+      {
+        "idTitulo": 5,
+        "nombreTitulo": "Abogado",
+        "descripcionTitulo": "Recibido en UNL"
+      }
+    ],
+    "cuil": 20114449991,
+    "rol": "DOCENTE",
+    "idUsuario": 67,
+    "nroDocumento": 11444999,
+    "tipoDocumento": "DU/DNI",
+    "nombre": "Alejandro",
+    "apellido": "Carbó",
+    "listaTelefonos": [
+      {
+        "idTelefono": 37,
+        "caracteristica": 343,
+        "nroTelefono": 4221177,
+        "tipoTelefono": "Casa"
+      }
+    ],
+    "listaMails": [
+      {
+        "idMail": 37,
+        "direccionMail": "docente3@gmail.com",
+        "tipoMail": "Personal"
+      }
+    ],
+    "domicilio": {
+      "idDomicilio": 36,
+      "calle": "El Rodeo",
+      "numero": 419,
+      "piso": 0,
+      "localidad": "Paraná",
+      "dpto": "-",
+      "departamento": "Paraná",
+      "provincia": "Entre Rios",
+      "codigoPostal": 3100,
+      "barrio": "San Agustín"
+    },
+    "sexo": "m",
+    "nombreUsuario": "ale.carbo.ucr",
+    "fechaNacimiento": "Jan 21, 1984 12:00:00 AM",
+    "activo": true
+  },
+  {
+    "listaTitulos": [
+      {
+        "idTitulo": 6,
+        "nombreTitulo": "Ingeniería en Sistemas",
+        "descripcionTitulo": "Recibida en UCC"
+      }
+    ],
+    "cuil": 20118885551,
+    "rol": "DOCENTE/DIRECTIVO",
+    "idUsuario": 68,
+    "nroDocumento": 11888555,
+    "tipoDocumento": "DU/DNI",
+    "nombre": "Dolores",
+    "apellido": "Cerini",
+    "listaTelefonos": [
+      {
+        "idTelefono": 38,
+        "caracteristica": 343,
+        "nroTelefono": 4221177,
+        "tipoTelefono": "Casa"
+      }
+    ],
+    "listaMails": [
+      {
+        "idMail": 38,
+        "direccionMail": "docente4@gmail.com",
+        "tipoMail": "Personal"
+      }
+    ],
+    "domicilio": {
+      "idDomicilio": 37,
+      "calle": "El Rodeo",
+      "numero": 419,
+      "piso": 0,
+      "localidad": "Paraná",
+      "dpto": "-",
+      "departamento": "Paraná",
+      "provincia": "Entre Rios",
+      "codigoPostal": 3100,
+      "barrio": "San Agustín"
+    },
+    "sexo": "m",
+    "nombreUsuario": "dolores.cerini",
+    "fechaNacimiento": "Jan 21, 1984 12:00:00 AM",
+    "activo": true
+  }
+]
+
+/*DOCENTE DIRECTIVO*/
+
+[
+  {
+    "listaTitulos": [
+      {
+        "idTitulo": 6,
+        "nombreTitulo": "Ingeniería en Sistemas",
+        "descripcionTitulo": "Recibida en UCC"
+      }
+    ],
+    "cuil": 20118885551,
+    "rol": "DOCENTE/DIRECTIVO",
+    "idUsuario": 68,
+    "nroDocumento": 11888555,
+    "tipoDocumento": "DU/DNI",
+    "nombre": "Dolores",
+    "apellido": "Cerini",
+    "listaTelefonos": [
+      {
+        "idTelefono": 38,
+        "caracteristica": 343,
+        "nroTelefono": 4221177,
+        "tipoTelefono": "Casa"
+      }
+    ],
+    "listaMails": [
+      {
+        "idMail": 38,
+        "direccionMail": "docente4@gmail.com",
+        "tipoMail": "Personal"
+      }
+    ],
+    "domicilio": {
+      "idDomicilio": 37,
+      "calle": "El Rodeo",
+      "numero": 419,
+      "piso": 0,
+      "localidad": "Paraná",
+      "dpto": "-",
+      "departamento": "Paraná",
+      "provincia": "Entre Rios",
+      "codigoPostal": 3100,
+      "barrio": "San Agustín"
+    },
+    "sexo": "m",
+    "nombreUsuario": "dolores.cerini",
+    "fechaNacimiento": "Jan 21, 1984 12:00:00 AM",
+    "activo": true
+  }
+]
+
+/*AlUMNOS*/
+
+[
+  {
+    "matricula": 699841,
+    "idUsuario": 61,
+    "nroDocumento": 35442873,
+    "tipoDocumento": "DU/DNI",
+    "nombre": "Mauricio Ariel",
+    "apellido": "Ramirez",
+    "listaTelefonos": [
+      {
+        "idTelefono": 31,
+        "caracteristica": 343,
+        "nroTelefono": 4232266,
+        "tipoTelefono": "Casa"
+      }
+    ],
+    "listaMails": [
+      {
+        "idMail": 31,
+        "direccionMail": "alumno1@gmail.com",
+        "tipoMail": "Personal"
+      }
+    ],
+    "domicilio": {
+      "idDomicilio": 30,
+      "calle": "El Rodeo",
+      "numero": 419,
+      "piso": 0,
+      "localidad": "Paraná",
+      "dpto": "-",
+      "departamento": "Paraná",
+      "provincia": "Entre Rios",
+      "codigoPostal": 3100,
+      "barrio": "San Agustín"
+    },
+    "sexo": "m",
+    "nombreUsuario": "La_mitocondria_gamer",
+    "fechaNacimiento": "Jan 21, 1991 12:00:00 AM",
+    "activo": true
+  },
+  {
+    "matricula": 123456,
+    "idUsuario": 62,
+    "nroDocumento": 36099930,
+    "tipoDocumento": "DU/DNI",
+    "nombre": "Eric Daniel",
+    "apellido": "Pennachini",
+    "listaTelefonos": [
+      {
+        "idTelefono": 32,
+        "caracteristica": 343,
+        "nroTelefono": 4562144,
+        "tipoTelefono": "Casa"
+      }
+    ],
+    "listaMails": [
+      {
+        "idMail": 32,
+        "direccionMail": "alumno2@gmail.com",
+        "tipoMail": "Personal"
+      }
+    ],
+    "domicilio": {
+      "idDomicilio": 31,
+      "calle": "El Rodeo",
+      "numero": 419,
+      "piso": 0,
+      "localidad": "Paraná",
+      "dpto": "-",
+      "departamento": "Paraná",
+      "provincia": "Entre Rios",
+      "codigoPostal": 3100,
+      "barrio": "San Agustín"
+    },
+    "sexo": "m",
+    "nombreUsuario": "ericpennachini",
+    "fechaNacimiento": "Dec 20, 1991 12:00:00 AM",
+    "activo": true
+  },
+  {
+    "matricula": 321654,
+    "idUsuario": 63,
+    "nroDocumento": 33000111,
+    "tipoDocumento": "DU/DNI",
+    "nombre": "Martin",
+    "apellido": "Herrlein",
+    "listaTelefonos": [
+      {
+        "idTelefono": 33,
+        "caracteristica": 343,
+        "nroTelefono": 4231111,
+        "tipoTelefono": "Casa"
+      }
+    ],
+    "listaMails": [
+      {
+        "idMail": 33,
+        "direccionMail": "alumno3@gmail.com",
+        "tipoMail": "Personal"
+      }
+    ],
+    "domicilio": {
+      "idDomicilio": 32,
+      "calle": "El Rodeo",
+      "numero": 419,
+      "piso": 0,
+      "localidad": "Paraná",
+      "dpto": "-",
+      "departamento": "Paraná",
+      "provincia": "Entre Rios",
+      "codigoPostal": 3100,
+      "barrio": "San Agustín"
+    },
+    "sexo": "m",
+    "nombreUsuario": "el_tincho",
+    "fechaNacimiento": "Nov 10, 1991 12:00:00 AM",
+    "activo": true
+  },
+  {
+    "matricula": 555999,
+    "idUsuario": 64,
+    "nroDocumento": 22333444,
+    "tipoDocumento": "DU/DNI",
+    "nombre": "Daniel",
+    "apellido": "Pacheco",
+    "listaTelefonos": [
+      {
+        "idTelefono": 34,
+        "caracteristica": 343,
+        "nroTelefono": 4562144,
+        "tipoTelefono": "Casa"
+      }
+    ],
+    "listaMails": [
+      {
+        "idMail": 34,
+        "direccionMail": "alumno4@gmail.com",
+        "tipoMail": "Personal"
+      }
+    ],
+    "domicilio": {
+      "idDomicilio": 33,
+      "calle": "El Rodeo",
+      "numero": 419,
+      "piso": 0,
+      "localidad": "Paraná",
+      "dpto": "-",
+      "departamento": "Paraná",
+      "provincia": "Entre Rios",
+      "codigoPostal": 3100,
+      "barrio": "San Agustín"
+    },
+    "sexo": "m",
+    "nombreUsuario": "dani-o-pachek",
+    "fechaNacimiento": "Jan 21, 1984 12:00:00 AM",
+    "activo": true
+  }
+]

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import ar.com.santalucia.accesodatos.dao.academico.MateriaHome;
 import ar.com.santalucia.aplicacion.gestor.Gestor;
-import ar.com.santalucia.aplicacion.gestor.usuario.GestorDocente;
+import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.excepciones.ValidacionException;
@@ -39,9 +39,9 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 	@Override
 	public void add(Materia object) throws Exception {
 		try {
+			this.validar(object);
 			setSession();
 			setTransaction();
-			this.validar(object);
 			/*
 			if (object.getDocenteTitular() != null) { // creo que está de más...
 				if (object.getDocenteTitular().getIdUsuario() == null) {
@@ -109,7 +109,7 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 		}
 	}
 
-	@Override
+	
 	public ArrayList<Materia> getByExample(Materia example) throws Exception {
 		try {
 			setSession();
@@ -124,7 +124,7 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 		}
 	}
 
-	@Override
+	
 	public ArrayList<Materia> List() throws Exception {
 		try {
 			setSession();
@@ -156,7 +156,7 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 		return (ejemplos.isEmpty() ? false : true);
 	}
 
-	@Override
+	
 	public void validar(Materia object) throws Exception {
 		Boolean vMateria;
 		ValidacionException exception = new ValidacionException();
@@ -170,6 +170,12 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 		if (!exception.getMensajesError().isEmpty()) {
 			throw exception;
 		}
+	}
+
+	@Override
+	public void validar(Object object) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
 

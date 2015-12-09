@@ -1,18 +1,19 @@
 package ar.com.santalucia;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
-import org.jvnet.hk2.internal.Creator;
-
-import ar.com.santalucia.aplicacion.gestor.academico.GestorAnio;
-import ar.com.santalucia.aplicacion.gestor.usuario.GestorDocente;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Area;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
-import ar.com.santalucia.dominio.modelo.usuarios.Docente;
+import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
+import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
+import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
+import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
 import ar.com.santalucia.servicio.*;
 
 public class PruebaAltaAnio {
@@ -37,10 +38,10 @@ public class PruebaAltaAnio {
 		Alumno alumno2 = new Alumno();
 		Alumno alumno3 = new Alumno();
 		Alumno alumno4 = new Alumno();
-		Docente docente1 = new Docente();
-		Docente docente2 = new Docente();
-		Docente docente3 = new Docente();
-		Docente docente4 = new Docente();
+		Personal docente1 = new Personal();
+		Personal docente2 = new Personal();
+		Personal docente3 = new Personal();
+		Personal docente4 = new Personal();
 		
 		anio1.setIdAño(null);
 		anio1.setNombre("5to año");
@@ -69,6 +70,25 @@ public class PruebaAltaAnio {
 		materia2.setArea(new Area(null,"Sistemas"));
 		materia2.setActivo(true);
 		
+		Domicilio domicilio1=new Domicilio();
+		domicilio1.setBarrio("San Agustín");
+		domicilio1.setCalle("El Rodeo");
+		domicilio1.setCodigoPostal(3100);
+		domicilio1.setDepartamento("Paraná");
+		domicilio1.setDpto("-");
+		domicilio1.setLocalidad("Paraná");
+		domicilio1.setNumero(419);
+		domicilio1.setPiso(0);
+		domicilio1.setProvincia("Entre Rios");
+		
+		Set<Mail> listaMail1 = new HashSet<Mail>();
+		Mail mail1 = new Mail("alumno1@gmail.com","Personal");
+		listaMail1.add(mail1);
+
+		Set<Telefono> listaTelefono1 = new HashSet<Telefono>();
+		Telefono telefono1 = new Telefono(343L,4232266L,"Casa");
+		listaTelefono1.add(telefono1);
+		
 		alumno1.setIdUsuario(null);
 		alumno1.setApellido("Ramirez");
 		alumno1.setNombre("Mauricio Ariel");
@@ -79,9 +99,28 @@ public class PruebaAltaAnio {
 		alumno1.setSexo('m');
 		alumno1.setTipoDocumento("DU/DNI");
 		alumno1.setActivo(true);
-		alumno1.setDomicilio(null);
-		alumno1.setListaMails(null);
-		alumno1.setListaTelefonos(null);
+		alumno1.setListaMails(listaMail1);
+		alumno1.setListaTelefonos(listaTelefono1);
+		alumno1.setDomicilio(domicilio1);
+		
+		Set<Mail> listaMail2 = new HashSet<Mail>();
+		Mail mail2 = new Mail("alumno2@gmail.com","Personal");
+		listaMail2.add(mail2);
+
+		Set<Telefono> listaTelefono2 = new HashSet<Telefono>();
+		Telefono telefono2 = new Telefono(343L,4562144L,"Casa");
+		listaTelefono2.add(telefono2);
+		
+		Domicilio domicilio2=new Domicilio();
+		domicilio2.setBarrio("San Agustín");
+		domicilio2.setCalle("El Rodeo");
+		domicilio2.setCodigoPostal(3100);
+		domicilio2.setDepartamento("Paraná");
+		domicilio2.setDpto("-");
+		domicilio2.setLocalidad("Paraná");
+		domicilio2.setNumero(419);
+		domicilio2.setPiso(0);
+		domicilio2.setProvincia("Entre Rios");
 		
 		alumno2.setIdUsuario(null);
 		alumno2.setApellido("Pennachini");
@@ -93,9 +132,28 @@ public class PruebaAltaAnio {
 		alumno2.setSexo('m');
 		alumno2.setTipoDocumento("DU/DNI");
 		alumno2.setActivo(true);
-		alumno2.setDomicilio(null);
-		alumno2.setListaMails(null);
-		alumno2.setListaTelefonos(null);
+		alumno2.setListaMails(listaMail2);
+		alumno2.setListaTelefonos(listaTelefono2);
+		alumno2.setDomicilio(domicilio2);
+		
+		Set<Mail> listaMail3 = new HashSet<Mail>();
+		Mail mail3 = new Mail("alumno3@gmail.com","Personal");
+		listaMail3.add(mail3);
+
+		Set<Telefono> listaTelefono3 = new HashSet<Telefono>();
+		Telefono telefono3 = new Telefono(343L,4231111L,"Casa");
+		listaTelefono3.add(telefono3);
+		
+		Domicilio domicilio3=new Domicilio();
+		domicilio3.setBarrio("San Agustín");
+		domicilio3.setCalle("El Rodeo");
+		domicilio3.setCodigoPostal(3100);
+		domicilio3.setDepartamento("Paraná");
+		domicilio3.setDpto("-");
+		domicilio3.setLocalidad("Paraná");
+		domicilio3.setNumero(419);
+		domicilio3.setPiso(0);
+		domicilio3.setProvincia("Entre Rios");
 		
 		alumno3.setIdUsuario(null);
 		alumno3.setApellido("Herrlein");
@@ -107,9 +165,28 @@ public class PruebaAltaAnio {
 		alumno3.setSexo('m');
 		alumno3.setTipoDocumento("DU/DNI");
 		alumno3.setActivo(true);
-		alumno3.setDomicilio(null);
-		alumno3.setListaMails(null);
-		alumno3.setListaTelefonos(null);
+		alumno3.setDomicilio(domicilio3);
+		alumno3.setListaMails(listaMail3);
+		alumno3.setListaTelefonos(listaTelefono3);
+		
+		Set<Mail> listaMail4 = new HashSet<Mail>();
+		Mail mail4 = new Mail("alumno4@gmail.com","Personal");
+		listaMail4.add(mail4);
+
+		Set<Telefono> listaTelefono4 = new HashSet<Telefono>();
+		Telefono telefono4 = new Telefono(343L,4562144L,"Casa");
+		listaTelefono4.add(telefono4);
+		
+		Domicilio domicilio4=new Domicilio();
+		domicilio4.setBarrio("San Agustín");
+		domicilio4.setCalle("El Rodeo");
+		domicilio4.setCodigoPostal(3100);
+		domicilio4.setDepartamento("Paraná");
+		domicilio4.setDpto("-");
+		domicilio4.setLocalidad("Paraná");
+		domicilio4.setNumero(419);
+		domicilio4.setPiso(0);
+		domicilio4.setProvincia("Entre Rios");
 		
 		alumno4.setIdUsuario(null);
 		alumno4.setApellido("Pacheco");
@@ -121,10 +198,32 @@ public class PruebaAltaAnio {
 		alumno4.setSexo('m');
 		alumno4.setTipoDocumento("DU/DNI");
 		alumno4.setActivo(true);
-		alumno4.setDomicilio(null);
-		alumno4.setListaMails(null);
-		alumno4.setListaTelefonos(null);
+		alumno4.setDomicilio(domicilio4);
+		alumno4.setListaMails(listaMail4);
+		alumno4.setListaTelefonos(listaTelefono4);
 		
+		Set<Mail> listaMail5 = new HashSet<Mail>();
+		Mail mail5 = new Mail("docente1@gmail.com","Personal");
+		listaMail5.add(mail5);
+
+		Set<Telefono> listaTelefono5 = new HashSet<Telefono>();
+		Telefono telefono5 = new Telefono(343L,4221177L,"Casa");
+		listaTelefono5.add(telefono5);
+		
+		Set<Titulo> listaTitulos1 = new HashSet<Titulo>();
+		Titulo titulos1 = new Titulo("Ingenieria en electrónica","Recibido en UTN año 1970");
+		listaTitulos1.add(titulos1);
+		
+		Domicilio domicilio5=new Domicilio();
+		domicilio5.setBarrio("San Agustín");
+		domicilio5.setCalle("El Rodeo");
+		domicilio5.setCodigoPostal(3100);
+		domicilio5.setDepartamento("Paraná");
+		domicilio5.setDpto("-");
+		domicilio5.setLocalidad("Paraná");
+		domicilio5.setNumero(419);
+		domicilio5.setPiso(0);
+		domicilio5.setProvincia("Entre Rios");
 		
 		docente1.setIdUsuario(null);
 		docente1.setApellido("Sigura");
@@ -136,10 +235,34 @@ public class PruebaAltaAnio {
 		docente1.setSexo('m');
 		docente1.setTipoDocumento("DU/DNI");
 		docente1.setActivo(true);
-		docente1.setDomicilio(null);
-		docente1.setListaMails(null);
-		docente1.setListaTelefonos(null);
-		docente1.setListaTitulos(null);
+		docente1.setDomicilio(domicilio5);
+		docente1.setListaMails(listaMail5);
+		docente1.setListaTelefonos(listaTelefono5);
+		docente1.setListaTitulos(listaTitulos1);
+		docente1.setRol(Personal.DOCENTE);
+		
+		Set<Mail> listaMail6 = new HashSet<Mail>();
+		Mail mail6 = new Mail("docente2@gmail.com","Personal");
+		listaMail6.add(mail6);
+
+		Set<Telefono> listaTelefono6 = new HashSet<Telefono>();
+		Telefono telefono6 = new Telefono(343L,4221177L,"Casa");
+		listaTelefono6.add(telefono6);
+		
+		Set<Titulo> listaTitulos6 = new HashSet<Titulo>();
+		Titulo titulos6 = new Titulo("Ingeniería Civil","Recibido en UNL");
+		listaTitulos6.add(titulos6);
+		
+		Domicilio domicilio6=new Domicilio();
+		domicilio6.setBarrio("San Agustín");
+		domicilio6.setCalle("El Rodeo");
+		domicilio6.setCodigoPostal(3100);
+		domicilio6.setDepartamento("Paraná");
+		domicilio6.setDpto("-");
+		domicilio6.setLocalidad("Paraná");
+		domicilio6.setNumero(419);
+		domicilio6.setPiso(0);
+		domicilio6.setProvincia("Entre Rios");
 		
 		docente2.setIdUsuario(null);
 		docente2.setApellido("Llorente");
@@ -151,10 +274,34 @@ public class PruebaAltaAnio {
 		docente2.setSexo('f');
 		docente2.setTipoDocumento("DU/DNI");
 		docente2.setActivo(true);
-		docente2.setDomicilio(null);
-		docente2.setListaMails(null);
-		docente2.setListaTelefonos(null);
-		docente2.setListaTitulos(null);
+		docente2.setDomicilio(domicilio6);
+		docente2.setListaMails(listaMail6);
+		docente2.setListaTelefonos(listaTelefono6);
+		docente2.setListaTitulos(listaTitulos6);
+		docente2.setRol(Personal.DOCENTE);
+		
+		Set<Mail> listaMail7 = new HashSet<Mail>();
+		Mail mail7 = new Mail("docente3@gmail.com","Personal");
+		listaMail7.add(mail7);
+
+		Set<Telefono> listaTelefono7 = new HashSet<Telefono>();
+		Telefono telefono7 = new Telefono(343L,4221177L,"Casa");
+		listaTelefono7.add(telefono7);
+		
+		Set<Titulo> listaTitulos7 = new HashSet<Titulo>();
+		Titulo titulos7 = new Titulo("Abogado","Recibido en UNL");
+		listaTitulos7.add(titulos7);
+		
+		Domicilio domicilio7=new Domicilio();
+		domicilio7.setBarrio("San Agustín");
+		domicilio7.setCalle("El Rodeo");
+		domicilio7.setCodigoPostal(3100);
+		domicilio7.setDepartamento("Paraná");
+		domicilio7.setDpto("-");
+		domicilio7.setLocalidad("Paraná");
+		domicilio7.setNumero(419);
+		domicilio7.setPiso(0);
+		domicilio7.setProvincia("Entre Rios");
 		
 		docente3.setIdUsuario(null);
 		docente3.setApellido("Carbó");
@@ -166,10 +313,34 @@ public class PruebaAltaAnio {
 		docente3.setSexo('m');
 		docente3.setTipoDocumento("DU/DNI");
 		docente3.setActivo(true);
-		docente3.setDomicilio(null);
-		docente3.setListaMails(null);
-		docente3.setListaTelefonos(null);
-		docente3.setListaTitulos(null);
+		docente3.setDomicilio(domicilio7);
+		docente3.setListaMails(listaMail7);
+		docente3.setListaTelefonos(listaTelefono7);
+		docente3.setListaTitulos(listaTitulos7);
+		docente3.setRol(Personal.DOCENTE);
+		
+		Set<Mail> listaMail8 = new HashSet<Mail>();
+		Mail mail8 = new Mail("docente4@gmail.com","Personal");
+		listaMail8.add(mail8);
+
+		Set<Telefono> listaTelefono8 = new HashSet<Telefono>();
+		Telefono telefono8 = new Telefono(343L,4221177L,"Casa");
+		listaTelefono8.add(telefono8);
+		
+		Set<Titulo> listaTitulos8 = new HashSet<Titulo>();
+		Titulo titulos8 = new Titulo("Ingeniería en Sistemas","Recibida en UCC");
+		listaTitulos8.add(titulos8);
+		
+		Domicilio domicilio8=new Domicilio();
+		domicilio8.setBarrio("San Agustín");
+		domicilio8.setCalle("El Rodeo");
+		domicilio8.setCodigoPostal(3100);
+		domicilio8.setDepartamento("Paraná");
+		domicilio8.setDpto("-");
+		domicilio8.setLocalidad("Paraná");
+		domicilio8.setNumero(419);
+		domicilio8.setPiso(0);
+		domicilio8.setProvincia("Entre Rios");
 		
 		docente4.setIdUsuario(null);
 		docente4.setApellido("Cerini");
@@ -181,10 +352,11 @@ public class PruebaAltaAnio {
 		docente4.setSexo('m');
 		docente4.setTipoDocumento("DU/DNI");
 		docente4.setActivo(true);
-		docente4.setDomicilio(null);
-		docente4.setListaMails(null);
-		docente4.setListaTelefonos(null);
-		docente4.setListaTitulos(null);
+		docente4.setDomicilio(domicilio8);
+		docente4.setListaMails(listaMail8);
+		docente4.setListaTelefonos(listaTelefono8);
+		docente4.setListaTitulos(listaTitulos8);
+		docente4.setRol(Personal.DOCENTE_DIRECTIVO);
 		
 		curso1.getListaAlumnos().add(alumno1);
 		curso1.getListaAlumnos().add(alumno2);

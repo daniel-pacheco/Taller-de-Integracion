@@ -1,6 +1,6 @@
 package ar.com.santalucia.dominio.modelo.academico;
 
-import ar.com.santalucia.dominio.modelo.usuarios.Docente;
+import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 
 /**
  * Clase Materia
@@ -15,8 +15,8 @@ public class Materia {
 	private Long idMateria;
 	private String nombre;
 	private String descripcion;
-	private Docente docenteTitular;
-	private Docente docenteSuplente;
+	private Personal docenteTitular;
+	private Personal docenteSuplente;
 	private Area area;
 	private Boolean activo;
 	
@@ -24,7 +24,7 @@ public class Materia {
 		super();
 	}
 
-	public Materia(Long idMateria, String nombre, String descripcion, Docente docenteTitular, Docente docenteSuplente,
+	public Materia(Long idMateria, String nombre, String descripcion, Personal docenteTitular, Personal docenteSuplente,
 			Area area, Boolean activo) {
 		super();
 		this.idMateria = idMateria;
@@ -52,11 +52,11 @@ public class Materia {
 		this.nombre = nombre;
 	}
 
-	public Docente getDocenteTitular() {
+	public Personal getDocenteTitular() {
 		return docenteTitular;
 	}
 
-	public void setDocenteTitular(Docente docenteTitular) {
+	public void setDocenteTitular(Personal docenteTitular) {
 		this.docenteTitular = docenteTitular;
 	}
 
@@ -76,11 +76,11 @@ public class Materia {
 		this.descripcion = descripcion;
 	}
 
-	public Docente getDocenteSuplente() {
+	public Personal getDocenteSuplente() {
 		return docenteSuplente;
 	}
 
-	public void setDocenteSuplente(Docente docenteSuplente) {
+	public void setDocenteSuplente(Personal docenteSuplente) {
 		this.docenteSuplente = docenteSuplente;
 	}
 

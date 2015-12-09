@@ -1,7 +1,5 @@
 package ar.com.santalucia.aplicacion.gestor;
 
-import java.util.ArrayList;
-
 /**
  * Interface para los gestores
  * 
@@ -19,8 +17,5 @@ public interface IGestor<T> {
 	void modify(T object) throws Exception;
 	void delete(T object) throws Exception;
 	T getById(Long id) throws Exception;
-	ArrayList<T> getByExample(T example) throws Exception;
-	ArrayList<T> List() throws Exception;
 	void closeSession() throws Exception;
-	void validar(T object) throws Exception;
 }
