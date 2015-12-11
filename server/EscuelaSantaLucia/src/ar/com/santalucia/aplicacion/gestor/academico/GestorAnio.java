@@ -27,14 +27,14 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 
 	private AnioHome anioDAO;
 	private GestorCurso GCurso;
-	private GestorMateria GMateria;
+	//private GestorMateria GMateria;
 	
 	public GestorAnio() throws Exception {
 		super();
 		try {
 			anioDAO = new AnioHome();
 			GCurso = new GestorCurso();
-			GMateria = new GestorMateria();
+			//GMateria = new GestorMateria();
 		} catch (Exception ex) {
 			closeSession();
 			throw new Exception("Ha ocurrido un problema al inicializar el gestor: " + ex.getMessage());
@@ -45,22 +45,13 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 	public void add(Anio object) throws Exception {
 		try {
 			this.validar(object);
-			setSession();
-			setTransaction();
+//			setSession();
+//			setTransaction();
 			if (object.getListaCursos() != null) {
 				for (Curso c : object.getListaCursos()) {
 					GCurso.add(c);
 				} 
 			}
-			/*
-			for (Materia m: object.getListaMaterias()) {
-				GMateria.add(m);
-			}
-			/**
-			 * Se llama otra vez a estos dos metodos porque la materia
-			 * cierra la transacción, y la tiene que cerrar porque 
-			 * se puede dar de alta individualmente, por fuera del Anio.
-			**/ 
 			setSession();
 			setTransaction();
 			anioDAO.persist(object);
@@ -121,7 +112,6 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 		}
 	}
 
-	
 	public ArrayList<Anio> getByExample(Anio example) throws Exception {
 		try {
 			setSession();
@@ -156,7 +146,6 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 	 * @see ar.com.santalucia.validaciones.IValidacionAnio#existeNombreAnio(java.lang.String)
 	 */
 
-	
 	public Boolean existeNombreAnio(Anio anio) throws Exception{
 		Boolean resultado = false;
 		Anio anioEjemplo = new Anio();
@@ -179,6 +168,7 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 				}
 			}
 		} catch (Exception ex) {
+			// Excepción no tratada
 			throw ex;
 		}
 		return resultado;
@@ -192,29 +182,17 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 		// 3 - Comprobar si existe el curso en el listado
 		// 4 - Devolver true si se encontro
 		Boolean existeCurso = new Boolean(false);
-//		Curso cursoExample = new Curso();
-//		cursoExample.setDivision(divisionCurso);
 		try{
 			if(anio.getIdAnio() != null) // Esto es por si el año no existe
 			{
-				//Anio anioBusqueda = this.getById(anio.getIdAnio());
 				Set<Curso> cursos = anio.getListaCursos();
-				// Se uso contains porque es un arreglo de char y se sobrecargó equals
 				existeCurso = cursos.contains(curso);
 				return existeCurso;
 			}
 		} catch(Exception ex){
-			// La excepcion no está tratada!
 			throw new Exception("El proceso de validación de curso ha fallado. " + ex.getMessage());
 		}
-		return existeCurso;
-		//Boolean existeCurso = new Boolean(false);
-//		for (Curso c: anio.getListaCursos()) {
-//			if (c.getDivision() == divisionCurso) {
-//				existeCurso = true;
-//				return existeCurso;
-//			}
-//		} 	
+		return existeCurso;	
 	}
 	
 	@Override
@@ -248,7 +226,7 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 
 		for (Materia m: object.getListaMaterias()) {
 			exception.addMensajeError((this.existeMateriaEnAnio(m, object) 
-										? "La materia: " + m.getNombre() + " ya existe en la base de datos" 
+										? "La materia: " + m.getNombre() + " ya existe en el año." 
 										: null));
 		}
 		

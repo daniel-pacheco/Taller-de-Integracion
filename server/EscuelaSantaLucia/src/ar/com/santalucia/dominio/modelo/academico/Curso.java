@@ -25,7 +25,7 @@ public class Curso {
 		super();
 		listaAlumnos = new HashSet<Alumno>();
 	}
-
+ 
 	public Curso(Long idCurso, Character division, String turno, Integer cicloLectivo, Set<Alumno> listaAlumnos) {
 		super();
 		this.idCurso = idCurso;
