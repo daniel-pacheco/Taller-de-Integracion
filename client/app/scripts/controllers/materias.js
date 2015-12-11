@@ -28,12 +28,12 @@
   $scope.dropDownOptions = ['4', '5º', '3º', 'Todos'];
 
 //Test
-$scope.friends = [{name:'John', phone:'555-1276', anio: '4º'},
-                         {name:'Mary', phone:'800-BIG-MARY', anio: '4'},
-                         {name:'Mike', phone:'555-4321', anio: '4'},
-                         {name:'Adam', phone:'555-5678', anio: '5º'},
-                         {name:'Julie', phone:'555-8765', anio: '5º'},
-                         {name:'Juliette', phone:'555-5678', anio: '4º'}];
+$scope.friends = [{nombre:'John', docenteTitular:'555-1276', anioPertenece: '4º', area: 'cs sociales'},
+                         {nombre:'Mary', docenteTitular:'800-BIG-MARY', anioPertenece: '4', area: 'cs sociales'},
+                         {nombre:'Mike', docenteTitular:'555-4321', anioPertenece: '4', area: 'cs naturales'},
+                         {nombre:'Adam', docenteTitular:'555-5678', anioPertenece: '5º', area: 'cs sociales'},
+                         {nombre:'Julie', docenteTitular:'555-8765', anioPertenece: '5º', area: 'cs naturales'},
+                         {nombre:'Juliette', docenteTitular:'555-5678', anioPertenece: '4º', area: 'cs exsactas'}];
 
 });
 
