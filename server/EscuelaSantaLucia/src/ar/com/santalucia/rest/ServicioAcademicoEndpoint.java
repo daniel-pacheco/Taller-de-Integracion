@@ -106,8 +106,8 @@ public class ServicioAcademicoEndpoint {
 	}
 	
 	@GET
-	@Path("/listAll")
-	public Response listAll() {
+	@Path("/anio/listAll")
+	public Response AniolistAll() {
 		List<Anio> anios = new ArrayList<Anio>();
 		//anios = null;
 		try {

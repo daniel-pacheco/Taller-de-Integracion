@@ -2,6 +2,7 @@ package ar.com.santalucia;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import ar.com.santalucia.dominio.modelo.academico.Anio;
@@ -390,10 +391,34 @@ public class PruebaAltaAnio {
 		servDocente.addUsuario(docente4);
 		
 		servAcademico.addMateria(materia1);
-		servAcademico.addMateria(materia2);
-		
+		servAcademico.addMateria(materia2);		
 		servAcademico.addAnio(anio1);
-		//servAcademico.asignarMateriaAAnio(materia, idAnio)
+		
+		List<Anio> listaAnios = servAcademico.getAnios(anio1);
+		Long idAnio = 0L;
+		
+		for(Anio a: listaAnios){
+			idAnio=a.getIdAnio();
+			System.out.println(idAnio);
+		}
+		
+		
+		Materia tempMateria = new Materia();
+		List<Materia> listaMaterias = servAcademico.getMaterias(materia1);
+		for (Materia m: listaMaterias){
+			tempMateria = m;
+		}		
+		
+		servAcademico.asignarMateriaAAnio(tempMateria, idAnio);
+		
+		listaMaterias = servAcademico.getMaterias(materia2);
+		for (Materia m: listaMaterias){
+			tempMateria = m;
+		}
+		
+		servAcademico.asignarMateriaAAnio(tempMateria, idAnio);
+		
+		
 	}
 
 }

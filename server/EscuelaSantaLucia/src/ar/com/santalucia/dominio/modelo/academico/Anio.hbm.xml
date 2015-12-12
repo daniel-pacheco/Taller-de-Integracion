@@ -16,13 +16,13 @@ Generated 24/09/2015 16:41:55 by Hibernate Tools 3.4.0.CR1 -->
         <property name="descripcion" type="java.lang.String">
             <column name="DESCRIPCION" />
         </property>
-        <set name="listaCursos" table="CURSO" inverse="false" lazy="true">
+        <set name="listaCursos" table="CURSO" inverse="false" lazy="false">
             <key>
                 <column name="IDANIO" />
             </key>
             <one-to-many class="ar.com.santalucia.dominio.modelo.academico.Curso" />
         </set>
-        <set name="listaMaterias" table="MATERIA" inverse="false" lazy="true">
+        <set name="listaMaterias" table="MATERIA" inverse="false" lazy="false">
             <key>
                 <column name="IDANIO" />
             </key>

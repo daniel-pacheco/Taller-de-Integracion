@@ -195,6 +195,14 @@ public class ServicioAcademico {
 		}
 	}
 	
+	public List<Materia> getMaterias(Materia example) throws Exception{
+		try {
+			return gMateria.getByExample(example);
+		} catch (Exception ex) {
+			throw new Exception("Servicio: no se pudo obtener la lista de materias. " + ex.getMessage());
+		}
+	}
+	
 	public Boolean deleteMateria(Materia materia) throws Exception {
 		try {
 			gMateria.delete(materia);

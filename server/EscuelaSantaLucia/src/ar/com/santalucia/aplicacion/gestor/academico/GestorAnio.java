@@ -45,8 +45,6 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 	public void add(Anio object) throws Exception {
 		try {
 			this.validar(object);
-//			setSession();
-//			setTransaction();
 			if (object.getListaCursos() != null) {
 				for (Curso c : object.getListaCursos()) {
 					GCurso.add(c);
@@ -183,10 +181,20 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 		// 4 - Devolver true si se encontro
 		Boolean existeCurso = new Boolean(false);
 		try{
+
 			if(anio.getIdAnio() != null) // Esto es por si el año no existe
 			{
 				Set<Curso> cursos = anio.getListaCursos();
 				existeCurso = cursos.contains(curso);
+				/*
+				for(Curso c: cursos){
+					if(c.getIdCurso() != null){
+						if(c.equals(curso)){
+							existeCurso = true;
+						}
+					}
+				}
+				*/
 				return existeCurso;
 			}
 		} catch(Exception ex){
@@ -215,17 +223,23 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 	public void validar(Anio object) throws Exception {
 		Boolean vNombre;
 		ValidacionException exception = new ValidacionException();
+		Anio anio = new Anio();
+		
+		if (object.getIdAnio() != null) {
+			anio = this.getById(object.getIdAnio());
+		} else {
+			anio = object;
+		}
 		
 		vNombre = this.existeNombreAnio(object);
 		for (Curso c: object.getListaCursos()) {
-			exception.addMensajeError((this.existeCurso(c, object) 
+			exception.addMensajeError((this.existeCurso(c, anio) 
 										? "El curso: " + c.getDivision() + " ya existe en el año." 
 										: null));
 		}
-		
 
 		for (Materia m: object.getListaMaterias()) {
-			exception.addMensajeError((this.existeMateriaEnAnio(m, object) 
+			exception.addMensajeError((this.existeMateriaEnAnio(m, anio) 
 										? "La materia: " + m.getNombre() + " ya existe en el año." 
 										: null));
 		}
