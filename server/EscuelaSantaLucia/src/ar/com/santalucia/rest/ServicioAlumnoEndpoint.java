@@ -49,7 +49,6 @@ public class ServicioAlumnoEndpoint {
 		if (servicioAlumno == null) {
 			try {
 				servicioAlumno = new ServicioAlumno();
-				
 			} catch (Exception ex) {
 				throw ex;
 			}

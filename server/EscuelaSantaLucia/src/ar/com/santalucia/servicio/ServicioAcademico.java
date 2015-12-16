@@ -30,7 +30,7 @@ public class ServicioAcademico {
 	private GestorCurso gCurso;
 	private GestorMateria gMateria;
 	private GestorAlumno gAlumno;
-	private GestorPersonal gDocente;
+	private GestorPersonal gDocente; 
 
 	public ServicioAcademico() throws Exception {
 		try {
@@ -47,20 +47,15 @@ public class ServicioAcademico {
 
 	public Boolean addAnio(Anio anio) throws Exception {
 		try {
-			gAnio.add(anio);
+			if (anio.getIdAnio() == null) {
+				gAnio.add(anio);
+			}
+			else {
+				gAnio.modify(anio);
+			}
 		} catch (Exception ex) {
 			throw new Exception("Servicio: No se pudo dar de alta el año " + ex.getMessage());
 		}
-		return true;
-	}
-
-	public Boolean modifyAnio(Anio anio) throws Exception {
-		try {
-			gAnio.modify(anio);
-		} catch (Exception ex) {
-			throw new Exception("Servicio: No se pudo modificar el año. " + ex.getMessage());
-		}
-
 		return true;
 	}
 
@@ -84,6 +79,10 @@ public class ServicioAcademico {
 		}
 	}
 
+	public List<Anio> list() throws Exception{
+		return getAnios(new Anio());
+	} 
+	
 	public List<Anio> getAnios(Anio example) throws Exception {
 		try {
 			return gAnio.getByExample(example);
@@ -101,20 +100,26 @@ public class ServicioAcademico {
 		// 5 - Modificar el año con el nuevo listado de curso
 		// 6 - LLamar a modify del gestor del año con el año que se le agregó el
 		// curso
-
-		Anio anio = new Anio();
 		try {
-			anio = gAnio.getById(idAnio);
-			Set<Curso> cursos = anio.getListaCursos();
-			cursos.add(curso);
-			anio.setListaCursos(cursos);
-			gAnio.modify(anio);
-			return true;
+			if (curso.getIdCurso() == null) {
+				Anio anio = new Anio();
+				anio = gAnio.getById(idAnio);
+				Set<Curso> cursos = anio.getListaCursos();
+				cursos.add(curso);
+				anio.setListaCursos(cursos);
+				gAnio.modify(anio);
+				return true;
+			} 
+			else {
+				gCurso.modify(curso);
+				return true;
+			}
 		} catch (Exception ex) {
 			throw new Exception("Servicio: no se pudo agregar el curso al año. " + ex.getMessage());
 		}
 	}
-
+ 
+	/*
 	public Boolean modifyCurso(Curso curso) throws Exception {
 		// TODO
 		// Usar el gestor de curso y pasar el curso modificado
@@ -125,6 +130,7 @@ public class ServicioAcademico {
 			throw new Exception("Servicio: no se pudo modificar el curso. " + ex.getMessage());
 		}
 	}
+	*/
 
 	public Boolean deleteCurso(Curso curso, Long idAnio) throws Exception {
 		// TODO
@@ -169,19 +175,15 @@ public class ServicioAcademico {
 		// TODO
 		// 1 - Llamar al método add para agregar la nueva materia
 		try {
-			gMateria.add(materia);
+			if (materia.getIdMateria() ==  null) {
+				gMateria.add(materia);
+			}
+			else {
+				gMateria.modify(materia);
+			}
 			return true;
 		} catch (Exception ex) {
 			throw new Exception("Servicio: no se pudo agregar la materia. " + ex.getMessage());
-		}
-	}
-
-	public Boolean modifyMateria(Materia materia) throws Exception {
-		try {
-			gMateria.modify(materia);
-			return true;
-		} catch (Exception ex) {
-			throw new Exception("Servicio: no se pudo modificar la materia. " + ex.getMessage());
 		}
 	}
 
@@ -190,6 +192,14 @@ public class ServicioAcademico {
 			return gMateria.getById(idMateria);
 		} catch(Exception ex){
 			throw new Exception("Servicio: no se pudo obtener la materia. " + ex.getMessage());
+		}
+	}
+	
+	public List<Materia> getMaterias(Materia example) throws Exception{
+		try {
+			return gMateria.getByExample(example);
+		} catch (Exception ex) {
+			throw new Exception("Servicio: no se pudo obtener la lista de materias. " + ex.getMessage());
 		}
 	}
 	
@@ -202,6 +212,8 @@ public class ServicioAcademico {
 		return false;
 	}
 
+	//TODO: seguir desde aca
+	
 	public Boolean asignarDocentesAMateria(Personal docenteTitular, Personal docenteSuplente, Long idMateria) throws Exception {
 		// TODO
 		// 1 - Obtener la materia con el gestor
