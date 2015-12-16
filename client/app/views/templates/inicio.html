@@ -1,0 +1,272 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>Directivo</title>
+</head>
+<link rel="stylesheet" href="../Resources/css/bootstrapDirectivo.css">
+<script src="../Resources/js/jquery-1.11.2.min.js"></script>
+<script src="../Resources/js/contenido.js"></script>
+<script src="../Resources/js/presionado.js"></script>
+
+<script src="../Resources/js/bootstrap.min.js"></script>
+
+
+<body>
+
+
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <h4 class="modal-title">Aviso</h4>
+    </div>
+    <div class="modal-body">
+      <p>El perfil de alumno DNI: {numDni} fue creado exitosamente</p>
+      <p>¿Desea crear otro perfil nuevo?</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+      <button type="button" class="btn btn-primary" autofocus>Si</button>
+    </div>
+  </div><!-- /.modal-content -->
+  <br>
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <h4 class="modal-title">Aviso</h4>
+    </div>
+    <div class="modal-body">
+      <p>Ocurrió un problema al intentar crear el nuevo perfil</p>
+      <p>¿Desea regresar a la pantalla anterior e intentarlo nuevamente?</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+      <button type="button" class="btn btn-primary" autofocus>Si</button>
+    </div>
+  </div><!-- /.modal-content -->
+  <br>
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <h4 class="modal-title">Aviso</h4>
+    </div>
+    <div class="modal-body">
+      <p>¿Desea cambiar {Nombre Apellido DNI} a:?</p>
+      <p>
+        <label for="">Año:</label>
+        <select class="form-control" name="Año">
+          <option value="">7°</option>
+          <option value="">1°</option>
+          <option value="">2°</option>
+        </select>
+        <label for="">División:</label>
+        <select class="form-control" name="Año">
+          <option value="">A Vespertino</option>
+          <option value="">B Vespertino</option>
+          <option value="">C Matutino</option>
+        </select>
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+      <button type="button" class="btn btn-primary" autofocus>Aceptar</button>
+    </div>
+  </div><!-- /.modal-content -->
+  <br>
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <h4 class="modal-title">Aviso</h4>
+    </div>
+    <div class="modal-body">
+      <p>¿Desea desvincular a {Nombre Apellido DNI} del curso actual?</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+      <button type="button" class="btn btn-primary" autofocus>Si</button>
+    </div>
+  </div><!-- /.modal-content -->
+  <br>
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <h4 class="modal-title">Aviso</h4>
+    </div>
+    <div class="modal-body">
+      <p>La materia {Materia} fue dada de alta con éxito</p>
+      <p><b>Pertenece a:</b> {Año}</p>
+      <p><b>Titular:</b> {docenteTitular}</p>
+      <p><b>Suplente:</b> {docenteSuplente}</p>
+      <p>¿Desea crear otra materia nueva?</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+      <button type="button" class="btn btn-primary" autofocus>Si</button>
+    </div>
+  </div><!-- /.modal-content -->
+  <br>
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <h4 class="modal-title">Aviso</h4>
+    </div>
+    <div class="modal-body">
+    <p>Ocurrió un problema al intentar crear la nueva materia</p>
+    <p>¿Desea regresar a la pantalla anterior e intentarlo nuevamente?</p>
+    </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+    <button type="button" class="btn btn-primary" autofocus>Si</button>
+  </div>
+</div><!-- /.modal-content -->
+<br>
+<div class="modal-content">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">Confirmar</h4>
+  </div>
+  <div class="modal-body">
+    <p>¿Desea eliminar el elemento seleccionado?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+    <button type="button" class="btn btn-primary" autofocus>Si</button>
+  </div>
+</div><!-- /.modal-content -->
+<br>
+<div class="modal-content">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">Detalles de la materia</h4>
+  </div>
+  <div class="modal-body">
+    <p><b>Nombre:</b> {nombreMateria}</p>
+    <p><b>Descripción:</b> {descripciónMateria}</p>
+    <p><b>Docente Titular:</b> {docenteTitular}</p>
+    <p><b>Docente Suplente:</b> {docenteSuplente}</p>
+    <p><b>Año al que pertenece:</b> {añoQuePertenece}</p>
+    <p><b>Area:</b> {areaDeLaMateria}</p>
+  </div>
+  <div class="modal-footer">
+   <button type="button" class="btn btn-primary" autofocus>Aceptar</button>
+ </div>
+</div><!-- /.modal-content -->
+<br>
+<!-- /acaaa -->
+<div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <h4 class="modal-title">Elegir área</h4>
+    </div>
+    <div class="modal-body">
+      <p><em>Si el área que usted desea seleccionar no se encuentra en la lista inferior, puede agregarla y luego seleccionarla</em></p>
+      <label>Agregar área nueva: </label><input type="text" class="form-control"> 
+      <button type="button" class="btn btn-primary">Agregar</button>
+      <br>
+      <p>Áreas disponibles</p>
+      <select multiple class="form-control">
+  <option>Ciencias Sociales</option>
+  <option>Ciencias Naturales</option>
+  <option>Ciencias Exactas</option>
+  <option>Artes</option>
+  <option>Otra</option>
+</select>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" autofocus>Seleccionar</button>
+    </div>
+  </div><!-- /.modal-content -->
+  <br>
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <h4 class="modal-title">Datos de la mesa</h4>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-sm-4">
+          <label for="">Año: </label>{añoMesa} <br>
+          <label for="">Materia: </label>{nombreMateria} <br>
+          <label for="">Docentes: </label><ul><li>{Docente1}</li><li>{Docente2}</li><li>{Docente3}</li></ul> <br>
+        </div>
+        <div class="col-sm-4">
+          <label for="">Periodo: </label>{PeriodoMesa}<br>
+          <label for="">Fecha: </label>{dd/mm/aaaa} <br>
+          <label for=""> Hora de inicio: </label>{hh:mm} <br>
+          <label for="">Hora de fin: </label>{hh:mm} <br>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" data-dismiss="modal">Editar</button>
+      <button type="button" class="btn btn-primary" autofocus>Regresar</button>
+    </div>
+  </div><!-- /.modal-content -->
+  <br>
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <h4 class="modal-title">Confirmar la inscripción</h4>
+    </div>
+    <div class="modal-body">
+      <label for="">Incripción del alumno: </label>{nombreAlumno}<br>
+      <label for="">Matrícula: </label>{numMatricula}<br>
+      <label for="">Mesa N°: </label>{numeroMesa}<br>
+      <label for="">Año: </label>{año}<br>
+      <label for="">Materia: </label>{nombreMateria}<br>
+      <label for="">Fecha: </label>{dd/mm/aaaa}<br>
+      <label for="">Hora: </label>{hh:mm}<br>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+      <button type="button" class="btn btn-primary" autofocus>Confirmar</button>
+    </div>
+  </div><!-- /.modal-content -->
+  <br>
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <h4 class="modal-title">Aviso</h4>
+    </div>
+    <div class="modal-body">
+      <p>El perfil de alumno DNI: {numDni} fue creado exitosamente</p>
+      <p>¿Desea crear otro perfil nuevo?</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+      <button type="button" class="btn btn-primary" autofocus>Si</button>
+    </div>
+  </div><!-- /.modal-content -->
+  <br>
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <h4 class="modal-title">Aviso</h4>
+    </div>
+    <div class="modal-body">
+      <p>El perfil de alumno DNI: {numDni} fue creado exitosamente</p>
+      <p>¿Desea crear otro perfil nuevo?</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+      <button type="button" class="btn btn-primary" autofocus>Si</button>
+    </div>
+  </div><!-- /.modal-content -->
+  <br>
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <h4 class="modal-title">Aviso</h4>
+    </div>
+    <div class="modal-body">
+      <p>El perfil de alumno DNI: {numDni} fue creado exitosamente</p>
+      <p>¿Desea crear otro perfil nuevo?</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+      <button type="button" class="btn btn-primary" autofocus>Si</button>
+    </div>
+  </div><!-- /.modal-content -->
+  <br>
+
+</body>
+</html>

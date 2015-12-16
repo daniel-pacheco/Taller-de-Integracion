@@ -1,0 +1,27 @@
+<div class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+		<div class="modal-content">
+		    <div class="modal-header">
+		      <button type="button" class="close" data-dismiss="modal" ng-click="$hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		      <h4 class="modal-title">Elegir área</h4>
+		    </div>
+		    <div class="modal-body">
+		      <p><em>Si el área que usted desea seleccionar no se encuentra en la lista inferior, puede agregarla y luego seleccionarla</em></p>
+		      <label>Agregar área nueva: </label><input type="text" class="form-control"> 
+		      <button type="button" class="btn btn-primary">Agregar</button>
+		      <br>
+		      <p>Áreas disponibles</p>
+		      <select multiple class="form-control">
+		  <option>Ciencias Sociales</option>
+		  <option>Ciencias Naturales</option>
+		  <option>Ciencias Exactas</option>
+		  <option>Artes</option>
+		  <option>Otra</option>
+		</select>
+		    </div>
+		    <div class="modal-footer">
+		      <button type="button" class="btn btn-primary" ng-click="$hide()" autofocus>Seleccionar</button>
+		    </div>
+		  </div><!-- /.modal-content -->
+	</div>
+</div>
