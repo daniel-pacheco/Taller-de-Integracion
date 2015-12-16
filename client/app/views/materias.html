@@ -22,31 +22,31 @@
 <div class="col-md-10">
 	<h1>Materias</h1>
 	<hr>
-	<div id="listado" ng-show="listado1">
+	<div id="listado" ng-show="listado1" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
 		<fieldset class="navbar">
 			<legend>Listado</legend>
-			<label for="">Ano:</label> <select
+			<label for="">A&ntilde;o:</label> <select
 			class="dropdown-toggle form-control-inline" name="" ng-model="filterByYear"> <!-- ng-change="update(dropDownValue, option)"> -->
 			<option ng-repeat="option in dropDownOptions"  value="{{option}}">{{option}}</option>
 		</select>
-		<button ng-click="search()">Buscar</button>
+		<!--<button ng-click="search()">Buscar</button>-->
 		
-	<table class="table table-hover table-striped">
-		<thead>
-			<tr>
-				<th>Nombre</th>
-				<th>Docente titular</th>
-				<th>Año</th>
-				<th>&Aacute;rea</th>
-				<th>Acciones</th>
-			</tr>
-		</thead>
-		<tr ng-repeat="materia in friends | filter:filterByYear">
-			<td>{{materia.nombre}}</td>
-			<td>{{materia.docenteTitular}}</td>
-			<td>{{materia.anioPertenece}}</td>
-			<td>{{materia.area}}</td>
-			<td style="width:10%;"><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:50%" class="glyphicon glyphicon-edit" ></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAttendance" style="width:50%" class="glyphicon glyphicon-remove-circle"></span></td> 
+		<table class="table table-hover table-striped">
+			<thead>
+				<tr>
+					<th>Nombre</th>
+					<th>Docente titular</th>
+					<th>A&ntilde;o</th>
+					<th>&Aacute;rea</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			<tr ng-repeat="materia in friends | filter:filterByYear">
+				<td>{{materia.nombre}}</td>
+				<td>{{materia.docenteTitular}}</td>
+				<td>{{materia.anioPertenece}}</td>
+				<td>{{materia.area}}</td>
+				<td style="width:10%;"><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:50%" class="glyphicon glyphicon-edit" ></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAttendance" style="width:50%" class="glyphicon glyphicon-remove-circle"></span></td> 
 					<!--<td>{{alumno.name}}</td>
 					<td>{{alumno.phone}}</td>
 					<td>{{alumno.anio}}</td>
@@ -124,7 +124,7 @@
 						</div>
 					</div>
 
-										<div class="form-group">
+					<div class="form-group">
 						<div class="col-sm-3 control-label">
 							<label for="">Año al que pertenece:</label>
 						</div>

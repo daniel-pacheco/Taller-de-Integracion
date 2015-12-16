@@ -41,6 +41,11 @@ angular
         controller: 'MateriasCtrl',
         controllerAs: 'materias'
       })
+      .when('/anio', {
+        templateUrl: 'views/anio.html',
+        controller: 'AnioCtrl',
+        controllerAs: 'anio'
+      })
       .otherwise({
         redirectTo: '/'
       });

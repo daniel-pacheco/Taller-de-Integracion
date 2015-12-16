@@ -25,15 +25,15 @@
     };
   };
 
-  $scope.dropDownOptions = ['4', '5º', '3º', 'Todos'];
+  $scope.dropDownOptions = ['4', '5º', '3º', ' '];
 
 //Test
-$scope.friends = [{nombre:'John', docenteTitular:'555-1276', anioPertenece: '4º', area: 'cs sociales'},
-                         {nombre:'Mary', docenteTitular:'800-BIG-MARY', anioPertenece: '4', area: 'cs sociales'},
-                         {nombre:'Mike', docenteTitular:'555-4321', anioPertenece: '4', area: 'cs naturales'},
-                         {nombre:'Adam', docenteTitular:'555-5678', anioPertenece: '5º', area: 'cs sociales'},
-                         {nombre:'Julie', docenteTitular:'555-8765', anioPertenece: '5º', area: 'cs naturales'},
-                         {nombre:'Juliette', docenteTitular:'555-5678', anioPertenece: '4º', area: 'cs exsactas'}];
+$scope.friends = [{nombre:'Educación Fisica', docenteTitular:'María Laura', anioPertenece: '4º', area: 'cs sociales'},
+                         {nombre:'Matemática', docenteTitular:'Marta Blanco', anioPertenece: '4', area: 'cs sociales'},
+                         {nombre:'Lengua', docenteTitular:'Lorena Gomez', anioPertenece: '4', area: 'cs naturales'},
+                         {nombre:'Fisica', docenteTitular:'Alicia Modenutti', anioPertenece: '5º', area: 'cs sociales'},
+                         {nombre:'Geografía', docenteTitular:'Mariela Rickert', anioPertenece: '5º', area: 'cs naturales'},
+                         {nombre:'Historia', docenteTitular:'Gloria Herrlein', anioPertenece: '4º', area: 'cs exsactas'}];
 
 });
 
