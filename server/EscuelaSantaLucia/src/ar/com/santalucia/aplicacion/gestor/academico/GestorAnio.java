@@ -68,9 +68,10 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 	@Override
 	public void modify(Anio object) throws Exception {
 		try {
+			this.validar(object);
+			closeSession();
 			setSession();
 			setTransaction();
-			this.validar(object);
 			anioDAO.attachDirty(object);
 			sesionDeHilo.getTransaction().commit();
 		} catch (ValidacionException ex) {
@@ -174,50 +175,23 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 
 	@Override
 	public Boolean existeCurso(Curso curso, Anio anio) throws Exception{
-		// TODO
-		// 1 - Obtener el año al que pertenece el curso
-		// 2 - Rescatar el listado de curso
-		// 3 - Comprobar si existe el curso en el listado
-		// 4 - Devolver true si se encontro
 		Boolean existeCurso = new Boolean(false);
 		try{
-
-			if(anio.getIdAnio() != null) // Esto es por si el año no existe
-			{
-				Set<Curso> cursos = anio.getListaCursos();
-				existeCurso = cursos.contains(curso);
-				/*
-				for(Curso c: cursos){
-					if(c.getIdCurso() != null){
-						if(c.equals(curso)){
-							existeCurso = true;
-						}
+			Set<Curso> cursos = anio.getListaCursos();
+			existeCurso = cursos.contains(curso);
+			/*
+			for(Curso c: cursos){
+				if(c.getIdCurso() != null){
+					if(c.equals(curso)){
+						existeCurso = true;
 					}
 				}
-				*/
-				return existeCurso;
 			}
+			*/
+			return existeCurso;
 		} catch(Exception ex){
 			throw new Exception("El proceso de validación de curso ha fallado. " + ex.getMessage());
-		}
-		return existeCurso;	
-	}
-	
-	@Override
-	public Boolean existeMateriaEnAnio(Materia materia, Anio anio) throws Exception{
-		// Modificado 09-12-2015 @ 19:44
-		Boolean existeMateriaEnAnio = false;
-		Set<Materia> listaMaterias = new HashSet<Materia>();
-		try {
-			if (anio != null) {
-				listaMaterias = anio.getListaMaterias();
-				existeMateriaEnAnio = listaMaterias.contains(materia);
-				return existeMateriaEnAnio;
-			}
-		} catch (Exception ex) {
-			throw new Exception("El proceso de validación de materia ha fallado. " + ex.getMessage());
-		}
-		return existeMateriaEnAnio;
+		}	
 	}
 	
 	public void validar(Anio object) throws Exception {
@@ -225,27 +199,26 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 		ValidacionException exception = new ValidacionException();
 		Anio anio = new Anio();
 		
-		if (object.getIdAnio() != null) {
-			anio = this.getById(object.getIdAnio());
-		} else {
-			anio = object;
-		}
-		
 		vNombre = this.existeNombreAnio(object);
-		for (Curso c: object.getListaCursos()) {
-			exception.addMensajeError((this.existeCurso(c, anio) 
-										? "El curso: " + c.getDivision() + " ya existe en el año." 
-										: null));
-		}
-
-		for (Materia m: object.getListaMaterias()) {
-			exception.addMensajeError((this.existeMateriaEnAnio(m, anio) 
-										? "La materia: " + m.getNombre() + " ya existe en el año." 
-										: null));
-		}
-		
 		exception.addMensajeError(vNombre ? "El nombre " + object.getNombre() +" ya existe" : null);
 		
+		if (object.getIdAnio() != null) {
+			anio = this.getById(object.getIdAnio());
+			//anio.setListaCursos(object.getListaCursos());
+
+//			for (Materia m: object.getListaMaterias()) {
+//				exception.addMensajeError((this.existeMateriaEnAnio(m, anio) 
+//											? "La materia: " + m.getNombre() + " ya existe en el año." 
+//											: null));
+//			}
+			
+			for (Curso c: object.getListaCursos()) {
+				exception.addMensajeError((this.existeCurso(c, anio) 
+											? "El curso: " + c.getDivision() + " ya existe en el año." 
+											: null));
+			}
+		}
+
 		if (!exception.getMensajesError().isEmpty()) {
 			throw exception;
 		}

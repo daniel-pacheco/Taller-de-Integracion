@@ -6,7 +6,7 @@ import ar.com.santalucia.dominio.modelo.academico.Materia;
 
 /**
  * @author ericpennachini
- * @version 1.0
+ * @version 1.1
  *
  */
 
@@ -32,13 +32,13 @@ public interface IValidacionAnio {
 	Boolean existeCurso(Curso curso, Anio anio) throws Exception;
 	
 	
-	/**
-	 * Valida si la materia ya existe en la base de datos
-	 * @param nombreMateria
-	 * @return
-	 * @throws Exception 
-	 */
-	Boolean existeMateriaEnAnio(Materia materia, Anio anio) throws Exception;
+//	/**
+//	 * Valida si la materia ya existe en la base de datos
+//	 * @param nombreMateria
+//	 * @return
+//	 * @throws Exception 
+//	 */
+//	Boolean existeMateriaEnAnio(Materia materia, Anio anio) throws Exception;
 	
 	
 }
