@@ -3,6 +3,8 @@ package ar.com.santalucia.dominio.modelo.academico;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 
 /**
@@ -84,5 +86,17 @@ public class Curso {
 		}
 		return false;
 	}
+
+	@Override
+	public int hashCode() {
+		 return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
+		            // if deriving: appendSuper(super.hashCode()).
+		            append(division).
+		            append(turno).
+		            append(cicloLectivo).
+		            toHashCode();
+	}
+	
+	
 
 }

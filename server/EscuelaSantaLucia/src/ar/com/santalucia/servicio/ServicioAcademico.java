@@ -13,6 +13,7 @@ import ar.com.santalucia.dominio.modelo.academico.Curso;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
+import ar.com.santalucia.excepciones.ValidacionException;
 
 /**
  * Clase servicio para gestión académica. Engloba Anio, Curso, alumnos y
@@ -45,7 +46,7 @@ public class ServicioAcademico {
 		}
 	}
 
-	public Boolean addAnio(Anio anio) throws Exception {
+	public Boolean addAnio(Anio anio) throws Exception {	// EN ENDPOINT
 		try {
 			if (anio.getIdAnio() == null) {
 				gAnio.add(anio);
@@ -53,13 +54,19 @@ public class ServicioAcademico {
 			else {
 				gAnio.modify(anio);
 			}
-		} catch (Exception ex) {
+			
+		} 
+		catch(ValidacionException ex){
+			throw ex;
+		}
+		catch (Exception ex) {
 			throw new Exception("Servicio: No se pudo dar de alta el año " + ex.getMessage());
 		}
+		
 		return true;
 	}
 
-	public Boolean deleteAnio(Anio anio) throws Exception {
+	public Boolean deleteAnio(Anio anio) throws Exception {  // EN ENDPOINT
 		// TODO
 		// Elimina un año.
 		// ATENCIÓN: ¡La operacion puede ser en cascada!
@@ -71,7 +78,7 @@ public class ServicioAcademico {
 		return true;
 	}
 
-	public Anio getAnio(Long idAnio) throws Exception {
+	public Anio getAnio(Long idAnio) throws Exception { 	// EN ENDPOINT
 		try {
 			return gAnio.getById(idAnio);
 		} catch (Exception ex) {
@@ -79,11 +86,11 @@ public class ServicioAcademico {
 		}
 	}
 
-	public List<Anio> list() throws Exception{
+	public List<Anio> list() throws Exception{				// EN ENDPOINT
 		return getAnios(new Anio());
 	} 
 	
-	public List<Anio> getAnios(Anio example) throws Exception {
+	public List<Anio> getAnios(Anio example) throws Exception { // EN ENDPOINT
 		try {
 			return gAnio.getByExample(example);
 		} catch (Exception ex) {
@@ -91,7 +98,7 @@ public class ServicioAcademico {
 		}
 	}
 
-	public Boolean addCurso(Curso curso, Long idAnio) throws Exception {
+	public Boolean addCurso(Curso curso, Long idAnio) throws Exception { // CANDIDATO A SUPRIMIR
 		// TODO
 		// 1 - Obtener el objeto año
 		// 2 - Extraemos el listado de curso
@@ -120,7 +127,7 @@ public class ServicioAcademico {
 	}
  
 	/*
-	public Boolean modifyCurso(Curso curso) throws Exception {
+	public Boolean modifyCurso(Curso curso) throws Exception {			//CANDIDATO A SUPRIMIR
 		// TODO
 		// Usar el gestor de curso y pasar el curso modificado
 		try {
@@ -132,7 +139,7 @@ public class ServicioAcademico {
 	}
 	*/
 
-	public Boolean deleteCurso(Curso curso, Long idAnio) throws Exception {
+	public Boolean deleteCurso(Curso curso, Long idAnio) throws Exception { 	// EN ENDPOINT
 		// TODO
 		// 1 - Rescatar listado de alumnos del curso a borrar
 		// 2 - Obtener el curso genérico con el gestor
@@ -142,28 +149,20 @@ public class ServicioAcademico {
 		// 5 - Asignar el listado generado en (4) a la lista de alumnos del
 		// curso genérico
 		// 6 - Llamar al gestor de curso para guardar el curso genérico
-		// 7 - Eliminar el curso que estaba destinado a eliminarse.
+		// 7 - Eliminar el curso que estaba destinado a eliminarse.´
 		try {
 			Set<Alumno> alumnosCursoBorrado = curso.getListaAlumnos();
 			Curso cursoGenerico = gCurso.getByDivision('0');
-			cursoGenerico.getListaAlumnos().addAll(alumnosCursoBorrado); // atencion,
-																			// hay
-																			// que
-																			// ver
-																			// si
-																			// suma
-																			// realmente
-																			// los
-																			// datos
+			cursoGenerico.getListaAlumnos().addAll(alumnosCursoBorrado); // atencion, hay que ver si suma realmentelos datos
 			gCurso.modify(cursoGenerico);
 			gCurso.delete(curso);
+			return true;
 		} catch (Exception ex) {
 			throw new Exception("Servicio: no se pudo eliminar el curso. " + ex.getMessage());
 		}
-		return false;
 	}
 
-	public Curso getCurso(Long idCurso) throws Exception {
+	public Curso getCurso(Long idCurso) throws Exception { 		// EN ENDPOINT
 		try {
 			return gCurso.getById(idCurso);
 		} catch (Exception ex) {
@@ -171,7 +170,7 @@ public class ServicioAcademico {
 		}
 	}
 
-	public Boolean addMateria(Materia materia) throws Exception {
+	public Boolean addMateria(Materia materia) throws Exception { 		// EN ENDPOINT
 		// TODO
 		// 1 - Llamar al método add para agregar la nueva materia
 		try {
@@ -276,7 +275,7 @@ public class ServicioAcademico {
 		return true;
 	}
 	
-	public Boolean asignarAlumnoACurso(Alumno alumno, Long idCurso) throws Exception{
+	public Boolean asignarAlumnoACurso(Alumno alumno, Long idCurso) throws Exception{ 			//TRABAJANDO EN ENDPOINT
 		// TODO
 		// 1 - Obtener el curso 
 		// 2 - Rescatar lista de alumnos del curso

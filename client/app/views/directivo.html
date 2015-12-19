@@ -21,6 +21,19 @@
 
 <div class="col-md-10">
 	<h1>Alumnado</h1>
+	
+	<button data-ng-click="showModal()" type="button" class="btn btn-lg btn-danger">Custom Modal
+      <br />
+      <small>(using data-template)</small>
+    </button>
+    <button type="button" class="btn btn-lg btn-danger" data-animation="am-fade-and-slide-top" data-template-url="views/templates/message.tpl.html" bs-modal="modal">Modal
+      <br />
+      <small>(using service)</small>
+    </button>
+    <button data-ng-click="showModal()" type="button" class="btn btn-info" data-animation="am-fade-and-slide-top">
+    BRN Lookup
+</button>
+
 	<hr>
 	<div id="listado" ng-show="listado1">
 		<fieldset class="navbar">

@@ -8,7 +8,7 @@
  * Controller of the clientAppApp
  */
 angular.module('clientAppApp')
-  .controller('DirectivoCtrl', function ($scope, $q, $http, alumnoService) {
+  .controller('DirectivoCtrl', function ($scope, $q, $http, $modal, alumnoService) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -29,6 +29,33 @@ $scope.tooltip = {
     'title' : 'Desempeño académico'
   }
 };
+
+//modal
+/*
+var brnSearchModal = $modal({ scope: $scope, template: "views/aside.tpl.html", contentTemplate: false, html: true, show: false });
+
+$scope.showModal = function () {
+    brnSearchModal.$promise.then(brnSearchModal.show);
+};
+*/
+
+//$scope.modal = {title: 'Title', content: 'Hello Modal<br />This is a multiline message!'};
+
+  // Controller usage example C:\Taller-de-Integracion\client\..\bower_components\angular-strap\src\modal
+  //
+  function MyModalController($scope) {
+    $scope.title = 'Aviso';
+    $scope.content = 'El perfil de alumno DNI: {numDni} fue creado exitosamente';
+    $scope.question = '\¿Desea crear otro perfil nuevo?;'
+  }
+  MyModalController.$inject = ['$scope'];
+  var myModal = $modal({controller: MyModalController, templateUrl: 'views/templates/messagetextboxselect.tpl.html', show: false, animation: 'am-fade-and-slide-top'});
+  $scope.showModal = function() {
+    myModal.$promise.then(myModal.show);
+  };
+  $scope.hideModal = function() {
+    myModal.$promise.then(myModal.hide);
+  };
 
 //filters
 $scope.dropDownOptions = ['2014', '2015', '2016', 'Todos', 'DNI/MAT'];
