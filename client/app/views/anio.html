@@ -2,22 +2,110 @@
 	<div>
 		<!-- ngInclude: 'views/partials/affixed-sidebar.html' -->
 		<div class="bs-sidebar hidden-print affix" role="complementary" data-offset-top="-100" bs-affix style="position: relative; text-align: right;">
-		   <ul class="nav bs-sidenav">
-		    <li bs-scrollspy data-target="#getting-started">
-		      <a href="#getting-started">Men&uacute; A&ntilde;o</a>
-		    </li>
-		    <hr style="margin: 2px 0;">
-		    <li bs-scrollspy data-target="#modals">
-		      <a href="" ng-click="seleccionar('listado')">Listado</a>
-		    </li>
-		    <li bs-scrollspy data-target="#nuevoPerfil">
-		      <a href="" ng-click="seleccionar('nuevoPerfil')">Nuevo A&ntilde;o</a>
-		    </li>
-		    <li bs-scrollspy data-target="#nuevoPerfil">
-		      <a href="" ng-click="seleccionar('nuevoPerfil')">Administrar</a>
-		    </li>
-		  </ul>
+			<ul class="nav bs-sidenav">
+				<li bs-scrollspy data-target="#getting-started">
+					<a href="#getting-started">Men&uacute; A&ntilde;o</a>
+				</li>
+				<hr style="margin: 2px 0;">
+				<li bs-scrollspy data-target="#modals">
+					<a href="" ng-click="seleccionar('listado')">Listado</a>
+				</li>
+				<li bs-scrollspy data-target="#nuevoAnio">
+					<a href="" ng-click="seleccionar('nuevoAnio')">Nuevo A&ntilde;o</a>
+				</li>
+				<li bs-scrollspy data-target="#administrar">
+					<a href="" ng-click="seleccionar('administrar')">Administrar</a>
+				</li>
+			</ul>
 		</div>
 		<!--/ngInclude: 'views/partials/affixed-sidebar.html' -->
 	</div>
+</div>
+
+<div class="col-md-10">
+	<h1>Año</h1>
+	<hr>
+
+	<div id="nuevoAnio" ng-show="!listado1">
+		<fieldset>
+			<legend>Nuevo Año</legend>
+			<h3 class="small">Complete los datos para dar de alta un 
+				nuevo año y presione guardar al finalizar</h3>
+				<form class="form-horizontal media">
+				<!--<div class="pull-right">
+						<img class="img-rounded" src="images/defaultUser.png" alt="Usuario" width="220px" height="auto"/>
+					<div class="btn btn-primary btn-file" id="boton">Examinar<input type="file"></div>
+				</div>	-->
+
+				<div class="formulario media-body">
+
+					<div class="form-group">
+						<div class="col-sm-3 control-label">
+							<label for="">Nombre:</label>
+						</div>
+						<div class="col-sm-4">
+							<input class="form-control" placeholder="Física" type="text"
+							maxlength="10" required pattern="[a-zA-Z ]*">
+						</div>
+						<!-- Valida 8 digitos -->
+						
+					</div>
+					<!-- /form-group-->
+					<div class="form-group">
+						<div class="col-sm-3 control-label">
+							<label for="">Descripción:</label>
+						</div>
+						<div class="col-sm-4">
+							<input class="form-control" placeholder="" type="text"
+							maxlength="10" required pattern="[a-zA-Z ]*">
+						</div>
+						<!-- Valida 8 digitos -->
+						
+					</div>
+					<!-- /form-group-->
+					<div class="form-group">
+						<div class="col-sm-5 control-label">
+							<input class="btn btn-primary" type="submit" name=""
+							value="Guardar"/>
+						</div>
+					</div>
+				</div>
+
+			</form>
+		</fieldset>
+	</div>
+
+	<div id="listado" ng-show="listado1" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
+		<fieldset class="navbar">
+			<legend>Listado</legend>
+			<label for="">A&ntilde;o:</label> <select
+			class="dropdown-toggle form-control-inline" name="" ng-model="filterByYear"> <!-- ng-change="update(dropDownValue, option)"> -->
+			<option ng-repeat="option in dropDownOptions"  value="{{option}}">{{option}}</option>
+		</select>
+		<!--<button ng-click="search()">Buscar</button>-->
+		
+		<table class="table table-hover table-striped">
+			<thead>
+				<tr>
+					<th>Nombre</th>
+					<th>Docente titular</th>
+					<th>A&ntilde;o</th>
+					<th>&Aacute;rea</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			<tr ng-repeat="materia in friends | filter:filterByYear">
+				<td>{{materia.nombre}}</td>
+				<td>{{materia.docenteTitular}}</td>
+				<td>{{materia.anioPertenece}}</td>
+				<td>{{materia.area}}</td>
+				<td style="width:10%;"><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:50%" class="glyphicon glyphicon-edit" ></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAttendance" style="width:50%" class="glyphicon glyphicon-remove-circle"></span></td> 
+					<!--<td>{{alumno.name}}</td>
+					<td>{{alumno.phone}}</td>
+					<td>{{alumno.anio}}</td>
+					<td>{{$index}}</td> -->
+				</tr>
+			</table>
+		</fieldset>
+	</div>	
 </div>

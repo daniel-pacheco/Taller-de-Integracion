@@ -29,11 +29,11 @@
 
 //Test
 $scope.friends = [{nombre:'Educación Fisica', docenteTitular:'María Laura', anioPertenece: '4º', area: 'cs sociales'},
-                         {nombre:'Matemática', docenteTitular:'Marta Blanco', anioPertenece: '4', area: 'cs sociales'},
-                         {nombre:'Lengua', docenteTitular:'Lorena Gomez', anioPertenece: '4', area: 'cs naturales'},
-                         {nombre:'Fisica', docenteTitular:'Alicia Modenutti', anioPertenece: '5º', area: 'cs sociales'},
-                         {nombre:'Geografía', docenteTitular:'Mariela Rickert', anioPertenece: '5º', area: 'cs naturales'},
-                         {nombre:'Historia', docenteTitular:'Gloria Herrlein', anioPertenece: '4º', area: 'cs exsactas'}];
+{nombre:'Matemática', docenteTitular:'Marta Blanco', anioPertenece: '4', area: 'cs sociales'},
+{nombre:'Lengua', docenteTitular:'Lorena Gomez', anioPertenece: '4', area: 'cs naturales'},
+{nombre:'Fisica', docenteTitular:'Alicia Modenutti', anioPertenece: '5º', area: 'cs sociales'},
+{nombre:'Geografía', docenteTitular:'Mariela Rickert', anioPertenece: '5º', area: 'cs naturales'},
+{nombre:'Historia', docenteTitular:'Gloria Herrlein', anioPertenece: '4º', area: 'cs exsactas'}];
 
 });
 
