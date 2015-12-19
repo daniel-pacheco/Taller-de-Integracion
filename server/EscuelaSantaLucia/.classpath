@@ -56,5 +56,7 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="Resources/Apache/commons-lang3-3.4-javadoc.jar"/>
+	<classpathentry kind="lib" path="Resources/Apache/commons-lang3-3.4.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

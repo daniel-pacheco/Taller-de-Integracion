@@ -29,7 +29,7 @@ public interface IValidacionAnio {
 	 * @return
 	 * @throws Exception 
 	 */
-	Boolean existeCurso(Curso curso, Anio anio) throws Exception;
+	Boolean existeCurso(Anio anio) throws Exception;
 	
 	
 //	/**

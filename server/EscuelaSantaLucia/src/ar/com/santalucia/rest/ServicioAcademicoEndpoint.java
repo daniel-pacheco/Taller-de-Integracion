@@ -204,7 +204,18 @@ public class ServicioAcademicoEndpoint {
 		return Response.ok(materia).build();
 	}
 	
-	
+	@PUT
+	@Path("/cur/asign/{idC:[0-9][0-9]*}")
+	public Response asignarAlumnoACurso(Alumno alumno, @PathParam("idC") final Long idCurso) {
+		try {
+			setInstance();
+			servicioAcademico.asignarAlumnoACurso(alumno, idCurso);
+			return Response.ok(true).build();
+		} catch (Exception ex) {
+			// TODO Auto-generated catch block
+			return Response.ok(ex).build();
+		}
+	}
 	
 	
 	

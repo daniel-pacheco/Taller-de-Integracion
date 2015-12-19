@@ -70,6 +70,15 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 		try {
 			this.validar(object);
 			closeSession();
+			if (object.getListaCursos() != null) {
+				for (Curso c : object.getListaCursos()) {
+					if(c.getIdCurso() == null){
+						GCurso.add(c);
+					}else{
+						GCurso.modify(c);
+					}
+				}
+			} 
 			setSession();
 			setTransaction();
 			anioDAO.attachDirty(object);
@@ -174,11 +183,11 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 	}
 
 	@Override
-	public Boolean existeCurso(Curso curso, Anio anio) throws Exception{
+	public Boolean existeCurso(Anio anio) throws Exception{
 		Boolean existeCurso = new Boolean(false);
 		try{
 			Set<Curso> cursos = anio.getListaCursos();
-			existeCurso = cursos.contains(curso);
+			//existeCurso = cursos.contains(anio);
 			/*
 			for(Curso c: cursos){
 				if(c.getIdCurso() != null){
@@ -188,6 +197,14 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 				}
 			}
 			*/
+			for(Curso c: cursos){
+				for(Curso n: cursos){
+					if((c.equals(n)) && ((c.getIdCurso() != n.getIdCurso()))) {
+						existeCurso = true;
+						break;
+					}
+				}
+			}
 			return existeCurso;
 		} catch(Exception ex){
 			throw new Exception("El proceso de validación de curso ha fallado. " + ex.getMessage());
@@ -197,13 +214,13 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 	public void validar(Anio object) throws Exception {
 		Boolean vNombre;
 		ValidacionException exception = new ValidacionException();
-		Anio anio = new Anio();
+		
 		
 		vNombre = this.existeNombreAnio(object);
 		exception.addMensajeError(vNombre ? "El nombre " + object.getNombre() +" ya existe" : null);
 		
 		if (object.getIdAnio() != null) {
-			anio = this.getById(object.getIdAnio());
+			//anio = this.getById(object.getIdAnio());
 			//anio.setListaCursos(object.getListaCursos());
 
 //			for (Materia m: object.getListaMaterias()) {
@@ -213,7 +230,7 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 //			}
 			
 			for (Curso c: object.getListaCursos()) {
-				exception.addMensajeError((this.existeCurso(c, anio) 
+				exception.addMensajeError((this.existeCurso(object) 
 											? "El curso: " + c.getDivision() + " ya existe en el año." 
 											: null));
 			}
