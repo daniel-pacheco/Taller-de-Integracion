@@ -44,12 +44,12 @@ $scope.showModal = function () {
   // Controller usage example C:\Taller-de-Integracion\client\..\bower_components\angular-strap\src\modal
   //
   function MyModalController($scope) {
-    $scope.title = 'Aviso';
+    /*$scope.title = 'Aviso';
     $scope.content = 'El perfil de alumno DNI: {numDni} fue creado exitosamente';
-    $scope.question = '\¿Desea crear otro perfil nuevo?;'
+    $scope.question = '\¿Desea crear otro perfil nuevo?;'*/
   }
   MyModalController.$inject = ['$scope'];
-  var myModal = $modal({controller: MyModalController, templateUrl: 'views/templates/messagetextboxselect.tpl.html', show: false, animation: 'am-fade-and-slide-top'});
+  var myModal = $modal({controller: MyModalController, templateUrl: 'views/templates/messageregistrationdetails.tpl.html', show: false, animation: 'am-fade-and-slide-top'});
   $scope.showModal = function() {
     myModal.$promise.then(myModal.show);
   };
