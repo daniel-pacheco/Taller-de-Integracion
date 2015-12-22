@@ -21,6 +21,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import ar.com.santalucia.dominio.modelo.academico.Anio;
+import ar.com.santalucia.dominio.modelo.academico.Area;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
@@ -127,7 +128,7 @@ public class ServicioAcademicoEndpoint {
 		try {
 			setInstance();
 			servicioAcademico.addCurso(curso, idAnio);
-			return Response.ok().build();
+			return Response.ok(true).build();
 		} catch (Exception ex) {
 			// TODO Auto-generated catch block
 			return Response.ok(ex).build();
@@ -205,6 +206,31 @@ public class ServicioAcademicoEndpoint {
 	}
 	
 	@PUT
+	@Path("/area")
+	public Response updateArea(Area area){
+		try{
+			setInstance();
+			servicioAcademico.addArea(area);
+		}catch(Exception ex){
+			return Response.ok(ex).build();
+		}
+		
+		return Response.ok(area.getIdArea()).build();
+	}
+	
+	@DELETE
+	@Path("/area/{id:[0-9][0-9]*}")
+	public Response deleteArea(@PathParam("id") final Long idArea){
+		try{
+			Area area = gArea.getById(idArea);
+			servicioAcademico.deleteArea(area);
+		}catch(ex){
+			return Response.ok(ex).build();
+		}
+		return Response.ok(true).build();
+	}
+	
+	@PUT
 	@Path("/cur/asign/{idC:[0-9][0-9]*}")
 	public Response asignarAlumnoACurso(Alumno alumno, @PathParam("idC") final Long idCurso) {
 		try {
@@ -218,7 +244,7 @@ public class ServicioAcademicoEndpoint {
 	}
 	
 	@PUT
-	@Path("/cur/desvn/{idC:[0-9][0-9]*}")
+	@Path("/cur/desvin/{idC:[0-9][0-9]*}")
 	public Response desvincularAlumnoDeCurso(Alumno alumno, @PathParam("idC") final Long idCurso) {
 		try {
 			setInstance();
@@ -229,9 +255,6 @@ public class ServicioAcademicoEndpoint {
 			return Response.ok(ex).build();
 		}
 	}
-	
-	
-	
 	
 	/**
 	* @param id
