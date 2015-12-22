@@ -217,6 +217,18 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 	
+	@PUT
+	@Path("/cur/desvn/{idC:[0-9][0-9]*}")
+	public Response desvincularAlumnoDeCurso(Alumno alumno, @PathParam("idC") final Long idCurso) {
+		try {
+			setInstance();
+			servicioAcademico.desvincularAlumnoDeCurso(alumno, idCurso);
+			return Response.ok(true).build();
+		} catch (Exception ex) {
+			// TODO Auto-generated catch block
+			return Response.ok(ex).build();
+		}
+	}
 	
 	
 	
