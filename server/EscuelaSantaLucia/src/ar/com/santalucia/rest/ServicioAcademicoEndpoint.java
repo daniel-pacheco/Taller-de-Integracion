@@ -21,9 +21,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import ar.com.santalucia.dominio.modelo.academico.Anio;
+import ar.com.santalucia.dominio.modelo.academico.Area;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
+import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.servicio.ServicioAcademico;
 import ar.com.santalucia.servicio.ServicioAlumno;
 
@@ -107,7 +109,7 @@ public class ServicioAcademicoEndpoint {
 	
 	@GET
 	@Path("/anio/listAll")
-	public Response AniolistAll() {
+	public Response aniolistAll() {
 		List<Anio> anios = new ArrayList<Anio>();
 		//anios = null;
 		try {
@@ -127,7 +129,7 @@ public class ServicioAcademicoEndpoint {
 		try {
 			setInstance();
 			servicioAcademico.addCurso(curso, idAnio);
-			return Response.ok().build();
+			return Response.ok(true).build();
 		} catch (Exception ex) {
 			// TODO Auto-generated catch block
 			return Response.ok(ex).build();
@@ -157,7 +159,6 @@ public class ServicioAcademicoEndpoint {
 			setInstance();
 			curso = servicioAcademico.getCurso(id);
 		} catch (Exception ex) {
-			// ex.printStackTrace();
 			return Response.ok(ex).build();
 		}
 		return Response.ok(curso).build();
@@ -203,6 +204,49 @@ public class ServicioAcademicoEndpoint {
 		}
 		return Response.ok(materia).build();
 	}
+
+// PENDIENTE	
+	
+//	@POST
+//	@Path("/mat/asignDoc")
+//
+//	
+//	asignarDocentesAMateria(Personal docenteTitular, Personal docenteSuplente, Long idMateria)
+	
+	
+	@PUT
+	@Path("/area")
+	public Response updateArea(Area area){
+		try{
+			setInstance();
+			servicioAcademico.addArea(area);
+		}catch(Exception ex){
+			return Response.ok(ex).build();
+		}
+		return Response.ok(area.getIdArea()).build();
+	}
+	
+	@GET
+	@Path("/area/listAll")
+	public Response areaListAll(){
+		try{
+			Area area = new Area();
+			return Response.ok(servicioAcademico.getAreas(area)).build();
+		}catch(Exception ex){
+			return Response.ok(ex).build();
+		}
+	}
+	
+	@DELETE
+	@Path("/area/{id:[0-9][0-9]*}")
+	public Response deleteArea(@PathParam("id") final Long idArea){
+		try{
+			servicioAcademico.deleteArea(servicioAcademico.getArea(idArea));
+		} catch(Exception ex) {
+			return Response.ok(ex).build();
+		}
+		return Response.ok(true).build();
+	}
 	
 	@PUT
 	@Path("/cur/asign/{idC:[0-9][0-9]*}")
@@ -217,8 +261,39 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 	
+	@PUT
+	@Path("/cur/desvin/{idC:[0-9][0-9]*}")
+	public Response desvincularAlumnoDeCurso(Alumno alumno, @PathParam("idC") final Long idCurso) {
+		try {
+			setInstance();
+			servicioAcademico.desvincularAlumnoDeCurso(alumno, idCurso);
+			return Response.ok(true).build();
+		} catch (Exception ex) {
+			// TODO Auto-generated catch block
+			return Response.ok(ex).build();
+		}
+	}
 	
+	@POST
+	@Path("/mat/asign/{idM:[0-9][0-9]*}/{idA:[0-9][0-9]*}")
+	public Response asignarMateriaAAnio(@PathParam("idM") final Long idMateria, @PathParam("idA") final Long idAnio){
+		try{
+			return Response.ok(servicioAcademico.asignarMateriaAAnio(servicioAcademico.getMateria(idMateria), idAnio)).build();
+		}catch(Exception ex){
+			return Response.ok(ex).build();
+		}
+	}
 	
+	@POST
+	@Path("/mat/desvin/{idM:[0-9][0-9]*}/{idA:[0-9][0-9]*}")
+	public Response desvincularMateriaDeAnio(@PathParam("idM") final Long idMateria, @PathParam("idA") final Long idAnio){
+		try{
+			return Response.ok(servicioAcademico.desvincularMateriaDeAnio(servicioAcademico.getMateria(idMateria), idAnio)).build();
+		}catch(Exception ex){
+			return Response.ok(ex).build();
+		}
+		
+	}
 	
 	
 	/**

@@ -135,7 +135,7 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 			sesionDeHilo.getTransaction().commit();
 			return listaMateriasDevolver;
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al listar los alumnos: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al listar las materias: " + ex.getMessage());
 		}
 	}
 	

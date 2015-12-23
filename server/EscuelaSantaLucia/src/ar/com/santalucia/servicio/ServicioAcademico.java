@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Set;
 
 import ar.com.santalucia.aplicacion.gestor.academico.GestorAnio;
+import ar.com.santalucia.aplicacion.gestor.academico.GestorArea;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorCurso;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMateria;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
+import ar.com.santalucia.dominio.modelo.academico.Area;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
@@ -23,13 +25,14 @@ import ar.com.santalucia.excepciones.ValidacionException;
  *
  */
 
-// Último modificador: Ariel Ramirez @ 05-11-2015 17:57
+// Último modificador: Ariel Ramirez @ 22-12-2015 23:01
 
 public class ServicioAcademico {
 
 	private GestorAnio gAnio;
 	private GestorCurso gCurso;
 	private GestorMateria gMateria;
+	private GestorArea gArea;
 	private GestorAlumno gAlumno;
 	private GestorPersonal gDocente; 
 
@@ -41,7 +44,7 @@ public class ServicioAcademico {
 			gAlumno = new GestorAlumno();
 			gDocente = new GestorPersonal();
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un problema al intentar inicializar el servicio de operaciones básicas. "
+			throw new Exception("ServicioAcademico: Ha ocurrido un problema al intentar inicializar el servicio de operaciones básicas. "
 					+ ex.getMessage());
 		}
 	}
@@ -73,7 +76,7 @@ public class ServicioAcademico {
 		try {
 			gAnio.delete(anio);
 		} catch (Exception ex) {
-			throw new Exception("Servicio: No se pudo eliminar el año. " + ex.getMessage());
+			throw new Exception("ServicioAcademico: No se pudo eliminar el año. " + ex.getMessage());
 		}
 		return true;
 	}
@@ -82,7 +85,7 @@ public class ServicioAcademico {
 		try {
 			return gAnio.getById(idAnio);
 		} catch (Exception ex) {
-			throw new Exception("Servicio: No se pudo obtener el año. " + ex.getMessage());
+			throw new Exception("ServicioAcademico: No se pudo obtener el año. " + ex.getMessage());
 		}
 	}
 
@@ -94,7 +97,7 @@ public class ServicioAcademico {
 		try {
 			return gAnio.getByExample(example);
 		} catch (Exception ex) {
-			throw new Exception("Servicio: no se pudo obtener la lista de años. " + ex.getMessage());
+			throw new Exception("ServicioAcademico: no se pudo obtener la lista de años. " + ex.getMessage());
 		}
 	}
 
@@ -122,7 +125,7 @@ public class ServicioAcademico {
 				return true;
 			}
 		} catch (Exception ex) {
-			throw new Exception("Servicio: no se pudo agregar el curso al año. " + ex.getMessage());
+			throw new Exception("ServicioAcademico: no se pudo agregar el curso al año. " + ex.getMessage());
 		}
 	}
  
@@ -158,7 +161,7 @@ public class ServicioAcademico {
 			gCurso.delete(curso);
 			return true;
 		} catch (Exception ex) {
-			throw new Exception("Servicio: no se pudo eliminar el curso. " + ex.getMessage());
+			throw new Exception("ServicioAcademico: no se pudo eliminar el curso. " + ex.getMessage());
 		}
 	}
 
@@ -166,7 +169,7 @@ public class ServicioAcademico {
 		try {
 			return gCurso.getById(idCurso);
 		} catch (Exception ex) {
-			throw new Exception("Servicio: no se pudo obtener el curso. " + ex.getMessage());
+			throw new Exception("ServicioAcademico: no se pudo obtener el curso. " + ex.getMessage());
 		}
 	}
 
@@ -182,15 +185,15 @@ public class ServicioAcademico {
 			}
 			return true;
 		} catch (Exception ex) {
-			throw new Exception("Servicio: no se pudo agregar la materia. " + ex.getMessage());
+			throw new Exception("ServicioAcademico: no se pudo agregar la materia. " + ex.getMessage());
 		}
 	}
 
-	public Materia getMateria(Long idMateria) throws Exception{
+	public Materia getMateria(Long idMateria) throws Exception{ // EN ENDPOINT
 		try{
 			return gMateria.getById(idMateria);
 		} catch(Exception ex){
-			throw new Exception("Servicio: no se pudo obtener la materia. " + ex.getMessage());
+			throw new Exception("ServicioAcademico: no se pudo obtener la materia. " + ex.getMessage());
 		}
 	}
 	
@@ -198,22 +201,20 @@ public class ServicioAcademico {
 		try {
 			return gMateria.getByExample(example);
 		} catch (Exception ex) {
-			throw new Exception("Servicio: no se pudo obtener la lista de materias. " + ex.getMessage());
+			throw new Exception("ServicioAcademico: no se pudo obtener la lista de materias. " + ex.getMessage());
 		}
 	}
 	
-	public Boolean deleteMateria(Materia materia) throws Exception {
+	public Boolean deleteMateria(Materia materia) throws Exception { // EN ENDPOINT
 		try {
 			gMateria.delete(materia);
 		} catch (Exception ex) {
-			throw new Exception("Servicio: no se pudo eliminar la materia. " + ex.getMessage());
+			throw new Exception("ServicioAcademico: no se pudo eliminar la materia. " + ex.getMessage());
 		}
 		return false;
 	}
-
-	//TODO: seguir desde aca
 	
-	public Boolean asignarDocentesAMateria(Personal docenteTitular, Personal docenteSuplente, Long idMateria) throws Exception {
+	public Boolean asignarDocentesAMateria(Personal docenteTitular, Personal docenteSuplente, Long idMateria) throws Exception { 
 		// TODO
 		// 1 - Obtener la materia con el gestor
 		// 2 - Asignar docente titular y suplente haciedo
@@ -233,11 +234,49 @@ public class ServicioAcademico {
 			gMateria.modify(materia);
 			return true;
 		} catch (Exception ex) {
-			throw new Exception("Servicio: no se pudo asignar docentes a la materia. " + ex.getMessage());
+			throw new Exception("ServicioAcademico: no se pudo asignar docentes a la materia. " + ex.getMessage());
 		}
 	}
 
-	public Boolean asignarMateriaAAnio(Materia materia, Long idAnio) throws Exception{
+	public Boolean addArea(Area area) throws Exception{  // EN ENDPOINT
+		try{
+			if(area.getIdArea() == null){
+				gArea.add(area);	
+			}else{
+				gArea.modify(area);
+			}
+		}catch(Exception ex){
+			throw new Exception("ServicioAcademico: No se pudo dar de alta el área " + ex.getMessage());
+		}
+		return true;
+	}
+	
+	public Area getArea(Long idArea) throws Exception{ // EN ENDPOINT
+		try{
+			return gArea.getById(idArea);
+		}catch(Exception ex){
+			throw new Exception("ServicioAcademico: No se pudo obtener el área " + ex.getMessage());
+		}
+	}
+	
+	public List<Area> getAreas(Area example) throws Exception{ // EN ENDPOINT
+		try{
+			return gArea.getByExample(example);
+		}catch(Exception ex){
+			throw new Exception("ServicioAcademico: No se pudo obtener el listado de áreas " + ex.getMessage());
+		}
+	}
+	
+	public Boolean deleteArea(Area area) throws Exception{ // EN ENDPOINT
+		try{
+			gArea.delete(area);
+		}catch (Exception ex){
+			throw new Exception("ServicioAcademico: No se pudo eliminar el área " + ex.getMessage());
+		}
+		return true;
+	}
+	
+	public Boolean asignarMateriaAAnio(Materia materia, Long idAnio) throws Exception{ // EN ENDPOINT
 		// TODO
 		// 1 - Obtener el año
 		// 2 - Rescatar la lista de materias del año
@@ -256,7 +295,7 @@ public class ServicioAcademico {
 		}
 	}
 
-	public Boolean desvinvularMateriaDeAnio(Materia materia, Long idAnio) throws Exception{
+	public Boolean desvincularMateriaDeAnio(Materia materia, Long idAnio) throws Exception{ // EN ENDPOINT 
 		// TODO
 		// 1 - Obtener el año
 		// 2 - Rescatar la lista de materias
@@ -275,7 +314,7 @@ public class ServicioAcademico {
 		return true;
 	}
 	
-	public Boolean asignarAlumnoACurso(Alumno alumno, Long idCurso) throws Exception{ 			//TRABAJANDO EN ENDPOINT
+	public Boolean asignarAlumnoACurso(Alumno alumno, Long idCurso) throws Exception{ 			//EN ENDPOINT
 		// TODO
 		// 1 - Obtener el curso 
 		// 2 - Rescatar lista de alumnos del curso
@@ -304,7 +343,7 @@ public class ServicioAcademico {
 		}
 	}
 
-	public Boolean desvincularAlumnoDeCurso(Alumno alumno, Long idCurso) throws Exception{
+	public Boolean desvincularAlumnoDeCurso(Alumno alumno, Long idCurso) throws Exception{ // EN ENDPOINT
 		// TODO
 		// 1 - Traer el curso generico
 		// 2 - Rescatar el listado de alumnos del curso generico
