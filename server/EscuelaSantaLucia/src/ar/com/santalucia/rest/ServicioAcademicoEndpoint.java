@@ -224,7 +224,7 @@ public class ServicioAcademicoEndpoint {
 		try{
 			Area area = gArea.getById(idArea);
 			servicioAcademico.deleteArea(area);
-		}catch(ex){
+		} catch(Exception ex) {
 			return Response.ok(ex).build();
 		}
 		return Response.ok(true).build();

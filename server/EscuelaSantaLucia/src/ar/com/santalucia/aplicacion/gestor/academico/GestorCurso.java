@@ -147,7 +147,7 @@ public class GestorCurso extends Gestor<Curso> {
 			sesionDeHilo.getTransaction().commit();
 			return listaCursosDevolver;
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al listar los alumnos: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al listar los cursos: " + ex.getMessage());
 		}
 	}
 
