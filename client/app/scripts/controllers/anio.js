@@ -15,13 +15,24 @@
  	'Karma'
  	];
 
- 	$scope.listado1 = true;
+ 	$scope.listadoAnio = true;
+ 	$scope.administrarAnio = false;
+ 	$scope.nuevoAnio = false;
 
  	$scope.seleccionar = function(id) {
- 		if (id === 'listado') {
- 			$scope.listado1 = true;
+ 		if (id === 'listadoAnio') {
+ 			$scope.administrarAnio = false;
+ 			$scope.nuevoAnio = false;
+ 			$scope.listadoAnio = true;
+ 			
  		}else if (id === 'nuevoAnio'){
- 			$scope.listado1 = false;
- 		};
+ 			$scope.listadoAnio = false;
+ 			$scope.administrarAnio = false;
+ 			$scope.nuevoAnio = true;
+ 		} else if (id === "administrarAnio"){
+ 		 	$scope.listadoAnio = false;
+ 		 	$scope.nuevoAnio = false;
+ 		 	$scope.administrarAnio = true;
+ 		 };
  	};
  });

@@ -118,3 +118,7 @@ input, button, select, textarea {
   border-left: 4px solid #404040;
   }
 }
+
+.brillo > span:hover{
+text-shadow: 2px 2px 2px red;
+}
