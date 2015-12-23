@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import ar.com.santalucia.aplicacion.gestor.academico.GestorAnio;
+import ar.com.santalucia.aplicacion.gestor.academico.GestorArea;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorCurso;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMateria;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
@@ -24,14 +25,14 @@ import ar.com.santalucia.excepciones.ValidacionException;
  *
  */
 
-// Último modificador: Ariel Ramirez @ 22-12-2015 19:07
+// Último modificador: Ariel Ramirez @ 22-12-2015 23:01
 
 public class ServicioAcademico {
 
 	private GestorAnio gAnio;
 	private GestorCurso gCurso;
 	private GestorMateria gMateria;
-	//private GestorArea gArea;
+	private GestorArea gArea;
 	private GestorAlumno gAlumno;
 	private GestorPersonal gDocente; 
 
@@ -237,7 +238,7 @@ public class ServicioAcademico {
 		}
 	}
 
-	public Boolean addArea(Area area) throws Exception{  //Todavía no existe el gestor, por eso marca en rojo EN ENDPOINT
+	public Boolean addArea(Area area) throws Exception{  // EN ENDPOINT
 		try{
 			if(area.getIdArea() == null){
 				gArea.add(area);	
@@ -250,7 +251,23 @@ public class ServicioAcademico {
 		return true;
 	}
 	
-	public Boolean deleteArea(Area area) throws Exception{
+	public Area getArea(Long idArea) throws Exception{ // EN ENDPOINT
+		try{
+			return gArea.getById(idArea);
+		}catch(Exception ex){
+			throw new Exception("ServicioAcademico: No se pudo obtener el área " + ex.getMessage());
+		}
+	}
+	
+	public List<Area> getAreas(Area example) throws Exception{ // EN ENDPOINT
+		try{
+			return gArea.getByExample(example);
+		}catch(Exception ex){
+			throw new Exception("ServicioAcademico: No se pudo obtener el listado de áreas " + ex.getMessage());
+		}
+	}
+	
+	public Boolean deleteArea(Area area) throws Exception{ // EN ENDPOINT
 		try{
 			gArea.delete(area);
 		}catch (Exception ex){
@@ -259,7 +276,7 @@ public class ServicioAcademico {
 		return true;
 	}
 	
-	public Boolean asignarMateriaAAnio(Materia materia, Long idAnio) throws Exception{
+	public Boolean asignarMateriaAAnio(Materia materia, Long idAnio) throws Exception{ // EN ENDPOINT
 		// TODO
 		// 1 - Obtener el año
 		// 2 - Rescatar la lista de materias del año
@@ -278,7 +295,7 @@ public class ServicioAcademico {
 		}
 	}
 
-	public Boolean desvincularMateriaDeAnio(Materia materia, Long idAnio) throws Exception{
+	public Boolean desvincularMateriaDeAnio(Materia materia, Long idAnio) throws Exception{ // EN ENDPOINT 
 		// TODO
 		// 1 - Obtener el año
 		// 2 - Rescatar la lista de materias
@@ -297,7 +314,7 @@ public class ServicioAcademico {
 		return true;
 	}
 	
-	public Boolean asignarAlumnoACurso(Alumno alumno, Long idCurso) throws Exception{ 			//TRABAJANDO EN ENDPOINT
+	public Boolean asignarAlumnoACurso(Alumno alumno, Long idCurso) throws Exception{ 			//EN ENDPOINT
 		// TODO
 		// 1 - Obtener el curso 
 		// 2 - Rescatar lista de alumnos del curso
@@ -326,7 +343,7 @@ public class ServicioAcademico {
 		}
 	}
 
-	public Boolean desvincularAlumnoDeCurso(Alumno alumno, Long idCurso) throws Exception{
+	public Boolean desvincularAlumnoDeCurso(Alumno alumno, Long idCurso) throws Exception{ // EN ENDPOINT
 		// TODO
 		// 1 - Traer el curso generico
 		// 2 - Rescatar el listado de alumnos del curso generico
