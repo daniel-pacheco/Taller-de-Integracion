@@ -25,7 +25,7 @@ import ar.com.santalucia.excepciones.ValidacionException;
  *
  */
 
-// Último modificador: Ariel Ramirez @ 22-12-2015 23:01
+// Último modificador: Ariel Ramirez @ 23-12-2015 16:59
 
 public class ServicioAcademico {
 

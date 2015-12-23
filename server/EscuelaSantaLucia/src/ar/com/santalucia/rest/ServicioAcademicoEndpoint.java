@@ -28,6 +28,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.servicio.ServicioAcademico;
 import ar.com.santalucia.servicio.ServicioAlumno;
+import ar.com.santalucia.servicio.ServicioDocente;
 
 /**
  * @author Casa
@@ -204,15 +205,21 @@ public class ServicioAcademicoEndpoint {
 		}
 		return Response.ok(materia).build();
 	}
-
-// PENDIENTE	
 	
-//	@POST
-//	@Path("/mat/asignDoc")
-//
-//	
-//	asignarDocentesAMateria(Personal docenteTitular, Personal docenteSuplente, Long idMateria)
-	
+	@POST
+	@Path("/mat/asignDoc/{idDt:[0-9][0-9]*}/{idDs:[0-9][0-9]*}/{idM:[0-9][0-9]*}")
+	public Response asignarDocentesAMateria(@PathParam("idDt") final Long idDt, @PathParam("idDs") final Long idDs, @PathParam("idM") final Long idM){
+		try{
+			setInstance();
+			ServicioDocente servicioDocente = new ServicioDocente();
+			return Response.ok(servicioAcademico.asignarDocentesAMateria(servicioDocente.getUsuario(idDt), 
+																		servicioDocente.getUsuario(idDs), 
+																		idM)).build(); 
+		}catch(Exception ex){
+			
+		}
+		return Response.ok(true).build();
+	}
 	
 	@PUT
 	@Path("/area")
@@ -230,6 +237,7 @@ public class ServicioAcademicoEndpoint {
 	@Path("/area/listAll")
 	public Response areaListAll(){
 		try{
+			setInstance();
 			Area area = new Area();
 			return Response.ok(servicioAcademico.getAreas(area)).build();
 		}catch(Exception ex){
@@ -241,6 +249,7 @@ public class ServicioAcademicoEndpoint {
 	@Path("/area/{id:[0-9][0-9]*}")
 	public Response deleteArea(@PathParam("id") final Long idArea){
 		try{
+			setInstance();
 			servicioAcademico.deleteArea(servicioAcademico.getArea(idArea));
 		} catch(Exception ex) {
 			return Response.ok(ex).build();
@@ -249,10 +258,14 @@ public class ServicioAcademicoEndpoint {
 	}
 	
 	@PUT
-	@Path("/cur/asign/{idC:[0-9][0-9]*}")
+	@Path("/cur/vin/{idC:[0-9][0-9]*}")
+	//@Path("/cur/vin/{idC:[0-9][0-9]*}/{idA:[0-9][0-9]*}")
+	//public Response asignarAlumnoACurso(@PathParam("idA") final Long idAlumno, @PathParam("idC") final Long idCurso) {
 	public Response asignarAlumnoACurso(Alumno alumno, @PathParam("idC") final Long idCurso) {
 		try {
 			setInstance();
+			//ServicioAlumno servicioAlumno = new ServicioAlumno();
+			//servicioAcademico.asignarAlumnoACurso(servicioAlumno.getUsuario(idAlumno), idCurso);
 			servicioAcademico.asignarAlumnoACurso(alumno, idCurso);
 			return Response.ok(true).build();
 		} catch (Exception ex) {
@@ -263,9 +276,13 @@ public class ServicioAcademicoEndpoint {
 	
 	@PUT
 	@Path("/cur/desvin/{idC:[0-9][0-9]*}")
+	//@Path("/cur/desvin/{idC:[0-9][0-9]*}/{idA:[0-9][0-9]*}")
+	//public Response desvincularAlumnoDeCurso(@PathParam("idA") final Long idAlumno, @PathParam("idC") final Long idCurso) {
 	public Response desvincularAlumnoDeCurso(Alumno alumno, @PathParam("idC") final Long idCurso) {
 		try {
 			setInstance();
+			//ServicioAlumno servicioAlumno = new ServicioAlumno();
+			//servicioAcademico.desvincularAlumnoDeCurso(servicioAlumno.getUsuario(idAlumno), idCurso);
 			servicioAcademico.desvincularAlumnoDeCurso(alumno, idCurso);
 			return Response.ok(true).build();
 		} catch (Exception ex) {
@@ -275,9 +292,10 @@ public class ServicioAcademicoEndpoint {
 	}
 	
 	@POST
-	@Path("/mat/asign/{idM:[0-9][0-9]*}/{idA:[0-9][0-9]*}")
+	@Path("/mat/vin/{idM:[0-9][0-9]*}/{idA:[0-9][0-9]*}")
 	public Response asignarMateriaAAnio(@PathParam("idM") final Long idMateria, @PathParam("idA") final Long idAnio){
 		try{
+			setInstance();
 			return Response.ok(servicioAcademico.asignarMateriaAAnio(servicioAcademico.getMateria(idMateria), idAnio)).build();
 		}catch(Exception ex){
 			return Response.ok(ex).build();
@@ -288,6 +306,7 @@ public class ServicioAcademicoEndpoint {
 	@Path("/mat/desvin/{idM:[0-9][0-9]*}/{idA:[0-9][0-9]*}")
 	public Response desvincularMateriaDeAnio(@PathParam("idM") final Long idMateria, @PathParam("idA") final Long idAnio){
 		try{
+			setInstance();
 			return Response.ok(servicioAcademico.desvincularMateriaDeAnio(servicioAcademico.getMateria(idMateria), idAnio)).build();
 		}catch(Exception ex){
 			return Response.ok(ex).build();
