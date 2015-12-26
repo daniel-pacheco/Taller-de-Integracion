@@ -6,7 +6,7 @@
     <class name="ar.com.santalucia.dominio.modelo.academico.Area" table="AREA">
         <id name="idArea" type="java.lang.Long">
             <column name="IDAREA" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
         <property name="nombre" type="java.lang.String">
             <column name="NOMBRE" />
