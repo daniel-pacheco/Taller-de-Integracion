@@ -143,7 +143,7 @@ public class ServicioAcademico {
 	}
 	*/
 
-	public Boolean deleteCurso(Curso curso, Long idAnio) throws Exception { 	// EN ENDPOINT
+	public Boolean deleteCurso(Curso curso) throws Exception { 	// EN ENDPOINT
 		// TODO
 		// 1 - Rescatar listado de alumnos del curso a borrar
 		// 2 - Obtener el curso genérico con el gestor
