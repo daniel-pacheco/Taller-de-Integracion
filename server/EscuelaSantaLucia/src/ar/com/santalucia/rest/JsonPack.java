@@ -3,7 +3,6 @@ package ar.com.santalucia.rest;
 import java.util.Vector;
 
 public class JsonPack {
-
 	private Vector<Integer> values;
 	
 	public JsonPack(){

@@ -365,5 +365,16 @@ public class ServicioAcademicoEndpoint {
 		//TODO: process the servicioacademico matching by the given id 
 		return Response.noContent().build();
 	}
+	
+	@GET
+	@Path("/area/{id:[0-9][0-9]*}")
+	public Response getAreaById(@PathParam("id") final Long id){
+		try{
+			setInstance();
+			return Response.ok(servicioAcademico.getArea(id)).build();
+		}catch(Exception ex){
+			return Response.ok(ex).build();
+		}
+	}
 
 }
