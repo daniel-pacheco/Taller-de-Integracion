@@ -41,6 +41,7 @@ public class ServicioAcademico {
 			gAnio = new GestorAnio();
 			gCurso = new GestorCurso();
 			gMateria = new GestorMateria();
+			gArea = new GestorArea();
 			gAlumno = new GestorAlumno();
 			gDocente = new GestorPersonal();
 		} catch (Exception ex) {
@@ -214,7 +215,7 @@ public class ServicioAcademico {
 		return false;
 	}
 	
-	public Boolean asignarDocentesAMateria(Personal docenteTitular, Personal docenteSuplente, Long idMateria) throws Exception { 
+	public Boolean asignarDocentesAMateria(Personal docenteTitular, Personal docenteSuplente, Long idMateria) throws Exception { // EN ENDPOINT
 		// TODO
 		// 1 - Obtener la materia con el gestor
 		// 2 - Asignar docente titular y suplente haciedo

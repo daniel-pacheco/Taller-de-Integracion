@@ -234,6 +234,17 @@ public class ServicioAcademicoEndpoint {
 	}
 	
 	@GET
+	@Path("/area/{id:[0-9][0-9]*}")
+	public Response getAreaById(@PathParam("id") final Long id){
+		try{
+			setInstance();
+			return Response.ok(servicioAcademico.getArea(id)).build();
+		}catch(Exception ex){
+			return Response.ok(ex).build();
+		}
+	}
+		
+	@GET
 	@Path("/area/listAll")
 	public Response areaListAll(){
 		try{
@@ -313,7 +324,6 @@ public class ServicioAcademicoEndpoint {
 		}
 		
 	}
-	
 	
 	/**
 	* @param id
