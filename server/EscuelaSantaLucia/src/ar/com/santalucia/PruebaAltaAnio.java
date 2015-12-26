@@ -388,37 +388,10 @@ public class PruebaAltaAnio {
 		servDocente.addUsuario(docente1);
 		servDocente.addUsuario(docente2);
 		servDocente.addUsuario(docente3);
-		servDocente.addUsuario(docente4);
-		
-//		servAcademico.addMateria(materia1);
-//		servAcademico.addMateria(materia2);		
+		servDocente.addUsuario(docente4);	
 		
 		servAcademico.addAnio(anio1);
-		
-//		List<Anio> listaAnios = servAcademico.getAnios(anio1);
-//		Long idAnio = 0L;
-//		
-//		for(Anio a: listaAnios){
-//			idAnio=a.getIdAnio();
-//			System.out.println(idAnio);
-//		}
-//		
-//		
-//		Materia tempMateria = new Materia();
-//		List<Materia> listaMaterias = servAcademico.getMaterias(materia1);
-//		for (Materia m: listaMaterias){
-//			tempMateria = m;
-//		}		
-//		
-//		servAcademico.asignarMateriaAAnio(tempMateria, idAnio);
-//		
-//		listaMaterias = servAcademico.getMaterias(materia2);
-//		for (Materia m: listaMaterias){
-//			tempMateria = m;
-//		}
-//		
-//		servAcademico.asignarMateriaAAnio(tempMateria, idAnio);
-		
+				
 		
 	}
 

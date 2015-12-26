@@ -258,15 +258,15 @@ public class ServicioAcademicoEndpoint {
 	}
 	
 	@PUT
-	@Path("/cur/vin/{idC:[0-9][0-9]*}")
-	//@Path("/cur/vin/{idC:[0-9][0-9]*}/{idA:[0-9][0-9]*}")
-	//public Response asignarAlumnoACurso(@PathParam("idA") final Long idAlumno, @PathParam("idC") final Long idCurso) {
-	public Response asignarAlumnoACurso(Alumno alumno, @PathParam("idC") final Long idCurso) {
+	//@Path("/cur/vin/{idC:[0-9][0-9]*}")
+	@Path("/cur/vin/{idC:[0-9][0-9]*}/{idA:[0-9][0-9]*}")
+	public Response asignarAlumnoACurso(@PathParam("idC") final Long idCurso, @PathParam("idA") final Long idAlumno) {
+	//public Response asignarAlumnoACurso(Alumno alumno, @PathParam("idC") final Long idCurso) {
 		try {
 			setInstance();
-			//ServicioAlumno servicioAlumno = new ServicioAlumno();
-			//servicioAcademico.asignarAlumnoACurso(servicioAlumno.getUsuario(idAlumno), idCurso);
-			servicioAcademico.asignarAlumnoACurso(alumno, idCurso);
+			ServicioAlumno servicioAlumno = new ServicioAlumno();
+			servicioAcademico.asignarAlumnoACurso(servicioAlumno.getUsuario(idAlumno), idCurso);
+			//servicioAcademico.asignarAlumnoACurso(alumno, idCurso);
 			return Response.ok(true).build();
 		} catch (Exception ex) {
 			// TODO Auto-generated catch block
@@ -275,15 +275,15 @@ public class ServicioAcademicoEndpoint {
 	}
 	
 	@PUT
-	@Path("/cur/desvin/{idC:[0-9][0-9]*}")
-	//@Path("/cur/desvin/{idC:[0-9][0-9]*}/{idA:[0-9][0-9]*}")
-	//public Response desvincularAlumnoDeCurso(@PathParam("idA") final Long idAlumno, @PathParam("idC") final Long idCurso) {
-	public Response desvincularAlumnoDeCurso(Alumno alumno, @PathParam("idC") final Long idCurso) {
+	//@Path("/cur/desvin/{idC:[0-9][0-9]*}")
+	@Path("/cur/desvin/{idC:[0-9][0-9]*}/{idA:[0-9][0-9]*}")
+	public Response desvincularAlumnoDeCurso(@PathParam("idC") final Long idCurso, @PathParam("idA") final Long idAlumno) {
+	//public Response desvincularAlumnoDeCurso(Alumno alumno, @PathParam("idC") final Long idCurso) {
 		try {
 			setInstance();
-			//ServicioAlumno servicioAlumno = new ServicioAlumno();
-			//servicioAcademico.desvincularAlumnoDeCurso(servicioAlumno.getUsuario(idAlumno), idCurso);
-			servicioAcademico.desvincularAlumnoDeCurso(alumno, idCurso);
+			ServicioAlumno servicioAlumno = new ServicioAlumno();
+			servicioAcademico.desvincularAlumnoDeCurso(servicioAlumno.getUsuario(idAlumno), idCurso);
+			//servicioAcademico.desvincularAlumnoDeCurso(alumno, idCurso);
 			return Response.ok(true).build();
 		} catch (Exception ex) {
 			// TODO Auto-generated catch block
