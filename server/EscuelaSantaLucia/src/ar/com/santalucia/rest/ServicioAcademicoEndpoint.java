@@ -37,6 +37,17 @@ import ar.com.santalucia.servicio.ServicioDocente;
 
 // Último modificador: Ariel Ramirez @ 26/12/2015 12:46
 
+/*
+ *Ejemplo JsonPack:
+ *
+ * {
+ *    "values":
+ *    [1,
+ *     2,
+ *     3]
+ * }
+ */
+
 @Path("/sAcademico")
 @PermitAll
 @Produces("application/json")
@@ -45,6 +56,10 @@ public class ServicioAcademicoEndpoint {
 
 	private ServicioAcademico servicioAcademico = null;
 	
+	/**
+	 * Instancia un objeto ServicioAcademico si no existe
+	 * @throws Exception
+	 */
 	private void setInstance() throws Exception {
 		if (servicioAcademico == null) {
 			try {
@@ -55,10 +70,7 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 	
-	/**
-	* @param servicioacademico
-	* @return
-	*/
+	
 	@POST
 	public Response create(final ServicioAcademico servicioacademico) {
 		//TODO: process the given servicioacademico 
@@ -68,6 +80,12 @@ public class ServicioAcademicoEndpoint {
 		return Response.created(null).build();
 	}
 
+	/**
+	 * Agrega o modifica un objeto de tipo Anio. Use este método cuando desee agregar un nuevo curso.<br>
+	 * El gestor de Anio cuenta con la lógica necesaria para detectar objetos Curso nuevos y agregarlos. No se realiza validaciones de nombre de Curso.
+	 * @param anio Objeto Anio que se desea agregar o modificar.
+	 * @return Id de anio si la operación es exitosa.
+	 */
 	@PUT
 	@Path("/anio/")
 	public Response updateAnio(Anio anio) {
@@ -76,41 +94,47 @@ public class ServicioAcademicoEndpoint {
 			servicioAcademico.addAnio(anio);
 			return Response.ok(anio.getIdAnio()).build();
 		} catch (Exception ex) {
-			// TODO Auto-generated catch block
 			return Response.ok(ex).build();
 		}
 	}
 	
+	/**
+	 * 
+	 * @param id Identificador de anio que se desea eliminar.
+	 * @return True si la operación es exitosa.
+	 */
 	@DELETE
 	@Path("/anio/{id:[0-9][0-9]*}")
 	public Response deleteAnioById(@PathParam("id") final Long id) {
-		Boolean exito = false;
 		try {
 			setInstance();
-			exito = servicioAcademico.deleteAnio(servicioAcademico.getAnio(id));
-			return Response.ok(exito).build();
+			return Response.ok(servicioAcademico.deleteAnio(servicioAcademico.getAnio(id))).build();
 		} catch (Exception ex) {
-			// ex.printStackTrace();
 			return Response.ok(ex).build();
 		}
 
 	}
 	
-	@RolesAllowed({"personal"}) //nueva Anotacion!
+	/**
+	 * 
+	 * @param id Identificador de anio que se desea obtener.
+	 * @return Objeto tipo Anio.
+	 */
 	@GET
 	@Path("/anio/{id:[0-9][0-9]*}")
 	public Response getAnioById(@PathParam("id") final Long id) {
-		Anio anio = new Anio();
 		try {
 			setInstance();
-			anio = servicioAcademico.getAnio(id);
+			return Response.ok(servicioAcademico.getAnio(id)).build();
 		} catch (Exception ex) {
-			// ex.printStackTrace();
 			return Response.ok(ex).build();
 		}
-		return Response.ok(anio).build();
 	}
 	
+	/**
+	 * Lista todos los objetos de tipo Anio existente.
+	 * @return Lista de Anios.
+	 */
 	@GET
 	@Path("/anio/listAll")
 	public Response aniolistAll() {
@@ -127,47 +151,61 @@ public class ServicioAcademicoEndpoint {
 		return Response.ok(anios).build();
 	}
 	
+	/**
+	 * 
+	 * @param curso
+	 * @param idAnio
+	 * @return
+	 */
 	@PUT
 	@Path("/cur/{id:[0-9][0-9]*}")
 	public Response updateCurso(Curso curso, @PathParam("id") final Long idAnio) {
 		try {
 			setInstance();
-			servicioAcademico.addCurso(curso, idAnio);
-			return Response.ok(true).build();
+			return Response.ok(servicioAcademico.addCurso(curso, idAnio)).build();
 		} catch (Exception ex) {
-			// TODO Auto-generated catch block
 			return Response.ok(ex).build();
 		}
 	}
 	
+	/**
+	 * 
+	 * @param idC Identificador del objeto Curso que se desea eliminar.
+	 * @return True si la operación es exitosa.
+	 */
 	@DELETE
 	@Path("/cur/{idC:[0-9][0-9]*}")
 	public Response deleteCursoById(@PathParam("idC") final Long idC) {
-		Boolean exito = false;
 		try {
 			setInstance();
-			exito = servicioAcademico.deleteCurso(servicioAcademico.getCurso(idC));
-			return Response.ok(exito).build();
+			return Response.ok(servicioAcademico.deleteCurso(servicioAcademico.getCurso(idC))).build();
 		} catch (Exception ex) {
-			// ex.printStackTrace();
 			return Response.ok(ex).build();
 		}
 	}
 	
-	@RolesAllowed({"personal"}) //nueva Anotacion!
+	/**
+	 * 
+	 * @param id Identificador del curso que se desea obtener.
+	 * @return Objeto de tipo Curso.
+	 */
 	@GET
 	@Path("/cur/{id:[0-9][0-9]*}")
 	public Response getCursoById(@PathParam("id") final Long id) {
 		Curso curso = new Curso();
 		try {
 			setInstance();
-			curso = servicioAcademico.getCurso(id);
+			return Response.ok(servicioAcademico.getCurso(id)).build();
 		} catch (Exception ex) {
 			return Response.ok(ex).build();
-		}
-		return Response.ok(curso).build();
+		}		
 	}
 	
+	/**
+	 * Agregar o modifica un objeto de tipo Materia.
+	 * @param materia Objeto de tipo Materioas que se desea agregar o modificar.
+	 * @return Identificador de Materia.
+	 */
 	@PUT
 	@Path("/mat/")
 	public Response updateMateria(Materia materia) {
@@ -181,20 +219,27 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param id Identificador del objeto de tipo Materia que se desea eliminar.
+	 * @return True si la operación es exitosa.
+	 */
 	@DELETE
 	@Path("/mat/{id:[0-9][0-9]*}")
 	public Response deleteMateriaById(@PathParam("id") final Long id) {
-		Boolean exito = false;
 		try {
 			setInstance();
-			exito = servicioAcademico.deleteMateria(servicioAcademico.getMateria(id));
-			return Response.ok(exito).build();
+			return Response.ok(servicioAcademico.deleteMateria(servicioAcademico.getMateria(id))).build();
 		} catch (Exception ex) {
-			// ex.printStackTrace();
 			return Response.ok(ex).build();
 		}
 	}
 	
+	/**
+	 * 
+	 * @param id Identificador del objeto de tipo Materia que se desea obtener.
+	 * @return Objeto de tipo Materia.
+	 */
 	@GET
 	@Path("/mat/{id:[0-9][0-9]*}")
 	public Response getMateriaById(@PathParam("id") final Long id) {
@@ -202,13 +247,18 @@ public class ServicioAcademicoEndpoint {
 		try {
 			setInstance();
 			materia = servicioAcademico.getMateria(id);
+			return Response.ok(materia).build();
 		} catch (Exception ex) {
-			// ex.printStackTrace();
 			return Response.ok(ex).build();
 		}
-		return Response.ok(materia).build();
 	}
 	
+	/**
+	 * Asigna Docente titular y suplente a una materia determinada. Todos los objetos involucrados deben estar en estado persistente<BR>
+	 * Orden de elementos en JsonPack: <br> [0]id Docente Titular, <br>[1]Id Docente Suplente, <br>[2]Id Materia.
+	 * @param jsonPack
+	 * @return True si la operación es exitosa.
+	 */
 	@POST
 	//@Path("/mat/asignDoc/{idDt:[0-9][0-9]*}/{idDs:[0-9][0-9]*}/{idM:[0-9][0-9]*}")
 	@Path("/mat/asignDoc")
@@ -223,23 +273,32 @@ public class ServicioAcademicoEndpoint {
 																		servicioDocente.getUsuario(jsonPack.getValues().elementAt(1)), 
 																		jsonPack.getValues().elementAt(2))).build(); 
 		}catch(Exception ex){
-			
+			return Response.ok(ex).build();
 		}
-		return Response.ok(true).build();
 	}
 	
+	/**
+	 * 
+	 * @param area Objeto de tipo Area que se desea crear o modificar.
+	 * @return Identificador de Area.
+	 */
 	@PUT
 	@Path("/area")
 	public Response updateArea(Area area){
 		try{
 			setInstance();
 			servicioAcademico.addArea(area);
+			return Response.ok(area.getIdArea()).build();
 		}catch(Exception ex){
 			return Response.ok(ex).build();
 		}
-		return Response.ok(area.getIdArea()).build();
+		
 	}
 	
+	/**
+	 * Lista los objetos de tipo Area disponibles.
+	 * @return Lista de objetos tipo Area.
+	 */
 	@GET
 	@Path("/area/listAll")
 	public Response areaListAll(){
@@ -252,18 +311,29 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param idArea Identificador del objeto tipo Area que se desea eliminar.
+	 * @return True si la operación es exitosa.
+	 */
 	@DELETE
 	@Path("/area/{id:[0-9][0-9]*}")
 	public Response deleteArea(@PathParam("id") final Long idArea){
 		try{
 			setInstance();
 			servicioAcademico.deleteArea(servicioAcademico.getArea(idArea));
+			return Response.ok(true).build();
 		} catch(Exception ex) {
 			return Response.ok(ex).build();
 		}
-		return Response.ok(true).build();
 	}
 	
+	/**
+	 * Vincula un Alumno que se encuentre en el Curso genérico (sin curso) a un Curso determinado. Todos los objetos involucrados deben estar en estado persistente.<br>
+	 * Orden de elementos en JsonPack: <br> [0]id Alumno, <br>[1]Id Curso.
+	 * @param jsonPack
+	 * @return True si la operación es exitosa.
+	 */
 	@POST
 	//@Path("/cur/vin/{idC:[0-9][0-9]*}")
 	//@Path("/cur/vin/{idC:[0-9][0-9]*}/{idA:[0-9][0-9]*}")
@@ -285,6 +355,12 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 	
+	/**
+	 * Desvincula un Alumno que se encuentre en un Curso no genérico y lo asigna al Curso genérico(sin curso). Todos los objetos involucrados deben estar en estado persistente.<br>
+	 * Orden de elementos en JsonPack: <br> [0]id Alumno, <br>[1]Id Curso.
+	 * @param jsonPack
+	 * @return True si la operación es exitosa.
+	 */
 	@POST
 	//@Path("/cur/desvin/{idC:[0-9][0-9]*}")
 	//@Path("/cur/desvin/{idC:[0-9][0-9]*}/{idA:[0-9][0-9]*}")
@@ -296,7 +372,7 @@ public class ServicioAcademicoEndpoint {
 			setInstance();
 			ServicioAlumno servicioAlumno = new ServicioAlumno();
 			//servicioAcademico.desvincularAlumnoDeCurso(servicioAlumno.getUsuario(idAlumno), idCurso);
-			//[0]idAlumno [1]idCurso
+			//Orden de elementos en JsonPack: <br> [0]id Alumno, <br>[1]Id Curso.
 			servicioAcademico.desvincularAlumnoDeCurso(servicioAlumno.getUsuario(jsonPack.getValues().elementAt(0)), jsonPack.getValues().elementAt(1));
 			//servicioAcademico.desvincularAlumnoDeCurso(alumno, idCurso);
 			return Response.ok(true).build();
@@ -306,6 +382,12 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 	
+	/**
+	 * Vincula una Materia A un Anio. Todos los objetos involucrados deben estar en estado persistente.<br>
+	 * Orden de elementos en JsonPack: <br> [0]id Materia, <br>[1]Id Anio.
+	 * @param jsonPack
+	 * @return
+	 */
 	@POST
 	//@Path("/mat/vin/{idM:[0-9][0-9]*}/{idA:[0-9][0-9]*}")
 	@Path("/mat/vin")
@@ -314,13 +396,21 @@ public class ServicioAcademicoEndpoint {
 		try{
 			setInstance();
 			//[0]idMateria [1]idAnio
-			return Response.ok(servicioAcademico.asignarMateriaAAnio(servicioAcademico.getMateria(jsonPack.getValues().elementAt(0)), jsonPack.getValues().elementAt(1))).build();
+			return Response.ok(servicioAcademico.asignarMateriaAAnio(
+					    	   servicioAcademico.getMateria(jsonPack.getValues().elementAt(0)), 
+					           jsonPack.getValues().elementAt(1))).build();
 			//return Response.ok(servicioAcademico.asignarMateriaAAnio(servicioAcademico.getMateria(idMateria), idAnio)).build();
 		}catch(Exception ex){
 			return Response.ok(ex).build();
 		}
 	}
 	
+	/**
+	 * Desvincula una Materia de un Anio.
+	 * Orden de elementos en JsonPack: <br> [0]id Mateia, <br>[1]Id Anio.
+	 * @param jsonPack
+	 * @return
+	 */
 	@POST
 	//@Path("/mat/desvin/{idM:[0-9][0-9]*}/{idA:[0-9][0-9]*}")
 	@Path("/mat/desvin")
@@ -337,6 +427,11 @@ public class ServicioAcademicoEndpoint {
 		
 	}
 	
+	/**
+	 * 
+	 * @param id Identificador del objeto tipo Area que se desea obtener.
+	 * @return Objeto de tipo Area.
+	 */
 	@GET
 	@Path("/area/{id:[0-9][0-9]*}")
 	public Response getAreaById(@PathParam("id") final Long id){
