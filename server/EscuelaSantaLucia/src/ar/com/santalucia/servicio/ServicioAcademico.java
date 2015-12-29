@@ -6,12 +6,14 @@ import java.util.Set;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorAnio;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorArea;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorCurso;
+import ar.com.santalucia.aplicacion.gestor.academico.GestorLlamado;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMateria;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Area;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
+import ar.com.santalucia.dominio.modelo.academico.Llamado;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
@@ -34,7 +36,8 @@ public class ServicioAcademico {
 	private GestorMateria gMateria;
 	private GestorArea gArea;
 	private GestorAlumno gAlumno;
-	private GestorPersonal gDocente; 
+	private GestorPersonal gDocente;
+	private GestorLlamado gLlamado;
 
 	public ServicioAcademico() throws Exception {
 		try {
@@ -44,6 +47,7 @@ public class ServicioAcademico {
 			gArea = new GestorArea();
 			gAlumno = new GestorAlumno();
 			gDocente = new GestorPersonal();
+			gLlamado = new GestorLlamado();
 		} catch (Exception ex) {
 			throw new Exception("ServicioAcademico: Ha ocurrido un problema al intentar inicializar el servicio de operaciones básicas. "
 					+ ex.getMessage());
@@ -64,7 +68,7 @@ public class ServicioAcademico {
 			throw ex;
 		}
 		catch (Exception ex) {
-			throw new Exception("Servicio: No se pudo dar de alta el año " + ex.getMessage());
+			throw new Exception("Servicio: No se pudo dar de alta el año: " + ex.getMessage());
 		}
 		
 		return true;
@@ -126,7 +130,7 @@ public class ServicioAcademico {
 				return true;
 			}
 		} catch (Exception ex) {
-			throw new Exception("ServicioAcademico: no se pudo agregar el curso al año. " + ex.getMessage());
+			throw new Exception("ServicioAcademico: no se pudo agregar el curso al año: " + ex.getMessage());
 		}
 	}
  
@@ -186,7 +190,7 @@ public class ServicioAcademico {
 			}
 			return true;
 		} catch (Exception ex) {
-			throw new Exception("ServicioAcademico: no se pudo agregar la materia. " + ex.getMessage());
+			throw new Exception("ServicioAcademico: no se pudo agregar la materia: " + ex.getMessage());
 		}
 	}
 
@@ -247,7 +251,7 @@ public class ServicioAcademico {
 				gArea.modify(area);
 			}
 		}catch(Exception ex){
-			throw new Exception("ServicioAcademico: No se pudo dar de alta el área " + ex.getMessage());
+			throw new Exception("ServicioAcademico: No se pudo dar de alta el área: " + ex.getMessage());
 		}
 		return true;
 	}
@@ -375,5 +379,49 @@ public class ServicioAcademico {
 	
 	public void closeSession() throws Exception {
 		gAnio.closeSession();
+	}
+	
+	
+	
+	
+	public Boolean addLlamado(Llamado llamado) throws Exception {
+		try {
+			if (llamado.getIdLlamado() == null) {
+				gLlamado.add(llamado);
+			}
+			else {
+				gLlamado.modify(llamado);
+			}
+		} catch (ValidacionException ex) {
+			throw ex;			
+		} catch (Exception ex) {
+			throw new Exception("Servicio: No se pudo dar de alta el llamado: " + ex.getMessage());
+		}
+		return true;
+	}
+	
+	public Boolean deleteLlamado(Llamado llamado) throws Exception{
+		try {
+			gLlamado.delete(llamado);
+		} catch (Exception ex) {
+			throw new Exception("ServicioAcademico: No se pudo eliminar el llamado: " + ex.getMessage());
+		}
+		return true;
+	}
+
+	public Llamado getLlamado(Long idLlamado) throws Exception {
+		try {
+			return gLlamado.getById(idLlamado);
+		} catch (Exception ex) {
+			throw new Exception("ServicioAcademico: No se pudo obtener el llamado: " + ex.getMessage());
+		}
+	}
+	
+	public List<Llamado> getLlamados(Llamado example) throws Exception{
+		try {
+			return gLlamado.getByExample(example);
+		} catch (Exception ex) {
+			throw new Exception("ServicioAcademico: No se pudo obtener el listado de llamados: " + ex.getMessage());
+		}
 	}
 }

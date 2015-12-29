@@ -1,5 +1,6 @@
 package ar.com.santalucia.validaciones;
 
+import ar.com.santalucia.dominio.modelo.academico.Materia;
 
 public interface IValidacionMateria extends IValidacion {
 	
@@ -8,6 +9,6 @@ public interface IValidacionMateria extends IValidacion {
 	 * @param nombreMateria
 	 * @return
 	 */
-	Boolean existeMateria(String nombreMateria);
+	Boolean existeMateria (Materia materia) throws Exception;
 
 }

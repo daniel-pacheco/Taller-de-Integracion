@@ -40,10 +40,13 @@ public class GestorLlamado extends Gestor<Llamado> implements IListable<Llamado>
 	@Override
 	public void add(Llamado object) throws Exception {
 		try {
+			this.validar(object);
 			setSession();
 			setTransaction();
 			llamadoDAO.persist(object);
 			sesionDeHilo.getTransaction().commit();
+		} catch (ValidacionException ex) {
+			throw ex;
 		} catch (Exception ex) {
 			setSession();
 			setTransaction();
@@ -55,6 +58,7 @@ public class GestorLlamado extends Gestor<Llamado> implements IListable<Llamado>
 	@Override
 	public void modify(Llamado object) throws Exception {
 		try {
+			this.validar(object);
 			setSession();
 			setTransaction();
 			llamadoDAO.attachDirty(object);
@@ -169,11 +173,15 @@ public class GestorLlamado extends Gestor<Llamado> implements IListable<Llamado>
 		Boolean vLlamado;
 		ValidacionException exception = new ValidacionException();
 		
-		//- comprobar existencia de llamado
+		// - comprobar existencia de llamado
 		vLlamado = this.existeLlamado(llamado);
-		exception.addMensajeError(vLlamado ? "El llamado " + llamado.getDescripcion() + " ya existe" : "");
+		exception.addMensajeError(vLlamado ? "El llamado " + llamado.getDescripcion() + " ya existe" : null);
 		
 		//TODO - comprobar existencia de mesa en llamado
+		
+		if (!exception.getMensajesError().isEmpty()) {
+			throw exception;
+		}
 	}
 
 }

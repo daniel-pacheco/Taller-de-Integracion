@@ -10,10 +10,10 @@
             <column name="IDLLAMADO" unique="true"/>
             <generator class="identity" />
         </id>
-        <property name="descripcion" type="java.util.String">
+        <property name="descripcion" type="java.lang.String">
             <column name="DESCRIPCION" />
         </property>
-        <set name="listaMesas" table="MESA" inverse="false" lazy="true">
+        <set name="listaMesas" table="MESA" inverse="false" lazy="false">
             <key>
                 <column name="IDLLAMADO" />
             </key>
