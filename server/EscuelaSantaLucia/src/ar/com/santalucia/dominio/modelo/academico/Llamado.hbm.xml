@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<!--<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">  -->
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"> 
 
-<!DOCTYPE hibernate-mapping SYSTEM "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
+<!--<!DOCTYPE hibernate-mapping SYSTEM "classpath://org/hibernate/hibernate-mapping-3.0.dtd">  -->
 <!-- Generated 24/09/2015 16:41:55 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="ar.com.santalucia.dominio.modelo.academico.Llamado" table="LLAMADO">
@@ -10,6 +10,9 @@
             <column name="IDLLAMADO" unique="true"/>
             <generator class="identity" />
         </id>
+        <property name="descripcion" type="java.util.String">
+            <column name="DESCRIPCION" />
+        </property>
         <set name="listaMesas" table="MESA" inverse="false" lazy="true">
             <key>
                 <column name="IDLLAMADO" />
