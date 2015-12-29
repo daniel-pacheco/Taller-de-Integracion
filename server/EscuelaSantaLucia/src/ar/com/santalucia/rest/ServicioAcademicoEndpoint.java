@@ -23,6 +23,7 @@ import javax.ws.rs.core.Response.Status;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Area;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
+import ar.com.santalucia.dominio.modelo.academico.Llamado;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
@@ -443,4 +444,53 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 
+	
+	@PUT
+	@Path("/llm/")
+	public Response updateLlamado(Llamado llamado) {
+		try {
+			setInstance();
+			servicioAcademico.addLlamado(llamado);
+			return Response.ok(llamado.getIdLlamado()).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
+	
+	@DELETE
+	@Path("/llm/{idL:[0-9][0-9]*}")
+	public Response deleteLlamadoById(@PathParam("idL") Long idLlamado) {
+		try {
+			setInstance();
+			return Response.ok(servicioAcademico.deleteLlamado(servicioAcademico.getLlamado(idLlamado))).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
+	
+	@GET
+	@Path("/llm/{idL:[0-9][0-9]*}")
+	public Response getLlamadoById(@PathParam("idL") Long idL) {
+		try {
+			setInstance();
+			return Response.ok(servicioAcademico.getLlamado(idL)).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
+	
+	@GET
+	@Path("/llm/listAll")
+	public Response llamadoListAll() {
+		try {
+			setInstance();
+			Llamado llamado = new Llamado();
+			return Response.ok(servicioAcademico.getLlamados(llamado)).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
+	
 }
+	
+

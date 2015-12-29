@@ -144,7 +144,8 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 	 */
 
 	@Override
-	public Boolean existeMateria(String nombreMateria) {
+	public Boolean existeMateria(Materia materia) throws Exception {
+		/*
 		Materia materiaEjemplo = new Materia();
 		materiaEjemplo.setNombre(nombreMateria);
 		ArrayList<Materia> ejemplos = new ArrayList<Materia>();
@@ -154,6 +155,33 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 			e.printStackTrace();
 		}
 		return (ejemplos.isEmpty() ? false : true);
+		*/
+		
+		Boolean resultado = false;
+		Materia materiaEjemplo = new Materia();
+		materiaEjemplo.setNombre(materia.getNombre());
+		try {
+			ArrayList<Materia> listaMaterias = this.getByExample(materiaEjemplo);
+			if (materia.getIdMateria() == null) {
+				resultado = (listaMaterias.isEmpty() ? false : true);
+			} else {
+				if (!listaMaterias.isEmpty()) {
+					Materia materiaTemp = new Materia();
+					for (Materia m : listaMaterias) {
+						materiaTemp = m;
+					}
+					if (materiaTemp.getIdMateria().equals(materia.getIdMateria())) {
+						resultado = false;
+					} else {
+						resultado = true;
+					}
+				}
+			}
+		} catch (Exception ex) {
+			// Excepción no tratada
+			throw ex;
+		}
+		return resultado;
 	}
 
 	
@@ -161,7 +189,7 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 		Boolean vMateria;
 		ValidacionException exception = new ValidacionException();
 		
-		vMateria = this.existeMateria(object.getNombre());
+		vMateria = this.existeMateria(object);
 		
 		exception.addMensajeError(vMateria 
 									? "La materia ya existe" 

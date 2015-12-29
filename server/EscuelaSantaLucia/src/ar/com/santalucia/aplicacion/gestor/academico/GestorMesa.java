@@ -2,12 +2,15 @@ package ar.com.santalucia.aplicacion.gestor.academico;
 
 import java.util.ArrayList;
 
+import ar.com.santalucia.accesodatos.dao.academico.MesaHome;
 import ar.com.santalucia.aplicacion.gestor.Gestor;
 import ar.com.santalucia.aplicacion.gestor.IListable;
 import ar.com.santalucia.dominio.modelo.academico.Mesa;
 
 public class GestorMesa extends Gestor<Mesa> implements IListable<Mesa> {
 
+	private MesaHome mesaDAO;
+	
 	public GestorMesa() throws Exception {
 		super();
 		// TODO Auto-generated constructor stub
