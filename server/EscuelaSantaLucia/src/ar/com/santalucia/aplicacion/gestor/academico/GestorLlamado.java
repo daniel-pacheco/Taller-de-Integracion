@@ -1,6 +1,7 @@
 package ar.com.santalucia.aplicacion.gestor.academico;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import ar.com.santalucia.accesodatos.dao.academico.LlamadoHome;
 import ar.com.santalucia.aplicacion.gestor.Gestor;
@@ -19,7 +20,7 @@ import ar.com.santalucia.validaciones.IValidacionLlamado;
  *
  */
 
-//Último modificador: Eric Pennachini @ dd-MM-aaaa hh:mm
+//Último modificador: Eric Pennachini @ 29-12-2015 20:00
 
 public class GestorLlamado extends Gestor<Llamado> implements IListable<Llamado>, IValidacionLlamado{
 
@@ -161,23 +162,44 @@ public class GestorLlamado extends Gestor<Llamado> implements IListable<Llamado>
 	}
 
 	@Override
-	public Boolean existeMesaEnLlamado(Mesa mesa, Llamado llamado) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public Boolean existeMesaEnLlamado(Llamado llamado) throws Exception {
+		Boolean existeMesa = new Boolean(false);
+		try {
+			Set<Mesa> mesas = llamado.getListaMesas();
+			for (Mesa m: mesas) {
+				for (Mesa me: mesas) {
+					if ((m.equals(me)) && (m.getIdMesa() != me.getIdMesa())) {
+						existeMesa = true;
+						break;
+					}
+				}
+			}
+			return existeMesa;
+		} catch (Exception ex) {
+			throw ex;
+		}
 	}
 
 	@Override
 	public void validar(Object object) throws Exception {
 		Llamado llamado = (Llamado) object;
 		
-		Boolean vLlamado;
+		Boolean vLlamado, vExisteMesa;
 		ValidacionException exception = new ValidacionException();
 		
 		// - comprobar existencia de llamado
 		vLlamado = this.existeLlamado(llamado);
 		exception.addMensajeError(vLlamado ? "El llamado " + llamado.getDescripcion() + " ya existe" : null);
 		
-		//TODO - comprobar existencia de mesa en llamado
+		// - comprobar existencia de mesa en llamado
+		//vExisteMesa = this.existeMesaEnLlamado(llamado);
+		if (llamado.getIdLlamado() != null) {
+			for (Mesa m: llamado.getListaMesas()) {
+				exception.addMensajeError(this.existeMesaEnLlamado(llamado) 
+											? "La mesa de " + m.getMateria().getNombre() + " ya existe en el llamado."
+											: null);
+			}
+		}
 		
 		if (!exception.getMensajesError().isEmpty()) {
 			throw exception;

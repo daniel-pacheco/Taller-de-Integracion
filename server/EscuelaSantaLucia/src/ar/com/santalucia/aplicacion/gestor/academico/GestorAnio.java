@@ -211,8 +211,7 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 	
 	public void validar(Anio object) throws Exception {
 		Boolean vNombre;
-		ValidacionException exception = new ValidacionException();
-		
+		ValidacionException exception = new ValidacionException();		
 		
 		vNombre = this.existeNombreAnio(object);
 		exception.addMensajeError(vNombre ? "El nombre " + object.getNombre() +" ya existe" : null);

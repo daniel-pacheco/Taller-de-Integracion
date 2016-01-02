@@ -8,6 +8,7 @@ import ar.com.santalucia.aplicacion.gestor.academico.GestorArea;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorCurso;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorLlamado;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMateria;
+import ar.com.santalucia.aplicacion.gestor.academico.GestorMesa;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
@@ -15,6 +16,7 @@ import ar.com.santalucia.dominio.modelo.academico.Area;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
 import ar.com.santalucia.dominio.modelo.academico.Llamado;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
+import ar.com.santalucia.dominio.modelo.academico.Mesa;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.excepciones.ValidacionException;
@@ -38,6 +40,7 @@ public class ServicioAcademico {
 	private GestorAlumno gAlumno;
 	private GestorPersonal gDocente;
 	private GestorLlamado gLlamado;
+	private GestorMesa gMesa;
 
 	public ServicioAcademico() throws Exception {
 		try {
@@ -48,6 +51,7 @@ public class ServicioAcademico {
 			gAlumno = new GestorAlumno();
 			gDocente = new GestorPersonal();
 			gLlamado = new GestorLlamado();
+			gMesa = new GestorMesa();
 		} catch (Exception ex) {
 			throw new Exception("ServicioAcademico: Ha ocurrido un problema al intentar inicializar el servicio de operaciones básicas. "
 					+ ex.getMessage());
@@ -423,5 +427,21 @@ public class ServicioAcademico {
 		} catch (Exception ex) {
 			throw new Exception("ServicioAcademico: No se pudo obtener el listado de llamados: " + ex.getMessage());
 		}
+	}
+	
+	
+	public Boolean addMesa(Mesa mesa) throws Exception{
+		try {
+			if (mesa.getIdMesa() != null) {
+				gMesa.add(mesa);
+			} else {
+				gMesa.modify(mesa);
+			}
+		} catch (ValidacionException ex) {
+			throw ex;
+		} catch (Exception ex) {
+			throw new Exception("Servicio: No se pudo dar de alta la mesa: " + ex.getMessage());
+		}
+		return true;
 	}
 }
