@@ -9,3 +9,7 @@ select * from TITULO;
 select * from MATERIA;
 select * from ANIO;
 select * from CURSO;
+select * from AREA;
+
+select * from LLAMADO;
+select * from MESA;

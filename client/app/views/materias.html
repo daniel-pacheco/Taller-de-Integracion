@@ -27,8 +27,10 @@
 			<legend>Listado</legend>
 			<label for="">A&ntilde;o:</label> <select
 			class="dropdown-toggle form-control-inline" name="" ng-model="filterByYear"> <!-- ng-change="update(dropDownValue, option)"> -->
+			<option value="" disabled selected>Seleccione una opci&oacute;n</option>
+			<option value="">Todos</option>
 			<option ng-repeat="option in dropDownOptions"  value="{{option}}">{{option}}</option>
-		</select>
+		</select>{{filterByYear}}
 		<!--<button ng-click="search()">Buscar</button>-->
 		
 		<table class="table table-hover table-striped">
@@ -46,7 +48,7 @@
 				<td>{{materia.docenteTitular}}</td>
 				<td>{{materia.anioPertenece}}</td>
 				<td>{{materia.area}}</td>
-				<td style="width:10%;"><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:50%" class="glyphicon glyphicon-edit" ></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAttendance" style="width:50%" class="glyphicon glyphicon-remove-circle"></span></td> 
+				<td style="width:10%;"><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipEdit" style="width:50%; cursor: pointer" class="glyphicon glyphicon-edit" ></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipRemove" style="width:50%; cursor: pointer" class="glyphicon glyphicon-remove-circle"></span></td> 
 					<!--<td>{{alumno.name}}</td>
 					<td>{{alumno.phone}}</td>
 					<td>{{alumno.anio}}</td>
@@ -158,7 +160,7 @@
 				</div>
 
 			</form>
-			</fieldset>
+		</fieldset>
 
-		</div>
+	</div>
 </div>

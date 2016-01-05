@@ -110,7 +110,7 @@ public class GestorTitulo extends Gestor<Titulo> implements IListable<Titulo>{
 			sesionDeHilo.getTransaction().commit();
 			return listaTituloDevolver;
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al listar los alumnos: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al listar los titulos: " + ex.getMessage());
 
 		}
 	}

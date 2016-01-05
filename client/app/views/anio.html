@@ -6,15 +6,16 @@
 				<li bs-scrollspy data-target="#getting-started">
 					<a href="#getting-started">Men&uacute; A&ntilde;o</a>
 				</li>
-				<hr style="margin: 2px 0;">
-				<li bs-scrollspy data-target="#modals">
-					<a href="" ng-click="seleccionar('listado')">Listado</a>
-				</li>
+				<hr style="margin: 2px 0;">				
 				<li bs-scrollspy data-target="#nuevoAnio">
-					<a href="" ng-click="seleccionar('nuevoAnio')">Nuevo A&ntilde;o</a>
+					<a href="" ng-click="seleccionar('nuevoAnio')">Nuevo</a>
+				</li>
+
+				<li bs-scrollspy data-target="#listadoAnio">
+					<a href="" ng-click="seleccionar('listadoAnio')">Listado</a>
 				</li>
 				<li bs-scrollspy data-target="#administrar">
-					<a href="" ng-click="seleccionar('administrar')">Administrar</a>
+					<a href="" ng-click="seleccionar('administrarAnio')">Administrar</a>
 				</li>
 			</ul>
 		</div>
@@ -26,80 +27,28 @@
 	<h1>Año</h1>
 	<hr>
 
-	<div id="nuevoAnio" ng-show="!listado1">
-		<fieldset>
-			<legend>Nuevo Año</legend>
-			<h3 class="small">Complete los datos para dar de alta un 
-				nuevo año y presione guardar al finalizar</h3>
-				<form class="form-horizontal media">
-				<!--<div class="pull-right">
-						<img class="img-rounded" src="images/defaultUser.png" alt="Usuario" width="220px" height="auto"/>
-					<div class="btn btn-primary btn-file" id="boton">Examinar<input type="file"></div>
-				</div>	-->
-
-				<div class="formulario media-body">
-
-					<div class="form-group">
-						<div class="col-sm-3 control-label">
-							<label for="">Nombre:</label>
-						</div>
-						<div class="col-sm-4">
-							<input class="form-control" placeholder="Física" type="text"
-							maxlength="10" required pattern="[a-zA-Z ]*">
-						</div>
-						<!-- Valida 8 digitos -->
-						
-					</div>
-					<!-- /form-group-->
-					<div class="form-group">
-						<div class="col-sm-3 control-label">
-							<label for="">Descripción:</label>
-						</div>
-						<div class="col-sm-4">
-							<input class="form-control" placeholder="" type="text"
-							maxlength="10" required pattern="[a-zA-Z ]*">
-						</div>
-						<!-- Valida 8 digitos -->
-						
-					</div>
-					<!-- /form-group-->
-					<div class="form-group">
-						<div class="col-sm-5 control-label">
-							<input class="btn btn-primary" type="submit" name=""
-							value="Guardar"/>
-						</div>
-					</div>
-				</div>
-
-			</form>
-		</fieldset>
-	</div>
-
-	<div id="listado" ng-show="listado1" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
+	<div id="listadoAnio" ng-show="listadoAnio" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
 		<fieldset class="navbar">
 			<legend>Listado</legend>
-			<label for="">A&ntilde;o:</label> <select
-			class="dropdown-toggle form-control-inline" name="" ng-model="filterByYear"> <!-- ng-change="update(dropDownValue, option)"> -->
-			<option ng-repeat="option in dropDownOptions"  value="{{option}}">{{option}}</option>
-		</select>
-		<!--<button ng-click="search()">Buscar</button>-->
-		
-		<table class="table table-hover table-striped">
-			<thead>
-				<tr>
-					<th>Nombre</th>
-					<th>Docente titular</th>
-					<th>A&ntilde;o</th>
-					<th>&Aacute;rea</th>
-					<th>Acciones</th>
-				</tr>
-			</thead>
-			<tr ng-repeat="materia in friends | filter:filterByYear">
-				<td>{{materia.nombre}}</td>
-				<td>{{materia.docenteTitular}}</td>
-				<td>{{materia.anioPertenece}}</td>
-				<td>{{materia.area}}</td>
-				<td style="width:10%;"><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:50%" class="glyphicon glyphicon-edit" ></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAttendance" style="width:50%" class="glyphicon glyphicon-remove-circle"></span></td> 
+			
+			<!--<button ng-click="search()">Buscar</button>-->
+
+			<table class="table table-hover table-striped">
+				<thead>
+					<tr>
+						<th>A&ntilde;o</th>
+						<th>Divisi&oacute;n</th>
+						<th>Turno</th>
+						<th>Cantidad de alumnos</th>
+						<th>Acciones</th>
+					</tr>
+				</thead>
+				<tr ng-repeat="anio in anios">
+					<td>{{anio.anio}}</td>
+					<td>{{anio.division}}</td>
+					<td>{{anio.turno}}</td>
+					<td>{{anio.cantidadDeAlumnos}}</td>
+					<td style="width:10%;"><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipEdit" style="width:50%; cursor: pointer" class="glyphicon glyphicon-edit" ></span></td> 
 					<!--<td>{{alumno.name}}</td>
 					<td>{{alumno.phone}}</td>
 					<td>{{alumno.anio}}</td>
@@ -108,4 +57,113 @@
 			</table>
 		</fieldset>
 	</div>	
+
+	<div id="nuevoAnio" ng-show="nuevoAnio">
+		<fieldset>
+			<legend>Nuevo Año</legend>
+			<h3 class="small">Complete los datos para dar de alta un 
+				nuevo año y presione guardar al finalizar</h3>
+				<form class="form-horizontal media" style="margin: 0% 10%">
+				<!--<div class="pull-right">
+						<img class="img-rounded" src="images/defaultUser.png" alt="Usuario" width="220px" height="auto"/>
+					<div class="btn btn-primary btn-file" id="boton">Examinar<input type="file"></div>
+				</div>	-->
+
+				<div class="formulario media-body">
+
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<label for="">Nombre:</label>
+						</div>
+						<div class="col-sm-3">
+							<input class="form-control" placeholder="Física" type="text"
+							maxlength="10" required pattern="[a-zA-Z ]*">
+						</div>
+						<!-- Valida 8 digitos -->
+						
+					</div>
+					<!-- /form-group-->
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<label for="">Descripción:</label>
+						</div>
+						<div class="col-sm-4">
+							<input class="form-control" placeholder="" type="text"
+							maxlength="10" required pattern="[a-zA-Z ]*">
+						</div>
+						<!-- Valida 8 digitos -->
+					</div>
+					<!-- /form-group-->
+					<div class="form-group">
+						<div class="col-sm-2">
+						</div>
+						<div class="col-sm-2">
+							<label>Divisiones</label>
+							<select multiple class="form-control">
+								<option autofocus>U - Tarde</option>
+								<option>A - Tarde</option>
+							</select> 
+							<div class="">
+								<span class="glyphicon glyphicon-plus shadowRed" style="margin:0 10%;"></span> 
+								<span class="glyphicon glyphicon-minus shadowGreen"></span> 
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<label for="">Nombre</label>
+						</div>
+						<div class="col-sm-2">
+							<input class="form-control" placeholder="U" type="text" maxlength="10" required pattern="[a-zA-Z ]*">
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<label for="">Turno</label>
+						</div>
+						<div class="col-sm-2">
+							<select class="form-control" name="Año">
+								<option value="">Ma&ntilde;ana</option>
+								<option value="">Tarde</option>
+								<option value="">Noche</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-3 control-label">
+						<input class="btn btn-primary" type="submit" name=""
+						value="Guardar"/>
+					</div>
+				</div>
+			</form>
+		</fieldset>
+	</div>
+
+	<div id="administrarAnio" ng-show="administrarAnio"style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
+		<fieldset class="navbar">
+			<legend>Administrar</legend>
+			<h3 class="small">Seleccione el a&ntilde;o y divisi&oacute;n que desee administrar</h3>
+			<!--<button ng-click="search()">Buscar</button>-->
+
+			<label for="">A&ntilde;o:</label> 
+			<select
+				class="dropdown-toggle form-control-inline" name="" ng-model="dropDownValue"> <!-- ng-change="update(dropDownValue, option)"> -->
+				<option ng-repeat="option in dropDownOptions" value="{{dropDownOptions}}">{{option}}</option>
+			</select>{{dropDownValue}}
+			<label for="">Divisi&oacute;n:</label> 
+			<select
+				class="dropdown-toggle form-control-inline" name="" ng-model="dropDownDivisionValue"> <!-- ng-change="update(dropDownValue, option)"> -->
+				<option ng-repeat="option in dropDownDiviosnOptions" value="{{dropDownDiviosnOptions}}">{{option}}</option>
+			</select>{{dropDownValue}}
+			<br>
+			<button ng-click="acept()">Buscar</button>
+
+			<div id="listFilters" ng-show="listAnioIsEnabled">
+				Hola Mundo
+			</div>
+
+		</fieldset>
+	</div>
 </div>

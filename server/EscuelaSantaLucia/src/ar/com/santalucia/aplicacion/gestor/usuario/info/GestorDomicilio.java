@@ -115,7 +115,7 @@ public class GestorDomicilio extends Gestor<Domicilio> implements IListable<Domi
 			sesionDeHilo.getTransaction().commit();
 			return listaDomicilioDevolver;
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al listar los alumnos: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al listar los domicilios: " + ex.getMessage());
 
 		}
 	}

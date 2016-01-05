@@ -112,7 +112,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 			sesionDeHilo.getTransaction().commit();
 			return listaMailDevolver;
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al listar los alumnos: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al listar los e-mails: " + ex.getMessage());
 
 		}
 

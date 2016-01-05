@@ -29,16 +29,6 @@ public interface IValidacionAnio {
 	 * @return
 	 * @throws Exception 
 	 */
-	Boolean existeCurso(Anio anio) throws Exception;
-	
-	
-//	/**
-//	 * Valida si la materia ya existe en la base de datos
-//	 * @param nombreMateria
-//	 * @return
-//	 * @throws Exception 
-//	 */
-//	Boolean existeMateriaEnAnio(Materia materia, Anio anio) throws Exception;
-	
+	Boolean existeCurso(Anio anio) throws Exception;	
 	
 }

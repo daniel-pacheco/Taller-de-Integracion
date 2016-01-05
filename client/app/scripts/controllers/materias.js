@@ -25,7 +25,16 @@
     };
   };
 
-  $scope.dropDownOptions = ['4', '5º', '3º', ' '];
+
+  $scope.tooltip = {
+    tooltipEdit : {
+      'title' : 'Editar'
+    }, tooltipRemove : {
+      'title' : 'Eliminar'
+    }
+  };
+  $scope.dropDownOptions = ['4', '5º', '3º'];
+  $scope.dropDownValue = '';
 
 //Test
 $scope.friends = [{nombre:'Educación Fisica', docenteTitular:'María Laura', anioPertenece: '4º', area: 'cs sociales'},

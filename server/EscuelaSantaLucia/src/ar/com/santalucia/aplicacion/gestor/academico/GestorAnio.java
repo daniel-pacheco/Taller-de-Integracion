@@ -27,14 +27,12 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 
 	private AnioHome anioDAO;
 	private GestorCurso GCurso;
-	//private GestorMateria GMateria;
 	
 	public GestorAnio() throws Exception {
 		super();
 		try {
 			anioDAO = new AnioHome();
 			GCurso = new GestorCurso();
-			//GMateria = new GestorMateria();
 		} catch (Exception ex) {
 			closeSession();
 			throw new Exception("Ha ocurrido un problema al inicializar el gestor: " + ex.getMessage());
@@ -144,7 +142,7 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 			sesionDeHilo.getTransaction().commit();
 			return listaAniosDevolver;
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al listar los alumnos: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al listar los áreas: " + ex.getMessage());
 		}
 	}
 	
@@ -213,22 +211,12 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 	
 	public void validar(Anio object) throws Exception {
 		Boolean vNombre;
-		ValidacionException exception = new ValidacionException();
-		
+		ValidacionException exception = new ValidacionException();		
 		
 		vNombre = this.existeNombreAnio(object);
 		exception.addMensajeError(vNombre ? "El nombre " + object.getNombre() +" ya existe" : null);
 		
 		if (object.getIdAnio() != null) {
-			//anio = this.getById(object.getIdAnio());
-			//anio.setListaCursos(object.getListaCursos());
-
-//			for (Materia m: object.getListaMaterias()) {
-//				exception.addMensajeError((this.existeMateriaEnAnio(m, anio) 
-//											? "La materia: " + m.getNombre() + " ya existe en el año." 
-//											: null));
-//			}
-			
 			for (Curso c: object.getListaCursos()) {
 				exception.addMensajeError((this.existeCurso(object) 
 											? "El curso: " + c.getDivision() + " ya existe en el año." 

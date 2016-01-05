@@ -33,8 +33,8 @@ public class PruebaAltaAnio {
 		Anio anio1 = new Anio();
 		Curso curso1 = new Curso();
 		Curso curso2 = new Curso();
-		Materia materia1 = new Materia();
-		Materia materia2 = new Materia();
+//		Materia materia1 = new Materia();
+//		Materia materia2 = new Materia();
 		Alumno alumno1 = new Alumno();
 		Alumno alumno2 = new Alumno();
 		Alumno alumno3 = new Alumno();
@@ -59,17 +59,17 @@ public class PruebaAltaAnio {
 		curso2.setTurno("Único");
 		curso2.setCicloLectivo(2015);
 		
-		materia1.setIdMateria(null);
-		materia1.setNombre("Administración de Recursos");
-		materia1.setDescripcion("");
-		materia1.setArea(new Area(null,"Sistemas"));
-		materia1.setActivo(true);
-		
-		materia2.setIdMateria(null);
-		materia2.setNombre("Seguridad y Auditoría");
-		materia2.setDescripcion("");
-		materia2.setArea(new Area(null,"Sistemas"));
-		materia2.setActivo(true);
+//		materia1.setIdMateria(null);
+//		materia1.setNombre("Administración de Recursos");
+//		materia1.setDescripcion("");
+//		materia1.setArea(new Area(null,"Sistemas"));
+//		materia1.setActivo(true);
+//		
+//		materia2.setIdMateria(null);
+//		materia2.setNombre("Seguridad y Auditoría");
+//		materia2.setDescripcion("");
+//		materia2.setArea(new Area(null,"Sistemas"));
+//		materia2.setActivo(true);
 		
 		Domicilio domicilio1=new Domicilio();
 		domicilio1.setBarrio("San Agustín");
@@ -364,12 +364,12 @@ public class PruebaAltaAnio {
 		curso2.getListaAlumnos().add(alumno3);
 		curso2.getListaAlumnos().add(alumno4);
 		
-		materia1.setDocenteTitular(docente1);
-		materia1.setDocenteSuplente(docente2);
-		materia1.setArea(null);
-		materia2.setDocenteTitular(docente3);
-		materia2.setDocenteSuplente(docente4);
-		materia2.setArea(null);
+//		materia1.setDocenteTitular(docente1);
+//		materia1.setDocenteSuplente(docente2);
+//		materia1.setArea(null);
+//		materia2.setDocenteTitular(docente3);
+//		materia2.setDocenteSuplente(docente4);
+//		materia2.setArea(null);
 		
 		anio1.getListaCursos().add(curso1);
 		anio1.getListaCursos().add(curso2);
@@ -388,37 +388,12 @@ public class PruebaAltaAnio {
 		servDocente.addUsuario(docente1);
 		servDocente.addUsuario(docente2);
 		servDocente.addUsuario(docente3);
-		servDocente.addUsuario(docente4);
-		
-//		servAcademico.addMateria(materia1);
-//		servAcademico.addMateria(materia2);		
+		servDocente.addUsuario(docente4);	
 		
 		servAcademico.addAnio(anio1);
-		
-//		List<Anio> listaAnios = servAcademico.getAnios(anio1);
-//		Long idAnio = 0L;
-//		
-//		for(Anio a: listaAnios){
-//			idAnio=a.getIdAnio();
-//			System.out.println(idAnio);
-//		}
-//		
-//		
-//		Materia tempMateria = new Materia();
-//		List<Materia> listaMaterias = servAcademico.getMaterias(materia1);
-//		for (Materia m: listaMaterias){
-//			tempMateria = m;
-//		}		
-//		
-//		servAcademico.asignarMateriaAAnio(tempMateria, idAnio);
-//		
-//		listaMaterias = servAcademico.getMaterias(materia2);
-//		for (Materia m: listaMaterias){
-//			tempMateria = m;
-//		}
-//		
-//		servAcademico.asignarMateriaAAnio(tempMateria, idAnio);
-		
+				
+		Area area1 = new Area(null,"Sistemas");
+		servAcademico.addArea(area1);
 		
 	}
 
