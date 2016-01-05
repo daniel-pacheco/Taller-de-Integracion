@@ -444,4 +444,59 @@ public class ServicioAcademico {
 		}
 		return true;
 	}
+	
+	public Mesa getMesa(Long idMesa) throws Exception {
+		try {
+			return gMesa.getById(idMesa);
+		} catch (Exception ex) {
+			throw new Exception("ServicioAcademico: No se pudo obtner la mesa " + ex.getMessage());
+		}
+	}
+	
+	public List<Mesa> getMesas(Mesa example) throws Exception{
+		try {
+			return gMesa.getByExample(example);
+		} catch (Exception ex) {
+			throw new Exception("ServicioAcademico: No se pudo obtner las mesas " + ex.getMessage());
+		}
+	}
+	
+	public Boolean deleteMesa(Mesa mesa) throws Exception {
+		try {
+			gMesa.delete(mesa);
+		} catch (Exception ex) {
+			throw new Exception("ServicioAcademico: No se pudo eliminar la mesa " + ex.getMessage());
+		}
+		return true;
+	}
+
+
+	public Boolean asignarMesaALlamado(Mesa mesa, Long idLlamado) throws Exception{
+		//TODO
+		try {
+			Llamado llamado = gLlamado.getById(idLlamado);
+			Set<Mesa> mesas = llamado.getListaMesas();
+			mesas.add(mesa);
+			llamado.setListaMesas(mesas);
+			gLlamado.modify(llamado);
+			return true;
+		} catch (Exception ex) {
+			throw new Exception("No se pudo asignar la mesa al llamado: " + ex.getMessage());
+		}
+	}
+	
+	public Boolean desvincularMesaDeLlamado(Mesa mesa, Long idLlamado) throws Exception{
+		//TODO
+		try {
+			Llamado llamado = gLlamado.getById(idLlamado);
+			Set<Mesa> mesas = llamado.getListaMesas();
+			mesas.remove(mesa);
+			llamado.setListaMesas(mesas);
+			gLlamado.modify(llamado);
+			return true;
+		} catch (Exception ex) {
+			throw new Exception("No se pudo asignar la mesa al llamado: " + ex.getMessage());
+		}
+	}
+	
 }
