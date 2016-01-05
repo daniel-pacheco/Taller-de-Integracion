@@ -25,6 +25,7 @@ import ar.com.santalucia.dominio.modelo.academico.Area;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
 import ar.com.santalucia.dominio.modelo.academico.Llamado;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
+import ar.com.santalucia.dominio.modelo.academico.Mesa;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.servicio.ServicioAcademico;
@@ -491,6 +492,53 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 	
+	
+	@PUT
+	@Path("/mes/")
+	public Response updateMesa(Mesa mesa) {
+		try {
+			setInstance();
+			servicioAcademico.addMesa(mesa);
+			return Response.ok(mesa.getIdMesa()).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
+
+	@DELETE
+	@Path("/mes/{idMe:[0-9][0-9]*}")
+	public Response deleteMesaById(@PathParam("idMe") Long idMe) {
+		try {
+			setInstance();
+			return Response.ok(servicioAcademico.deleteMesa(servicioAcademico.getMesa(idMe))).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
+	
+	@GET
+	@Path("/mes/{idMe:[0-9][0-9]*}")
+	public Response getMesaById(@PathParam("idMe") Long idMe) {
+		try {
+			setInstance();
+			return Response.ok(servicioAcademico.getMesa(idMe)).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
+
+	@GET
+	@Path("/mes/listAll")
+	public Response mesaListAll() {
+		try {
+			setInstance();
+			Mesa mesa = new Mesa();
+			return Response.ok(servicioAcademico.getMesas(mesa)).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
+
 }
 	
 
