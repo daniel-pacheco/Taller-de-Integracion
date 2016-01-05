@@ -8,7 +8,7 @@
  * Controller of the clientAppApp
  */
 angular.module('clientAppApp')
-  .controller('DirectivoCtrl', function ($scope, $q, $http, $modal, alumnoService) {
+  .controller('DirectivoCtrl', function ($scope, $q, $http, $modal, alumnoService, modalService) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -31,34 +31,32 @@ $scope.tooltip = {
 };
 
 //modal
-/*
-var brnSearchModal = $modal({ scope: $scope, template: "views/aside.tpl.html", contentTemplate: false, html: true, show: false });
 
-$scope.showModal = function () {
-    brnSearchModal.$promise.then(brnSearchModal.show);
-};
-*/
+  //modal options 1
+  $scope.modalx = {};
+  $scope.modalx.controller =  'DirectivoCtrl';  
+  $scope.modalx.title = 'title local directivo';
+  $scope.modalx.content = 'content local directivo';
+  $scope.modalx.templateUrl = 'views/templates/message.tpl.html';
+  $scope.modalx.text = 'perooo, vo so loco vite?';
+  $scope.modalx.show = false;
 
-//$scope.modal = {title: 'Title', content: 'Hello Modal<br />This is a multiline message!'};
+  //modal options 2
+  $scope.modalxi = {};
+  $scope.modalxi.controller =  'DirectivoCtrl';  
+  $scope.modalxi.title = 'title local directivo cambiado';
+  $scope.modalxi.content = 'content local directivo cambiado';
+  $scope.modalxi.templateUrl = 'views/templates/message.tpl.html';
+  $scope.modalxi.text = 'perooo, vo so loco vite?';
+  $scope.modalxi.show = true;
 
-  // Controller usage example C:\Taller-de-Integracion\client\..\bower_components\angular-strap\src\modal
-  //
-  function MyModalController($scope) {
-    /*$scope.title = 'Aviso';
-    $scope.content = 'El perfil de alumno DNI: {numDni} fue creado exitosamente';
-    $scope.question = '\¿Desea crear otro perfil nuevo?;'*/
-  }
-  MyModalController.$inject = ['$scope'];
-  var myModal = $modal({controller: MyModalController, templateUrl: 'views/templates/messageregistrationdetails.tpl.html', show: false, animation: 'am-fade-and-slide-top'});
-  $scope.showModal = function() {
-    myModal.$promise.then(myModal.show);
-  };
-  $scope.hideModal = function() {
-    myModal.$promise.then(myModal.hide);
-  };
+  $scope.setM = modalService.setModal;
+
+  $scope.showModal = modalService.showModal;
+  $scope.hideModal = modalService.hideModal;
 
 //filters
-$scope.dropDownOptions = ['2014', '2015', '2016', 'Todos', 'DNI/MAT'];
+$scope.dropDownOptions = ['2014', '2015', '2016','DNI/MAT'];
 $scope.dropDownValue = '';
 
 $scope.dropDownCursoOptions = ['5 Mat', '4 Mat', '3 Mat', '2 Mat'];
@@ -87,10 +85,77 @@ $scope.search = function () {
 
 
 //---Llamadas al servicio ALUMNO---
+var alumnoJson = {  
+  "idUsuario"       : null,
+  "nroDocumento"    : 33333333,
+  "tipoDocumento"   : "DNI",
+  "nombre"          : "JoSe",
+  "apellido"        : "Angular",
+  "matricula"       : 33333333,
+  "listaTelefonos" :[
+    {
+    "idTelefono"     : null,
+    "caracteristica" : 343,
+    "nroTelefono"    : 4232545,
+    "tipoTelefono"   : "fijo/casa"
+    },
+    {
+    "idTelefono"     : null,
+    "caracteristica" : 343,
+    "nroTelefono"    : 155423111,
+    "tipoTelefono"   : "celular"
+    }
+  ],
+  "listaMails"    :[
+    {
+    "idMail       " : null,
+    "direccionMail" : "jmlinares_chiqui@hotmail.com",
+    "tipoMail   " : "Personal"
+    },
+    {
+    "idMail       " : null,
+    "direccionMail" : "janetmlinares@gmail.com",
+    "tipoMail   " : "Académico"
+    }
+  ],
+  "domicilio"         :{
+    "idDomicilio" : null,
+    "calle"         : "Narciso Laprida",
+    "numero"        : 1432,
+    "piso"          : 0,
+    "localidad"     : "Paraná",
+    "dpto"          : "-",
+    "departamento"  : "Paraná",
+    "provincia"     : "Entre Ríos",
+    "codigoPostal"   : 3100,
+    "barrio"        : "Centro"
+  },
+  "sexo"            : "F",
+  "nombreUsuario"   : "jose.angular",
+  "fechaNacimiento" : "Dec 21, 1991 12:00:00 AM",
+  "activo"          : true
+  };
+
 $scope.answer = [];
-alumnoService.alumnoGetAll().then(function(response){
+$scope.answer = [];
+$scope.getAll = alumnoService.alumnoGetAll().then(function(response){
   $scope.answer = response.data;  
 });
+
+$scope.putAlumno = function () {
+  alumnoService.alumnoPut(alumnoJson).then(function(response){
+  $scope.postAnswer = response.data;
+  $scope.getAll();
+  })
+};
+
+
+$scope.deleteAlumno = function (id) {
+  alumnoService.alumnoDel(id).then(function (response) {
+    $scope.postAnswer = response.data;
+    $scope.getAll();
+  })
+};
 
 
 //---utils

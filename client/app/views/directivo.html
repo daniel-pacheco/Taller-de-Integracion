@@ -20,19 +20,22 @@
 </div>
 
 <div class="col-md-10">
-	<h1>Alumnado</h1>
+	<h1>Alumnado</h1>{{postAnswer}}
 	
 	<button data-ng-click="showModal()" type="button" class="btn btn-lg btn-danger">Custom Modal
       <br />
       <small>(using data-template)</small>
     </button>
-    <button type="button" class="btn btn-lg btn-danger" data-animation="am-fade-and-slide-top" data-template-url="views/templates/message.tpl.html" bs-modal="modal">Modal
+    <button type="button" class="btn btn-lg btn-danger" ng-click="setM(modalx)">Modal
       <br />
       <small>(using service)</small>
     </button>
     <button data-ng-click="showModal()" type="button" class="btn btn-info" data-animation="am-fade-and-slide-top">
     BRN Lookup
 </button>
+	<button ng-click="setM(modalxi)" type="button" class="btn btn-info">
+    Post
+	</button>
 
 	<hr>
 	<div id="listado" ng-show="listado1">
@@ -41,6 +44,7 @@
 			<label for="">Año lectivo:</label> <select
 				class="dropdown-toggle form-control-inline" name="" ng-model="dropDownValue"> <!-- ng-change="update(dropDownValue, option)"> -->
 				<option value="" disabled selected>Seleccione una opci&oacute;n</option>
+				<option value="">Todos</option>
 				<option ng-repeat="option in dropDownOptions" value="{{option}}">{{option}}</option>
 			</select>{{dropDownValue}}
 			<input type="text" class="form-control-inline" ng-show="dropDownValue === 'DNI/MAT'">
@@ -69,7 +73,8 @@
 						<th>Apellido</th>
 						<th>Nombre</th>
 						<th>DNI</th>
-						<th>Acciones</th>
+						<th>Id</th>
+						<th>Acciones</th>						
 					</tr>
 				</thead>
 				<tr ng-repeat="alumno in answer | filter:filterByName">
@@ -77,6 +82,7 @@
 					<td>{{alumno.nombre}}</td>
 					<td>{{alumno.apellido}}</td>
 					<td>{{alumno.nroDocumento}}</td>
+					<td ng-click = "deleteAlumno(alumno.idUsuario)">{{alumno.idUsuario}}</td>
 					<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%" class="glyphicon glyphicon-user" ></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAttendance" style="width:25%" class="glyphicon glyphicon-calendar"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipReportCard" style="width:25%" class="glyphicon glyphicon-list-alt"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAcademicPerformance" style="width:25%" class="glyphicon glyphicon-education"></span></td> 
 					<!--<td>{{alumno.name}}</td>
 					<td>{{alumno.phone}}</td>

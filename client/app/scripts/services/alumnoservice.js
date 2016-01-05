@@ -11,11 +11,21 @@ angular.module('clientAppApp')
   .service('alumnoService', function ($http) {
     // AngularJS will instantiate a singleton by calling "new" on this function
 
-    var server = 'http://localhost:8080/'; //http://192.168.0.101:8080/EscuelaSantaLucia/rest/sAlumno/listAll //http://localhost:8080/EscuelaSantaLucia/rest/sAlumno/listAll
-    var query = 'EscuelaSantaLucia/rest/sAlumno/listAll';
+    var server = /*'http://localhost:8080/';*/ 'http://192.168.1.8:8080/';//EscuelaSantaLucia/rest/sAlumno/listAll //http://localhost:8080/EscuelaSantaLucia/rest/sAlumno/listAll'
+    var getQuery = 'EscuelaSantaLucia/rest/sAlumno/listAll';
+    var postQuery = 'EscuelaSantaLucia/rest/sAlumno/alu/';
+    var delQuery = 'EscuelaSantaLucia/rest/sAlumno/alu/';
 
     this.alumnoGetAll = function () {
-    	return $http.get(server + query);
+    	return $http.get(server + getQuery);
     }
+
+	this.alumnoPut = function(alumno){	  
+	  return $http.put(server + postQuery, alumno);
+	}
+
+	this.alumnoDel = function(alumnoId){	  
+	  return $http.delete(server + postQuery + alumnoId);
+	}
 
   });
