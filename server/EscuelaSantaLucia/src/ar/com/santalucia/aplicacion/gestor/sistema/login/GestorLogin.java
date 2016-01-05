@@ -1,5 +1,4 @@
 package ar.com.santalucia.aplicacion.gestor.sistema.login;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -14,7 +13,13 @@ import ar.com.santalucia.aplicacion.gestor.Gestor;
 import ar.com.santalucia.dominio.modelo.sistema.login.Login;
 import ar.com.santalucia.dominio.modelo.sistema.login.LoginHome;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
+/**
+ * 
+ * @author Ariel Ramirez
+ *
+ */
 
+// Último modificador: Ariel Ramirez @ 05/01/2015 17:34
 public class GestorLogin extends Gestor<Login> {
 
 	private LoginHome loginDAO;
@@ -97,7 +102,6 @@ public class GestorLogin extends Gestor<Login> {
 			closeSession();
 			throw new Exception("[GestorLogin] " + "Ha ocurrido un error al buscar objetos que coincidan con el ejemplo dado. " + ex.getMessage());
 		}
-
 	}
 	
 	public Boolean autenticar(Login login) throws Exception{
@@ -160,9 +164,7 @@ public class GestorLogin extends Gestor<Login> {
 	
 	public Boolean reestablecer(Login login){
 		// REESTABLECE LA CLAVE (BLANQUEO)
-		
-		
-		
+	
 		return true;
 	}
 	

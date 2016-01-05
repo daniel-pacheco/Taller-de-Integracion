@@ -18,7 +18,6 @@ public class TesterTemporal {
 //		}else{
 //			System.out.println("Frases no coinciden");
 //		}
-		
 		rutinaLogin();
 		
 	}
