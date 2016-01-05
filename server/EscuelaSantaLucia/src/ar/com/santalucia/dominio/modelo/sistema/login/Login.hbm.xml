@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 02/01/2016 16:26:11 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="ar.com.santalucia.dominio.modelo.sistema.login.Login" table="LOGIN">
+        <id name="idLogin" type="java.lang.Long">
+            <column name="IDLOGIN" />
+            <generator class="identity" />
+        </id>
+        <property name="usuario" type="java.lang.Long">
+            <column name="USUARIO" />
+        </property>
+        <property name="clave" type="java.lang.String">
+            <column name="CLAVE" />
+        </property>
+        <property name="ultimoAcceso" type="java.util.Date">
+            <column name="ULTIMOACCESO" />
+        </property>
+        <property name="ultimoEgreso" type="java.util.Date">
+            <column name="ULTIMOEGRESO" />
+        </property>
+        <property name="rol" type="java.lang.String">
+            <column name="ROL" />
+        </property>
+        <property name="habilitado" type="java.lang.Boolean">
+            <column name="HABILITADO" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -13,9 +13,11 @@ import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
 import ar.com.santalucia.aplicacion.gestor.Gestor;
 import ar.com.santalucia.aplicacion.gestor.IListable;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorCurso;
+import ar.com.santalucia.aplicacion.gestor.sistema.login.GestorLogin;
 import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorDomicilio;
 import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorMail;
 import ar.com.santalucia.aplicacion.gestor.usuario.info.GestorTelefono;
+import ar.com.santalucia.dominio.modelo.sistema.login.Login;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.Usuario;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
@@ -35,11 +37,13 @@ import ar.com.santalucia.validaciones.IValidacionUsuarioAlumno;
 
 public class GestorAlumno extends GestorUsuario implements IValidacionUsuarioAlumno {
 	private AlumnoHome alumnoDAO;
-
+	private GestorLogin gLogin;
+	
 	public GestorAlumno() throws Exception {
 		super();
 		try {
 			alumnoDAO = new AlumnoHome();
+			gLogin = new GestorLogin();
 		} catch (Exception ex) {
 			closeSession();
 			throw new Exception("Ha ocurrido un problema al inicializar el gestor: " + ex.getMessage());
@@ -74,6 +78,7 @@ public class GestorAlumno extends GestorUsuario implements IValidacionUsuarioAlu
 			}
 			alumnoDAO.persist(alumno);
 			sesionDeHilo.getTransaction().commit();
+			gLogin.add(new Login(null, alumno.getNroDocumento(), alumno.getNroDocumento().toString(), null, null, Login.ALUMNO, true)); // CREA UNA ENTRADA PARA LOGIN
 		} catch (ValidacionException ex) {
 			throw ex;
 		} catch (Exception ex) {
