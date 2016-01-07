@@ -274,7 +274,7 @@ public class ServicioAcademicoEndpoint {
 			return Response.ok(servicioAcademico.asignarDocentesAMateria(servicioDocente.getUsuario(jsonPack.getValues().elementAt(0)), 
 																		servicioDocente.getUsuario(jsonPack.getValues().elementAt(1)), 
 																		jsonPack.getValues().elementAt(2))).build(); 
-		}catch(Exception ex){
+		} catch(Exception ex) {
 			return Response.ok(ex).build();
 		}
 	}
@@ -417,13 +417,13 @@ public class ServicioAcademicoEndpoint {
 	//@Path("/mat/desvin/{idM:[0-9][0-9]*}/{idA:[0-9][0-9]*}")
 	@Path("/mat/desvin")
 	//public Response desvincularMateriaDeAnio(@PathParam("idM") final Long idMateria, @PathParam("idA") final Long idAnio){
-    public Response desvincularMateriaDeAnio(JsonPack jsonPack){
-		try{
+    public Response desvincularMateriaDeAnio(JsonPack jsonPack) {
+		try {
 			setInstance();
 			//[0]idMateria [1]idAnio
 			return Response.ok(servicioAcademico.desvincularMateriaDeAnio(servicioAcademico.getMateria(jsonPack.getValues().elementAt(0)), jsonPack.getValues().elementAt(1))).build();
 			//return Response.ok(servicioAcademico.desvincularMateriaDeAnio(servicioAcademico.getMateria(idMateria), idAnio)).build();
-		}catch(Exception ex){
+		} catch(Exception ex) {
 			return Response.ok(ex).build();
 		}
 		
@@ -436,11 +436,11 @@ public class ServicioAcademicoEndpoint {
 	 */
 	@GET
 	@Path("/area/{id:[0-9][0-9]*}")
-	public Response getAreaById(@PathParam("id") final Long id){
-		try{
+	public Response getAreaById(@PathParam("id") final Long id) {
+		try {
 			setInstance();
 			return Response.ok(servicioAcademico.getArea(id)).build();
-		}catch(Exception ex){
+		} catch(Exception ex) {
 			return Response.ok(ex).build();
 		}
 	}

@@ -256,6 +256,11 @@ public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioD
 							"El DNI se encuentra en uso por otro usuario. Se sugiere:  " + personalTemp.toString());
 					throw sugPerException;
 				}
+			}else{
+				if (existeDocumento(personal)){ // 07/01/2016
+					exception.addMensajeError("El número de DNI ya está en uso.");
+					throw exception;
+					}
 			}
 			break;
 		case "DOCENTE":
@@ -273,6 +278,11 @@ public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioD
 							"El DNI se encuentra en uso por otro usuario. Se sugiere: " + personalTemp.toString());
 					throw sugPerException;
 				}
+			}else{
+				if (existeDocumento(personal)){ // 07/01/2016
+					exception.addMensajeError("El número de DNI ya está en uso.");
+					throw exception;
+					}
 			}
 			break;
 		case "DOCENTE/DIRECTIVO":
