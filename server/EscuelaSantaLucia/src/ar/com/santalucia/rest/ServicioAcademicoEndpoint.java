@@ -280,6 +280,24 @@ public class ServicioAcademicoEndpoint {
 	}
 	
 	/**
+	 * Desvincula Docente titular y suplente a una materia determinada. Todos los objetos involucrados deben estar persistentes.<br>
+	 * Orden de elementos en JsonPack <br>[0]id Docente Titular, <br> [1]id Docente Suplente, <br>[2]id Materia
+	 * @param jsonPack
+	 * @return true si la operación es exitosa
+	 */
+	public Response desvincularDocentesDeMateria(JsonPack jsonPack) {
+		try {
+			setInstance();
+			ServicioDocente servicioDocente = new ServicioDocente();
+			return Response.ok(servicioAcademico.desvincularDocentesDeMateria(servicioDocente.getUsuario(jsonPack.getValues().elementAt(0)), 
+																		servicioDocente.getUsuario(jsonPack.getValues().elementAt(1)), 
+																		jsonPack.getValues().elementAt(2))).build(); 
+		} catch(Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
+	
+	/**
 	 * 
 	 * @param area Objeto de tipo Area que se desea crear o modificar.
 	 * @return Identificador de Area.
@@ -539,6 +557,86 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 
+	@POST
+	@Path("/mes/asign")
+	public Response asignarMesaALlamado(JsonPack jsonPack) {
+		try {
+			setInstance();
+			return Response.ok(servicioAcademico.asignarMesaALlamado(
+					servicioAcademico.getMesa(jsonPack.getValues().elementAt(0)), 
+					jsonPack.getValues().elementAt(1))).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
+	
+	@POST
+	@Path("/mes/desvin")
+	public Response desvincularMesaDeLlamado(JsonPack jsonPack) {
+		try {
+			setInstance();
+			return Response.ok(servicioAcademico.desvincularMesaDeLlamado(
+					servicioAcademico.getMesa(jsonPack.getValues().elementAt(0)), 
+					jsonPack.getValues().elementAt(1))).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
+
+	@POST
+	@Path("/mes/asignDoc")
+	public Response asignarDocenteAMesa(JsonPack jsonPack) {
+		try {
+			setInstance();
+			ServicioDocente servicioDocente = new ServicioDocente();
+			return Response.ok(servicioAcademico.asignarDocenteAMesa(
+					servicioDocente.getUsuario(jsonPack.getValues().elementAt(0)), 
+					jsonPack.getValues().elementAt(1))).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
+
+	@POST
+	@Path("/mes/desvinDoc")
+	public Response desvincularDocenteDeMesa(JsonPack jsonPack) {
+		try {
+			setInstance();
+			ServicioDocente servicioDocente = new ServicioDocente();
+			return Response.ok(servicioAcademico.desvincularDocenteDeMesa(
+					servicioDocente.getUsuario(jsonPack.getValues().elementAt(0)), 
+					jsonPack.getValues().elementAt(1))).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
+	
+	@POST
+	@Path("/mes/asignMat")
+	public Response asignarMateriaAMesa(JsonPack jsonPack) {
+		try {
+			setInstance();
+			return Response.ok(servicioAcademico.asignarMateriaAMesa(
+					servicioAcademico.getMateria(jsonPack.getValues().elementAt(0)), 
+					jsonPack.getValues().elementAt(1))).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
+	
+	@POST
+	@Path("/mes/desvinMat")
+	public Response desvincularMateriaDeMesa(JsonPack jsonPack) {
+		try {
+			setInstance();
+			return Response.ok(servicioAcademico.desvincularMateriaDeMesa(
+					servicioAcademico.getMateria(jsonPack.getValues().elementAt(0)), 
+					jsonPack.getValues().elementAt(1))).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
+	
 }
 	
 

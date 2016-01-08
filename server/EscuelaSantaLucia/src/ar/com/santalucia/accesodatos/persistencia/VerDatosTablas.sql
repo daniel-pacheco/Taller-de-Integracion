@@ -13,3 +13,4 @@ select * from AREA;
 
 select * from LLAMADO;
 select * from MESA;
+select * from docente_mesa;
