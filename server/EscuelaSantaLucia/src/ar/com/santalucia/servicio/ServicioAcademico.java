@@ -447,7 +447,7 @@ public class ServicioAcademico {
 	
 	public Boolean addMesa(Mesa mesa) throws Exception{ // EN ENDPOINT
 		try {
-			if (mesa.getIdMesa() != null) {
+			if (mesa.getIdMesa() == null) {
 				gMesa.add(mesa);
 			} else {
 				gMesa.modify(mesa);
@@ -544,7 +544,7 @@ public class ServicioAcademico {
 		}
 	}
 	
-	public Boolean asignarMateriaAMesa(Materia materia, Long idMesa) throws Exception {
+	public Boolean asignarMateriaAMesa(Materia materia, Long idMesa) throws Exception { // EN ENDPOINT
 		try {
 			Mesa mesa = gMesa.getById(idMesa);
 			mesa.setMateria(materia);
@@ -555,7 +555,7 @@ public class ServicioAcademico {
 		}
 	}
 	
-	public Boolean desvincularMateriaDeMesa(Materia materia, Long idMesa) throws Exception {
+	public Boolean desvincularMateriaDeMesa(Materia materia, Long idMesa) throws Exception { // EN ENDPOINT
 		try {
 			Mesa mesa = gMesa.getById(idMesa);
 			mesa.setMateria(null);

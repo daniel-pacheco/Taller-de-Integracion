@@ -17,6 +17,9 @@ public class Inscripcion {
 	private Date fecha;
 	private Alumno alumno;
 	private Boolean asistencia;
+	//private Boolean activo;
+	//private Long codigoLlamado;
+	//private Long codigoTransaccion;
 	
 	public Inscripcion() {
 		super();

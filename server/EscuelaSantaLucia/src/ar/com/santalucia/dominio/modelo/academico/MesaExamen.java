@@ -15,7 +15,7 @@ public class MesaExamen {
 	private Long idMesaExamen;
 	private String nroActa;
 	private Inscripcion inscripcion;
-	private Nota nota;
+	private Nota nota; 
 
 	public MesaExamen() {
 		super();
