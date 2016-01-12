@@ -109,20 +109,22 @@ public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioD
 		}
 	}
 
-	//SUPRIMIDO
-//	public ArrayList<Personal> List() throws Exception {
-//		try {
-//			setSession();
-//			setTransaction();
-//			Personal criterioVacio = new Personal();
-//			ArrayList<Personal> listaPersonalDevolver = new ArrayList<Personal>();
-//			listaPersonalDevolver = (ArrayList<Personal>) docenteDAO.findByExample(criterioVacio);
-//			sesionDeHilo.getTransaction().commit();
-//			return listaPersonalDevolver;
-//		} catch (Exception ex) {
-//			throw new Exception("Ha ocurrido un error al listar los docentes: " + ex.getMessage());
-//		}
-//	}
+	// SUPRIMIDO
+	// public ArrayList<Personal> List() throws Exception {
+	// try {
+	// setSession();
+	// setTransaction();
+	// Personal criterioVacio = new Personal();
+	// ArrayList<Personal> listaPersonalDevolver = new ArrayList<Personal>();
+	// listaPersonalDevolver = (ArrayList<Personal>)
+	// docenteDAO.findByExample(criterioVacio);
+	// sesionDeHilo.getTransaction().commit();
+	// return listaPersonalDevolver;
+	// } catch (Exception ex) {
+	// throw new Exception("Ha ocurrido un error al listar los docentes: " +
+	// ex.getMessage());
+	// }
+	// }
 
 	/*
 	 * Implementación de IValidacionDocDir
@@ -173,10 +175,10 @@ public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioD
 	public Boolean existeDniEnPersonal(Personal personal) throws Exception {
 		Personal personalTemp = new Personal();
 		personalTemp.setNroDocumento(personal.getNroDocumento());
-//		personalTemp.setListaMails(null);
-//		personalTemp.setListaTelefonos(null);
-//		personalTemp.setDomicilio(null);
-//		personalTemp.setListaTitulos(null);
+		// personalTemp.setListaMails(null);
+		// personalTemp.setListaTelefonos(null);
+		// personalTemp.setDomicilio(null);
+		// personalTemp.setListaTitulos(null);
 		// Buscar en el rol contrario
 		if (personal.getRol().equals(Personal.DIRECTIVO)) {
 			personalTemp.setRol(Personal.DOCENTE);
@@ -208,7 +210,7 @@ public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioD
 
 		return false;
 	}
-	
+
 	/**
 	 * @param Object
 	 *            de tipo Docente
@@ -256,6 +258,11 @@ public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioD
 							"El DNI se encuentra en uso por otro usuario. Se sugiere:  " + personalTemp.toString());
 					throw sugPerException;
 				}
+			} else {
+				if (existeDocumento(personal)) { // 07/01/2016
+					exception.addMensajeError("El número de DNI ya está en uso.");
+					throw exception;
+				}
 			}
 			break;
 		case "DOCENTE":
@@ -273,6 +280,11 @@ public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioD
 							"El DNI se encuentra en uso por otro usuario. Se sugiere: " + personalTemp.toString());
 					throw sugPerException;
 				}
+			} else {
+				if (existeDocumento(personal)) { // 07/01/2016
+					exception.addMensajeError("El número de DNI ya está en uso.");
+					throw exception;
+				}
 			}
 			break;
 		case "DOCENTE/DIRECTIVO":
@@ -288,7 +300,5 @@ public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioD
 			break;
 		}
 	}
-
-	
 
 }

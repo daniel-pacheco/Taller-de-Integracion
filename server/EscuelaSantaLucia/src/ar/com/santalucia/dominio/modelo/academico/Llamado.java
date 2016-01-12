@@ -17,6 +17,7 @@ public class Llamado {
 	private Set<Mesa>listaMesas;
 	private Date fechaInicio;
 	private Date fechaFin;
+	//private Long codigo;
 	
 	public Llamado() {
 		super();

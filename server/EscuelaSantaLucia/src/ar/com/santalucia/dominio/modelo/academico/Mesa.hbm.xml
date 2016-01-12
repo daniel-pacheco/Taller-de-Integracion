@@ -10,7 +10,7 @@
             <column name="IDMESA" unique="true"/>
             <generator class="identity" />
         </id>
-        <property name="fecha" type="java.sql.Date">
+        <property name="fecha" type="java.util.Date">
             <column name="FECHA" />
         </property>
         <property name="plazoInscripcion" type="java.lang.Long">

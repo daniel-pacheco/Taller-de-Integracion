@@ -1,6 +1,7 @@
 package ar.com.santalucia.dominio.modelo.academico;
 
-import java.sql.Date;
+
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,6 +40,7 @@ public class Mesa {
 		this.setIntegrantesTribunal(integrantesTribunal);
 		this.setListaInscripciones(listaInscripciones);
 	}
+	
 
 	public Long getIdMesa() {
 		return idMesa;
@@ -87,5 +89,4 @@ public class Mesa {
 	public void setListaInscripciones(Set<Inscripcion> listaInscripciones) {
 		this.listaInscripciones = listaInscripciones;
 	}
-
 }

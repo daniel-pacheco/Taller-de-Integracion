@@ -11,6 +11,13 @@ public interface IValidacionMesa extends IValidacion {
 	 * @return <b>true</b> si la fecha es válida; <b>false</b> si no es válida
 	 * @throws Exception 
 	 */
-	Boolean fechaValida(Mesa mesa, Long idLlamado) throws Exception;
+	//Boolean fechaValida(Mesa mesa, Long idLlamado) throws Exception;
+	
+	/**
+	 * Valida si la mesa tiene el tribunal de docentes completo (3 docentes)
+	 * @param mesa
+	 * @return <b>true</b> si ya están los 3 docentes; <b>false</b> si todavía hay lugar
+	 */
+	Boolean tribunalCompleto(Mesa mesa);
 
 }

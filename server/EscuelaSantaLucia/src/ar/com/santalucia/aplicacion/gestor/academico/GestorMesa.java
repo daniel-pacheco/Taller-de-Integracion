@@ -7,8 +7,10 @@ import ar.com.santalucia.aplicacion.gestor.Gestor;
 import ar.com.santalucia.aplicacion.gestor.IListable;
 import ar.com.santalucia.dominio.modelo.academico.Mesa;
 import ar.com.santalucia.excepciones.ValidacionException;
+import ar.com.santalucia.validaciones.IValidacionMesa;
 
-public class GestorMesa extends Gestor<Mesa> implements IListable<Mesa> {
+
+public class GestorMesa extends Gestor<Mesa> implements IListable<Mesa>, IValidacionMesa {
 
 	private MesaHome mesaDAO;
 	
@@ -25,6 +27,7 @@ public class GestorMesa extends Gestor<Mesa> implements IListable<Mesa> {
 	@Override
 	public void add(Mesa object) throws Exception {
 		try {
+			this.validar(object);
 			setSession();
 			setTransaction();
 			mesaDAO.persist(object);
@@ -42,10 +45,13 @@ public class GestorMesa extends Gestor<Mesa> implements IListable<Mesa> {
 	@Override
 	public void modify(Mesa object) throws Exception {
 		try {
+			this.validar(object);
 			setSession();
 			setTransaction();
 			mesaDAO.attachDirty(object);
 			sesionDeHilo.getTransaction().commit();
+		} catch (ValidacionException ex) {
+			throw ex;
 		} catch (Exception ex) {
 			setSession();
 			setTransaction();
@@ -109,6 +115,31 @@ public class GestorMesa extends Gestor<Mesa> implements IListable<Mesa> {
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un error al listar los áreas: " + ex.getMessage());
 		}
+	}
+
+	@Override
+	public Boolean tribunalCompleto(Mesa mesa) {
+		if (mesa.getIntegrantesTribunal().size() > 3) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public void validar(Object object) throws Exception {
+		Mesa mesa = (Mesa) object;
+		
+		Boolean vCupo;
+		ValidacionException exception = new ValidacionException();
+		
+		vCupo = this.tribunalCompleto(mesa);
+		exception.addMensajeError(vCupo ? "El tribunal de mesa está completo con los tres docentes." : null);
+		
+		if (!exception.getMensajesError().isEmpty()) {
+			throw exception;
+		}
+		
 	}
 
 }

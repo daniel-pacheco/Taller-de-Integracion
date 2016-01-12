@@ -33,7 +33,7 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 
 	@Override
 	public Personal getUsuario(Long id) throws Exception {
-		if (id > 0) {
+		if (id != null) {
 			try {
 				Personal usuario = new Personal();
 				usuario = (Personal) gPersonal.getById(id);
