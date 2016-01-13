@@ -17,7 +17,9 @@ angular
     'ngSanitize',
     'ngTouch',
     'mgcrea.ngStrap',
-    'ngAnimate'
+    'ngAnimate',
+    'ngFileUpload',
+    'ngImgCrop'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -27,7 +29,7 @@ angular
         controllerAs: 'main'
       })
       .when('/about', {
-        templateUrl: 'views/templates/inicio.html',
+        templateUrl: 'views/about.html',
         controller: 'AboutCtrl',
         controllerAs: 'about'
       })
