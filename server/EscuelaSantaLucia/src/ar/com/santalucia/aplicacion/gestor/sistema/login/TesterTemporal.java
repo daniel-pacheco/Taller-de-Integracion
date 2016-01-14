@@ -2,10 +2,16 @@ package ar.com.santalucia.aplicacion.gestor.sistema.login;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SignatureException;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.MessageDigestAlgorithms;
 
+import ar.com.auth0.jwt.JWTSigner;
+import ar.com.auth0.jwt.JWTVerifier;
 import ar.com.santalucia.dominio.modelo.sistema.login.Login;
 
 public class TesterTemporal {
@@ -18,7 +24,8 @@ public class TesterTemporal {
 //		}else{
 //			System.out.println("Frases no coinciden");
 //		}
-		rutinaLogin();
+		//rutinaLogin();
+		rutinaEjemplo();
 		
 	}
 	
@@ -59,7 +66,44 @@ public class TesterTemporal {
 		}else{
 			System.out.println("Ocurrió un problema al intententar desconectar la cuenta");
 		}
+	}
+	
+	public static void rutinaEjemplo() throws Exception{
+		Map<String, Object> claim = new HashMap<String, Object>();
+		Map<String, Object> claimDev = new HashMap<String, Object>();
+		
+		claim.put("iss", "system");
+		claim.put("sub", "Subject");
+		claim.put("aud", "audiencia");
+		claim.put("exp", null);
+		claim.put("nbf", Calendar.getInstance().getTime().getTime());
+		claim.put("iat", null);
+		claim.put("jti", null);
 		
 		
+		JWTSigner signer = new JWTSigner("Una cadena cualquiera");
+		JWTVerifier verifier = new JWTVerifier("Una cadena cualquiera");
+		
+		String token = signer.sign(claim);
+		System.out.println(token);
+		
+		claimDev = verifier.verify(token);
+		System.out.println(claimDev);
+		
+		final String CLIENT_SECRET = ""; 
+		
+//		try {
+//	            Base64 decoder = new Base64(true);
+//	            byte[] secret = decoder.decodeBase64(CLIENT_SECRET);
+//	            Map<String,Object> decodedPayload =
+//	                new JWTVerifier(secret, "audience").verify("my-token");
+//
+//	            // Get custom fields from decoded Payload
+//	            System.out.println(decodedPayload.get("name"));
+//	        } catch (SignatureException signatureException) {
+//	            System.err.println("Invalid signature!");
+//	        } catch (IllegalStateException illegalStateException) {
+//	            System.err.println("Invalid Token! " + illegalStateException);
+//	        }
 	}
 }

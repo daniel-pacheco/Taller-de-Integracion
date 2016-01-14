@@ -60,6 +60,7 @@ public final class GsonMessageBodyHandler implements MessageBodyWriter<Object>, 
 	public Object readFrom(Class<Object> type, Type genericType, Annotation[] annotations, MediaType mediaType,
 			MultivaluedMap<String, String> httpHeaders, InputStream entityStream) throws IOException {
 		InputStreamReader streamReader = new InputStreamReader(entityStream, UTF_8);
+		System.out.println(httpHeaders.get("mytoken"));
 		try {
 			Type jsonType;
 			if (type.equals(genericType)) {

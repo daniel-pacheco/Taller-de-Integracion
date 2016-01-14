@@ -10,6 +10,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -18,11 +19,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.catalina.filters.RequestFilter;
+
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 import ar.com.santalucia.servicio.ServicioAlumno;
+import jdk.nashorn.internal.ir.RuntimeNode.Request;
 
 /**
  * 
@@ -78,7 +82,10 @@ public class ServicioAlumnoEndpoint {
 	@RolesAllowed({"alumno"}) //nueva Anotacion!
 	@GET
 	@Path("/alu/{id:[0-9][0-9]*}")
-	public Response getAlumnoById(@PathParam("id") final Long id) {
+	public Response getAlumnoById(@PathParam("id") final Long id, @HeaderParam("mytoken") String mytoken) {
+		//String token= new String();
+		String token = mytoken;
+		token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTdWJqZWN0IiwiYXVkIjoiYXVkaWVuY2lhIiwibmJmIjoxNDUyODA2MzgxOTEyLCJpc3MiOiJzeXN0ZW0ifQ.PPO-ymnXjLXR0-clsG-PCeCGdT3GVkGJMSRAIey2pAY";
 		Alumno alumno = new Alumno();
 		alumno = null;
 		try {
@@ -88,7 +95,7 @@ public class ServicioAlumnoEndpoint {
 			// ex.printStackTrace();
 			return Response.ok(ex).build();
 		}
-		return Response.ok(alumno).build();
+		return Response.ok(alumno).header("mytoken", token).build();
 	}
 
 	/**

@@ -20,5 +20,8 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="Resources/DataBaseConnector/mysql-connector-java-5.1.36-bin.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jackson-core-2.7.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jackson-databind-2.7.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jackson-annotations-2.7.0.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
