@@ -14,10 +14,11 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import ar.com.santalucia.excepciones.LoginError;
 import ar.com.santalucia.servicio.ServicioAlumno;
 import ar.com.santalucia.servicio.ServicioLogin;
 
-@Path("/serviciologins")
+@Path("/sLogin")
 @Produces({ "application/xml", "application/json" }) /*¿PODRÁ SER URL-ENCODE?*/
 @Consumes({ "application/xml", "application/json" })
 public class ServicioLoginEndpoint {
@@ -45,6 +46,26 @@ public class ServicioLoginEndpoint {
 		return Response.created(null).build();
 	}
 
+	@POST
+	@Path("/login")
+	public Response login(final String[] credenciales){
+		String token = null;
+		try{
+			setInstance();
+			token = servicioLogin.autenticar(Long.valueOf(credenciales[0]),credenciales[1],credenciales[2]);
+			return Response.ok().header("auth0", token).build();
+		}catch (LoginError ex){
+			//return Response.ok(ex).build();
+			return Response.status(Status.UNAUTHORIZED).build();
+		}catch(Exception ex){
+			return Response.ok(ex).build();
+		}
+	}
+	
+	
+	
+	
+	
 	@GET
 	@Path("/{id:[0-9][0-9]*}")
 	public Response findById(@PathParam("id") final Long id) {

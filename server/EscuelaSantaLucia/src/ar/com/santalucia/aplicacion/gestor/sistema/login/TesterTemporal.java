@@ -9,6 +9,8 @@ import java.util.Map;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.MessageDigestAlgorithms;
+import org.jose4j.jwt.JwtClaims;
+import org.jose4j.jwt.consumer.JwtConsumer;
 
 import ar.com.auth0.jwt.JWTSigner;
 import ar.com.auth0.jwt.JWTVerifier;
@@ -74,7 +76,7 @@ public class TesterTemporal {
 		
 		claim.put("iss", "system");
 		claim.put("sub", "Subject");
-		claim.put("aud", "audiencia");
+		claim.put("aud", "342661242");
 		claim.put("exp", null);
 		claim.put("nbf", Calendar.getInstance().getTime().getTime());
 		claim.put("iat", null);

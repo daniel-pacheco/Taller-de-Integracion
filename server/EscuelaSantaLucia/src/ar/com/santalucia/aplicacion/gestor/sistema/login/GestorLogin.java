@@ -104,6 +104,28 @@ public class GestorLogin extends Gestor<Login> {
 		}
 	}
 	
+	/**
+	 * Actualiza el dato de identificación de usuario (número de documento) en la tabla de login.
+	 * @param usuarioExistente
+	 * @param usuarioNuevo
+	 * @throws Exception
+	 */
+	public void updateUser(Long usuarioExistente, Long usuarioNuevo) throws Exception{
+		try{
+			Login login = new Login();  
+			List<Login> listaLogin = new ArrayList<Login>();
+			listaLogin = this.getByExample(new Login(null, usuarioExistente, null, null, null, null, null));
+			for(Login l:listaLogin){
+				login = l;
+			}
+			login.setUsuario(usuarioNuevo);
+			this.modify(login);
+		}catch(Exception ex){
+			closeSession();
+			throw new Exception("[GestorLogin] " + "Ha ocurrido un error al actualizar el usuario. " + ex.getMessage());
+		}
+	}
+	
 	public Boolean autenticar(Login login) throws Exception{
 		// LOGICA PARA VERIFICAR CREDENCIALES
 		// Recibir las credenciales entrantes
@@ -178,6 +200,7 @@ public class GestorLogin extends Gestor<Login> {
 	      }	
 		return cadenaEncriptada.toString();
 	}
+	
 	
 	
 }

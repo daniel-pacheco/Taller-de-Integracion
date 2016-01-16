@@ -78,7 +78,7 @@ public class GestorAlumno extends GestorUsuario implements IValidacionUsuarioAlu
 			}
 			alumnoDAO.persist(alumno);
 			sesionDeHilo.getTransaction().commit();
-			gLogin.add(new Login(null, alumno.getNroDocumento(), alumno.getNroDocumento().toString(), null, null, Login.ALUMNO, true)); // CREA UNA ENTRADA PARA LOGIN
+			//gLogin.add(new Login(null, alumno.getNroDocumento(), alumno.getNroDocumento().toString(), null, null, Login.ALUMNO, true)); // CREA UNA ENTRADA PARA LOGIN
 		} catch (ValidacionException ex) {
 			throw ex;
 		} catch (Exception ex) {
