@@ -58,7 +58,7 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 			setSession();
 			setTransaction();
 			sesionDeHilo.getTransaction().rollback();
-			throw new Exception("Ha ocurrido un problema al agregar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al agregar el AÑO: " + ex.getMessage());
 		}
 		
 	}
@@ -87,7 +87,7 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 			setSession();
 			setTransaction();
 			sesionDeHilo.getTransaction().rollback();
-			throw new Exception("Ha ocurrido un problema al actualizar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al actualizar el AÑO: " + ex.getMessage());
 		}
 	}
 
@@ -100,7 +100,7 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 			sesionDeHilo.getTransaction().commit();
 		} catch (Exception ex) {
 			closeSession();
-			throw new Exception("Ha ocurrido un problema al eliminar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al eliminar el AÑO: " + ex.getMessage());
 		}
 	}
 
@@ -114,7 +114,7 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 			return anioDevolver;
 		} catch (Exception ex) {
 			closeSession();
-			throw new Exception("Ha ocurrido un error al buscar el objeto por su ID: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al buscar el AÑO por su ID: " + ex.getMessage());
 		}
 	}
 
@@ -128,7 +128,7 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 		} catch (Exception ex) {
 			closeSession();
 			throw new Exception(
-					"Ha ocurrido un error al buscar objetos que coincidan con el ejemplo dado: " + ex.getMessage());
+					"Ha ocurrido un error al buscar AÑOS que coincidan con el ejemplo dado: " + ex.getMessage());
 		}
 	}
 
@@ -142,7 +142,7 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 			sesionDeHilo.getTransaction().commit();
 			return listaAniosDevolver;
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al listar los áreas: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al listar los AÑOS: " + ex.getMessage());
 		}
 	}
 	

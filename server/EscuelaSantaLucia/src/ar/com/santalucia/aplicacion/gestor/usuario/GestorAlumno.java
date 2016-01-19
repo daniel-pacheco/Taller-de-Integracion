@@ -80,7 +80,7 @@ public class GestorAlumno extends GestorUsuario implements IValidacionUsuarioAlu
 			setSession();
 			setTransaction();
 			sesionDeHilo.getTransaction().rollback();
-			throw new Exception("Ha ocurrido un problema al agregar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al agregar el ALUMNO: " + ex.getMessage());
 		}
 	}
 
@@ -104,7 +104,7 @@ public class GestorAlumno extends GestorUsuario implements IValidacionUsuarioAlu
 			setSession();
 			setTransaction();
 			sesionDeHilo.getTransaction().rollback();
-			throw new Exception("Ha ocurrido un problema al actualizar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al actualizar el ALUMNO: " + ex.getMessage());
 		}
 	}
 
@@ -183,7 +183,7 @@ public class GestorAlumno extends GestorUsuario implements IValidacionUsuarioAlu
 		} catch (Exception ex) {
 			closeSession();
 			throw new Exception(
-					"Ha ocurrido un error al buscar objetos que coincidan con el ejemplo dado: " + ex.getMessage());
+					"Ha ocurrido un error al buscar ALUMNOS que coincidan con el ejemplo dado: " + ex.getMessage());
 		}
 
 	}

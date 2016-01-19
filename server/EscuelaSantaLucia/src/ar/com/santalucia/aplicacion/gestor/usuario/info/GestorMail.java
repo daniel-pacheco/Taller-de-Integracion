@@ -27,7 +27,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 			sesionDeHilo = HibernateUtil.getSessionFactory().getCurrentSession();
 			mailDAO = new MailHome();
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un problema al inicializar la persistencia: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al inicializar el gestor: " + ex.getMessage());
 		}
 	}
 
@@ -44,7 +44,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 			setTransaction();
 			mailDAO.persist(object);
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un problema al agregar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al agregar el E-MAIL: " + ex.getMessage());
 		}
 	}
 
@@ -56,7 +56,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 			mailDAO.attachDirty(object);
 			sesionDeHilo.getTransaction().commit();
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al modificar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al modificar el E-MAIL: " + ex.getMessage());
 		}
 	}
 
@@ -68,7 +68,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 			mailDAO.delete(object);
 			sesionDeHilo.getTransaction().commit();
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al modificar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al modificar el E-MAIL: " + ex.getMessage());
 		}
 
 	}
@@ -82,7 +82,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 			mailDevolver = mailDAO.findById(id);
 			return mailDevolver;
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al buscar el objeto por su ID: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al buscar el E-MAIL por su ID: " + ex.getMessage());
 		}
 	}
 
@@ -96,7 +96,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 			return listaMailDevolver;
 		} catch (Exception ex) {
 			throw new Exception(
-					"Ha ocurrido un error al buscar objetos que coincidan con el ejemplo dado: " + ex.getMessage());
+					"Ha ocurrido un error al buscar E-MAILs que coincidan con el ejemplo dado: " + ex.getMessage());
 
 		}
 	}
@@ -112,7 +112,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 			sesionDeHilo.getTransaction().commit();
 			return listaMailDevolver;
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al listar los e-mails: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al listar los E-MAILs: " + ex.getMessage());
 
 		}
 

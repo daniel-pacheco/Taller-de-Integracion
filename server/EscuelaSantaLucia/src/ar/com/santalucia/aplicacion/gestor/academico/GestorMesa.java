@@ -38,7 +38,7 @@ public class GestorMesa extends Gestor<Mesa> implements IListable<Mesa>, IValida
 			setSession();
 			setTransaction();
 			sesionDeHilo.getTransaction().rollback();
-			throw new Exception("Ha ocurrido un problema al agregar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al agregar la MESA: " + ex.getMessage());
 		}	
 	}
 
@@ -56,7 +56,7 @@ public class GestorMesa extends Gestor<Mesa> implements IListable<Mesa>, IValida
 			setSession();
 			setTransaction();
 			sesionDeHilo.getTransaction().rollback();
-			throw new Exception("Ha ocurrido un problema al actualizar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al actualizar la MESA: " + ex.getMessage());
 		}
 	}
 
@@ -69,7 +69,7 @@ public class GestorMesa extends Gestor<Mesa> implements IListable<Mesa>, IValida
 			sesionDeHilo.getTransaction().commit();
 		} catch (Exception ex) {
 			closeSession();
-			throw new Exception("Ha ocurrido un problema al eliminar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al eliminar la MESA: " + ex.getMessage());
 		}
 	}
 
@@ -83,7 +83,7 @@ public class GestorMesa extends Gestor<Mesa> implements IListable<Mesa>, IValida
 			return mesaDevolver;
 		} catch (Exception ex) {
 			closeSession();
-			throw new Exception("Ha ocurrido un error al buscar el objeto por su ID: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al buscar la MESA por su ID: " + ex.getMessage());
 		}
 	}
 
@@ -98,7 +98,7 @@ public class GestorMesa extends Gestor<Mesa> implements IListable<Mesa>, IValida
 		} catch (Exception ex) {
 			closeSession();
 			throw new Exception(
-					"Ha ocurrido un error al buscar objetos que coincidan con el ejemplo dado: " + ex.getMessage());
+					"Ha ocurrido un error al buscar MESAS que coincidan con el ejemplo dado: " + ex.getMessage());
 		}
 	}
 
@@ -113,7 +113,7 @@ public class GestorMesa extends Gestor<Mesa> implements IListable<Mesa>, IValida
 			sesionDeHilo.getTransaction().commit();
 			return listaMesasDevolver;
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al listar los áreas: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al listar las MESAS: " + ex.getMessage());
 		}
 	}
 

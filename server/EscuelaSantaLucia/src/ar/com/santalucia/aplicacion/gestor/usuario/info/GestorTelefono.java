@@ -26,7 +26,7 @@ public class GestorTelefono extends Gestor<Telefono> implements IListable<Telefo
 			sesionDeHilo = HibernateUtil.getSessionFactory().getCurrentSession();
 			telefonoDAO = new TelefonoHome();
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un problema al inicializar la persistencia: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al inicializar el gestor: " + ex.getMessage());
 		}
 	}
 
@@ -43,7 +43,7 @@ public class GestorTelefono extends Gestor<Telefono> implements IListable<Telefo
 			setTransaction();
 			telefonoDAO.persist(object);
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un problema al agregar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al agregar el TELÉFONO: " + ex.getMessage());
 		}
 
 	}
@@ -56,7 +56,7 @@ public class GestorTelefono extends Gestor<Telefono> implements IListable<Telefo
 			telefonoDAO.attachDirty(object);
 			sesionDeHilo.getTransaction().commit();
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al modificar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al modificar el TELÉFONO: " + ex.getMessage());
 		}
 
 	}
@@ -69,7 +69,7 @@ public class GestorTelefono extends Gestor<Telefono> implements IListable<Telefo
 			telefonoDAO.delete(object);
 			sesionDeHilo.getTransaction().commit();
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al eliminar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al eliminar el TELÉFONO: " + ex.getMessage());
 		}
 	}
 
@@ -82,7 +82,7 @@ public class GestorTelefono extends Gestor<Telefono> implements IListable<Telefo
 			telefonoDevolver = telefonoDAO.findById(id);
 			return telefonoDevolver;
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al buscar el objeto por su ID: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al buscar el TELÉFONO por su ID: " + ex.getMessage());
 		}
 	}
 
@@ -97,7 +97,7 @@ public class GestorTelefono extends Gestor<Telefono> implements IListable<Telefo
 			return listaTelefonoDevolver;
 		} catch (Exception ex) {
 			throw new Exception(
-					"Ha ocurrido un error al buscar objetos que coincidan con el ejemplo dado: " + ex.getMessage());
+					"Ha ocurrido un error al buscar TELÉFONOS que coincidan con el ejemplo dado: " + ex.getMessage());
 
 		}
 	}
@@ -113,7 +113,7 @@ public class GestorTelefono extends Gestor<Telefono> implements IListable<Telefo
 			sesionDeHilo.getTransaction().commit();
 			return listaTelefonoDevolver;
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al listar los telefonos: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al listar los TELÉFONOS: " + ex.getMessage());
 
 		}
 	}

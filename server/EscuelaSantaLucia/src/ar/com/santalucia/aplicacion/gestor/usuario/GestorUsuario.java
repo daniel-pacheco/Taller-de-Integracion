@@ -16,7 +16,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
  * Clase Usuario (de esta extienden Alumno, Docente, Directivo y Administrador)
  * 
  * @author Eric
- * @version 1.0
+ * @version 1.1
  *
  */
 
@@ -31,10 +31,15 @@ public abstract class GestorUsuario extends Gestor<Usuario> implements IListable
 	
 	public GestorUsuario() throws Exception {
 		super();
-		usuarioDAO = new UsuarioHome();
-		GTelefono = new GestorTelefono();
-		GMail = new GestorMail();
-		GDomicilio = new GestorDomicilio();
+		try {
+			usuarioDAO = new UsuarioHome();
+			GTelefono = new GestorTelefono();
+			GMail = new GestorMail();
+			GDomicilio = new GestorDomicilio();
+		} catch (Exception ex) {
+			closeSession();
+			throw new Exception("Ha ocurrido un problema al inicializar el gestor: " + ex.getMessage());
+		}
 	}
 
 	@Override
@@ -52,16 +57,17 @@ public abstract class GestorUsuario extends Gestor<Usuario> implements IListable
 			sesionDeHilo.getTransaction().commit();
 		} catch (Exception ex) {
 			closeSession();
-			throw new Exception("Ha ocurrido un problema al eliminar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al eliminar el " 
+									+ object.getClass().getSimpleName().toUpperCase() + ": " + ex.getMessage());
 		}
 	}
 
 	@Override
 	public Usuario getById(Long id) throws Exception{
+		Usuario usuarioDevolver = new Usuario();
 		try {
 			setSession();
 			setTransaction();
-			Usuario usuarioDevolver = new Usuario();
 			usuarioDevolver = usuarioDAO.findById(id);
 			// NO HACER COMMIT para poder más tarde hacer el get de la lista de
 			// teléfonos
@@ -71,7 +77,8 @@ public abstract class GestorUsuario extends Gestor<Usuario> implements IListable
 			return usuarioDevolver;
 		} catch (Exception ex) {
 			closeSession();
-			throw new Exception("Ha ocurrido un error al buscar el objeto por su ID: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al buscar el " 
+									+ usuarioDevolver.getClass().getSimpleName().toUpperCase() + " por su ID: " + ex.getMessage());
 		}
 	};
 	
@@ -85,7 +92,8 @@ public abstract class GestorUsuario extends Gestor<Usuario> implements IListable
 		} catch (Exception ex) {
 			closeSession();
 			throw new Exception(
-					"Ha ocurrido un error al buscar objetos que coincidan con el ejemplo dado: " + ex.getMessage());
+					"Ha ocurrido un error al buscar " 
+									+ example.getClass().getSimpleName().toUpperCase() + " que coincidan con el ejemplo dado: " + ex.getMessage());
 		}
 
 	}

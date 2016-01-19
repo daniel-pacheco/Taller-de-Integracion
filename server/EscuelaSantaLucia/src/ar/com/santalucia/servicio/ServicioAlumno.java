@@ -44,7 +44,7 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 			try {
 				return (Alumno) gAlumno.getById(id);
 			} catch (Exception ex) {
-				throw new Exception("Servicio: problemas. " + ex.getMessage());
+				throw new Exception("Hubo un problema al obtener el ALUMNO: " + ex.getMessage());
 			}
 		}
 		return null;
@@ -55,7 +55,7 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 		try {
 			return gAlumno.getByExample(example);
 		} catch (Exception ex) {
-			throw new Exception("Servicio: problemas. " + ex.getMessage());
+			throw new Exception("Hubo un problema al obtener el listado de ALUMNOS: " + ex.getMessage());
 		}
 	}
 
@@ -75,7 +75,7 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 		} catch (ValidacionException ex) {
 			throw ex;
 		} catch (Exception ex) {
-			throw new Exception("Servicio add(): no se pudo completar la operacion. " + ex.getMessage());
+			throw new Exception("Hubo un problema al agregar o modificar el ALUMNO: " + ex.getMessage());
 		}
 	}
 
@@ -94,7 +94,7 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 			}
 		} catch (Exception ex) {
 			throw new Exception(
-					"Servicio: Ha ocurrido un problema al intentar recuperar los teléfonos . " + ex.getMessage());
+					"Hubo un problema al obtener el listado de TELÉFONOS del ALUMNO: " + ex.getMessage());
 		}
 		return telefonos;
 	}
@@ -110,7 +110,7 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 			}
 		} catch (Exception ex) {
 			throw new Exception(
-					"Servicio: Ha ocurrido un problema al intentar recuperar los mails. " + ex.getMessage());
+					"Hubo un problema al obtener el listado de E-MAILs del ALUMNO: " + ex.getMessage());
 		}
 		return mails;
 	}
@@ -131,6 +131,9 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 		}
 	}
 
+	/*
+	 * CANDIDATO A SUPRIMIR
+	 */
 	@Override
 	public boolean modifyUsuario(Alumno usuarioModificado) throws Exception {
 		try {
@@ -140,6 +143,9 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 			throw new Exception("Servicio modify(): no se pudo completar la operacion. " + ex.getMessage());
 		}
 	}
+	/*
+	 * 
+	 */
 
 	@Override
 	public void closeSession() throws Exception {

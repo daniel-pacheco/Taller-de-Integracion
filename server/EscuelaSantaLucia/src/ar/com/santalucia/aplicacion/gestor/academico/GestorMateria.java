@@ -59,7 +59,7 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 			setSession();
 			setTransaction();
 			sesionDeHilo.getTransaction().rollback();
-			throw new Exception("Ha ocurrido un problema al agregar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al agregar la MATERIA: " + ex.getMessage());
 		}
 	}
 
@@ -77,7 +77,7 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 			setSession();
 			setTransaction();
 			sesionDeHilo.getTransaction().rollback();
-			throw new Exception("Ha ocurrido un problema al actualizar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al actualizar la MATERIA: " + ex.getMessage());
 		}
 		
 	}
@@ -91,7 +91,7 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 			sesionDeHilo.getTransaction().commit();
 		} catch (Exception ex) {
 			closeSession();
-			throw new Exception("Ha ocurrido un problema al eliminar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al eliminar la MATERIA: " + ex.getMessage());
 		}
 	}
 
@@ -105,7 +105,7 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 			return materiaDevolver;
 		} catch (Exception ex) {
 			closeSession();
-			throw new Exception("Ha ocurrido un error al buscar el objeto por su ID: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al buscar la MATERIA por su ID: " + ex.getMessage());
 		}
 	}
 
@@ -120,7 +120,7 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 		} catch (Exception ex) {
 			closeSession();
 			throw new Exception(
-					"Ha ocurrido un error al buscar objetos que coincidan con el ejemplo dado: " + ex.getMessage());
+					"Ha ocurrido un error al buscar MATERIAS que coincidan con el ejemplo dado: " + ex.getMessage());
 		}
 	}
 
@@ -135,7 +135,7 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 			sesionDeHilo.getTransaction().commit();
 			return listaMateriasDevolver;
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al listar las materias: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al listar las MATERIAS: " + ex.getMessage());
 		}
 	}
 	
