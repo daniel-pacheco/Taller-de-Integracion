@@ -33,7 +33,7 @@ public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioD
 			GTitulo = new GestorTitulo();
 		} catch (Exception ex) {
 			closeSession();
-			throw new Exception("Ha ocurrido un problema al inicializar la persistencia.");
+			throw new Exception("Ha ocurrido un problema al inicializar el gestor: " + ex.getMessage());
 		}
 	}
 
@@ -72,7 +72,7 @@ public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioD
 			setSession();
 			setTransaction();
 			sesionDeHilo.getTransaction().rollback();
-			throw new Exception("Ha ocurrido un problema al agregar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al agregar el " + personal.getRol() + ": " + ex.getMessage());
 		}
 	}
 
@@ -91,7 +91,7 @@ public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioD
 			setSession();
 			setTransaction();
 			sesionDeHilo.getTransaction().rollback();
-			throw new Exception("Ha ocurrido un problema al actualizar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al actualizar el " + personal.getRol() + ": " + ex.getMessage());
 		}
 	}
 
@@ -105,7 +105,7 @@ public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioD
 		} catch (Exception ex) {
 			closeSession();
 			throw new Exception(
-					"Ha ocurrido un error al buscar objetos que coincidan con el ejemplo dado: " + ex.getMessage());
+					"Ha ocurrido un error al buscar " + object.getRol() + "S que coincidan con el ejemplo dado: " + ex.getMessage());
 		}
 	}
 

@@ -31,7 +31,7 @@ public class GestorArea extends Gestor<Area> implements IListable<Area> {
 			setSession();
 			setTransaction();
 			sesionDeHilo.getTransaction().rollback();
-			throw new Exception("Ha ocurrido un problema al agregar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al agregar el ÁREA: " + ex.getMessage());
 		}
 	}
 
@@ -46,7 +46,7 @@ public class GestorArea extends Gestor<Area> implements IListable<Area> {
 			setSession();
 			setTransaction();
 			sesionDeHilo.getTransaction().rollback();
-			throw new Exception("Ha ocurrido un problema al actualizar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al actualizar el ÁREA: " + ex.getMessage());
 		}		
 	}
 
@@ -59,7 +59,7 @@ public class GestorArea extends Gestor<Area> implements IListable<Area> {
 			sesionDeHilo.getTransaction().commit();
 		} catch (Exception ex) {
 			closeSession();
-			throw new Exception("Ha ocurrido un problema al eliminar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al eliminar el ÁREA: " + ex.getMessage());
 		}
 	}
 
@@ -73,7 +73,7 @@ public class GestorArea extends Gestor<Area> implements IListable<Area> {
 			return areaDevolver;
 		} catch (Exception ex) {
 			closeSession();
-			throw new Exception("Ha ocurrido un error al buscar el objeto por su ID: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al buscar el ÁREA por su ID: " + ex.getMessage());
 		}
 	}
 
@@ -88,7 +88,7 @@ public class GestorArea extends Gestor<Area> implements IListable<Area> {
 		} catch (Exception ex) {
 			closeSession();
 			throw new Exception(
-					"Ha ocurrido un error al buscar objetos que coincidan con el ejemplo dado: " + ex.getMessage());
+					"Ha ocurrido un error al buscar ÁREAS que coincidan con el ejemplo dado: " + ex.getMessage());
 		}
 	}
 
@@ -103,7 +103,7 @@ public class GestorArea extends Gestor<Area> implements IListable<Area> {
 			sesionDeHilo.getTransaction().commit();
 			return listaAreasDevolver;
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al listar las áreas: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al listar las ÁREAS: " + ex.getMessage());
 		}
 	}
 

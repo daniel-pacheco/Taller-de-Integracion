@@ -23,7 +23,7 @@ public abstract class ServicioUsuario<T> implements IServicioUsuario<T> {
 			gTitulo = new GestorTitulo();
 		} catch (Exception ex) {
 			throw new Exception(
-					"Ha ocurrido un problema al intentar inicializar el servicio de operaciones básicas. "
+					"Ha ocurrido un problema al intentar inicializar el servicio de operaciones básicas: "
 							+ ex.getMessage());
 		}
 	}
