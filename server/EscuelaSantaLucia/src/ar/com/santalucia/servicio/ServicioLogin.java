@@ -79,9 +79,9 @@ public class ServicioLogin {
 	 * @param token
 	 * @throws Exception
 	 */
-	public static String comprobar(String token) throws Exception{
+	public static String comprobar(String token, String rol) throws Exception{
 		Map<String, Object> claimDev = new HashMap<String, Object>();
-		JWTVerifier verifier = new JWTVerifier("Una cadena cualquiera");
+		JWTVerifier verifier = new JWTVerifier(obtenerFirma(rol));
 		claimDev = verifier.verify(token);
 		return claimDev.get("sub").toString();
 	}
@@ -110,7 +110,7 @@ public class ServicioLogin {
 	public String generarToken(String usuario, String rol) throws Exception{
 		Map<String, Object> claim = new HashMap<String, Object>(); // Definición del claim
 		
-		claim.put("iss", "system");
+		claim.put("iss", "systemStaLucia");
 		claim.put("sub", rol);
 		claim.put("aud", usuario);
 		claim.put("exp", null);
@@ -131,7 +131,7 @@ public class ServicioLogin {
 	 * @return
 	 * @throws Exception
 	 */
-	public String obtenerFirma(String rol) throws Exception{
+	private static String obtenerFirma(String rol) throws Exception{
 		String firma = null;
 		switch (rol) {
 		case Login.ALUMNO :

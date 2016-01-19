@@ -26,7 +26,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 import ar.com.santalucia.servicio.ServicioAlumno;
-import jdk.nashorn.internal.ir.RuntimeNode.Request;
+import ar.com.santalucia.servicio.ServicioLogin;
 
 /**
  * 
@@ -41,7 +41,7 @@ import jdk.nashorn.internal.ir.RuntimeNode.Request;
 @PermitAll
 @Produces({"application/json" })
 @Consumes({"application/json" })
-public class ServicioAlumnoEndpoint {
+public class ServicioAlumnoEndpoint{
 	
 	private ServicioAlumno servicioAlumno = null;
 	
@@ -82,20 +82,22 @@ public class ServicioAlumnoEndpoint {
 	@RolesAllowed({"alumno"}) //nueva Anotacion!
 	@GET
 	@Path("/alu/{id:[0-9][0-9]*}")
-	public Response getAlumnoById(@PathParam("id") final Long id, @HeaderParam("mytoken") String mytoken) {
+	public Response getAlumnoById(@PathParam("id") final Long id, @HeaderParam("rol") String rolIn, @HeaderParam("auth0") String token) {
 		//String token= new String();
-		String token = mytoken;
-		token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTdWJqZWN0IiwiYXVkIjoiYXVkaWVuY2lhIiwibmJmIjoxNDUyODA2MzgxOTEyLCJpc3MiOiJzeXN0ZW0ifQ.PPO-ymnXjLXR0-clsG-PCeCGdT3GVkGJMSRAIey2pAY";
+		String rol = rolIn;
 		Alumno alumno = new Alumno();
 		alumno = null;
 		try {
-			setInstance();
-			alumno = servicioAlumno.getUsuario(id);
+			if (rol.equals(ServicioLogin.comprobar(token, rol))) // Comprobacion chancha de logueo
+			{
+				setInstance();
+				alumno = servicioAlumno.getUsuario(id);
+			}
 		} catch (Exception ex) {
 			// ex.printStackTrace();
 			return Response.ok(ex).build();
 		}
-		return Response.ok(alumno).header("mytoken", token).build();
+		return Response.ok(alumno).build();
 	}
 
 	/**
@@ -301,6 +303,5 @@ public class ServicioAlumnoEndpoint {
 			//e.printStackTrace();
 			return Response.ok(ex).build();
 		}
-	}
-	
+	}	
 }
