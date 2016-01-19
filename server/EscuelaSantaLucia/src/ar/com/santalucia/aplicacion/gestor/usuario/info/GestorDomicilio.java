@@ -27,7 +27,7 @@ public class GestorDomicilio extends Gestor<Domicilio> implements IListable<Domi
 			sesionDeHilo = HibernateUtil.getSessionFactory().getCurrentSession();
 			domicilioDAO = new DomicilioHome();
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un problema al inicializar la persistencia: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al inicializar el gestor: " + ex.getMessage());
 		}
 	}
 
@@ -45,7 +45,7 @@ public class GestorDomicilio extends Gestor<Domicilio> implements IListable<Domi
 			domicilioDAO.persist(object);
 			// sesionDeHilo.getTransaction().commit();
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un problema al agregar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al agregar el DOMICILIO: " + ex.getMessage());
 		}
 
 	}
@@ -58,7 +58,7 @@ public class GestorDomicilio extends Gestor<Domicilio> implements IListable<Domi
 			domicilioDAO.attachDirty(object);
 			sesionDeHilo.getTransaction().commit();
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al modificar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al modificar el DOMICILIO: " + ex.getMessage());
 		}
 
 	}
@@ -71,7 +71,7 @@ public class GestorDomicilio extends Gestor<Domicilio> implements IListable<Domi
 			domicilioDAO.delete(object);
 			sesionDeHilo.getTransaction().commit();
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al eliminar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al eliminar el DOMICILIO: " + ex.getMessage());
 		}
 	}
 
@@ -84,7 +84,7 @@ public class GestorDomicilio extends Gestor<Domicilio> implements IListable<Domi
 			domicilioDevolver = domicilioDAO.findById(id);
 			return domicilioDevolver;
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al buscar el objeto por su ID: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al buscar el DOMICILIO por su ID: " + ex.getMessage());
 		}
 	}
 
@@ -99,7 +99,7 @@ public class GestorDomicilio extends Gestor<Domicilio> implements IListable<Domi
 			return listaDomicilioDevolver;
 		} catch (Exception ex) {
 			throw new Exception(
-					"Ha ocurrido un error al buscar objetos que coincidan con el ejemplo dado: " + ex.getMessage());
+					"Ha ocurrido un error al buscar DOMICILIOS que coincidan con el ejemplo dado: " + ex.getMessage());
 
 		}
 	}
@@ -115,7 +115,7 @@ public class GestorDomicilio extends Gestor<Domicilio> implements IListable<Domi
 			sesionDeHilo.getTransaction().commit();
 			return listaDomicilioDevolver;
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al listar los domicilios: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al listar los DOMICILIOS: " + ex.getMessage());
 
 		}
 	}

@@ -74,5 +74,4 @@ public class Inscripcion {
 		this.asistencia = asistencia;
 	}
 	
-	
 }

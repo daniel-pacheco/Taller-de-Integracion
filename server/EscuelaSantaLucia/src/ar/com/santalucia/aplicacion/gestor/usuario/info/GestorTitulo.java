@@ -25,7 +25,7 @@ public class GestorTitulo extends Gestor<Titulo> implements IListable<Titulo>{
 		try {
 			tituloDAO = new TituloHome();
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un problema al inicializar la persistencia: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al inicializar el gestor: " + ex.getMessage());
 		}
 	}
 
@@ -42,7 +42,7 @@ public class GestorTitulo extends Gestor<Titulo> implements IListable<Titulo>{
 			setTransaction();
 			tituloDAO.persist(object);
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un problema al agregar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al agregar el TÍTULO: " + ex.getMessage());
 		}
 	}
 
@@ -54,7 +54,7 @@ public class GestorTitulo extends Gestor<Titulo> implements IListable<Titulo>{
 			tituloDAO.attachDirty(object);
 			sesionDeHilo.getTransaction().commit();
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al modificar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al modificar el TÍTULO: " + ex.getMessage());
 		}
 	}
 
@@ -66,7 +66,7 @@ public class GestorTitulo extends Gestor<Titulo> implements IListable<Titulo>{
 			tituloDAO.delete(object);
 			sesionDeHilo.getTransaction().commit();
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al eliminar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al eliminar el TÍTULO: " + ex.getMessage());
 		}
 
 	}
@@ -80,7 +80,7 @@ public class GestorTitulo extends Gestor<Titulo> implements IListable<Titulo>{
 			tituloDevolver = tituloDAO.findById(id);
 			return tituloDevolver;
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al buscar el objeto por su ID: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al buscar el TÍTULO por su ID: " + ex.getMessage());
 		}
 	}
 
@@ -94,7 +94,7 @@ public class GestorTitulo extends Gestor<Titulo> implements IListable<Titulo>{
 			return listaTituloDevolver;
 		} catch (Exception ex) {
 			throw new Exception(
-					"Ha ocurrido un error al buscar objetos que coincidan con el ejemplo dado: " + ex.getMessage());
+					"Ha ocurrido un error al buscar TÍTULOS que coincidan con el ejemplo dado: " + ex.getMessage());
 
 		}
 	}
@@ -110,7 +110,7 @@ public class GestorTitulo extends Gestor<Titulo> implements IListable<Titulo>{
 			sesionDeHilo.getTransaction().commit();
 			return listaTituloDevolver;
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al listar los titulos: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al listar los TÍTULOS: " + ex.getMessage());
 
 		}
 	}

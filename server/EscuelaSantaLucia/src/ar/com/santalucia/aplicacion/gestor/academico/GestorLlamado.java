@@ -52,7 +52,7 @@ public class GestorLlamado extends Gestor<Llamado> implements IListable<Llamado>
 			setSession();
 			setTransaction();
 			sesionDeHilo.getTransaction().rollback();
-			throw new Exception("Ha ocurrido un problema al agregar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al agregar el LLAMADO: " + ex.getMessage());
 		}
 	}
 
@@ -68,7 +68,7 @@ public class GestorLlamado extends Gestor<Llamado> implements IListable<Llamado>
 			setSession();
 			setTransaction();
 			sesionDeHilo.getTransaction().rollback();
-			throw new Exception("Ha ocurrido un problema al actualizar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al actualizar el LLAMADO: " + ex.getMessage());
 		}
 	}
 
@@ -81,7 +81,7 @@ public class GestorLlamado extends Gestor<Llamado> implements IListable<Llamado>
 			sesionDeHilo.getTransaction().commit();
 		} catch (Exception ex) {
 			closeSession();
-			throw new Exception("Ha ocurrido un problema al eliminar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al eliminar el LLAMADO: " + ex.getMessage());
 		}
 	}
 
@@ -95,7 +95,7 @@ public class GestorLlamado extends Gestor<Llamado> implements IListable<Llamado>
 			return llamadoDevolver;
 		} catch (Exception ex) {
 			closeSession();
-			throw new Exception("Ha ocurrido un error al buscar el objeto por su ID: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al buscar el LLAMADO por su ID: " + ex.getMessage());
 		}
 	}
 
@@ -110,7 +110,7 @@ public class GestorLlamado extends Gestor<Llamado> implements IListable<Llamado>
 		} catch (Exception ex) {
 			closeSession();
 			throw new Exception(
-					"Ha ocurrido un error al buscar objetos que coincidan con el ejemplo dado: " + ex.getMessage());
+					"Ha ocurrido un error al buscar LLAMADOS que coincidan con el ejemplo dado: " + ex.getMessage());
 		}
 	}
 
@@ -125,7 +125,7 @@ public class GestorLlamado extends Gestor<Llamado> implements IListable<Llamado>
 			sesionDeHilo.getTransaction().commit();
 			return listaLlamadosDevolver;
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al listar los áreas: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al listar los LLAMADO: " + ex.getMessage());
 		}
 	}
 

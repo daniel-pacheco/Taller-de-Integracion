@@ -44,7 +44,7 @@ public class GestorCurso extends Gestor<Curso> {
 	@Override
 	public void add(Curso object) throws Exception {
 		try {
-			this.validar(object);
+			//this.validar(object);
 			setSession();
 			setTransaction();
 			cursoDAO.persist(object);
@@ -55,7 +55,7 @@ public class GestorCurso extends Gestor<Curso> {
 			setSession();
 			setTransaction();
 			sesionDeHilo.getTransaction().rollback();
-			throw new Exception("Ha ocurrido un problema al agregar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al agregar el CURSO: " + ex.getMessage());
 		}
 	}
 
@@ -64,7 +64,7 @@ public class GestorCurso extends Gestor<Curso> {
 		try {
 			setSession();
 			setTransaction();
-			this.validar(object);
+			//this.validar(object);
 			cursoDAO.attachDirty(object);
 			sesionDeHilo.getTransaction().commit();
 		} catch (ValidacionException ex) {
@@ -73,7 +73,7 @@ public class GestorCurso extends Gestor<Curso> {
 			setSession();
 			setTransaction();
 			sesionDeHilo.getTransaction().rollback();
-			throw new Exception("Ha ocurrido un problema al actualizar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al actualizar el CURSO: " + ex.getMessage());
 		}
 	}
 
@@ -86,7 +86,7 @@ public class GestorCurso extends Gestor<Curso> {
 			sesionDeHilo.getTransaction().commit();
 		} catch (Exception ex) {
 			closeSession();
-			throw new Exception("Ha ocurrido un problema al eliminar el objeto: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un problema al eliminar el CURSO: " + ex.getMessage());
 		}
 	}
 
@@ -100,7 +100,7 @@ public class GestorCurso extends Gestor<Curso> {
 			return cursoDevolver;
 		} catch (Exception ex) {
 			closeSession();
-			throw new Exception("Ha ocurrido un error al buscar el objeto por su ID: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al buscar el CURSO por su ID: " + ex.getMessage());
 		}
 	}
 
@@ -115,7 +115,7 @@ public class GestorCurso extends Gestor<Curso> {
 		} catch (Exception ex) {
 			closeSession();
 			throw new Exception(
-					"Ha ocurrido un error al buscar objetos que coincidan con el ejemplo dado: " + ex.getMessage());
+					"Ha ocurrido un error al buscar CURSOS que coincidan con el ejemplo dado: " + ex.getMessage());
 		}
 	}
 	
@@ -132,7 +132,7 @@ public class GestorCurso extends Gestor<Curso> {
 			return null;
 		} catch (Exception ex) {
 			closeSession();
-			throw new Exception("Ha ocurrido un error al buscar el curso por su división: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al buscar el CURSO por su división: " + ex.getMessage());
 		}
 	}
 
@@ -147,14 +147,14 @@ public class GestorCurso extends Gestor<Curso> {
 			sesionDeHilo.getTransaction().commit();
 			return listaCursosDevolver;
 		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al listar los cursos: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al listar los CURSOS: " + ex.getMessage());
 		}
 	}
 
-	
+	/*
 	public void validar(Curso object) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
-
+*/
 }

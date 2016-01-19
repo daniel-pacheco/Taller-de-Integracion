@@ -48,7 +48,7 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 				}
 				return null;
 			} catch (Exception ex) {
-				throw new Exception("Servicio: problemas. " + ex.getMessage());
+				throw new Exception("Hubo un problema al obtener el DOCENTE: " + ex.getMessage());
 			}
 		}
 		return null;
@@ -69,7 +69,7 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 			listaDevolver.addAll(gPersonal.getByExample(example));
 			return listaDevolver;
 		} catch (Exception ex) {
-			throw new Exception("Servicio: problemas. " + ex.getMessage());
+			throw new Exception("Hubo un problema al obtener el listado de DOCENTES: " + ex.getMessage());
 		}
 	}
 
@@ -81,14 +81,13 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 			} else {
 				gPersonal.modify(usuario);
 			}
-			;
 			return true;
 		} catch (SugerenciaPersonalException ex) {
 			throw ex;
 		} catch (ValidacionException ex) {
 			throw ex;
 		} catch (Exception ex) {
-			throw new Exception("Servicio add(): no se pudo completar la operacion. " + ex.getMessage());
+			throw new Exception("Hubo un problema al agregar o modificar el DOCENTE: " + ex.getMessage());
 		}
 	}
 
@@ -103,7 +102,7 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 			}
 		} catch (Exception ex) {
 			throw new Exception(
-					"Servicio: Ha ocurrido un problema al intentar recuperar los teléfonos . " + ex.getMessage());
+					"Hubo un problema al obtener el listado de TELÉFONOS del DOCENTE: " + ex.getMessage());
 		}
 		return telefonos;
 	}
@@ -119,7 +118,7 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 			}
 		} catch (Exception ex) {
 			throw new Exception(
-					"Servicio: Ha ocurrido un problema al intentar recuperar los mails. " + ex.getMessage());
+					"Hubo un problema al obtener el listado de E-MAILs del DOCENTE: " + ex.getMessage());
 		}
 		return mails;
 	}
@@ -135,11 +134,14 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 			}
 		} catch (Exception ex) {
 			throw new Exception(
-					"Servicio: Ha ocurrido un problema al intentar recuperar los titulos. " + ex.getMessage());
+					"Hubo un problema al obtener el listado de TÍTULOS del DOCENTE: " + ex.getMessage());
 		}
 		return titulos;
 	}
 
+	/*
+	 * CANDIDATO A SUPRIMIR
+	 */
 	@Override
 	public boolean modifyUsuario(Personal usuarioModificado) throws Exception {
 		try {
@@ -149,6 +151,9 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 			throw new Exception("Servicio modify(): no se pudo completar la operacion. " + ex.getMessage());
 		}
 	}
+	/*
+	 * 
+	 */
 
 	@Override
 	public boolean removeUsuario(Personal usuario) throws Exception {
@@ -162,7 +167,7 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 			modifyUsuario(usuario);	
 			return true;
 		} catch (Exception ex) {
-			throw ex;
+			throw new Exception("Hubo un problema al eliminar el DOCENTE: " + ex.getMessage());
 		}
 	}
 
