@@ -13,7 +13,7 @@ angular
     'ngAnimate',
     'ngCookies',
     'ngResource',
-    'ngRoute',
+    'ui.router',
     'ngSanitize',
     'ngTouch',
     'mgcrea.ngStrap',
@@ -21,13 +21,13 @@ angular
     'ngFileUpload',
     'ngImgCrop'
   ])
+  
+  .config(function($stateProvider, $urlRouterProvider) {
+    // if none of the above states are matched, use this as the fallback
+    $urlRouterProvider.otherwise('/');
+});/*
   .config(function ($routeProvider) {
-    $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl',
-        controllerAs: 'main'
-      })
+    $routeProvider      
       .when('/about', {
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl',
@@ -42,13 +42,9 @@ angular
         templateUrl: 'views/materias.html',
         controller: 'MateriasCtrl',
         controllerAs: 'materias'
-      })
-      .when('/anio', {
-        templateUrl: 'views/anio.html',
-        controller: 'AnioCtrl',
-        controllerAs: 'anio'
-      })
+      })      
       .otherwise({
         redirectTo: '/'
       });
   });
+*/

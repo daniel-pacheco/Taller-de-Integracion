@@ -8,13 +8,18 @@
  * Controller of the clientAppApp
  */
  angular.module('clientAppApp')
+ .config(function($stateProvider) {
+    $stateProvider
+    .state('materias', {
+        url: '/materias',
+        templateUrl: 'views/materias.html',
+        controller: 'MateriasCtrl',
+        data: {
+          pageTitle: 'Materias'
+        }
+    });
+})
  .controller('MateriasCtrl', function ($scope) {
-  this.awesomeThings = [
-  'HTML5 Boilerplate',
-  'AngularJS',
-  'Karma'
-  ];
-
   $scope.listado1 = true;
 
   $scope.seleccionar = function(id) {

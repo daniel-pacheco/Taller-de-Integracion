@@ -7,16 +7,27 @@
  * # AboutCtrl
  * Controller of the clientAppApp
  */
-angular.module('clientAppApp')
-  .controller('AboutCtrl', function ($scope, Upload, $timeout) {
+ angular.module('clientAppApp')
+ .config(function($stateProvider) {
+    $stateProvider
+    .state('about', {
+        url: '/about',
+        templateUrl: 'views/about.html',
+        controller: 'AboutCtrl',
+        data: {
+          pageTitle: 'About'
+      }
+  });
+})
+ .controller('AboutCtrl', function ($scope, Upload, $timeout) {
     this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
+    'HTML5 Boilerplate',
+    'AngularJS',
+    'Karma'
     ];
-  
 
-$scope.upload = function (dataUrl) {
+
+    $scope.upload = function (dataUrl) {
         Upload.upload({
             url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
             data: {
@@ -35,4 +46,4 @@ $scope.upload = function (dataUrl) {
     }
 
 
-  });
+});

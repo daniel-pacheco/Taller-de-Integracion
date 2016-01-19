@@ -8,14 +8,19 @@
  * Controller of the clientAppApp
  */
  angular.module('clientAppApp')
+ .config(function($stateProvider) {
+    $stateProvider
+    .state('anio', {
+        url: '/anio',
+        templateUrl: 'views/anio.html',
+        controller: 'AnioCtrl',
+        data: {
+        	pageTitle: 'Anio'            
+        }
+    });
+})
  .controller('AnioCtrl', function ($scope) {
- 	this.awesomeThings = [
- 	'HTML5 Boilerplate',
- 	'AngularJS',
- 	'Karma'
- 	];
-
-
+ 	
  	$scope.tooltip = {
  		tooltipEdit : {
  			'title' : 'Editar'
