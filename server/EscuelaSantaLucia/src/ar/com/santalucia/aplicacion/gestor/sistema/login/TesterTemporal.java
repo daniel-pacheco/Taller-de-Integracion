@@ -7,6 +7,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.ws.rs.core.Response;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.MessageDigestAlgorithms;
 import org.jose4j.jwt.JwtClaims;
@@ -15,6 +17,9 @@ import org.jose4j.jwt.consumer.JwtConsumer;
 import ar.com.auth0.jwt.JWTSigner;
 import ar.com.auth0.jwt.JWTVerifier;
 import ar.com.santalucia.dominio.modelo.sistema.login.Login;
+import ar.com.santalucia.rest.ServicioAlumnoEndpoint;
+import ar.com.santalucia.rest.ServicioLoginEndpoint;
+import ar.com.santalucia.servicio.ServicioLogin;
 
 public class TesterTemporal {
 
@@ -28,6 +33,7 @@ public class TesterTemporal {
 //		}
 		//rutinaLogin();
 		rutinaEjemplo();
+		//rutinaConServicio();
 		
 	}
 	
@@ -70,7 +76,24 @@ public class TesterTemporal {
 		}
 	}
 	
+	public static void rutinaConServicio() throws Exception{
+		ServicioLogin sLogin = new ServicioLogin();
+		
+		StringBuffer tokenOut = new StringBuffer();
+		
+		tokenOut.append(sLogin.autenticar(32654321L, "32654321", "ALUMNO"));
+		//tokenOut = sLogin.autenticar(32654321L, "32654321", "ALUMNO");
+		StringBuffer tokenIn = new StringBuffer();
+		tokenIn.append(tokenOut);
+		
+		ServicioLogin.comprobar(tokenIn.toString(), "ALUMNO");
+		
+	}
+	
 	public static void rutinaEjemplo() throws Exception{
+		final StringBuffer FIRMA_AL = new StringBuffer();
+		FIRMA_AL.append("xdfGtrhjsvSDyAdddddwwwwwqqqqqyyyyykkkkkbbbbbzzzzz44444<<<<<33333aaaaafdgsergdfvdsfgtrgdgsdfgdsgdfsg");		
+		
 		Map<String, Object> claim = new HashMap<String, Object>();
 		Map<String, Object> claimDev = new HashMap<String, Object>();
 		
@@ -83,8 +106,8 @@ public class TesterTemporal {
 		claim.put("jti", null);
 		
 		
-		JWTSigner signer = new JWTSigner("Una cadena cualquiera");
-		JWTVerifier verifier = new JWTVerifier("Una cadena cualquiera");
+		JWTSigner signer = new JWTSigner(FIRMA_AL.toString());
+		JWTVerifier verifier = new JWTVerifier(FIRMA_AL.toString());
 		
 		String token = signer.sign(claim);
 		System.out.println(token);

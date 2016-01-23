@@ -36,10 +36,7 @@
       <param-name>jersey.config.server.provider.packages</param-name>
       <param-value>ar.com.santalucia.login, ar.com.santalucia.rest, ar.com.santalucia.rest.config</param-value>
     </init-param>
-    <init-param>
-      <param-name>javax.ws.rs.Application</param-name>
-      <param-value>ar.com.santalucia.login.EscuelaSantaLuciaResourceConfig</param-value>
-    </init-param>
+    
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet>

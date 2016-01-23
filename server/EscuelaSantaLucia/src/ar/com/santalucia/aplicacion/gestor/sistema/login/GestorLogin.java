@@ -201,6 +201,4 @@ public class GestorLogin extends Gestor<Login> {
 		return cadenaEncriptada.toString();
 	}
 	
-	
-	
 }

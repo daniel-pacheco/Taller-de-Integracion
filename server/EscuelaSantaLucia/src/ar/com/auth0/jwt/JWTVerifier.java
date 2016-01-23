@@ -29,6 +29,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *        mención al autor original.
 */
  
+// Último modificador: Ariel Ramirez @ 23-01-2016 11:18
 
 public class JWTVerifier {
 
@@ -132,7 +133,7 @@ public class JWTVerifier {
     void verifyExpiration(JsonNode jwtClaims) throws JWTExpiredException {
         final long expiration = jwtClaims.has("exp") ? jwtClaims.get("exp").asLong(0) : 0;
 
-        if (expiration != 0 && System.currentTimeMillis() / 1000L >= expiration) {
+        if (expiration != 0 && System.currentTimeMillis() >= expiration) {
             throw new JWTExpiredException("jwt expired", expiration);
         }
     }

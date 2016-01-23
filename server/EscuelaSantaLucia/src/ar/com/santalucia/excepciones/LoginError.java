@@ -10,7 +10,9 @@ public class LoginError extends Exception {
 	private String detalles; 
 	
 	public static final String LOGINERROR="Las credenciales ingresadas son incorrectas";
-	public static final String FIRMAERROR="No tiene permisos para esta solicitud";
+	public static final String FIRMAERROR = "La firma está corrupta";
+	public static final String ROLERROR = "No está autorizado para realizar esta operación";
+	public static final String EXPIRADO = "La sesión ha expirado";
 	
 	public LoginError(String mensaje){
 		detalles = mensaje;
@@ -21,6 +23,12 @@ public class LoginError extends Exception {
 	}
 	public void setDetalles(String detalles) {
 		this.detalles = detalles;
+	}
+	
+	@Override
+	public String getMessage() {
+		
+		return getDetalles();
 	}
 	
 }

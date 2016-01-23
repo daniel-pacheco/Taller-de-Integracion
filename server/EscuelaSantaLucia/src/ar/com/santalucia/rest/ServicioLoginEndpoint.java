@@ -19,7 +19,7 @@ import ar.com.santalucia.servicio.ServicioAlumno;
 import ar.com.santalucia.servicio.ServicioLogin;
 
 @Path("/sLogin")
-@Produces({ "application/xml", "application/json" }) /*¿PODRÁ SER URL-ENCODE?*/
+@Produces({ "application/xml", "application/json" }) 
 @Consumes({ "application/xml", "application/json" })
 public class ServicioLoginEndpoint {
 

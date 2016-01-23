@@ -25,6 +25,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
+import ar.com.santalucia.excepciones.LoginError;
 import ar.com.santalucia.servicio.ServicioAlumno;
 import ar.com.santalucia.servicio.ServicioLogin;
 
@@ -47,7 +48,7 @@ public class ServicioAlumnoEndpoint{
 	
 	/**
 	 * Instancia un objeto ServicioAlumno si no existe
-	 * @throws Exception
+	 * @throws Exception 
 	 */
 	private void setInstance() throws Exception {
 		if (servicioAlumno == null) {
@@ -79,29 +80,39 @@ public class ServicioAlumnoEndpoint{
 	 * mail y domicilio o null si no existe.
 	 */
 	
-	@RolesAllowed({"alumno"}) //nueva Anotacion!
+	
 	@GET
 	@Path("/alu/{id:[0-9][0-9]*}")
 	public Response getAlumnoById(@PathParam("id") final Long id, @HeaderParam("rol") String rolIn, @HeaderParam("auth0") String token) {
-		//String token= new String();
-		String rol = rolIn;
 		Alumno alumno = new Alumno();
-		alumno = null;
+		String nuevoToken = new String();
 		try {
-			if (rol.equals(ServicioLogin.comprobar(token, rol))) // Comprobacion chancha de logueo
-			{
-				setInstance();
-				alumno = servicioAlumno.getUsuario(id);
+			//ServicioLogin.comprobar(token, rolIn); //Hace la comprobacion de la credencial
+			nuevoToken = ServicioLogin.comprobar(token, rolIn);
+			setInstance();
+			alumno = servicioAlumno.getUsuario(id);
+		}catch (LoginError ex){
+			switch (ex.getDetalles()) {
+			case LoginError.ROLERROR: 
+				return Response.status(Status.UNAUTHORIZED).build();
+			case LoginError.FIRMAERROR:
+				return Response.status(Status.FORBIDDEN).build();
+			case LoginError.EXPIRADO:
+				return Response.ok(ex).build();
+			default:
+				break;
 			}
 		} catch (Exception ex) {
-			// ex.printStackTrace();
-			return Response.ok(ex).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 		}
-		return Response.ok(alumno).build();
+		if(nuevoToken == null){
+			return Response.ok(alumno).build();
+		}else{
+			return Response.ok(alumno).header("auth0", nuevoToken).build();
+		}
 	}
 
 	/**
-	 * 
 	 * @param id
 	 *            Identificador del usuario del cuál se desea recuperar los
 	 *            teléfonos.
