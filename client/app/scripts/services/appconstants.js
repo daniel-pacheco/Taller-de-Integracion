@@ -22,4 +22,12 @@
  	directivo: 'DIRECTIVO'
  })
 
+ .constant('MENU_DIRECTIVO',{
+ 	alumnado: ['#/alumnado', 'Alumnado'],
+ 	materias: ['#/materias', 'Materias'],
+ 	anio: ['#/anio', 'Año'],
+ 	about: ['#/about', 'About'],
+ 	contact: ['#/contact', 'Contact']
+ })
+
  .constant('appConstants', 42);
