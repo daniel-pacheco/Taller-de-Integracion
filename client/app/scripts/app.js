@@ -43,6 +43,11 @@ angular
         controller: 'MateriasCtrl',
         controllerAs: 'materias'
       })      
+      .when('/desemp', {
+        templateUrl: 'views/desemp.html',
+        controller: 'DesempCtrl',
+        controllerAs: 'desemp'
+      })
       .otherwise({
         redirectTo: '/'
       });
