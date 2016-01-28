@@ -15,6 +15,7 @@ import ar.com.santalucia.dominio.modelo.academico.Materia;
 public class Trimestre {
 
 	private Long idTrimestre;
+	private String descripcion;
 	private Integer cicloLectivo;
 	private Set<Nota> listaNotas;
 	private Materia materia;
@@ -24,9 +25,10 @@ public class Trimestre {
 		listaNotas = new HashSet<Nota>();
 	}
 
-	public Trimestre(Long idTrimestre, Integer cicloLectivo, Set<Nota> listaNotas, Materia materia) {
+	public Trimestre(Long idTrimestre, String descripcion, Integer cicloLectivo, Set<Nota> listaNotas, Materia materia) {
 		super();
 		this.idTrimestre = idTrimestre;
+		this.descripcion = descripcion;
 		this.cicloLectivo = cicloLectivo;
 		this.setListaNotas(listaNotas);
 		this.materia = materia;
@@ -62,6 +64,14 @@ public class Trimestre {
 
 	public void setMateria(Materia materia) {
 		this.materia = materia;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 }

@@ -54,18 +54,6 @@ public class ServicioAlumnoEndpoint {
 			}
 		}
 	}
-	
-	@POST
-	public Response create(final ServicioAlumno servicioalumno) {
-		// TODO: process the given servicioalumno
-		// you may want to use the following return statement, assuming that
-		// ServicioAlumno#getId() or a similar method
-		// would provide the identifier to retrieve the created ServicioAlumno
-		// resource:
-		// return
-		// Response.created(UriBuilder.fromResource(ServicioAlumnoEndpoint.class).path(String.valueOf(servicioalumno.getId())).build()).build();
-		return Response.created(null).build();
-	}
 
 	/**
 	 *  

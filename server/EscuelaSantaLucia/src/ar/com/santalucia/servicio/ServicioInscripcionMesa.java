@@ -5,23 +5,17 @@ import java.util.List;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorInscripcion;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMesa;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMesaExamen;
+import ar.com.santalucia.aplicacion.gestor.desempenio.GestorNota;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
 import ar.com.santalucia.dominio.modelo.academico.Inscripcion;
 import ar.com.santalucia.dominio.modelo.academico.Mesa;
 import ar.com.santalucia.dominio.modelo.academico.MesaExamen;
+import ar.com.santalucia.dominio.modelo.desempenio.Nota;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.excepciones.ValidacionException;
 
 /**
  * Clase servicio para inscripciones a mesa
- * 
- * <code>
- * **métodos de relaciones**
- * public Boolean inscribirAlumno(Alumno alumno, Long idInscripcion); OK
- * public Boolean asignarMesaAInscripcion(Mesa mesa, Long idInscripcion); OK
- * public Boolean asignarInscripcionAMesaExamen(Inscripcion inscripcion, Long idMesaExamen);
- *  
- * </code>
  * 
  * @author Eric
  * @version 1.0
@@ -31,6 +25,7 @@ public class ServicioInscripcionMesa {
 	
 	private GestorInscripcion gInscripcion;
 	private GestorMesaExamen gMesaExamen;
+	private GestorNota gNota;
 	private GestorMesa gMesa;
 	private GestorAlumno gAlumno;
 	
@@ -39,11 +34,13 @@ public class ServicioInscripcionMesa {
 			gInscripcion = new GestorInscripcion();
 			gMesa = new GestorMesa();
 			gAlumno = new GestorAlumno();
+			gNota = new GestorNota();
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un problema al inicializar el servicio de operaciones básicas: "
 					+ ex.getMessage());
 		}
 	}
+	
 	
 	public Boolean addInscripcion(Inscripcion inscripcion) throws Exception {
 		try {
@@ -109,6 +106,7 @@ public class ServicioInscripcionMesa {
 		return true;
 	}
 	
+	
 	public Boolean addMesaExamen(MesaExamen mesaExamen) throws Exception {
 		try {
 			if (mesaExamen.getIdMesaExamen() == null) {
@@ -161,5 +159,66 @@ public class ServicioInscripcionMesa {
 		return true;
 	}
 
+	
+	public Boolean addNota(Nota nota) throws Exception {
+		try {
+			if (nota.getIdNota() == null) {
+				gNota.add(nota);
+			} else {
+				gNota.modify(nota);
+			}
+		} catch (ValidacionException ex) {
+			throw ex;
+		} catch (Exception ex) {
+			throw new Exception("No se pudo dar de alta la NOTA: " + ex.getMessage());
+		}
+		return false;
+	}
+	
+	public Boolean deleteNota(Nota nota) throws Exception{
+		try {
+			gNota.delete(nota);
+		} catch (Exception ex) {
+			throw new Exception("No se pudo eliminar la NOTA: " + ex.getMessage());
+		}
+		return true;
+	}
+
+	public Nota getNota(Long idNota) throws Exception {
+		try {
+			return gNota.getById(idNota);
+		} catch (Exception ex) {
+			throw new Exception("No se pudo obtener la NOTA: " + ex.getMessage());
+		}
+	}
+	
+	public List<Nota> getNotas(Nota example) throws Exception {
+		try {
+			return gNota.getByExample(example);
+		} catch (Exception ex) {
+			throw new Exception("No se pudo obtener la lista de NOTA: " + ex.getMessage());
+		}
+	}
+
+	public Boolean asignarNotaAMesaExamen(Nota nota, Long idMesaExamen) throws Exception {
+		try {
+			/**
+			 * 1) obtener mesa-examen
+			 * 2) asignar nota a mesa-examen
+			 * 3) asignar materia a nota (mesa-examen->inscripcion->mesa->materia)
+			 * 4) modify mesa-examen
+			 * 5) modifi nota
+			 */
+			MesaExamen mesaExamen = gMesaExamen.getById(idMesaExamen);
+			mesaExamen.setNota(nota);
+			nota.setMateria(mesaExamen.getInscripcion().getMesa().getMateria());
+			gMesaExamen.modify(mesaExamen);
+			gNota.modify(nota);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
+	}
 	
 }
