@@ -12,6 +12,18 @@
 
   var myModal = {};
   
+  /*
+  
+  $scope.modalx = {};
+  $scope.modalx.controller =  'DirectivoCtrl';  
+  $scope.modalx.title = 'title local directivo';
+  $scope.modalx.content = 'content local directivo';
+  $scope.modalx.templateUrl = 'views/templates/message.tpl.html';
+  $scope.modalx.text = 'perooo, vo so loco vite?';
+  $scope.modalx.show = false;
+
+  */
+
   this.setModal = function(modalOptions){
     myModal = $modal(modalOptions);
   }

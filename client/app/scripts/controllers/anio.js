@@ -8,14 +8,15 @@
  * Controller of the clientAppApp
  */
  angular.module('clientAppApp')
- .config(function($stateProvider) {
+ .config(function($stateProvider, USER_ROLES) {
     $stateProvider
     .state('anio', {
         url: '/anio',
         templateUrl: 'views/anio.html',
         controller: 'AnioCtrl',
         data: {
-        	pageTitle: 'Anio'            
+        	pageTitle: 'Anio',
+          authorizedRoles: [USER_ROLES.admin]           
         }
     });
 })

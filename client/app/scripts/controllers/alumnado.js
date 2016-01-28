@@ -169,10 +169,10 @@ var alumnoJson = {
 
 $scope.answer = [];
 $scope.answer = [];
-$scope.getAll = alumnoService.alumnoGetAll().then(function(response){
+/*$scope.getAll = alumnoService.alumnoGetAll().then(function(response){
 	$scope.answer = response.data;  
 });
-
+*/
 $scope.putAlumno = function () {
 	alumnoService.alumnoPut(alumnoJson).then(function(response){
 		$scope.postAnswer = response.data;
@@ -193,6 +193,37 @@ $scope.deleteAlumno = function (id) {
 $scope.update = function (variable, value) {
 	variable = value;
 }
+
+//---Auth Test
+$scope.logout = function() {
+    AuthService.logout();
+    $state.go('login');
+  };
+ 
+  $scope.performValidRequest = function() {
+    $http.get('http://localhost:8100/valid').then(
+      function(result) {
+        $scope.response = result;
+      });
+  };
+ 
+  $scope.performUnauthorizedRequest = function() {
+    $http.get('http://localhost:8100/notauthorized').then(
+      function(result) {
+        // No result here..
+      }, function(err) {
+        $scope.response = err;
+      });
+  };
+ 
+  $scope.performInvalidRequest = function() {
+    $http.get('http://localhost:8100/notauthenticated').then(
+      function(result) {
+        // No result here..
+      }, function(err) {
+        $scope.response = err;
+      });
+  };
 
 //---test
 $scope.friends = [{name:'John', phone:'555-1276'},
