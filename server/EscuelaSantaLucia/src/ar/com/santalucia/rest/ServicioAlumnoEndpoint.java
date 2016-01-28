@@ -10,6 +10,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -18,11 +19,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.catalina.filters.RequestFilter;
+
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
+import ar.com.santalucia.excepciones.LoginError;
 import ar.com.santalucia.servicio.ServicioAlumno;
+import ar.com.santalucia.servicio.ServicioLogin;
 
 /**
  * 
@@ -37,13 +42,13 @@ import ar.com.santalucia.servicio.ServicioAlumno;
 @PermitAll
 @Produces({"application/json" })
 @Consumes({"application/json" })
-public class ServicioAlumnoEndpoint {
+public class ServicioAlumnoEndpoint{
 	
 	private ServicioAlumno servicioAlumno = null;
 	
 	/**
 	 * Instancia un objeto ServicioAlumno si no existe
-	 * @throws Exception
+	 * @throws Exception 
 	 */
 	private void setInstance() throws Exception {
 		if (servicioAlumno == null) {
@@ -63,24 +68,39 @@ public class ServicioAlumnoEndpoint {
 	 * mail y domicilio o null si no existe.
 	 */
 	
-	@RolesAllowed({"alumno"}) //nueva Anotacion!
+	
 	@GET
 	@Path("/alu/{id:[0-9][0-9]*}")
-	public Response getAlumnoById(@PathParam("id") final Long id) {
+	public Response getAlumnoById(@PathParam("id") final Long id, @HeaderParam("rol") String rolIn, @HeaderParam("auth0") String token) {
 		Alumno alumno = new Alumno();
-		alumno = null;
+		String nuevoToken = new String();
 		try {
+			//ServicioLogin.comprobar(token, rolIn); //Hace la comprobacion de la credencial
+			nuevoToken = ServicioLogin.comprobar(token, rolIn);
 			setInstance();
 			alumno = servicioAlumno.getUsuario(id);
+		}catch (LoginError ex){
+			switch (ex.getDetalles()) {
+			case LoginError.ROLERROR: 
+				return Response.status(Status.UNAUTHORIZED).build();
+			case LoginError.FIRMAERROR:
+				return Response.status(Status.FORBIDDEN).build();
+			case LoginError.EXPIRADO:
+				return Response.ok(ex).build();
+			default:
+				break;
+			}
 		} catch (Exception ex) {
-			// ex.printStackTrace();
-			return Response.ok(ex).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 		}
-		return Response.ok(alumno).build();
+		if(nuevoToken == null){
+			return Response.ok(alumno).build();
+		}else{
+			return Response.ok(alumno).header("auth0", nuevoToken).build();
+		}
 	}
 
 	/**
-	 * 
 	 * @param id
 	 *            Identificador del usuario del cuál se desea recuperar los
 	 *            teléfonos.
@@ -282,6 +302,5 @@ public class ServicioAlumnoEndpoint {
 			//e.printStackTrace();
 			return Response.ok(ex).build();
 		}
-	}
-	
+	}	
 }

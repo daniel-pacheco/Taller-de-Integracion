@@ -1,5 +1,5 @@
-package ar.com.santalucia.accesodatos.dao.academico;
-// Generated 22/12/2015 18:55:28 by Hibernate Tools 4.3.1.Final
+package ar.com.santalucia.dominio.modelo.sistema.login;
+// Generated 02/01/2016 16:55:28 by Hibernate Tools 4.3.1.Final
 
 import java.util.List;
 import javax.naming.InitialContext;
@@ -10,16 +10,15 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 
 import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
-import ar.com.santalucia.dominio.modelo.academico.Area;
 
 /**
- * Home object for domain model class Area.
- * @see ar.com.santalucia.dominio.modelo.academico.Area
+ * Home object for domain model class Login.
+ * @see ar.com.santalucia.dominio.modelo.sistema.login.Login
  * @author Hibernate Tools
  */
-public class AreaHome {
+public class LoginHome {
 
-	private static final Log log = LogFactory.getLog(AreaHome.class);
+	private static final Log log = LogFactory.getLog(LoginHome.class);
 
 	private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
@@ -32,8 +31,8 @@ public class AreaHome {
 		}
 	}
 
-	public void persist(Area transientInstance) {
-		log.debug("persisting Area instance");
+	public void persist(Login transientInstance) {
+		log.debug("persisting Login instance");
 		try {
 			sessionFactory.getCurrentSession().persist(transientInstance);
 			log.debug("persist successful");
@@ -43,8 +42,8 @@ public class AreaHome {
 		}
 	}
 
-	public void attachDirty(Area instance) {
-		log.debug("attaching dirty Area instance");
+	public void attachDirty(Login instance) {
+		log.debug("attaching dirty Login instance");
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(instance);
 			log.debug("attach successful");
@@ -54,8 +53,8 @@ public class AreaHome {
 		}
 	}
 
-	public void attachClean(Area instance) {
-		log.debug("attaching clean Area instance");
+	public void attachClean(Login instance) {
+		log.debug("attaching clean Login instance");
 		try {
 			sessionFactory.getCurrentSession().lock(instance, LockMode.NONE);
 			log.debug("attach successful");
@@ -65,8 +64,8 @@ public class AreaHome {
 		}
 	}
 
-	public void delete(Area persistentInstance) {
-		log.debug("deleting Area instance");
+	public void delete(Login persistentInstance) {
+		log.debug("deleting Login instance");
 		try {
 			sessionFactory.getCurrentSession().delete(persistentInstance);
 			log.debug("delete successful");
@@ -76,10 +75,10 @@ public class AreaHome {
 		}
 	}
 
-	public Area merge(Area detachedInstance) {
-		log.debug("merging Area instance");
+	public Login merge(Login detachedInstance) {
+		log.debug("merging Login instance");
 		try {
-			Area result = (Area) sessionFactory.getCurrentSession().merge(detachedInstance);
+			Login result = (Login) sessionFactory.getCurrentSession().merge(detachedInstance);
 			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -88,11 +87,11 @@ public class AreaHome {
 		}
 	}
 
-	public Area findById(java.lang.Long id) {
-		log.debug("getting Area instance with id: " + id);
+	public Login findById(java.lang.Long id) {
+		log.debug("getting Login instance with id: " + id);
 		try {
-			Area instance = (Area) sessionFactory.getCurrentSession()
-					.get("ar.com.santalucia.dominio.modelo.academico.Area", id);
+			Login instance = (Login) sessionFactory.getCurrentSession()
+					.get("ar.com.santalucia.dominio.modelo.sistema.login.Login", id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {
@@ -105,12 +104,12 @@ public class AreaHome {
 		}
 	}
 
-	public List findByExample(Area instance) {
-		log.debug("finding Area instance by example");
+	public List findByExample(Login instance) {
+		log.debug("finding Login instance by example");
 		try {
 			List results = sessionFactory.getCurrentSession()
-					.createCriteria("ar.com.santalucia.dominio.modelo.academico.Area").add(Example.create(instance))
-					.list();
+					.createCriteria("ar.com.santalucia.dominio.modelo.sistema.login.Login")
+					.add(Example.create(instance)).list();
 			log.debug("find by example successful, result size: " + results.size());
 			return results;
 		} catch (RuntimeException re) {

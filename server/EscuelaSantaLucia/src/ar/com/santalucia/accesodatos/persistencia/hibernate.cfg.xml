@@ -7,7 +7,7 @@ Trabajar offline
 <hibernate-configuration>
  <session-factory>
   <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-  <property name="hibernate.connection.password">mysqlwindows</property>
+  <property name="hibernate.connection.password">linuxalpoder</property>
   <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/escuelabd</property>
   <property name="hibernate.connection.username">root</property>
   <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
@@ -51,5 +51,6 @@ Trabajar offline
    class="ar.com.santalucia.dominio.modelo.desempenio.BoletinInasistencias" resource="ar/com/santalucia/dominio/modelo/desempenio/BoletinInasistencias.hbm.xml"/>
   <mapping class="ar.com.santalucia.dominio.modelo.academico.Area" resource="ar/com/santalucia/dominio/modelo/academico/Area.hbm.xml"/>
   <mapping class="ar.com.santalucia.dominio.modelo.usuarios.Personal" resource="ar/com/santalucia/dominio/modelo/usuarios/Personal.hbm.xml"/>
+ <mapping class="ar.com.santalucia.dominio.modelo.sistema.login.Login" resource="ar/com/santalucia/dominio/modelo/sistema/login/Login.hbm.xml"/>
  </session-factory>
 </hibernate-configuration>
