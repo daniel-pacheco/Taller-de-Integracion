@@ -3,6 +3,7 @@ package ar.com.santalucia.dominio.modelo.academico;
 import ar.com.santalucia.dominio.modelo.desempenio.Nota;
 
 /**
+ * Clase MesaExamen, registra la rendida del alumno
  * 
  * @author Eric
  * @version 1.1

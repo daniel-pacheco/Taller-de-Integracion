@@ -8,6 +8,7 @@
  * Controller of the clientAppApp
  */
  angular.module('clientAppApp')
+<<<<<<< HEAD
  .controller('ClientappappCtrl', function ($scope, $state, loginService, modalService, AUTH_EVENTS) {
   $scope.username = loginService.username();
 
@@ -43,7 +44,23 @@ $scope.$on(AUTH_EVENTS.notAuthenticated, function(event) {
 $scope.setCurrentUsername = function(name) {
   $scope.username = name;
 };
+=======
+ .controller('ClientappappCtrl', function ($scope,MENU_DIRECTIVO) {
+ 	this.awesomeThings = [
+ 	'HTML5 Boilerplate',
+ 	'AngularJS',
+ 	'Karma'
+ 	];
+>>>>>>> 557474a1d1203ee5d86c7f188229d2856d5ecff2
 
     // aca se van a cargar todas las cosas que le pidamos al backend como para arrancar la app
 
-  });
+
+    //Cambia el estilo a active al seleccionar un item del menu
+    $scope.menuDirectivo = MENU_DIRECTIVO;
+    $scope.setActive = function(menuItem) {
+    	$scope.activeMenu = menuItem
+    }
+
+
+});

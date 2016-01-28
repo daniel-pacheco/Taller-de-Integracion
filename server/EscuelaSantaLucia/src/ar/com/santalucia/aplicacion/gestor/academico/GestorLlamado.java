@@ -64,6 +64,8 @@ public class GestorLlamado extends Gestor<Llamado> implements IListable<Llamado>
 			setTransaction();
 			llamadoDAO.attachDirty(object);
 			sesionDeHilo.getTransaction().commit();
+		} catch (ValidacionException ex) {
+			throw ex;
 		} catch (Exception ex) {
 			setSession();
 			setTransaction();

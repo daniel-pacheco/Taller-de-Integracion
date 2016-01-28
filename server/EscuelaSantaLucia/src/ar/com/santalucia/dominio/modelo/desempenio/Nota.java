@@ -18,20 +18,19 @@ public class Nota {
 	private Float calificacion;
 	private Materia materia;
 	private String tipo;
-	private Trimestre trimestre;
+	//private Trimestre trimestre;
 
 	public Nota() {
 		super();
 	}
 
-	public Nota(Long idNota, Date fecha, Float calificacion, Materia materia, String tipo, Trimestre trimestre) {
+	public Nota(Long idNota, Date fecha, Float calificacion, Materia materia, String tipo) {
 		super();
 		this.idNota = idNota;
 		this.fecha = fecha;
 		this.calificacion = calificacion;
 		this.materia = materia;
 		this.tipo = tipo;
-		this.trimestre = trimestre;
 	}
 
 	public Long getIdNota() {
@@ -57,7 +56,7 @@ public class Nota {
 	public void setCalificacion(Float calificacion) {
 		this.calificacion = calificacion;
 	}
-
+	
 	public Materia getMateria() {
 		return materia;
 	}
@@ -65,7 +64,7 @@ public class Nota {
 	public void setMateria(Materia materia) {
 		this.materia = materia;
 	}
-
+	
 	public String getTipo() {
 		return tipo;
 	}
@@ -73,7 +72,7 @@ public class Nota {
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
-
+	/*
 	public Trimestre getTrimestre() {
 		return trimestre;
 	}
@@ -81,5 +80,5 @@ public class Nota {
 	public void setTrimestre(Trimestre trimestre) {
 		this.trimestre = trimestre;
 	}
-
+	*/
 }

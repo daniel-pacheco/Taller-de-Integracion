@@ -26,6 +26,7 @@ angular
   .config(function($stateProvider, $urlRouterProvider) {
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/');
+<<<<<<< HEAD
 })
 
 .run(function ($rootScope, $state, loginService, AUTH_EVENTS) {
@@ -46,6 +47,34 @@ angular
         $state.go('login');
       }
     }
+=======
+});/*
+  .config(function ($routeProvider) {
+    $routeProvider      
+      .when('/about', {
+        templateUrl: 'views/about.html',
+        controller: 'AboutCtrl',
+        controllerAs: 'about'
+      })
+      .when('/directivo', {
+        templateUrl: 'views/directivo.html',
+        controller: 'DirectivoCtrl',
+        controllerAs: 'directivo'
+      })
+      .when('/materias', {
+        templateUrl: 'views/materias.html',
+        controller: 'MateriasCtrl',
+        controllerAs: 'materias'
+      })      
+      .when('/desemp', {
+        templateUrl: 'views/desemp.html',
+        controller: 'DesempCtrl',
+        controllerAs: 'desemp'
+      })
+      .otherwise({
+        redirectTo: '/'
+      });
+>>>>>>> 557474a1d1203ee5d86c7f188229d2856d5ecff2
   });
 })
   

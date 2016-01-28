@@ -23,9 +23,18 @@
  .controller('AnioCtrl', function ($scope) {
  	
  	$scope.tooltip = {
- 		tooltipEdit : {
- 			'title' : 'Editar'
- 		}
+ 		tooltipProfile : {
+ 			'title' : 'Perfil'
+ 		},
+    tooltipDelete : {
+      'title' : 'Eliminar'
+    },
+    tooltipChange : {
+      'title' : 'Cambiar'
+    },
+      tooltipAsign : {
+      'title' : 'Asignar a este curso'
+    }
  	};
 
  	$scope.listadoAnio = true;

@@ -7,7 +7,6 @@ import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 /**
  * 
  * @author Ariel Ramirez
- *
  * @version 1.0
  */
 public class Inscripcion {

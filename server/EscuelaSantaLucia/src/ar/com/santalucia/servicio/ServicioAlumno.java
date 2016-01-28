@@ -8,6 +8,7 @@ import java.util.Set;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorCurso;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
+import ar.com.santalucia.dominio.modelo.sistema.login.Login;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
@@ -31,6 +32,7 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 
 	private GestorAlumno gAlumno;
 	private GestorCurso gCurso;
+	private ServicioLogin sLogin;
 
 	public ServicioAlumno() throws Exception {
 		super();
@@ -62,14 +64,18 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 	@Override
 	public boolean addUsuario(Alumno usuario) throws Exception {
 		try {
+			sLogin = new ServicioLogin();			//Instanciado para usar sólo aquí
 			if (usuario.getIdUsuario() == null) {
 				gAlumno.add(usuario);
+				sLogin.addLogin(usuario.getNroDocumento(), Login.ALUMNO);
 				Curso cursoGen = new Curso();
 				cursoGen = gCurso.getByDivision('0');
 				cursoGen.getListaAlumnos().add(usuario);
 				gCurso.modify(cursoGen);
 			} else {
+				Long dniViejo = gAlumno.getById(usuario.getIdUsuario()).getNroDocumento(); 
 				gAlumno.modify(usuario);
+				sLogin.actualizarUsuario(dniViejo, usuario.getNroDocumento());
 			}
 			return true;
 		} catch (ValidacionException ex) {
