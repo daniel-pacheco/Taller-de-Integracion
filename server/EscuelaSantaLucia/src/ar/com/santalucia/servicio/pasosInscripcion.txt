@@ -10,13 +10,13 @@ Pasos para realizar una inscripción a mesa de un alumno:
 
 Cuando el alumno va a rendir (si no se presenta a rendir también):
 
-4) Dar de alta la mesa-examen (representa la "rendida") OK
+4) Dar de alta la mesa-examen (representa la "rendida")
 	<< Poner asistencia del alumno: TRUE o FALSE >>
-5) Asignar la inscripción a la mesa-examen OK
-6) Dar de alta la nota OK
+5) Asignar la inscripción a la mesa-examen
+6) Dar de alta la nota
 	<< Si la asistencia es FALSE, nota = null (no se crea) y los pasos 7 y 8 no se ejecutan >>
-7) Asignar la materia a la nota (esto ya está en la mesa) OK
-8) Asignar la nota a la mesa-examen OK
+7) Asignar la materia a la nota (esto ya está en la mesa)
+8) Asignar la nota a la mesa-examen
 
 ////////////////////////////////////////////////////////////////////
 

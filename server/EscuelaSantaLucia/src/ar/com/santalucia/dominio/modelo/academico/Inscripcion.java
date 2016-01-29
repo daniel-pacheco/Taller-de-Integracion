@@ -2,6 +2,7 @@ package ar.com.santalucia.dominio.modelo.academico;
 
 import java.util.Date;
 
+import ar.com.santalucia.dominio.modelo.desempenio.Nota;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 
 /**
@@ -16,6 +17,8 @@ public class Inscripcion {
 	private Date fecha;
 	private Alumno alumno;
 	private Boolean asistencia;
+	private Nota nota;
+	private String nroActa;
 	//private Boolean activo;
 	//private Long codigoLlamado;
 	//private Long codigoTransaccion;
@@ -24,13 +27,16 @@ public class Inscripcion {
 		super();
 	}
 
-	public Inscripcion(Long idInscripcion, Mesa mesa, Date fecha, Alumno alumno, Boolean asistencia) {
+	public Inscripcion(Long idInscripcion, Mesa mesa, Date fecha, Alumno alumno, Boolean asistencia, Nota nota,
+			String nroActa) {
 		super();
 		this.idInscripcion = idInscripcion;
 		this.mesa = mesa;
 		this.fecha = fecha;
 		this.alumno = alumno;
 		this.asistencia = asistencia;
+		this.setNota(nota);
+		this.setNroActa(nroActa);
 	}
 
 	public Long getIdInscripcion() {
@@ -71,6 +77,22 @@ public class Inscripcion {
 
 	public void setAsistencia(Boolean asistencia) {
 		this.asistencia = asistencia;
+	}
+
+	public Nota getNota() {
+		return nota;
+	}
+
+	public void setNota(Nota nota) {
+		this.nota = nota;
+	}
+
+	public String getNroActa() {
+		return nroActa;
+	}
+
+	public void setNroActa(String nroActa) {
+		this.nroActa = nroActa;
 	}
 	
 }

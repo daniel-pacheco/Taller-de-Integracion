@@ -199,7 +199,7 @@ public class ServicioInscripcionMesa {
 			throw new Exception("No se pudo obtener la lista de NOTA: " + ex.getMessage());
 		}
 	}
-
+	
 	public Boolean asignarNotaAMesaExamen(Nota nota, Long idMesaExamen) throws Exception {
 		try {
 			/**
