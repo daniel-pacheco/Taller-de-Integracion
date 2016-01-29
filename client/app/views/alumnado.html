@@ -35,7 +35,18 @@
 	</button>
 	<button ng-click="setM(modalxi)" type="button" class="btn btn-info">
 		Post
+	</button> <br>
+	<button ng-click="performValidRequest()" type="button" class="btn btn-info">
+		valid request
 	</button>
+	<button ng-click="performUnauthorizedRequest()" type="button" class="btn btn-info">
+		unauthorized resource
+	</button>
+	<button ng-click="performInvalidRequest()" type="button" class="btn btn-info">
+		Make Request without valid token
+	</button>
+	<br>
+	{{response}}
 
 	<hr>
 	<div id="listado" ng-show="listado1">

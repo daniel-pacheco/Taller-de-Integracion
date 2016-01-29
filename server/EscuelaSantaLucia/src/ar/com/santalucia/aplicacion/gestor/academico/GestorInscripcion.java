@@ -124,11 +124,19 @@ public class GestorInscripcion extends Gestor<Inscripcion> implements IListable<
 	}
 
 	@Override
+	public Boolean existeNroActa(String nroActa) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
 	public void validar(Object object) throws Exception {
 		Inscripcion inscripcion = (Inscripcion) object;
 		
 		ValidacionException exception = new ValidacionException();
 		Boolean vFecha = this.validarFecha(inscripcion);
+		
+		// validar si existe nro acta
 		
 		exception.addMensajeError(vFecha ? null : "La fecha de la inscripción excede el plazo mínimo. "
 													+ "Recuerde que se puede inscribir hasta " 

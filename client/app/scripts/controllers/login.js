@@ -19,10 +19,22 @@ angular.module('clientAppApp')
         }
     });
 })
-  .controller('LoginCtrl', function ($scope, $aside, $http, loginService, USER_ROLES) {
+  .controller('LoginCtrl', function ($scope, $state, $http, loginService, USER_ROLES) {
     $scope.roleOptions = USER_ROLES;
     
     $scope.loguearse =  loginService.login;
 
     $scope.HolaMundo ='Hola mundo';
+
+    $scope.data = {};
+ 
+  $scope.login = function(data) {
+    loginService.login(data.username, data.password, data.role).then(function(authenticated) {
+      $state.go('alumnado', {}, {reload: true});
+      $scope.setCurrentUsername(data.username);
+    }, function(err) {
+      alert('Login failed! Please check your credentials!');
+    });
+  };
+
   });

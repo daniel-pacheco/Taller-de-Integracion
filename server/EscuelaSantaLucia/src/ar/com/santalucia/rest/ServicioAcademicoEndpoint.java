@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -16,7 +15,6 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -26,8 +24,6 @@ import ar.com.santalucia.dominio.modelo.academico.Curso;
 import ar.com.santalucia.dominio.modelo.academico.Llamado;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.academico.Mesa;
-import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
-import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.servicio.ServicioAcademico;
 import ar.com.santalucia.servicio.ServicioAlumno;
 import ar.com.santalucia.servicio.ServicioDocente;
@@ -70,16 +66,6 @@ public class ServicioAcademicoEndpoint {
 				throw ex;
 			}
 		}
-	}
-	
-	
-	@POST
-	public Response create(final ServicioAcademico servicioacademico) {
-		//TODO: process the given servicioacademico 
-		//you may want to use the following return statement, assuming that ServicioAcademico#getId() or a similar method 
-		//would provide the identifier to retrieve the created ServicioAcademico resource:
-		//return Response.created(UriBuilder.fromResource(ServicioAcademicoEndpoint.class).path(String.valueOf(servicioacademico.getId())).build()).build();
-		return Response.created(null).build();
 	}
 
 	/**
