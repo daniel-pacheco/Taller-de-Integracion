@@ -8,8 +8,8 @@
  * Controller of the clientAppApp
  */
  angular.module('clientAppApp')
-<<<<<<< HEAD
- .controller('ClientappappCtrl', function ($scope, $state, loginService, modalService, AUTH_EVENTS) {
+
+ .controller('ClientappappCtrl', function ($scope, $state, loginService, modalService, AUTH_EVENTS, MENU_DIRECTIVO) {
   $scope.username = loginService.username();
 
   $scope.unauthorized = {};
@@ -44,14 +44,6 @@ $scope.$on(AUTH_EVENTS.notAuthenticated, function(event) {
 $scope.setCurrentUsername = function(name) {
   $scope.username = name;
 };
-=======
- .controller('ClientappappCtrl', function ($scope,MENU_DIRECTIVO) {
- 	this.awesomeThings = [
- 	'HTML5 Boilerplate',
- 	'AngularJS',
- 	'Karma'
- 	];
->>>>>>> 557474a1d1203ee5d86c7f188229d2856d5ecff2
 
     // aca se van a cargar todas las cosas que le pidamos al backend como para arrancar la app
 

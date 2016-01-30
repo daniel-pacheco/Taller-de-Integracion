@@ -26,8 +26,19 @@
  	alumnado: ['#/alumnado', 'Alumnado'],
  	materias: ['#/materias', 'Materias'],
  	anio: ['#/anio', 'Año'],
+ 	desemp: ['#/desemp', 'Desempeño'],
  	about: ['#/about', 'About'],
  	contact: ['#/contact', 'Contact']
+ })
+
+ .constant('CURSOS',{
+ 	todos: 'Todos',
+ 	primero: 'Primero',
+ 	segundo: 'Segundo',
+ 	tercero: 'Tercero',
+ 	cuarto: 'Cuarto',
+ 	quinto: 'Quinto',
+ 	sexto: 'Sexto'
  })
 
  .constant('appConstants', 42);

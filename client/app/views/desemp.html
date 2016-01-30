@@ -1,1 +1,38 @@
-<p>This is the desemp view.</p>
+<ul class="nav nav-tabs" >
+	<li role="presentation" class="dropdown">
+		<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+			Seleccione un a&ntilde;o<span class="caret"></span>
+		</a>
+		<ul class="dropdown-menu">
+			<li><a>2014</a></li>
+			<li><a>2015</a></li>
+			<li><a>2016</a></li>
+		</ul>
+	</li>
+	<li ng-repeat="item in cursos" role="presentation" ng-class="{active : activeMenu === item}" ng-click="seleccionar('{{item}}')"><a href="" ng-click="setActive(item)">{{item}}</a></li>
+</ul>
+</br>
+<div id="listadoTodos" ng-show="listadoTodos" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
+	{{cursos.todos}}
+</div>	
+
+<div id="listadoPrimero" ng-show="listadoPrimero" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
+	hola {{cursos.primero}}
+</div>	
+<div id="listadoSegundo" ng-show="listadoSegundo" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
+	{{cursos.segundo}}
+</div>	
+
+<div id="listadoTercero" ng-show="listadoTercero" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
+	hola {{cursos.tercero}}
+</div>	
+<div id="listadoCuarto" ng-show="listadoCuarto" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
+	{{cursos.cuarto}}
+</div>	
+
+<div id="listadoQuinto" ng-show="listadoQuinto" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
+	hola {{cursos.quinto}}
+</div>	
+<div id="listadoSexto" ng-show="listadoSexto" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
+	{{cursos.sexto}}
+</div>	
