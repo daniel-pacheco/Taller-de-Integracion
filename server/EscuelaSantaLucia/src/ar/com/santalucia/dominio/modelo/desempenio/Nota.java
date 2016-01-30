@@ -14,19 +14,20 @@ import ar.com.santalucia.dominio.modelo.academico.Materia;
 public class Nota {
 
 	private Long idNota;
+	private String descripcion;
 	private Date fecha;
 	private Float calificacion;
 	private Materia materia;
 	private String tipo;
-	//private Trimestre trimestre;
-
+	
 	public Nota() {
 		super();
 	}
 
-	public Nota(Long idNota, Date fecha, Float calificacion, Materia materia, String tipo) {
+	public Nota(Long idNota, String descripcion, Date fecha, Float calificacion, Materia materia, String tipo) {
 		super();
 		this.idNota = idNota;
+		this.descripcion = descripcion;
 		this.fecha = fecha;
 		this.calificacion = calificacion;
 		this.materia = materia;
@@ -72,13 +73,13 @@ public class Nota {
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
-	/*
-	public Trimestre getTrimestre() {
-		return trimestre;
+
+	public String getDescripcion() {
+		return descripcion;
 	}
 
-	public void setTrimestre(Trimestre trimestre) {
-		this.trimestre = trimestre;
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
-	*/
+
 }

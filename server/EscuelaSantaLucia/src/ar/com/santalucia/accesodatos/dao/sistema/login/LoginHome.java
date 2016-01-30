@@ -1,4 +1,4 @@
-package ar.com.santalucia.dominio.modelo.sistema.login;
+package ar.com.santalucia.accesodatos.dao.sistema.login;
 // Generated 02/01/2016 16:55:28 by Hibernate Tools 4.3.1.Final
 
 import java.util.List;
@@ -10,6 +10,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 
 import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
+import ar.com.santalucia.dominio.modelo.sistema.login.Login;
 
 /**
  * Home object for domain model class Login.

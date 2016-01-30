@@ -27,11 +27,5 @@
 				<column name="IDUSUARIO"/>
 			</many-to-many>
         </set>
-        <set name="listaInscripciones" table="INSCRIPCION" inverse="false" lazy="true">
-            <key>
-                <column name="IDMESA" />
-            </key>
-            <one-to-many class="ar.com.santalucia.dominio.modelo.academico.Inscripcion" />
-        </set>
     </class>
 </hibernate-mapping>

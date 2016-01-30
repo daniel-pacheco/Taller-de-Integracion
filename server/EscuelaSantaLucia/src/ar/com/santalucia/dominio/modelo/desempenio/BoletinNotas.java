@@ -9,15 +9,16 @@ import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
  * Clase BoletinNotas: maneja un boletin de notas (libreta), conteniendo una
  * lista de Trimestres.
  * @author ericpennachini
- * @version 1.0
- *
+ * @version 1.1
  */
 
-public class BoletinNotas {
+// Último modificador: Eric Pennachini @ 30-01-16 13:00
 
+public class BoletinNotas {
 	private Long idBoletinNotas;
 	private Alumno propietario;
 	private Set<Trimestre> listaTrimestres;
+	private Set<Nota> listaNotasExamen; // notas de diciembre, marzo...
 	private Integer cicloLectivo;
 
 	public BoletinNotas() {
@@ -25,11 +26,12 @@ public class BoletinNotas {
 		listaTrimestres = new HashSet<Trimestre>();
 	}
 
-	public BoletinNotas(Long idBoletinNotas, Alumno propietario, Set<Trimestre> listaTrimestres, Integer cicloLectivo) {
+	public BoletinNotas(Long idBoletinNotas, Alumno propietario, Set<Trimestre> listaTrimestres, Set<Nota> listaNotasExamen, Integer cicloLectivo) {
 		super();
 		this.idBoletinNotas = idBoletinNotas;
 		this.propietario = propietario;
 		this.setListaTrimestres(listaTrimestres);
+		this.setListaNotasExamen(listaNotasExamen);
 		this.cicloLectivo = cicloLectivo;
 	}
 
@@ -63,6 +65,14 @@ public class BoletinNotas {
 
 	public void setCicloLectivo(Integer cicloLectivo) {
 		this.cicloLectivo = cicloLectivo;
+	}
+
+	public Set<Nota> getListaNotasExamen() {
+		return listaNotasExamen;
+	}
+
+	public void setListaNotasExamen(Set<Nota> listaNotasExamen) {
+		this.listaNotasExamen = listaNotasExamen;
 	}
 
 }

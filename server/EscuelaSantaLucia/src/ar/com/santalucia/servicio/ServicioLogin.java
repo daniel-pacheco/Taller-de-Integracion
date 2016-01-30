@@ -2,10 +2,8 @@ package ar.com.santalucia.servicio;
 
 import java.security.SignatureException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
 import ar.com.auth0.jwt.JWTExpiredException;
 import ar.com.auth0.jwt.JWTSigner;
 import ar.com.auth0.jwt.JWTVerifier;
@@ -19,29 +17,16 @@ import ar.com.santalucia.excepciones.LoginError;
  *
  */
 public class ServicioLogin {
-	/* Responsabilidades:
-	Autenticar y desconectar usuarios
-	Generar informcion para token
-	Descifrar informacion de tokens
-	Mantener control de tokens
-	¿Podria ser una clase estática?
-	*/
 	private GestorLogin gLogin;
 	
 	private static String FIRMA_AL = "xdfGtrhjsvSDyoplasdcdsegilyEscuelaSantaLucia-uyfFdHhdKfLYGYHheraqw3543543523fwSFA";
 	private static String FIRMA_DO = "xdfGtrh545612342554gdsdagnsdcdsegily.EscuelaSantaLucia-uyfFdHhdKfLYGYHher.4567886ewr3543523fwSFA";
 	private static String FIRMA_DIR = "qqwdopvjijhrntreugbeugb8890834.EscuelaSantaLucia-uyfFdHhdKfLYGYHher.aqw3dfsghDSFHYRjtyjTKcqw3erdqwecfa<QA";
 	private static String FIRMA_AD = "SERHGERHHET$#/$ergdsfgds4356SFSRDF2#&#$.EscuelaSantaLucia-uyfFdHhdKfLYGYHher.aqw3543543523fwSFAaREWTER45dbsdgbqwt3$";
-	//private static String SUBJECT="SantaLuciaSystem";
 	
 	public ServicioLogin() throws Exception{
-		try {
-			gLogin = new GestorLogin();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			gLogin = new GestorLogin();		
 		}
-	}
 	
 	/**
 	 * Agrega una entrada de login para un usuario nuevo. 
@@ -56,6 +41,12 @@ public class ServicioLogin {
 		}
 	}
 	
+	/**
+	 * Actualiza los datos de login de un usuario. Cuando un usuario cammbia de número de DNI se debe actualizar la tabla de login.
+	 * @param usuarioViejo DNI antiguo del usuario.
+	 * @param usuarioNuevo DNI nuevo del usuario.
+	 * @throws Exception
+	 */
 	public void actualizarUsuario(Long usuarioViejo, Long usuarioNuevo) throws Exception{
 		try{
 			gLogin.updateUser(usuarioViejo, usuarioNuevo);
@@ -64,10 +55,15 @@ public class ServicioLogin {
 		}
 	}
 	
+	/**
+	 * Verifica las credenciales presentadas por el usuario y datos de la llamada del front end. Si las credenciales son correctas se devuelve un token.
+	 * @param usuario
+	 * @param clave
+	 * @param rol
+	 * @return Token si las credenciales son correctas
+	 * @throws Exception
+	 */
 	public String autenticar(Long usuario, String clave, String rol) throws Exception{
-		// Comprobar las credenciales
-		// Si es correcto, generar el token
-		// Devolver el token
 		String token = null;
 		if (gLogin.autenticar(new Login(null, usuario, clave, null,null,rol,null))){
 			token = generarToken(usuario.toString(), rol);
@@ -78,11 +74,15 @@ public class ServicioLogin {
 	}
 	
 	/**
-	 * 
+	 * Comprueba el token y los datos asociados por cada petición realizada al backend. En caso de que las credenciales coincidan, se verifica
+	 * el tiempo de expiración del token. De estar próximo a expirar el token se devuelve uno nuevo.
 	 * @param token
-	 * @throws Exception
+	 * @param rol 
+	 * @return
+	 * @throws Exception 
+	 * @throws SignatureException
+	 * @throws LoginError
 	 */
-	//public static String comprobar(String token, String rol) throws Exception{
 	public static String comprobar(String token, String rol) throws Exception, SignatureException, LoginError{
 		try{
 			Map<String, Object> claimDev = new HashMap<String, Object>();
@@ -124,19 +124,11 @@ public class ServicioLogin {
 	
 	private static String generarToken(String usuario, String rol) throws Exception{
 		Map<String, Object> claim = new HashMap<String, Object>(); // Definición del claim
-		
 		Calendar calendar = Calendar.getInstance();
 		
-		//Date expiracion = new Date();
-		calendar.add(Calendar.MINUTE, 1);
-		//expiracion.setTime(calendar.getTimeInMillis());
+		calendar.add(Calendar.MINUTE, 20); // Calendar para fijar el tiempo de expiración, n minutos a partir de fecha del sistema.
+		//System.out.println("Supuesta expiracion: " + calendar.getTime()); // Descomentar esta linea para tener salida por consola
 		
-		System.out.println("Supuesta expiracion: " + calendar.getTime());
-		/*
-		if (!claim.isEmpty()) {
-			claim.clear();
-		}	
-		*/
 		claim.put("iss", "systemStaLucia");
 		claim.put("sub", rol);
 		claim.put("aud", usuario);
@@ -177,15 +169,14 @@ public class ServicioLogin {
 			firma = ServicioLogin.FIRMA_AD;
 			break;
 		default:
-			break;
-			//Disparar excepcion PermisoDenegado
+			throw new LoginError(LoginError.FIRMAERROR);
 		}
 		return firma;
 	}
 	
 	private static String renovarToken(Long tExpiracion, String usuario, String rol) throws Exception {
 		Long diferencia = tExpiracion - System.currentTimeMillis();
-		if (diferencia <= (1000*30)){
+		if (diferencia <= (1000*600)){ //Unidades en milisegundos (1000 * segundos antes de que expire) actual: 10 minutos
 			System.out.println(">> Token renovado!");
 			return generarToken(usuario, rol);
 		}

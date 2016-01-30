@@ -8,8 +8,11 @@ import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 /**
  * 
  * @author Ariel Ramirez
- * @version 1.0
+ * @version 1.1
  */
+
+// Último modificador: Eric Pennachini @ 30-01-16 13:00
+
 public class Inscripcion {
 	
 	private Long idInscripcion;
@@ -18,10 +21,6 @@ public class Inscripcion {
 	private Alumno alumno;
 	private Boolean asistencia;
 	private Nota nota;
-	private String nroActa;
-	//private Boolean activo;
-	//private Long codigoLlamado;
-	//private Long codigoTransaccion;
 	
 	public Inscripcion() {
 		super();
@@ -36,7 +35,7 @@ public class Inscripcion {
 		this.alumno = alumno;
 		this.asistencia = asistencia;
 		this.setNota(nota);
-		this.setNroActa(nroActa);
+		//this.setNroActa(nroActa);
 	}
 
 	public Long getIdInscripcion() {
@@ -85,14 +84,6 @@ public class Inscripcion {
 
 	public void setNota(Nota nota) {
 		this.nota = nota;
-	}
-
-	public String getNroActa() {
-		return nroActa;
-	}
-
-	public void setNroActa(String nroActa) {
-		this.nroActa = nroActa;
 	}
 	
 }

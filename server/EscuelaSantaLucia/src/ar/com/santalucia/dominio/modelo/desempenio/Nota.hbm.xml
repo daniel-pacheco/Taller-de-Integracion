@@ -10,6 +10,9 @@
             <column name="IDNOTA" />
             <generator class="identity" />
         </id>
+        <property name="descripcion" type="java.lang.String">
+            <column name="DESCRIPCION" />
+        </property>
         <property name="fecha" type="java.util.Date">
             <column name="FECHA" />
         </property>
@@ -22,10 +25,5 @@
         <property name="tipo" type="java.lang.String">
             <column name="TIPO" />
         </property>
-        <!-- 
-        <many-to-one name="trimestre" class="ar.com.santalucia.dominio.modelo.desempenio.Trimestre" fetch="join">
-            <column name="TRIMESTRE" />
-        </many-to-one>
-         -->
     </class>
 </hibernate-mapping>

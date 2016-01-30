@@ -1,18 +1,12 @@
 package ar.com.santalucia.aplicacion.gestor.sistema.login;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.MessageDigestAlgorithms;
-
+import ar.com.santalucia.accesodatos.dao.sistema.login.LoginHome;
 import ar.com.santalucia.aplicacion.gestor.Gestor;
 import ar.com.santalucia.dominio.modelo.sistema.login.Login;
-import ar.com.santalucia.dominio.modelo.sistema.login.LoginHome;
-import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 /**
  * 
  * @author Ariel Ramirez
