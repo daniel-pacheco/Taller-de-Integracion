@@ -187,24 +187,24 @@ public class ServicioInscripcionMesaEndpoint {
 	 * @param jsonPack [idInscripcion, idMesaExamen, ]
 	 * @return
 	 */
-	@POST
-	@Path("/aluRinde/")
-	public Response alumnoRinde(JsonPack jsonPack) {
-		try {
-			// obtengo la mesaExamen para poder después comprobar su asistencia, de paso la uso para asignarle la inscripción
-			Inscripcion inscripcion = servicioInscripcionMesa.getInscripcion(jsonPack.getValues().elementAt(0));
-			MesaExamen mesaExamen = servicioInscripcionMesa.getMesaExamen(jsonPack.getValues().elementAt(1));			
-			
-			Boolean resPaso1 = servicioInscripcionMesa.asignarInscripcionAMesaExamen(inscripcion, mesaExamen.getIdMesaExamen());
-			
-			if (inscripcion.getAsistencia() == true) {
-				
-			}
-			
-			return Response.ok().build();
-		} catch (Exception ex) {
-			return Response.ok(ex).build();
-		}
-	}
+//	@POST
+//	@Path("/aluRinde/")
+//	public Response alumnoRinde(JsonPack jsonPack) {
+//		try {
+//			// obtengo la mesaExamen para poder después comprobar su asistencia, de paso la uso para asignarle la inscripción
+//			Inscripcion inscripcion = servicioInscripcionMesa.getInscripcion(jsonPack.getValues().elementAt(0));
+//			MesaExamen mesaExamen = servicioInscripcionMesa.getMesaExamen(jsonPack.getValues().elementAt(1));			
+//			
+//			Boolean resPaso1 = servicioInscripcionMesa.asignarInscripcionAMesaExamen(inscripcion, mesaExamen.getIdMesaExamen());
+//			
+//			if (inscripcion.getAsistencia() == true) {
+//				
+//			}
+//			
+//			return Response.ok().build();
+//		} catch (Exception ex) {
+//			return Response.ok(ex).build();
+//		}
+//	}
 	
 }

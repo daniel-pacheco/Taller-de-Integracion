@@ -47,33 +47,10 @@ public class GestorMesaExamen extends Gestor<MesaExamen> implements IValidacionM
 	}
 
 	@Override
-	public void modify(MesaExamen object) throws Exception {
-		try {
-			this.validar(object);
-			setSession();
-			setTransaction();
-			mesaExamenDAO.attachDirty(object);
-			sesionDeHilo.getTransaction().commit();
-		} catch (Exception ex) {
-			setSession();
-			setTransaction();
-			sesionDeHilo.getTransaction().rollback();
-			throw new Exception("Ha ocurrido un problema al actualizar la MESA-EXAMEN: " + ex.getMessage());
-		}
-	}
+	public void modify(MesaExamen object) throws Exception {}
 
 	@Override
-	public void delete(MesaExamen object) throws Exception {
-		try {
-			setSession();
-			setTransaction();
-			mesaExamenDAO.delete(object);
-			sesionDeHilo.getTransaction().commit();
-		} catch (Exception ex) {
-			closeSession();
-			throw new Exception("Ha ocurrido un problema al eliminar la MESA-EXAMEN: " + ex.getMessage());
-		}
-	}
+	public void delete(MesaExamen object) throws Exception {}
 
 	@Override
 	public MesaExamen getById(Long id) throws Exception {
@@ -120,15 +97,9 @@ public class GestorMesaExamen extends Gestor<MesaExamen> implements IValidacionM
 	}
 
 	@Override
-	public Boolean existeNroActa(String nroActa) {
-		
-		return null;
-	}
-
-	@Override
 	public void validar(Object object) throws Exception {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 }
