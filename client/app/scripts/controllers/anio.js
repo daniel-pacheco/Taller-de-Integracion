@@ -34,6 +34,9 @@
     },
       tooltipAsign : {
       'title' : 'Asignar a este curso'
+    },
+    tooltipEdit : {
+      'title' : 'Editar'
     }
  	};
 
@@ -79,14 +82,14 @@
  	{anio:'4º', division:'U', turno: 'Tarde', cantidadDeAlumnos: '45'},
  	{anio:'5º', division:'U', turno: 'Tarde', cantidadDeAlumnos: '32'}];
 
- 	//---test list alumnos
-$scope.test = [{nro:'1', name:'John', firstName:'Lennon', DNI:'555555555'},
-					{nro:'1', name:'John', firstName:'Lennon', DNI:'555555555'},
-					{nro:'2', name:'John', firstName:'Lennon', DNI:'555555555'},
-					{nro:'3', name:'John', firstName:'Lennon', DNI:'555555555'},
-					{nro:'4', name:'John', firstName:'Lennon', DNI:'555555555'},
-					{nro:'5', name:'John', firstName:'Lennon', DNI:'555555555'},
-					{nro:'6', name:'John', firstName:'Lennon', DNI:'555555555'},
-					{nro:'7', name:'John', firstName:'Lennon', DNI:'555555555'}];
+  //---test list alumnos notas
+$scope.test = [{nro:'1', name:'John', surName:'Lennon', DNI:'555555555'},
+          {nro:'1', name:'John', surName:'Lennon', DNI:'555555555'},
+          {nro:'2', name:'John', surName:'Lennon', DNI:'555555555'},
+          {nro:'3', name:'John', surName:'Lennon', DNI:'555555555'},
+          {nro:'4', name:'John', surName:'Lennon', DNI:'555555555'},
+          {nro:'5', name:'John', surName:'Lennon', DNI:'555555555'},
+          {nro:'6', name:'John', surName:'Lennon', DNI:'555555555'},
+          {nro:'7', name:'John', surName:'Lennon', DNI:'555555555'}];
 
  });

@@ -117,86 +117,174 @@ input, button, select, textarea {
     transition: all 0.25s ease-in-out;
     border-left: 4px solid #404040;
   }
+  /* triangulos
+.triangle-bottom {
+     width: 0;
+    height: 0;
+    border-left: 100px solid transparent;
+    border-right: 100px solid transparent;
+    border-bottom: 100px solid #CCC;
+    margin: 0% 20%;
 }
+.triangle-left {
+  display: block;
+    width: 0;
+    height: 0;
+    border-top: 100px solid transparent;
+    border-left: 100px solid #CCC;
+    border-bottom: 100px solid transparent;
+    margin-left: 50%;
+    }*/
+  }
 
-.shadowRed{
-  text-shadow: 1px 1px 1px #000, 3px 3px 5px green;
-  cursor: pointer;
-}
-.shadowGreen{
-  text-shadow: 1px 1px 1px #000, 3px 3px 5px red;
-  cursor: pointer;
-}
+  .shadowRed{
+    text-shadow: 1px 1px 1px #000, 3px 3px 5px green;
+    cursor: pointer;
+  }
+  .shadowGreen{
+    text-shadow: 1px 1px 1px #000, 3px 3px 5px red;
+    cursor: pointer;
+  }
 
-.glyphicon {
-  text-align:center;
-}
+  .glyphicon {
+    text-align:center;
+  }
 
-h1, h2, h3, h4 {
-  margin-top: 10px;
-  margin-bottom: 5px;
-}
+  h1, h2, h3, h4 {
+    margin-top: 10px;
+    margin-bottom: 5px;
+  }
 
-hr {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
+  hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
 
-.cropArea {
+  .cropArea {
     background: #E4E4E4;
     overflow: hidden;
     width:500px;
     height:350px;
-}
-form .progress {
+  }
+  form .progress {
     line-height: 15px;
-}
-.progress {
+  }
+  .progress {
     display: inline-block;
     width: 100px;
     border: 3px groove #CCC;
-}
-.progress div {
+  }
+  .progress div {
     font-size: smaller;
     background: orange;
     width: 0;
-}
+  }
 
-.btn-opacity {
-  opacity: 0.45;
+  .btn-opacity {
+    opacity: 0.45;
     filter: alpha(opacity=45); /* For IE8 and earlier */
-     }
+  }
 
-.animate-if {
-  background:white;
-  border:1px solid black;
-  padding:10px;
+  .animate-if {
+    background:white;
+    border:1px solid black;
+    padding:10px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    margin: 0 15%;
+    box-shadow: 5px 5px 2px #888888;
+  }
+
+  .animate-if.ng-enter, .animate-if.ng-leave {
+    transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+  }
+
+  .animate-if.ng-enter,
+  .animate-if.ng-leave.ng-leave-active {
+    opacity:0;
+  }
+
+  .animate-if.ng-leave,
+  .animate-if.ng-enter.ng-enter-active {
+    opacity:1;
+  }
+
+  .navbar-nav > .active > a {
+    background-color: #313131;
+    -webkit-transition: all 0.25s ease-in-out;
+    -moz-transition: all 0.25s ease-in-out;
+    -o-transition: all 0.25s ease-in-out;
+    transition: all 0.25s ease-in-out;
+    border-left: 4px solid #404040;
+  }
+
+  .box-margin {
+    background:white;
+    border:1px solid #ccc;
+    padding:10px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    margin: 0 15%;
+    
+  }
+
+  /*Radio button*/
+
+
+  input[type="radio"] {
+    display:none;
+  }
+  input[type="radio"] + label {
+    color: #555;
+    font-size:13px;
+    cursor:pointer;
+  }
+  input[type="radio"] + label span {
+    display:inline-block;
+    width:15px;
+    height:15px;
+    margin:-1px 4px 0 0;
+    vertical-align:middle;
+    cursor:pointer;
+    -moz-border-radius:  50%;
+    border-radius:  50%;
+  }
+
+  input[type="radio"] + label span {
+   background-color:#BBB;
+ }
+
+ input[type="radio"]:checked + label span{
+   background-color:#555;
+ }
+
+ input[type="radio"] + label span,
+ input[type="radio"]:checked + label span {
+  -webkit-transition:background-color 0.3s linear;
+  -o-transition:background-color 0.3s linear;
+  -moz-transition:background-color 0.3s linear;
+  transition:background-color 0.3s linear;
+}
+
+
+.boxShadow {
+  background: white;
+  border:1px solid #AAA;
   -webkit-border-radius: 6px;
--moz-border-radius: 6px;
-border-radius: 6px;
-  margin: 0 15%;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  margin: 1% 0.2%;
   box-shadow: 5px 5px 2px #888888;
+  padding: 1%;
 }
 
-.animate-if.ng-enter, .animate-if.ng-leave {
-  transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
-}
-
-.animate-if.ng-enter,
-.animate-if.ng-leave.ng-leave-active {
-  opacity:0;
-}
-
-.animate-if.ng-leave,
-.animate-if.ng-enter.ng-enter-active {
-  opacity:1;
-}
-
-.navbar-nav > .active > a {
-  background-color: #313131;
-  -webkit-transition: all 0.25s ease-in-out;
-  -moz-transition: all 0.25s ease-in-out;
-  -o-transition: all 0.25s ease-in-out;
-  transition: all 0.25s ease-in-out;
-  border-left: 4px solid #404040;
+.table {
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  margin: 1% 0.2%;
+  box-shadow: 5px 5px 2px #888888;
+  padding: 1%;
 }

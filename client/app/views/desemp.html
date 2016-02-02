@@ -1,5 +1,13 @@
+<h1>Desempe&ntilde;o</h1>
 <ul class="nav nav-tabs" >
-	<li role="presentation" class="dropdown">
+	<li role="presentation" style="margin:5px 5px 0px 0px">
+		<select  class="dropdown-toggle form-control" name="" ng-model="year"> <!-- ng-change="update(dropDownValue, option)"> -->
+			<option value="" disabled selected>Seleccione un a&ntilde;o</option>
+			<option value="{{year}}" ng-repeat="year in years" ng-click="activeYear(year)">{{year}}</option>
+
+		</select></li>
+		
+	<!-- <li role="presentation" class="dropdown">
 		<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
 			Seleccione un a&ntilde;o<span class="caret"></span>
 		</a>
@@ -8,31 +16,127 @@
 			<li><a>2015</a></li>
 			<li><a>2016</a></li>
 		</ul>
-	</li>
-	<li ng-repeat="item in cursos" role="presentation" ng-class="{active : activeMenu === item}" ng-click="seleccionar('{{item}}')"><a href="" ng-click="setActive(item)">{{item}}</a></li>
+	</li> -->
+	<li ng-repeat="item in cursos" role="presentation" ng-class="{active : activeMenu === item}" ng-click="seleccionar(item)"><a href="" ng-click="setActiveMenu(item)">{{item}}</a></li>
 </ul>
-</br>
-<div id="listadoTodos" ng-show="listadoTodos" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
-	{{cursos.todos}}
-</div>	
 
-<div id="listadoPrimero" ng-show="listadoPrimero" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
-	hola {{cursos.primero}}
-</div>	
-<div id="listadoSegundo" ng-show="listadoSegundo" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
-	{{cursos.segundo}}
-</div>	
 
-<div id="listadoTercero" ng-show="listadoTercero" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
-	hola {{cursos.tercero}}
-</div>	
-<div id="listadoCuarto" ng-show="listadoCuarto" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
-	{{cursos.cuarto}}
-</div>	
+<div class="form-group">
+	<div class="col-md-2 boxShadow">
+		<select  class="dropdown-toggle form-control" name="" ng-model="materia"> <!-- ng-change="update(dropDownValue, option)"> -->
+			<option value="" disabled selected>Seleccione una materia</option>
+			<option value="{{materia}}" ng-repeat="materia in materias" ng-click="activeMateria(materia)">{{materia}}</option>
+		</select>
+		<br>
+		<div class="box-margin">
+			Filtro
+			<input type="radio" id="radio01" name="radio" />
+			<label for="radio01"><span></span>Mostrar todos</label>
+			<input type="radio" id="radio02" name="radio" />
+			<label for="radio02"><span></span>A diciembre</label>
+			<input type="radio" id="radio03" name="radio" />
+			<label for="radio03"><span></span>A marzo</label>			
+		</div>
+		<br>
+		<a href="">Porcentaje de inasistencias</a>
+	</div>
 
-<div id="listadoQuinto" ng-show="listadoQuinto" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
-	hola {{cursos.quinto}}
-</div>	
-<div id="listadoSexto" ng-show="listadoSexto" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
-	{{cursos.sexto}}
-</div>	
+	<div class="col-md-7" style="margin-top: 1%">
+		<div class="box-margin" ng-model="year" ng-model="activeMenu" ng-model="materia">
+			{{year}} > {{activeMenu}} > {{materia}}
+		</div>
+	<!-- <div class="triangle-bottom"></div>
+	Seleccione un curso para obtener informaci&oacute;n m&aacute;s detallada
+	<br>
+	<div class="triangle-left">hola mundoooooooo</div> -->
+	<div id="listadoTodos" ng-show="listadoTodos" style="width: 80%; margin: 0% 6%">  <!--lista centrada -->
+		Sin materia seleccionada
+		<table class="table table-hover table-striped">
+				<thead>
+					<tr>
+						<th>Apellido</th>
+						<th>Nombre</th>
+						<th>DNI</th>
+						<th>1°Trim</th>
+						<th>2°Trim</th>
+						<th>3°Trim</th>
+						<th>Diciembre</th>
+						<th>Marzo</th>
+						<th>Nota Final</th>
+						<th>Inasistencias</th>
+					</tr>
+				</thead>
+				<tr ng-repeat="alumno in alumnos">
+					<td>{{alumno.surName}}</td>
+					<td>{{alumno.name}}</td>
+					<td>{{alumno.DNI}}</td>
+					<td>{{alumno.primerTrim}}</td>
+					<td>{{alumno.segundoTrim}}</td>
+					<td>{{alumno.tercerTrim}}</td>
+					<td>{{alumno.diciembre}}</td>
+					<td>{{alumno.marzo}}</td>
+					<td>{{alumno.notaFinal}}</td>
+					<td>{{alumno.cantFaltas}}</td>					
+					<!--<td style="width:10%;"><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipEdit" style="width:50%; cursor: pointer" class="glyphicon glyphicon-edit" ></span></td> 
+					<td>{{alumno.name}}</td>
+					<td>{{alumno.phone}}</td>
+					<td>{{alumno.anio}}</td>
+					<td>{{$index}}</td> -->
+				</tr>
+			</table> 
+
+			Con materia seleccionada
+				<table class="table table-hover table-striped">
+				<thead>
+					<tr>
+						<th>Apellido</th>
+						<th>Nombre</th>
+						<th>DNI</th>
+						<th>Detalle</th>
+					</tr>
+				</thead>
+				<tr ng-repeat="alumno in alumnos">
+					<td>{{alumno.surName}}</td>
+					<td>{{alumno.name}}</td>
+					<td>{{alumno.DNI}}</td>
+					<td>{{alumno.details}}</td>					
+					<!--<td style="width:10%;"><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipEdit" style="width:50%; cursor: pointer" class="glyphicon glyphicon-edit" ></span></td> 
+					<td>{{alumno.name}}</td>
+					<td>{{alumno.phone}}</td>
+					<td>{{alumno.anio}}</td>
+					<td>{{$index}}</td> -->
+				</tr>
+			</table> 
+	</div>	
+
+	<div id="listadoPrimero" ng-show="listadoPrimero" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
+		hola {{cursos.primero}}
+	</div>	
+	<div id="listadoSegundo" ng-show="listadoSegundo" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
+		{{cursos.segundo}}
+	</div>	
+
+	<div id="listadoTercero" ng-show="listadoTercero" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
+		hola {{cursos.tercero}}
+	</div>	
+	<div id="listadoCuarto" ng-show="listadoCuarto" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
+		{{cursos.cuarto}}
+	</div>	
+
+	<div id="listadoQuinto" ng-show="listadoQuinto" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
+		hola {{cursos.quinto}}
+	</div>	
+	<div id="listadoSexto" ng-show="listadoSexto" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
+		{{cursos.sexto}}
+	</div>	
+</div>
+
+<div class="col-md-2" style="float: right; margin: 1% 1%">
+	<div class="boxShadow">
+		HelloHelloHelloHello HelloHelloHelloHello HelloHelloHello
+	</div>
+	<div class="boxShadow">
+		HelloHelloHelloHello HelloHelloHelloHello HelloHelloHello22
+	</div>
+</div>
+</div>
