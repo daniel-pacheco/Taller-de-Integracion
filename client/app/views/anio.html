@@ -149,33 +149,33 @@
 
 			<label for="">A&ntilde;o:</label> 
 			<select
-				class="dropdown-toggle form-control-inline" name="" ng-model="dropDownValue"> <!-- ng-change="update(dropDownValue, option)"> -->
-				<option ng-repeat="option in dropDownOptions" value="{{dropDownOptions}}">{{option}}</option>
-			</select>
-			<label for="">Divisi&oacute;n:</label> 
-			<select
-				class="dropdown-toggle form-control-inline" name="" ng-model="dropDownDivisionValue"> <!-- ng-change="update(dropDownValue, option)"> -->
-				<option ng-repeat="option in dropDownDiviosnOptions" value="{{dropDownDiviosnOptions}}">{{option}}</option>
-			</select>
-			<button class="btn btn-info" ng-click="acept()">Aceptar</button>
+			class="dropdown-toggle form-control-inline" name="" ng-model="dropDownValue"> <!-- ng-change="update(dropDownValue, option)"> -->
+			<option ng-repeat="option in dropDownOptions" value="{{dropDownOptions}}">{{option}}</option>
+		</select>
+		<label for="">Divisi&oacute;n:</label> 
+		<select
+		class="dropdown-toggle form-control-inline" name="" ng-model="dropDownDivisionValue"> <!-- ng-change="update(dropDownValue, option)"> -->
+		<option ng-repeat="option in dropDownDiviosnOptions" value="{{dropDownDiviosnOptions}}">{{option}}</option>
+	</select>
+	<button class="btn btn-info" ng-click="acept()">Aceptar</button>
 
-			<div id="listFilters" ng-show="listAnioIsEnabled">
-				<table class="table  table-hover table-striped">
-				<thead>
-					<tr>
-						<th>Nro</th>
-						<th>Nombre</th>
-						<th>Apellido</th>
-						<th>DNI</th>
-						<th>Acciones</th>						
-					</tr>
-				</thead>
-				<tr ng-repeat="alumno in test | filter:filterByName">
-					<td>{{alumno.nro}}</td>
-					<td>{{alumno.name}}</td>
-					<td>{{alumno.firstName}}</td>
-					<td>{{alumno.DNI}}</td>
-					<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%; cursor: pointer" class="glyphicon glyphicon-user" ></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipDelete" style="width:25%; cursor: pointer" class="glyphicon glyphicon-remove-circle"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipChange" style="width:25%; cursor: pointer" class="glyphicon glyphicon-edit"></span></td> 
+	<div id="listFilters" ng-show="listAnioIsEnabled">
+		<table class="table  table-hover table-striped">
+			<thead>
+				<tr>
+					<th>Nro</th>
+					<th>Nombre</th>
+					<th>Apellido</th>
+					<th>DNI</th>
+					<th>Acciones</th>						
+				</tr>
+			</thead>
+			<tr ng-repeat="alumno in test | filter:filterByName">
+				<td>{{alumno.nro}}</td>
+				<td>{{alumno.name}}</td>
+				<td>{{alumno.surName}}</td>
+				<td>{{alumno.DNI}}</td>
+				<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%; cursor: pointer" class="glyphicon glyphicon-user" ></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipDelete" style="width:25%; cursor: pointer" class="glyphicon glyphicon-remove-circle"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipChange" style="width:25%; cursor: pointer" class="glyphicon glyphicon-edit"></span></td> 
 					<!--<td>{{alumno.name}}</td>
 					<td>{{alumno.phone}}</td>
 					<td>{{$index}}</td> -->
@@ -184,21 +184,21 @@
 			
 			<label>Asignar alumnos que no se encuentran asignados: <input type="checkbox" ng-model="checked" ng-init="checked=false" /></label><br/>
 
-<div ng-if="checked" class="animate-if">
-  <table class="table  table-hover table-striped">
-				<thead>
-					<tr>
-						<th>Nombre</th>
-						<th>Apellido</th>
-						<th>DNI</th>
-						<th>Acciones</th>						
-					</tr>
-				</thead>
-				<tr ng-repeat="alumno in test | filter:filterByName">
-					<td>{{alumno.name}}</td>
-					<td>{{alumno.firstName}}</td>
-					<td>{{alumno.DNI}}</td>
-					<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipEdit" style="width:25%; cursor: pointer" class="glyphicon glyphicon glyphicon-pushpin" ></span></td> 
+			<div ng-if="checked" class="animate-if">
+				<table class="table  table-hover table-striped">
+					<thead>
+						<tr>
+							<th>Nombre</th>
+							<th>Apellido</th>
+							<th>DNI</th>
+							<th>Acciones</th>						
+						</tr>
+					</thead>
+					<tr ng-repeat="alumno in test | filter:filterByName">
+						<td>{{alumno.name}}</td>
+						<td>{{alumno.firstName}}</td>
+						<td>{{alumno.DNI}}</td>
+						<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipEdit" style="width:25%; cursor: pointer" class="glyphicon glyphicon glyphicon-pushpin" ></span></td> 
 					<!--<td>{{alumno.name}}</td>
 					<td>{{alumno.phone}}</td>
 					<td>{{$index}}</td> -->
@@ -207,14 +207,14 @@
 			</table>
 			<button class="btn btn-info">Finalizar</button>
 
-</div>
-<input class="btn btn-primary" type="submit" name=""
-							value="Guardar" style="margin: 10% 45%"/>
-</div>
-
-
-		</fieldset>
-
+		</div>
+		<input class="btn btn-primary" type="submit" name=""
+		value="Guardar" style="margin: 10% 45%"/>
 	</div>
+
+
+</fieldset>
+
+</div>
 
 </div>

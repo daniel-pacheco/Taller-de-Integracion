@@ -147,6 +147,7 @@ public class ServicioInscripcionMesa {
 		}
 	}
 	
+	/*
 	public Boolean asignarInscripcionAMesaExamen(Inscripcion inscripcion, Long idMesaExamen) throws Exception {
 		try {
 			MesaExamen mesaExamen = gMesaExamen.getById(idMesaExamen);
@@ -158,7 +159,7 @@ public class ServicioInscripcionMesa {
 		
 		return true;
 	}
-
+	*/
 	
 	public Boolean addNota(Nota nota) throws Exception {
 		try {
@@ -200,6 +201,7 @@ public class ServicioInscripcionMesa {
 		}
 	}
 	
+	/*
 	public Boolean asignarNotaAMesaExamen(Nota nota, Long idMesaExamen) throws Exception {
 		try {
 			/**
@@ -208,7 +210,7 @@ public class ServicioInscripcionMesa {
 			 * 3) asignar materia a nota (mesa-examen->inscripcion->mesa->materia)
 			 * 4) modify mesa-examen
 			 * 5) modifi nota
-			 */
+			 *//*
 			MesaExamen mesaExamen = gMesaExamen.getById(idMesaExamen);
 			mesaExamen.setNota(nota);
 			nota.setMateria(mesaExamen.getInscripcion().getMesa().getMateria());
@@ -220,5 +222,5 @@ public class ServicioInscripcionMesa {
 		}
 		return true;
 	}
-	
+	*/
 }
