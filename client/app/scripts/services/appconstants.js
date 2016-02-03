@@ -8,7 +8,10 @@
  * Constant in the clientAppApp.
  */
  angular.module('clientAppApp')
- .constant('SERVER', {address : 'http://192.168.1.8:8080/'})
+ .constant('SERVER', {
+ 	address : 'http://192.168.1.3:8080/',
+ 	login: 'EscuelaSantaLucia/rest/sLogin/login'
+ })
 
  .constant('AUTH_EVENTS', {
  	notAuthenticated: 'auth-not-authenticated',

@@ -39,9 +39,16 @@
 
           <div class="collapse navbar-collapse" id="js-navbar-collapse">
 
+            
             <ul class="nav navbar-nav" ng-repeat="item in menuDirectivo">
               <li ng-class="{active : activeMenu === item}"><a ng-href="{{item[0]}}" ng-click="setActive(item)">{{item[1]}}</a></li>
             </ul>
+
+            
+            <div>
+              <label style="color:red;">hola {{credentials.userRole}} {{credentials.userName}}</label>
+              <button ng-click="logOut()" type="button" class="btn btn-info">cerrar sesión</button>
+            </div>
 
             <!--<ul class="nav navbar-nav">
               <li><a ng-href="#/alumnado">Alumnado</a></li>
@@ -57,9 +64,9 @@
             <li><a href="#">Something else here</a></li>
             <li role="separator" class="divider"></li>
             <li><a href="#">Separated link</a></li>
-          </ul>-->
+          </ul>
         </li>
-            </ul>
+            </ul>-->
           </div>
         </div>
       </div>
@@ -119,7 +126,7 @@
         <script src="scripts/services/modalservice.js"></script>
         <script src="scripts/services/appconstants.js"></script>
         <script src="scripts/controllers/clientappapp.js"></script>
-        <script src="scripts/services/loginservice.js"></script>
+        <script src="scripts/services//auth/loginservice.js"></script>
         <script src="scripts/services/auth/authinterceptor.js"></script>
         <script src="scripts/controllers/desemp.js"></script>
         <!-- endbuild -->
