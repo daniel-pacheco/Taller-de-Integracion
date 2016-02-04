@@ -1,0 +1,276 @@
+<div class="col-md-2 hidden-sm hidden-xs">
+	<div>
+		<!-- ngInclude: 'views/partials/affixed-sidebar.html' -->
+		<div class="bs-sidebar hidden-print affix" role="complementary" data-offset-top="-100" bs-affix style="position: relative; text-align: right;">
+			<ul class="nav bs-sidenav">
+				<li bs-scrollspy data-target="#getting-started">
+					<a href="#getting-started">Men&uacute; Docente</a>
+				</li>
+				<hr style="margin: 2px 0;">
+				<li bs-scrollspy data-target="#listado">
+					<a href="" ng-click="seleccionar('listado')">Listado</a>
+				</li>
+				<li bs-scrollspy data-target="#nuevoPerfil">
+					<a href="" ng-click="seleccionar('nuevoPerfil')">Nuevo Perfil</a>
+				</li>
+			</ul>
+		</div>
+		<!--/ngInclude: 'views/partials/affixed-sidebar.html' -->
+	</div>
+</div>
+
+<div class="col-md-10">
+	<h1>Docente</h1>
+	<hr>
+	<div id="listado" ng-show="listado"style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
+		<fieldset class="navbar">
+			<legend>Listado</legend>
+
+			<label for="">Filtros:</label> <select
+			class="dropdown-toggle form-control-inline" name="" ng-model="filterByArea.area"> <!-- ng-change="update(dropDownValue, option)"> -->
+			<option value="" disabled selected>Seleccione un &Aacute;rea</option>
+			<option value="">Todos</option>
+			<option ng-repeat="area in dropDownAreas"  value="{{area}}">{{area}}</option>
+		</select>
+		<input class="form-control-inline" type="text" placeholder="Buscar por DNI" maxlength="255" required pattern="[0-9]*" ng-model="filterByDNI.cuil">
+		<input class="form-control-inline" type="text" placeholder="Buscar por nombre" maxlength="255" required pattern="[a-zA-Z]*" ng-model="filterByName.name">
+
+			<table class="table table-hover table-striped">
+		<thead>
+			<tr>
+				<th>Nro</th>
+				<th>&Aacute;rea</th>
+				<th>Materia</th>
+				<th>Apellido</th>
+				<th>Nombre</th>
+				<th>CUIL</th>
+				<th>Acciones</th>						
+			</tr>
+		</thead>
+		<tr ng-repeat="docente in docentes | filter:filterByArea:strict | filter:filterByMateria | filter:filterByDNI:strict | filter:filterByName:strict">
+			<td>{{docente.nro}}</td>
+			<td>{{docente.area}}</td>
+			<td>{{docente.materia}}</td>
+			<td>{{docente.apellido}}</td>
+			<td>{{docente.name}}</td>
+			<td>{{docente.cuil}}</td>
+			<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%; cursor: pointer" class="glyphicon glyphicon-user" ></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipDelete" style="width:25%; cursor: pointer" class="glyphicon glyphicon-remove"></span></td> 
+					<!--<td>{{alumno.name}}</td>
+					<td>{{alumno.phone}}</td>
+					<td>{{$index}}</td> -->
+				</tr>
+			</table>
+		</fieldset>
+	</div>
+
+	<div id="nuevoPerfil" ng-show="nuevoPerfil">
+		<fieldset>
+			<legend>Nuevo Docente</legend>
+			<h3 class="small">Ingrese los datos para crear un nuevo perfil
+				de docente y haga clic en guardar cuando finalice</h3>
+
+				<form class="form-horizontal media">
+				<!--<div class="pull-right">
+						<img class="img-rounded" src="images/defaultUser.png" alt="Usuario" width="220px" height="auto"/>
+					<div class="btn btn-primary btn-file" id="boton">Examinar<input type="file"></div>
+				</div>	-->
+				
+				<div class="formulario media-body">
+
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<label for="">Documento:</label>
+						</div>
+						<div class="col-sm-3">
+							<input class="form-control" placeholder="12332112" type="text"
+							maxlength="10" required pattern="\d{8}">
+						</div>
+						<!-- Valida 8 digitos -->
+						<div class="col-sm-1 control-label">
+							<label for="">Tipo:</label>
+						</div>
+						<div class="col-sm-2">
+							<select class="form-control" name="Tipo documento">
+								<option value="">DNI</option>
+								<option value="">LC</option>
+								<option value="">Otro</option>
+							</select>
+						</div>
+					</div>
+					<!-- /form-group-->
+
+
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<label for="">Nombres:</label>
+						</div>
+						<div class="col-sm-5">
+							<input class="form-control" placeholder="Nombre Nombre"
+							type="text" maxlength="255" required pattern="[a-zA-Z ]*">
+							<!-- Valida letras y espacios -->
+						</div>
+						
+					</div>
+					<!-- /form-group-->
+					
+
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<label for="">Apellidos:</label>
+						</div>
+						<div class="col-sm-5">
+							<input class="form-control" placeholder="Apellido Apellido"
+							type="text" maxlength="255" required pattern="[a-zA-Z ]*">
+							<!-- Valida letras y espacios-->
+						</div>
+					</div>
+
+
+
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<label for="">Sexo:</label>
+						</div>
+						<div class="col-sm-5">
+							<input type="radio" name="sexo" value="Femenino" id="Fem"><label class="text-radio" for="Fem"><span></span>Femenino </label>
+							<input type="radio" name="sexo" value="Masculino"checked id="Masc"><label class="text-radio" for="Masc"><span></span>Masculino </label>
+						</div>
+					</div>
+					<!-- /form-group-->
+
+
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<label for="">Domicilio:</label>
+						</div>
+						<div class="col-sm-5">
+							<input class="form-control" placeholder="Domicilio 123"
+							type="text" maxlength="255" required pattern="[a-zA-Z 0-9]*" />
+							<!-- Valida letras, numeros y espacios-->
+						</div>
+					</div>
+					<!-- /form-group-->
+
+
+
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<label for="">Fecha de nac.:</label>
+						</div>
+						<div class="col-sm-5">
+							<input class="form-control" placeholder="10/10/1010" type="date"
+							step="1" value="01-01-2000" />
+						</div>
+					</div>
+					<!-- /form-group-->
+
+
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<label for="">CUIT/CUIL:</label>
+						</div>
+						<div class="col-sm-5">
+							<input class="form-control" placeholder="12332112" type="text"
+							maxlength="15" required pattern="d{2}\-\d{8}\-\d{1}">
+						</div>
+						<!-- Valida 8 digitos -->
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<label for="">Teléfono fijo:</label>
+						</div>
+
+						<div class="col-sm-5">
+							<input class="form-control" placeholder="0343-4353535" type="tel" />
+						</div>
+					</div>
+					<!-- /form-group-->
+
+
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<label for="">Celular:</label>
+						</div>
+
+						<div class="col-sm-5">
+							<input class="form-control" placeholder="0343-155555555"
+							type="tel" />
+						</div>
+					</div>
+					<!-- /form-group-->
+
+
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<label for="">Mail:</label>
+						</div>
+						<div class="col-sm-5">
+							<input class="form-control" placeholder="nombre@nombre.com"
+							type="email" maxlength="255">
+						</div>
+					</div>
+					<!-- /form-group-->
+
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<label for="">Título:</label>
+						</div>
+						<div class="col-sm-5">
+							<input class="form-control" placeholder="nombre@nombre.com"
+							type="email" maxlength="255">
+						</div>
+					</div>
+
+
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<label for="">Observaciones:</label>
+						</div>
+						<div class="col-sm-5">
+							<textarea class="form-control" rows="3"></textarea>
+							<!--<input class="form-control"
+							type="text" maxlength="255" required pattern="[a-zA-Z ]*">-->
+							<!-- Valida letras y espacios-->
+						</div>
+					</div>
+					<!-- /form-group-->
+					<div class="form-group">
+						<div class="col-sm-1">
+						</div>
+						<div class="col-sm-2">
+							<button class="btn btn-default" ngf-select ng-model="picFile" accept="image/*" ngf-max-size="2MB" ngf-min-height="100" style="margin: 5px auto">Seleccione imagen de perfil</button>
+
+							<div ngf-drop ng-model="picFile" ngf-pattern="image/*" class="cropArea"><!--{{picFile}}-->
+								<img-crop image="picFile  | ngfDataUrl"                 
+								result-image="croppedDataUrl" ng-init="croppedDataUrl=''">
+							</img-crop>
+						</div>
+						
+							<!--<div>
+								<img ng-src="{{croppedDataUrl}}">
+							</div>-->
+							<!--<button ng-click="upload(croppedDataUrl)">Submit</button> -->
+							<span class="progress" ng-show="progress >= 0">
+								<div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
+							</span>
+							<span ng-show="result">Carga completa</span>
+							<span class="err" ng-show="errorMsg">{{errorMsg}}</span>
+						</div>
+					</div>
+
+				</div><!-- /formulario-->
+				<div class="form-group">
+					<div class="col-sm-3 col-sm-offset-3">
+						<input class="btn btn-danger" type="button" name=""
+						onclick="cargarAlumnoPrincipal()" value="Cancelar" />
+					</div>
+					<div class="col-sm-1">
+						<input class="btn btn-primary" ng-click="upload(croppedDataUrl)" type="submit" name=""
+						value="Guardar" />
+					</div>
+				</div>
+				
+			</form>
+		</fieldset>
+	</div>
+</div>

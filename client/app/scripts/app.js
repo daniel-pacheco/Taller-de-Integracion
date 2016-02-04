@@ -29,7 +29,7 @@ angular
 
 })
 
-/*.run(function ($rootScope, $state, loginService, AUTH_EVENTS) {
+.run(function ($rootScope, $state, loginService, AUTH_EVENTS) {
   $rootScope.$on('$stateChangeStart', function (event, next, nextParams, fromState) {
  
     if ('data' in next && 'authorizedRoles' in next.data) {
@@ -50,7 +50,7 @@ angular
 
 });
 
-})*/
+})
   
 .run(function($httpBackend){
   $httpBackend.whenGET('http://localhost:8100/valid')
