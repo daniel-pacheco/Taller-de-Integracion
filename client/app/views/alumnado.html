@@ -77,7 +77,7 @@
 			<option ng-repeat="divisionOption in dropDownDivisionOptions" value="{{divisionOption}}">{{divisionOption}}</option>
 		</select>
 	</div>
-	<table class="table table-hover">
+	<table class="table table-hover table-striped">
 		<thead>
 			<tr>
 				<th>Nro</th>
@@ -94,7 +94,7 @@
 			<td>{{alumno.apellido}}</td>
 			<td>{{alumno.nroDocumento}}</td>
 			<td ng-click = "deleteAlumno(alumno.idUsuario)">{{alumno.idUsuario}}</td>
-			<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%" class="glyphicon glyphicon-user" ></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAttendance" style="width:25%" class="glyphicon glyphicon-calendar"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipReportCard" style="width:25%" class="glyphicon glyphicon-list-alt"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAcademicPerformance" style="width:25%" class="glyphicon glyphicon-education"></span></td> 
+			<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%; cursor: pointer" class="glyphicon glyphicon-user" ></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAttendance" style="width:25%; cursor: pointer" class="glyphicon glyphicon-calendar"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipReportCard" style="width:25%; cursor: pointer" class="glyphicon glyphicon-list-alt"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAcademicPerformance" style="width:25%; cursor: pointer" class="glyphicon glyphicon-education"></span></td> 
 					<!--<td>{{alumno.name}}</td>
 					<td>{{alumno.phone}}</td>
 					<td>{{$index}}</td> -->
@@ -176,8 +176,8 @@
 							<label for="">Sexo:</label>
 						</div>
 						<div class="col-sm-5">
-							<input type="radio" name="sexo" value="Femenino" id="Fem"><label class="text-radio" for="Fem">Femenino </label>
-							<input type="radio" name="sexo" value="Masculino"checked id="Masc"><label class="text-radio" for="Masc">Masculino </label>
+							<input type="radio" name="sexo" value="Femenino" id="Fem"><label class="text-radio" for="Fem"><span></span>Femenino </label>
+							<input type="radio" name="sexo" value="Masculino"checked id="Masc"><label class="text-radio" for="Masc"><span></span>Masculino </label>
 						</div>
 					</div>
 					<!-- /form-group-->
