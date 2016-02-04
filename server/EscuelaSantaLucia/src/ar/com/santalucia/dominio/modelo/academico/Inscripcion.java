@@ -8,10 +8,10 @@ import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 /**
  * 
  * @author Ariel Ramirez
- * @version 1.1
+ * @version 1.2
  */
 
-// Último modificador: Eric Pennachini @ 30-01-16 13:00
+// Último modificador: Eric Pennachini @ 01-02-16 13:00
 
 public class Inscripcion {
 	
@@ -35,7 +35,6 @@ public class Inscripcion {
 		this.alumno = alumno;
 		this.asistencia = asistencia;
 		this.setNota(nota);
-		//this.setNroActa(nroActa);
 	}
 
 	public Long getIdInscripcion() {

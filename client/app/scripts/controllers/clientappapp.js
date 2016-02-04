@@ -10,7 +10,10 @@
  angular.module('clientAppApp')
 
  .controller('ClientappappCtrl', function ($scope, $state, loginService, modalService, AUTH_EVENTS, MENU_DIRECTIVO) {
-  $scope.username = loginService.username();
+  
+  $scope.credentials = {};
+
+  //$scope.username = loginService.username();
 
   $scope.unauthorized = {};
   $scope.unauthorized.controller =  'ClientappappCtrl';  
@@ -35,14 +38,22 @@ $scope.$on(AUTH_EVENTS.notAuthorized, function(event) {
 });
 
 $scope.$on(AUTH_EVENTS.notAuthenticated, function(event) {
-  loginService.logout();
-  $state.go('login');
+  //loginService.logout();
+  //$state.go('login');
+  this.logOut();
   //modalService.setModal($scope.unauthenticated);
   alert('unauthenticated');
 });
 
-$scope.setCurrentUsername = function(name) {
-  $scope.username = name;
+$scope.setCurrentUsernameAndRole = function() {
+  $scope.credentials.userName = loginService.userName();
+  $scope.credentials.userRole = loginService.userRole();
+};
+
+$scope.logOut = function () {
+  loginService.logout();
+  this.setCurrentUsernameAndRole();
+  $state.go('login');
 };
 
     // aca se van a cargar todas las cosas que le pidamos al backend como para arrancar la app

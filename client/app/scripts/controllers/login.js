@@ -7,34 +7,29 @@
  * # MainCtrl
  * Controller of the clientAppApp
  */
-angular.module('clientAppApp')
-.config(function($stateProvider) {
-    $stateProvider
-    .state('login', {
-        url: '/',
-        templateUrl: 'views/login.html',
-        controller: 'LoginCtrl',
-        data: {
-          pageTitle: 'Login'            
-        }
-    });
+ angular.module('clientAppApp')
+ .config(function($stateProvider) {
+  $stateProvider
+  .state('login', {
+    url: '/',
+    templateUrl: 'views/login.html',
+    controller: 'LoginCtrl',
+    data: {
+      pageTitle: 'Login'            
+    }
+  });
 })
-  .controller('LoginCtrl', function ($scope, $state, $http, loginService, USER_ROLES) {
-    $scope.roleOptions = USER_ROLES;
-    
-    $scope.loguearse =  loginService.login;
-
-    $scope.HolaMundo ='Hola mundo';
-
-    $scope.data = {};
- 
+ .controller('LoginCtrl', function ($scope, $state, $http, loginService, USER_ROLES) {
+  $scope.roleOptions = USER_ROLES;
+  $scope.data = {};
+  
   $scope.login = function(data) {
     loginService.login(data.username, data.password, data.role).then(function(authenticated) {
       $state.go('alumnado', {}, {reload: true});
-      $scope.setCurrentUsername(data.username);
+      $scope.setCurrentUsernameAndRole();
     }, function(err) {
       alert('Login failed! Please check your credentials!');
     });
   };
 
-  });
+});

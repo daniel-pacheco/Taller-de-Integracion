@@ -171,8 +171,8 @@ $scope.answer = [];
 $scope.answer = [];
 /*$scope.getAll = alumnoService.alumnoGetAll().then(function(response){
 	$scope.answer = response.data;  
-});
-*/
+});*/
+
 $scope.putAlumno = function () {
 	alumnoService.alumnoPut(alumnoJson).then(function(response){
 		$scope.postAnswer = response.data;

@@ -19,8 +19,7 @@ angular
     'mgcrea.ngStrap',
     'ngAnimate',
     'ngFileUpload',
-    'ngImgCrop',
-    'ngMockE2E'
+    'ngImgCrop'
   ])
   
   .config(function($stateProvider, $urlRouterProvider) {
@@ -51,7 +50,7 @@ angular
 });
 
 })
-  
+  /*
 .run(function($httpBackend){
   $httpBackend.whenGET('http://localhost:8100/valid')
         .respond({message: 'This is my valid response!'});
@@ -60,5 +59,5 @@ angular
   $httpBackend.whenGET('http://localhost:8100/notauthorized')
         .respond(403, {message: "Not Authorized"});
  
-  $httpBackend.whenGET(/views\/\w+.*/).passThrough();
- })
+  $httpBackend.whenGET(/views\/\w+.*//*).passThrough();
+ })*/

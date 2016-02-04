@@ -53,7 +53,7 @@ public class ServicioLoginEndpoint {
 		try{
 			setInstance();
 			token = servicioLogin.autenticar(Long.valueOf(credenciales[0]),credenciales[1],credenciales[2]);
-			return Response.ok().header("auth0", token).build();
+			return Response.ok().header("auth0", token).header("Access-Control-Expose-Headers", "auth0").build();
 		}catch (LoginError ex){
 			//return Response.ok(ex).build();
 			return Response.status(Status.UNAUTHORIZED).build();
