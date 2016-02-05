@@ -28,6 +28,7 @@
  .constant('MENU_DIRECTIVO',{
  	alumnado: ['#/alumnado', 'Alumnado'],
  	materias: ['#/materias', 'Materias'],
+ 	docente: ['#/docente', 'Docente'],
  	anio: ['#/anio', 'Año'],
  	desemp: ['#/desemp', 'Desempeño'],
  	about: ['#/about', 'About'],
