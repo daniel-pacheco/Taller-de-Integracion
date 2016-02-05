@@ -11,23 +11,25 @@ import java.util.Set;
  * @version 1.0
  *
  */
+
+// Último modificador: Ariel Ramirez @ 03-02-2016 19:53
+
 public class Publicacion {
 	private Long idPublicacion;
-	// private String nombre;
 	private String descripcion;
 	private Date fechaCreacion;
 	private Date fechaUltimaModificacion;
-	private Set<Recurso> listaRecursos;
+	private Set<Recurso> listaRecursos; //El recurso debe existir o se debe subir antes que la persistencia de la publicación
+	private String texto;
 
 	public Publicacion() {
 		super();
 	}
 
-	public Publicacion(Long idPublicacion, /* String nombre, */ String descripcion, Date fechaCreacion,
+	public Publicacion(Long idPublicacion, String descripcion, Date fechaCreacion,
 			Date fechaUltimaModificacion, Set<Recurso> listaRecursos) {
 		super();
 		this.idPublicacion = idPublicacion;
-		// this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.fechaCreacion = fechaCreacion;
 		this.fechaUltimaModificacion = fechaUltimaModificacion;
@@ -41,15 +43,7 @@ public class Publicacion {
 	public void setIdPublicacion(Long idPublicacion) {
 		this.idPublicacion = idPublicacion;
 	}
-	/*
-	public String getNombre() {
-		return nombre;
-	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-	*/
 	public String getDescripcion() {
 		return descripcion;
 	}
@@ -80,6 +74,14 @@ public class Publicacion {
 
 	public void setListaRecursos(Set<Recurso> listaRecursos) {
 		this.listaRecursos = listaRecursos;
+	}
+
+	public String getTexto() {
+		return texto;
+	}
+
+	public void setTexto(String texto) {
+		this.texto = texto;
 	}
 
 }

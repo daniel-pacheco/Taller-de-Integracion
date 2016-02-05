@@ -8,6 +8,8 @@ package ar.com.santalucia.dominio.modelo.aulavirtual;
  *
  */
 
+// Último modificador: Ariel Ramirez @ 03-02-2016 09:06
+
 public class Recurso {
 	private Long idRecurso;
 	private String nombre;
@@ -15,6 +17,9 @@ public class Recurso {
 	private String vinculo;
 	private Character tipo;
 
+	public static Character VINCULO_WEB = 'v';
+	public static Character ARCHIVO = 'a';
+	
 	public Recurso() {
 		super();
 	}

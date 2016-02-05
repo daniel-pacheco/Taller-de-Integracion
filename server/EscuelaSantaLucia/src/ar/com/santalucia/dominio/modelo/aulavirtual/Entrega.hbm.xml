@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 05/02/2016 15:57:27 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="ar.com.santalucia.dominio.modelo.aulavirtual.Entrega" table="ENTREGA">
+        <id name="idEntrega" type="java.lang.Long">
+            <column name="IDENTREGA" />
+            <generator class="assigned" />
+        </id>
+        <property name="descripcion" type="java.lang.String">
+            <column name="DESCRIPCION" />
+        </property>
+        <property name="fecha" type="java.util.Date">
+            <column name="FECHA" />
+        </property>
+        <property name="vinculo" type="java.lang.String">
+            <column name="VINCULO" />
+        </property>
+        <property name="calificacion" type="java.lang.Float">
+            <column name="CALIFICACION" />
+        </property>
+        <property name="retroalimentacion" type="java.lang.String">
+            <column name="RETROALIMENTACION" />
+        </property>
+        <many-to-one name="perteneceEntrega" class="ar.com.santalucia.dominio.modelo.aulavirtual.ConfiguracionEntrega" fetch="join">
+            <column name="PERTENECEENTREGA" />
+        </many-to-one>
+        <many-to-one name="alumno" class="ar.com.santalucia.dominio.modelo.usuarios.Alumno" fetch="join">
+            <column name="ALUMNO" />
+        </many-to-one>
+        <property name="cantidadModificaciones" type="java.lang.Integer">
+            <column name="CANTIDADMODIFICACIONES" />
+        </property>
+    </class>
+</hibernate-mapping>

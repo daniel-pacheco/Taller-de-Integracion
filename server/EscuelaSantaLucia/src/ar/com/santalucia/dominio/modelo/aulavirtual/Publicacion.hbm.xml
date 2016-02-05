@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 05/02/2016 15:57:27 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="ar.com.santalucia.dominio.modelo.aulavirtual.Publicacion" table="PUBLICACION">
+        <id name="idPublicacion" type="java.lang.Long">
+            <column name="IDPUBLICACION" />
+            <generator class="assigned" />
+        </id>
+        <property name="descripcion" type="java.lang.String">
+            <column name="DESCRIPCION" />
+        </property>
+        <property name="fechaCreacion" type="java.util.Date">
+            <column name="FECHACREACION" />
+        </property>
+        <property name="fechaUltimaModificacion" type="java.util.Date">
+            <column name="FECHAULTIMAMODIFICACION" />
+        </property>
+        <set name="listaRecursos" table="RECURSO" inverse="false" lazy="true">
+            <key>
+                <column name="IDPUBLICACION" />
+            </key>
+            <one-to-many class="ar.com.santalucia.dominio.modelo.aulavirtual.Recurso" />
+        </set>
+        <property name="texto" type="java.lang.String">
+            <column name="TEXTO" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -5,9 +5,9 @@
 Trabajar offline
 <!DOCTYPE hibernate-configuration SYSTEM "classpath://org/hibernate/hibernate-configuration-3.0.dtd">  -->
 <hibernate-configuration>
- <session-factory>
+ <session-factory name="">
   <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-  <property name="hibernate.connection.password">TallerDB</property>
+  <property name="hibernate.connection.password">linuxalpoder</property>
   <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/escuelabd</property>
   <property name="hibernate.connection.username">root</property>
   <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
@@ -51,6 +51,15 @@ Trabajar offline
    class="ar.com.santalucia.dominio.modelo.desempenio.BoletinInasistencias" resource="ar/com/santalucia/dominio/modelo/desempenio/BoletinInasistencias.hbm.xml"/>
   <mapping class="ar.com.santalucia.dominio.modelo.academico.Area" resource="ar/com/santalucia/dominio/modelo/academico/Area.hbm.xml"/>
   <mapping class="ar.com.santalucia.dominio.modelo.usuarios.Personal" resource="ar/com/santalucia/dominio/modelo/usuarios/Personal.hbm.xml"/>
- <mapping class="ar.com.santalucia.dominio.modelo.sistema.login.Login" resource="ar/com/santalucia/dominio/modelo/sistema/login/Login.hbm.xml"/>
+  <mapping class="ar.com.santalucia.dominio.modelo.sistema.login.Login" resource="ar/com/santalucia/dominio/modelo/sistema/login/Login.hbm.xml"/>
+  <mapping
+   class="ar.com.santalucia.dominio.modelo.aulavirtual.AulaVirtual" resource="ar/com/santalucia/dominio/modelo/aulavirtual/AulaVirtual.hbm.xml"/>
+  <mapping
+   class="ar.com.santalucia.dominio.modelo.aulavirtual.ConfiguracionEntrega" resource="ar/com/santalucia/dominio/modelo/aulavirtual/ConfiguracionEntrega.hbm.xml"/>
+  <mapping class="ar.com.santalucia.dominio.modelo.aulavirtual.Entrega" resource="ar/com/santalucia/dominio/modelo/aulavirtual/Entrega.hbm.xml"/>
+  <mapping class="ar.com.santalucia.dominio.modelo.aulavirtual.Muro" resource="ar/com/santalucia/dominio/modelo/aulavirtual/Muro.hbm.xml"/>
+  <mapping
+   class="ar.com.santalucia.dominio.modelo.aulavirtual.Publicacion" resource="ar/com/santalucia/dominio/modelo/aulavirtual/Publicacion.hbm.xml"/>
+  <mapping class="ar.com.santalucia.dominio.modelo.aulavirtual.Recurso" resource="ar/com/santalucia/dominio/modelo/aulavirtual/Recurso.hbm.xml"/>
  </session-factory>
 </hibernate-configuration>

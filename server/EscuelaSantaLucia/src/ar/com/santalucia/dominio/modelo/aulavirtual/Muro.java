@@ -1,7 +1,6 @@
 package ar.com.santalucia.dominio.modelo.aulavirtual;
 
 import java.util.Set;
-
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 
 /**
@@ -12,24 +11,26 @@ import ar.com.santalucia.dominio.modelo.academico.Materia;
  *
  */
 
+// Último modificador: Ariel Ramirez @ 19:24
+
 public class Muro {
 	private Long idMuro;
 	private String nombre;
 	private String descripcion;
-	private Set<Recurso> listaRecursos;
 	private Materia materia;
+	private Set<Publicacion> listaPublicaciones;
 
 	public Muro() {
 		super();
 	}
 
-	public Muro(Long idMuro, String nombre, String descripcion, Set<Recurso> listaRecursos, Materia materia) {
+	public Muro(Long idMuro, String nombre, String descripcion, Materia materia, Set<Publicacion> listaPublicaciones) {
 		super();
 		this.idMuro = idMuro;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
-		this.listaRecursos = listaRecursos;
 		this.materia = materia;
+		this.setListaPublicaciones(listaPublicaciones); 
 	}
 
 	public Long getIdMuro() {
@@ -56,20 +57,20 @@ public class Muro {
 		this.descripcion = descripcion;
 	}
 
-	public Set<Recurso> getListaRecursos() {
-		return listaRecursos;
-	}
-
-	public void setListaRecursos(Set<Recurso> listaRecursos) {
-		this.listaRecursos = listaRecursos;
-	}
-
 	public Materia getMateria() {
 		return materia;
 	}
 
 	public void setMateria(Materia materia) {
 		this.materia = materia;
+	}
+
+	public Set<Publicacion> getListaPublicaciones() {
+		return listaPublicaciones;
+	}
+
+	public void setListaPublicaciones(Set<Publicacion> listaPublicaciones) {
+		this.listaPublicaciones = listaPublicaciones;
 	}
 
 }

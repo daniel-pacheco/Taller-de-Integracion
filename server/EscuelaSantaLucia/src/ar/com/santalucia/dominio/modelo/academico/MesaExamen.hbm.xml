@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 05/02/2016 16:04:05 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="ar.com.santalucia.dominio.modelo.academico.MesaExamen" table="MESAEXAMEN">
+        <id name="idMesaExamen" type="java.lang.Long">
+            <column name="IDMESAEXAMEN" />
+            <generator class="assigned" />
+        </id>
+        <property name="nroActa" type="java.lang.String">
+            <column name="NROACTA" />
+        </property>
+        <property name="nota" type="java.lang.Long">
+            <column name="NOTA" />
+        </property>
+        <property name="asistencia" type="java.lang.Boolean">
+            <column name="ASISTENCIA" />
+        </property>
+        <property name="fecha" type="java.util.Date">
+            <column name="FECHA" />
+        </property>
+        <property name="nombreMateria" type="java.lang.String">
+            <column name="NOMBREMATERIA" />
+        </property>
+        <property name="dniDocente1" type="java.lang.Long">
+            <column name="DNIDOCENTE1" />
+        </property>
+        <property name="nombreDocente1" type="java.lang.String">
+            <column name="NOMBREDOCENTE1" />
+        </property>
+        <property name="apellidoDocente1" type="java.lang.String">
+            <column name="APELLIDODOCENTE1" />
+        </property>
+        <property name="dniDocente2" type="java.lang.Long">
+            <column name="DNIDOCENTE2" />
+        </property>
+        <property name="nombreDocente2" type="java.lang.String">
+            <column name="NOMBREDOCENTE2" />
+        </property>
+        <property name="apellidoDocente2" type="java.lang.String">
+            <column name="APELLIDODOCENTE2" />
+        </property>
+        <property name="dniDocente3" type="java.lang.Long">
+            <column name="DNIDOCENTE3" />
+        </property>
+        <property name="nombreDocente3" type="java.lang.String">
+            <column name="NOMBREDOCENTE3" />
+        </property>
+        <property name="apellidoDocente3" type="java.lang.String">
+            <column name="APELLIDODOCENTE3" />
+        </property>
+        <property name="dniAlumno" type="java.lang.Long">
+            <column name="DNIALUMNO" />
+        </property>
+        <property name="nombreAlumno" type="java.lang.String">
+            <column name="NOMBREALUMNO" />
+        </property>
+        <property name="apellidoAlumno" type="java.lang.String">
+            <column name="APELLIDOALUMNO" />
+        </property>
+        <property name="horaInicioMesa" type="java.util.Date">
+            <column name="HORAINICIOMESA" />
+        </property>
+        <property name="horaFinMesa" type="java.util.Date">
+            <column name="HORAFINMESA" />
+        </property>
+    </class>
+</hibernate-mapping>

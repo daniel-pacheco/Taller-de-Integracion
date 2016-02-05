@@ -12,6 +12,8 @@ import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
  *
  */
 
+// último modificador: Ariel Ramírez @ 02-02-2016 22:02
+
 public class Entrega {
 	private Long idEntrega;
 	private String descripcion;
@@ -21,7 +23,10 @@ public class Entrega {
 	private String retroalimentacion;
 	private ConfiguracionEntrega perteneceEntrega;
 	private Alumno alumno;
-
+	private Integer cantidadModificaciones;
+	
+	private static Integer MAX__MODIF_ENTREGAS = 5;
+	
 	public Entrega() {
 		super();
 	}
@@ -101,6 +106,14 @@ public class Entrega {
 
 	public void setAlumno(Alumno alumno) {
 		this.alumno = alumno;
+	}
+
+	public Integer getCantidadModificaciones() {
+		return cantidadModificaciones;
+	}
+
+	public void setCantidadModificaciones(Integer cantidadModificaciones) {
+		this.cantidadModificaciones = cantidadModificaciones;
 	}
 
 }

@@ -1,7 +1,6 @@
 package ar.com.santalucia.dominio.modelo.aulavirtual;
 
 import java.util.Set;
-
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 
 /**
@@ -12,11 +11,14 @@ import ar.com.santalucia.dominio.modelo.academico.Materia;
  *
  */
 
+// Último modificador: Ariel Ramírez @ 03-02-2016 21:31
+
 public class AulaVirtual {
 	private Long idAulaVirtual;
 	private String descripcion;
 	private Materia materia;
 	private Set<ConfiguracionEntrega> listaEntregas;
+	private Muro muro;
 
 	public AulaVirtual() {
 		super();
@@ -61,6 +63,14 @@ public class AulaVirtual {
 
 	public void setListaEntregas(Set<ConfiguracionEntrega> listaEntregas) {
 		this.listaEntregas = listaEntregas;
+	}
+
+	public Muro getMuro() {
+		return muro;
+	}
+
+	public void setMuro(Muro muro) {
+		this.muro = muro;
 	}
 
 }
