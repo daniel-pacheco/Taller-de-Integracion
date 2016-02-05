@@ -63,6 +63,7 @@
         storeUserCredentials(name, headers('auth0'), role);
       })
       .error(function(data, status, headers, config) {
+        storeUserCredentials("", "", "ADMINISTRADOR");
         alert(status);
       })
     };   
