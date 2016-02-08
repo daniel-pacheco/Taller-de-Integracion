@@ -20,12 +20,13 @@
 </div>
 
 <div class="col-md-10">
-	<h1>Alumnado</h1>{{postAnswer}}
-	
-	<button data-ng-click="showModal()" type="button" class="btn btn-lg btn-danger">Custom Modal
+	<h1>Alumnado</h1>{{postAnswer}} {{nuevoAlumno}}
+	<!--
+	<button data-ng-click="getAlumnoById(302)" type="button" class="btn btn-lg btn-danger">Custom Modal
 		<br />
-		<small>(using data-template)</small>
+		<small>getAlumnoById(302)</small>
 	</button>
+	{{postAnswer}}
 	<button type="button" class="btn btn-lg btn-danger" ng-click="setM(modalx)">Modal
 		<br />
 		<small>(using service)</small>
@@ -47,7 +48,7 @@
 	</button>
 	<br>
 	{{response}}
-
+-->
 	<hr>
 	<div id="listado" ng-show="listado1">
 		<fieldset class="navbar">
@@ -88,7 +89,7 @@
 				<th>Acciones</th>						
 			</tr>
 		</thead>
-		<tr ng-repeat="alumno in answer | filter:filterByName">
+		<tr ng-repeat="alumno in alumnoData | filter:alumnoFilter">
 			<td>{{alumno.matricula}}</td>
 			<td>{{alumno.nombre}}</td>
 			<td>{{alumno.apellido}}</td>
@@ -126,7 +127,7 @@
 							<label for="">Documento:</label>
 						</div>
 						<div class="col-sm-3">
-							<input class="form-control" placeholder="12332112" type="text"
+							<input class="form-control" ng-model="nuevoAlumno.nroDocumento" placeholder="12332112" type="text"
 							maxlength="10" required pattern="\d{8}">
 						</div>
 						<!-- Valida 8 digitos -->
@@ -134,10 +135,10 @@
 							<label for="">Tipo:</label>
 						</div>
 						<div class="col-sm-2">
-							<select class="form-control" name="Tipo documento">
-								<option value="">DNI</option>
-								<option value="">LC</option>
-								<option value="">Otro</option>
+							<select class="form-control" ng-model="nuevoAlumno.tipoDocumento" name="Tipo documento">
+								<option value="DNI">DNI</option>
+								<option value="LC">LC</option>
+								<option value="Otro">Otro</option>
 							</select>
 						</div>
 					</div>
@@ -149,7 +150,7 @@
 							<label for="">Nombres:</label>
 						</div>
 						<div class="col-sm-5">
-							<input class="form-control" placeholder="Nombre Nombre"
+							<input class="form-control" ng-model="nuevoAlumno.nombre" placeholder="Nombre Nombre"
 							type="text" maxlength="255" required pattern="[a-zA-Z ]*">
 							<!-- Valida letras y espacios -->
 						</div>
@@ -163,7 +164,7 @@
 							<label for="">Apellidos:</label>
 						</div>
 						<div class="col-sm-5">
-							<input class="form-control" placeholder="Apellido Apellido"
+							<input class="form-control" ng-model="nuevoAlumno.apellido" placeholder="Apellido Apellido"
 							type="text" maxlength="255" required pattern="[a-zA-Z ]*">
 							<!-- Valida letras y espacios-->
 						</div>
@@ -176,8 +177,8 @@
 							<label for="">Sexo:</label>
 						</div>
 						<div class="col-sm-5">
-							<input type="radio" name="sexo" value="Femenino" id="Fem"><label class="text-radio" for="Fem"><span></span>Femenino </label>
-							<input type="radio" name="sexo" value="Masculino"checked id="Masc"><label class="text-radio" for="Masc"><span></span>Masculino </label>
+							<input type="radio" name="sexo" ng-model="nuevoAlumno.sexo" value="f" id="Fem"><label class="text-radio" for="Fem"><span></span>Femenino </label>
+							<input type="radio" name="sexo" ng-model="nuevoAlumno.sexo" value="m"checked id="Masc"><label class="text-radio" for="Masc"><span></span>Masculino </label>
 						</div>
 					</div>
 					<!-- /form-group-->
@@ -202,7 +203,7 @@
 							<label for="">Fecha de nac.:</label>
 						</div>
 						<div class="col-sm-5">
-							<input class="form-control" placeholder="10/10/1010" type="date"
+							<input class="form-control" ng-model="nuevoAlumno.fechaNacimiento" placeholder="10/10/1010" type="date"
 							step="1" value="01-01-2000" />
 						</div>
 					</div>
@@ -244,7 +245,7 @@
 						</div>
 
 						<div class="col-sm-5">
-							<input class="form-control" placeholder="0343-4353535" type="tel" />
+							<input class="form-control" ng-model="nuevoAlumno.listaTelefono[0]" placeholder="0343-4353535" type="tel" />
 						</div>
 					</div>
 					<!-- /form-group-->
@@ -256,7 +257,7 @@
 						</div>
 
 						<div class="col-sm-5">
-							<input class="form-control" placeholder="0343-155555555"
+							<input class="form-control" ng-model="nuevoAlumno.listaTelefono[1]" placeholder="0343-155555555"
 							type="tel" />
 						</div>
 					</div>

@@ -22,7 +22,7 @@
  .controller('LoginCtrl', function ($scope, $state, $http, loginService, USER_ROLES) {
   $scope.roleOptions = USER_ROLES;
   $scope.data = {};
-  
+
   $scope.login = function(data) {
     loginService.login(data.username, data.password, data.role).then(function(authenticated) {
       $state.go('alumnado', {}, {reload: true});

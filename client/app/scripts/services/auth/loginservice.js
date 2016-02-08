@@ -43,7 +43,7 @@
     authToken = token;
     userRole = role; 
     // Set the token as header for your requests!
-    $http.defaults.headers.common['auth0'] = token;//auth0 le dicen los pibes
+    //$http.defaults.headers.common['auth0'] = token;//auth0 le dicen los pibes
   }
   
   function destroyUserCredentials() {
@@ -88,6 +88,7 @@
     isAuthorized: isAuthorized,
     isAuthenticated: function() {return isAuthenticated;},
     userName: function() {return userName;},
-    userRole: function() {return userRole;}
+    userRole: function() {return userRole;},
+    authToken: function() {return authToken;}
   };
 });

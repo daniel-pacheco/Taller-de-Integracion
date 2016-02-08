@@ -19,14 +19,14 @@
  		}
  	});
  })
- .controller('AlumnadoCtrl', function ($scope, $q, $http, $modal, alumnoService, modalService, Upload, $timeout) {
- 	this.awesomeThings = [
- 	'HTML5 Boilerplate',
- 	'AngularJS',
- 	'Karma'
- 	];
+ .controller('AlumnadoCtrl', function ($scope, $q, $http, $modal, alumnoService, modalService, Upload, $timeout, alumnoData) {
  	$scope.listado1 = true;
  	$scope.listFilterIsEnabled = false;
+
+ 	$scope.nuevoAlumno = {
+    "listaTelefonos": [],
+    "listaMails": []
+  }
 
 //tooltips
 $scope.tooltip = {
@@ -87,6 +87,14 @@ $scope.upload = function (dataUrl) {
 }
 
 //filters
+
+$scope.alumnoFilter = function (alumno) {//la clave de este comparador es q transofrma todo a string y va comparando las posiciones, no tiene en cuenta los espacios
+        return (angular.lowercase(alumno.apellido).indexOf(angular.lowercase($scope.filterByName) || '') !== -1 ||
+                angular.lowercase(alumno.nombre).indexOf(angular.lowercase($scope.filterByName) || '') !== -1 ||
+                angular.lowercase(alumno.nroDocumento.toString()).indexOf(angular.lowercase($scope.filterByName) || '') !== -1
+                );
+    };
+
 $scope.dropDownOptions = ['2014', '2015', '2016','DNI/MAT'];
 $scope.dropDownValue = '';
 
@@ -168,10 +176,19 @@ var alumnoJson = {
 };
 
 $scope.answer = [];
-$scope.answer = [];
+$scope.alumnoData = alumnoData;
+
+
 /*$scope.getAll = alumnoService.alumnoGetAll().then(function(response){
 	$scope.answer = response.data;  
 });*/
+
+$scope.getAlumnoById = function (id) {
+	alumnoService.alumnoGetById(id)
+		.then(function(response){
+			$scope.postAnswer = response.data;	
+		})
+}
 
 $scope.putAlumno = function () {
 	alumnoService.alumnoPut(alumnoJson).then(function(response){
