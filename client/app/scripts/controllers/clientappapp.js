@@ -63,7 +63,11 @@ $scope.logOut = function () {
     $scope.menuDirectivo = MENU_DIRECTIVO;
     $scope.setActive = function(menuItem) {
     	$scope.activeMenu = menuItem
-    }
+    };
 
-
+$scope.tooltip = {
+tooltipLogout : {
+    'title' : 'Cerrar sesión'
+  }
+}
 });
