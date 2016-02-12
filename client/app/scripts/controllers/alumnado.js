@@ -44,13 +44,13 @@ $scope.tooltip = {
 //modal
 
 	//modal options 1
-	$scope.modalx = {};
-	$scope.modalx.controller =  'DirectivoCtrl';  
-	$scope.modalx.title = 'title local directivo';
-	$scope.modalx.content = 'content local directivo';
-	$scope.modalx.templateUrl = 'views/templates/message.tpl.html';
-	$scope.modalx.text = 'perooo, vo so loco vite?';
-	$scope.modalx.show = false;
+	$scope.modalx = {}; //inicializa un objeto
+	$scope.modalx.controller =  'AlumnadoCtrl';  //nombre del controller que va a llamar al modal
+	$scope.modalx.title = 'title local directivo'; // titulo del modal (accede directo)
+	$scope.modalx.content = 'content local directivo'; //contenido del modal (accede directo)
+	$scope.modalx.templateUrl = 'views/templates/message.tpl.html'; //plantilla del modal
+	$scope.modalx.show = false; //si el modal se va a mosrtar al configurarlo o si habrá que llamarlo (por defecto false, hay q llamarlo)
+	$scope.modalx.text = 'perooo, vo so loco vite?'; //contenido extra del modal (se peude poner el nombre que quiera, no accede directo)
 
 	//modal options 2
 	$scope.modalxi = {};
@@ -119,6 +119,7 @@ $scope.search = function () {
 	if (!$scope.listFilterIsEnabled) {
 		$scope.listFilterIsEnabled = true;
 	};
+	this.showData();
 }
 
 
@@ -176,8 +177,10 @@ var alumnoJson = {
 };
 
 $scope.answer = [];
-$scope.alumnoData = alumnoData;
 
+$scope.showData = function() {
+$scope.alumnoData = alumnoData;
+}
 
 /*$scope.getAll = alumnoService.alumnoGetAll().then(function(response){
 	$scope.answer = response.data;  

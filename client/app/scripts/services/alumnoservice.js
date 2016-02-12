@@ -12,7 +12,7 @@ angular.module('clientAppApp')
     // AngularJS will instantiate a singleton by calling "new" on this function
 
     var server = SERVER.address;/*'http://localhost:8080/'; 'http://192.168.1.8:8080/';//EscuelaSantaLucia/rest/sAlumno/listAll //http://localhost:8080/EscuelaSantaLucia/rest/sAlumno/listAll'*/
-    alert(server);
+    console.log('server address: ' + server);
     var getByIdQuery = 'EscuelaSantaLucia/rest/sAlumno/alu/';
     var getQuery = 'EscuelaSantaLucia/rest/sAlumno/listAll';
     var postQuery = 'EscuelaSantaLucia/rest/sAlumno/alu/';

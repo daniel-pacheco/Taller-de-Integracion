@@ -11,7 +11,7 @@
  .config(function($stateProvider) {
   $stateProvider
   .state('login', {
-    url: '/',
+    url: '/login',
     templateUrl: 'views/login.html',
     controller: 'LoginCtrl',
     data: {
