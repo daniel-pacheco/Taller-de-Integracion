@@ -40,7 +40,7 @@
 		<thead>
 			<tr>
 				<th>Nro</th>
-				<th>&Aacute;rea</th>
+				<!-- <th>&Aacute;rea</th> -->
 				<th>Materia</th>
 				<th>Apellido</th>
 				<th>Nombre</th>
@@ -50,10 +50,10 @@
 		</thead>
 		<tr ng-repeat="docente in docentes | filter:filterByArea:strict | filter:docenteFilter">
 			<td>{{docente.nro}}</td>
-			<td>{{docente.area}}</td>
+			<!-- <td>{{docente.area}}</td> -->
 			<td>{{docente.materia}}</td>
-			<td>{{docente.surname}}</td>
-			<td>{{docente.name}}</td>
+			<td>{{docente.apellido}}</td>
+			<td>{{docente.nombre}}</td>
 			<td>{{docente.cuil}}</td>
 			<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%; cursor: pointer" class="glyphicon glyphicon-user" ></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipDelete" style="width:25%; cursor: pointer" class="glyphicon glyphicon-remove"></span></td> 
 					<!--<td>{{alumno.name}}</td>
