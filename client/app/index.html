@@ -45,10 +45,12 @@
             </ul>
 
             
-            <div>
-              <label style="color:red;">hola {{credentials.userRole}} {{credentials.userName}}</label>
-              <button ng-click="logOut()" type="button" class="btn btn-info">cerrar sesión</button>
-            </div>
+            <ul class="navbar-nav saludo" style="float: right;">
+              <span bs-tooltip="tooltip.tooltipProfile" class="glyphicon glyphicon-user" ></span>
+              <span class="saludo">Hola {{credentials.userRole}} {{credentials.userName}}</span>
+              <!--  -->
+              <button ng-click="logOut()" type="button" class="btn btn-danger"> <span bs-tooltip="tooltip.tooltipProfile" class="glyphicon glyphicon-off" ></span> Despedirse</button>
+            </ul>
 
             <!--<ul class="nav navbar-nav">
               <li><a ng-href="#/alumnado">Alumnado</a></li>
