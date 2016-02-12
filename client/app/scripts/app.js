@@ -27,7 +27,7 @@ angular
     $urlRouterProvider.otherwise('/login');
 
 })
-
+/*
 .run(function ($rootScope, $state, loginService, AUTH_EVENTS) {
   $rootScope.$on('$stateChangeStart', function (event, next, nextParams, fromState) {
  
@@ -50,7 +50,7 @@ angular
 });
 
 })
-  /*
+  
 .run(function($httpBackend){
   $httpBackend.whenGET('http://localhost:8100/valid')
         .respond({message: 'This is my valid response!'});

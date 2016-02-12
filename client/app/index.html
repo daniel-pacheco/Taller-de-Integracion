@@ -49,7 +49,7 @@
               <span bs-tooltip="tooltip.tooltipProfile" class="glyphicon glyphicon-user" ></span>
               <span class="saludo">Hola {{credentials.userRole}} {{credentials.userName}}</span>
               <!--  -->
-              <button ng-click="logOut()" type="button" class="btn btn-danger"> <span bs-tooltip="tooltip.tooltipProfile" class="glyphicon glyphicon-off" ></span> Despedirse</button>
+              <button ng-click="logOut()" type="button" class="btn btn-danger"><span data-type="info" data-placement="bottom" bs-tooltip="tooltip.tooltipLogout" class="glyphicon glyphicon-off" data-animation="am-fade-and-scale"></span></button>
             </ul>
 
             <!--<ul class="nav navbar-nav">
@@ -133,6 +133,7 @@
         <script src="scripts/controllers/desemp.js"></script>
         <script src="scripts/controllers/docente.js"></script>
         <script src="scripts/services/alumnodata.js"></script>
+        <script src="scripts/services/docentedata.js"></script>
         <!-- endbuild -->
 </body>
 </html>

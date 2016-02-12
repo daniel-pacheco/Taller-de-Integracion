@@ -31,7 +31,7 @@
 		<br />
 		<small>(using service)</small>
 	</button>
-	 <button data-ng-click="showModal()" type="button" class="btn btn-info" data-animation="am-fade-and-slide-top">
+	<button data-ng-click="showModal()" type="button" class="btn btn-info" data-animation="am-fade-and-slide-top">
 		BRN Lookup
 	</button>
 	<!--<button ng-click="setM(modalxi)" type="button" class="btn btn-info">
@@ -136,7 +136,7 @@
 						</div>
 						<div class="col-sm-2">
 							<select class="form-control" ng-model="nuevoAlumno.tipoDocumento" name="Tipo documento">
-								<option value="DU/DNI">DU/DNI</option>
+								<option value="DNI">DNI</option>
 								<option value="LC">LC</option>
 								<option value="Otro">Otro</option>
 							</select>
@@ -186,11 +186,10 @@
 
 					<div class="form-group">
 						<div class="col-sm-2 control-label">
-							<label for="">Domicilio </label>
-							<label for="">Calle:</label>
+							<label for="">Domicilio:</label>
 						</div>
 						<div class="col-sm-5">
-							<input class="form-control" placeholder="Calle"
+							<input class="form-control" placeholder="Domicilio 123"
 							type="text" maxlength="255" required pattern="[a-zA-Z 0-9]*" />
 							<!-- Valida letras, numeros y espacios-->
 						</div>{{modalx.addressData}}
@@ -222,7 +221,8 @@
 							step="1" value="01-01-2000" />
 						</div>
 					</div>
-					<!-- /form-group
+					<!-- /form-group-->
+
 
 					<div class="form-group">
 						<div class="col-sm-2 control-label">
@@ -235,6 +235,9 @@
 							</select>
 						</div>
 					</div>
+					<!-- /form-group-->
+
+
 
 					<div class="form-group">
 						<div class="col-sm-2 control-label">
@@ -247,7 +250,7 @@
 							</select>
 						</div>
 					</div>
-					form-group-->
+					<!-- /form-group-->
 
 
 					<div class="form-group">
@@ -292,7 +295,7 @@
 							<label for="">Observaciones:</label>
 						</div>
 						<div class="col-sm-5">
-							<textarea class="form-control" rows="3" placeholder="El modelo de alumno no tiene lugar para observaciones..."></textarea>
+							<textarea class="form-control" rows="3"></textarea>
 							<!--<input class="form-control"
 							type="text" maxlength="255" required pattern="[a-zA-Z ]*">-->
 							<!-- Valida letras y espacios-->

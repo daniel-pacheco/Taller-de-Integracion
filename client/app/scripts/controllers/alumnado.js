@@ -133,7 +133,7 @@ $scope.domicilioAvanzado = function () {
 		$scope.modalx.content = 'Opciones Avanzadas'; 
 		$scope.modalx.templateUrl = '/views/templates/addaddressdetails.tpl.html';
 		$scope.modalx.show = false; 
-		$scope.modalx.addressData = {};
+		$scope.modalx.addressData = {};//cambiar x modelo externo apra ver si funca devolver datos
 
 		$scope.setM(this.modalx);
 		$scope.showModal(); 
