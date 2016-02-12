@@ -48,7 +48,7 @@ $scope.tooltip = {
 	$scope.modalx.controller =  'AlumnadoCtrl';  //nombre del controller que va a llamar al modal
 	$scope.modalx.title = 'title local directivo'; // titulo del modal (accede directo)
 	$scope.modalx.content = 'content local directivo'; //contenido del modal (accede directo)
-	$scope.modalx.templateUrl = 'views/templates/message.tpl.html'; //plantilla del modal
+	$scope.modalx.templateUrl = '/views/agregarTelefono.html'; //plantilla del modal
 	$scope.modalx.show = false; //si el modal se va a mosrtar al configurarlo o si habrá que llamarlo (por defecto false, hay q llamarlo)
 	$scope.modalx.text = 'perooo, vo so loco vite?'; //contenido extra del modal (se peude poner el nombre que quiera, no accede directo)
 
@@ -122,7 +122,24 @@ $scope.search = function () {
 	this.showData();
 }
 
+//---Nuevo perfil
 
+$scope.domicilioAvanzado = function () {
+
+	
+		$scope.modalx = {};
+		$scope.modalx.controller =  'AlumnadoCtrl';  
+		$scope.modalx.title = 'Nuevo Domicilio'; 
+		$scope.modalx.content = 'Opciones Avanzadas'; 
+		$scope.modalx.templateUrl = '/views/templates/addaddressdetails.tpl.html';
+		$scope.modalx.show = false; 
+		$scope.modalx.addressData = {};
+
+		$scope.setM(this.modalx);
+		$scope.showModal(); 
+	
+
+}
 
 //---Llamadas al servicio ALUMNO---
 var alumnoJson = {  
