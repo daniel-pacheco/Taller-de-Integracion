@@ -24,11 +24,11 @@
  	$scope.listFilterIsEnabled = false;
 
  	$scope.nuevoAlumno = {
-    "listaTelefonos": [],
-    "listaMails": []
-  }
-
+ 		"listaTelefonos": [],
+ 		"listaMails": []
+ 	}
 //tooltips
+
 $scope.tooltip = {
 	tooltipProfile : {
 		'title' : 'Perfil'
@@ -84,16 +84,16 @@ $scope.upload = function (dataUrl) {
 	}, function (evt) {
 		$scope.progress = parseInt(100.0 * evt.loaded / evt.total);
 	});
-}
+};
 
 //filters
 
 $scope.alumnoFilter = function (alumno) {//la clave de este comparador es q transofrma todo a string y va comparando las posiciones, no tiene en cuenta los espacios
-        return (angular.lowercase(alumno.apellido).indexOf(angular.lowercase($scope.filterByName) || '') !== -1 ||
-                angular.lowercase(alumno.nombre).indexOf(angular.lowercase($scope.filterByName) || '') !== -1 ||
-                angular.lowercase(alumno.nroDocumento.toString()).indexOf(angular.lowercase($scope.filterByName) || '') !== -1
-                );
-    };
+	return (angular.lowercase(alumno.apellido).indexOf(angular.lowercase($scope.filterByName) || '') !== -1 ||
+		angular.lowercase(alumno.nombre).indexOf(angular.lowercase($scope.filterByName) || '') !== -1 ||
+		angular.lowercase(alumno.nroDocumento.toString()).indexOf(angular.lowercase($scope.filterByName) || '') !== -1
+		);
+};
 
 $scope.dropDownOptions = ['2014', '2015', '2016','DNI/MAT'];
 $scope.dropDownValue = '';
@@ -122,25 +122,41 @@ $scope.search = function () {
 	this.showData();
 }
 
+$scope.activeMenuIzqAlu = 1;
+$scope.setActiveAlu = function(menuItemAlu) {
+	$scope.activeMenuIzqAlu = menuItemAlu;
+};
 //---Nuevo perfil
 
 $scope.domicilioAvanzado = function () {
 
 	
+	$scope.modalx = {};
+	$scope.modalx.controller =  'AlumnadoCtrl';  
+	$scope.modalx.title = 'Nuevo Domicilio'; 
+	$scope.modalx.content = 'Opciones Avanzadas'; 
+	$scope.modalx.templateUrl = '/views/templates/addaddressdetails.tpl.html';
+	$scope.modalx.show = false; 
+		$scope.modalx.addressData = {};//cambiar x modelo externo apra ver si funca devolver datos
+
+		$scope.setM(this.modalx);
+		$scope.showModal(); 
+	}
+
+	$scope.telefonoAvanzado = function () {
+
+		
 		$scope.modalx = {};
 		$scope.modalx.controller =  'AlumnadoCtrl';  
-		$scope.modalx.title = 'Nuevo Domicilio'; 
+		$scope.modalx.title = 'Teléfonos'; 
 		$scope.modalx.content = 'Opciones Avanzadas'; 
-		$scope.modalx.templateUrl = '/views/templates/addaddressdetails.tpl.html';
+		$scope.modalx.templateUrl = '/views/templates/addphonedetails.tpl.html';
 		$scope.modalx.show = false; 
 		$scope.modalx.addressData = {};//cambiar x modelo externo apra ver si funca devolver datos
 
 		$scope.setM(this.modalx);
 		$scope.showModal(); 
-	
-
-}
-
+	}
 //---Llamadas al servicio ALUMNO---
 var alumnoJson = {  
 	"idUsuario"       : null,
@@ -196,7 +212,7 @@ var alumnoJson = {
 $scope.answer = [];
 
 $scope.showData = function() {
-$scope.alumnoData = alumnoData;
+	$scope.alumnoData = alumnoData;
 }
 
 /*$scope.getAll = alumnoService.alumnoGetAll().then(function(response){
@@ -205,9 +221,9 @@ $scope.alumnoData = alumnoData;
 
 $scope.getAlumnoById = function (id) {
 	alumnoService.alumnoGetById(id)
-		.then(function(response){
-			$scope.postAnswer = response.data;	
-		})
+	.then(function(response){
+		$scope.postAnswer = response.data;	
+	})
 }
 
 $scope.putAlumno = function () {
@@ -233,34 +249,34 @@ $scope.update = function (variable, value) {
 
 //---Auth Test
 $scope.logout = function() {
-    AuthService.logout();
-    $state.go('login');
-  };
- 
-  $scope.performValidRequest = function() {
-    $http.get('http://localhost:8100/valid').then(
-      function(result) {
-        $scope.response = result;
-      });
-  };
- 
-  $scope.performUnauthorizedRequest = function() {
-    $http.get('http://localhost:8100/notauthorized').then(
-      function(result) {
+	AuthService.logout();
+	$state.go('login');
+};
+
+$scope.performValidRequest = function() {
+	$http.get('http://localhost:8100/valid').then(
+		function(result) {
+			$scope.response = result;
+		});
+};
+
+$scope.performUnauthorizedRequest = function() {
+	$http.get('http://localhost:8100/notauthorized').then(
+		function(result) {
         // No result here..
-      }, function(err) {
-        $scope.response = err;
-      });
-  };
- 
-  $scope.performInvalidRequest = function() {
-    $http.get('http://localhost:8100/notauthenticated').then(
-      function(result) {
+    }, function(err) {
+    	$scope.response = err;
+    });
+};
+
+$scope.performInvalidRequest = function() {
+	$http.get('http://localhost:8100/notauthenticated').then(
+		function(result) {
         // No result here..
-      }, function(err) {
-        $scope.response = err;
-      });
-  };
+    }, function(err) {
+    	$scope.response = err;
+    });
+};
 
 //---test
 $scope.friends = [{name:'John', phone:'555-1276'},

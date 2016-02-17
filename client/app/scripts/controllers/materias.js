@@ -41,6 +41,12 @@
   $scope.dropDownOptions = ['4', '5º', '3º'];
   $scope.dropDownValue = '';
 
+  
+$scope.activeMenuIzqAlu = 1;
+$scope.setActiveAlu = function(menuItemAlu) {
+  $scope.activeMenuIzqAlu = menuItemAlu;
+};
+
 //Test
 $scope.friends = [{nombre:'Educación Fisica', docenteTitular:'María Laura', anioPertenece: '4º', area: 'cs sociales'},
 {nombre:'Matemática', docenteTitular:'Marta Blanco', anioPertenece: '4', area: 'cs sociales'},

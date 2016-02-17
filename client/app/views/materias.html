@@ -7,11 +7,11 @@
 					<a href="#getting-started">Men&uacute; materia</a>
 				</li>
 				<hr style="margin: 2px 0;">
-				<li bs-scrollspy data-target="#modals">
-					<a href="" ng-click="seleccionar('listado')">Listado</a>
+				<li data-target="#modals" ng-class="{active : activeMenuIzqAlu === 1}">
+					<a href="" ng-click="seleccionar('listado'); setActiveAlu(1)">Listado</a>
 				</li>
-				<li bs-scrollspy data-target="#nuevaMateria">
-					<a href="" ng-click="seleccionar('nuevaMateria')">Nueva materia</a>
+				<li data-target="#nuevaMateria" ng-class="{active : activeMenuIzqAlu === 2}">
+					<a href="" ng-click="seleccionar('nuevaMateria'); setActiveAlu(2)">Nueva materia</a>
 				</li>
 			</ul>
 		</div>

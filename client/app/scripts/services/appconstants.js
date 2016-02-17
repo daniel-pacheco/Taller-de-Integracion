@@ -34,7 +34,7 @@
  	about: ['#/about', 'About'],
  	contact: ['#/contact', 'Contact']
  })
-
+ 
  .constant('CURSOS',{
  	todos: 'Todos',
  	primero: 'Primero',
