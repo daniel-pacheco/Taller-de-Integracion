@@ -12,6 +12,7 @@ import ar.com.santalucia.dominio.modelo.academico.Mesa;
 import ar.com.santalucia.dominio.modelo.academico.MesaExamen;
 import ar.com.santalucia.dominio.modelo.desempenio.Nota;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
+import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.excepciones.ValidacionException;
 
 /**
@@ -32,6 +33,7 @@ public class ServicioInscripcionMesa {
 	public ServicioInscripcionMesa() throws Exception{
 		try {
 			gInscripcion = new GestorInscripcion();
+			gMesaExamen = new GestorMesaExamen();
 			gMesa = new GestorMesa();
 			gAlumno = new GestorAlumno();
 			gNota = new GestorNota();
@@ -201,6 +203,44 @@ public class ServicioInscripcionMesa {
 		}
 	}
 	
+	public Boolean pasarAHistorico(Inscripcion inscripcion) throws Exception {
+		/*
+		 * 1) Inscripcion -> mesa, alumno (nombre y apellido), nota (calificacion), asistencia
+		 * 2) Mesa -> docentes (nombres y apellidos [3]), materia, fechas inicio y fin
+		 * 3) Materia -> nombre
+		 */
+		try {
+			MesaExamen mesaExamen = new MesaExamen();
+			mesaExamen.setNota(inscripcion.getNota().getCalificacion()); //asignando la calificación
+			mesaExamen.setAsistencia(inscripcion.getAsistencia());
+			mesaExamen.setFechaInscripcion(inscripcion.getFecha());
+			mesaExamen.setNombreMateria(inscripcion.getMesa().getMateria().getNombre());
+			Personal docente1 = (Personal) inscripcion.getMesa().getIntegrantesTribunal().toArray()[0];
+			Personal docente2 = (Personal) inscripcion.getMesa().getIntegrantesTribunal().toArray()[1];
+			Personal docente3 = (Personal) inscripcion.getMesa().getIntegrantesTribunal().toArray()[2];
+			mesaExamen.setDniDocente1(docente1.getNroDocumento());
+			mesaExamen.setNombreDocente1(docente1.getNombre());
+			mesaExamen.setApellidoDocente1(docente1.getApellido());
+			mesaExamen.setDniDocente2(docente2.getNroDocumento());
+			mesaExamen.setNombreDocente2(docente2.getNombre());
+			mesaExamen.setApellidoDocente2(docente2.getApellido());
+			mesaExamen.setDniDocente3(docente3.getNroDocumento());
+			mesaExamen.setNombreDocente3(docente3.getNombre());
+			mesaExamen.setApellidoDocente3(docente3.getApellido());
+			mesaExamen.setDniAlumno(inscripcion.getAlumno().getNroDocumento());
+			mesaExamen.setNombreAlumno(inscripcion.getAlumno().getNombre());
+			mesaExamen.setApellidoAlumno(inscripcion.getAlumno().getApellido());
+			mesaExamen.setHoraInicioMesa(inscripcion.getMesa().getFechaHoraInicio());
+			mesaExamen.setHoraFinMesa(inscripcion.getMesa().getFechaHoraFin());
+			
+			gMesaExamen.add(mesaExamen);
+		} catch (Exception ex) {
+			throw new Exception("No se pudo agregar la MESA-EXAMEN: " + ex.getMessage());
+		}
+		
+		return true;
+	}
+	
 	/*
 	public Boolean asignarNotaAMesaExamen(Nota nota, Long idMesaExamen) throws Exception {
 		try {
@@ -209,7 +249,7 @@ public class ServicioInscripcionMesa {
 			 * 2) asignar nota a mesa-examen
 			 * 3) asignar materia a nota (mesa-examen->inscripcion->mesa->materia)
 			 * 4) modify mesa-examen
-			 * 5) modifi nota
+			 * 5) modify nota
 			 *//*
 			MesaExamen mesaExamen = gMesaExamen.getById(idMesaExamen);
 			mesaExamen.setNota(nota);
@@ -223,4 +263,5 @@ public class ServicioInscripcionMesa {
 		return true;
 	}
 	*/
+
 }
