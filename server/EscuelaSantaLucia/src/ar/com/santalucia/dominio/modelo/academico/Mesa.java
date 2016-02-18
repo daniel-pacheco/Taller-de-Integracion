@@ -10,15 +10,16 @@ import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 /**
  * 
  * @author Ariel Ramirez
- * @version 1.1
+ * @version 2.0
  * 
  */
 
-// Último modificador: Eric Pennachini @ 30-01-16 13:00
+// Último modificador: Eric Pennachini @ 03-02-16 11:42
 
 public class Mesa {
 	private Long idMesa;
-	private Date fecha;
+	private Date fechaHoraInicio;
+	private Date fechaHoraFin;
 	private Long plazoInscripcion;
 	private Materia materia;
 	private Set<Personal> integrantesTribunal;
@@ -28,11 +29,12 @@ public class Mesa {
 		integrantesTribunal = new HashSet<Personal>();
 	}
 
-	public Mesa(Long idMesa, Date fecha, Long plazoInscripcion, Materia materia, Set<Personal> integrantesTribunal,
+	public Mesa(Long idMesa, Date fechaHoraInicio, Date fechaHoraFin, Long plazoInscripcion, Materia materia, Set<Personal> integrantesTribunal,
 			Set<Inscripcion> listaInscripciones) {
 		super();
 		this.idMesa = idMesa;
-		this.fecha = fecha;
+		this.fechaHoraInicio = fechaHoraInicio;
+		this.fechaHoraFin = fechaHoraFin;
 		this.plazoInscripcion = plazoInscripcion;
 		this.materia = materia;
 		this.setIntegrantesTribunal(integrantesTribunal);
@@ -47,12 +49,12 @@ public class Mesa {
 		this.idMesa = idMesa;
 	}
 
-	public Date getFecha() {
-		return fecha;
+	public Date getFechaHoraInicio() {
+		return fechaHoraInicio;
 	}
 
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
+	public void setFechaHoraInicio(Date fecha) {
+		this.fechaHoraInicio = fecha;
 	}
 
 	public Long getPlazoInscripcion() {
@@ -77,6 +79,14 @@ public class Mesa {
 
 	public void setIntegrantesTribunal(Set<Personal> integrantesTribunal) {
 		this.integrantesTribunal = integrantesTribunal;
+	}
+
+	public Date getFechaHoraFin() {
+		return fechaHoraFin;
+	}
+
+	public void setFechaHoraFin(Date fechaHoraFin) {
+		this.fechaHoraFin = fechaHoraFin;
 	}
 	
 }

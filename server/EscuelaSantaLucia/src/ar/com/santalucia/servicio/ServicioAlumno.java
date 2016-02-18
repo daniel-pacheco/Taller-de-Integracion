@@ -59,6 +59,8 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 		}
 	}
 
+	//public boolean getUsuariosByNomA
+	
 	@Override
 	public boolean addUsuario(Alumno usuario) throws Exception {
 		try {

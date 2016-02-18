@@ -26,3 +26,18 @@ update[entidad]
 delete[entidad]ById
 get[entidad]ById
 [entidad]ListAll
+
+////////////////////////////////////////////////////////////////////
+
+PASAR A HISTÓRICO LA INSCRIPCIÓN
+
+Datos que se necesitan de otras entidades:
+1) Inscripcion -> mesa, alumno, nota (calificacion), asistencia
+2) Mesa -> docentes, materia, fechas
+3) Materia -> nombre
+
+/*
+	En el caso de la nota hay que ver si se relaciona 
+	directamente la entidad
+	o solo la calificación en duro.
+*/

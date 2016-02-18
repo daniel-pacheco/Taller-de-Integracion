@@ -17,9 +17,9 @@ import ar.com.santalucia.dominio.modelo.desempenio.Nota;
 public class MesaExamen {
 	private Long idMesaExamen;
 	private String nroActa;
-	private Long nota; // o Nota en vez de Long
+	private Float nota; // o Nota en vez de Long
 	private Boolean asistencia;
-	private Date fecha;
+	private Date fechaInscripcion;
 	private String nombreMateria;
 	private Long dniDocente1;
 	private String nombreDocente1;
@@ -33,14 +33,14 @@ public class MesaExamen {
 	private Long dniAlumno;
 	private String nombreAlumno;
 	private String apellidoAlumno;
-	private Date horaInicioMesa;
-	private Date horaFinMesa;
+	private Date fechaHoraInicioMesa;
+	private Date fechaHoraFinMesa;
 
 	public MesaExamen() {
 		super();
 	}
 
-	public MesaExamen(Long idMesaExamen, String nroActa, Long nota, Boolean asistencia, Date fecha,
+	public MesaExamen(Long idMesaExamen, String nroActa, Float nota, Boolean asistencia, Date fechaInscripcion,
 			String nombreMateria, Long dniDocente1, String nombreDocente1, String apellidoDocente1, Long dniDocente2,
 			String nombreDocente2, String apellidoDocente2, Long dniDocente3, String nombreDocente3,
 			String apellidoDocente3, Long dniAlumno, String nombreAlumno, String apellidoAlumno, Date horaInicioMesa,
@@ -50,7 +50,7 @@ public class MesaExamen {
 		this.nroActa = nroActa;
 		this.nota = nota;
 		this.asistencia = asistencia;
-		this.fecha = fecha;
+		this.fechaInscripcion = fechaInscripcion;
 		this.nombreMateria = nombreMateria;
 		this.dniDocente1 = dniDocente1;
 		this.nombreDocente1 = nombreDocente1;
@@ -64,8 +64,8 @@ public class MesaExamen {
 		this.dniAlumno = dniAlumno;
 		this.nombreAlumno = nombreAlumno;
 		this.apellidoAlumno = apellidoAlumno;
-		this.horaInicioMesa = horaInicioMesa;
-		this.horaFinMesa = horaFinMesa;
+		this.fechaHoraInicioMesa = horaInicioMesa;
+		this.fechaHoraFinMesa = horaFinMesa;
 	}
 
 	public Long getIdMesaExamen() {
@@ -84,11 +84,11 @@ public class MesaExamen {
 		this.nroActa = nroActa;
 	}
 
-	public Long getNota() {
+	public Float getNota() {
 		return nota;
 	}
 
-	public void setNota(Long nota) {
+	public void setNota(Float nota) {
 		this.nota = nota;
 	}
 
@@ -100,12 +100,12 @@ public class MesaExamen {
 		this.asistencia = asistencia;
 	}
 
-	public Date getFecha() {
-		return fecha;
+	public Date getFechaInscripcion() {
+		return fechaInscripcion;
 	}
 
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
+	public void setFechaInscripcion(Date fecha) {
+		this.fechaInscripcion = fecha;
 	}
 
 	public String getNombreMateria() {
@@ -213,19 +213,19 @@ public class MesaExamen {
 	}
 
 	public Date getHoraInicioMesa() {
-		return horaInicioMesa;
+		return fechaHoraInicioMesa;
 	}
 
 	public void setHoraInicioMesa(Date horaInicioMesa) {
-		this.horaInicioMesa = horaInicioMesa;
+		this.fechaHoraInicioMesa = horaInicioMesa;
 	}
 
 	public Date getHoraFinMesa() {
-		return horaFinMesa;
+		return fechaHoraFinMesa;
 	}
 
 	public void setHoraFinMesa(Date horaFinMesa) {
-		this.horaFinMesa = horaFinMesa;
+		this.fechaHoraFinMesa = horaFinMesa;
 	}
 
 }
