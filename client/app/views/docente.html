@@ -7,11 +7,11 @@
 					<a href="#getting-started">Men&uacute; Docente</a>
 				</li>
 				<hr style="margin: 2px 0;">
-				<li bs-scrollspy data-target="#listado">
-					<a href="" ng-click="seleccionar('listado')">Listado</a>
+				<li ng-class="{active : activeMenuIzqDoc === 1}" data-target="#listado">
+					<a href="" ng-click="seleccionar('listado'); setActiveDoc(1)">Listado</a>
 				</li>
-				<li bs-scrollspy data-target="#nuevoPerfil">
-					<a href="" ng-click="seleccionar('nuevoPerfil')">Nuevo Perfil</a>
+				<li ng-class="{active : activeMenuIzqDoc === 2}" data-target="#nuevoPerfil">
+					<a href="" ng-click="seleccionar('nuevoPerfil'); setActiveDoc(2)">Nuevo Perfil</a>
 				</li>
 			</ul>
 		</div>

@@ -31,7 +31,7 @@ angular
 .run(function ($rootScope, $state, loginService, AUTH_EVENTS) {
   $rootScope.$on('$stateChangeStart', function (event, next, nextParams, fromState) {
  
-    if ('data' in next && 'authorizedRoles' in next.data) {
+ /*   if ('data' in next && 'authorizedRoles' in next.data) {
       var authorizedRoles = next.data.authorizedRoles;
       if (!loginService.isAuthorized(authorizedRoles)) {
         event.preventDefault();
@@ -46,7 +46,7 @@ angular
         $state.go('login');
       }
     }
-
+*/
 });
 
 })

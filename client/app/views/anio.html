@@ -7,15 +7,15 @@
 					<a href="#getting-started">Men&uacute; A&ntilde;o</a>
 				</li>
 				<hr style="margin: 2px 0;">				
-				<li bs-scrollspy data-target="#nuevoAnio">
-					<a href="" ng-click="seleccionar('nuevoAnio')">Nuevo</a>
+				<li ng-class="{active : activeMenuIzqAnio === 1}" data-target="#nuevoAnio">
+					<a href="" ng-click="seleccionar('nuevoAnio'); setActiveAnio(1)">Nuevo</a>
 				</li>
 
-				<li bs-scrollspy data-target="#listadoAnio">
-					<a href="" ng-click="seleccionar('listadoAnio')">Listado</a>
+				<li ng-class="{active : activeMenuIzqAnio === 2}" data-target="#listadoAnio">
+					<a href="" ng-click="seleccionar('listadoAnio'); setActiveAnio(2)">Listado</a>
 				</li>
-				<li bs-scrollspy data-target="#administrar">
-					<a href="" ng-click="seleccionar('administrarAnio')">Administrar</a>
+				<li ng-class="{active : activeMenuIzqAnio === 3}" data-target="#administrar">
+					<a href="" ng-click="seleccionar('administrarAnio'); setActiveAnio(3)">Administrar</a>
 				</li>
 			</ul>
 		</div>

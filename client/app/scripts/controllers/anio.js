@@ -74,6 +74,11 @@
   };
 }
 
+$scope.activeMenuIzqAnio = 1;
+$scope.setActiveAnio = function(menuItemAnio) {
+  $scope.activeMenuIzqAnio = menuItemAnio;
+};
+
  	//Test
  	$scope.anios = [{anio:'7º', division:'U', turno: 'Tarde', cantidadDeAlumnos: '21'},
  	{anio:'1º', division:'U', turno: 'Tarde', cantidadDeAlumnos: '32'},

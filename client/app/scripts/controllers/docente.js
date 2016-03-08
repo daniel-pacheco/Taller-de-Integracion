@@ -65,6 +65,10 @@ $scope.showData = function() {
 $scope.docentes = docenteData;
 }
 
+$scope.activeMenuIzqDoc = 1;
+$scope.setActiveDoc = function(menuItemDoc) {
+  $scope.activeMenuIzqDoc = menuItemDoc;
+};
 
 
 
