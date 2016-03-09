@@ -6,7 +6,7 @@
     <class name="ar.com.santalucia.dominio.modelo.aulavirtual.Recurso" table="RECURSO">
         <id name="idRecurso" type="java.lang.Long">
             <column name="IDRECURSO" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
         <property name="nombre" type="java.lang.String">
             <column name="NOMBRE" />

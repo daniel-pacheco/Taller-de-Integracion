@@ -10,8 +10,11 @@
             <column name="IDMESA" unique="true"/>
             <generator class="identity" />
         </id>
-        <property name="fecha" type="java.util.Date">
-            <column name="FECHA" />
+        <property name="fechaHoraInicio" type="java.util.Date">
+            <column name="FECHAHORAINICIO" />
+        </property>
+        <property name="fechaHoraFin" type="java.util.Date">
+            <column name="FECHAHORAFIN" />
         </property>
         <property name="plazoInscripcion" type="java.lang.Long">
             <column name="PLAZOINSCRIPCION" />

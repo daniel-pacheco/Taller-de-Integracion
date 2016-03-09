@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 09/03/2016 18:52:19 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="ar.com.santalucia.dominio.modelo.sistema.configuracion.ParametroConfiguracion" table="PARAMETROCONFIGURACION">
+        <id name="idParametroConfiguracion" type="java.lang.Long">
+            <column name="IDPARAMETROCONFIGURACION" />
+            <generator class="identity" />
+        </id>
+        <property name="nombre" type="java.lang.String">
+            <column name="NOMBRE" />
+        </property>
+        <property name="valor" type="java.lang.String">
+            <column name="VALOR" />
+        </property>
+    </class>
+</hibernate-mapping>

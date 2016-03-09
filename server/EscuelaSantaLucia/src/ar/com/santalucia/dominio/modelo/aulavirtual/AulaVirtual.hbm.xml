@@ -6,7 +6,7 @@
     <class name="ar.com.santalucia.dominio.modelo.aulavirtual.AulaVirtual" table="AULAVIRTUAL">
         <id name="idAulaVirtual" type="java.lang.Long">
             <column name="IDAULAVIRTUAL" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
         <property name="descripcion" type="java.lang.String">
             <column name="DESCRIPCION" />

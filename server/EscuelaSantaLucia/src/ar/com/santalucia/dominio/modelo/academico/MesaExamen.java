@@ -64,8 +64,8 @@ public class MesaExamen {
 		this.dniAlumno = dniAlumno;
 		this.nombreAlumno = nombreAlumno;
 		this.apellidoAlumno = apellidoAlumno;
-		this.fechaHoraInicioMesa = horaInicioMesa;
-		this.fechaHoraFinMesa = horaFinMesa;
+		this.setFechaHoraInicioMesa(horaInicioMesa);
+		this.setFechaHoraFinMesa(horaFinMesa);
 	}
 
 	public Long getIdMesaExamen() {
@@ -212,20 +212,20 @@ public class MesaExamen {
 		this.apellidoAlumno = apellidoAlumno;
 	}
 
-	public Date getHoraInicioMesa() {
+	public Date getFechaHoraInicioMesa() {
 		return fechaHoraInicioMesa;
 	}
 
-	public void setHoraInicioMesa(Date horaInicioMesa) {
-		this.fechaHoraInicioMesa = horaInicioMesa;
+	public void setFechaHoraInicioMesa(Date fechaHoraInicioMesa) {
+		this.fechaHoraInicioMesa = fechaHoraInicioMesa;
 	}
 
-	public Date getHoraFinMesa() {
+	public Date getFechaHoraFinMesa() {
 		return fechaHoraFinMesa;
 	}
 
-	public void setHoraFinMesa(Date horaFinMesa) {
-		this.fechaHoraFinMesa = horaFinMesa;
+	public void setFechaHoraFinMesa(Date fechaHoraFinMesa) {
+		this.fechaHoraFinMesa = fechaHoraFinMesa;
 	}
 
 }

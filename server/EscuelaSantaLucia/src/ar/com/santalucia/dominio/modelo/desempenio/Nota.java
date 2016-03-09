@@ -6,6 +6,7 @@ import ar.com.santalucia.dominio.modelo.academico.Materia;
 
 /**
  * Clase Nota
+ * 
  * @author ericpennachini
  * @version 1.0
  *

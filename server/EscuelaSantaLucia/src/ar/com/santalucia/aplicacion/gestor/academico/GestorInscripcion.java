@@ -10,7 +10,7 @@ import ar.com.santalucia.dominio.modelo.academico.Llamado;
 import ar.com.santalucia.excepciones.ValidacionException;
 import ar.com.santalucia.validaciones.IValidacionInscripcion;
 
-public class GestorInscripcion extends Gestor<Inscripcion> implements IListable<Inscripcion>, IValidacionInscripcion {
+public class GestorInscripcion extends Gestor<Inscripcion> implements IListable<Inscripcion>/*, IValidacionInscripcion*/ {
 
 	private InscripcionHome inscripcionDAO;
 	
@@ -27,7 +27,7 @@ public class GestorInscripcion extends Gestor<Inscripcion> implements IListable<
 	@Override
 	public void add(Inscripcion object) throws Exception {
 		try {
-			this.validar(object);
+			//this.validar(object);
 			setSession();
 			setTransaction();
 			inscripcionDAO.persist(object);
@@ -43,7 +43,7 @@ public class GestorInscripcion extends Gestor<Inscripcion> implements IListable<
 	@Override
 	public void modify(Inscripcion object) throws Exception {
 		try {
-			this.validar(object);
+			//this.validar(object);
 			setSession();
 			setTransaction();
 			inscripcionDAO.attachDirty(object);
@@ -113,6 +113,7 @@ public class GestorInscripcion extends Gestor<Inscripcion> implements IListable<
 		}
 	}
 
+	/*
 	@Override
 	public Boolean validarFecha(Inscripcion inscripcion) {
 		if (inscripcion.getFecha().getTime() >= (inscripcion.getMesa().getFecha().getTime() - 2)) {
@@ -148,5 +149,6 @@ public class GestorInscripcion extends Gestor<Inscripcion> implements IListable<
 			throw exception;
 		}
 	}
-
+	*/
+	
 }

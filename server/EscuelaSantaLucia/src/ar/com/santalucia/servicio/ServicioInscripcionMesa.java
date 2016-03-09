@@ -230,8 +230,8 @@ public class ServicioInscripcionMesa {
 			mesaExamen.setDniAlumno(inscripcion.getAlumno().getNroDocumento());
 			mesaExamen.setNombreAlumno(inscripcion.getAlumno().getNombre());
 			mesaExamen.setApellidoAlumno(inscripcion.getAlumno().getApellido());
-			mesaExamen.setHoraInicioMesa(inscripcion.getMesa().getFechaHoraInicio());
-			mesaExamen.setHoraFinMesa(inscripcion.getMesa().getFechaHoraFin());
+			mesaExamen.setFechaHoraInicioMesa(inscripcion.getMesa().getFechaHoraInicio());
+			mesaExamen.setFechaHoraFinMesa(inscripcion.getMesa().getFechaHoraFin());
 			
 			gMesaExamen.add(mesaExamen);
 		} catch (Exception ex) {

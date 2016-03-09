@@ -17,8 +17,8 @@
         <property name="asistencia" type="java.lang.Boolean">
             <column name="ASISTENCIA" />
         </property>
-        <property name="fecha" type="java.util.Date">
-            <column name="FECHA" />
+        <property name="fechaInscripcion" type="java.util.Date">
+            <column name="FECHAINSCRIPCION" />
         </property>
         <property name="nombreMateria" type="java.lang.String">
             <column name="NOMBREMATERIA" />
@@ -59,11 +59,11 @@
         <property name="apellidoAlumno" type="java.lang.String">
             <column name="APELLIDOALUMNO" />
         </property>
-        <property name="horaInicioMesa" type="java.util.Date">
-            <column name="HORAINICIOMESA" />
+        <property name="fechaHoraInicioMesa" type="java.util.Date">
+            <column name="FECHAHORAINICIOMESA" />
         </property>
-        <property name="horaFinMesa" type="java.util.Date">
-            <column name="HORAFINMESA" />
+        <property name="fechaHoraFinMesa" type="java.util.Date">
+            <column name="FECHAHORAFINMESA" />
         </property>
     </class>
 </hibernate-mapping>
