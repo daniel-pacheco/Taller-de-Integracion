@@ -9,7 +9,7 @@ import ar.com.santalucia.aplicacion.gestor.desempenio.GestorNota;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
 import ar.com.santalucia.dominio.modelo.academico.Inscripcion;
 import ar.com.santalucia.dominio.modelo.academico.Mesa;
-import ar.com.santalucia.dominio.modelo.academico.MesaExamen;
+import ar.com.santalucia.dominio.modelo.academico.MesaExamenHist;
 import ar.com.santalucia.dominio.modelo.desempenio.Nota;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
@@ -109,9 +109,9 @@ public class ServicioInscripcionMesa {
 	}
 	
 	
-	public Boolean addMesaExamen(MesaExamen mesaExamen) throws Exception {
+	public Boolean addMesaExamen(MesaExamenHist mesaExamen) throws Exception {
 		try {
-			if (mesaExamen.getIdMesaExamen() == null) {
+			if (mesaExamen.getIdMesaExamenHist() == null) {
 				gMesaExamen.add(mesaExamen);
 			} else {
 				gMesaExamen.modify(mesaExamen);
@@ -123,7 +123,7 @@ public class ServicioInscripcionMesa {
 		return true;
 	}
 	
-	public Boolean deleteMesaExamen(MesaExamen mesaExamen) throws Exception {
+	public Boolean deleteMesaExamen(MesaExamenHist mesaExamen) throws Exception {
 		try {
 			gMesaExamen.delete(mesaExamen);
 		} catch (Exception ex) {
@@ -133,7 +133,7 @@ public class ServicioInscripcionMesa {
 		return true;
 	}
 	
-	public MesaExamen getMesaExamen(Long idMesaExamen) throws Exception {
+	public MesaExamenHist getMesaExamen(Long idMesaExamen) throws Exception {
 		try {
 			return gMesaExamen.getById(idMesaExamen);
 		} catch (Exception ex) {
@@ -141,7 +141,7 @@ public class ServicioInscripcionMesa {
 		}
 	}
 	
-	public List<MesaExamen> listMesaExamen(MesaExamen example) throws Exception {
+	public List<MesaExamenHist> listMesaExamen(MesaExamenHist example) throws Exception {
 		try {
 			return gMesaExamen.getByExample(example);
 		} catch (Exception ex) {
@@ -210,7 +210,7 @@ public class ServicioInscripcionMesa {
 		 * 3) Materia -> nombre
 		 */
 		try {
-			MesaExamen mesaExamen = new MesaExamen();
+			MesaExamenHist mesaExamen = new MesaExamenHist();
 			mesaExamen.setNota(inscripcion.getNota().getCalificacion()); //asignando la calificación
 			mesaExamen.setAsistencia(inscripcion.getAsistencia());
 			mesaExamen.setFechaInscripcion(inscripcion.getFecha());

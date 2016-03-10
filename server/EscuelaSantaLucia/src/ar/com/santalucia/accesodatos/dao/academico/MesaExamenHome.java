@@ -10,11 +10,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 
 import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
-import ar.com.santalucia.dominio.modelo.academico.MesaExamen;
+import ar.com.santalucia.dominio.modelo.academico.MesaExamenHist;
 
 /**
  * Home object for domain model class MesaExamen.
- * @see ar.com.santalucia.dominio.modelo.academico.MesaExamen
+ * @see ar.com.santalucia.dominio.modelo.academico.MesaExamenHist
  * @author Hibernate Tools
  */
 public class MesaExamenHome {
@@ -32,7 +32,7 @@ public class MesaExamenHome {
 		}
 	}
 
-	public void persist(MesaExamen transientInstance) {
+	public void persist(MesaExamenHist transientInstance) {
 		log.debug("persisting MesaExamen instance");
 		try {
 			sessionFactory.getCurrentSession().persist(transientInstance);
@@ -43,7 +43,7 @@ public class MesaExamenHome {
 		}
 	}
 
-	public void attachDirty(MesaExamen instance) {
+	public void attachDirty(MesaExamenHist instance) {
 		log.debug("attaching dirty MesaExamen instance");
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(instance);
@@ -54,7 +54,7 @@ public class MesaExamenHome {
 		}
 	}
 
-	public void attachClean(MesaExamen instance) {
+	public void attachClean(MesaExamenHist instance) {
 		log.debug("attaching clean MesaExamen instance");
 		try {
 			sessionFactory.getCurrentSession().lock(instance, LockMode.NONE);
@@ -65,7 +65,7 @@ public class MesaExamenHome {
 		}
 	}
 
-	public void delete(MesaExamen persistentInstance) {
+	public void delete(MesaExamenHist persistentInstance) {
 		log.debug("deleting MesaExamen instance");
 		try {
 			sessionFactory.getCurrentSession().delete(persistentInstance);
@@ -76,10 +76,10 @@ public class MesaExamenHome {
 		}
 	}
 
-	public MesaExamen merge(MesaExamen detachedInstance) {
+	public MesaExamenHist merge(MesaExamenHist detachedInstance) {
 		log.debug("merging MesaExamen instance");
 		try {
-			MesaExamen result = (MesaExamen) sessionFactory.getCurrentSession().merge(detachedInstance);
+			MesaExamenHist result = (MesaExamenHist) sessionFactory.getCurrentSession().merge(detachedInstance);
 			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -88,10 +88,10 @@ public class MesaExamenHome {
 		}
 	}
 
-	public MesaExamen findById(java.lang.Long id) {
+	public MesaExamenHist findById(java.lang.Long id) {
 		log.debug("getting MesaExamen instance with id: " + id);
 		try {
-			MesaExamen instance = (MesaExamen) sessionFactory.getCurrentSession()
+			MesaExamenHist instance = (MesaExamenHist) sessionFactory.getCurrentSession()
 					.get("ar.com.santalucia.dominio.modelo.academico.MesaExamen", id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
@@ -105,7 +105,7 @@ public class MesaExamenHome {
 		}
 	}
 
-	public List findByExample(MesaExamen instance) {
+	public List findByExample(MesaExamenHist instance) {
 		log.debug("finding MesaExamen instance by example");
 		try {
 			List results = sessionFactory.getCurrentSession()

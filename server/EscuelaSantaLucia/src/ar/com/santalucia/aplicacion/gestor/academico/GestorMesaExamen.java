@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import ar.com.santalucia.accesodatos.dao.academico.MesaExamenHome;
 import ar.com.santalucia.aplicacion.gestor.Gestor;
 import ar.com.santalucia.aplicacion.gestor.IListable;
-import ar.com.santalucia.dominio.modelo.academico.MesaExamen;
+import ar.com.santalucia.dominio.modelo.academico.MesaExamenHist;
 import ar.com.santalucia.validaciones.IValidacionMesaExamen;
 
 /**
@@ -16,7 +16,7 @@ import ar.com.santalucia.validaciones.IValidacionMesaExamen;
  *
  */
 
-public class GestorMesaExamen extends Gestor<MesaExamen> implements IValidacionMesaExamen, IListable<MesaExamen> {
+public class GestorMesaExamen extends Gestor<MesaExamenHist> implements IValidacionMesaExamen, IListable<MesaExamenHist> {
 
 	private MesaExamenHome mesaExamenDAO;
 	
@@ -31,7 +31,7 @@ public class GestorMesaExamen extends Gestor<MesaExamen> implements IValidacionM
 	}
 
 	@Override
-	public void add(MesaExamen object) throws Exception {
+	public void add(MesaExamenHist object) throws Exception {
 		try {
 			this.validar(object);
 			setSession();
@@ -47,17 +47,17 @@ public class GestorMesaExamen extends Gestor<MesaExamen> implements IValidacionM
 	}
 
 	@Override
-	public void modify(MesaExamen object) throws Exception {}
+	public void modify(MesaExamenHist object) throws Exception {}
 
 	@Override
-	public void delete(MesaExamen object) throws Exception {}
+	public void delete(MesaExamenHist object) throws Exception {}
 
 	@Override
-	public MesaExamen getById(Long id) throws Exception {
+	public MesaExamenHist getById(Long id) throws Exception {
 		try {
 			setSession();
 			setTransaction();
-			MesaExamen mesaExamenDevolver = new MesaExamen();
+			MesaExamenHist mesaExamenDevolver = new MesaExamenHist();
 			mesaExamenDevolver = mesaExamenDAO.findById(id);
 			return mesaExamenDevolver;
 		} catch (Exception ex) {
@@ -67,11 +67,11 @@ public class GestorMesaExamen extends Gestor<MesaExamen> implements IValidacionM
 	}
 
 	@Override
-	public ArrayList<MesaExamen> getByExample(MesaExamen example) throws Exception {
+	public ArrayList<MesaExamenHist> getByExample(MesaExamenHist example) throws Exception {
 		try {
 			setSession();
 			setTransaction();
-			ArrayList<MesaExamen> listaMesaExamenDevolver = (ArrayList<MesaExamen>) mesaExamenDAO.findByExample(example);
+			ArrayList<MesaExamenHist> listaMesaExamenDevolver = (ArrayList<MesaExamenHist>) mesaExamenDAO.findByExample(example);
 			sesionDeHilo.getTransaction().commit();
 			return listaMesaExamenDevolver;
 		} catch (Exception ex) {
@@ -82,13 +82,13 @@ public class GestorMesaExamen extends Gestor<MesaExamen> implements IValidacionM
 	}
 
 	@Override
-	public ArrayList<MesaExamen> List() throws Exception {
+	public ArrayList<MesaExamenHist> List() throws Exception {
 		try {
 			setSession();
 			setTransaction();
-			MesaExamen criterioVacio = new MesaExamen();
-			ArrayList<MesaExamen> listaMesaExamenDevolver = new ArrayList<MesaExamen>();
-			listaMesaExamenDevolver = (ArrayList<MesaExamen>) mesaExamenDAO.findByExample(criterioVacio);
+			MesaExamenHist criterioVacio = new MesaExamenHist();
+			ArrayList<MesaExamenHist> listaMesaExamenDevolver = new ArrayList<MesaExamenHist>();
+			listaMesaExamenDevolver = (ArrayList<MesaExamenHist>) mesaExamenDAO.findByExample(criterioVacio);
 			sesionDeHilo.getTransaction().commit();
 			return listaMesaExamenDevolver;
 		} catch (Exception ex) {

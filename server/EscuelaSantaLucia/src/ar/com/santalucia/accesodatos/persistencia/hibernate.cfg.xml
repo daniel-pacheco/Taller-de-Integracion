@@ -5,7 +5,7 @@
 Trabajar offline
 <!DOCTYPE hibernate-configuration SYSTEM "classpath://org/hibernate/hibernate-configuration-3.0.dtd">  -->
 <hibernate-configuration>
- <session-factory> 
+ <session-factory>
   <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
   <property name="hibernate.connection.password">mysqlwindows</property>
   <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/escuelabd</property>
@@ -40,7 +40,8 @@ Trabajar offline
   <mapping class="ar.com.santalucia.dominio.modelo.academico.Llamado" resource="ar/com/santalucia/dominio/modelo/academico/Llamado.hbm.xml"/>
   <mapping class="ar.com.santalucia.dominio.modelo.academico.Materia" resource="ar/com/santalucia/dominio/modelo/academico/Materia.hbm.xml"/>
   <mapping class="ar.com.santalucia.dominio.modelo.academico.Mesa" resource="ar/com/santalucia/dominio/modelo/academico/Mesa.hbm.xml"/>
-  <mapping class="ar.com.santalucia.dominio.modelo.academico.MesaExamen" resource="ar/com/santalucia/dominio/modelo/academico/MesaExamen.hbm.xml"/>
+  <mapping
+   class="ar.com.santalucia.dominio.modelo.academico.MesaExamenHist" resource="ar/com/santalucia/dominio/modelo/academico/MesaExamenHist.hbm.xml"/>
   <mapping class="ar.com.santalucia.dominio.modelo.desempenio.Nota" resource="ar/com/santalucia/dominio/modelo/desempenio/Nota.hbm.xml"/>
   <mapping class="ar.com.santalucia.dominio.modelo.desempenio.Trimestre" resource="ar/com/santalucia/dominio/modelo/desempenio/Trimestre.hbm.xml"/>
   <mapping
@@ -61,5 +62,11 @@ Trabajar offline
   <mapping
    class="ar.com.santalucia.dominio.modelo.aulavirtual.Publicacion" resource="ar/com/santalucia/dominio/modelo/aulavirtual/Publicacion.hbm.xml"/>
   <mapping class="ar.com.santalucia.dominio.modelo.aulavirtual.Recurso" resource="ar/com/santalucia/dominio/modelo/aulavirtual/Recurso.hbm.xml"/>
+  <mapping
+   class="ar.com.santalucia.dominio.modelo.desempenio.BoletinNotasHist" resource="ar/com/santalucia/dominio/modelo/desempenio/BoletinNotasHist.hbm.xml"/>
+  <mapping
+   class="ar.com.santalucia.dominio.modelo.academico.MateriaHist" resource="ar/com/santalucia/dominio/modelo/academico/MateriaHist.hbm.xml"/>
+  <mapping
+   class="ar.com.santalucia.dominio.modelo.desempenio.MateriaNotasBoletin" resource="ar/com/santalucia/dominio/modelo/desempenio/MateriaNotasBoletin.hbm.xml"/>
  </session-factory>
 </hibernate-configuration>
