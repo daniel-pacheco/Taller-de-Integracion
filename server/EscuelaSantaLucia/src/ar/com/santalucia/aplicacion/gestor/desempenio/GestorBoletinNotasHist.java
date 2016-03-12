@@ -46,32 +46,67 @@ public class GestorBoletinNotasHist extends Gestor<BoletinNotasHist> implements 
 
 	@Override
 	public void modify(BoletinNotasHist object) throws Exception {
-		// TODO Auto-generated method stub
-		
+		try {
+			setSession();
+			setTransaction();
+			boletinNotasHistDAO.attachDirty(object);
+			sesionDeHilo.getTransaction().commit();
+		} catch (Exception ex) {
+			setSession();
+			setTransaction();
+			sesionDeHilo.getTransaction().rollback();
+			throw new Exception("Ha ocurrido un problema al actualizar el BOLETÍN DE NOTAS: " + ex.getMessage());
+		}
 	}
 
+	/**
+	 * NO SE IMPLEMENTA	
+	 */
 	@Override
-	public void delete(BoletinNotasHist object) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
+	public void delete(BoletinNotasHist object) throws Exception {}
 
 	@Override
 	public BoletinNotasHist getById(Long id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			setSession();
+			setTransaction(); 
+			BoletinNotasHist boletinDevolver = new BoletinNotasHist();
+			boletinDevolver = boletinNotasHistDAO.findById(id);
+			return boletinDevolver;
+		} catch (Exception ex) {
+			closeSession();
+			throw new Exception("Ha ocurrido un error al buscar el BOLETÍN por su ID: " + ex.getMessage());
+		}
 	}
 
 	@Override
 	public ArrayList<BoletinNotasHist> getByExample(BoletinNotasHist example) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			setSession();
+			setTransaction();
+			ArrayList<BoletinNotasHist> listaBoletinDevolver = (ArrayList<BoletinNotasHist>) boletinNotasHistDAO.findByExample((BoletinNotasHist) example);
+			sesionDeHilo.getTransaction().commit();
+			return listaBoletinDevolver;
+		} catch (Exception ex) {
+			closeSession();
+			throw new Exception(
+					"Ha ocurrido un error al buscar BOLETINES que coincidan con el ejemplo dado: " + ex.getMessage());
+		}
 	}
 
 	@Override
 	public ArrayList<BoletinNotasHist> List() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			setSession();
+			setTransaction();
+			BoletinNotasHist criterioVacio = new BoletinNotasHist();
+			ArrayList<BoletinNotasHist> listaBoletinDevolver = new ArrayList<BoletinNotasHist>();
+			listaBoletinDevolver = (ArrayList<BoletinNotasHist>) boletinNotasHistDAO.findByExample(criterioVacio);
+			sesionDeHilo.getTransaction().commit();
+			return listaBoletinDevolver;
+		} catch (Exception ex) {
+			throw new Exception("Ha ocurrido un error al listar los BOLETINES: " + ex.getMessage());
+		}
 	}
 
 }

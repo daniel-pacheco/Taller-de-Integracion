@@ -43,7 +43,6 @@ public class ServicioInscripcionMesa {
 		}
 	}
 	
-	
 	public Boolean addInscripcion(Inscripcion inscripcion) throws Exception {
 		try {
 			if (inscripcion.getIdInscripcion() == null) {

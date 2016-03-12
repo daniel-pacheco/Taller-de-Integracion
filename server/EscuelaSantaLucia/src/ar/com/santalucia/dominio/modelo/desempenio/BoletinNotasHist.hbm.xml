@@ -32,7 +32,7 @@
         <property name="curso" type="java.lang.String">
             <column name="CURSO" />
         </property>
-        <property name="cicloLectivo" type="java.lang.Long">
+        <property name="cicloLectivo" type="java.lang.Integer">
             <column name="CICLOLECTIVO" />
         </property>
     </class>

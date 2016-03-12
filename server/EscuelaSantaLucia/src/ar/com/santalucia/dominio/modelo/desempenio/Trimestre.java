@@ -7,6 +7,7 @@ import ar.com.santalucia.dominio.modelo.academico.Materia;
 
 /**
  * Clase Trimestre: maneja los trimestres del boletín
+ * 
  * @author ericpennachini
  * @version 1.0
  *
@@ -17,7 +18,8 @@ public class Trimestre {
 	private Long idTrimestre;
 	private String descripcion;
 	private Integer cicloLectivo;
-	private Set<Nota> listaNotas;
+	private Set<Nota> listaNotas; //notas de examenes o tps que hacen a la nota final que pone el docente
+	private Nota notaFinal;
 	private Materia materia;
 
 	public Trimestre() {
@@ -25,12 +27,14 @@ public class Trimestre {
 		listaNotas = new HashSet<Nota>();
 	}
 
-	public Trimestre(Long idTrimestre, String descripcion, Integer cicloLectivo, Set<Nota> listaNotas, Materia materia) {
+	public Trimestre(Long idTrimestre, String descripcion, Integer cicloLectivo, Set<Nota> listaNotas, 
+			Nota notaFinal, Materia materia) {
 		super();
 		this.idTrimestre = idTrimestre;
 		this.descripcion = descripcion;
 		this.cicloLectivo = cicloLectivo;
 		this.setListaNotas(listaNotas);
+		this.setNotaFinal(notaFinal);
 		this.materia = materia;
 	}
 
@@ -56,6 +60,14 @@ public class Trimestre {
 
 	public void setListaNotas(Set<Nota> listaNotas) {
 		this.listaNotas = listaNotas;
+	}
+
+	public Nota getNotaFinal() {
+		return notaFinal;
+	}
+
+	public void setNotaFinal(Nota notaFinal) {
+		this.notaFinal = notaFinal;
 	}
 
 	public Materia getMateria() {

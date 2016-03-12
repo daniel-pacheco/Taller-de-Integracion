@@ -20,7 +20,7 @@ public class BoletinNotasHist {
 	private Set<MateriaNotasBoletin> listaMateriasNotasBoletin;
 	private String anio;
 	private String curso;
-	private Long cicloLectivo;
+	private Integer cicloLectivo;
 
 	public BoletinNotasHist() {
 		super();
@@ -28,7 +28,7 @@ public class BoletinNotasHist {
 
 	public BoletinNotasHist(Long idBoletinNotasHist, Long idBoletin, Long dniAlumno, String nombreAlumno,
 			String apellidoAlumno, Set<MateriaNotasBoletin> listaMateriasNotasBoletin, String anio, String curso,
-			Long cicloLectivo) {
+			Integer cicloLectivo) {
 		super();
 		this.idBoletinNotasHist = idBoletinNotasHist;
 		this.idBoletin = idBoletin;
@@ -105,11 +105,11 @@ public class BoletinNotasHist {
 		this.curso = curso;
 	}
 
-	public Long getCicloLectivo() {
+	public Integer getCicloLectivo() {
 		return cicloLectivo;
 	}
 
-	public void setCicloLectivo(Long cicloLectivo) {
+	public void setCicloLectivo(Integer cicloLectivo) {
 		this.cicloLectivo = cicloLectivo;
 	}
 
