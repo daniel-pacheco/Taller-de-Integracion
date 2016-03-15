@@ -37,16 +37,16 @@
 			<thead>
 				<tr>
 					<th>Nombre</th>
-					<th>Docente titular</th>
 					<th>A&ntilde;o</th>
+					<th>Docente titular</th>
 					<th>&Aacute;rea</th>
 					<th>Acciones</th>
 				</tr>
 			</thead>
 			<tr ng-repeat="materia in friends | filter:filterByYear">
 				<td>{{materia.nombre}}</td>
-				<td>{{materia.docenteTitular}}</td>
 				<td>{{materia.anioPertenece}}</td>
+				<td>{{materia.docenteTitular}}</td>
 				<td>{{materia.area}}</td>
 				<td style="width:10%;"><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipEdit" style="width:50%; cursor: pointer" class="glyphicon glyphicon-edit" ></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipRemove" style="width:50%; cursor: pointer" class="glyphicon glyphicon-remove-circle"></span></td> 
 					<!--<td>{{alumno.name}}</td>

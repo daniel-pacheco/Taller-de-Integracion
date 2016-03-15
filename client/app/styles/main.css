@@ -299,3 +299,7 @@ input, button, select, textarea {
     text-decoration: none;
     background-color: #eee;
 }
+
+.form-group > span {
+  float: none;
+}

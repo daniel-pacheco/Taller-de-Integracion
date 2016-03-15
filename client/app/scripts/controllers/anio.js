@@ -74,7 +74,7 @@
   };
 }
 
-$scope.activeMenuIzqAnio = 1;
+$scope.activeMenuIzqAnio = 2;
 $scope.setActiveAnio = function(menuItemAnio) {
   $scope.activeMenuIzqAnio = menuItemAnio;
 };

@@ -20,7 +20,7 @@ angular.module('clientAppApp')
  		}
  	});
  })
-  .controller('DocenteCtrl', function ($scope, docenteData) {
+  .controller('DocenteCtrl', function ($scope, docenteData, modalService) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -64,14 +64,33 @@ $scope.docenteFilter = function (docente) {//la clave de este comparador es q tr
 $scope.showData = function() {
 $scope.docentes = docenteData;
 }
-
+$scope.showData();
 $scope.activeMenuIzqDoc = 1;
 $scope.setActiveDoc = function(menuItemDoc) {
   $scope.activeMenuIzqDoc = menuItemDoc;
 };
 
 
+$scope.setM = modalService.setModal;
 
+  $scope.showModal = modalService.showModal;
+  $scope.hideModal = modalService.hideModal;
+
+
+$scope.detallesPerfil = function (perfilDoc) {
+  
+  $scope.modalx = {};
+  $scope.modalx.perfilDocente = perfilDoc;
+  $scope.modalx.controller =  'DocenteCtrl';  
+  $scope.modalx.title = 'Perfil'; 
+  $scope.modalx.content = 'Detalles del perfil'; 
+  $scope.modalx.templateUrl = '/views/templates/showProfileDocente.tpl.html';
+  $scope.modalx.show = false; 
+    //$scope.modalx.addressData = {};//cambiar x modelo externo apra ver si funca devolver datos
+
+    $scope.setM($scope.modalx);
+    $scope.showModal(); 
+  }
     /*$scope.docentes = [{name:'John', surname:'lenono', area:'Cs. Sociales', cuil:'252525', materia:'Historia'},
 {name:'Mary', surname:'yein', area:'Cs. Naturales', cuil:'434343', materia:'Biologia' },
 {name:'Mike', surname:'chumajer', area:'Cs. Sociales', cuil:'111111', materia:'Geografia'},

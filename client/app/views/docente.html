@@ -25,7 +25,6 @@
 	<div id="listado" ng-show="listado"style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
 		<fieldset class="navbar">
 			<legend>Listado</legend>
-
 			<label for="">Filtros:</label> <select
 			class="dropdown-toggle form-control-inline" name="" ng-model="filterByArea.area"> <!-- ng-change="update(dropDownValue, option)"> -->
 			<option value="" disabled selected>Seleccione un &Aacute;rea</option>
@@ -48,20 +47,22 @@
 				<th>Acciones</th>						
 			</tr>
 		</thead>
-		<tr ng-repeat="docente in docentes | filter:filterByArea:strict | filter:docenteFilter">
+		<tr ng-repeat="docente in docentes | filter:filterByArea | filter:docenteFilter">
 			<td>{{docente.nro}}</td>
 			<!-- <td>{{docente.area}}</td> -->
 			<td>{{docente.materia}}</td>
 			<td>{{docente.apellido}}</td>
 			<td>{{docente.nombre}}</td>
 			<td>{{docente.cuil}}</td>
-			<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%; cursor: pointer" class="glyphicon glyphicon-user" ></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipDelete" style="width:25%; cursor: pointer" class="glyphicon glyphicon-remove"></span></td> 
+			<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%; cursor: pointer" class="glyphicon glyphicon-user" ng-click="detallesPerfil(docente)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipDelete" style="width:25%; cursor: pointer" class="glyphicon glyphicon-remove"></span></td> 
 					<!--<td>{{alumno.name}}</td>
 					<td>{{alumno.phone}}</td>
 					<td>{{$index}}</td> -->
 				</tr>
 			</table>
 		</fieldset>
+
+		 {{perfilDocente}}
 	</div>
 
 	<div id="nuevoPerfil" ng-show="nuevoPerfil">
@@ -69,7 +70,7 @@
 			<legend>Nuevo Docente</legend>
 			<span class="help-block">Ingrese los datos para crear un nuevo perfil
 				de docente y haga clic en guardar cuando finalice</span>
-
+<!-- http://www.bootply.com/sY7gQy6XF7 Aca nuevo perfil-->
 				<form class="form-horizontal media">
 				<!--<div class="pull-right">
 						<img class="img-rounded" src="images/defaultUser.png" alt="Usuario" width="220px" height="auto"/>
