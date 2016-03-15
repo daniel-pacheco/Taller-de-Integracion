@@ -8,14 +8,14 @@ import ar.com.santalucia.dominio.modelo.desempenio.Nota;
  * Clase MesaExamen, entidad histórica que registra las rendidas de los alumnos
  * 
  * @author Eric
- * @version 2.0
+ * @version 2.1
  *
  */
 
-// Ultimo modificador: Eric Pennachini @ 19-09-15 17:20
+// Ultimo modificador: Eric Pennachini @ 10-03-2016 17:07
 
-public class MesaExamen {
-	private Long idMesaExamen;
+public class MesaExamenHist {
+	private Long idMesaExamenHist;
 	private String nroActa;
 	private Float nota; // o Nota en vez de Long
 	private Boolean asistencia;
@@ -36,17 +36,17 @@ public class MesaExamen {
 	private Date fechaHoraInicioMesa;
 	private Date fechaHoraFinMesa;
 
-	public MesaExamen() {
+	public MesaExamenHist() {
 		super();
 	}
 
-	public MesaExamen(Long idMesaExamen, String nroActa, Float nota, Boolean asistencia, Date fechaInscripcion,
+	public MesaExamenHist(Long idMesaExamen, String nroActa, Float nota, Boolean asistencia, Date fechaInscripcion,
 			String nombreMateria, Long dniDocente1, String nombreDocente1, String apellidoDocente1, Long dniDocente2,
 			String nombreDocente2, String apellidoDocente2, Long dniDocente3, String nombreDocente3,
 			String apellidoDocente3, Long dniAlumno, String nombreAlumno, String apellidoAlumno, Date horaInicioMesa,
 			Date horaFinMesa) {
 		super();
-		this.idMesaExamen = idMesaExamen;
+		this.idMesaExamenHist = idMesaExamen;
 		this.nroActa = nroActa;
 		this.nota = nota;
 		this.asistencia = asistencia;
@@ -68,12 +68,12 @@ public class MesaExamen {
 		this.setFechaHoraFinMesa(horaFinMesa);
 	}
 
-	public Long getIdMesaExamen() {
-		return idMesaExamen;
+	public Long getIdMesaExamenHist() {
+		return idMesaExamenHist;
 	}
 
-	public void setIdMesaExamen(Long idMesaExamen) {
-		this.idMesaExamen = idMesaExamen;
+	public void setIdMesaExamenHist(Long idMesaExamenHist) {
+		this.idMesaExamenHist = idMesaExamenHist;
 	}
 
 	public String getNroActa() {

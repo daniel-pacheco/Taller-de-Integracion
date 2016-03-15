@@ -19,7 +19,7 @@
  		}
  	});
  })
- .controller('AlumnadoCtrl', function ($scope, $q, $http, $modal, alumnoService, modalService, Upload, $timeout, alumnoData) {
+ .controller('AlumnadoCtrl', function ($scope, $q, $http, $modal, alumnoService, Upload, $timeout, alumnoData) {
  	$scope.listado1 = true;
  	$scope.listFilterIsEnabled = false;
 
@@ -41,30 +41,40 @@ $scope.tooltip = {
 	}
 };
 
-//modal
+//modals
+	
+$scope.modalx = {}; //inicializa un objeto para pasar data al modal
+var myModal = {};
+  
+  $scope.showAddresModal = function() {
+  	myModal =  $modal({
+  		controller: 'AlumnadoCtrl', 
+  		title: 'Nuevo Domicilio', 
+  		content: 'Opciones Avanzadas', 
+  		templateUrl: '/views/templates/addaddressdetails.tpl.html', 
+  		show: false
+  	});
 
-	//modal options 1
-	$scope.modalx = {}; //inicializa un objeto
-	$scope.modalx.controller =  'AlumnadoCtrl';  //nombre del controller que va a llamar al modal
-	$scope.modalx.title = 'title local directivo'; // titulo del modal (accede directo)
-	$scope.modalx.content = 'content local directivo'; //contenido del modal (accede directo)
-	$scope.modalx.templateUrl = '/views/agregarTelefono.html'; //plantilla del modal
-	$scope.modalx.show = false; //si el modal se va a mosrtar al configurarlo o si habrá que llamarlo (por defecto false, hay q llamarlo)
-	$scope.modalx.text = 'perooo, vo so loco vite?'; //contenido extra del modal (se peude poner el nombre que quiera, no accede directo)
+    myModal.$promise.then(myModal.show);
+  };
 
-	//modal options 2
-	$scope.modalxi = {};
-	$scope.modalxi.controller =  'DirectivoCtrl';  
-	$scope.modalxi.title = 'title local directivo cambiado';
-	$scope.modalxi.content = 'content local directivo cambiado';
-	$scope.modalxi.templateUrl = 'views/templates/message.tpl.html';
-	$scope.modalxi.text = 'perooo, vo so loco vite?';
-	$scope.modalxi.show = true;
+$scope.modalx.addressData = {};
+$scope.modalx.addressData.calle = "calle re loca";
+$scope.afsdkjakfshkasjfha = 'hola che todo bien?';
 
-	$scope.setM = modalService.setModal;
 
-	$scope.showModal = modalService.showModal;
-	$scope.hideModal = modalService.hideModal;
+	$scope.telefonoAvanzado = function () {
+		
+		myModal =  $modal({
+  		controller: 'AlumnadoCtrl', 
+  		title: 'Teléfonos', 
+  		content: 'Opciones Avanzadas', 
+  		templateUrl: '/views/templates/addphonedetails.tpl.html', 
+  		show: false
+  	});
+	myModal.$promise.then(myModal.show);		 
+	}
+	
 
 //File-Select
 
@@ -126,37 +136,7 @@ $scope.activeMenuIzqAlu = 1;
 $scope.setActiveAlu = function(menuItemAlu) {
 	$scope.activeMenuIzqAlu = menuItemAlu;
 };
-//---Nuevo perfil
 
-$scope.domicilioAvanzado = function () {
-
-	
-	$scope.modalx = {};
-	$scope.modalx.controller =  'AlumnadoCtrl';  
-	$scope.modalx.title = 'Nuevo Domicilio'; 
-	$scope.modalx.content = 'Opciones Avanzadas'; 
-	$scope.modalx.templateUrl = '/views/templates/addaddressdetails.tpl.html';
-	$scope.modalx.show = false; 
-		$scope.modalx.addressData = {};//cambiar x modelo externo apra ver si funca devolver datos
-
-		$scope.setM(this.modalx);
-		$scope.showModal(); 
-	}
-
-	$scope.telefonoAvanzado = function () {
-
-		
-		$scope.modalx = {};
-		$scope.modalx.controller =  'AlumnadoCtrl';  
-		$scope.modalx.title = 'Teléfonos'; 
-		$scope.modalx.content = 'Opciones Avanzadas'; 
-		$scope.modalx.templateUrl = '/views/templates/addphonedetails.tpl.html';
-		$scope.modalx.show = false; 
-		$scope.modalx.addressData = {};//cambiar x modelo externo apra ver si funca devolver datos
-
-		$scope.setM(this.modalx);
-		$scope.showModal(); 
-	}
 //---Llamadas al servicio ALUMNO---
 var alumnoJson = {  
 	"idUsuario"       : null,

@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 10/03/2016 18:03:47 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="ar.com.santalucia.dominio.modelo.desempenio.BoletinNotasHist" table="BOLETINNOTASHIST">
+        <id name="idBoletinNotasHist" type="java.lang.Long">
+            <column name="IDBOLETINNOTASHIST" />
+            <generator class="identity" />
+        </id>
+        <property name="idBoletin" type="java.lang.Long">
+            <column name="IDBOLETIN" />
+        </property>
+        <property name="dniAlumno" type="java.lang.Long">
+            <column name="DNIALUMNO" />
+        </property>
+        <property name="nombreAlumno" type="java.lang.String">
+            <column name="NOMBREALUMNO" />
+        </property>
+        <property name="apellidoAlumno" type="java.lang.String">
+            <column name="APELLIDOALUMNO" />
+        </property>
+        <set name="listaMateriasNotasBoletin" table="MATERIANOTASBOLETIN" inverse="false" lazy="false" cascade="all">
+            <key>
+                <column name="IDBOLETINNOTASHIST" />
+            </key>
+            <one-to-many class="ar.com.santalucia.dominio.modelo.desempenio.MateriaNotasBoletin" />
+        </set>
+        <property name="anio" type="java.lang.String">
+            <column name="ANIO" />
+        </property>
+        <property name="curso" type="java.lang.String">
+            <column name="CURSO" />
+        </property>
+        <property name="cicloLectivo" type="java.lang.Integer">
+            <column name="CICLOLECTIVO" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import ar.com.santalucia.dominio.modelo.academico.Inscripcion;
-import ar.com.santalucia.dominio.modelo.academico.MesaExamen;
+import ar.com.santalucia.dominio.modelo.academico.MesaExamenHist;
 import ar.com.santalucia.servicio.ServicioAcademico;
 import ar.com.santalucia.servicio.ServicioAlumno;
 import ar.com.santalucia.servicio.ServicioInscripcionMesa;
@@ -129,11 +129,11 @@ public class ServicioInscripcionMesaEndpoint {
 	
 	@PUT
 	@Path("/exam/")
-	public Response updateMesaExamen(MesaExamen mesaExamen) {
+	public Response updateMesaExamen(MesaExamenHist mesaExamen) {
 		try {
 			setInstance();
 			servicioInscripcionMesa.addMesaExamen(mesaExamen);
-			return Response.ok(mesaExamen.getIdMesaExamen()).build();
+			return Response.ok(mesaExamen.getIdMesaExamenHist()).build();
 		} catch (Exception ex) {
 			return Response.ok(ex).build();
 		}
@@ -167,7 +167,7 @@ public class ServicioInscripcionMesaEndpoint {
 	public Response mesaExamenListAll() {
 		try {
 			setInstance();
-			MesaExamen mesaExamen = new MesaExamen();
+			MesaExamenHist mesaExamen = new MesaExamenHist();
 			return Response.ok(servicioInscripcionMesa.listMesaExamen(mesaExamen)).build();
 		} catch (Exception ex) {
 			return Response.ok(ex).build();
