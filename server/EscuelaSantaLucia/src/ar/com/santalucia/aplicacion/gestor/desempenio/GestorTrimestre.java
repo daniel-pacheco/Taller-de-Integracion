@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import ar.com.santalucia.accesodatos.dao.desempenio.TrimestreHome;
 import ar.com.santalucia.aplicacion.gestor.Gestor;
 import ar.com.santalucia.aplicacion.gestor.IListable;
+import ar.com.santalucia.dominio.modelo.desempenio.Nota;
 import ar.com.santalucia.dominio.modelo.desempenio.Trimestre;
 import ar.com.santalucia.excepciones.ValidacionException;
 import ar.com.santalucia.validaciones.IValidacionTrimestre;
@@ -12,11 +13,13 @@ import ar.com.santalucia.validaciones.IValidacionTrimestre;
 public class GestorTrimestre extends Gestor<Trimestre> implements IListable<Trimestre>, IValidacionTrimestre {
 	
 	private TrimestreHome trimestreDAO;
+	private GestorNota GNota;
 
 	public GestorTrimestre() throws Exception {
 		super();
 		try {
 			trimestreDAO = new TrimestreHome();
+			GNota = new GestorNota();
 		} catch (Exception ex) {
 			closeSession();
 			throw new Exception("Ha ocurrido un problema al inicializar el gestor: " + ex.getMessage());
@@ -29,6 +32,11 @@ public class GestorTrimestre extends Gestor<Trimestre> implements IListable<Trim
 			this.validar(object);
 			setSession();
 			setTransaction();
+			if (object.getListaNotas() != null) {
+				for (Nota n : object.getListaNotas()) {
+					GNota.add(n);
+				}
+			}
 			trimestreDAO.persist(object);
 			sesionDeHilo.getTransaction().commit();
 		} catch (ValidacionException ex) {
