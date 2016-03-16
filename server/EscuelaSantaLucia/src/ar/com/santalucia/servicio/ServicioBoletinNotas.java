@@ -1,11 +1,13 @@
 package ar.com.santalucia.servicio;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinNotas;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinNotasHist;
 import ar.com.santalucia.dominio.modelo.academico.Inscripcion;
+import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotas;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotasHist;
 import ar.com.santalucia.dominio.modelo.desempenio.MateriaNotasBoletin;
@@ -81,17 +83,47 @@ public class ServicioBoletinNotas {
 			boletinHistorico.setDniAlumno(boletinNotas.getPropietario().getNroDocumento());
 			boletinHistorico.setNombreAlumno(boletinNotas.getPropietario().getNombre());
 			boletinHistorico.setApellidoAlumno(boletinNotas.getPropietario().getApellido());
-			boletinHistorico.setAnio(null);
+			boletinHistorico.setAnio(boletinNotas.getAnio().getNombre());
 			boletinHistorico.setCurso(null);
 			boletinHistorico.setCicloLectivo(boletinNotas.getCicloLectivo());
-			// materias y notas
+			
 			Set<Trimestre> trimestres = boletinNotas.getListaTrimestres();
 			Set<Nota> notasExtras = boletinNotas.getListaNotasExamen();
-			MateriaNotasBoletin materiasNotasBoletin = new MateriaNotasBoletin();
-			for (Trimestre t : trimestres) {
-				materiasNotasBoletin.setMateria(t.getMateria().getNombre());
-				materiasNotasBoletin.setNotaTrimestre1(t.getNotaFinal().getCalificacion().intValue());
+			Set<MateriaNotasBoletin> listaMateriasNotasBoletin = new HashSet<MateriaNotasBoletin>();
+			
+			for (Materia m : boletinNotas.getAnio().getListaMaterias()) {
+				MateriaNotasBoletin materiaNotasBoletin = new MateriaNotasBoletin();
+				materiaNotasBoletin.setMateria(m.getNombre());
+				for (Trimestre t : trimestres) {
+					materiaNotasBoletin.setNotaTrimestre1((
+						t.getOrden()==1 && t.getMateria().getNombre()==m.getNombre()
+							? t.getNotaFinal().getCalificacion().intValue()
+							:null));
+					materiaNotasBoletin.setNotaTrimestre2((
+						t.getOrden()==2 && t.getMateria().getNombre()==m.getNombre()
+							? t.getNotaFinal().getCalificacion().intValue()
+							:null));
+					materiaNotasBoletin.setNotaTrimestre3((
+						t.getOrden()==3 && t.getMateria().getNombre()==m.getNombre()
+							? t.getNotaFinal().getCalificacion().intValue()
+							:null));
+				}
+				for (Nota ne : notasExtras) {
+					materiaNotasBoletin.setNotaDiciembre(
+						ne.getTipo()==Nota.DICIEMBRE && ne.getMateria().getNombre()==m.getNombre()
+						? ne.getCalificacion().intValue()
+						: null);
+					materiaNotasBoletin.setNotaDiciembre(
+						ne.getTipo()==Nota.MARZO && ne.getMateria().getNombre()==m.getNombre()
+						? ne.getCalificacion().intValue()
+						: null);
+				}
+				listaMateriasNotasBoletin.add(materiaNotasBoletin);
 			}
+			
+			boletinHistorico.setListaMateriasNotasBoletin(listaMateriasNotasBoletin);
+			gBoletinHist.add(boletinHistorico);
+			
 		} catch (Exception ex) {
 			throw new Exception ("No se pudo pasar a histórico el BOLETÍN DE NOTAS: " + ex.getMessage());
 		}
