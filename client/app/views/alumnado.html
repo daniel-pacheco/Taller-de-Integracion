@@ -121,148 +121,149 @@
 				</div>	-->
 				
 				<div class="formulario media-body">
-
-					<div class="form-group">
-						<div class="col-sm-2 control-label">
-							<label for="">Documento:</label>
-						</div>
-						<div class="col-sm-3">
-							<input class="form-control" ng-model="nuevoAlumno.nroDocumento" placeholder="12332112" type="text"
-							maxlength="10" required pattern="\d{8}">
-						</div>
-						<!-- Valida 8 digitos -->
-						<div class="col-sm-1 control-label">
-							<label for="">Tipo:</label>
-						</div>
-						<div class="col-sm-2">
-							<select class="form-control" ng-model="nuevoAlumno.tipoDocumento" name="Tipo documento">
-								<option value="DNI">DNI</option>
-								<option value="LC">LC</option>
-								<option value="Otro">Otro</option>
-							</select>
-						</div>
-					</div>
-					<!-- /form-group-->
-
-
-					<div class="form-group">
-						<div class="col-sm-2 control-label">
-							<label for="">Nombres:</label>
-						</div>
-						<div class="col-sm-5">
-							<input class="form-control" ng-model="nuevoAlumno.nombre" placeholder="Nombre Nombre"
-							type="text" maxlength="255" required pattern="[a-zA-Z ]*">
-							<!-- Valida letras y espacios -->
-						</div>
-						
-					</div>
-					<!-- /form-group-->
-					
-
-					<div class="form-group">
-						<div class="col-sm-2 control-label">
-							<label for="">Apellidos:</label>
-						</div>
-						<div class="col-sm-5">
-							<input class="form-control" ng-model="nuevoAlumno.apellido" placeholder="Apellido Apellido"
-							type="text" maxlength="255" required pattern="[a-zA-Z ]*">
-							<!-- Valida letras y espacios-->
-						</div>
-					</div>
+					<div class="conteiner">
+						<div class="row">
+							<div class="col-md-5 personal-info">
+								<div class="form-group">
+									<div class="col-sm-4 control-label">
+										<label for="">Documento:</label>
+									</div>
+									<div class="col-sm-4">
+										<input class="form-control" ng-model="nuevoAlumno.nroDocumento" placeholder="12332112" type="text"
+										maxlength="10" required pattern="\d{8}">
+									</div>
+									<!-- Valida 8 digitos -->
+									
+									<div class="col-sm-3">
+										<select class="form-control" ng-model="nuevoAlumno.tipoDocumento" name="Tipo documento">
+											<option value="" disabled selected>Tipo</option>
+											<option value="DNI">DNI</option>
+											<option value="LC">LC</option>
+											<option value="Otro">Otro</option>
+										</select>
+									</div>
+								</div>
+								<!-- /form-group-->
 
 
+								<div class="form-group">
+									<div class="col-sm-4 control-label">
+										<label for="">Nombres:</label>
+									</div>
+									<div class="col-sm-5">
+										<input class="form-control" ng-model="nuevoAlumno.nombre" placeholder="Nombre Nombre"
+										type="text" maxlength="255" required pattern="[a-zA-Z ]*">
+										<!-- Valida letras y espacios -->
+									</div>
 
-					<div class="form-group">
-						<div class="col-sm-2 control-label">
-							<label for="">Sexo:</label>
-						</div>
-						<div class="col-sm-5">
-							<input type="radio" name="sexo" ng-model="nuevoAlumno.sexo" value="f" id="Fem"><label class="text-radio" for="Fem"><span></span>Femenino </label>
-							<input type="radio" name="sexo" ng-model="nuevoAlumno.sexo" value="m"checked id="Masc"><label class="text-radio" for="Masc"><span></span>Masculino </label>
-						</div>
-					</div>
-					<!-- /form-group-->
+								</div>
+								<!-- /form-group-->
 
 
-					<div class="form-group">
-						<div class="col-sm-2 control-label">
-							<label for="">Domicilio:</label>
-						</div>
-						<div class="col-sm-3">
-							<input class="form-control" placeholder="Domicilio 123"
-							type="text" maxlength="255" required pattern="[a-zA-Z 0-9]*" />
-							<!-- Valida letras, numeros y espacios-->
-						</div>
-						<div class="col-sm-1 control-label">
+								<div class="form-group">
+									<div class="col-sm-4 control-label">
+										<label for="">Apellidos:</label>
+									</div>
+									<div class="col-sm-5">
+										<input class="form-control" ng-model="nuevoAlumno.apellido" placeholder="Apellido Apellido"
+										type="text" maxlength="255" required pattern="[a-zA-Z ]*">
+										<!-- Valida letras y espacios-->
+									</div>
+								</div>
+
+
+
+								<div class="form-group">
+									<div class="col-sm-4 control-label">
+										<label for="">Sexo:</label>
+									</div>
+									<div class="col-sm-7">
+										<input type="radio" name="sexo" ng-model="nuevoAlumno.sexo" value="f" id="Fem"><label class="text-radio" for="Fem"><span></span>Femenino </label>
+										<input type="radio" name="sexo" ng-model="nuevoAlumno.sexo" value="m"checked id="Masc"><label class="text-radio" for="Masc"><span></span>Masculino </label>
+									</div>
+								</div>
+								<!-- /form-group-->
+
+
+								<div class="form-group">
+									<div class="col-sm-4 control-label">
+										<label for="">Domicilio:</label>
+									</div>
+									<div class="col-sm-6">
+										<input class="form-control" placeholder="Domicilio 123"
+										type="text" maxlength="255" required pattern="[a-zA-Z 0-9]*" />
+										<!-- Valida letras, numeros y espacios-->
+									</div>
+						<!-- <div class="col-sm-1 control-label">
 							<label for="">N&uacute;mero:</label>
 						</div>
 						<div class="col-sm-2">
 							<input class="form-control" placeholder="123"
 							type="text" maxlength="255" required pattern="[0-9]*" />
-							<!-- Valida letras, numeros y espacios-->
+							 Valida letras, numeros y espacios
+							</div> -->
+							<div class="col-sm-1">
+								<input type="button" class="btn btn-default" value="Avanzado" ng-click="showAddresModal()">
+							</div>{{modalx.addressData}}
 						</div>
-						<div class="col-sm-1">
-							<input type="button" class="btn btn-default" value="Avanzado" ng-click="showAddresModal()">
-						</div>{{modalx.addressData}}
-					</div>
-					<!-- /form-group-->
+						<!-- /form-group-->
 
 
 
-					<div class="form-group">
-						<div class="col-sm-2 control-label">
-							<label for="">Fecha de nac.:</label>
+						<div class="form-group">
+							<div class="col-sm-4 control-label">
+								<label for="">Fecha de nac.:</label>
+							</div>
+							<div class="col-sm-6">
+								<input class="form-control" ng-model="nuevoAlumno.fechaNacimiento" placeholder="10/10/1010" type="date"
+								step="1" value="01-01-2000" />
+							</div>
 						</div>
-						<div class="col-sm-5">
-							<input class="form-control" ng-model="nuevoAlumno.fechaNacimiento" placeholder="10/10/1010" type="date"
-							step="1" value="01-01-2000" />
-						</div>
-					</div>
-					<!-- /form-group-->
+						<!-- /form-group-->
 
 
-					<div class="form-group">
-						<div class="col-sm-2 control-label">
-							<label for="">Año curso:</label>
+						<!-- <div class="form-group">
+							<div class="col-sm-4 control-label">
+								<label for="">Año curso:</label>
+							</div>
+							<div class="col-sm-3">
+								<select class="form-control" name="Año">
+									<option value="">elemento 1</option>
+									<option value="">elemento 2</option>
+								</select>
+							</div>
 						</div>
-						<div class="col-sm-3">
-							<select class="form-control" name="Año">
-								<option value="">elemento 1</option>
-								<option value="">elemento 2</option>
-							</select>
-						</div>
-					</div>
-					<!-- /form-group-->
+						 /form-group
 
 
 
-					<div class="form-group">
-						<div class="col-sm-2 control-label">
-							<label for="">Nombre curso:</label>
-						</div>
-						<div class="col-sm-3">
-							<select class="form-control" name="Curso">
-								<option value="">elemento 3</option>
-								<option value="">elemento 4</option>
-							</select>
-						</div>
-					</div>
-					<!-- /form-group-->
+						<div class="form-group">
+							<div class="col-sm-4 control-label">
+								<label for="">Nombre curso:</label>
+							</div>
+							<div class="col-sm-3">
+								<select class="form-control" name="Curso">
+									<option value="">elemento 3</option>
+									<option value="">elemento 4</option>
+								</select>
+							</div>
+						</div> -->
+						<!-- /form-group-->
 
 
-					<div class="form-group">
-						<div class="col-sm-2 control-label">
-							<label for="">Teléfono:</label>
-						</div>
+						<div class="form-group">
+							<div class="col-sm-4 control-label">
+								<label for="">Teléfono:</label>
+							</div>
 
-						<div class="col-sm-4">
-							<input class="form-control" ng-model="nuevoAlumno.listaTelefono[0]" placeholder="0343-4353535" type="tel" />
+							<div class="col-sm-4">
+								<input class="form-control" ng-model="nuevoAlumno.listaTelefono[0]" placeholder="0343-4353535" type="tel" />
+							</div>
+							<div class="col-sm-1">
+								<input type="button" class="btn btn-default" value="Avanzado" ng-click="telefonoAvanzado()">
+							</div>
 						</div>
-						<div class="col-sm-1">
-							<input type="button" class="btn btn-default" value="Avanzado" ng-click="telefonoAvanzado()">
-						</div>
-					</div>
-					<!-- /form-group-->
+						<!-- /form-group-->
 
 
 				<!-- 	<div class="form-group">
@@ -279,10 +280,10 @@
 
 
 					<div class="form-group">
-						<div class="col-sm-2 control-label">
+						<div class="col-sm-4 control-label">
 							<label for="">Mail:</label>
 						</div>
-						<div class="col-sm-5">
+						<div class="col-sm-6">
 							<input class="form-control" placeholder="nombre@nombre.com"
 							type="email" maxlength="255">
 						</div>
@@ -291,17 +292,19 @@
 
 
 					<div class="form-group">
-						<div class="col-sm-2 control-label">
+						<div class="col-sm-4 control-label">
 							<label for="">Observaciones:</label>
 						</div>
-						<div class="col-sm-5">
-							<textarea class="form-control" rows="3"></textarea>
+						<div class="col-sm-7">
+							<textarea class="form-control" rows="4"></textarea>
 							<!--<input class="form-control"
 							type="text" maxlength="255" required pattern="[a-zA-Z ]*">-->
 							<!-- Valida letras y espacios-->
 						</div>
 					</div>
-					<!-- /form-group-->
+				</div>
+				<!-- /form-group-->
+				<div class="col-md-3">
 					<div class="form-group">
 						<div class="col-sm-1">
 						</div>
@@ -313,7 +316,8 @@
 								result-image="croppedDataUrl" ng-init="croppedDataUrl=''">
 							</img-crop>
 						</div>
-						
+					</div>
+
 							<!--<div>
 								<img ng-src="{{croppedDataUrl}}">
 							</div>-->
@@ -326,19 +330,21 @@
 						</div>
 					</div>
 
-				</div><!-- /formulario-->
-				<div class="form-group">
-					<div class="col-sm-3 col-sm-offset-3">
-						<input class="btn btn-danger" type="button" name=""
-						onclick="cargarAlumnoPrincipal()" value="Cancelar" />
-					</div>
-					<div class="col-sm-1">
-						<input class="btn btn-primary" ng-click="upload(croppedDataUrl)" type="submit" name=""
-						value="Guardar" />
-					</div>
 				</div>
-				
-			</form>
-		</fieldset>
+			</div>
+		</div><!-- /formulario-->
+		<div class="form-group">
+			<div class="col-sm-3 col-sm-offset-3">
+				<input class="btn btn-danger" type="button" name=""
+				onclick="cargarAlumnoPrincipal()" value="Cancelar" />
+			</div>
+			<div class="col-sm-1">
+				<input class="btn btn-primary" ng-click="upload(croppedDataUrl)" type="submit" name=""
+				value="Guardar" />
+			</div>
+		</div>
 
-	</div>
+	</form>
+</fieldset>
+
+</div>
