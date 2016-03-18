@@ -8,8 +8,8 @@
             <column name="IDTRIMESTRE" />
             <generator class="identity" />
         </id>
-        <property name="descripcion" type="java.lang.String">
-            <column name="DESCRIPCION" />
+        <property name="orden" type="java.lang.Integer">
+            <column name="ORDEN" />
         </property>
         <property name="cicloLectivo" type="java.lang.Integer">
             <column name="CICLOLECTIVO" />

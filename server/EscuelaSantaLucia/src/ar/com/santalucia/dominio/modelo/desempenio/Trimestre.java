@@ -9,14 +9,16 @@ import ar.com.santalucia.dominio.modelo.academico.Materia;
  * Clase Trimestre: maneja los trimestres del boletín
  * 
  * @author ericpennachini
- * @version 1.0
+ * @version 2.1
  *
  */
+
+//Último modificador: Eric Pennachini @ 12-03-16 14:51
 
 public class Trimestre {
 
 	private Long idTrimestre;
-	private String descripcion;
+	private Integer orden;
 	private Integer cicloLectivo;
 	private Set<Nota> listaNotas; //notas de examenes o tps que hacen a la nota final que pone el docente
 	private Nota notaFinal;
@@ -27,11 +29,11 @@ public class Trimestre {
 		listaNotas = new HashSet<Nota>();
 	}
 
-	public Trimestre(Long idTrimestre, String descripcion, Integer cicloLectivo, Set<Nota> listaNotas, 
+	public Trimestre(Long idTrimestre, Integer orden, Integer cicloLectivo, Set<Nota> listaNotas, 
 			Nota notaFinal, Materia materia) {
 		super();
 		this.idTrimestre = idTrimestre;
-		this.descripcion = descripcion;
+		this.orden = orden;
 		this.cicloLectivo = cicloLectivo;
 		this.setListaNotas(listaNotas);
 		this.setNotaFinal(notaFinal);
@@ -78,12 +80,12 @@ public class Trimestre {
 		this.materia = materia;
 	}
 
-	public String getDescripcion() {
-		return descripcion;
+	public Integer getOrden() {
+		return orden;
 	}
 
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	public void setOrden(Integer orden) {
+		this.orden = orden;
 	}
 
 }
