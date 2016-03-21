@@ -4,7 +4,7 @@
 		<div class="bs-sidebar hidden-print affix" role="complementary" data-offset-top="-100" bs-affix style="position: relative; text-align: right;">
 			<ul class="nav bs-sidenav">
 				<li bs-scrollspy data-target="#getting-started">
-					<a href="#getting-started">Men&uacute; Docente</a>
+					<h1><a href="#getting-started">Docente</a><h1>
 				</li>
 				<hr style="margin: 2px 0;">
 				<li ng-class="{active : activeMenuIzqDoc === 1}" data-target="#listado">
@@ -20,20 +20,25 @@
 </div>
 
 <div class="col-md-10">
-	<h1>Docente</h1>
-	<hr>
-	<div id="listado" ng-show="listado"style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
+	<!-- <h1>Docente</h1>
+	<hr> -->
+	<div id="listado" ng-show="listado">  <!--lista centrada -->
 		<fieldset class="navbar">
-			<legend>Listado</legend>
-			<label for="">Filtros:</label> <select
-			class="dropdown-toggle form-control-inline" name="" ng-model="filterByArea.area"> <!-- ng-change="update(dropDownValue, option)"> -->
+			<h2>Listado</h2>
+			<hr>
+			<!-- <label for="">Filtros:</label> <select
+			class="dropdown-toggle form-control-inline" name="" ng-model="filterByArea.area"> 
 			<option value="" disabled selected>Seleccione un &Aacute;rea</option>
 			<option value="">Todos</option>
 			<option ng-repeat="area in dropDownAreas"  value="{{area}}">{{area}}</option>
-		</select>
-		<label for="">Buscar por Nombre, Apellido, DNI o materia:</label>
-		<input class="form-control-inline" type="text" placeholder="Nombre" maxlength="255" required pattern="[a-zA-Z 0-9]*" ng-model="filterByName">
-
+		</select> -->
+		
+		<div class="panel panel-default">
+  <div class="panel-heading">
+		Buscar por Nombre, Apellido, DNI o materia:
+		<input class="form-control-inline" type="text" placeholder="Buscar" maxlength="255" required pattern="[a-zA-Z 0-9]*" ng-model="filterByName">
+</div>
+</div>
 
 		<table class="table table-hover table-striped">
 			<thead>
@@ -67,20 +72,20 @@
 
 	<div id="nuevoPerfil" ng-show="nuevoPerfil">
 		<fieldset>
-			<legend>{{subtitle}}</legend>
-			<span class="help-block">Ingrese los datos para crear un nuevo perfil
-				de docente y haga clic en guardar cuando finalice</span>
+			<h2>{{subtitle}}: <small>Ingrese los datos para crear un nuevo perfil
+				de docente y haga clic en guardar cuando finalice</small></h2>
+				<hr>
 				<!-- http://www.bootply.com/sY7gQy6XF7 Aca nuevo perfil-->
 				<form class="form-horizontal media">
-				<!--<div class="pull-right">
+				<!--<div class="pull-right"> 
 						<img class="img-rounded" src="images/defaultUser.png" alt="Usuario" width="220px" height="auto"/>
 					<div class="btn btn-primary btn-file" id="boton">Examinar<input type="file"></div>
 				</div>	-->
 				
 				<div class="formulario media-body">
-					<div class="container">
+					<!-- <div class="container"> -->
 						<div class="row">
-							<div class="col-md-5 personal-info">
+							<div class="col-md-6 personal-info">
 								<form class="form-horizontal media">
 
 									<div class="form-group">
@@ -239,43 +244,40 @@
 									
 								</div>
 
-								<div class="col-md-5">
+								<div class="col-md-6">
 									<div class="form-group">
-										<div class="col-sm-2">
 											<button class="btn btn-default" ngf-select ng-model="picFile" accept="image/*" ngf-max-size="2MB" ngf-min-height="100" style="margin: 5px auto">Seleccione imagen de perfil</button>
 
 											<div ngf-drop ng-model="picFile" ngf-pattern="image/*" class="cropArea"><!--{{picFile}}-->
 												<img-crop image="picFile  | ngfDataUrl"                 
 												result-image="croppedDataUrl" ng-init="croppedDataUrl=''">
-											</img-crop>
-											<!--<div>
-												<img ng-src="{{croppedDataUrl}}">
-											</div>-->
-											<!--<button ng-click="upload(croppedDataUrl)">Submit</button> -->
-											<span class="progress" ng-show="progress >= 0">
-												<div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
-											</span>
-											<span ng-show="result">Carga completa</span>
-											<span class="err" ng-show="errorMsg">{{errorMsg}}</span>
-
-										</div>
+												</img-crop>
+												<!--<div>
+													<img ng-src="{{croppedDataUrl}}">
+												</div>-->
+												<!--<button ng-click="upload(croppedDataUrl)">Submit</button> -->
+												<span class="progress" ng-show="progress >= 0">
+													<div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
+												</span>
+												<span ng-show="result">Carga completa</span>
+												<span class="err" ng-show="errorMsg">{{errorMsg}}</span>
+											</div>
 									</div>
 								</div>
 							</div>
+						<!-- </div> -->
+					</div><!-- /formulario-->
+					<div class="form-group">
+						<div class="col-sm-2 col-sm-offset-3">
+							<input class="btn btn-danger" type="button" name=""
+							onclick="cargarAlumnoPrincipal()" value="Cancelar" />
+						</div>
+						<div class="col-sm-2">
+							<input class="btn btn-primary" ng-click="upload(croppedDataUrl)" type="submit" name=""
+							value="Guardar" />
 						</div>
 					</div>
-				</div><!-- /formulario-->
-				<div class="form-group">
-					<div class="col-sm-4 col-sm-offset-3">
-						<input class="btn btn-danger" type="button" name=""
-						onclick="cargarAlumnoPrincipal()" value="Cancelar" />
-					</div>
-					<div class="col-sm-1">
-						<input class="btn btn-primary" ng-click="upload(croppedDataUrl)" type="submit" name=""
-						value="Guardar" />
-					</div>
-				</div>
-			</form>
-		</fieldset>
+				</form>
+			</fieldset>
+		</div>
 	</div>
-</div>
