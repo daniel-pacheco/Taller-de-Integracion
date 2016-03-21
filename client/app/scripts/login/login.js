@@ -12,7 +12,7 @@
   $stateProvider
   .state('login', {
     url: '/login',
-    templateUrl: 'views/login.html',
+    templateUrl: 'scripts/login/login.html',
     controller: 'LoginCtrl',
     data: {
       pageTitle: 'Login'            
