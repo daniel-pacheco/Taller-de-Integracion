@@ -291,13 +291,13 @@ input, button, select, textarea {
 
 .saludo {
   color: #CCC;
-      padding-top: 5px;
-    padding-bottom: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .nav > .active > a {
-    text-decoration: none;
-    background-color: #eee;
+  text-decoration: none;
+  background-color: #eee;
 }
 
 .personal-info >.form-horizontal > .form-group > label {
@@ -306,4 +306,16 @@ input, button, select, textarea {
 
 .form-horizontal {
   width: 100%;
+}
+
+h1 {
+  font-size: 26px;
+}
+
+
+.nav > li > a:hover {
+ -webkit-transition: all 0.2s ease-in-out;
+ -moz-transition: all 0.2s ease-in-out;
+ -o-transition: all 0.2s ease-in-out;
+ transition: all 0.2s ease-in-out;
 }

@@ -20,20 +20,21 @@
 </div>
 
 <div class="col-md-10">
-	<h1>Alumnado</h1>{{postAnswer}} {{nuevoAlumno}}
-	<!--
+	
+	<!--<h1>Alumnado</h1>{{postAnswer}} {{nuevoAlumno}}
+	
 	<button data-ng-click="getAlumnoById(302)" type="button" class="btn btn-lg btn-danger">Custom Modal
 		<br />
 		<small>getAlumnoById(302)</small>
 	</button>
-	{{postAnswer}}-->
+	{{postAnswer}}
 	<button type="button" class="btn btn-lg btn-danger" ng-click="setM(modalx)">Modal
 		<br />
 		<small>(using service)</small>
 	</button>
 	<button data-ng-click="getAlumnoById(302)" type="button" class="btn btn-info" data-animation="am-fade-and-slide-top">
 		BRN Lookup
-	</button>
+	</button>-->
 	<!--<button ng-click="setM(modalxi)" type="button" class="btn btn-info">
 		Post
 	</button> <br>
@@ -49,66 +50,76 @@
 	<br>
 	{{response}}
 -->
-<hr>
 <div id="listado" ng-show="listado1">
 	<fieldset class="navbar">
-		<legend>Listado</legend>
-		<label for="">Año lectivo:</label> <select
-		class="dropdown-toggle form-control-inline" name="" ng-model="dropDownValue"> <!-- ng-change="update(dropDownValue, option)"> -->
-		<option value="" disabled selected>Seleccione una opci&oacute;n</option>
-		<option value="">Todos</option>
-		<option ng-repeat="option in dropDownOptions" value="{{option}}">{{option}}</option>
-	</select>{{dropDownValue}}
-	<input type="text" class="form-control-inline" ng-show="dropDownValue === 'DNI/MAT'">
-	<button ng-click="search()">Buscar</button>
+		<h1>Listado: <small>Seleccione el a&ntilde;o lectivo del que desa listar los alumnos</small></h1>
+		<hr>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<label>A&ntilde;o lectivo: </label><select
+				class="dropdown-toggle form-control-inline" name="" ng-model="dropDownValue"> <!-- ng-change="update(dropDownValue, option)"> -->
+				<option value="" disabled selected>Seleccione una opci&oacute;n</option>
+				<option value="">Todos</option>
+				<option ng-repeat="option in dropDownOptions" value="{{option}}">{{option}}</option>
+			</select>{{dropDownValue}}
+
+			<input type="text" class="form-control-inline" ng-show="dropDownValue === 'DNI/MAT'">
+			<button class="btn btn-default" ng-click="search()">Buscar</button>
+		</div>
+	</div>
 	<div id="listFilters" ng-show="listFilterIsEnabled">
 		<h2>Filtros de búsqueda</h2>
-		<label for="">Nombre:</label>
-		<input class="form-control-inline" type="text" maxlength="255" required pattern="[a-zA-Z 0-9]*" ng-model="filterByName">{{filterByName}} 
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<label>Nombre: </label> 
+				<input class="form-control-inline" type="text" maxlength="255" required pattern="[a-zA-Z 0-9]*" ng-model="filterByName">{{filterByName}} 
 
-		<label for="">Curso:</label>
-		<select class="dropdown-toggle form-control-inline" name="" ng-model="dropDownCursoValue">
-			<option value="" disabled selected>Seleccione un curso</option>
-			<option ng-repeat="cursoOption in dropDownCursoOptions" value="{{cursoOption}}">{{cursoOption}}</option>
-		</select> 
+				<label>Curso: </label>
+				<select class="dropdown-toggle form-control-inline" name="" ng-model="dropDownCursoValue">
+					<option value="" disabled selected>Seleccione un curso</option>
+					<option ng-repeat="cursoOption in dropDownCursoOptions" value="{{cursoOption}}">{{cursoOption}}</option>
+				</select> 
 
-		<label for="">División:</label> <select
-		class="dropdown-toggle form-control-inline" name="" ng-model="dropDownDivisionValue">
-		<option value="" disabled selected>Seleccione una divisi&oacute;n</option>
-		<option ng-repeat="divisionOption in dropDownDivisionOptions" value="{{divisionOption}}">{{divisionOption}}</option>
-	</select>
-</div>
-<table class="table table-hover table-striped">
-	<thead>
-		<tr>
-			<th>Nro</th>
-			<th>Apellido</th>
-			<th>Nombre</th>
-			<th>DNI</th>
-			<th>Id</th>
-			<th>Acciones</th>						
-		</tr>
-	</thead>
-	<tr ng-repeat="alumno in alumnoData | filter:alumnoFilter">
-		<td>{{alumno.matricula}}</td>
-		<td>{{alumno.nombre}}</td>
-		<td>{{alumno.apellido}}</td>
-		<td>{{alumno.nroDocumento}}</td>
-		<td ng-click = "deleteAlumno(alumno.idUsuario)">{{alumno.idUsuario}}</td>
-		<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%; cursor: pointer" class="glyphicon glyphicon-user" ></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAttendance" style="width:25%; cursor: pointer" class="glyphicon glyphicon-calendar"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipReportCard" style="width:25%; cursor: pointer" class="glyphicon glyphicon-list-alt"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAcademicPerformance" style="width:25%; cursor: pointer" class="glyphicon glyphicon-education"></span></td> 
+				<label>División: </label><select
+				class="dropdown-toggle form-control-inline" name="" ng-model="dropDownDivisionValue">
+				<option value="" disabled selected>Seleccione una divisi&oacute;n</option>
+				<option ng-repeat="divisionOption in dropDownDivisionOptions" value="{{divisionOption}}">{{divisionOption}}</option>
+			</select>
+		</div>
+	</div>
+
+	<table class="table table-hover table-striped">
+		<thead>
+			<tr>
+				<th>Nro</th>
+				<th>Apellido</th>
+				<th>Nombre</th>
+				<th>DNI</th>
+				<th>Id</th>
+				<th>Acciones</th>						
+			</tr>
+		</thead>
+		<tr ng-repeat="alumno in alumnoData | filter:alumnoFilter">
+			<td>{{alumno.matricula}}</td>
+			<td>{{alumno.nombre}}</td>
+			<td>{{alumno.apellido}}</td>
+			<td>{{alumno.nroDocumento}}</td>
+			<td ng-click = "deleteAlumno(alumno.idUsuario)">{{alumno.idUsuario}}</td>
+			<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%; cursor: pointer" class="glyphicon glyphicon-user" ></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAttendance" style="width:25%; cursor: pointer" class="glyphicon glyphicon-calendar"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipReportCard" style="width:25%; cursor: pointer" class="glyphicon glyphicon-list-alt"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAcademicPerformance" style="width:25%; cursor: pointer" class="glyphicon glyphicon-education"></span></td> 
 					<!--<td>{{alumno.name}}</td>
 					<td>{{alumno.phone}}</td>
 					<td>{{$index}}</td> -->
 				</tr>
 			</table>
-		</fieldset>
-	</div>
+		</div>
+	</fieldset>
+</div>
 
-	<div id="nuevoPerfil" ng-show="!listado1">
-		<fieldset>
-			<legend>Nuevo Alumno</legend>
-			<h3 class="small">Ingrese los datos para crear un nuevo perfil
-				de alumno y haga clic en guardar cuando finalice</h3>
+<div id="nuevoPerfil" ng-show="!listado1">
+	<fieldset>
+		<h1>Nuevo docente: <small>Ingrese los datos para crear un nuevo perfil
+			de alumno y haga clic en guardar cuando finalice</small></h1>
+			<hr>
 			<!--<div class="cargar_imagen">
 				<img src="images/defaultUser.png" alt="Usuario" width="190px" height="auto"/>
 				<span class="btn btn-primary btn-file">Examinar<input type="file"></span>
@@ -122,78 +133,78 @@
 				
 				<div class="formulario media-body">
 					<!-- <div class="container"> Pachec: probar esto en la resolución grande -->
-						<div class="row">
-							<div class="col-md-6 personal-info">
-								<div class="form-group">
-									<div class="col-sm-4 control-label">
-										<label for="">Documento:</label>
-									</div>
-									<div class="col-sm-4">
-										<input class="form-control" ng-model="nuevoAlumno.nroDocumento" placeholder="12332112" type="text"
-										maxlength="10" required pattern="\d{8}">
-									</div>
-									<!-- Valida 8 digitos -->
-									
-									<div class="col-sm-3">
-										<select class="form-control" ng-model="nuevoAlumno.tipoDocumento" name="Tipo documento">
-											<option value="" disabled selected>Tipo</option>
-											<option value="DNI">DNI</option>
-											<option value="LC">LC</option>
-											<option value="Otro">Otro</option>
-										</select>
-									</div>
+					<div class="row">
+						<div class="col-md-6 personal-info">
+							<div class="form-group">
+								<div class="col-sm-4 control-label">
+									<label for="">Documento:</label>
 								</div>
-								<!-- /form-group-->
-
-
-								<div class="form-group">
-									<div class="col-sm-4 control-label">
-										<label for="">Nombres:</label>
-									</div>
-									<div class="col-sm-5">
-										<input class="form-control" ng-model="nuevoAlumno.nombre" placeholder="Nombre Nombre"
-										type="text" maxlength="255" required pattern="[a-zA-Z ]*">
-										<!-- Valida letras y espacios -->
-									</div>
-
+								<div class="col-sm-4">
+									<input class="form-control" ng-model="nuevoAlumno.nroDocumento" placeholder="12332112" type="text"
+									maxlength="10" required pattern="\d{8}">
 								</div>
-								<!-- /form-group-->
+								<!-- Valida 8 digitos -->
+
+								<div class="col-sm-3">
+									<select class="form-control" ng-model="nuevoAlumno.tipoDocumento" name="Tipo documento">
+										<option value="" disabled selected>Tipo</option>
+										<option value="DNI">DNI</option>
+										<option value="LC">LC</option>
+										<option value="Otro">Otro</option>
+									</select>
+								</div>
+							</div>
+							<!-- /form-group-->
 
 
-								<div class="form-group">
-									<div class="col-sm-4 control-label">
-										<label for="">Apellidos:</label>
-									</div>
-									<div class="col-sm-5">
-										<input class="form-control" ng-model="nuevoAlumno.apellido" placeholder="Apellido Apellido"
-										type="text" maxlength="255" required pattern="[a-zA-Z ]*">
-										<!-- Valida letras y espacios-->
-									</div>
+							<div class="form-group">
+								<div class="col-sm-4 control-label">
+									<label for="">Nombres:</label>
+								</div>
+								<div class="col-sm-5">
+									<input class="form-control" ng-model="nuevoAlumno.nombre" placeholder="Nombre Nombre"
+									type="text" maxlength="255" required pattern="[a-zA-Z ]*">
+									<!-- Valida letras y espacios -->
 								</div>
 
+							</div>
+							<!-- /form-group-->
 
 
-								<div class="form-group">
-									<div class="col-sm-4 control-label">
-										<label for="">Sexo:</label>
-									</div>
-									<div class="col-sm-7">
-										<input type="radio" name="sexo" ng-model="nuevoAlumno.sexo" value="f" id="Fem"><label class="text-radio" for="Fem"><span></span>Femenino </label>
-										<input type="radio" name="sexo" ng-model="nuevoAlumno.sexo" value="m"checked id="Masc"><label class="text-radio" for="Masc"><span></span>Masculino </label>
-									</div>
+							<div class="form-group">
+								<div class="col-sm-4 control-label">
+									<label for="">Apellidos:</label>
 								</div>
-								<!-- /form-group-->
+								<div class="col-sm-5">
+									<input class="form-control" ng-model="nuevoAlumno.apellido" placeholder="Apellido Apellido"
+									type="text" maxlength="255" required pattern="[a-zA-Z ]*">
+									<!-- Valida letras y espacios-->
+								</div>
+							</div>
 
 
-								<div class="form-group">
-									<div class="col-sm-4 control-label">
-										<label for="">Domicilio:</label>
-									</div>
-									<div class="col-sm-6">
-										<input class="form-control" placeholder="Domicilio 123"
-										type="text" maxlength="255" required pattern="[a-zA-Z 0-9]*" />
-										<!-- Valida letras, numeros y espacios-->
-									</div>
+
+							<div class="form-group">
+								<div class="col-sm-4 control-label">
+									<label for="">Sexo:</label>
+								</div>
+								<div class="col-sm-7">
+									<input type="radio" name="sexo" ng-model="nuevoAlumno.sexo" value="f" id="Fem"><label class="text-radio" for="Fem"><span></span>Femenino </label>
+									<input type="radio" name="sexo" ng-model="nuevoAlumno.sexo" value="m"checked id="Masc"><label class="text-radio" for="Masc"><span></span>Masculino </label>
+								</div>
+							</div>
+							<!-- /form-group-->
+
+
+							<div class="form-group">
+								<div class="col-sm-4 control-label">
+									<label for="">Domicilio:</label>
+								</div>
+								<div class="col-sm-6">
+									<input class="form-control" placeholder="Domicilio 123"
+									type="text" maxlength="255" required pattern="[a-zA-Z 0-9]*" />
+									<!-- Valida letras, numeros y espacios-->
+								</div>
 						<!-- <div class="col-sm-1 control-label">
 							<label for="">N&uacute;mero:</label>
 						</div>
@@ -204,7 +215,7 @@
 							</div> -->
 							<div class="col-sm-1">
 								<input type="button" class="btn btn-default" value="Avanzado" ng-click="showAddresModal()">
-							</div>{{modalx.addressData}}
+							</div><!-- {{modalx.addressData}} -->
 						</div>
 						<!-- /form-group-->
 
@@ -331,20 +342,20 @@
 					</div>
 
 				</div>
-			<!-- </div> -->
-		</div><!-- /formulario-->
-		<div class="form-group">
-			<div class="col-sm-2 col-sm-offset-3">
-				<input class="btn btn-danger" type="button" name=""
-				onclick="cargarAlumnoPrincipal()" value="Cancelar" />
+				<!-- </div> -->
+			</div><!-- /formulario-->
+			<div class="form-group">
+				<div class="col-sm-2 col-sm-offset-3">
+					<input class="btn btn-danger" type="button" name=""
+					onclick="cargarAlumnoPrincipal()" value="Cancelar" />
+				</div>
+				<div class="col-sm-1">
+					<input class="btn btn-primary" ng-click="upload(croppedDataUrl)" type="submit" name=""
+					value="Guardar" />
+				</div>
 			</div>
-			<div class="col-sm-1">
-				<input class="btn btn-primary" ng-click="upload(croppedDataUrl)" type="submit" name=""
-				value="Guardar" />
-			</div>
-		</div>
 
-	</form>
-</fieldset>
+		</form>
+	</fieldset>
 
 </div>
