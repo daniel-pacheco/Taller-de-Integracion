@@ -9,7 +9,7 @@
  */
  angular.module('clientAppApp')
 
- .controller('ClientappappCtrl', function ($scope, $state, loginService, modalService, AUTH_EVENTS, MENU_DIRECTIVO) {
+ .controller('ClientappappCtrl', function ($scope, $state, $popover, loginService, modalService, AUTH_EVENTS, MENU_DIRECTIVO) {
   
   $scope.credentials = {};
 
@@ -64,6 +64,10 @@ $scope.logOut = function () {
     $scope.setActive = function(menuItem) {
     	$scope.activeMenu = menuItem
     };
+
+$scope.popover = {
+  "title": "Despedirse",   
+};
 
 $scope.tooltip = {
 tooltipLogout : {

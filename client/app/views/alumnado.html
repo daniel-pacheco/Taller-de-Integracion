@@ -105,7 +105,7 @@
 			<td>{{alumno.apellido}}</td>
 			<td>{{alumno.nroDocumento}}</td>
 			<td ng-click = "deleteAlumno(alumno.idUsuario)">{{alumno.idUsuario}}</td>
-			<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%; cursor: pointer" class="glyphicon glyphicon-user" ></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAttendance" style="width:25%; cursor: pointer" class="glyphicon glyphicon-calendar"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipReportCard" style="width:25%; cursor: pointer" class="glyphicon glyphicon-list-alt"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAcademicPerformance" style="width:25%; cursor: pointer" class="glyphicon glyphicon-education"></span></td> 
+			<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%; cursor: pointer" class="glyphicon glyphicon-user" ng-click="showProfile(alumno)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAttendance" style="width:25%; cursor: pointer" class="glyphicon glyphicon-calendar"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipReportCard" style="width:25%; cursor: pointer" class="glyphicon glyphicon-list-alt"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAcademicPerformance" style="width:25%; cursor: pointer" class="glyphicon glyphicon-education"></span></td> 
 					<!--<td>{{alumno.name}}</td>
 					<td>{{alumno.phone}}</td>
 					<td>{{$index}}</td> -->
@@ -117,7 +117,7 @@
 
 <div id="nuevoPerfil" ng-show="!listado1">
 	<fieldset>
-		<h1>Nuevo docente: <small>Ingrese los datos para crear un nuevo perfil
+		<h1>{{subtitle}}: <small>Ingrese los datos para crear un nuevo perfil
 			de alumno y haga clic en guardar cuando finalice</small></h1>
 			<hr>
 			<!--<div class="cargar_imagen">
@@ -135,9 +135,10 @@
 					<!-- <div class="container"> Pachec: probar esto en la resolución grande -->
 					<div class="row">
 						<div class="col-md-6 personal-info">
+							<div class="alert alert-danger" role="alert">* Campos obligatorios</div>
 							<div class="form-group">
 								<div class="col-sm-4 control-label">
-									<label for="">Documento:</label>
+									<label for=""><a style="color: red">*</a>Documento:</label>
 								</div>
 								<div class="col-sm-4">
 									<input class="form-control" ng-model="nuevoAlumno.nroDocumento" placeholder="12332112" type="text"
@@ -159,10 +160,10 @@
 
 							<div class="form-group">
 								<div class="col-sm-4 control-label">
-									<label for="">Nombres:</label>
+									<label for=""><a style="color: red">*</a>Nombre/s:</label>
 								</div>
 								<div class="col-sm-5">
-									<input class="form-control" ng-model="nuevoAlumno.nombre" placeholder="Nombre Nombre"
+									<input class="form-control" ng-model="nuevoAlumno.nombre" placeholder="Nombre"
 									type="text" maxlength="255" required pattern="[a-zA-Z ]*">
 									<!-- Valida letras y espacios -->
 								</div>
@@ -173,10 +174,10 @@
 
 							<div class="form-group">
 								<div class="col-sm-4 control-label">
-									<label for="">Apellidos:</label>
+									<label for=""><a style="color: red">*</a>Apellido/s:</label>
 								</div>
 								<div class="col-sm-5">
-									<input class="form-control" ng-model="nuevoAlumno.apellido" placeholder="Apellido Apellido"
+									<input class="form-control" ng-model="nuevoAlumno.apellido" placeholder="Apellido"
 									type="text" maxlength="255" required pattern="[a-zA-Z ]*">
 									<!-- Valida letras y espacios-->
 								</div>
@@ -189,8 +190,8 @@
 									<label for="">Sexo:</label>
 								</div>
 								<div class="col-sm-7">
-									<input type="radio" name="sexo" ng-model="nuevoAlumno.sexo" value="f" id="Fem"><label class="text-radio" for="Fem"><span></span>Femenino </label>
-									<input type="radio" name="sexo" ng-model="nuevoAlumno.sexo" value="m"checked id="Masc"><label class="text-radio" for="Masc"><span></span>Masculino </label>
+									<input type="radio" name="sexo" ng-model="nuevoAlumno.sexo" id="F"><label class="text-radio" for="F"><span></span>Femenino </label>
+									<input type="radio" name="sexo" ng-model="nuevoAlumno.sexo" checked id="M"><label class="text-radio" for="M"><span></span>Masculino </label>
 								</div>
 							</div>
 							<!-- /form-group-->
@@ -198,7 +199,7 @@
 
 							<div class="form-group">
 								<div class="col-sm-4 control-label">
-									<label for="">Domicilio:</label>
+									<label for=""><a style="color: red">*</a>Domicilio:</label>
 								</div>
 								<div class="col-sm-6">
 									<input class="form-control" placeholder="Domicilio 123"
@@ -223,7 +224,7 @@
 
 						<div class="form-group">
 							<div class="col-sm-4 control-label">
-								<label for="">Fecha de nac.:</label>
+								<label for=""><a style="color: red">*</a>Fecha de nac.:</label>
 							</div>
 							<div class="col-sm-6">
 								<input class="form-control" ng-model="nuevoAlumno.fechaNacimiento" placeholder="10/10/1010" type="date"
@@ -264,7 +265,7 @@
 
 						<div class="form-group">
 							<div class="col-sm-4 control-label">
-								<label for="">Teléfono:</label>
+								<label for=""><a style="color: red">*</a>Teléfono:</label>
 							</div>
 
 							<div class="col-sm-4">
@@ -292,7 +293,7 @@
 
 					<div class="form-group">
 						<div class="col-sm-4 control-label">
-							<label for="">Mail:</label>
+							<label for=""><a style="color: red">*</a>Mail:</label>
 						</div>
 						<div class="col-sm-6">
 							<input class="form-control" placeholder="nombre@nombre.com"
@@ -313,6 +314,7 @@
 							<!-- Valida letras y espacios-->
 						</div>
 					</div>
+					<div class="alert alert-danger" role="alert">* Campos obligatorios</div>
 				</div>
 				<!-- /form-group-->
 				<div class="col-md-3">

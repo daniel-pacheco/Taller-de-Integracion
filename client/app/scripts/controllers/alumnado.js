@@ -59,7 +59,7 @@ var myModal = {};
   };
 
 $scope.modalx.addressData = {};
-$scope.modalx.addressData.calle = "calle re loca";
+$scope.modalx.addressData.calle = "";
 $scope.afsdkjakfshkasjfha = 'hola che todo bien?';
 
 
@@ -75,6 +75,21 @@ $scope.afsdkjakfshkasjfha = 'hola che todo bien?';
 	myModal.$promise.then(myModal.show);		 
 	}
 	
+
+	$scope.modalx = {}; //inicializa un objeto para pasar data al modal
+$scope.showProfile = function(alumno){
+  var myModal1 = {};
+  myModal1 = $modal({
+    controller: 'AlumnadoCtrl', 
+    title: 'Perfil', 
+    content: 'Detalles del perfil', 
+    templateUrl: '/views/templates/showProfileAlumno.tpl.html', 
+    show: false
+  })
+
+  myModal1.$promise.then(myModal1.show);
+};
+
 
 //File-Select
 
@@ -136,6 +151,19 @@ $scope.activeMenuIzqAlu = 1;
 $scope.setActiveAlu = function(menuItemAlu) {
 	$scope.activeMenuIzqAlu = menuItemAlu;
 };
+
+
+$scope.subtitle = "Nuevo Alumno"
+
+/*
+$scope.alumnoEdit = null;
+$scope.editProfile = function(alumno) {
+  $scope.listado = false;
+  $scope.subtitle = "Editar Alumno"
+  $scope.nuevoPerfil = true;
+  $scope.alumnoEdit = alumno;
+}*/
+
 
 //---Llamadas al servicio ALUMNO---
 var alumnoJson = {  
