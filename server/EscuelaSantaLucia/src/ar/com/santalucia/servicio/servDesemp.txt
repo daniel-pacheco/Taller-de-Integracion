@@ -1,0 +1,10 @@
+Creación de un boletín (altas y asignaciones)
+Ref: OK => ya está codeado
+
+- add boletin ............................... OK
+- add trimestres ............................ OK
+- add notas ................................. OK
+- asignar notas a trimestre ................. OK
+- asignar nota final a trimestre ............ OK
+- asignar trimestres a boletin .............. OK
+- asignar alumno a boletin .................. OK

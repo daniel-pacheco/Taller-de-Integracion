@@ -18,9 +18,7 @@
             <key>
                 <column name="IDTRIMESTRE" />
             </key>
-            <element type="ar.com.santalucia.dominio.modelo.desempenio.Nota">
-                <column name="LISTANOTAS" />
-            </element>
+            <one-to-many class="ar.com.santalucia.dominio.modelo.desempenio.Nota"/>
         </set>
         <many-to-one name="notaFinal" class="ar.com.santalucia.dominio.modelo.desempenio.Nota" fetch="join">
             <column name="NOTAFINAL" />
