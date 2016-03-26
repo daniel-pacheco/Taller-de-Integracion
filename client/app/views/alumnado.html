@@ -54,6 +54,7 @@
 	<fieldset class="navbar">
 		<h1>Listado: <small>Seleccione el a&ntilde;o lectivo del que desa listar los alumnos</small></h1>
 		<hr>
+		
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<label>A&ntilde;o lectivo: </label><select
@@ -67,7 +68,11 @@
 			<button class="btn btn-default" ng-click="search()">Buscar</button>
 		</div>
 	</div>
+<div ng-show="loading">
+<loading></loading>
+</div>
 	<div id="listFilters" ng-show="listFilterIsEnabled">
+
 		<h2>Filtros de búsqueda</h2>
 		<div class="panel panel-default">
 			<div class="panel-heading">
@@ -87,7 +92,7 @@
 			</select>
 		</div>
 	</div>
-
+	
 	<table class="table table-hover table-striped">
 		<thead>
 			<tr>

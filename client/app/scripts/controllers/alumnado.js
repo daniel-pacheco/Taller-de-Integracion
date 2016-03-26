@@ -7,6 +7,7 @@
  * # DirectivoCtrl
  * Controller of the clientAppApp
  */
+
  angular.module('clientAppApp')
  .config(function($stateProvider) {
  	$stateProvider
@@ -19,6 +20,21 @@
  		}
  	});
  })
+  .directive('loading', function () {
+      return {
+        restrict: 'E',
+        replace:true,
+        template: '<div class="loading"><img src="http://www.nasa.gov/multimedia/videogallery/ajax-loader.gif" width="20" height="20" />LOADING...</div>',
+        link: function (scope, element, attr) {
+              scope.$watch('loading', function (val) {
+                  if (val)
+                      $(element).show();
+                  else
+                      $(element).hide();
+              });
+        }
+      }
+  })
  .controller('AlumnadoCtrl', function ($scope, $q, $http, $modal, alumnoService, Upload, $timeout, alumnoData) {
  	$scope.listado1 = true;
  	$scope.listFilterIsEnabled = false;
@@ -28,7 +44,6 @@
  		"listaMails": []
  	}
 //tooltips
-
 $scope.tooltip = {
 	tooltipProfile : {
 		'title' : 'Perfil'
@@ -144,6 +159,7 @@ $scope.search = function () {
 	if (!$scope.listFilterIsEnabled) {
 		$scope.listFilterIsEnabled = true;
 	};
+
 	this.showData();
 }
 
@@ -218,10 +234,19 @@ var alumnoJson = {
 };
 
 $scope.answer = [];
-
+ $scope.alumnoData = [];
 $scope.showData = function() {
-	$scope.alumnoData = alumnoData;
-}
+	 $scope.loading = true;
+	  /*$http.get(alumnoData) esto es para que muestre el loading mientras carga, el http da 404 xq no tengo servidor
+	   .success(function(data) {
+           $scope.alumnoData = data[0].alumnoData;
+            $scope.loading = false;
+        });*/
+			$scope.alumnoData = alumnoData;
+			$scope.loading = false;
+
+      }
+
 
 /*$scope.getAll = alumnoService.alumnoGetAll().then(function(response){
 	$scope.answer = response.data;  
