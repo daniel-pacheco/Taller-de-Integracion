@@ -90,7 +90,7 @@ function showProfile(){
   })
 
   myModal1.$promise.then(myModal1.show);
-  console.log($scope.modalx);
+
 };
 $scope.modalx.docentee = "docentee";
 

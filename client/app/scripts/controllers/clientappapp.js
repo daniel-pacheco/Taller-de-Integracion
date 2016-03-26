@@ -69,9 +69,9 @@ $scope.popover = {
   "title": "Despedirse",   
 };
 
-$scope.tooltip = {
+/*$scope.tooltip = {
 tooltipLogout : {
     'title' : 'Cerrar sesión'
   }
-}
+}*/
 });

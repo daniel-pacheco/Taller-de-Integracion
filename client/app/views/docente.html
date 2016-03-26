@@ -59,7 +59,7 @@
 				<td>{{docente.apellido}}</td>
 				<td>{{docente.nombre}}</td>
 				<td>{{docente.cuil}}</td>
-				<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:33%; cursor: pointer" class="glyphicon glyphicon-user" ng-click="asignar(docente)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipEdit" style="width:33%; cursor: pointer" class="glyphicon glyphicon-edit" ng-click="editProfile(docente)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipDelete" style="width:33%; cursor: pointer" class="glyphicon glyphicon-remove"></span></td> 
+				<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:40%; cursor: pointer" class="glyphicon glyphicon-user" ng-click="asignar(docente)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipDelete" style="width:40%; cursor: pointer" class="glyphicon glyphicon-remove"></span></td> 
 
 					<!--<td>{{alumno.name}}</td>
 					<td>{{alumno.phone}}</td>
@@ -86,11 +86,12 @@
 					<!-- <div class="container"> -->
 						<div class="row">
 							<div class="col-md-6 personal-info">
+								<div class="alert alert-danger" role="alert">* Campos obligatorios</div>
 								<form class="form-horizontal media">
 
 									<div class="form-group">
 										<div class="col-sm-4 control-label">
-											<label for="">Documento:</label>
+											<label for=""><a style="color: red">*</a>Documento:</label>
 										</div>
 										<div class="col-sm-4">
 											<input class="form-control" ng-model="docenteEdit.nroDocumento" placeholder="12332112" type="text"
@@ -112,7 +113,7 @@
 									<!-- /form-group-->
 									<div class="form-group">
 										<div class="col-sm-4 control-label">
-											<label for="">Nombres:</label>
+											<label for=""><a style="color: red">*</a>Nombres:</label>
 										</div>
 										<div class="col-sm-5">
 											<input class="form-control" ng-model="docenteEdit.nombre" placeholder="Nombre"
@@ -126,7 +127,7 @@
 
 									<div class="form-group">
 										<div class="col-sm-4 control-label">
-											<label for="">Apellidos:</label>
+											<label for=""><a style="color: red">*</a>Apellidos:</label>
 										</div>
 										<div class="col-sm-5">
 											<input class="form-control" placeholder="Apellido"
@@ -151,7 +152,7 @@
 
 									<div class="form-group">
 										<div class="col-sm-4 control-label">
-											<label for="">Domicilio:</label>
+											<label for=""><a style="color: red">*</a>Domicilio:</label>
 										</div>
 										<div class="col-sm-6">
 											<input class="form-control" placeholder="Domicilio 123"
@@ -165,7 +166,7 @@
 
 									<div class="form-group">
 										<div class="col-sm-4 control-label">
-											<label for="">Fecha de nac.:</label>
+											<label for=""><a style="color: red">*</a>Fecha de nac.:</label>
 										</div>
 										<div class="col-sm-6">
 											<input class="form-control" placeholder="10/10/1010" type="date"
@@ -177,7 +178,7 @@
 
 									<div class="form-group">
 										<div class="col-sm-4 control-label">
-											<label for="">CUIT/CUIL:</label>
+											<label for=""><a style="color: red">*</a>CUIT/CUIL:</label>
 										</div>
 										<div class="col-sm-5">
 											<input class="form-control" placeholder="12332112" type="text"
@@ -213,7 +214,7 @@
 
 									<div class="form-group">
 										<div class="col-sm-4 control-label">
-											<label for="">Mail:</label>
+											<label for=""><a style="color: red">*</a>Mail:</label>
 										</div>
 										<div class="col-sm-6">
 											<input class="form-control" placeholder="nombre@nombre.com"
@@ -241,7 +242,7 @@
 											<textarea class="form-control" rows="4"></textarea>
 										</div>
 									</div>
-									
+									<div class="alert alert-danger" role="alert">* Campos obligatorios</div>
 								</div>
 
 								<div class="col-md-6">
