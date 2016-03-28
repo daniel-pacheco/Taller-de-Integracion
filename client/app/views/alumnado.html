@@ -16,8 +16,10 @@
 			</ul>
 		</div>
 		<!--/ngInclude: 'views/partials/affixed-sidebar.html' -->
+
 	</div>
 </div>
+
 
 <div class="col-md-10">
 	
@@ -68,9 +70,12 @@
 			<button class="btn btn-default" ng-click="search()">Buscar</button>
 		</div>
 	</div>
-<div ng-show="loading">
-<loading></loading>
-</div>
+	<div ng-show="loading">
+		<loading></loading>
+	</div>
+
+	
+
 	<div id="listFilters" ng-show="listFilterIsEnabled">
 
 		<h2>Filtros de búsqueda</h2>
@@ -92,10 +97,13 @@
 			</select>
 		</div>
 	</div>
-	
+	<div ng-show="mostrarBtnInasistencias" class="affix" role="complementary" data-offset-top="-60" bs-affix style="position: relative; text-align: center;">
+		<button class="btn btn-warning">Colocar Inasistencias</button>
+	</div>
 	<table class="table table-hover table-striped">
 		<thead>
 			<tr>
+				<th><input type="checkbox"></th>
 				<th>Nro</th>
 				<th>Apellido</th>
 				<th>Nombre</th>
@@ -104,7 +112,8 @@
 				<th>Acciones</th>						
 			</tr>
 		</thead>
-		<tr ng-repeat="alumno in alumnoData | filter:alumnoFilter">
+		<tr ng-repeat="alumno in alumnoData | filter:alumnoFilter" ng-click="seleccionarCheckbox(alumno)">
+			<td><input type="checkbox" ng-init="true" ng-model="selectAlumno" ng-checked="alumno.selected"></td>
 			<td>{{alumno.matricula}}</td>
 			<td>{{alumno.nombre}}</td>
 			<td>{{alumno.apellido}}</td>
@@ -118,6 +127,7 @@
 			</table>
 		</div>
 	</fieldset>
+	
 </div>
 
 <div id="nuevoPerfil" ng-show="!listado1">
