@@ -14,7 +14,7 @@ import java.util.Set;
 public class Llamado {
 	private Long idLlamado;
 	private String descripcion;
-	private Set<Mesa>listaMesas;
+	private Set<Mesa> listaMesas;
 	private Date fechaInicio;
 	private Date fechaFin;
 	//private Long codigo;

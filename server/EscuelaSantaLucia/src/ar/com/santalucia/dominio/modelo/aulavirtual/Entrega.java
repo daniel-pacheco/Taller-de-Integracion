@@ -25,7 +25,7 @@ public class Entrega {
 	private Alumno alumno;
 	private Integer cantidadModificaciones;
 	
-	private static Integer MAX__MODIF_ENTREGAS = 5;
+	private static Integer MAX_MODIF_ENTREGAS = 5;
 	
 	public Entrega() {
 		super();

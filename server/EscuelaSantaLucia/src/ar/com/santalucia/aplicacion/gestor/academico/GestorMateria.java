@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import ar.com.santalucia.accesodatos.dao.academico.MateriaHome;
 import ar.com.santalucia.aplicacion.gestor.Gestor;
+import ar.com.santalucia.aplicacion.gestor.IListable;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
@@ -20,7 +21,7 @@ import ar.com.santalucia.validaciones.IValidacionMateria;
 
 // UltimoModificador: Eric Pennachini @ 23-10-2015 16:20
 
-public class GestorMateria extends Gestor<Materia> implements IValidacionMateria{
+public class GestorMateria extends Gestor<Materia> implements IValidacionMateria, IListable<Materia> {
 
 	private MateriaHome materiaDAO;
 	//private GestorDocente GDocente;
@@ -109,7 +110,7 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 		}
 	}
 
-	
+	/*
 	public ArrayList<Materia> getByExample(Materia example) throws Exception {
 		try {
 			setSession();
@@ -138,7 +139,38 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 			throw new Exception("Ha ocurrido un error al listar las MATERIAS: " + ex.getMessage());
 		}
 	}
+	*/ 
 	
+	@Override
+	public ArrayList<Materia> getByExample(Materia example) throws Exception {
+		try {
+			setSession();
+			setTransaction();
+			ArrayList<Materia> listaMateriasDevolver = (ArrayList<Materia>) materiaDAO.findByExample((Materia) example);
+			sesionDeHilo.getTransaction().commit();
+			return listaMateriasDevolver;
+		} catch (Exception ex) {
+			closeSession();
+			throw new Exception(
+					"Ha ocurrido un error al buscar MATERIAS que coincidan con el ejemplo dado: " + ex.getMessage());
+		}
+	}
+
+	@Override
+	public ArrayList<Materia> List() throws Exception {
+		try {
+			setSession();
+			setTransaction();
+			Materia criterioVacio = new Materia();
+			ArrayList<Materia> listaMateriasDevolver = new ArrayList<Materia>();
+			listaMateriasDevolver = (ArrayList<Materia>) materiaDAO.findByExample(criterioVacio);
+			sesionDeHilo.getTransaction().commit();
+			return listaMateriasDevolver;
+		} catch (Exception ex) {
+			throw new Exception("Ha ocurrido un error al listar las MATERIAS: " + ex.getMessage());
+		}
+	}
+
 	/*
 	 * Implementación de IValidacionMateria
 	 */
@@ -184,12 +216,13 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 		return resultado;
 	}
 
-	
-	public void validar(Materia object) throws Exception {
+	@Override
+	public void validar(Object object) throws Exception {
+		Materia materia = (Materia) object;
 		Boolean vMateria;
 		ValidacionException exception = new ValidacionException();
 		
-		vMateria = this.existeMateria(object);
+		vMateria = this.existeMateria(materia);
 		
 		exception.addMensajeError(vMateria 
 									? "La materia ya existe" 
@@ -199,12 +232,5 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 			throw exception;
 		}
 	}
-
-	@Override
-	public void validar(Object object) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 }
