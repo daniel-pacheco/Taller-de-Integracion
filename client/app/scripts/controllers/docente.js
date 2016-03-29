@@ -20,7 +20,7 @@
  		}
  	});
  })
- .controller('DocenteCtrl', function ($scope, docenteData, $modal, $timeout) {
+ .controller('DocenteCtrl', function ($scope, docenteData, $modal, $timeout, modalService) {
   this.awesomeThings = [
   'HTML5 Boilerplate',
   'AngularJS',
@@ -75,28 +75,27 @@ $scope.setActiveDoc = function(menuItemDoc) {
   $scope.activeMenuIzqDoc = menuItemDoc;
 };
 
-$scope.modalx = {}; //inicializa un objeto para pasar data al modal
-function showProfile(){
-  var myModal1 = {};
-  myModal1 = $modal({
-    controller: 'DocenteCtrl', 
+//Modal
+
+$scope.asignar = function(docente){
+  
+  modalService.set(docente);
+
+  var modalInstance = $modal({
+    controller: ["$scope", "modalService", "docente", function($scope, modalService, docente){this.docente = docente;}],
+    controllerAs: 'modalCtrl',
+    templateUrl: '/views/templates/showProfileDocente.tpl.html',
     title: 'Perfil', 
-    content: 'Detalles del perfil', 
-    templateUrl: '/views/templates/showProfileDocente.tpl.html', 
-    show: false
-  })
+    content: 'Detalles del perfil',
+    resolve: {
+      docente: function(){
+        return modalService.get();
+      }
+    }
+  });
 
-  myModal1.$promise.then(myModal1.show);
-  console.log($scope.modalx);
-};
-$scope.modalx.docentee = "docentee";
-
-$scope.asignar = function (docente) {
-  $scope.modalx.docente = docente;
-  showProfile();
+  modalInstance.$promise.then(modalInstance.show);
 }
-
-
 
 $scope.docenteEdit = null;
 $scope.editProfile = function(docente) {
