@@ -105,6 +105,19 @@ $scope.telefonoAvanzado = function () {
 		myModal1.$promise.then(myModal1.show);
 	};
 
+	$scope.showLibretaInasistencias = function(alumno) {
+		var myModal2 = {};
+		myModal2 = $modal({
+			controller: 'AlumnadoCtrl', 
+			title: 'Inasistencias', 
+			content: 'Boletín de Inasistencias', 
+			templateUrl: '/views/templates/boletinInasistencias.tpl.html', 
+			show: false
+		})
+
+		myModal2.$promise.then(myModal2.show);
+	};
+
 
 //File-Select
 

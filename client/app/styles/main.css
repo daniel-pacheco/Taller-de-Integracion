@@ -230,6 +230,16 @@ input, button, select, textarea {
     
   }
 
+  .box-margin-lib {
+    background:white;
+    border:1px solid #ccc;
+    padding:10px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    margin: 0 3%;
+    
+  }
   /*Radio button*/
 
 
@@ -326,4 +336,8 @@ h1 {
   margin: 40px 5px; 
   width: 80px;
   display: inline;
+}
+
+.margin-lib > .form-group {
+  margin-bottom: 0px;
 }

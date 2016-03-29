@@ -2804,7 +2804,7 @@ angular.module('clientAppApp')
     "nombreUsuario": "eric.pennachini.56",
     "fechaNacimiento": "Dec 21, 1990 12:00:00 AM"
   },
-  {
+ /* {
     "matricula": 40000057,
     "idUsuario": 359,
     "nroDocumento": 30000057,
@@ -14758,7 +14758,7 @@ angular.module('clientAppApp')
     "nombreUsuario": "janet.emilia.linares.sanchez",
     "fechaNacimiento": "Dec 21, 1991 12:00:00 AM",
     "activo": true
-  }
+  }*/
 ]
 
   	);
