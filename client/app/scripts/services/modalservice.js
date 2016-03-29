@@ -11,6 +11,15 @@
  .service('modalService', function ($modal) {
 
   var myModal = {};
+  var myVar = {};
+
+  this.set = function(myParameter){
+    myVar = myParameter;
+  }
+
+  this.get = function(){
+    return myVar;
+  }
   
   /*
   

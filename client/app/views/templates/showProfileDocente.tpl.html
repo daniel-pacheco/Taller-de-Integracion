@@ -61,34 +61,32 @@
 							<div class="col-md-8 personal-info">
 								<form class="form-horizontal" role="form">
 									<div class="form-group">
-										<label class="col-lg-4">DNI: </label>
-										<label class="col-lg-3"></label>
-										{{modalx.docente.nombre}}
-										{{modalx.docentee}}
+										<label class="col-lg-4">{{modalCtrl.docente.tipoDocumento}} </label>
+										<label class="col-lg-3">{{modalCtrl.docente.nroDocumento}}</label>
 									</div>
 									<div class="form-group">
 										<label class="col-lg-4">Apellido: </label>
-										<input class="col-lg-3"></input>
+										<label class="col-lg-3">{{modalCtrl.docente.apellido}}</label>
 									</div>
 									<div class="form-group">
 										<label class="col-lg-4">Nombre: </label>
-										<span class="col-lg-5">Martin Gerardo</span>
+										<span class="col-lg-5">{{modalCtrl.docente.nombre}}</span>
 									</div>
-									<div class="form-group">
-										<label class="col-lg-4">Telefonos: </label>
-										<span class="col-lg-5">4354755 - 155013187</span>
+									<div class="form-group" ng-if="modalCtrl.docente.listaTelefonos"> <!-- por si la lista es vacía no se muestra -->
+										<label class="col-lg-4">Telefonos: </label> <!--cambiar por ng-repeat modalCtrl.docente.listaTelefonos[$index].nroTelefono-->
+										<span class="col-lg-5">{{modalCtrl.docente.listaTelefonos[0].nroTelefono}} - {{modalCtrl.docente.listaTelefonos[1].nroTelefono}}</span>
 									</div>
 									<div class="form-group">
 										<label class="col-lg-4">Domicilio: </label>
-										<span class="col-lg-5">Jorge Newbery 384</span>
+										<span class="col-lg-5">{{modalCtrl.docente.domicilio.calle}} - {{modalCtrl.docente.domicilio.numero}}</span>
 									</div>
-									<div class="form-group">
-										<label class="col-lg-4">Correo electronico: </label>
-										<span class="col-lg-5">herrlein.martin@gmail.com</span>
+									<div class="form-group"> <!-- poner ng-if=modalCtrl.docente.listaMails -->
+										<label class="col-lg-4">Correo electronico: </label>  <!--cambiar por ng-repeat -->
+										<span class="col-lg-5">{{modalCtrl.docente.listaMails[0].direccionMail}}</span>
 									</div>
 									<div class="form-group">
 										<label class="col-lg-4">CUIL: </label>
-										<span class="col-lg-5">20-36406068-9</span>
+										<span class="col-lg-5">{{modalCtrl.docente.cuil}}</span>
 									</div>
 									<div class="form-group">
 										<div class="col-lg-7">
