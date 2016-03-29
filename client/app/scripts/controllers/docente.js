@@ -53,9 +53,12 @@ $scope.subtitle = "Nuevo Docente"
     case 'listado':
     $scope.listado = true;
     this.showData();
+    $scope.docenteEdit = null;
     break;
     case 'nuevoPerfil':
     $scope.nuevoPerfil = true;
+      $scope.subtitle = "Nuevo Docente"
+          $scope.docenteEdit = null;
     break;
   }
 };
@@ -74,6 +77,7 @@ $scope.activeMenuIzqDoc = 1;
 $scope.setActiveDoc = function(menuItemDoc) {
   $scope.activeMenuIzqDoc = menuItemDoc;
 };
+
 
 //Modal
 

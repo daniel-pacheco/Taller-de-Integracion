@@ -37,9 +37,7 @@
 
           </div>
 
-          <div class="collapse navbar-collapse" id="js-navbar-collapse">
-
-            
+          <div class="collapse navbar-collapse" id="js-navbar-collapse">           
             <ul class="nav navbar-nav" ng-repeat="item in menuDirectivo">
               <li ng-class="{active : activeMenu === item}">
                 <a ng-href="{{item[0]}}" ng-click="setActive(item)">{{item[1]}}</a>
@@ -49,7 +47,10 @@
               <span bs-tooltip="tooltip.tooltipProfile" class="glyphicon glyphicon-user" ></span>
               <span class="saludo">Hola {{credentials.userRole}} {{credentials.userName}}</span>
               <!--  -->
-              <button ng-click="logOut()" type="button" class="btn btn-danger"><span data-type="info" data-placement="bottom" bs-tooltip="tooltip.tooltipLogout" class="glyphicon glyphicon-off" data-animation="am-fade-and-scale"></span></button>
+
+              <button type="button" class="btn btn-danger" title="{{popover.title}}" data-content="{{popover.content}}" data-animation="am-flip-x" data-auto-close="1" data-template-url="/views/templates/logout.tpl.html" data-placement="bottom" bs-popover><span data-type="info" data-placement="bottom" bs-tooltip="tooltip.tooltipLogout" class="glyphicon glyphicon-off" data-animation="am-fade-and-scale"></span>
+              </button>
+
             </ul>
           </div>
         </div>

@@ -12,7 +12,7 @@ import ar.com.santalucia.dominio.modelo.academico.Materia;
 
 //UltimoModificador: Ariel Ramirez @ 09-12-2015 19:38
 
-public interface IValidacionAnio {
+public interface IValidacionAnio extends IValidacion{
 	
 	/**
 	 * Valida si el nombre del año ya existe en la base de datos

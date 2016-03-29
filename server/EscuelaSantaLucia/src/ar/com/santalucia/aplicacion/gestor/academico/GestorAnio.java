@@ -6,6 +6,7 @@ import java.util.Set;
 
 import ar.com.santalucia.accesodatos.dao.academico.AnioHome;
 import ar.com.santalucia.aplicacion.gestor.Gestor;
+import ar.com.santalucia.aplicacion.gestor.IListable;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
@@ -23,7 +24,7 @@ import ar.com.santalucia.validaciones.IValidacionAnio;
 
 //Último modificador: Ariel Ramirez @ 09-12-2015 19:53
 
-public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
+public class GestorAnio extends Gestor<Anio> implements IValidacionAnio, IListable<Anio> {
 
 	private AnioHome anioDAO;
 	private GestorCurso GCurso;
@@ -118,6 +119,37 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 		}
 	}
 
+	@Override
+	public ArrayList<Anio> getByExample(Anio example) throws Exception {
+		try {
+			setSession();
+			setTransaction();
+			ArrayList<Anio> listaAniosDevolver = (ArrayList<Anio>) anioDAO.findByExample((Anio) example);
+			sesionDeHilo.getTransaction().commit();
+			return listaAniosDevolver;
+		} catch (Exception ex) {
+			closeSession();
+			throw new Exception(
+					"Ha ocurrido un error al buscar AÑOS que coincidan con el ejemplo dado: " + ex.getMessage());
+		}
+	}
+
+	@Override
+	public ArrayList<Anio> List() throws Exception {
+		try {
+			setSession();
+			setTransaction();
+			Anio criterioVacio = new Anio();
+			ArrayList<Anio> listaAniosDevolver = new ArrayList<Anio>();
+			listaAniosDevolver = (ArrayList<Anio>) anioDAO.findByExample(criterioVacio);
+			sesionDeHilo.getTransaction().commit();
+			return listaAniosDevolver;
+		} catch (Exception ex) {
+			throw new Exception("Ha ocurrido un error al listar los AÑOS: " + ex.getMessage());
+		}
+	}
+	
+	/*
 	public ArrayList<Anio> getByExample(Anio example) throws Exception {
 		try {
 			setSession();
@@ -145,13 +177,8 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 			throw new Exception("Ha ocurrido un error al listar los AÑOS: " + ex.getMessage());
 		}
 	}
+	*/
 	
-	/*
-	 * Implementación de IValidacionAnio
-	 * (non-Javadoc)
-	 * @see ar.com.santalucia.validaciones.IValidacionAnio#existeNombreAnio(java.lang.String)
-	 */
-
 	public Boolean existeNombreAnio(Anio anio) throws Exception{
 		Boolean resultado = false;
 		Anio anioEjemplo = new Anio();
@@ -208,17 +235,20 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 			throw new Exception("El proceso de validación de curso ha fallado. " + ex.getMessage());
 		}	
 	}
-	
-	public void validar(Anio object) throws Exception {
+
+	@Override
+	public void validar(Object object) throws Exception {
+		Anio anio = (Anio) object;
+		
 		Boolean vNombre;
 		ValidacionException exception = new ValidacionException();		
 		
-		vNombre = this.existeNombreAnio(object);
-		exception.addMensajeError(vNombre ? "El nombre " + object.getNombre() +" ya existe" : null);
+		vNombre = this.existeNombreAnio(anio);
+		exception.addMensajeError(vNombre ? "El nombre " + anio.getNombre() +" ya existe" : null);
 		
-		if (object.getIdAnio() != null) {
-			for (Curso c: object.getListaCursos()) {
-				exception.addMensajeError((this.existeCurso(object) 
+		if (anio.getIdAnio() != null) {
+			for (Curso c: anio.getListaCursos()) {
+				exception.addMensajeError((this.existeCurso(anio) 
 											? "El curso: " + c.getDivision() + " ya existe en el año." 
 											: null));
 			}
@@ -227,6 +257,7 @@ public class GestorAnio extends Gestor<Anio>implements IValidacionAnio {
 		if (!exception.getMensajesError().isEmpty()) {
 			throw exception;
 		}
+		
 	}
 
 }

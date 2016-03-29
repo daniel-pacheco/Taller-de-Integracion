@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import ar.com.santalucia.accesodatos.dao.academico.CursoHome;
 import ar.com.santalucia.aplicacion.gestor.Gestor;
+import ar.com.santalucia.aplicacion.gestor.IListable;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
@@ -19,7 +20,7 @@ import ar.com.santalucia.excepciones.ValidacionException;
 
 // UltimoModificador: Eric Pennachini @ 23-10-2015 16:23
 
-public class GestorCurso extends Gestor<Curso> {
+public class GestorCurso extends Gestor<Curso> implements IListable<Curso> {
 
 	private CursoHome cursoDAO;
 	private GestorAlumno GAlumno;
@@ -103,8 +104,8 @@ public class GestorCurso extends Gestor<Curso> {
 			throw new Exception("Ha ocurrido un error al buscar el CURSO por su ID: " + ex.getMessage());
 		}
 	}
-
 	
+	/*
 	public ArrayList<Curso> getByExample(Curso example) throws Exception {
 		try {
 			setSession();
@@ -118,6 +119,21 @@ public class GestorCurso extends Gestor<Curso> {
 					"Ha ocurrido un error al buscar CURSOS que coincidan con el ejemplo dado: " + ex.getMessage());
 		}
 	}
+	
+	public ArrayList<Curso> List() throws Exception {
+		try {
+			setSession();
+			setTransaction();
+			Curso criterioVacio = new Curso();
+			ArrayList<Curso> listaCursosDevolver = new ArrayList<Curso>();
+			listaCursosDevolver = (ArrayList<Curso>) cursoDAO.findByExample(criterioVacio);
+			sesionDeHilo.getTransaction().commit();
+			return listaCursosDevolver;
+		} catch (Exception ex) {
+			throw new Exception("Ha ocurrido un error al listar los CURSOS: " + ex.getMessage());
+		}
+	}
+	*/
 	
 	public Curso getByDivision(Character division) throws Exception{
 		try {
@@ -136,7 +152,22 @@ public class GestorCurso extends Gestor<Curso> {
 		}
 	}
 
-	
+	@Override
+	public ArrayList<Curso> getByExample(Curso example) throws Exception {
+		try {
+			setSession();
+			setTransaction();
+			ArrayList<Curso> listaCursosDevolver = (ArrayList<Curso>) cursoDAO.findByExample((Curso) example);
+			sesionDeHilo.getTransaction().commit();
+			return listaCursosDevolver;
+		} catch (Exception ex) {
+			closeSession();
+			throw new Exception(
+					"Ha ocurrido un error al buscar CURSOS que coincidan con el ejemplo dado: " + ex.getMessage());
+		}
+	}
+
+	@Override
 	public ArrayList<Curso> List() throws Exception {
 		try {
 			setSession();
@@ -150,6 +181,7 @@ public class GestorCurso extends Gestor<Curso> {
 			throw new Exception("Ha ocurrido un error al listar los CURSOS: " + ex.getMessage());
 		}
 	}
+
 
 	/*
 	public void validar(Curso object) throws Exception {

@@ -7,6 +7,7 @@
  * # DirectivoCtrl
  * Controller of the clientAppApp
  */
+
  angular.module('clientAppApp')
  .config(function($stateProvider) {
  	$stateProvider
@@ -19,6 +20,21 @@
  		}
  	});
  })
+ .directive('loading', function () {
+ 	return {
+ 		restrict: 'E',
+ 		replace:true,
+ 		template: '<div class="loading"><img src="http://www.nasa.gov/multimedia/videogallery/ajax-loader.gif" width="20" height="20" />LOADING...</div>',
+ 		link: function (scope, element, attr) {
+ 			scope.$watch('loading', function (val) {
+ 				if (val)
+ 					$(element).show();
+ 				else
+ 					$(element).hide();
+ 			});
+ 		}
+ 	}
+ })
  .controller('AlumnadoCtrl', function ($scope, $q, $http, $modal, alumnoService, Upload, $timeout, alumnoData) {
  	$scope.listado1 = true;
  	$scope.listFilterIsEnabled = false;
@@ -28,7 +44,6 @@
  		"listaMails": []
  	}
 //tooltips
-
 $scope.tooltip = {
 	tooltipProfile : {
 		'title' : 'Perfil'
@@ -42,39 +57,54 @@ $scope.tooltip = {
 };
 
 //modals
-	
+
 $scope.modalx = {}; //inicializa un objeto para pasar data al modal
 var myModal = {};
-  
-  $scope.showAddresModal = function() {
-  	myModal =  $modal({
-  		controller: 'AlumnadoCtrl', 
-  		title: 'Nuevo Domicilio', 
-  		content: 'Opciones Avanzadas', 
-  		templateUrl: '/views/templates/addaddressdetails.tpl.html', 
-  		show: false
-  	});
 
-    myModal.$promise.then(myModal.show);
-  };
+$scope.showAddresModal = function() {
+	myModal =  $modal({
+		controller: 'AlumnadoCtrl', 
+		title: 'Nuevo Domicilio', 
+		content: 'Opciones Avanzadas', 
+		templateUrl: '/views/templates/addaddressdetails.tpl.html', 
+		show: false
+	});
+
+	myModal.$promise.then(myModal.show);
+};
 
 $scope.modalx.addressData = {};
-$scope.modalx.addressData.calle = "calle re loca";
+$scope.modalx.addressData.calle = "";
 $scope.afsdkjakfshkasjfha = 'hola che todo bien?';
 
 
-	$scope.telefonoAvanzado = function () {
-		
-		myModal =  $modal({
-  		controller: 'AlumnadoCtrl', 
-  		title: 'Teléfonos', 
-  		content: 'Opciones Avanzadas', 
-  		templateUrl: '/views/templates/addphonedetails.tpl.html', 
-  		show: false
-  	});
+$scope.telefonoAvanzado = function () {
+
+	myModal =  $modal({
+		controller: 'AlumnadoCtrl', 
+		title: 'Teléfonos', 
+		content: 'Opciones Avanzadas', 
+		templateUrl: '/views/templates/addphonedetails.tpl.html', 
+		show: false
+	});
 	myModal.$promise.then(myModal.show);		 
-	}
-	
+}
+
+
+	$scope.modalx = {}; //inicializa un objeto para pasar data al modal
+	$scope.showProfile = function(alumno){
+		var myModal1 = {};
+		myModal1 = $modal({
+			controller: 'AlumnadoCtrl', 
+			title: 'Perfil', 
+			content: 'Detalles del perfil', 
+			templateUrl: '/views/templates/showProfileAlumno.tpl.html', 
+			show: false
+		})
+
+		myModal1.$promise.then(myModal1.show);
+	};
+
 
 //File-Select
 
@@ -97,6 +127,20 @@ $scope.upload = function (dataUrl) {
 };
 
 //filters
+var count = 0;
+$scope.seleccionarCheckbox = function(alumno) {//al presionar un td de la lista de alumnos pone checkbox en true y muestra boton colocar inasistencias
+	if (alumno.selected) {
+		count = count - 1;
+		alumno.selected = false;
+	}
+	else  {
+		count = count + 1;
+		alumno.selected = true;
+	}
+	if (count > 0) {
+		$scope.mostrarBtnInasistencias = true;
+	} else $scope.mostrarBtnInasistencias = false
+};
 
 $scope.alumnoFilter = function (alumno) {//la clave de este comparador es q transofrma todo a string y va comparando las posiciones, no tiene en cuenta los espacios
 	return (angular.lowercase(alumno.apellido).indexOf(angular.lowercase($scope.filterByName) || '') !== -1 ||
@@ -129,6 +173,7 @@ $scope.search = function () {
 	if (!$scope.listFilterIsEnabled) {
 		$scope.listFilterIsEnabled = true;
 	};
+
 	this.showData();
 }
 
@@ -136,6 +181,19 @@ $scope.activeMenuIzqAlu = 1;
 $scope.setActiveAlu = function(menuItemAlu) {
 	$scope.activeMenuIzqAlu = menuItemAlu;
 };
+
+
+$scope.subtitle = "Nuevo Alumno"
+
+/*
+$scope.alumnoEdit = null;
+$scope.editProfile = function(alumno) {
+  $scope.listado = false;
+  $scope.subtitle = "Editar Alumno"
+  $scope.nuevoPerfil = true;
+  $scope.alumnoEdit = alumno;
+}*/
+
 
 //---Llamadas al servicio ALUMNO---
 var alumnoJson = {  
@@ -190,10 +248,19 @@ var alumnoJson = {
 };
 
 $scope.answer = [];
-
+$scope.alumnoData = [];
 $scope.showData = function() {
-	$scope.alumnoData = alumnoData;
+	$scope.loading = true;
+	  /*$http.get(alumnoData) esto es para que muestre el loading mientras carga, el http da 404 xq no tengo servidor
+	   .success(function(data) {
+           $scope.alumnoData = data[0].alumnoData;
+            $scope.loading = false;
+        });*/
+$scope.alumnoData = alumnoData;
+$scope.loading = false;
+
 }
+
 
 /*$scope.getAll = alumnoService.alumnoGetAll().then(function(response){
 	$scope.answer = response.data;  
