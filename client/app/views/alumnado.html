@@ -74,8 +74,6 @@
 		<loading></loading>
 	</div>
 
-	
-
 	<div id="listFilters" ng-show="listFilterIsEnabled">
 
 		<h2>Filtros de búsqueda</h2>
@@ -98,6 +96,7 @@
 		</div>
 	</div>
 	<div ng-show="mostrarBtnInasistencias" class="affix" role="complementary" data-offset-top="-60" bs-affix style="position: relative; text-align: center;">
+		<button ng-click="checkAll()"class="btn btn-info">Desmarcar Todos</button>
 		<button class="btn btn-warning">Colocar Inasistencias</button>
 	</div>
 	<table class="table table-hover table-striped">
@@ -112,14 +111,14 @@
 				<th>Acciones</th>						
 			</tr>
 		</thead>
-		<tr ng-repeat="alumno in alumnoData | filter:alumnoFilter">
+		<tr ng-repeat="alumno in alumnoData | filter:alumnoFilter" ng-style="alumno.selected && {'background-color': '#ddd'}">
 			<td><input type="checkbox" ng-init="true" ng-model="selectAlumno" ng-checked="alumno.selected"></td>
 			<td ng-click="seleccionarCheckbox(alumno)">{{alumno.matricula}}</td>
 			<td ng-click="seleccionarCheckbox(alumno)">{{alumno.nombre}}</td>
 			<td ng-click="seleccionarCheckbox(alumno)">{{alumno.apellido}}</td>
 			<td ng-click="seleccionarCheckbox(alumno)">{{alumno.nroDocumento}}</td>
 			<td ng-click = "deleteAlumno(alumno.idUsuario)">{{alumno.idUsuario}}</td>
-			<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%; cursor: pointer" class="glyphicon glyphicon-user" ng-click="showProfile(alumno)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAttendance" ng-click="showLibretaInasistencias(alumno)" style="width:25%; cursor: pointer" class="glyphicon glyphicon-calendar"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipReportCard" style="width:25%; cursor: pointer" class="glyphicon glyphicon-list-alt"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAcademicPerformance" style="width:25%; cursor: pointer" class="glyphicon glyphicon-education"></span></td> 
+			<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%; cursor: pointer" class="glyphicon glyphicon-user" ng-click="showProfile(alumno)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAttendance" ng-click="libretaInasistencias(alumno)" style="width:25%; cursor: pointer" class="glyphicon glyphicon-calendar"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipReportCard" style="width:25%; cursor: pointer" class="glyphicon glyphicon-list-alt"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAcademicPerformance" style="width:25%; cursor: pointer" class="glyphicon glyphicon-education"></span></td> 
 					<!--<td>{{alumno.name}}</td>
 					<td>{{alumno.phone}}</td>
 					<td>{{$index}}</td> -->

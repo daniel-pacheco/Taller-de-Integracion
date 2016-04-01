@@ -1,42 +1,85 @@
 <div class="modal" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog" style="width: 70%;">
+	<div class="modal-dialog" style="width: 55%; margin: inherint inherint">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="$hide()"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">{{title}}</h4>
+				<h4 class="modal-title">{{title}}: <small>Realice la accion que desee y presione guardar para concretar los cambios</small></h4>
 			</div>
 			
 			<div class="modal-body">
 				<div class="container">
 					<div class="row">
 						<!-- left column -->
-						<div class="col-md-5 box-margin-lib personal-info">
+						<div class="col-md-10 box-margin-lib personal-info">
 							<div class="form-horizontal margin-lib">
 								<div class="form-group">
-									<label class="col-lg-6">Nombre y Apellido: </label>
-									<span class="col-lg-5">Hola Mundo</span>
+									<label class="col-lg-4">Nombre y Apellido: </label>
+									<span class="col-lg-8">{{modalCtrl.libInasistencias.nombre}} {{modalCtrl.libInasistencias.apellido}}</span>
 								</div>
 								<div class="form-group">
-									<label class="col-lg-6">DNI: </label>
-									<span class="col-lg-5">123123123</span>
+									<label class="col-lg-4">DNI: </label>
+									<span class="col-lg-5">{{modalCtrl.libInasistencias.nroDocumento}}</span>
 								</div>
 								<div class="form-group">
-									<label class="col-lg-6">Cursa actualmente: </label>
-									<span class="col-lg-5">4 das</span>
+									<label class="col-lg-4">Cursa actualmente: </label>
+									<span class="col-lg-5">{{modalCtrl.libInasistencias.cursaActualmente}}</span>
 								</div>
 								<div class="form-group">
-									<label class="col-lg-6">A&ntilde;o: </label>
-									<span class="col-lg-5">2016</span>
+									<label class="col-lg-4">A&ntilde;o: </label>
+									<span class="col-lg-5">{{modalCtrl.libInasistencias.anioAcademico}}</span>
 								</div>
 							</div>
 						</div>
-				
 					</div>
-
 					<!-- edit form column -->
-					<div class="row">
-						<div class="col-md-6 box-margin-lib personal-info">
+					<div class="row" style="margin-top: 10px;">
+						<div class="col-md-11 box-margin-lib personal-info table-responsive">
+							<table class="table table-hover table-striped table-condensed">
+								<thead>
+									<tr>
+										<th class="col-md-3">Fecha</th>
+										<th class="col-md-3">Inasistencia a</th>
+										<th class="col-md-2">Faltas</th>
+										<th class="col-md-1">Justif</th>
+										<th class="col-md-1">Total</th>
+										<th class="col-md-3">Acciones</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="inasistencia in modalCtrl.libInasistencias.listaInasistencias">
+										<td>{{inasistencia.fecha}}</td>
+										<td>{{inasistencia.faltoA}}</td>
+										<td>{{inasistencia.cantidad}}</td>
+										<td>{{inasistencia.justificada}}</td>
+										<td>{{inasistencia.totalAcum}}</td>
+										<td><span data-animation="am-flip-x" bs-tooltip="modalCtrl.libInasistencias.tooltip.tooltipEdit" style="width:50%; cursor: pointer" class="glyphicon glyphicon-edit" ng-click=""></span><span data-animation="am-flip-x" bs-tooltip="modalCtrl.libInasistencias.tooltip.tooltipDelete" ng-click="" style="width:50%; cursor: pointer" class="glyphicon glyphicon-remove"></span></td> 
+									</tr>
+									<tr>
+										<td>
+											<input   placeholder="10/10/1010" type="text"
+											class="form-control col-sm-2 col-md-2 col-xs-2 col-lg-2" name="fecha"
+											ng-model="modalCtrl.libInasistencias.listaInasistencias.fecha" />
+										</td>
+										<td>
+											<input type="text" class="form-control col-sm-2 col-md-2 col-xs-2 col-lg-2" name="faltoA"
+											ng-model="modalCtrl.libInasistencias.listaInasistencias.faltoA" placeholder="Ed física"/>
+										</td>
+										<td>
+											<input type="text" class="form-control col-sm-2 col-md-2 col-xs-2 col-lg-2" name="cantidad"
+											ng-model="modalCtrl.libInasistencias.listaInasistencias.cantidad" placeholder="1/2" maxlength="4" required pattern=""/>
+										</td>
+										<td>
+											<input type="text" class="form-control col-sm-2 col-md-2 col-xs-2 col-lg-2" name="justificada"
+											ng-model="modalCtrl.libInasistencias.listaInasistencias.justificada" placeholder="J/I"  maxlength="1" style="text-transform:uppercase;"/>
+										</td>
+										<td>
+											<button class="form-control col-sm-2 col-md-2 col-xs-2 col-lg-2 btn btn-primary" type="button" ng-click="modalCtrl.libInasistencias.listaInasistencias.addRow()">Agregar</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
+
 
 					</div>
 				</div>
@@ -44,7 +87,7 @@
 
 			<div class="modal-footer">
 				<button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="$hide()">Cerrar</button>
-				<!--<button type="button" class="btn btn-primary" autofocus ng-click="$hide()">Si</button>incluir llamada a funcion aceptar-->
+				<button type="button" class="btn btn-primary" autofocus ng-click="$hide()">Guardar</button>
 			</div>
 		</div>
 	</div>

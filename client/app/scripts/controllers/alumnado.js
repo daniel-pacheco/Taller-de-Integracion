@@ -35,7 +35,7 @@
  		}
  	}
  })
- .controller('AlumnadoCtrl', function ($scope, $q, $http, $modal, alumnoService, Upload, $timeout, alumnoData) {
+ .controller('AlumnadoCtrl', function ($scope, $q, $http, $modal, boletinInasistenciasData, alumnoService, Upload, $timeout, alumnoData, modalService) {
  	$scope.listado1 = true;
  	$scope.listFilterIsEnabled = false;
 
@@ -53,6 +53,10 @@ $scope.tooltip = {
 		'title' : 'Libreta de Calificaciones'
 	}, tooltipAcademicPerformance : {
 		'title' : 'Desempeño académico'
+	}, tooltipEdit : {
+		'title' : 'Editar'
+	}, tooltipDelete : {
+		'title' : 'Eliminar'
 	}
 };
 
@@ -105,7 +109,7 @@ $scope.telefonoAvanzado = function () {
 		myModal1.$promise.then(myModal1.show);
 	};
 
-	$scope.showLibretaInasistencias = function(alumno) {
+/*	$scope.showLibretaInasistencias = function(alumno) {
 		var myModal2 = {};
 		myModal2 = $modal({
 			controller: 'AlumnadoCtrl', 
@@ -116,8 +120,32 @@ $scope.telefonoAvanzado = function () {
 		})
 
 		myModal2.$promise.then(myModal2.show);
-	};
+	};*/
 
+
+	$scope.libInasistencias = boletinInasistenciasData;
+	$scope.libretaInasistencias = function(alumno){
+		$scope.libInasistencias = boletinInasistenciasData;//esta deberia ser una funcion que pida la libreta de inasistencias del alumno que recibe
+		$scope.libInasistencias.tooltip = $scope.tooltip;
+		$scope.libInasistencias.listaInasistencias.addRow = function(){		
+			$scope.libInasistencias.listaInasistencias.push({'fecha':$scope.libInasistencias.listaInasistencias.fecha, 'faltoA': $scope.libInasistencias.listaInasistencias.faltoA, 'cantidad':$scope.libInasistencias.listaInasistencias.cantidad, 'justificada':$scope.libInasistencias.listaInasistencias.justificada.toUpperCase() });
+		};
+		modalService.set($scope.libInasistencias);
+		var modalInstance = $modal({
+			controller: ["$scope", "modalService", "libInasistencias", function($scope, modalService, libInasistencias){this.libInasistencias = libInasistencias;}],
+			controllerAs: 'modalCtrl',
+			templateUrl: '/views/templates/boletinInasistencias.tpl.html',
+			title: 'Inasistencias', 
+			content: 'Boletín de Inasistencias', 
+			resolve: {
+				libInasistencias: function(){
+					return modalService.get();
+				}
+			}
+		});
+
+		modalInstance.$promise.then(modalInstance.show);
+	}
 
 //File-Select
 
@@ -143,16 +171,23 @@ $scope.upload = function (dataUrl) {
 var count = 0;
 $scope.seleccionarCheckbox = function(alumno) {//al presionar un td de la lista de alumnos pone checkbox en true y muestra boton colocar inasistencias
 	if (alumno.selected) {
-		count = count - 1;
+		count--;
 		alumno.selected = false;
 	}
 	else  {
-		count = count + 1;
+		count++;
 		alumno.selected = true;
 	}
 	if (count > 0) {
 		$scope.mostrarBtnInasistencias = true;
 	} else $scope.mostrarBtnInasistencias = false
+};
+
+$scope.checkAll = function () {
+	angular.forEach($scope.alumnoData, function (item) {
+		item.selected = false;
+	});
+	$scope.mostrarBtnInasistencias = false;
 };
 
 $scope.alumnoFilter = function (alumno) {//la clave de este comparador es q transofrma todo a string y va comparando las posiciones, no tiene en cuenta los espacios

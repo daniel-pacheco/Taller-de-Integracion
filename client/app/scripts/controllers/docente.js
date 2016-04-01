@@ -83,7 +83,7 @@ $scope.setActiveDoc = function(menuItemDoc) {
 
 $scope.asignar = function(docente){
   
-  modalService.set(docente);
+  //modalService.set(docente);
 
   var modalInstance = $modal({
     controller: ["$scope", "modalService", "docente", function($scope, modalService, docente){this.docente = docente;}],
