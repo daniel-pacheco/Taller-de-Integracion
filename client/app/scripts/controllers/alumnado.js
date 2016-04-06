@@ -20,6 +20,7 @@
  		}
  	});
  })
+
  .directive('loading', function () {
  	return {
  		restrict: 'E',
@@ -123,13 +124,17 @@ $scope.telefonoAvanzado = function () {
 	};*/
 
 
-	$scope.libInasistencias = boletinInasistenciasData;
+	$scope.libInasistencias = {};
 	$scope.libretaInasistencias = function(alumno){
 		$scope.libInasistencias = boletinInasistenciasData;//esta deberia ser una funcion que pida la libreta de inasistencias del alumno que recibe
 		$scope.libInasistencias.tooltip = $scope.tooltip;
 		$scope.libInasistencias.listaInasistencias.addRow = function(){		
-			$scope.libInasistencias.listaInasistencias.push({'fecha':$scope.libInasistencias.listaInasistencias.fecha, 'faltoA': $scope.libInasistencias.listaInasistencias.faltoA, 'cantidad':$scope.libInasistencias.listaInasistencias.cantidad, 'justificada':$scope.libInasistencias.listaInasistencias.justificada.toUpperCase() });
-		};
+			$scope.libInasistencias.listaInasistencias.push({
+				'fecha':$scope.libInasistencias.listaInasistencias.fecha, 
+				'faltoA': $scope.libInasistencias.listaInasistencias.faltoA, 
+				'cantidad':$scope.libInasistencias.listaInasistencias.cantidad, 
+				'justificada':$scope.libInasistencias.listaInasistencias.justificada.toUpperCase() });
+		};	
 		modalService.set($scope.libInasistencias);
 		var modalInstance = $modal({
 			controller: ["$scope", "modalService", "libInasistencias", function($scope, modalService, libInasistencias){this.libInasistencias = libInasistencias;}],

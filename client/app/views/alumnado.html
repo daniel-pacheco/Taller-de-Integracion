@@ -139,7 +139,7 @@
 				<span class="btn btn-primary btn-file">Examinar<input type="file"></span>
 			</div>-->
 
-			<form class="form-horizontal media">
+			<form class="form-horizontal media" name="formAlu" novalidate>
 				<!--<div class="pull-right">
 						<img class="img-rounded" src="images/defaultUser.png" alt="Usuario" width="220px" height="auto"/>
 					<div class="btn btn-primary btn-file" id="boton">Examinar<input type="file"></div>
@@ -150,14 +150,20 @@
 					<div class="row">
 						<div class="col-md-6 personal-info">
 							<div class="alert alert-danger" role="alert">* Campos obligatorios</div>
-							<div class="form-group">
+							<div class="form-group" ng-class="{ 'has-error': formAlu.nroDocumento.$touched && formAlu.nroDocumento.$invalid }">
 								<div class="col-sm-4 control-label">
 									<label for=""><a style="color: red">*</a>Documento:</label>
 								</div>
 								<div class="col-sm-4">
-									<input class="form-control" ng-model="nuevoAlumno.nroDocumento" placeholder="12332112" type="text"
-									maxlength="10" required pattern="\d{8}">
+									<input type="text" name="nroDocumento" class="form-control" ng-model="nuevoAlumno.nroDocumento" placeholder="12332112" maxlength="10" required pattern="\d{8}">
+									<div ng-messages="formAlu.nroDocumento.$error" ng-if="formAlu.nroDocumento.$touched && formAlu.nroDocumento.$invalid">
+										<div ng-message="pattern"class="alert alert-error">  
+											<a class="close" data-dismiss="alert">×</a>  
+											<strong>Error!</strong>Formato invalido  
+										</div>
+									</div>
 								</div>
+
 								<!-- Valida 8 digitos -->
 
 								<div class="col-sm-3">
