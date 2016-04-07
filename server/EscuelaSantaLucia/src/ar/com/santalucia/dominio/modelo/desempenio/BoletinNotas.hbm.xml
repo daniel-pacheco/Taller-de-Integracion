@@ -16,7 +16,7 @@
         <many-to-one name="anio" class="ar.com.santalucia.dominio.modelo.academico.Anio" fetch="join">
             <column name="ANIO" />
         </many-to-one>
-        <set name="listaTrimestres" table="TRIMESTRE" inverse="false" lazy="true">
+        <set name="listaTrimestres" table="TRIMESTRE" inverse="false" lazy="false">
             <key>
                 <column name="IDBOLETINNOTAS" />
             </key>

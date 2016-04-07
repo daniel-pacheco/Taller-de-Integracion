@@ -1,15 +1,18 @@
 package ar.com.santalucia.servicio;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import ar.com.santalucia.aplicacion.gestor.academico.GestorAnio;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMateria;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinNotas;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinNotasHist;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorNota;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorTrimestre;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
+import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Inscripcion;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotas;
@@ -34,16 +37,18 @@ public class ServicioDesempenio {
 	private GestorTrimestre gTrimestre;
 	private GestorBoletinNotas gBoletin;
 	private GestorBoletinNotasHist gBoletinHist;
-	private GestorAlumno gAlumno;
+	private GestorAlumno gAlumno; // ¿?
+	private GestorAnio gAnio;
 	
 	public ServicioDesempenio() throws Exception {
 		try {
 			gNota = new GestorNota();
-			gMateria = new GestorMateria();
+			//gMateria = new GestorMateria();
 			gTrimestre = new GestorTrimestre();
 			gBoletin = new GestorBoletinNotas();
 			gBoletinHist = new GestorBoletinNotasHist();
-			gAlumno = new GestorAlumno();
+			//gAlumno = new GestorAlumno();
+			gAnio = new GestorAnio();
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un problema al inicializar el servicio de operaciones básicas: "
 					+ ex.getMessage());
@@ -96,7 +101,7 @@ public class ServicioDesempenio {
 			boletinHistorico.setDniAlumno(boletinNotas.getPropietario().getNroDocumento());
 			boletinHistorico.setNombreAlumno(boletinNotas.getPropietario().getNombre());
 			boletinHistorico.setApellidoAlumno(boletinNotas.getPropietario().getApellido());
-			boletinHistorico.setAnio(boletinNotas.getAnio().getNombre());
+			boletinHistorico.setAnio(boletinNotas.getAnio());
 			boletinHistorico.setCurso(null);
 			boletinHistorico.setCicloLectivo(boletinNotas.getCicloLectivo());
 			
@@ -104,7 +109,12 @@ public class ServicioDesempenio {
 			Set<Nota> notasExtras = boletinNotas.getListaNotasExamen();
 			Set<MateriaNotasBoletin> listaMateriasNotasBoletin = new HashSet<MateriaNotasBoletin>();
 			
-			for (Materia m : boletinNotas.getAnio().getListaMaterias()) {
+			Anio anioBuscar = new Anio();
+			anioBuscar.setNombre(boletinNotas.getAnio());
+			ArrayList<Anio> listaAnios = gAnio.getByExample(anioBuscar);
+			Anio anioEnc = new Anio();
+			anioEnc = listaAnios.get(0);
+			for (Materia m : anioEnc.getListaMaterias()) {
 				MateriaNotasBoletin materiaNotasBoletin = new MateriaNotasBoletin();
 				materiaNotasBoletin.setMateria(m.getNombre());
 				for (Trimestre t : trimestres) {
@@ -238,7 +248,7 @@ public class ServicioDesempenio {
 			Trimestre trimestre = gTrimestre.getById(idTrimestre);
 			nota.setMateria(trimestre.getMateria()); // asigno la materia a la nota tomando del trimestre.
 			gNota.modify(nota);
-			if (nota.getTipo() == Nota.NOTA_FINAL_TRIMESTRAL) {
+			if (nota.getTipo().equals(Nota.NOTA_FINAL_TRIMESTRAL)) {
 				trimestre.setNotaFinal(nota);
 			} else {
 				Set<Nota> listaNotas = trimestre.getListaNotas();
