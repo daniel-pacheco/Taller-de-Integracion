@@ -60,7 +60,7 @@
 				<td>{{docente.nombre}}</td>
 				<td>{{docente.cuil}}</td>
 				<!-- <td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:33%; cursor: pointer" class="glyphicon glyphicon-user" ng-click="asignar(docente)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipEdit" style="width:33%; cursor: pointer" class="glyphicon glyphicon-edit" ng-click="asignar(docente)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipDelete" style="width:33%; cursor: pointer" class="glyphicon glyphicon-remove"></span></td> --> 
-				<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:40%; cursor: pointer" class="glyphicon glyphicon-user" ng-click="asignar(docente)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipDelete" style="width:40%; cursor: pointer" class="glyphicon glyphicon-remove"></span></td> 
+				<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:40%; cursor: pointer" class="glyphicon glyphicon-user" ng-click="showModal(docente)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipDelete" style="width:40%; cursor: pointer" class="glyphicon glyphicon-remove"></span></td> 
 
 					<!--<td>{{alumno.name}}</td>
 					<td>{{alumno.phone}}</td>
@@ -68,7 +68,6 @@
 				</tr>
 			</table>
 		</fieldset>
-		{{modalx.docente}}
 	</div>
 
 	<div id="nuevoPerfil" ng-show="nuevoPerfil">

@@ -20,7 +20,7 @@
  		}
  	});
  })
- .controller('DocenteCtrl', function ($scope, docenteData, $modal, $timeout, modalService) {
+ .controller('DocenteCtrl', function ($scope, docenteData, $timeout, ModalService) {
   this.awesomeThings = [
   'HTML5 Boilerplate',
   'AngularJS',
@@ -80,26 +80,24 @@ $scope.setActiveDoc = function(menuItemDoc) {
 
 
 //Modal
+ $scope.showModal = function(docente) {
 
-$scope.asignar = function(docente){
-  
-  //modalService.set(docente);
-
-  var modalInstance = $modal({
-    controller: ["$scope", "modalService", "docente", function($scope, modalService, docente){this.docente = docente;}],
-    controllerAs: 'modalCtrl',
-    templateUrl: '/views/templates/showProfileDocente.tpl.html',
-    title: 'Perfil', 
-    content: 'Detalles del perfil',
-    resolve: {
-      docente: function(){
-        return modalService.get();
+    ModalService.showModal({
+      templateUrl: '/views/templates/showProfileDocente.tpl.html',
+      controller: 'DocenteModalController',
+      inputs: {
+        title: "Perfil",
+        docente: docente
       }
-    }
-  });
+    }).then(function(modal) {
+      modal.element.modal();
+      modal.close.then(function(result) {        
+        console.log('el resultado es: ' + result); //$scope.algo.nroDocumento = result;
+      });
+    });
 
-  modalInstance.$promise.then(modalInstance.show);
-}
+  }; 
+
 
 $scope.docenteEdit = null;
 $scope.editProfile = function(docente) {
