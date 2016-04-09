@@ -102,7 +102,7 @@ public class ServicioDesempenio {
 			boletinHistorico.setNombreAlumno(boletinNotas.getPropietario().getNombre());
 			boletinHistorico.setApellidoAlumno(boletinNotas.getPropietario().getApellido());
 			boletinHistorico.setAnio(boletinNotas.getAnio());
-			boletinHistorico.setCurso(null);
+			boletinHistorico.setCurso(boletinNotas.getCurso());
 			boletinHistorico.setCicloLectivo(boletinNotas.getCicloLectivo());
 			
 			Set<Trimestre> trimestres = boletinNotas.getListaTrimestres();
@@ -114,32 +114,48 @@ public class ServicioDesempenio {
 			ArrayList<Anio> listaAnios = gAnio.getByExample(anioBuscar);
 			Anio anioEnc = new Anio();
 			anioEnc = listaAnios.get(0);
+			
 			for (Materia m : anioEnc.getListaMaterias()) {
 				MateriaNotasBoletin materiaNotasBoletin = new MateriaNotasBoletin();
 				materiaNotasBoletin.setMateria(m.getNombre());
 				for (Trimestre t : trimestres) {
-					materiaNotasBoletin.setNotaTrimestre1((
-						t.getOrden()==1 && t.getMateria().getNombre()==m.getNombre()
-							? t.getNotaFinal().getCalificacion().intValue()
-							:null));
-					materiaNotasBoletin.setNotaTrimestre2((
-						t.getOrden()==2 && t.getMateria().getNombre()==m.getNombre()
-							? t.getNotaFinal().getCalificacion().intValue()
-							:null));
-					materiaNotasBoletin.setNotaTrimestre3((
-						t.getOrden()==3 && t.getMateria().getNombre()==m.getNombre()
-							? t.getNotaFinal().getCalificacion().intValue()
-							:null));
+//					materiaNotasBoletin.setNotaTrimestre1((
+//						t.getOrden().equals(1) && t.getMateria().getNombre().equals(m.getNombre())
+//							? t.getNotaFinal().getCalificacion().intValue()
+//							:null));
+//					materiaNotasBoletin.setNotaTrimestre2((
+//						t.getOrden().equals(2) && t.getMateria().getNombre().equals(m.getNombre())
+//							? t.getNotaFinal().getCalificacion().intValue()
+//							:null));
+//					materiaNotasBoletin.setNotaTrimestre3((
+//						t.getOrden().equals(3) && t.getMateria().getNombre().equals(m.getNombre())
+//							? t.getNotaFinal().getCalificacion().intValue()
+//							:null));
+					if (t.getOrden().equals(1) && t.getMateria().getNombre().equals(m.getNombre())) {
+						materiaNotasBoletin.setNotaTrimestre1(t.getNotaFinal().getCalificacion().intValue());
+					}
+					if (t.getOrden().equals(2) && t.getMateria().getNombre().equals(m.getNombre())) {
+						materiaNotasBoletin.setNotaTrimestre2(t.getNotaFinal().getCalificacion().intValue());
+					}
+					if (t.getOrden().equals(3) && t.getMateria().getNombre().equals(m.getNombre())) {
+						materiaNotasBoletin.setNotaTrimestre3(t.getNotaFinal().getCalificacion().intValue());
+					}
 				}
 				for (Nota ne : notasExtras) {
-					materiaNotasBoletin.setNotaDiciembre(
-						ne.getTipo()==Nota.DICIEMBRE && ne.getMateria().getNombre()==m.getNombre()
-						? ne.getCalificacion().intValue()
-						: null);
-					materiaNotasBoletin.setNotaDiciembre(
-						ne.getTipo()==Nota.MARZO && ne.getMateria().getNombre()==m.getNombre()
-						? ne.getCalificacion().intValue()
-						: null);
+//					materiaNotasBoletin.setNotaDiciembre(
+//						ne.getTipo().equals(Nota.DICIEMBRE) && ne.getMateria().getNombre().equals(m.getNombre())
+//						? ne.getCalificacion().intValue()
+//						: null);
+//					materiaNotasBoletin.setNotaDiciembre(
+//						ne.getTipo().equals(Nota.MARZO) && ne.getMateria().getNombre().equals(m.getNombre())
+//						? ne.getCalificacion().intValue()
+//						: null);
+					if (ne.getTipo().equals(Nota.DICIEMBRE) && ne.getMateria().getNombre().equals(m.getNombre())) {
+						materiaNotasBoletin.setNotaDiciembre(ne.getCalificacion().intValue());
+					}
+					if (ne.getTipo().equals(Nota.MARZO) && ne.getMateria().getNombre().equals(m.getNombre())) {
+						materiaNotasBoletin.setNotaMarzo(ne.getCalificacion().intValue());
+					}
 				}
 				listaMateriasNotasBoletin.add(materiaNotasBoletin);
 			}
@@ -154,7 +170,7 @@ public class ServicioDesempenio {
 	}
 
 	
-	public Boolean addNota(Nota nota) throws Exception {
+	public Boolean addNota(Nota nota) throws Exception { // EN ENDPOINT
 		try {
 			if (nota.getIdNota() == null) {
 				gNota.add(nota);
@@ -167,7 +183,7 @@ public class ServicioDesempenio {
 		return false;
 	}
 		
-	public Boolean deleteNota(Nota nota) throws Exception {
+	public Boolean deleteNota(Nota nota) throws Exception { // EN ENDPOINT
 		try {
 			gNota.delete(nota);
 		} catch (Exception ex) {
@@ -176,7 +192,7 @@ public class ServicioDesempenio {
 		return true;
 	}
 	
-	public Nota getNota(Long idNota) throws Exception {
+	public Nota getNota(Long idNota) throws Exception { // EN ENDPOINT
 		try {
 			return gNota.getById(idNota);
 		} catch (Exception ex) {
@@ -184,7 +200,7 @@ public class ServicioDesempenio {
 		}
 	}
 	
-	public List<Nota> getNotas(Nota example) throws Exception {
+	public List<Nota> getNotas(Nota example) throws Exception { // EN ENDPOINT
 		try {
 			return gNota.getByExample(example);
 		} catch (Exception ex) {
@@ -193,7 +209,7 @@ public class ServicioDesempenio {
 	}
 	
 	
-	public Boolean addTrimestre(Trimestre trimestre) throws Exception {
+	public Boolean addTrimestre(Trimestre trimestre) throws Exception { // EN ENDPOINT
 		try {
 			if (trimestre.getIdTrimestre() == null) {
 				gTrimestre.add(trimestre);
@@ -206,7 +222,7 @@ public class ServicioDesempenio {
 		return false;
 	}
 		
-	public Boolean deleteTrimestre(Trimestre trimestre) throws Exception {
+	public Boolean deleteTrimestre(Trimestre trimestre) throws Exception { // EN ENDPOINT
 		try {
 			gTrimestre.delete(trimestre);
 		} catch (Exception ex) {
@@ -215,7 +231,7 @@ public class ServicioDesempenio {
 		return true;
 	}
 	
-	public Trimestre getTrimestre(Long idTrimestre) throws Exception {
+	public Trimestre getTrimestre(Long idTrimestre) throws Exception { // EN ENDPOINT
 		try {
 			return gTrimestre.getById(idTrimestre);
 		} catch (Exception ex) {
@@ -223,7 +239,7 @@ public class ServicioDesempenio {
 		}
 	}
 	
-	public List<Trimestre> getTrimestres(Trimestre example) throws Exception {
+	public List<Trimestre> getTrimestres(Trimestre example) throws Exception { // EN ENDPOINT
 		try {
 			return gTrimestre.getByExample(example);
 		} catch (Exception ex) {
@@ -232,7 +248,7 @@ public class ServicioDesempenio {
 	}
 
 	
-	public Boolean asignarMateriaATrimestre(Materia materia, Long idTrimestre) throws Exception {
+	public Boolean asignarMateriaATrimestre(Materia materia, Long idTrimestre) throws Exception { // EN ENDPOINT
 		try {
 			Trimestre trimestre = gTrimestre.getById(idTrimestre);
 			trimestre.setMateria(materia);
@@ -261,6 +277,8 @@ public class ServicioDesempenio {
 		}
 		return true;
 	}
+	
+	
 	
 	public Boolean asignarTrimestreABoletin(Trimestre trimestre, Long idBoletin) throws Exception {
 		try {
