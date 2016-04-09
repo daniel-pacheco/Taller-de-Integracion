@@ -14,7 +14,7 @@
         <property name="cicloLectivo" type="java.lang.Integer">
             <column name="CICLOLECTIVO" />
         </property>
-        <set name="listaNotas" table="TRIMESTRE" inverse="false" lazy="true">
+        <set name="listaNotas" table="TRIMESTRE" inverse="false" lazy="false">
             <key>
                 <column name="IDTRIMESTRE" />
             </key>

@@ -34,6 +34,7 @@ public class GestorBoletinNotasHist extends Gestor<BoletinNotasHist> implements 
 					GMateriaNotaBoletin.add(mnb);
 				}
 			}
+			
 			boletinNotasHistDAO.persist(object);
 			sesionDeHilo.getTransaction().commit();
 		} catch (Exception ex) {

@@ -1,15 +1,18 @@
 package ar.com.santalucia.servicio;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import ar.com.santalucia.aplicacion.gestor.academico.GestorAnio;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMateria;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinNotas;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinNotasHist;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorNota;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorTrimestre;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
+import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Inscripcion;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotas;
@@ -34,16 +37,18 @@ public class ServicioDesempenio {
 	private GestorTrimestre gTrimestre;
 	private GestorBoletinNotas gBoletin;
 	private GestorBoletinNotasHist gBoletinHist;
-	private GestorAlumno gAlumno;
+	private GestorAlumno gAlumno; // ¿?
+	private GestorAnio gAnio;
 	
 	public ServicioDesempenio() throws Exception {
 		try {
 			gNota = new GestorNota();
-			gMateria = new GestorMateria();
+			//gMateria = new GestorMateria();
 			gTrimestre = new GestorTrimestre();
 			gBoletin = new GestorBoletinNotas();
 			gBoletinHist = new GestorBoletinNotasHist();
-			gAlumno = new GestorAlumno();
+			//gAlumno = new GestorAlumno();
+			gAnio = new GestorAnio();
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un problema al inicializar el servicio de operaciones básicas: "
 					+ ex.getMessage());
@@ -96,40 +101,61 @@ public class ServicioDesempenio {
 			boletinHistorico.setDniAlumno(boletinNotas.getPropietario().getNroDocumento());
 			boletinHistorico.setNombreAlumno(boletinNotas.getPropietario().getNombre());
 			boletinHistorico.setApellidoAlumno(boletinNotas.getPropietario().getApellido());
-			boletinHistorico.setAnio(boletinNotas.getAnio().getNombre());
-			boletinHistorico.setCurso(null);
+			boletinHistorico.setAnio(boletinNotas.getAnio());
+			boletinHistorico.setCurso(boletinNotas.getCurso());
 			boletinHistorico.setCicloLectivo(boletinNotas.getCicloLectivo());
 			
 			Set<Trimestre> trimestres = boletinNotas.getListaTrimestres();
 			Set<Nota> notasExtras = boletinNotas.getListaNotasExamen();
 			Set<MateriaNotasBoletin> listaMateriasNotasBoletin = new HashSet<MateriaNotasBoletin>();
 			
-			for (Materia m : boletinNotas.getAnio().getListaMaterias()) {
+			Anio anioBuscar = new Anio();
+			anioBuscar.setNombre(boletinNotas.getAnio());
+			ArrayList<Anio> listaAnios = gAnio.getByExample(anioBuscar);
+			Anio anioEnc = new Anio();
+			anioEnc = listaAnios.get(0);
+			
+			for (Materia m : anioEnc.getListaMaterias()) {
 				MateriaNotasBoletin materiaNotasBoletin = new MateriaNotasBoletin();
 				materiaNotasBoletin.setMateria(m.getNombre());
 				for (Trimestre t : trimestres) {
-					materiaNotasBoletin.setNotaTrimestre1((
-						t.getOrden()==1 && t.getMateria().getNombre()==m.getNombre()
-							? t.getNotaFinal().getCalificacion().intValue()
-							:null));
-					materiaNotasBoletin.setNotaTrimestre2((
-						t.getOrden()==2 && t.getMateria().getNombre()==m.getNombre()
-							? t.getNotaFinal().getCalificacion().intValue()
-							:null));
-					materiaNotasBoletin.setNotaTrimestre3((
-						t.getOrden()==3 && t.getMateria().getNombre()==m.getNombre()
-							? t.getNotaFinal().getCalificacion().intValue()
-							:null));
+//					materiaNotasBoletin.setNotaTrimestre1((
+//						t.getOrden().equals(1) && t.getMateria().getNombre().equals(m.getNombre())
+//							? t.getNotaFinal().getCalificacion().intValue()
+//							:null));
+//					materiaNotasBoletin.setNotaTrimestre2((
+//						t.getOrden().equals(2) && t.getMateria().getNombre().equals(m.getNombre())
+//							? t.getNotaFinal().getCalificacion().intValue()
+//							:null));
+//					materiaNotasBoletin.setNotaTrimestre3((
+//						t.getOrden().equals(3) && t.getMateria().getNombre().equals(m.getNombre())
+//							? t.getNotaFinal().getCalificacion().intValue()
+//							:null));
+					if (t.getOrden().equals(1) && t.getMateria().getNombre().equals(m.getNombre())) {
+						materiaNotasBoletin.setNotaTrimestre1(t.getNotaFinal().getCalificacion().intValue());
+					}
+					if (t.getOrden().equals(2) && t.getMateria().getNombre().equals(m.getNombre())) {
+						materiaNotasBoletin.setNotaTrimestre2(t.getNotaFinal().getCalificacion().intValue());
+					}
+					if (t.getOrden().equals(3) && t.getMateria().getNombre().equals(m.getNombre())) {
+						materiaNotasBoletin.setNotaTrimestre3(t.getNotaFinal().getCalificacion().intValue());
+					}
 				}
 				for (Nota ne : notasExtras) {
-					materiaNotasBoletin.setNotaDiciembre(
-						ne.getTipo()==Nota.DICIEMBRE && ne.getMateria().getNombre()==m.getNombre()
-						? ne.getCalificacion().intValue()
-						: null);
-					materiaNotasBoletin.setNotaDiciembre(
-						ne.getTipo()==Nota.MARZO && ne.getMateria().getNombre()==m.getNombre()
-						? ne.getCalificacion().intValue()
-						: null);
+//					materiaNotasBoletin.setNotaDiciembre(
+//						ne.getTipo().equals(Nota.DICIEMBRE) && ne.getMateria().getNombre().equals(m.getNombre())
+//						? ne.getCalificacion().intValue()
+//						: null);
+//					materiaNotasBoletin.setNotaDiciembre(
+//						ne.getTipo().equals(Nota.MARZO) && ne.getMateria().getNombre().equals(m.getNombre())
+//						? ne.getCalificacion().intValue()
+//						: null);
+					if (ne.getTipo().equals(Nota.DICIEMBRE) && ne.getMateria().getNombre().equals(m.getNombre())) {
+						materiaNotasBoletin.setNotaDiciembre(ne.getCalificacion().intValue());
+					}
+					if (ne.getTipo().equals(Nota.MARZO) && ne.getMateria().getNombre().equals(m.getNombre())) {
+						materiaNotasBoletin.setNotaMarzo(ne.getCalificacion().intValue());
+					}
 				}
 				listaMateriasNotasBoletin.add(materiaNotasBoletin);
 			}
@@ -144,7 +170,7 @@ public class ServicioDesempenio {
 	}
 
 	
-	public Boolean addNota(Nota nota) throws Exception {
+	public Boolean addNota(Nota nota) throws Exception { // EN ENDPOINT
 		try {
 			if (nota.getIdNota() == null) {
 				gNota.add(nota);
@@ -157,7 +183,7 @@ public class ServicioDesempenio {
 		return false;
 	}
 		
-	public Boolean deleteNota(Nota nota) throws Exception {
+	public Boolean deleteNota(Nota nota) throws Exception { // EN ENDPOINT
 		try {
 			gNota.delete(nota);
 		} catch (Exception ex) {
@@ -166,7 +192,7 @@ public class ServicioDesempenio {
 		return true;
 	}
 	
-	public Nota getNota(Long idNota) throws Exception {
+	public Nota getNota(Long idNota) throws Exception { // EN ENDPOINT
 		try {
 			return gNota.getById(idNota);
 		} catch (Exception ex) {
@@ -174,7 +200,7 @@ public class ServicioDesempenio {
 		}
 	}
 	
-	public List<Nota> getNotas(Nota example) throws Exception {
+	public List<Nota> getNotas(Nota example) throws Exception { // EN ENDPOINT
 		try {
 			return gNota.getByExample(example);
 		} catch (Exception ex) {
@@ -183,7 +209,7 @@ public class ServicioDesempenio {
 	}
 	
 	
-	public Boolean addTrimestre(Trimestre trimestre) throws Exception {
+	public Boolean addTrimestre(Trimestre trimestre) throws Exception { // EN ENDPOINT
 		try {
 			if (trimestre.getIdTrimestre() == null) {
 				gTrimestre.add(trimestre);
@@ -196,7 +222,7 @@ public class ServicioDesempenio {
 		return false;
 	}
 		
-	public Boolean deleteTrimestre(Trimestre trimestre) throws Exception {
+	public Boolean deleteTrimestre(Trimestre trimestre) throws Exception { // EN ENDPOINT
 		try {
 			gTrimestre.delete(trimestre);
 		} catch (Exception ex) {
@@ -205,7 +231,7 @@ public class ServicioDesempenio {
 		return true;
 	}
 	
-	public Trimestre getTrimestre(Long idTrimestre) throws Exception {
+	public Trimestre getTrimestre(Long idTrimestre) throws Exception { // EN ENDPOINT
 		try {
 			return gTrimestre.getById(idTrimestre);
 		} catch (Exception ex) {
@@ -213,7 +239,7 @@ public class ServicioDesempenio {
 		}
 	}
 	
-	public List<Trimestre> getTrimestres(Trimestre example) throws Exception {
+	public List<Trimestre> getTrimestres(Trimestre example) throws Exception { // EN ENDPOINT
 		try {
 			return gTrimestre.getByExample(example);
 		} catch (Exception ex) {
@@ -222,7 +248,7 @@ public class ServicioDesempenio {
 	}
 
 	
-	public Boolean asignarMateriaATrimestre(Materia materia, Long idTrimestre) throws Exception {
+	public Boolean asignarMateriaATrimestre(Materia materia, Long idTrimestre) throws Exception { // EN ENDPOINT
 		try {
 			Trimestre trimestre = gTrimestre.getById(idTrimestre);
 			trimestre.setMateria(materia);
@@ -238,7 +264,7 @@ public class ServicioDesempenio {
 			Trimestre trimestre = gTrimestre.getById(idTrimestre);
 			nota.setMateria(trimestre.getMateria()); // asigno la materia a la nota tomando del trimestre.
 			gNota.modify(nota);
-			if (nota.getTipo() == Nota.NOTA_FINAL_TRIMESTRAL) {
+			if (nota.getTipo().equals(Nota.NOTA_FINAL_TRIMESTRAL)) {
 				trimestre.setNotaFinal(nota);
 			} else {
 				Set<Nota> listaNotas = trimestre.getListaNotas();
@@ -251,6 +277,8 @@ public class ServicioDesempenio {
 		}
 		return true;
 	}
+	
+	
 	
 	public Boolean asignarTrimestreABoletin(Trimestre trimestre, Long idBoletin) throws Exception {
 		try {
