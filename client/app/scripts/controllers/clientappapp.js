@@ -58,20 +58,4 @@ $scope.logOut = function () {
 
     // aca se van a cargar todas las cosas que le pidamos al backend como para arrancar la app
 
-
-    //Cambia el estilo a active al seleccionar un item del menu
-    $scope.menuDirectivo = MENU_DIRECTIVO;
-    $scope.setActive = function(menuItem) {
-    	$scope.activeMenu = menuItem
-    };
-
-$scope.popover = {
-  "title": "Despedirse",   
-};
-
-/*$scope.tooltip = {
-tooltipLogout : {
-    'title' : 'Cerrar sesión'
-  }
-}*/
 });

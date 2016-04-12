@@ -12,6 +12,8 @@ import javax.ws.rs.core.Response;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotas;
 import ar.com.santalucia.dominio.modelo.desempenio.Nota;
 import ar.com.santalucia.dominio.modelo.desempenio.Trimestre;
+import ar.com.santalucia.servicio.ServicioAcademico;
+import ar.com.santalucia.servicio.ServicioAlumno;
 import ar.com.santalucia.servicio.ServicioDesempenio;
 
 @Path("/sDesempenio")
@@ -198,6 +200,62 @@ public class ServicioDesempenioEndpoint {
 			setInstance();
 			return Response.ok(servicioDesempenio.asignarNotaATrimestre(
 								servicioDesempenio.getNota(jsonPack.getValues().elementAt(0)), 
+								jsonPack.getValues().elementAt(1))).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
+	
+	/**
+	 * 
+	 * @param jsonPack [idMateria, idTrimestre]
+	 * @return
+	 */
+	@POST
+	@Path("/trim/asignMateria")
+	public Response asignarMateriaATrimestre(JsonPack jsonPack) {
+		try {
+			setInstance();
+			ServicioAcademico servicioAcademico = new ServicioAcademico();
+			return Response.ok(servicioDesempenio.asignarMateriaATrimestre(
+								servicioAcademico.getMateria(jsonPack.getValues().elementAt(0)), 
+								jsonPack.getValues().elementAt(1))).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
+	
+	/**
+	 * 
+	 * @param jsonPack [idTrimestre, idBoletin]
+	 * @return
+	 */
+	@POST
+	@Path("/bol/asignTrim")
+	public Response asignarTrimestreABoletin(JsonPack jsonPack) {
+		try {
+			setInstance();
+			return Response.ok(servicioDesempenio.asignarTrimestreABoletin(
+								servicioDesempenio.getTrimestre(jsonPack.getValues().elementAt(0)), 
+								jsonPack.getValues().elementAt(1))).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
+	
+	/**
+	 * 
+	 * @param jsonPack [idAlumno, idBoletin]
+	 * @return
+	 */
+	@POST
+	@Path("/bol/asignAlu")
+	public Response asignarAlumnoABoletin(JsonPack jsonPack) {
+		try {
+			setInstance();
+			ServicioAlumno servicioAlumno = new ServicioAlumno();
+			return Response.ok(servicioDesempenio.asignarAlumnoABoletin(
+								servicioAlumno.getUsuario(jsonPack.getValues().elementAt(0)), 
 								jsonPack.getValues().elementAt(1))).build();
 		} catch (Exception ex) {
 			return Response.ok(ex).build();

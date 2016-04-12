@@ -19,7 +19,8 @@ angular
     'mgcrea.ngStrap',
     'ngAnimate',
     'ngFileUpload',
-    'ngImgCrop'
+    'ngImgCrop',
+    'angularModalService'
   ])
   
   .config(function($stateProvider, $urlRouterProvider) {

@@ -25,14 +25,14 @@
  	directivo: 'DIRECTIVO'
  })
 
- .constant('MENU_DIRECTIVO',{
- 	alumnado: ['#/alumnado', 'Alumnado'],
- 	materias: ['#/materias', 'Materias'],
- 	docente: ['#/docente', 'Docente'],
- 	anio: ['#/anio', 'Año'],
- 	desemp: ['#/desemp', 'Desempeño'],
- 	about: ['#/about', 'About'],
- 	contact: ['#/contact', 'Contact']
+ .constant('MENU_DIRECTIVO',{ //la dirección relativa entre los estados anidados se separa por .
+ 	alumnado: ['.alumnado', 'Alumnado'],
+ 	materias: ['.materias', 'Materias'],
+ 	docente: ['.docente', 'Docente'],
+ 	anio: ['.anio', 'Año'],
+ 	desemp: ['.desemp', 'Desempeño'],
+ 	about: ['.about', 'About'],
+ 	contact: ['.contact', 'Contact']
  })
  
  .constant('CURSOS',{

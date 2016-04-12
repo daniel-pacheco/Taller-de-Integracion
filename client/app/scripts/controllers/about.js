@@ -10,7 +10,7 @@
  angular.module('clientAppApp')
  .config(function($stateProvider) {
     $stateProvider
-    .state('about', {
+    .state('directivo.about', {
         url: '/about',
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl',

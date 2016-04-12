@@ -10,7 +10,7 @@
  angular.module('clientAppApp')
  .config(function($stateProvider) {
     $stateProvider
-    .state('materias', {
+    .state('directivo.materias', {
         url: '/materias',
         templateUrl: 'views/materias.html',
         controller: 'MateriasCtrl',

@@ -60,7 +60,7 @@
 				<td>{{docente.nombre}}</td>
 				<td>{{docente.cuil}}</td>
 				<!-- <td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:33%; cursor: pointer" class="glyphicon glyphicon-user" ng-click="asignar(docente)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipEdit" style="width:33%; cursor: pointer" class="glyphicon glyphicon-edit" ng-click="asignar(docente)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipDelete" style="width:33%; cursor: pointer" class="glyphicon glyphicon-remove"></span></td> --> 
-				<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:40%; cursor: pointer" class="glyphicon glyphicon-user" ng-click="asignar(docente)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipDelete" style="width:40%; cursor: pointer" class="glyphicon glyphicon-remove"></span></td> 
+				<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:40%; cursor: pointer" class="glyphicon glyphicon-user" ng-click="showModal(docente)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipDelete" style="width:40%; cursor: pointer" class="glyphicon glyphicon-remove"></span></td> 
 
 					<!--<td>{{alumno.name}}</td>
 					<td>{{alumno.phone}}</td>
@@ -68,7 +68,6 @@
 				</tr>
 			</table>
 		</fieldset>
-		{{modalx.docente}}
 	</div>
 
 	<div id="nuevoPerfil" ng-show="nuevoPerfil">
@@ -182,8 +181,8 @@
 											<label for=""><a style="color: red">*</a>CUIT/CUIL:</label>
 										</div>
 										<div class="col-sm-5">
-											<input class="form-control" placeholder="12332112" type="text"
-											maxlength="15" ng-model="docenteEdit.cuil" required pattern="d{2}\-\d{8}\-\d{1}">
+											<input class="form-control" placeholder="11-12332112-1" type="text"
+											maxlength="13" ng-model="docenteEdit.cuil" required pattern="d{2}\-\d{8}\-\d{1}">
 										</div>
 									</div>
 									<!-- Valida 8 digitos -->

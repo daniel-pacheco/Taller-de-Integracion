@@ -28,7 +28,7 @@ public class GestorMateriaNotasBoletin extends Gestor<MateriaNotasBoletin> imple
 			setSession();
 			setTransaction();
 			materiaNotasBoletinDAO.persist(object);
-			sesionDeHilo.getTransaction().commit();
+			//sesionDeHilo.getTransaction().commit();
 		} catch (Exception ex) {
 			setSession();
 			setTransaction();

@@ -10,7 +10,7 @@
  angular.module('clientAppApp')
  .config(function($stateProvider, USER_ROLES) {
     $stateProvider
-    .state('anio', {
+    .state('directivo.anio', {
         url: '/anio',
         templateUrl: 'views/anio.html',
         controller: 'AnioCtrl',

@@ -1,9 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-
-<!--<!DOCTYPE hibernate-mapping SYSTEM "classpath://org/hibernate/hibernate-mapping-3.0.dtd">-->
-<!-- Generated 25/09/2015 17:22:03 by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 07/04/2016 19:53:38 by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
     <class name="ar.com.santalucia.dominio.modelo.desempenio.BoletinNotas" table="BOLETINNOTAS">
         <id name="idBoletinNotas" type="java.lang.Long">
@@ -13,14 +11,29 @@
         <many-to-one name="propietario" class="ar.com.santalucia.dominio.modelo.usuarios.Alumno" fetch="join">
             <column name="PROPIETARIO" />
         </many-to-one>
-        <many-to-one name="anio" class="ar.com.santalucia.dominio.modelo.academico.Anio" fetch="join">
+        <property name="anio" type="java.lang.String">
             <column name="ANIO" />
-        </many-to-one>
-        <set name="listaTrimestres" table="TRIMESTRE" inverse="false" lazy="true">
+        </property>
+        <property name="curso" type="java.lang.String">
+            <column name="CURSO" />
+        </property>
+        <set name="listaTrimestres" table="BOLETINNOTAS" inverse="false" lazy="false">
             <key>
                 <column name="IDBOLETINNOTAS" />
             </key>
-            <one-to-many class="ar.com.santalucia.dominio.modelo.desempenio.Trimestre" />
+<!--             <element type="ar.com.santalucia.dominio.modelo.desempenio.Trimestre"> -->
+<!--                 <column name="LISTATRIMESTRES" /> -->
+<!--             </element> -->
+			<one-to-many class="ar.com.santalucia.dominio.modelo.desempenio.Trimestre" />
+        </set>
+        <set name="listaNotasExamen" table="BOLETINNOTAS" inverse="false" lazy="false">
+            <key>
+                <column name="IDBOLETINNOTAS" />
+            </key>
+<!--             <element type="ar.com.santalucia.dominio.modelo.desempenio.Nota"> -->
+<!--                 <column name="LISTANOTASEXAMEN" /> -->
+<!--             </element> -->
+            <one-to-many class="ar.com.santalucia.dominio.modelo.desempenio.Nota" />
         </set>
         <property name="cicloLectivo" type="java.lang.Integer">
             <column name="CICLOLECTIVO" />

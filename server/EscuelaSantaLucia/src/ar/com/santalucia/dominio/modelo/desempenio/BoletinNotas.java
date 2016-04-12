@@ -11,16 +11,17 @@ import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
  * lista de Trimestres.
  *
  * @author ericpennachini
- * @version 1.2
+ * @version 2.0
  *
  */
 
-// Último modificador: Eric Pennachini @ 14-03-2016 20:00
+// Último modificador: Eric Pennachini @ 07-04-2016 15:41
 
 public class BoletinNotas {
 	private Long idBoletinNotas;
 	private Alumno propietario;
-	private Anio anio;
+	private String anio;
+	private String curso;
 	private Set<Trimestre> listaTrimestres;
 	private Set<Nota> listaNotasExamen; // notas de diciembre, marzo...
 	private Integer cicloLectivo;
@@ -28,13 +29,15 @@ public class BoletinNotas {
 	public BoletinNotas() {
 		super();
 		listaTrimestres = new HashSet<Trimestre>();
+		listaNotasExamen = new HashSet<Nota>();
 	}
 
-	public BoletinNotas(Long idBoletinNotas, Alumno propietario, Anio anio, Set<Trimestre> listaTrimestres, Set<Nota> listaNotasExamen, Integer cicloLectivo) {
+	public BoletinNotas(Long idBoletinNotas, Alumno propietario, String anio, String curso, Set<Trimestre> listaTrimestres, Set<Nota> listaNotasExamen, Integer cicloLectivo) {
 		super();
 		this.idBoletinNotas = idBoletinNotas;
 		this.propietario = propietario;
 		this.anio = anio;
+		this.curso = curso;
 		this.setListaTrimestres(listaTrimestres);
 		this.setListaNotasExamen(listaNotasExamen);
 		this.cicloLectivo = cicloLectivo;
@@ -80,12 +83,20 @@ public class BoletinNotas {
 		this.listaNotasExamen = listaNotasExamen;
 	}
 
-	public Anio getAnio() {
+	public String getAnio() {
 		return anio;
 	}
 
-	public void setAnio(Anio anio) {
+	public void setAnio(String anio) {
 		this.anio = anio;
+	}
+
+	public String getCurso() {
+		return curso;
+	}
+
+	public void setCurso(String curso) {
+		this.curso = curso;
 	}
 
 }
