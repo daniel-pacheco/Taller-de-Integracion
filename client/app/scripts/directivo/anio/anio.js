@@ -12,7 +12,7 @@
     $stateProvider
     .state('directivo.anio', {
         url: '/anio',
-        templateUrl: 'views/anio.html',
+        templateUrl: 'scripts/directivo/anio/anio.html',
         controller: 'AnioCtrl',
         data: {
         	pageTitle: 'Anio',

@@ -12,7 +12,7 @@
     $stateProvider
     .state('directivo.materias', {
         url: '/materias',
-        templateUrl: 'views/materias.html',
+        templateUrl: 'scripts/directivo/materias/materias.html',
         controller: 'MateriasCtrl',
         data: {
           pageTitle: 'Materias'

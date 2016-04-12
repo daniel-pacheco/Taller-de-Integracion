@@ -31,8 +31,7 @@
  	docente: ['.docente', 'Docente'],
  	anio: ['.anio', 'Año'],
  	desemp: ['.desemp', 'Desempeño'],
- 	about: ['.about', 'About'],
- 	contact: ['.contact', 'Contact']
+ 	test: ['.test', 'Test']
  })
  
  .constant('CURSOS',{

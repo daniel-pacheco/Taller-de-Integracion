@@ -1,5 +1,5 @@
 angular.module('clientAppApp')
-.controller('DocenteModalController', [
+.controller('showProfileDocenteModalController', [
   '$scope', '$element', 'title', 'docente','close',
   function($scope, $element, title, docente, close) {//acá se inyecta las variables necesarias y luego la función close
 

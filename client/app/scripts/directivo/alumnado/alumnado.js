@@ -13,7 +13,7 @@
  	$stateProvider
  	.state('directivo.alumnado', {
  		url: '/alumnado',
- 		templateUrl: 'views/alumnado.html',
+ 		templateUrl: 'scripts/directivo/alumnado/alumnado.html',
  		controller: 'AlumnadoCtrl',
  		data: {
  			pageTitle: 'Alumnado'

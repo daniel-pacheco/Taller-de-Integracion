@@ -13,7 +13,7 @@
  	$stateProvider
  	.state('directivo', {
  		url: '/directivo',
- 		templateUrl: 'views/directivonavbar.html',
+ 		templateUrl: 'scripts/directivo/directivonavbar.html',
  		controller: 'DirectivoNavBarCtrl',
  		data: {
  			pageTitle: 'Directivo'

@@ -13,7 +13,7 @@
  	$stateProvider
  	.state('directivo.docente', {
  		url: '/docente',
- 		templateUrl: 'views/docente.html',
+ 		templateUrl: 'scripts/directivo/docente/docente.html',
  		controller: 'DocenteCtrl',
  		data: {
  			pageTitle: 'Docente'
@@ -83,8 +83,8 @@ $scope.setActiveDoc = function(menuItemDoc) {
  $scope.showModal = function(docente) {
 
     ModalService.showModal({
-      templateUrl: '/views/templates/showProfileDocente.tpl.html',
-      controller: 'DocenteModalController',
+      templateUrl: 'scripts/directivo/docente/modal/showProfileDocente.tpl.html',
+      controller: 'showProfileDocenteModalController',
       inputs: {
         title: "Perfil",
         docente: docente

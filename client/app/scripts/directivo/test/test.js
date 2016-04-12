@@ -10,16 +10,16 @@
  angular.module('clientAppApp')
  .config(function($stateProvider) {
     $stateProvider
-    .state('directivo.about', {
-        url: '/about',
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl',
+    .state('directivo.test', {
+        url: '/test',
+        templateUrl: 'scripts/directivo/test/test.html',
+        controller: 'DirectivoTestCtrl',
         data: {
           pageTitle: 'About'
       }
   });
 })
- .controller('AboutCtrl', function ($scope, Upload, $timeout) {
+ .controller('DirectivoTestCtrl', function ($scope, Upload, $timeout) {
     this.awesomeThings = [
     'HTML5 Boilerplate',
     'AngularJS',
