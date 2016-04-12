@@ -158,10 +158,12 @@
 									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span>  Documento:</label>
 								</div>
 								<div class="col-sm-4">
-									<input type="text" name="nroDocumento" class="form-control validate" ng-model="nuevoAlumno.nroDocumento" placeholder="12332112" maxlength="10" required pattern="\d{8}"/>
+									<input type="text" name="nroDocumento" class="form-control validate" ng-model="nuevoAlumno.nroDocumento" placeholder="12332112" ng-maxlength="10" required pattern="\d{8}"  ng-minlength="5"/>
 									<div ng-messages="formAlu.nroDocumento.$error" ng-if="formAlu.nroDocumento.$touched && formAlu.nroDocumento.$invalid">
 										<div ng-message="pattern" class="help-block">Formato invalido</div>
 										<div ng-message="required" class="help-block">Complete este campo</div>
+										<div ng-message="minlength" class="help-block">Demasiado corto</div>
+										<div ng-message="maxlength" class="help-block">Demasiado largo</div>
 									</div>
 								</div>
 
