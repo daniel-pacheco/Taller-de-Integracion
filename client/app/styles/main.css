@@ -346,25 +346,6 @@ h1 {
   background-color: #234145;
 }
 
-input:valid{ /* when a field is considered invalid by the browser */
-    border-color: #35B043;
-}
-
-input:focus:invalid{ /* when a field is considered invalid by the browser */
-   /*background: #fff url(images/invalid.png) no-repeat 98% center;*/
-    box-shadow: 0 0 5px #d45252;
-    border-color: #b03535;
-}
-
-input::before::invalid{ 
- box-shadow: 0 0 5px #d45252;
-    border-color: #b03535;
-}
-
-.form_hint::before {
-    content: "\25C0"; /* left point triangle in escaped unicode */
-    color:#d45252;
-    position: absolute;
-    top:1px;
-    left:-6px;
+.desaprobado {
+  color: red;
 }

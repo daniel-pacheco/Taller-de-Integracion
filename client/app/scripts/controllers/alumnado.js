@@ -36,7 +36,7 @@
  		}
  	}
  })
- .controller('AlumnadoCtrl', function ($scope, $q, $http, $modal, boletinInasistenciasData, alumnoService, Upload, $timeout, alumnoData, modalService) {
+ .controller('AlumnadoCtrl', function ($scope, $q, $http, $modal, boletinInasistenciasData, libCalificacionesdata, alumnoService, Upload, $timeout, alumnoData, modalService) {
  	$scope.listado1 = true;
  	$scope.listFilterIsEnabled = false;
 
@@ -148,10 +148,29 @@ $scope.telefonoAvanzado = function () {
 				}
 			}
 		});
-
 		modalInstance.$promise.then(modalInstance.show);
 	}
+$scope.libCalificaciones = libCalificacionesdata;
+$scope.libretaCalificaciones = function(alumno){
+	$scope.libCalificaciones = {};
+		$scope.libCalificaciones = libCalificacionesdata;//esta deberia ser una funcion que pida la libreta de calificaciones del alumno que recibe
+		//$scope.libCalificaciones.tooltip = $scope.tooltip;
+		modalService.set($scope.libCalificaciones);
+		var modalInstance2 = $modal({
+			controller: ["$scope", "modalService", "libCalificaciones", function($scope, modalService, libCalificaciones){this.libCalificaciones = libCalificaciones;}],
+			controllerAs: 'modalCtrl',
+			templateUrl: '/views/templates/libretaCalificaciones.tpl.html',
+			title: 'Boletín de calificaciones', 
+			content: 'Notas', 
+			resolve: {
+				libCalificaciones: function(){
+					return modalService.get();
+				}
+			}
+		});
 
+		modalInstance2.$promise.then(modalInstance2.show);
+	}
 //File-Select
 
 $scope.upload = function (dataUrl) {
