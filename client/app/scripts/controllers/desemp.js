@@ -10,7 +10,7 @@
  angular.module('clientAppApp')
  .config(function($stateProvider) {
  	$stateProvider
- 	.state('desemp', {
+ 	.state('directivo.desemp', {
  		url: '/desemp',
  		templateUrl: 'views/desemp.html',
  		controller: 'DesempCtrl',

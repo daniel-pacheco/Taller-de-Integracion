@@ -25,10 +25,11 @@
 
   $scope.login = function(data) {
     loginService.login(data.username, data.password, data.role).then(function(authenticated) {
-      $state.go('alumnado', {}, {reload: true});
+      $state.go('directivo.alumnado', {}, {reload: true});
       $scope.setCurrentUsernameAndRole();
     }, function(err) {
       alert('Login failed! Please check your credentials!');
+      $state.go('directivo.alumnado', {}, {reload: true});//esto es para que redirija igual, se tiene q sacar cuando la auth esté activa
     });
   };
 

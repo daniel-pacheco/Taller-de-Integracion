@@ -11,7 +11,7 @@
 
  .config(function($stateProvider) {
  	$stateProvider
- 	.state('docente', {
+ 	.state('directivo.docente', {
  		url: '/docente',
  		templateUrl: 'views/docente.html',
  		controller: 'DocenteCtrl',

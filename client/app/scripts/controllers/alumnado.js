@@ -11,7 +11,7 @@
  angular.module('clientAppApp')
  .config(function($stateProvider) {
  	$stateProvider
- 	.state('alumnado', {
+ 	.state('directivo.alumnado', {
  		url: '/alumnado',
  		templateUrl: 'views/alumnado.html',
  		controller: 'AlumnadoCtrl',
