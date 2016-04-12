@@ -12,6 +12,7 @@ angular
   .module('clientAppApp', [
     'ngAnimate',
     'ngCookies',
+    'ngMessages',
     'ngResource',
     'ui.router',
     'ngSanitize',
@@ -21,6 +22,7 @@ angular
     'ngFileUpload',
     'ngImgCrop',
     'angularModalService'
+
   ])
   
   .config(function($stateProvider, $urlRouterProvider) {
