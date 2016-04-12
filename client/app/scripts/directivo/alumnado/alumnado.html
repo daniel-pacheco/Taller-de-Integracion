@@ -149,18 +149,19 @@
 					<!-- <div class="container"> Pachec: probar esto en la resolución grande -->
 					<div class="row">
 						<div class="col-md-6 personal-info">
-							<div class="alert alert-danger" role="alert">* Campos obligatorios</div>
+							<div class="alert alert-warning alert-dismissible" role="alert">
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<span class="glyphicon glyphicon-asterisk small"></span>Campos obligatorios
+							</div>
 							<div class="form-group" ng-class="{ 'has-error': formAlu.nroDocumento.$touched && formAlu.nroDocumento.$invalid }">
 								<div class="col-sm-4 control-label">
-									<label for=""><a style="color: red">*</a>Documento:</label>
+									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span>  Documento:</label>
 								</div>
 								<div class="col-sm-4">
-									<input type="text" name="nroDocumento" class="form-control validate" ng-model="nuevoAlumno.nroDocumento" placeholder="12332112" ng-maxlength="10" required pattern="\d{8}"  ng-minlength="5"/>
+									<input type="text" name="nroDocumento" class="form-control validate" ng-model="nuevoAlumno.nroDocumento" placeholder="12332112" maxlength="8" required pattern="\d{8}"/>
 									<div ng-messages="formAlu.nroDocumento.$error" ng-if="formAlu.nroDocumento.$touched && formAlu.nroDocumento.$invalid">
-										<div ng-message="pattern" class="help-block">Formato invalido</div>
 										<div ng-message="required" class="help-block">Complete este campo</div>
-										<div ng-message="minlength" class="help-block">Demasiado corto</div>
-										<div ng-message="maxlength" class="help-block">Demasiado largo</div>
+										<div ng-message="pattern" class="help-block">Formato invalido</div>
 									</div>
 								</div>
 
@@ -180,7 +181,7 @@
 
 							<div class="form-group" ng-class="{ 'has-error': formAlu.nombre.$touched && formAlu.nombre.$invalid }">
 								<div class="col-sm-4 control-label">
-									<label for=""><a style="color: red">*</a>Nombre/s:</label>
+									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Nombre/s:</label>
 								</div>
 								<div class="col-sm-5">
 									<input name="nombre" class="form-control" ng-model="nuevoAlumno.nombre" placeholder="Nombre"
@@ -198,7 +199,7 @@
 
 							<div class="form-group" ng-class="{ 'has-error': formAlu.apellido.$touched && formAlu.apellido.$invalid }">
 								<div class="col-sm-4 control-label">
-									<label for=""><a style="color: red">*</a>Apellido/s:</label>
+									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Apellido/s:</label>
 								</div>
 								<div class="col-sm-5">
 									<input name="apellido" class="form-control" ng-model="nuevoAlumno.apellido" placeholder="Apellido" type="text" maxlength="255" required pattern="[a-zA-Z ]*">
@@ -226,7 +227,7 @@
 
 							<div class="form-group" ng-class="{ 'has-error': formAlu.domicilio.$touched && formAlu.domicilio.$invalid }">
 								<div class="col-sm-4 control-label">
-									<label for=""><a style="color: red">*</a>Domicilio:</label>
+									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Domicilio:</label>
 								</div>
 								<div class="col-sm-6">
 									<input name="domicilio" class="form-control" placeholder="Domicilio 123" type="text" maxlength="255" required pattern="[a-zA-Z 0-9]*" />
@@ -254,7 +255,7 @@
 
 						<div class="form-group" ng-class="{ 'has-error': formAlu.fechaNacimiento.$touched && formAlu.fechaNacimiento.$invalid }">
 							<div class="col-sm-4 control-label">
-								<label for=""><a style="color: red">*</a>Fecha de nac.:</label>
+								<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Fecha de nac.:</label>
 							</div>
 							<div class="col-sm-6">
 								<input name="fechaNacimiento"class="form-control" ng-model="nuevoAlumno.fechaNacimiento" placeholder="10/10/1010" type="date"
@@ -333,7 +334,7 @@
 
 					<div class="form-group" ng-class="{ 'has-error': formAlu.email.$touched && formAlu.email.$invalid }">
 						<div class="col-sm-4 control-label">
-							<label for=""><a style="color: red">*</a>Mail:</label>
+							<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Mail:</label>
 						</div>
 						<div class="col-sm-6">
 							<input name="email" type="email" class="form-control" placeholder="nombre@nombre.com" maxlength="255" required/>
@@ -362,7 +363,7 @@
 							<!-- Valida letras y espacios-->
 						</div>
 					</div>
-					<div class="alert alert-danger" role="alert">* Campos obligatorios</div>
+					
 				</div>
 				<!-- /form-group-->
 				<div class="col-md-3">
