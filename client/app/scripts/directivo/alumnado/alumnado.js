@@ -36,7 +36,7 @@
  		}
  	}
  })
- .controller('AlumnadoCtrl', function ($scope, $q, $http, $modal, boletinInasistenciasData, libCalificacionesdata, alumnoService, Upload, $timeout, alumnoData, modalService) {
+ .controller('AlumnadoCtrl', function ($scope, $q, $http, boletinInasistenciasData, libCalificacionesdata, alumnoService, Upload, $timeout, alumnoData, ModalService) {
  	$scope.listado1 = true;
  	$scope.listFilterIsEnabled = false;
 
@@ -96,19 +96,22 @@ $scope.telefonoAvanzado = function () {
 }
 
 
-	$scope.modalx = {}; //inicializa un objeto para pasar data al modal
-	$scope.showProfile = function(alumno){
-		var myModal1 = {};
-		myModal1 = $modal({
-			controller: 'AlumnadoCtrl', 
-			title: 'Perfil', 
-			content: 'Detalles del perfil', 
-			templateUrl: '/views/templates/showProfileAlumno.tpl.html', 
-			show: false
-		})
+$scope.showModalProfile = function(alumno){
+	ModalService.showModal({
+		templateUrl: 'scripts/directivo/alumnado/modal/showProfileAlumno.tpl.html',
+		controller: 'showProfileAlumnoModalController',
+		inputs: {
+			title: "Perfil",
+			alumno: alumno
+		}
+	}).then(function(modal) {
+		modal.element.modal();
+     /* modal.close.then(function(result) {        
+        console.log('el resultado es: ' + result); //$scope.algo.nroDocumento = result;
+    });*/
+});
 
-		myModal1.$promise.then(myModal1.show);
-	};
+}; 
 
 /*	$scope.showLibretaInasistencias = function(alumno) {
 		var myModal2 = {};
@@ -123,8 +126,23 @@ $scope.telefonoAvanzado = function () {
 		myModal2.$promise.then(myModal2.show);
 	};*/
 
+	$scope.showModalInasistencias = function(alumno){//esta deberia ser una funcion que pida la libreta de inasistencias del alumno que recibe
+		ModalService.showModal({
+			templateUrl: 'scripts/directivo/alumnado/modal/boletinInasistencias.tpl.html',
+			controller: 'showInasistenciasModalController',
+			inputs: {
+				title: "Boletín de inasistencias",
+				libInasistencias: boletinInasistenciasData,
+			}
+		}).then(function(modal) {
+			modal.element.modal();
+     /* modal.close.then(function(result) {        
+        console.log('el resultado es: ' + result); //$scope.algo.nroDocumento = result;
+    });*/
+	});
 
-	$scope.libInasistencias = {};
+	}; 
+/*	$scope.libInasistencias = {};
 	$scope.libretaInasistencias = function(alumno){
 		$scope.libInasistencias = boletinInasistenciasData;//esta deberia ser una funcion que pida la libreta de inasistencias del alumno que recibe
 		$scope.libInasistencias.tooltip = $scope.tooltip;
@@ -149,10 +167,25 @@ $scope.telefonoAvanzado = function () {
 			}
 		});
 		modalInstance.$promise.then(modalInstance.show);
-	}
-$scope.libCalificaciones = libCalificacionesdata;
-$scope.libretaCalificaciones = function(alumno){
-	$scope.libCalificaciones = {};
+	}*/
+	$scope.showModalLibreta = function(alumno){//esta deberia ser una funcion que pida la libreta de calificaciones del alumno que recibe
+		ModalService.showModal({
+			templateUrl: 'scripts/directivo/alumnado/modal/libretaCalificaciones.tpl.html',
+			controller: 'showLibretaAlumnoModalController',
+			inputs: {
+				title: "Libreta de calificaciones",
+				libCalificaciones: libCalificacionesdata,
+			}
+		}).then(function(modal) {
+			modal.element.modal();
+     /* modal.close.then(function(result) {        
+        console.log('el resultado es: ' + result); //$scope.algo.nroDocumento = result;
+    });*/
+	});
+		};
+/*	$scope.libCalificaciones = libCalificacionesdata;
+	$scope.libretaCalificaciones = function(alumno){
+		$scope.libCalificaciones = {};
 		$scope.libCalificaciones = libCalificacionesdata;//esta deberia ser una funcion que pida la libreta de calificaciones del alumno que recibe
 		//$scope.libCalificaciones.tooltip = $scope.tooltip;
 		modalService.set($scope.libCalificaciones);
@@ -170,7 +203,7 @@ $scope.libretaCalificaciones = function(alumno){
 		});
 
 		modalInstance2.$promise.then(modalInstance2.show);
-	}
+	}*/
 //File-Select
 
 $scope.upload = function (dataUrl) {
