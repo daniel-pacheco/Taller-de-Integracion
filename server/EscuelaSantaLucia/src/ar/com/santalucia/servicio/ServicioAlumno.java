@@ -58,8 +58,6 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 			throw new Exception("Hubo un problema al obtener el listado de ALUMNOS: " + ex.getMessage());
 		}
 	}
-
-	//public boolean getUsuariosByNomA
 	
 	@Override
 	public boolean addUsuario(Alumno usuario) throws Exception {
