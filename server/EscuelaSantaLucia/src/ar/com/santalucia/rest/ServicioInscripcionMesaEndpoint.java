@@ -178,11 +178,19 @@ public class ServicioInscripcionMesaEndpoint {
 	 * Registra cuando el alumno va o no a rendir.
 	 * Si se inscribió a la mesa y se presenta a rendir, se pone la nota correspondiente. Sino, se pone la falta.
 	 * 
+	 * 
 	 * Paso 0: crear mesaExamen
 	 * Paso 1: asignarInscripcionAMesaExamen(...)
 	 * Paso 2: inscripcion con asistencia true -> sigue paso 3
 	 * Paso 3: crear nota
 	 * Paso 4: asignarNotaAMesaExamen(...) -> esto ya asigna la materia a la nota
+	 * 
+	 * -- NUEVO FLUJO DE TAREAS
+	 * Paso 0: crear mesaExamenHist
+	 * Paso 1: Si la asistencia es 'true', sigue paso 2
+	 * Paso 2: crear nota
+	 * Paso 3: 
+	 * 
 	 * 
 	 * @param jsonPack [idInscripcion, idMesaExamen, ]
 	 * @return
