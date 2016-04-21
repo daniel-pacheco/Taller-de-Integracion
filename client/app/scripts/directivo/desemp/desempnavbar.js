@@ -12,7 +12,7 @@
  	$stateProvider
  	.state('directivo.desemp', {
  		url: '/desemp',
- 		templateUrl: 'scripts/directivo/desemp/desemp.html',
+ 		templateUrl: 'scripts/directivo/desemp/desempnavbar.html',
  		controller: 'DesempCtrl',
  		data: {
  			pageTitle: 'Desempeño'

@@ -1,7 +1,7 @@
 <h1>Desempe&ntilde;o</h1>
 <ul class="nav nav-tabs" >
 	<li role="presentation" style="margin:5px 5px 0px 0px">
-		<select  class="dropdown-toggle form-control" name="" ng-model="year"> <!-- ng-change="update(dropDownValue, option)"> -->
+		<select  class="dropdown-toggle form-control" style="width:100%" name="" ng-model="year"> <!-- ng-change="update(dropDownValue, option)"> -->
 			<option value="" disabled selected>Seleccione un a&ntilde;o</option>
 			<option value="{{year}}" ng-repeat="year in years" ng-click="activeYear(year)">{{year}}</option>
 
@@ -17,39 +17,41 @@
 			<li><a>2016</a></li>
 		</ul>
 	</li> -->
-	<li ng-repeat="item in cursos" role="presentation" ng-class="{active : activeMenu === item}" ng-click="seleccionar(item)"><a href="" ng-click="setActiveMenu(item)">{{item}}</a></li>
+	<li ng-repeat="item in cursos" role="presentation" ng-class="{active : activeMenu === item}" ng-click="seleccionar(item)" ui-sref="{{item[0]}}"><a href="" ng-click="setActiveMenu(item)">{{item[1]}}</a></li>
 </ul>
 
 
 <div class="form-group">
 	<div class="col-md-2 boxShadow">
-		<select  class="dropdown-toggle form-control" name="" ng-model="materia"> <!-- ng-change="update(dropDownValue, option)"> -->
+		<select  class="dropdown-toggle form-control" style="width:100%" name="" ng-model="materia"> <!-- ng-change="update(dropDownValue, option)"> -->
 			<option value="" disabled selected>Seleccione una materia</option>
 			<option value="{{materia}}" ng-repeat="materia in materias" ng-click="activeMateria(materia)">{{materia}}</option>
 		</select>
 		<br>
-		<div class="box-margin">
-			Filtro
-			<input type="radio" id="radio01" name="radio" />
-			<label for="radio01"><span></span>Mostrar todos</label>
-			<input type="radio" id="radio02" name="radio" />
-			<label for="radio02"><span></span>A diciembre</label>
-			<input type="radio" id="radio03" name="radio" />
-			<label for="radio03"><span></span>A marzo</label>			
+		<div class="box-margin-lib">
+			<p><label>Filtro</label></p>
+			<p><input type="radio" id="radio01" name="radio"><label for="radio01"><span></span>Mostrar todos</label></p>
+			<p><input type="radio" id="radio02" name="radio"><label for="radio02"><span></span>A diciembre</label></p>
+			<p><input type="radio" id="radio03" name="radio"><label for="radio03"><span></span>A marzo</label></p>			
 		</div>
 		<br>
-		<a href="">Porcentaje de inasistencias</a>
+		<p><a href="">Porcentaje de inasistencias</a></p>
 	</div>
 
 	<div class="col-md-7" style="margin-top: 1%">
-		<div class="box-margin" ng-model="year" ng-model="activeMenu" ng-model="materia">
-			{{year}} > {{activeMenu}} > {{materia}}
-		</div>
+		<div class="box-margin">
+		<p style="margin-bottom:0px">{{year}}<span ng-if="year" class="glyphicon glyphicon-chevron-right"></span>{{activeMenu[1]}}<span ng-if="materia" class="glyphicon glyphicon-chevron-right"></span>{{materia}}</p>
+	</div>
+
+	<div class="container-fluid">
+  		<div ui-view></div>
+	</div>
 	<!-- <div class="triangle-bottom"></div>
 	Seleccione un curso para obtener informaci&oacute;n m&aacute;s detallada
 	<br>
 	<div class="triangle-left">hola mundoooooooo</div> -->
-	<div id="listadoTodos" ng-show="listadoTodos" style="width: 80%; margin: 0% 6%">  <!--lista centrada -->
+	
+<!--	<div id="listadoTodos" ng-show="listadoTodos" style="width: 80%; margin: 0% 6%">  
 		Sin materia seleccionada
 		<table class="table table-hover table-striped">
 				<thead>
@@ -77,11 +79,11 @@
 					<td>{{alumno.marzo}}</td>
 					<td>{{alumno.notaFinal}}</td>
 					<td>{{alumno.cantFaltas}}</td>					
-					<!--<td style="width:10%;"><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipEdit" style="width:50%; cursor: pointer" class="glyphicon glyphicon-edit" ></span></td> 
+					<!-<td style="width:10%;"><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipEdit" style="width:50%; cursor: pointer" class="glyphicon glyphicon-edit" ></span></td> 
 					<td>{{alumno.name}}</td>
 					<td>{{alumno.phone}}</td>
 					<td>{{alumno.anio}}</td>
-					<td>{{$index}}</td> -->
+					<td>{{$index}}</td> ->
 				</tr>
 			</table> 
 
@@ -100,33 +102,33 @@
 					<td>{{alumno.name}}</td>
 					<td>{{alumno.DNI}}</td>
 					<td>{{alumno.details}}</td>					
-					<!--<td style="width:10%;"><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipEdit" style="width:50%; cursor: pointer" class="glyphicon glyphicon-edit" ></span></td> 
+					<!-<td style="width:10%;"><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipEdit" style="width:50%; cursor: pointer" class="glyphicon glyphicon-edit" ></span></td> 
 					<td>{{alumno.name}}</td>
 					<td>{{alumno.phone}}</td>
 					<td>{{alumno.anio}}</td>
-					<td>{{$index}}</td> -->
+					<td>{{$index}}</td> ->
 				</tr>
 			</table> 
 	</div>	
 
-	<div id="listadoPrimero" ng-show="listadoPrimero" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
+	<div id="listadoPrimero" ng-show="listadoPrimero" style="width: 80%; margin: 0% 10%">  
 		hola {{cursos.primero}}
 	</div>	
-	<div id="listadoSegundo" ng-show="listadoSegundo" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
+	<div id="listadoSegundo" ng-show="listadoSegundo" style="width: 80%; margin: 0% 10%">  
 		{{cursos.segundo}}
 	</div>	
 
-	<div id="listadoTercero" ng-show="listadoTercero" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
+	<div id="listadoTercero" ng-show="listadoTercero" style="width: 80%; margin: 0% 10%">  
 		hola {{cursos.tercero}}
 	</div>	
-	<div id="listadoCuarto" ng-show="listadoCuarto" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
+	<div id="listadoCuarto" ng-show="listadoCuarto" style="width: 80%; margin: 0% 10%">  
 		{{cursos.cuarto}}
 	</div>	
 
-	<div id="listadoQuinto" ng-show="listadoQuinto" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
+	<div id="listadoQuinto" ng-show="listadoQuinto" style="width: 80%; margin: 0% 10%">  
 		hola {{cursos.quinto}}
 	</div>	
-	<div id="listadoSexto" ng-show="listadoSexto" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
+	<div id="listadoSexto" ng-show="listadoSexto" style="width: 80%; margin: 0% 10%">  
 		{{cursos.sexto}}
 	</div>	
 </div>
@@ -138,5 +140,5 @@
 	<div class="boxShadow">
 		HelloHelloHelloHello HelloHelloHelloHello HelloHelloHello22
 	</div>
-</div>
+</div> -->
 </div>
