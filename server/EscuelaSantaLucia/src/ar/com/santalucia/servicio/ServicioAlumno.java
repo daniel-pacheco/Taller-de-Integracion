@@ -1,10 +1,13 @@
 package ar.com.santalucia.servicio;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorCurso;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
+import ar.com.santalucia.dominio.dto.AlumnoDTO;
+import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
 import ar.com.santalucia.dominio.modelo.sistema.login.Login;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
@@ -36,6 +39,11 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 		super();
 		gAlumno = new GestorAlumno();
 		gCurso = new GestorCurso();
+	}
+
+	@Override
+	public void closeSession() throws Exception {
+		gAlumno.closeSession();
 	}
 
 	@Override
@@ -134,29 +142,46 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 			throw ex;
 		}
 	}
-
-	/*
-	 * CANDIDATO A SUPRIMIR
-	 */
-	@Override
-	public boolean modifyUsuario(Alumno usuarioModificado) throws Exception {
-		try {
-			gAlumno.modify(usuarioModificado);
-			return true;
-		} catch (Exception ex) {
-			throw new Exception("Servicio modify(): no se pudo completar la operacion. " + ex.getMessage());
-		}
-	}
+	
+	
 	/*
 	 * 
 	 */
 
-	@Override
-	public void closeSession() throws Exception {
-		gAlumno.closeSession();
-	}
-
 	// No se incluyen los métodos para agregar mail, título o teléfono dado a
 	// que solo es necesario llamar a this.addUsuario(Alumno usuario)
+	
+	public ArrayList<AlumnoDTO> listAlumnosDTO() throws Exception {
+		ArrayList<AlumnoDTO> listaAlumnosDTO = new ArrayList<AlumnoDTO>();
+		ArrayList<Alumno> listaAlumnos = new ArrayList<Alumno>();
+		ServicioAcademico servicioAcademico = new ServicioAcademico();
+		try {
+			Alumno alumnoEx = new Alumno();
+			listaAlumnos = gAlumno.getByExample(alumnoEx);
+			for (Alumno a : listaAlumnos) {
+				AlumnoDTO aDTO = new AlumnoDTO(a.getNroDocumento(), a.getNombre(), a.getApellido(), "", "");
+				if (gCurso.getByDivision('0').getListaAlumnos().contains(a)) {
+					aDTO.setCurso("0 - Genérico");
+					aDTO.setAnio("---");
+				} else {
+					Anio anioEx = new Anio();
+					List<Anio> listaAnios = new ArrayList<Anio>();
+					listaAnios = servicioAcademico.getAnios(anioEx);
+					for (Anio anio : listaAnios) {
+						for (Curso c : anio.getListaCursos()) {
+							if (c.getListaAlumnos().contains(a)) {
+								aDTO.setCurso(c.getDivision() + " " + c.getTurno());
+								aDTO.setAnio(anio.getNombre());
+							}
+						}
+					}
+				}
+				listaAlumnosDTO.add(aDTO);
+			} 
+		} catch (Exception ex) {
+			throw new Exception("Ha ocurrido un error al listar los alumos: " + ex.getMessage());
+		}
+		return listaAlumnosDTO;
+	}
 
 }

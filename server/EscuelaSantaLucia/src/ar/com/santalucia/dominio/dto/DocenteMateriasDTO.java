@@ -3,7 +3,9 @@ package ar.com.santalucia.dominio.dto;
 import java.util.ArrayList;
 
 /**
- * DocenteMateriasDTO: contiene información de un docente y las materias que dicta
+ * DocenteMateriasDTO: contiene información de un docente con los años en que
+ * dicta materias las materias que dicta y las áreas a las que se ve afectado
+ * por las materias.
  * 
  * @author Eric
  * @version 1.0
@@ -13,18 +15,22 @@ public class DocenteMateriasDTO {
 	private Long dniDocente;
 	private String nombreDocente;
 	private String apellidoDocente;
-	private ArrayList<String> materias;
+	private ArrayList<String> anios;
+	private ArrayList<String> areas;
+	private ArrayList<MateriaAreaDTO> materias;
 
 	public DocenteMateriasDTO() {
 		super();
 	}
 
-	public DocenteMateriasDTO(Long dniDocente, String nombreDocente, String apellidoDocente,
-			ArrayList<String> materias) {
+	public DocenteMateriasDTO(Long dniDocente, String nombreDocente, String apellidoDocente, ArrayList<String> anios,
+			ArrayList<String> areas, ArrayList<MateriaAreaDTO> materias) {
 		super();
 		this.dniDocente = dniDocente;
 		this.nombreDocente = nombreDocente;
 		this.apellidoDocente = apellidoDocente;
+		this.anios = anios;
+		this.areas = areas;
 		this.materias = materias;
 	}
 
@@ -52,11 +58,27 @@ public class DocenteMateriasDTO {
 		this.apellidoDocente = apellidoDocente;
 	}
 
-	public ArrayList<String> getMaterias() {
+	public ArrayList<String> getAnios() {
+		return anios;
+	}
+
+	public void setAnios(ArrayList<String> anios) {
+		this.anios = anios;
+	}
+
+	public ArrayList<String> getAreas() {
+		return areas;
+	}
+
+	public void setAreas(ArrayList<String> areas) {
+		this.areas = areas;
+	}
+
+	public ArrayList<MateriaAreaDTO> getMaterias() {
 		return materias;
 	}
 
-	public void setMaterias(ArrayList<String> materias) {
+	public void setMaterias(ArrayList<MateriaAreaDTO> materias) {
 		this.materias = materias;
 	}
 
