@@ -139,18 +139,7 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 		return titulos;
 	}
 
-	/*
-	 * CANDIDATO A SUPRIMIR
-	 */
-	@Override
-	public boolean modifyUsuario(Personal usuarioModificado) throws Exception {
-		try {
-			gPersonal.modify(usuarioModificado);
-			return true;
-		} catch (Exception ex) {
-			throw new Exception("Servicio modify(): no se pudo completar la operacion. " + ex.getMessage());
-		}
-	}
+
 	/*
 	 * 
 	 */
@@ -158,13 +147,12 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 	@Override
 	public boolean removeUsuario(Personal usuario) throws Exception {
 		try {
-			//gPersonal.delete(usuario);
 			if(usuario.getRol().equals(Personal.DOCENTE_DIRECTIVO)){
 				usuario.setRol(Personal.DIRECTIVO);
 			}else{
 				usuario.setActivo(false);
 			}
-			modifyUsuario(usuario);	
+			gPersonal.modify(usuario);
 			return true;
 		} catch (Exception ex) {
 			throw new Exception("Hubo un problema al eliminar el DOCENTE: " + ex.getMessage());

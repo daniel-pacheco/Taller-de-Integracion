@@ -35,13 +35,13 @@
  })
  
  .constant('CURSOS',{
- 	todos: 'Todos',
- 	primero: 'Primero',
- 	segundo: 'Segundo',
- 	tercero: 'Tercero',
- 	cuarto: 'Cuarto',
- 	quinto: 'Quinto',
- 	sexto: 'Sexto'
+ 	todos: ['.todos' ,'Todos'],
+ 	primero: ['.primero', 'Primero'],
+ 	segundo: ['.segundo','Segundo'],
+ 	tercero: ['.tercero','Tercero'],
+ 	cuarto: ['.cuarto','Cuarto'],
+ 	quinto: ['.quinto','Quinto'],
+ 	sexto: ['.sexto','Sexto']
  })
 
  .constant('appConstants', 42);

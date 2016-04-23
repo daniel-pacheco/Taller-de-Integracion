@@ -10,6 +10,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotas;
+import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotasHist;
 import ar.com.santalucia.dominio.modelo.desempenio.Nota;
 import ar.com.santalucia.dominio.modelo.desempenio.Trimestre;
 import ar.com.santalucia.servicio.ServicioAcademico;
@@ -91,6 +92,17 @@ public class ServicioDesempenioEndpoint {
 			setInstance();
 			Boolean resultado = servicioDesempenio.pasarAHistorico(boletinNotas);
 			return Response.ok(resultado).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
+	
+	@PUT
+	@Path("/bol/addHist")
+	public Response addBoletinHistorico(BoletinNotasHist boletinHistorico) {
+		try {
+			setInstance();
+			return Response.ok(servicioDesempenio.addBoletinHistorico(boletinHistorico)).build();
 		} catch (Exception ex) {
 			return Response.ok(ex).build();
 		}

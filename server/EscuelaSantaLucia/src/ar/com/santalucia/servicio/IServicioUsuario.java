@@ -90,13 +90,6 @@ public interface IServicioUsuario<T> {
 	 */
 	boolean modifyTitulo(Titulo tituloModificado) throws Exception; 								
 	/**
-	 * Modifica un objeto de tipo Usuario. Para realizar operaciones de modificación y bajas de objetos asociados a estos, prefiera los métodos modifyObjeto() y/o deleteObjeto().
-	 * @param usuarioModificado Objeto de tipo Usuario que se desea modificar.
-	 * @return True si la operación se pudo completar exitosamente,
-	 * @throws Exception Lanzada en caso de existir un problema, si el objeto a modificar no está en estado persistente o por error de validación.
-	 */
-	boolean modifyUsuario(T usuarioModificado) throws Exception;
-	/**
 	 * Elimina un objeto de tipo Teléfono que esté en estado persistente.
 	 * @param idTelefono Id del objeto de tipo Telefono que se desea eliminar.
 	 * @return True si la operación se pudo completar exitosamente.

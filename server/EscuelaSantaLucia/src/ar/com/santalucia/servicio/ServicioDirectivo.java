@@ -141,18 +141,7 @@ public class ServicioDirectivo extends ServicioUsuario<Personal> {
 		return titulos;
 	}
 
-	/*
-	 * CANDIDATO A SUPRIMIR
-	 */
-	@Override
-	public boolean modifyUsuario(Personal usuarioModificado) throws Exception {
-		try {
-			gPersonal.modify(usuarioModificado);
-			return true;
-		} catch (Exception ex) {
-			throw new Exception("Servicio modify(): no se pudo completar la operacion. " + ex.getMessage());
-		}
-	}
+
 	/*
 	 * 
 	 */
@@ -166,7 +155,8 @@ public class ServicioDirectivo extends ServicioUsuario<Personal> {
 			}else{
 				usuario.setActivo(false);
 			}
-			modifyUsuario(usuario);
+			//modifyUsuario(usuario);
+			gPersonal.modify(usuario);
 			return true;
 		} catch (Exception ex) {
 			throw new Exception("Hubo un problema al eliminar el DIRECTIVO: " + ex.getMessage());

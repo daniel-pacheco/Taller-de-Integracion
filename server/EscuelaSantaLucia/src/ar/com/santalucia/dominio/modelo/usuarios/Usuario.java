@@ -163,9 +163,9 @@ public class Usuario {
 	@Override
 	public boolean equals(Object obj) {
 		Usuario usuario = (Usuario) obj;
-		if ((this.idUsuario == usuario.idUsuario) &&
-				(this.nroDocumento == usuario.idUsuario) &&
-				(this.tipoDocumento == usuario.tipoDocumento)){
+		if ((this.idUsuario.equals(usuario.idUsuario)) &&
+				(this.nroDocumento.equals(usuario.idUsuario)) &&
+				(this.tipoDocumento.equals(usuario.tipoDocumento))) {
 			return true;
 		}
 		return false;

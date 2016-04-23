@@ -119,18 +119,6 @@ public class ServicioDesempenio {
 				MateriaNotasBoletin materiaNotasBoletin = new MateriaNotasBoletin();
 				materiaNotasBoletin.setMateria(m.getNombre());
 				for (Trimestre t : trimestres) {
-//					materiaNotasBoletin.setNotaTrimestre1((
-//						t.getOrden().equals(1) && t.getMateria().getNombre().equals(m.getNombre())
-//							? t.getNotaFinal().getCalificacion().intValue()
-//							:null));
-//					materiaNotasBoletin.setNotaTrimestre2((
-//						t.getOrden().equals(2) && t.getMateria().getNombre().equals(m.getNombre())
-//							? t.getNotaFinal().getCalificacion().intValue()
-//							:null));
-//					materiaNotasBoletin.setNotaTrimestre3((
-//						t.getOrden().equals(3) && t.getMateria().getNombre().equals(m.getNombre())
-//							? t.getNotaFinal().getCalificacion().intValue()
-//							:null));
 					if (t.getOrden().equals(1) && t.getMateria().getNombre().equals(m.getNombre())) {
 						materiaNotasBoletin.setNotaTrimestre1(t.getNotaFinal().getCalificacion().intValue());
 					}
@@ -142,14 +130,6 @@ public class ServicioDesempenio {
 					}
 				}
 				for (Nota ne : notasExtras) {
-//					materiaNotasBoletin.setNotaDiciembre(
-//						ne.getTipo().equals(Nota.DICIEMBRE) && ne.getMateria().getNombre().equals(m.getNombre())
-//						? ne.getCalificacion().intValue()
-//						: null);
-//					materiaNotasBoletin.setNotaDiciembre(
-//						ne.getTipo().equals(Nota.MARZO) && ne.getMateria().getNombre().equals(m.getNombre())
-//						? ne.getCalificacion().intValue()
-//						: null);
 					if (ne.getTipo().equals(Nota.DICIEMBRE) && ne.getMateria().getNombre().equals(m.getNombre())) {
 						materiaNotasBoletin.setNotaDiciembre(ne.getCalificacion().intValue());
 					}
@@ -169,6 +149,14 @@ public class ServicioDesempenio {
 		return true;
 	}
 
+	public Boolean addBoletinHistorico(BoletinNotasHist boletinHistorico) throws Exception {
+		try {
+			gBoletinHist.add(boletinHistorico); // validar id
+		} catch (Exception ex) {
+			throw new Exception("No se pudo agregar el BOLETÍN HISTÓRICO: " + ex.getMessage());
+		}
+		return true;
+	}
 	
 	public Boolean addNota(Nota nota) throws Exception { // EN ENDPOINT
 		try {
