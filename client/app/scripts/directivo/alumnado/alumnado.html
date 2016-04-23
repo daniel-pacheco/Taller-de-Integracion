@@ -13,6 +13,9 @@
 				<li ng-class="{active : activeMenuIzqAlu === 2}" data-target="#nuevoPerfil">
 					<a href="" ng-click="seleccionar('nuevoPerfil'); setActiveAlu(2)">Nuevo Perfil</a>
 				</li>
+				<li ng-class="{active : activeMenuIzqAlu === 3}" ng-show="showEditProfileMenuIzq " data-target="#editarPerfil">
+					<a href="">Editar Perfil</a>
+				</li>
 			</ul>
 		</div>
 		<!--/ngInclude: 'views/partials/affixed-sidebar.html' -->
@@ -52,7 +55,7 @@
 	<br>
 	{{response}}
 -->
-<div id="listado" ng-show="listado1">
+<div id="listado" ng-show="listado">
 	<fieldset class="navbar">
 		<h1>Listado: <small>Seleccione el a&ntilde;o lectivo del que desa listar los alumnos</small></h1>
 		<hr>
@@ -129,7 +132,7 @@
 	
 </div>
 
-<div id="nuevoPerfil" ng-show="!listado1">
+<div id="nuevoPerfil" ng-show="nuevoPerfil">
 	<fieldset>
 		<h1>{{subtitle}}: <small>Ingrese los datos para crear un nuevo perfil
 			de alumno y haga clic en guardar cuando finalice</small></h1>

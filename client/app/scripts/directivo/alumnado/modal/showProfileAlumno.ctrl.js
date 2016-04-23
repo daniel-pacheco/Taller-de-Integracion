@@ -11,7 +11,7 @@ angular.module('clientAppApp')
   //  This close function doesn't need to use jQuery or bootstrap, because
   //  the button has the 'data-dismiss' attribute.
   $scope.close = function() {
-    close(alumno.nroDocumento, 500); // close, sends the first parameter but give 500ms for bootstrap to animate
+    close($scope.alumno, 500); // close, sends the first parameter but give 500ms for bootstrap to animate
   };
 
   //  This cancel function must use the bootstrap, 'modal' function because
