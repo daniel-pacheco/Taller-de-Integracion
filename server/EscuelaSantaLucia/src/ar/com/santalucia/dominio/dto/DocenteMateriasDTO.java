@@ -4,8 +4,7 @@ import java.util.ArrayList;
 
 /**
  * DocenteMateriasDTO: contiene información de un docente con los años en que
- * dicta materias las materias que dicta y las áreas a las que se ve afectado
- * por las materias.
+ * dicta materias las materias que dicta.
  * 
  * @author Eric
  * @version 1.0
@@ -16,7 +15,7 @@ public class DocenteMateriasDTO {
 	private String nombreDocente;
 	private String apellidoDocente;
 	private ArrayList<String> anios;
-	private ArrayList<String> areas;
+	//private ArrayList<String> areas;
 	private ArrayList<MateriaAreaDTO> materias;
 
 	public DocenteMateriasDTO() {
@@ -24,13 +23,13 @@ public class DocenteMateriasDTO {
 	}
 
 	public DocenteMateriasDTO(Long dniDocente, String nombreDocente, String apellidoDocente, ArrayList<String> anios,
-			ArrayList<String> areas, ArrayList<MateriaAreaDTO> materias) {
+			/*ArrayList<String> areas,*/ ArrayList<MateriaAreaDTO> materias) {
 		super();
 		this.dniDocente = dniDocente;
 		this.nombreDocente = nombreDocente;
 		this.apellidoDocente = apellidoDocente;
 		this.anios = anios;
-		this.areas = areas;
+		//this.areas = areas;
 		this.materias = materias;
 	}
 
@@ -65,7 +64,7 @@ public class DocenteMateriasDTO {
 	public void setAnios(ArrayList<String> anios) {
 		this.anios = anios;
 	}
-
+	/*
 	public ArrayList<String> getAreas() {
 		return areas;
 	}
@@ -73,7 +72,7 @@ public class DocenteMateriasDTO {
 	public void setAreas(ArrayList<String> areas) {
 		this.areas = areas;
 	}
-
+	*/
 	public ArrayList<MateriaAreaDTO> getMaterias() {
 		return materias;
 	}

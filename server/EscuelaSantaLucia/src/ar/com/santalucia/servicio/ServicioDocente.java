@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Set;
 
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
+import ar.com.santalucia.dominio.dto.DocenteMateriasDTO;
+import ar.com.santalucia.dominio.dto.MateriaAreaDTO;
+import ar.com.santalucia.dominio.modelo.academico.Anio;
+import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
@@ -164,5 +168,47 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 		gPersonal.closeSession();
 
 	}
+	
+	/*
+	 * 
+	 */
 
+	
+	public ArrayList<DocenteMateriasDTO> listDocentesMateriasDTO() throws Exception {
+		ArrayList<DocenteMateriasDTO> listaDocentesMateriasDTO = new ArrayList<DocenteMateriasDTO>();
+		ArrayList<Personal> listaDocentes = new ArrayList<Personal>();
+		ServicioAcademico servicioAcademico = new ServicioAcademico();
+		try {
+			Personal personal = new Personal();
+			listaDocentes = gPersonal.getByExample(personal);
+			for (Personal p: listaDocentes) {
+				DocenteMateriasDTO docenteDTO = new DocenteMateriasDTO(p.getNroDocumento(), p.getNombre(), p.getApellido(), null, null);
+				Anio anioEx = new Anio();
+				List<Anio> listaAnios = new ArrayList<Anio>();
+				listaAnios = servicioAcademico.getAnios(anioEx);
+				for (Anio a: listaAnios) {
+					for (Materia m: a.getListaMaterias()) {
+						if (m.getDocenteTitular() != null) {
+							if (m.getDocenteTitular().equals(p)) {
+								ArrayList<String> anios = (docenteDTO.getMaterias() == null) ? new ArrayList<String>() : docenteDTO.getAnios();
+								if (!anios.contains(a.getNombre())) {
+									anios.add(a.getNombre());
+								}
+								docenteDTO.setAnios(anios);
+								ArrayList<MateriaAreaDTO> materias = (docenteDTO.getMaterias() == null) ? new ArrayList<MateriaAreaDTO>() : docenteDTO.getMaterias();
+								materias.add(new MateriaAreaDTO(m.getNombre(), m.getArea().getNombre()));
+								docenteDTO.setMaterias(materias);
+							} 
+						}
+					}
+				}
+				listaDocentesMateriasDTO.add(docenteDTO);
+			}
+		} catch (Exception ex) {
+			throw new Exception("Ha ocurrido un error al listar los docentes y materias: " + ex.getMessage());
+		}
+		return listaDocentesMateriasDTO;
+	}
+	
+	
 }
