@@ -50,7 +50,7 @@ public class Alumno extends Usuario {
 	public boolean equals(Object obj) {
 		if (obj instanceof Alumno) {
 			Alumno alumno = (Alumno) obj;
-			if ((this.idUsuario.equals(alumno.idUsuario)) && (this.nroDocumento.equals(alumno.idUsuario))
+			if ((this.idUsuario.equals(alumno.idUsuario)) && (this.nroDocumento.equals(alumno.nroDocumento))
 					&& (this.tipoDocumento.equals(alumno.tipoDocumento)) && (this.matricula.equals(alumno.matricula))) {
 				return true;
 			} 

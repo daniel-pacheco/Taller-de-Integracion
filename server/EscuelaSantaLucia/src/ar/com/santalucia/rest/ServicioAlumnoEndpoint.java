@@ -302,8 +302,7 @@ public class ServicioAlumnoEndpoint{
 			//e.printStackTrace();
 			return Response.ok(ex).build();
 		}
-	}	
-	
+	}
 	
 	/*
 	 * Endpoint light
