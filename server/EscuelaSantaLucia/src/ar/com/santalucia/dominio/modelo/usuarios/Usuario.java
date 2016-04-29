@@ -160,14 +160,59 @@ public class Usuario {
 		return this.nombre + " " + this.apellido;
 	}	
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((idUsuario == null) ? 0 : idUsuario.hashCode());
+		result = prime * result + ((nombreUsuario == null) ? 0 : nombreUsuario.hashCode());
+		result = prime * result + ((tipoDocumento == null) ? 0 : tipoDocumento.hashCode());
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
-		Usuario usuario = (Usuario) obj;
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Usuario))
+			return false;
+		Usuario other = (Usuario) obj;
+		if (idUsuario == null) {
+			if (other.idUsuario != null)
+				return false;
+		} else if (!idUsuario.equals(other.idUsuario))
+			return false;
+		if (nombreUsuario == null) {
+			if (other.nombreUsuario != null)
+				return false;
+		} else if (!nombreUsuario.equals(other.nombreUsuario))
+			return false;
+		if (tipoDocumento == null) {
+			if (other.tipoDocumento != null)
+				return false;
+		} else if (!tipoDocumento.equals(other.tipoDocumento))
+			return false;
+		return true;
+	}
+	
+	/*
+	 * OTRO EQUALS
+	 * 
+	 * Usuario usuario = (Usuario) obj;
 		if ((this.idUsuario.equals(usuario.idUsuario)) &&
 				(this.nroDocumento.equals(usuario.idUsuario)) &&
 				(this.tipoDocumento.equals(usuario.tipoDocumento))) {
 			return true;
 		}
 		return false;
-	}
+	 */
+	
 }

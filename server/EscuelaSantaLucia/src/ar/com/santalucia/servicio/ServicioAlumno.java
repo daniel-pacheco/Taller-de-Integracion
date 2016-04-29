@@ -7,10 +7,14 @@ import java.util.Set;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorCurso;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
 import ar.com.santalucia.dominio.dto.AlumnoDTO;
+import ar.com.santalucia.dominio.dto.DocenteMateriasDTO;
+import ar.com.santalucia.dominio.dto.MateriaAreaDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
+import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.sistema.login.Login;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
+import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
@@ -156,11 +160,12 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 		ArrayList<Alumno> listaAlumnos = new ArrayList<Alumno>();
 		ServicioAcademico servicioAcademico = new ServicioAcademico();
 		try {
-			Alumno alumnoEx = new Alumno();
+			Alumno alumnoEx = new Alumno(); // alumno nulo de ejemplo
 			listaAlumnos = gAlumno.getByExample(alumnoEx);
 			for (Alumno a : listaAlumnos) {
 				AlumnoDTO aDTO = new AlumnoDTO(a.getNroDocumento(), a.getNombre(), a.getApellido(), "", "");
-				if (gCurso.getByDivision('0').getListaAlumnos().contains(a)) {
+				Set<Alumno> listaAluCurso = gCurso.getByDivision('0').getListaAlumnos();
+				if (listaAluCurso.contains(a)) {
 					aDTO.setCurso("0 - Genérico");
 					aDTO.setAnio("---");
 				} else {
