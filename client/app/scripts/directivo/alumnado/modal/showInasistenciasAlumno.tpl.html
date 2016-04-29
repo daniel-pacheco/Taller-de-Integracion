@@ -119,21 +119,21 @@
 					<form name="form" novalidate ng-submit="addInasistencia()">	
 						<div class="panel-heading">
 							<div class="form-group  col-sm-3 col-md-3 col-xs-3 col-lg-3" ng-class="{ 'has-error': form.fecha.$touched && form.fecha.$invalid }">
-								<input type="text" name="fecha" value="currentDate" class="form-control" ng-model="libInasistencias.listaInasistencias.fecha" placeholder="10/10/1010" maxlength="10" required pattern="^(0?[1-9]|[12][0-9]|3[01])[\/](0?[1-9]|1[012])[/\\/](19|20)\d{2}"/>
+								<input type="text" name="fecha" class="form-control" ng-model="nuevaInasistencia.fecha" value="{{currentDate}}" placeholder="10/10/1010" maxlength="10" required pattern="^(0?[1-9]|[12][0-9]|3[01])[\/](0?[1-9]|1[012])[/\\/](19|20)\d{2}"/>
 								<div ng-messages="form.fecha.$error" ng-if="form.fecha.$touched && form.fecha.$invalid">
 									<div ng-message="pattern" class="help-block" style="position: fixed;">Formato invalido</div>
 									<div ng-message="required" class="help-block" style="position: fixed;">Complete este campo</div>
 								</div>
 							</div>
 							<div class="form-group  col-sm-2 col-md-2 col-xs-2 col-lg-2" ng-class="{ 'has-error': form.faltoA.$touched && form.faltoA.$invalid }">
-								<input type="text" name="faltoA" class="form-control"ng-model="libInasistencias.listaInasistencias.faltoA" placeholder="Ed física" required pattern="[a-zA-Z ]*" maxlength="18"/>
+								<input type="text" name="faltoA" class="form-control"ng-model="nuevaInasistencia.faltoA" placeholder="Ed física" required pattern="[a-zA-Z ]*" maxlength="18"/>
 								<div ng-messages="form.faltoA.$error" ng-if="form.faltoA.$touched && form.faltoA.$invalid">
 									<div ng-message="pattern" class="help-block" style="position: fixed;">Formato invalido</div>
 									<div ng-message="required" class="help-block" style="position: fixed;">Complete este campo</div>
 								</div>
 							</div>
 							<div class="form-group  col-sm-2 col-md-2 col-xs-2 col-lg-2" ng-class="{ 'has-error': form.cantidad.$touched && form.cantidad.$invalid }">
-								<input type="text" class="form-control" name="cantidad" ng-model="libInasistencias.listaInasistencias.cantidad" placeholder="0.5" maxlength="4" required pattern="^\d{1,3}(?:,\s?\d{3})*(?:\.\d*)?$">
+								<input type="text" class="form-control" name="cantidad" ng-model="nuevaInasistencia.cantidad" placeholder="0.5" maxlength="4" required pattern="^\d{1,3}(?:,\s?\d{3})*(?:\.\d*)?$">
 								<div ng-messages="form.cantidad.$error" ng-if="form.cantidad.$touched && form.cantidad.$invalid">
 									<div ng-message="pattern" class="help-block" style="position: fixed;">Formato invalido</div>
 									<div ng-message="required" class="help-block" style="position: fixed;">Complete este campo</div>
@@ -141,7 +141,7 @@
 							</div>
 							<div class="form-group col-sm-2 col-md-2 col-xs-2 col-lg-2" ng-class="{ 'has-error': form.justificada.$touched && form.justificada.$invalid }">
 								<input type="text" class="form-control" name="justificada"
-								ng-model="libInasistencias.listaInasistencias.justificada" placeholder="J/I"  maxlength="1" style="text-transform:uppercase;" required pattern="[ijIJ]">
+								ng-model="nuevaInasistencia.justificada" placeholder="J/I"  maxlength="1" style="text-transform:uppercase;" required pattern="[ijIJ]">
 								<div ng-messages="form.justificada.$error" ng-if="form.justificada.$touched && form.justificada.$invalid">
 									<div ng-message="pattern" class="help-block" style="position: fixed;">Formato invalido</div>
 									<div ng-message="required" class="help-block" style="position: fixed;">Complete este campo</div>

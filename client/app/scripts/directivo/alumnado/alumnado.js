@@ -21,6 +21,10 @@
  	});
  })
 
+
+
+  
+
  .directive('loading', function () {
  	return {
  		restrict: 'E',
@@ -36,7 +40,7 @@
  		}
  	}
  })
- .controller('AlumnadoCtrl', function ($scope, $q, $http, boletinInasistenciasData, libCalificacionesdata, alumnoService, Upload, $timeout, alumnoData, ModalService) {
+ .controller('AlumnadoCtrl', function ($scope, $q, $http, boletinInasistenciasData, $alert, libCalificacionesdata, plantillaTrimestralData, alumnoService, Upload, $timeout, alumnoData, ModalService) {
  	$scope.listado = true;
  	$scope.listFilterIsEnabled = false;
 
@@ -266,12 +270,42 @@ $scope.dropDownCursoValue = '';
 $scope.dropDownDivisionOptions = ['U', 'A', 'B', 'C'];
 $scope.dropDownDivisionValue = '';
 
+$scope.dropDownAnioOptions = ['Primero', 'Segundo', 'Tercero', 'Cuarto', 'Quinto', 'Sexto'];
+$scope.dropDownAnioValue = '';
+
 $scope.filterByName = '';
 
+$scope.subtitle = "Listado";
 $scope.seleccionar = function (id){
+	switch (id){
+		case 'listado':
+			$scope.nuevoPerfil = false;
+			$scope.subtitle = "Listado";
+			$scope.showEditProfileMenuIzq = false;
+			$scope.notas = false;
+			$scope.listado = true;
+			break;
+		case 'nuevoPerfil':
+			$scope.listado = false;
+			$scope.subtitle = "Nuevo Alumno";
+			$scope.nuevoAlumno = null;
+			$scope.showEditProfileMenuIzq = false; 
+			$scope.notas = false;
+			$scope.nuevoPerfil = true;
+			break;
+		case 'notas':
+			$scope.listado = false;
+			$scope.nuevoPerfil = false;
+			$scope.subtitle = "Notas";
+			$scope.showEditProfileMenuIzq = false;
+			$scope.notas = true;
+			break;
 
+
+	}
 	if (id === 'listado') {
 		$scope.nuevoPerfil = false;
+		$scope.subtitle = "Listado";
 		$scope.listado = true;
 		$scope.showEditProfileMenuIzq = false;
 
@@ -298,9 +332,6 @@ $scope.setActiveAlu = function(menuItemAlu) {
 };
 
 
-$scope.subtitle = "Nuevo Alumno"
-
-
 $scope.alumnoEdit = null;
 $scope.editProfile = function(alumno) {
 	$scope.listado = false;
@@ -308,7 +339,7 @@ $scope.editProfile = function(alumno) {
 	$scope.nuevoPerfil = true;
 	$scope.nuevoAlumno = alumno;
 	$scope.showEditProfileMenuIzq = true;
-	$scope.setActiveAlu(3);//esto pinta editar perfil en el menú izq
+	$scope.setActiveAlu(4);//esto pinta editar perfil en el menú izq
 }
 
 
@@ -364,11 +395,32 @@ var alumnoJson = {
 	"activo"          : true
 };
 
+/*collapse*/
+$scope.panels = {};
+  $scope.panels.activePanel = 0;
+
+  $scope.multiplePanels = {
+    activePanels: [null]
+  };
+
+  $scope.asignarPlantillaTrim = function (trim){//esto debería consultar la planilla del trim
+$scope.notasTrim = {};
+$scope.notasTrim = plantillaTrimestralData;
+
+  };
+
+
+$scope.showAsignarNotas = function () {
+if (!$scope.asignarNotas) {
+		$scope.asignarNotas = true;
+	};
+};
+
 $scope.answer = [];
 $scope.alumnoData = [];
 $scope.showData = function() {
-	$scope.loading = true;
-	  /*$http.get(alumnoData) esto es para que muestre el loading mientras carga, el http da 404 xq no tengo servidor
+	/*$scope.loading = true;
+	  $http.get(alumnoData) esto es para que muestre el loading mientras carga, el http da 404 xq no tengo servidor
 	   .success(function(data) {
            $scope.alumnoData = data[0].alumnoData;
             $scope.loading = false;

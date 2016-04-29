@@ -5,6 +5,7 @@ angular.module('clientAppApp')
 
     $scope.title = title;
     $scope.libInasistencias = {}; 
+    $scope.nuevaInasistencia = {};
   //$scope.dni = docente.nroDocumento;
   var copiaLibInasistencias = angular.copy (libInasistencias)
 $scope.libInasistencias = libInasistencias;//creo la copia para poder editarla tranquilo
@@ -60,16 +61,23 @@ if (mm < 10)
 
 var yyyy = today.getFullYear(); 
 
-$scope.currentDate = dd+"/"+mm+"/"+yyyy;
-$scope.addInasistencia = function(){//Esto agrega una fila dinamicamente en el boletin de inasistencias
+currentDay = dd+"/"+mm+"/"+yyyy;
+
+$scope.nuevaInasistencia.fecha = currentDay;
+
+$scope.addInasistencia = function
+(){//Esto agrega una fila dinamicamente en el boletin de inasistencias
   libInasistencias.listaInasistencias.push({
-    'fecha':$scope.libInasistencias.listaInasistencias.fecha, 
-    'faltoA': $scope.libInasistencias.listaInasistencias.faltoA, 
-    'cantidad':$scope.libInasistencias.listaInasistencias.cantidad, 
-    'justificada':$scope.libInasistencias.listaInasistencias.justificada.toUpperCase() });
-  $scope.libInasistencias.listaInasistencias.faltoA="";
-  $scope.libInasistencias.listaInasistencias.cantidad="";
-  $scope.libInasistencias.listaInasistencias.justificada="";
+    'fecha':$scope.nuevaInasistencia.fecha, 
+    'faltoA': $scope.nuevaInasistencia.faltoA, 
+    'cantidad':$scope.nuevaInasistencia.cantidad, 
+    'justificada':$scope.nuevaInasistencia.justificada.toUpperCase() });
+  $scope.nuevaInasistencia.faltoA = "";
+  $scope.nuevaInasistencia.cantidad = "";
+  $scope.nuevaInasistencia.justificada = "";
+  $scope.nuevaInasistencia.fecha = "";
+  $scope.form.$setUntouched();
+  $scope.nuevaInasistencia.fecha = currentDay;
 };
 
 $scope.saveEditInasistencia = function(position) {

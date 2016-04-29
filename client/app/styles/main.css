@@ -322,6 +322,11 @@ h1 {
   font-size: 26px;
 }
 
+h2 {
+  font-size: 21px;
+}
+
+
 
 .nav > li > a:hover {
  -webkit-transition: all 0.2s ease-in-out;
@@ -348,4 +353,24 @@ h1 {
 
 .desaprobado {
   color: red;
+}
+
+
+
+.Rotate-90
+{
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+ 
+  -webkit-transform-origin: 50% 50%;
+  -moz-transform-origin: 50% 50%;
+  -ms-transform-origin: 50% 50%;
+  -o-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+   top: 50px;
+  width: 20px;
+
 }
