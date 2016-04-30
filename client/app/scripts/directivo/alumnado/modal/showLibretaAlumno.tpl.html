@@ -55,7 +55,7 @@
 								<tbody>
 									<tr ng-repeat="libreta in libCalificaciones.notas">
 										<td>{{libreta.Materia}}</td>
-										<td class="text-center" ng-class="{ 'desaprobado': {{libreta.NotaPrimT}} < 6 }">{{libreta.NotaPrimT}}</td>
+										<td class="text-center" ng-class="{ 'desaprobado': {{libreta.NotaPrimT}} < 6 }"><!-- Esto del color lo pueden querer personalizable -->{{libreta.NotaPrimT}}</td>
 										<td class="text-center">{{libreta.NotaSeguT}}</td>
 										<td class="text-center">{{libreta.NotaTercT}}</td>
 										<td class="text-center">{{libreta.NotaFinal}}</td>

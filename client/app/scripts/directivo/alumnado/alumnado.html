@@ -13,6 +13,12 @@
 				<li ng-class="{active : activeMenuIzqAlu === 2}" data-target="#nuevoPerfil">
 					<a href="" ng-click="seleccionar('nuevoPerfil'); setActiveAlu(2)">Nuevo Perfil</a>
 				</li>
+				<li ng-class="{active : activeMenuIzqAlu === 3}" data-target="#notas">
+					<a href="" ng-click="seleccionar('notas'); setActiveAlu(3)">Notas</a>
+				</li>
+				<li ng-class="{active : activeMenuIzqAlu === 4}" ng-show="showEditProfileMenuIzq " data-target="#editarPerfil">
+					<a href="">Editar Perfil</a>
+				</li>
 			</ul>
 		</div>
 		<!--/ngInclude: 'views/partials/affixed-sidebar.html' -->
@@ -52,9 +58,9 @@
 	<br>
 	{{response}}
 -->
-<div id="listado" ng-show="listado1">
-	<fieldset class="navbar">
-		<h1>Listado: <small>Seleccione el a&ntilde;o lectivo del que desa listar los alumnos</small></h1>
+<div id="listado" ng-show="listado">
+	<fieldset class="">
+		<h1>{{subtitle}}: <small>Seleccione el a&ntilde;o lectivo del que desa listar los alumnos</small></h1>
 		<hr>
 		
 		<div class="panel panel-default">
@@ -65,9 +71,9 @@
 				<option value="">Todos</option>
 				<option ng-repeat="option in dropDownOptions" value="{{option}}">{{option}}</option>
 			</select>{{dropDownValue}}
-
 			<input type="text" class="form-control-inline" ng-show="dropDownValue === 'DNI/MAT'">
-			<button class="btn btn-default" ng-click="search()">Buscar</button>
+			<button class="btn btn-default" ng-click="search()"  title="Ayuda: " data-content="Selecciones uno o varios alumnos para colocar multiples inasistencias" data-type="info" data-duration="4" data-container="#alerts-container" bs-alert>Buscar</button>
+			<div id="alerts-container" style="width:60%; float:right;" class="small"></div>
 		</div>
 	</div>
 	<div ng-show="loading">
@@ -126,10 +132,9 @@
 			</table>
 		</div>
 	</fieldset>
-	
 </div>
 
-<div id="nuevoPerfil" ng-show="!listado1">
+<div id="nuevoPerfil" ng-show="nuevoPerfil">
 	<fieldset>
 		<h1>{{subtitle}}: <small>Ingrese los datos para crear un nuevo perfil
 			de alumno y haga clic en guardar cuando finalice</small></h1>
@@ -408,5 +413,95 @@
 
 		</form>
 	</fieldset>
+
+</div>
+
+<div id="notas" ng-show="notas">
+	<fieldset class="navbar">
+		<h1>{{subtitle}}: <small>Asigne notas trimestrales o gesti&oacute;n de hist&oacute;ricos</small></h1>
+		<hr>
+		
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<label>Seleccione a&ntilde;o y curso: </label> 
+
+				<select class="dropdown-toggle form-control-inline" name="" ng-model="dropDownAnioValue"> <!-- ng-change="update(dropDownValue, option)"> -->
+					<option value="" disabled selected>Seleccione un a&ntilde;o</option>
+
+					<option ng-repeat="optionAnio in dropDownAnioOptions" value="{{optionAnio}}">{{optionAnio}}</option>
+				</select>
+
+				<select	class="dropdown-toggle form-control-inline" name="" ng-model="dropDownDivisionValue"> <!-- ng-change="update(dropDownValue, option)"> -->
+					<option value="" disabled selected>Seleccione un curso</option>
+
+					<option ng-repeat="optionDivision in dropDownDivisionOptions" value="{{optionDivision}}">{{optionDivision}}</option>
+				</select>
+
+				<button class="btn btn-default" ng-click="showAsignarNotas()">Buscar</button>
+			</div>
+		</div>
+		<div ng-show="loading">
+			<loading></loading>
+		</div>
+
+		<div id="asignarNotas" ng-show="asignarNotas">
+			<div class="panel-group" ng-model="multiplePanels.activePanels" data-allow-multiple="true" role="tablist" aria-multiselectable="true" bs-collapse>
+				<div class="panel panel-default">
+					<div class="panel-heading" style="cursor: pointer" ng-click="asignarPlantillaTrim(1)" bs-collapse-toggle>
+						<div class="panel-title">
+							Primer Trimestre
+							
+						</div>
+					</div>
+					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
+						<div class="panel-body form-group table-responsive">
+							<table class="table table-hover table-striped table-condensed table-bordered">
+								<thead>
+									<tr style="height: 95px; position: relative;">
+										<th class="col-md-3">
+											<button type="button" class="btn btn-success btn-block btn-md" style="float: top">Editar Plantilla</button>
+										</th>
+									</th>	
+									<th class="Rotate-90 col-md-1" ng-repeat="mate in notasTrim.listaTrimestres[0].notas" style="vertical-align: middle; padding: inherit;" >{{mate.materia}}</th>	<!--Esto toma del primer alumno la lista de materias y las muestra en el head-->
+								</tr>
+							</thead>
+							<tr ng-repeat="lista in notasTrim.listaTrimestres">
+								<td class="col-md-3">{{$index+1}} - {{lista.alumno}}</td>
+								<!-- <td ng-repeat="nota in lista.notas"><input ng-model="nota.nota" type="text" class="form-control" style="width: 48px; height: 27px; margin: auto"></td> -->
+								<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">{{nota.nota}}</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading" style="cursor: pointer" ng-click="asignarPlantillaTrim(2)" bs-collapse-toggle>
+					<div class="panel-title">
+						Segundo Trimestre
+
+					</div>
+				</div>
+				<div class="panel-collapse" role="tabpanel" bs-collapse-target>
+					<div class="panel-body">
+						<!-- {{ panels[1].body }} -->
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading" style="cursor: pointer" ng-click="asignarPlantillaTrim(3)" bs-collapse-toggle>
+					<div class="panel-title">
+						Tercer Trimestre
+						
+					</div>
+				</div>
+				<div class="panel-collapse" role="tabpanel" bs-collapse-target>
+					<div class="panel-body">
+						<!-- {{ panels[2].body }} -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</fieldset>
 
 </div>

@@ -345,4 +345,20 @@ public class ServicioDocenteEndpoint {
 			return Response.ok(ex).build();
 		}
 	}
+	
+	
+	
+	/*
+	 * Endpoint light
+	 */
+	@GET
+	@Path("/listAllMin")
+	public Response listDocentesMateriasDTO() {
+		try {
+			setInstance();
+			return Response.ok(servicioDocente.listDocentesMateriasDTO()).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
 }

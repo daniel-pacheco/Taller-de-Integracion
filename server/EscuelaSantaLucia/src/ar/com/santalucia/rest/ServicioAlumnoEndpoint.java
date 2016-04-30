@@ -302,5 +302,20 @@ public class ServicioAlumnoEndpoint{
 			//e.printStackTrace();
 			return Response.ok(ex).build();
 		}
-	}	
+	}
+	
+	/*
+	 * Endpoint light
+	 */
+	@GET
+	@Path("/listAllMin")
+	public Response listAlumnosDTO() {
+		try {
+			setInstance();
+			return Response.ok(servicioAlumno.listAlumnosDTO()).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
+	
 }

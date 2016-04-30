@@ -68,4 +68,20 @@ public class Personal extends Usuario {
 		this.cuil = cuil;
 	}
 
+	/* (non-Javadoc)
+	 * @see ar.com.santalucia.dominio.modelo.usuarios.Usuario#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Personal) {
+			Personal personal = (Personal) obj;
+			if ((this.idUsuario.equals(personal.idUsuario)) && (this.nroDocumento.equals(personal.nroDocumento))
+					&& (this.tipoDocumento.equals(personal.tipoDocumento)) && (this.cuil.equals(personal.cuil))) {
+				return true;
+			} 
+		}
+		return false;
+	}
+	
+
 }

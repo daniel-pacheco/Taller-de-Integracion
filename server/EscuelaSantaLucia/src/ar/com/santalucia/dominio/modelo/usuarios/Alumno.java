@@ -24,8 +24,6 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 
 public class Alumno extends Usuario {
 
-	
-
 	private Long matricula;
 
 	public Alumno() {
@@ -50,13 +48,19 @@ public class Alumno extends Usuario {
 	
 	@Override
 	public boolean equals(Object obj) {
-		Alumno alumno = (Alumno) obj;
-		if ((this.idUsuario == alumno.idUsuario) &&
-				(this.nroDocumento == alumno.idUsuario) &&
-				(this.tipoDocumento == alumno.tipoDocumento) &&
-				(this.matricula == alumno.matricula)){
-			return true;
+		if (obj instanceof Alumno) {
+			Alumno alumno = (Alumno) obj;
+			if ((this.idUsuario.equals(alumno.idUsuario)) && (this.nroDocumento.equals(alumno.nroDocumento))
+					&& (this.tipoDocumento.equals(alumno.tipoDocumento)) && (this.matricula.equals(alumno.matricula))) {
+				return true;
+			} 
 		}
 		return false;
 	}
+
+	@Override
+	public int hashCode() {
+		return idUsuario.hashCode();
+	}	
+	
 }
