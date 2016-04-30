@@ -69,33 +69,33 @@ angular.module('clientAppApp')
 
   var newDocente = function(){
     var docente = {
-        "idUsuario"     : 0,
-        "nroDocumento"  : 0,
-        "tipoDocumento" : "DU/DNI",
-        "nombre"        : "",
-        "apellido"      : "",
-        "cuil"          : 0,
-        "rol"           : "",
-        "listaTelefonos" :[],
-        "listaMails"    :[],
-        "domicilio"         :{},
-        "listaTitulos": [],
-        "sexo"            : "",
-        "nombreUsuario"   : "",
-        "fechaNacimiento" : "",
-        "activo"          : false
+      "idUsuario"     : 0,
+      "nroDocumento"  : 0,
+      "tipoDocumento" : "DU/DNI",
+      "nombre"        : "",
+      "apellido"      : "",
+      "cuil"          : 0,
+      "rol"           : "",
+      "listaTelefonos" :[],
+      "listaMails"    :[],
+      "domicilio"         :{},
+      "listaTitulos": [],
+      "sexo"            : "",
+      "nombreUsuario"   : "",
+      "fechaNacimiento" : "",
+      "activo"          : false
     };
     return doncente;
   };
 
   var newDocenteLight = function(){ //no creo que se use pero queda de referencia
     var docente = {
-        "nroDocumento" : 0,
-        "nombre" : "",
-        "apellido" : "",
-        "año" : [],
-        "area": [],
-        "materia" : []
+      "nroDocumento" : 0,
+      "nombre" : "",
+      "apellido" : "",
+      "año" : [],
+      "area": [],
+      "materia" : []
     };
     return doncente;
   };
@@ -109,12 +109,46 @@ angular.module('clientAppApp')
     return titulo;
   };
 
+  var newEstadisticaAnioCurso = function(){
+    var estadisticaAnioCurso = {
+      "cicloLectivo": 0,
+      "anio": '',
+      "division": 'U',
+      "cantAlumnos": 0,
+      "materias":[],
+      "trimestres":[],
+      "desempenioAnual":{}
+    };
+    return estadisticaAnioCurso;
+  };
+
+  var newEstadisticaMateria = function(){
+    var estadisticaMateria = {
+      "nombre": '',
+      "aprobados": 0,
+      "desaprobados": 0
+    };
+    return estadisticaMateria;
+  };
+
+  var newEstadisticaTrimestre = function(){
+    var estadisticaTrimestre = {
+      "aprobados": 0,
+      "debenUna": 0,
+      "debenDosOMas": 0
+    };
+    return estadisticaTrimestre;
+  };
+
   return {
     newAlumno: newAlumno,
     newTelefono: newTelefono,
     newMail: newMail,
     newDomicilio: newDomicilio,
     newDocente: newDocente,
+    newEstadisticaAnioCurso: newEstadisticaAnioCurso,
+    newEstadisticaMateria: newEstadisticaMateria,
+    newEstadisticaTrimestre: newEstadisticaTrimestre
   }
 //};
 })

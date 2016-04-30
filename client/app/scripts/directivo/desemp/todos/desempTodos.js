@@ -52,7 +52,7 @@ $(function () {
                 name: 'Aprobados',
                 y: 56.33
             }, {
-                name: 'Deben a lo sumo 2 materias',
+                name: 'Deben 1 materia',
                 y: 24.03,
                 sliced: true,
                 selected: true
