@@ -172,7 +172,6 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 	/*
 	 * 
 	 */
-
 	
 	public ArrayList<DocenteMateriasDTO> listDocentesMateriasDTO() throws Exception {
 		ArrayList<DocenteMateriasDTO> listaDocentesMateriasDTO = new ArrayList<DocenteMateriasDTO>();
@@ -188,17 +187,21 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 				listaAnios = servicioAcademico.getAnios(anioEx);
 				for (Anio a: listaAnios) {
 					for (Materia m: a.getListaMaterias()) {
-						if (m.getDocenteTitular() != null) {
-							if (m.getDocenteTitular().equals(p)) {
-								ArrayList<String> anios = (docenteDTO.getMaterias() == null) ? new ArrayList<String>() : docenteDTO.getAnios();
-								if (!anios.contains(a.getNombre())) {
-									anios.add(a.getNombre());
-								}
-								docenteDTO.setAnios(anios);
-								ArrayList<MateriaAreaDTO> materias = (docenteDTO.getMaterias() == null) ? new ArrayList<MateriaAreaDTO>() : docenteDTO.getMaterias();
-								materias.add(new MateriaAreaDTO(m.getNombre(), m.getArea().getNombre()));
-								docenteDTO.setMaterias(materias);
-							} 
+						ArrayList<String> anios = (docenteDTO.getMaterias() == null) ? new ArrayList<String>() : docenteDTO.getAnios();
+						if (!anios.contains(a.getNombre())) {
+							anios.add(a.getNombre());
+						}
+						docenteDTO.setAnios(anios);
+						ArrayList<MateriaAreaDTO> materias = (docenteDTO.getMaterias() == null) 
+																? new ArrayList<MateriaAreaDTO>() 
+																: docenteDTO.getMaterias();
+						if ((m.getDocenteTitular() != null) && (m.getDocenteTitular().equals(p))) {
+							materias.add(new MateriaAreaDTO(m.getNombre(), MateriaAreaDTO.TITULAR, m.getArea().getNombre()));
+							docenteDTO.setMaterias(materias);
+						}
+						if ((m.getDocenteSuplente() != null) && (m.getDocenteSuplente().equals(p))) {
+							materias.add(new MateriaAreaDTO(m.getNombre(), MateriaAreaDTO.SUPLENTE, m.getArea().getNombre()));
+							docenteDTO.setMaterias(materias);
 						}
 					}
 				}

@@ -4,7 +4,7 @@ import java.util.List;
 
 import ar.com.santalucia.aplicacion.gestor.academico.GestorInscripcion;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMesa;
-import ar.com.santalucia.aplicacion.gestor.academico.GestorMesaExamen;
+import ar.com.santalucia.aplicacion.gestor.academico.GestorMesaExamenHist;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorNota;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
 import ar.com.santalucia.dominio.modelo.academico.Inscripcion;
@@ -25,7 +25,7 @@ import ar.com.santalucia.excepciones.ValidacionException;
 public class ServicioInscripcionMesa {
 	
 	private GestorInscripcion gInscripcion;
-	private GestorMesaExamen gMesaExamen;
+	private GestorMesaExamenHist gMesaExamenHist;
 	private GestorNota gNota;
 	private GestorMesa gMesa;
 	private GestorAlumno gAlumno;
@@ -33,7 +33,7 @@ public class ServicioInscripcionMesa {
 	public ServicioInscripcionMesa() throws Exception{
 		try {
 			gInscripcion = new GestorInscripcion();
-			gMesaExamen = new GestorMesaExamen();
+			gMesaExamenHist = new GestorMesaExamenHist();
 			gMesa = new GestorMesa();
 			gAlumno = new GestorAlumno();
 			gNota = new GestorNota();
@@ -108,15 +108,15 @@ public class ServicioInscripcionMesa {
 	}
 	
 	
-	public Boolean addMesaExamen(MesaExamenHist mesaExamen) throws Exception {
+	public Boolean addMesaExamenHist(MesaExamenHist mesaExamenHist) throws Exception {
 		try {
-			if (mesaExamen.getIdMesaExamenHist() == null) {
-				gMesaExamen.add(mesaExamen);
+			if (mesaExamenHist.getIdMesaExamenHist() == null) {
+				gMesaExamenHist.add(mesaExamenHist);
 			} else {
-				gMesaExamen.modify(mesaExamen);
+				gMesaExamenHist.modify(mesaExamenHist);
 			}
 		} catch (Exception ex) {
-			throw new Exception("No se pudo dar de alta la MESA-EXAMEN: " + ex.getMessage());
+			throw new Exception("No se pudo dar de alta la MESAEXAMENHIST: " + ex.getMessage());
 		}
 		
 		return true;
@@ -124,7 +124,7 @@ public class ServicioInscripcionMesa {
 	
 	public Boolean deleteMesaExamen(MesaExamenHist mesaExamen) throws Exception {
 		try {
-			gMesaExamen.delete(mesaExamen);
+			gMesaExamenHist.delete(mesaExamen);
 		} catch (Exception ex) {
 			throw new Exception("No se pudo eliminar la MESA-EXAMEN: " + ex.getMessage());
 		}
@@ -134,7 +134,7 @@ public class ServicioInscripcionMesa {
 	
 	public MesaExamenHist getMesaExamen(Long idMesaExamen) throws Exception {
 		try {
-			return gMesaExamen.getById(idMesaExamen);
+			return gMesaExamenHist.getById(idMesaExamen);
 		} catch (Exception ex) {
 			throw new Exception("No se pudo obtener la MESA-EXAMEN: " + ex.getMessage());
 		}
@@ -142,7 +142,7 @@ public class ServicioInscripcionMesa {
 	
 	public List<MesaExamenHist> listMesaExamen(MesaExamenHist example) throws Exception {
 		try {
-			return gMesaExamen.getByExample(example);
+			return gMesaExamenHist.getByExample(example);
 		} catch (Exception ex) {
 			throw new Exception("No se pudo obtener la lista de MESA-EXAMEN: " + ex.getMessage());
 		}
@@ -151,9 +151,9 @@ public class ServicioInscripcionMesa {
 	/*
 	public Boolean asignarInscripcionAMesaExamen(Inscripcion inscripcion, Long idMesaExamen) throws Exception {
 		try {
-			MesaExamen mesaExamen = gMesaExamen.getById(idMesaExamen);
+			MesaExamen mesaExamen = gMesaExamenHist.getById(idMesaExamen);
 			mesaExamen.setInscripcion(inscripcion);
-			gMesaExamen.modify(mesaExamen);
+			gMesaExamenHist.modify(mesaExamen);
 		} catch (Exception ex) {
 			throw new Exception("No se pudo asignar la INSCRIPCION a la MESA-EXAMEN: " + ex.getMessage());
 		}
@@ -232,7 +232,7 @@ public class ServicioInscripcionMesa {
 			mesaExamen.setFechaHoraInicioMesa(inscripcion.getMesa().getFechaHoraInicio());
 			mesaExamen.setFechaHoraFinMesa(inscripcion.getMesa().getFechaHoraFin());
 			
-			gMesaExamen.add(mesaExamen);
+			gMesaExamenHist.add(mesaExamen);
 		} catch (Exception ex) {
 			throw new Exception("No se pudo agregar la MESA-EXAMEN: " + ex.getMessage());
 		}
@@ -250,10 +250,10 @@ public class ServicioInscripcionMesa {
 			 * 4) modify mesa-examen
 			 * 5) modify nota
 			 *//*
-			MesaExamen mesaExamen = gMesaExamen.getById(idMesaExamen);
+			MesaExamen mesaExamen = gMesaExamenHist.getById(idMesaExamen);
 			mesaExamen.setNota(nota);
 			nota.setMateria(mesaExamen.getInscripcion().getMesa().getMateria());
-			gMesaExamen.modify(mesaExamen);
+			gMesaExamenHist.modify(mesaExamen);
 			gNota.modify(nota);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

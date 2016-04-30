@@ -132,7 +132,7 @@ public class ServicioInscripcionMesaEndpoint {
 	public Response updateMesaExamen(MesaExamenHist mesaExamen) {
 		try {
 			setInstance();
-			servicioInscripcionMesa.addMesaExamen(mesaExamen);
+			servicioInscripcionMesa.addMesaExamenHist(mesaExamen);
 			return Response.ok(mesaExamen.getIdMesaExamenHist()).build();
 		} catch (Exception ex) {
 			return Response.ok(ex).build();

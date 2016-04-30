@@ -23,7 +23,7 @@ public class DocenteMateriasDTO {
 	}
 
 	public DocenteMateriasDTO(Long dniDocente, String nombreDocente, String apellidoDocente, ArrayList<String> anios,
-			/*ArrayList<String> areas,*/ ArrayList<MateriaAreaDTO> materias) {
+			/*ArrayList<String> areas,*/ArrayList<MateriaAreaDTO> materias) {
 		super();
 		this.dniDocente = dniDocente;
 		this.nombreDocente = nombreDocente;
