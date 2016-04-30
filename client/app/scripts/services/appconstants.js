@@ -44,4 +44,11 @@
  	sexto: ['.sexto','Sexto']
  })
 
+.constant('DESEMP_LIMITES', {
+	ins: [0, 4], //[,)
+	reg: [4, 6], //[,)
+	bien: [6,8],
+	mBien: [8,9],
+	exc: [9,10]
+})
  .constant('appConstants', 42);
