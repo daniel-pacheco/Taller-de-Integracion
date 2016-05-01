@@ -4,14 +4,18 @@ package ar.com.santalucia.dominio.modelo.academico;
  * Clase MateriaHist: guarda información histórica de materias
  * 
  * @author Eric
- * @version 1.0
+ * @version 1.1
  *
  */
+
+// Último modificador: Ariel Ramírez @ 30-04-2016 11:02
 
 public class MateriaHist {
 	private Long idMateriaHist;
 	private String nombreMateria;
 	private String descripcionMateria;
+	private String nombreAnio;
+	private String cicloLectivo;
 
 	public MateriaHist() {
 		super();
@@ -46,6 +50,22 @@ public class MateriaHist {
 
 	public void setDescripcionMateria(String descripcionMateria) {
 		this.descripcionMateria = descripcionMateria;
+	}
+
+	public String getNombreAnio() {
+		return nombreAnio;
+	}
+
+	public void setNombreAnio(String nombreAnio) {
+		this.nombreAnio = nombreAnio;
+	}
+
+	public String getCicloLectivo() {
+		return cicloLectivo;
+	}
+
+	public void setCicloLectivo(String cicloLectivo) {
+		this.cicloLectivo = cicloLectivo;
 	}
 
 }

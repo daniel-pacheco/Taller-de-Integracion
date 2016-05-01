@@ -1,5 +1,7 @@
 package ar.com.santalucia.servicio;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -8,6 +10,7 @@ import ar.com.santalucia.aplicacion.gestor.academico.GestorArea;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorCurso;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorLlamado;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMateria;
+import ar.com.santalucia.aplicacion.gestor.academico.GestorMateriaHist;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMesa;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
@@ -16,6 +19,7 @@ import ar.com.santalucia.dominio.modelo.academico.Area;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
 import ar.com.santalucia.dominio.modelo.academico.Llamado;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
+import ar.com.santalucia.dominio.modelo.academico.MateriaHist;
 import ar.com.santalucia.dominio.modelo.academico.Mesa;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
@@ -29,7 +33,7 @@ import ar.com.santalucia.excepciones.ValidacionException;
  *
  */
 
-// Último modificador: Ariel Ramirez @ 23-12-2015 16:59
+// Último modificador: Ariel Ramirez @ 01-05-2016
 
 public class ServicioAcademico {
 
@@ -41,6 +45,7 @@ public class ServicioAcademico {
 	private GestorPersonal gDocente;
 	private GestorLlamado gLlamado;
 	private GestorMesa gMesa;
+	private GestorMateriaHist gMateriaHistorica;
 
 	public ServicioAcademico() throws Exception {
 		try {
@@ -52,6 +57,7 @@ public class ServicioAcademico {
 			gDocente = new GestorPersonal();
 			gLlamado = new GestorLlamado();
 			gMesa = new GestorMesa();
+			gMateriaHistorica = new GestorMateriaHist();
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un problema al inicializar el servicio de operaciones básicas: "
 					+ ex.getMessage());
@@ -65,6 +71,11 @@ public class ServicioAcademico {
 				gAnio.add(anio);
 			}
 			else {
+				Anio anioAux = new Anio();
+				anioAux = getAnio(anio.getIdAnio());
+				if ( ! ((anioAux.getNombre()).equals(anio.getNombre())) || ! ((anioAux.getCicloLectivo()).equals(anio.getCicloLectivo())) ){
+					crearMateriaHist(anioAux);
+				}
 				gAnio.modify(anio);
 			}
 			
@@ -251,6 +262,11 @@ public class ServicioAcademico {
 				gMateria.add(materia);
 			}
 			else {
+				Materia materiaAux = getMateria(materia.getIdMateria());
+				if( !(materiaAux.getNombre()).equals(materia.getNombre()) ) // Comparar nombre viejo y nuevo
+				{
+					crearMateriaHistorica(materiaAux);
+				}
 				gMateria.modify(materia);
 			}
 			return true;
@@ -566,10 +582,86 @@ public class ServicioAcademico {
 		}
 	}
 	
-	/*
-	 * 
-	 * */
+	/**
+	 * Crear un registro histórico en MateriaHist.
+	 * @param elemento
+	 * @throws Exception
+	 */
+	private void crearMateriaHistorica(Object elemento) throws Exception{
+		if(elemento instanceof Materia){  
+			crearMateriaHist((Materia)elemento); 						// Si se recibe una Materia
+		}else{
+			if(elemento instanceof Anio){
+				crearMateriaHist((Anio)elemento); 					// Si se recibe un Año
+			}else{
+				throw new Exception("No se pudo crear el histórico");
+			}
+		}
+	}
 	
+	/**
+	 * Crear un registro histórico en MateriaHist si se recibe una Materia.
+	 * @param materia
+	 * @return
+	 * @throws Exception
+	 */
+	private Boolean crearMateriaHist(Materia materia) throws Exception{
+		/* Cargamos datos de la materia al histórico */
+		MateriaHist materiaHistorica = new MateriaHist();
+		materiaHistorica.setNombreMateria(materia.getNombre());
+		materiaHistorica.setDescripcionMateria(materia.getDescripcion());
+		/* Localizar el año */
+		Anio anio = encontrarAnioDeMateria(materia); // Método nuevo
+		if (anio != null){
+			materiaHistorica.setNombreAnio(anio.getNombre());
+			materiaHistorica.setCicloLectivo(anio.getCicloLectivo());
+			gMateriaHistorica.add(materiaHistorica); // Persistir
+			return true;
+		}
+		return false;	
+	}
+	
+	/**
+	 * Devuelve el Año al que pertenece la materia recibida.
+	 * @param materia
+	 * @return
+	 * @throws Exception
+	 */
+	private Anio encontrarAnioDeMateria(Materia materia) throws Exception{
+		List<Anio> listaAnio = new ArrayList<Anio>();
+		Set<Materia>listaMateria = new HashSet<Materia>();
+		Anio anioExample = new Anio();  //Establezco un ejemplo de anio
+		anioExample.setActivo(true);
+		listaAnio = getAnios(anioExample); // :O tendría que ser listAnio() y que traiga solo los activos;
+		for(Anio a:listaAnio){
+			listaMateria = a.getListaMaterias();
+			for(Materia m:listaMateria){
+				if((m.getNombre()).equals(materia.getNombre())){
+					return a;
+				}
+			}		
+		}
+		return null; // No se encontró el año.
+	}
+	
+	/**
+	 * Crear un registro histórico en MateriaHist si se recibe un Anio.
+	 * @param anio
+	 * @return
+	 * @throws Exception
+	 */
+	private Boolean crearMateriaHist(Anio anio) throws Exception{
+		Set<Materia> listaMaterias = anio.getListaMaterias();
+		MateriaHist materiaHistorica = new MateriaHist();
+		materiaHistorica.setNombreAnio(anio.getNombre());
+		materiaHistorica.setCicloLectivo(anio.getCicloLectivo());
+		for (Materia m:listaMaterias){
+			materiaHistorica.setNombreMateria(m.getNombre());
+			materiaHistorica.setDescripcionMateria(m.getDescripcion());
+			gMateriaHistorica.add(materiaHistorica);
+		}
+		return true;
+	}
 	
 	public void closeSession() throws Exception {
 		gAnio.closeSession();

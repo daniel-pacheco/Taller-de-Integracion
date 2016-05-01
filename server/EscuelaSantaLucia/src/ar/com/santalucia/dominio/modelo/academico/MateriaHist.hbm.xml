@@ -14,5 +14,11 @@
         <property name="descripcionMateria" type="java.lang.String">
             <column name="DESCRIPCIONMATERIA" />
         </property>
+        <property name="nombreAnio" type="java.lang.String">
+            <column name="NOMBREANIO" />
+        </property>
+        <property name="cicloLectivo" type="java.lang.String">
+            <column name="CICLOLECTIVO" />
+        </property>
     </class>
 </hibernate-mapping>
