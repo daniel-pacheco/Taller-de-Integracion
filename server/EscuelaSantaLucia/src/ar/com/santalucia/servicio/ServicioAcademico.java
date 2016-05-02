@@ -76,7 +76,7 @@ public class ServicioAcademico {
 				if ( ! ((anioAux.getNombre()).equals(anio.getNombre())) || ! ((anioAux.getCicloLectivo()).equals(anio.getCicloLectivo())) ){
 					crearMateriaHist(anioAux);
 				}
-				gAnio.modify(anio);
+				gAnio.modify(completarAnioPersistente(anio));
 			}
 			
 		} 
@@ -152,7 +152,7 @@ public class ServicioAcademico {
 	}
  
 	/*
-	public Boolean modifyCurso(Curso curso) throws Exception {			//CANDIDATO A SUPRIMIR
+	public Boolean modifyCurso(Curso curso) throws Exception {			//CANDIDATO A SUPRIMIR PORQUE addCurso TIENE LÓGICA NECESARIA PARA MODIFICAR
 		// TODO
 		// Usar el gestor de curso y pasar el curso modificado
 		try {
@@ -582,6 +582,9 @@ public class ServicioAcademico {
 		}
 	}
 	
+
+	// ##### MÉTODOS AUXILIARES #####
+	
 	/**
 	 * Crear un registro histórico en MateriaHist.
 	 * @param elemento
@@ -661,6 +664,24 @@ public class ServicioAcademico {
 			gMateriaHistorica.add(materiaHistorica);
 		}
 		return true;
+	}
+	
+	/**
+	 * Realiza la modificación de una entidad Anio que viene con datos propios, no agregados.
+	 * @param anioModif
+	 * @return Entidad Anio completa desde la entidad persistente, con los campos indicados modificados.
+	 * @throws Exception
+	 */
+	private Anio completarAnioPersistente(Anio anioModif) throws Exception{
+		// RECUPERAR POR ID EL AÑO COMPLETO
+		// MODIFICAR LOS DATOS
+		// DEVOLVER LA ENTIDAD MODIFICADA
+		Anio anioAux = this.getAnio(anioModif.getIdAnio()); 	// Obtengo el persistente (no copio el id porque ya viene con el objeto)
+		anioAux.setNombre(anioModif.getNombre());				// Copio los datos de la modificación al persistente copiado
+		anioAux.setDescripcion(anioModif.getDescripcion());
+		anioAux.setCicloLectivo(anioModif.getCicloLectivo());
+		anioAux.setActivo(anioModif.getActivo());
+		return anioAux;
 	}
 	
 	public void closeSession() throws Exception {
