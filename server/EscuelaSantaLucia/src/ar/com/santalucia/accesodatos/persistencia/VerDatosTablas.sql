@@ -14,3 +14,7 @@ select * from AREA;
 select * from LLAMADO;
 select * from MESA;
 select * from docente_mesa;
+
+select * from trimestre;
+select * from boletinnotashist;
+select * from materianotasboletin;
