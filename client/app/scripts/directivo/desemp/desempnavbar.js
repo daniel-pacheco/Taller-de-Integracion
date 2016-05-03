@@ -19,7 +19,7 @@
  		}
  	});
  })
- .controller('DesempCtrl', function ($scope, CURSOS) {
+ .controller('DesempCtrl', function ($scope, $rootScope, modalService, CURSOS) {
   this.awesomeThings = [
   'HTML5 Boilerplate',
   'AngularJS',
@@ -30,7 +30,7 @@
 
     $scope.years = ['2010', '2011', '2012', '2013', '2014'];
 
-    $scope.materias = ['Matem', 'Historia', 'Lengua', 'Geografia'];
+    $scope.materias = ['Todos', 'Matem', 'Historia', 'Lengua', 'Geografia'];
 
 
 
@@ -72,13 +72,22 @@
   };
   $scope.activeMenu = "";
   $scope.setActiveMenu = function(menuItem) {
-   $scope.activeMenu = menuItem
+   $scope.activeMenu = menuItem;
  };
  $scope.activeYear = function(yearSelect) {
-  $scope.year = yearSelect
+  $scope.year = yearSelect;
 };
 $scope.activeMateria = function(materiaSelect) {
-  $scope.materia = materiaSelect
+  console.log(materiaSelect);
+  $scope.materia = materiaSelect;
+  this.sendMessage(materiaSelect);
+
+};
+
+$scope.sendMessage = function(value){
+  
+  modalService.set(value);
+  $rootScope.$broadcast("myEvent");
 };
 
   //---test list alumnos notas

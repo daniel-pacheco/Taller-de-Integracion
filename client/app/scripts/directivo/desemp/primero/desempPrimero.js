@@ -10,9 +10,27 @@ angular.module('clientAppApp')
 		}
 	});
 })
-.controller('DesempPrimeroCtrl', function ($scope, modalService, ObjectsFactory, CURSOS) {
+.controller('DesempPrimeroCtrl', function ($scope, modalService, ObjectsFactory, CURSOS, DESEMP_LIMITES) {
 
 	$scope.titulo = "Primero Controler";
+    $scope.toggleView = false;
+    $scope.todos = true;
+
+    $scope.$on("myEvent",function () {
+        var message = modalService.get();
+
+        console.log('my event occurred: ' + message);
+
+
+        if (message !== 'Todos' && $scope.todos === true) {
+            $scope.estadisticaPorMateria.nombre = message;
+            $scope.toggleView = !$scope.toggleView;
+            $scope.todos = !$scope.todos;        
+        } else if (message === 'Todos' && $scope.todos !== true){
+            $scope.toggleView = !$scope.toggleView;
+            $scope.todos = !$scope.todos;        
+        };
+    });
 
 	$scope.calcNota = function(n1, n2, n3){
 		return Number((n1 + n2 + n3)/3).toFixed(2);
@@ -53,15 +71,36 @@ var addTrimestres = function(materias){
 
     materias.desempenioAnual = desempenio;
 
-
 }
 
+var addNotas = function(stats){
+    for (var i = 0; i < stats.cantAlumnos; i++) {
+        stats.notas.push(modalService.getRandomArbitrary(1, 10));
+    };
+}
+
+var addHistoricos = function(stats){
+    for (var i = modalService.getRandomInt(1, 5); i > 0; i--) {
+        
+        var historico = ObjectsFactory.newHistoricoPorMateria();
+
+        historico.cicloLectivo = (stats.cicloLectivo - i);
+        historico.cantAlumnos = modalService.getRandomInt(15, 30);
+        historico.aprobados = modalService.getRandomInt(0, historico.cantAlumnos);
+        historico.desaprobados = (historico.cantAlumnos - historico.aprobados);
+
+        stats.historico.push(historico);
+    };
+}
+
+//-- esto simula la llegada del objeto cargado con datos
 $scope.statsAnioCurso = ObjectsFactory.newEstadisticaAnioCurso();
 $scope.statsAnioCurso.cicloLectivo = 2016;
 $scope.statsAnioCurso.anio = 'Primero';
 $scope.statsAnioCurso.cantAlumnos = modalService.getRandomInt(15,30);
 addDiezMaterias($scope.statsAnioCurso);
 addTrimestres($scope.statsAnioCurso);
+//-- fin llegada del objeto
 
 console.log($scope.statsAnioCurso);
 
@@ -90,12 +129,6 @@ function listarTrimestres(trimestre, indice, arreglo){
 
 $scope.statsAnioCurso.materias.forEach(listarMaterias);
 $scope.statsAnioCurso.trimestres.forEach(listarTrimestres);
-console.log($scope.listaMaterias);
-console.log($scope.listaDesaprobados);
-console.log($scope.listaAprobados);
-console.log($scope.listaPromocionados);
-console.log($scope.listaDebenUna);
-console.log($scope.listaDebenDosOMas);
 
 $(function () {
     $('#DesempStackedBar').highcharts({
@@ -276,6 +309,70 @@ $(function () {
 
 
 //graficas especificando materias
+
+$scope.estadisticaPorMateria = ObjectsFactory.newEstadisticaPorMateria();
+$scope.estadisticaPorMateria.cicloLectivo = 2016;
+//$scope.estadisticaPorMateria.nombre = modalService.makeId(8);
+$scope.estadisticaPorMateria.anio = 'Primero';
+$scope.estadisticaPorMateria.division = 'U';
+$scope.estadisticaPorMateria.cantAlumnos = modalService.getRandomInt(15, 30);
+addNotas($scope.estadisticaPorMateria);
+addHistoricos($scope.estadisticaPorMateria);
+
+console.log($scope.estadisticaPorMateria);
+
+
+
+//--desempeño por materia
+
+$scope.rendimiento = {};
+$scope.rendimiento.ins = 0;
+$scope.rendimiento.reg = 0;
+$scope.rendimiento.bien = 0;
+$scope.rendimiento.mBien = 0;
+$scope.rendimiento.exc = 0;
+
+function listarRendimientoMateria(stats, index, array){
+
+    switch(true) {
+    case /*DESEMP_LIMITES.ins[0] <= stats && */stats < DESEMP_LIMITES.ins[1]:
+        $scope.rendimiento.ins += 1;
+        break;
+    case /*DESEMP_LIMITES.reg[0] <= stats && */stats < DESEMP_LIMITES.reg[1]:
+        $scope.rendimiento.reg += 1;
+        break;
+    case /*DESEMP_LIMITES.bien[0] <= stats && */stats < DESEMP_LIMITES.bien[1]:
+        $scope.rendimiento.bien += 1;
+        break;
+    case /*DESEMP_LIMITES.mBien[0] <= stats && */stats < DESEMP_LIMITES.mBien[1]:
+        $scope.rendimiento.mBien += 1;
+        break;
+    case /*DESEMP_LIMITES.exc[0] <= stats && */stats <= DESEMP_LIMITES.exc[1]:
+        $scope.rendimiento.exc += 1;
+        break;
+    // default:
+    //     default 
+    }
+}
+
+$scope.estadisticaPorMateria.notas.forEach(listarRendimientoMateria);
+console.log($scope.rendimiento);
+
+//-- historicos por materia
+$scope.historicoCiclos = [];
+$scope.historicoCantAlumnos = [];
+$scope.historicoAprobados = [];
+$scope.historicoDesaprobados = [];
+
+function listarHistoricoPorMateria(stats, index, array){
+
+    $scope.historicoCiclos.push(stats.cicloLectivo);
+    $scope.historicoCantAlumnos.push(stats.cantAlumnos);
+    $scope.historicoAprobados.push(stats.aprobados);
+    $scope.historicoDesaprobados.push(stats.desaprobados);
+}
+
+$scope.estadisticaPorMateria.historico.forEach(listarHistoricoPorMateria);
 //pieChartDrillDown materia
 
 	$(function () {
@@ -285,7 +382,7 @@ $(function () {
             type: 'pie'
         },
         title: {
-            text: 'Materia XXXXXX aprobados/desaprobados primer año U 2015'
+            text: 'Aprobados/desaprobados ' + $scope.estadisticaPorMateria.nombre + ' ' + $scope.estadisticaPorMateria.anio + ' año ' + $scope.estadisticaPorMateria.division + ' ' + $scope.estadisticaPorMateria.cicloLectivo
         },
         subtitle: {
             text: 'Click en el área para detalles'
@@ -301,19 +398,19 @@ $(function () {
         },
 
         tooltip: {
-            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+            //headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.percentage:.2f}%</b> del total<br/>'
         },
         series: [{
-            name: 'Materias',
+            name: $scope.estadisticaPorMateria.nombre,
             colorByPoint: true,
             data: [{
                 name: 'Aprobados',
-                y: 66.33,
+                y: $scope.rendimiento.bien + $scope.rendimiento.mBien + $scope.rendimiento.exc,
                 drilldown: 'Rendimiento aprobados'
             }, {
                 name: 'Desaprobados',
-                y: 33.67,
+                y: $scope.rendimiento.ins + $scope.rendimiento.reg,
                 drilldown: 'Rendimiento reprobados'
             }]
         }],
@@ -322,16 +419,16 @@ $(function () {
                 name: 'Aprobados',
                 id: 'Rendimiento aprobados',
                 data: [
-                    ['Excelente', 31.13],
-                    ['Muy bien', 19.26],
-                    ['Bien', 14.54]                    
+                    ['Excelente', $scope.rendimiento.exc],
+                    ['Muy bien', $scope.rendimiento.mBien],
+                    ['Bien', $scope.rendimiento.bien]                    
                 ]
             }, {
                 name: 'Reprobados',
                 id: 'Rendimiento reprobados',
                 data: [
-                    ['Regular', 23],
-                    ['Insuficiente', 10.67]
+                    ['Regular', $scope.rendimiento.reg],
+                    ['Insuficiente', $scope.rendimiento.ins]
                 ]
             }]
         },
@@ -349,15 +446,15 @@ $(function () {
             type: 'column'
         },
         title: {
-            text: 'Desempeño historico de la división en la materia XXXX'
+            text: 'Desempeño historico de la división ' + $scope.estadisticaPorMateria.dvision + ' en la materia: ' + $scope.estadisticaPorMateria.nombre
         },
         xAxis: {
-            categories: ['2011', '2012', '2013', '2014', '2015']
+            categories: $scope.historicoCiclos
         },
         yAxis: {
             min: 0,
             title: {
-                text: 'Cantidad de Alumnos'
+                text: 'Cantidad de Alumnos: ' + $scope.historicoCantAlumnos
             },
             stackLabels: {
                 enabled: true,
@@ -396,11 +493,11 @@ $(function () {
         },
         series: [{
             name: 'Desaprobados',
-            data: [15, 3, 4, 5, 2],
+            data: $scope.historicoDesaprobados,
             color: 'red'
         }, {
             name: 'Aprobados',
-            data: [8, 21, 19, 20, 20]
+            data: $scope.historicoAprobados
         }]
     });
 });

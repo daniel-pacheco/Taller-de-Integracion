@@ -33,7 +33,7 @@ import ar.com.santalucia.servicio.ServicioDocente;
  *
  */
 
-// Último modificador: Ariel Ramirez @ 26/12/2015 12:46
+// Último modificador: Ariel Ramirez @ 02-05-2016
 
 /*
  *Ejemplo JsonPack:
@@ -69,9 +69,10 @@ public class ServicioAcademicoEndpoint {
 	}
 
 	/**
-	 * Agrega o modifica un objeto de tipo Anio. Use este método cuando desee agregar un nuevo curso.<br>
-	 * El gestor de Anio cuenta con la lógica necesaria para detectar objetos Curso nuevos y agregarlos. No se realiza validaciones de nombre de Curso.
-	 * @param anio Objeto Anio que se desea agregar o modificar.
+	 * Agrega o modifica un objeto de tipo Anio. Use este método cuando desee agregar un nuevo curso (SÓLO SI ANIO TAMBIÉN ES NUEVO).<br>
+	 * El gestor de Anio cuenta con la lógica necesaria para detectar objetos Curso nuevos y agregarlos. No se realiza validaciones de nombre de Curso.<br>
+	 * ATENCIÓN: Es posible modificar sólo los atributos propios del Anio con este método. Para modificar o eliminar Curso y Materia, utilice los métodos correspondientes.
+	 * @param anio Objeto Anio que se desea agregar o modificar. Si se trata de una modificación, cargue los atributos de arreglos con null.
 	 * @return Id de anio si la operación es exitosa.
 	 */
 	@PUT

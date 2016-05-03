@@ -23,14 +23,14 @@
 
 <div class="form-group">
 	<div class="col-md-2 boxShadow">
-		<select  class="dropdown-toggle form-control" style="width:100%" name="" ng-model="materia"> <!-- ng-change="update(dropDownValue, option)"> -->
+		<select  class="dropdown-toggle form-control" style="width:100%" name="" ng-model="materia" ng-change="activeMateria(materia)"> <!-- ng-change="update(dropDownValue, option)"> -->
 			<option value="" disabled selected>Seleccione una materia</option>
-			<option value="{{materia}}" ng-repeat="materia in materias" ng-click="activeMateria(materia)">{{materia}}</option>
+			<option value="{{materia}}" ng-repeat="materia in materias">{{materia}}</option>
 		</select>
 		<br>
 		<div class="box-margin-lib">
 			<p><label>Filtro</label></p>
-			<p><input type="radio" id="radio01" name="radio"><label for="radio01"><span></span>Mostrar todos</label></p>
+			<p><input type="radio" id="radio01" name="radio" ng-click="sendMessage('Matem')"><label for="radio01"><span></span>Mostrar todos</label></p>
 			<p><input type="radio" id="radio02" name="radio"><label for="radio02"><span></span>A diciembre</label></p>
 			<p><input type="radio" id="radio03" name="radio"><label for="radio03"><span></span>A marzo</label></p>			
 		</div>

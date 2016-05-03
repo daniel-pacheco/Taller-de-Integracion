@@ -31,5 +31,8 @@ Generated 24/09/2015 16:41:55 by Hibernate Tools 3.4.0.CR1 -->
         <property name="activo" type="java.lang.Boolean">
             <column name="ACTIVO" />
         </property>
+        <property name="cicloLectivo" type="java.lang.String">
+            <column name="CICLOLECTIVO" />
+        </property>
     </class>
 </hibernate-mapping>

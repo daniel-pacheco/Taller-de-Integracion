@@ -140,6 +140,29 @@ angular.module('clientAppApp')
     return estadisticaTrimestre;
   };
 
+  var newEstadisticaPorMateria = function(){
+    var estadisticaPorMateria = {
+      "cicloLectivo": 0,
+      "nombre": '',
+      "anio": '',
+      "division": 'U',
+      "cantAlumnos": 0,
+      "notas": [], //length === cantAlumnos
+      "historico": []
+    };
+    return estadisticaPorMateria;
+  };
+
+  var newHistoricoPorMateria = function(){
+    var historicoPorMateria = {
+      "cicloLectivo": 0,
+      "cantAlumnos": 0,
+      "aprobados": 0,
+      "desaprobados": 0
+    };
+    return historicoPorMateria;
+  };
+
   return {
     newAlumno: newAlumno,
     newTelefono: newTelefono,
@@ -148,7 +171,9 @@ angular.module('clientAppApp')
     newDocente: newDocente,
     newEstadisticaAnioCurso: newEstadisticaAnioCurso,
     newEstadisticaMateria: newEstadisticaMateria,
-    newEstadisticaTrimestre: newEstadisticaTrimestre
+    newEstadisticaTrimestre: newEstadisticaTrimestre,
+    newEstadisticaPorMateria: newEstadisticaPorMateria,
+    newHistoricoPorMateria, newHistoricoPorMateria
   }
 //};
 })

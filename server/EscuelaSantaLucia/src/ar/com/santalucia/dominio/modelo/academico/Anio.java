@@ -10,7 +10,7 @@ import java.util.Set;
  *
 */
 
-//Último modificador: Eric Pennachini @ 05-11-15 18:46
+//Último modificador: Ariel Ramírez @ 30-04-2016 11:05
 
 public class Anio {
 	private Long idAnio;
@@ -18,6 +18,7 @@ public class Anio {
 	private String descripcion;
 	private Set<Curso> listaCursos;
 	private Set<Materia> listaMaterias;
+	private String cicloLectivo;
 	private Boolean activo;
 
 	public Anio() {
@@ -83,6 +84,14 @@ public class Anio {
 
 	public void setActivo(Boolean activo) {
 		this.activo = activo;
+	}
+
+	public String getCicloLectivo() {
+		return cicloLectivo;
+	}
+
+	public void setCicloLectivo(String cicloLectivo) {
+		this.cicloLectivo = cicloLectivo;
 	}
 
 }
