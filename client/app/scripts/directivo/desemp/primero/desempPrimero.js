@@ -13,6 +13,24 @@ angular.module('clientAppApp')
 .controller('DesempPrimeroCtrl', function ($scope, modalService, ObjectsFactory, CURSOS, DESEMP_LIMITES) {
 
 	$scope.titulo = "Primero Controler";
+    $scope.toggleView = false;
+    $scope.todos = true;
+
+    $scope.$on("myEvent",function () {
+        var message = modalService.get();
+
+        console.log('my event occurred: ' + message);
+
+
+        if (message !== 'Todos' && $scope.todos === true) {
+            $scope.estadisticaPorMateria.nombre = message;
+            $scope.toggleView = !$scope.toggleView;
+            $scope.todos = !$scope.todos;        
+        } else if (message === 'Todos' && $scope.todos !== true){
+            $scope.toggleView = !$scope.toggleView;
+            $scope.todos = !$scope.todos;        
+        };
+    });
 
 	$scope.calcNota = function(n1, n2, n3){
 		return Number((n1 + n2 + n3)/3).toFixed(2);
@@ -294,7 +312,7 @@ $(function () {
 
 $scope.estadisticaPorMateria = ObjectsFactory.newEstadisticaPorMateria();
 $scope.estadisticaPorMateria.cicloLectivo = 2016;
-$scope.estadisticaPorMateria.nombre = modalService.makeId(8);
+//$scope.estadisticaPorMateria.nombre = modalService.makeId(8);
 $scope.estadisticaPorMateria.anio = 'Primero';
 $scope.estadisticaPorMateria.division = 'U';
 $scope.estadisticaPorMateria.cantAlumnos = modalService.getRandomInt(15, 30);
@@ -380,7 +398,7 @@ $scope.estadisticaPorMateria.historico.forEach(listarHistoricoPorMateria);
         },
 
         tooltip: {
-            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            //headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
             pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.percentage:.2f}%</b> del total<br/>'
         },
         series: [{

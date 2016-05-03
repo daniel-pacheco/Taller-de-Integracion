@@ -1,91 +1,94 @@
 <!-- -->
-{{titulo}}
-
-<h3>Todas las materias</h3>
-<table class="table table-hover table-striped">
-	<thead>
-		<tr>
-			<th>Apellido</th>
-			<th>Nombre</th>
-			<th>DNI</th>
-			<th>1°Trim</th>
-			<th>2°Trim</th>
-			<th>3°Trim</th>
-			<th>Total libres</th>
-			<th>A diciembre</th>
-			<th>A marzo</th>
-			<th>Inasistencias</th>
+<div ng-show="!toggleView">
+	<h3>Todas las materias</h3>
+	<table class="table table-hover table-striped">
+		<thead>
+			<tr>
+				<th>Apellido</th>
+				<th>Nombre</th>
+				<th>DNI</th>
+				<th>1°Trim</th>
+				<th>2°Trim</th>
+				<th>3°Trim</th>
+				<th>Total libres</th>
+				<th>A diciembre</th>
+				<th>A marzo</th>
+				<th>Inasistencias</th>
+			</tr>
+		</thead>
+		<tr ng-repeat="alumno in alumnos">
+			<td>{{alumno.surName}}</td>
+			<td>{{alumno.name}}</td>
+			<td>{{alumno.DNI}}</td>
+			<td style="text-align:center">{{alumno.primerTrim}}</td>
+			<td style="text-align:center">{{alumno.segundoTrim}}</td>
+			<td style="text-align:center">{{alumno.tercerTrim}}</td>
+			<td style="text-align:center">{{alumno.diciembre + alumno.marzo}}</td>
+			<td style="text-align:center">{{alumno.diciembre}}</td>
+			<td style="text-align:center">{{alumno.marzo}}</td>
+			<td style="text-align:center">{{alumno.cantFaltas}}</td>					
 		</tr>
-	</thead>
-	<tr ng-repeat="alumno in alumnos">
-		<td>{{alumno.surName}}</td>
-		<td>{{alumno.name}}</td>
-		<td>{{alumno.DNI}}</td>
-		<td style="text-align:center">{{alumno.primerTrim}}</td>
-		<td style="text-align:center">{{alumno.segundoTrim}}</td>
-		<td style="text-align:center">{{alumno.tercerTrim}}</td>
-		<td style="text-align:center">{{alumno.diciembre + alumno.marzo}}</td>
-		<td style="text-align:center">{{alumno.diciembre}}</td>
-		<td style="text-align:center">{{alumno.marzo}}</td>
-		<td style="text-align:center">{{alumno.cantFaltas}}</td>					
-	</tr>
-</table>
+	</table>
 
-<div class="row">
-  <hr>
-  <div class="col-md panel panel-default">
-  	<div id="DesempStackedBar"></div>
-  </div>  
-  <hr>
-  <div class="col-md panel panel-default">
-  	<div id="TrimestresStackedBar"></div>
-  </div>
-  <hr>
-  <div class="col-md panel panel-default">
-  	<div id="AnualPieChart"></div>
-  </div>
+	<div class="row">
+	  <hr>
+	  <div class="col-md panel panel-default">
+	  	<div id="DesempStackedBar"></div>
+	  </div>  
+	  <hr>
+	  <div class="col-md panel panel-default">
+	  	<div id="TrimestresStackedBar"></div>
+	  </div>
+	  <hr>
+	  <div class="col-md panel panel-default">
+	  	<div id="AnualPieChart"></div>
+	  </div>
+	</div>
 </div>
 
 <br>
-<h3>Materia XXXXXXx</h3>
-<table class="table table-hover table-striped">
-	<thead>
-		<tr>
-			<th>Apellido</th>
-			<th>Nombre</th>
-			<th>DNI</th>
-			<th>1°Trim</th>
-			<th>2°Trim</th>
-			<th>3°Trim</th>
-			<th>Nota</th>
-			<th>Diciembre</th>
-			<th>Marzo</th>
-			<th>Nota Final</th>
-			<th>Inasistencias</th>
-		</tr>
-	</thead>
-	<tr ng-repeat="alumno in alumnosMat">
-		<td>{{alumno.surName}}</td>
-		<td>{{alumno.name}}</td>
-		<td>{{alumno.DNI}}</td>
-		<td style="text-align:center">{{alumno.primerTrim}}</td>
-		<td style="text-align:center">{{alumno.segundoTrim}}</td>
-		<td style="text-align:center">{{alumno.tercerTrim}}</td>
-		<td style="text-align:center">{{calcNota(alumno.primerTrim, alumno.segundoTrim,  alumno.tercerTrim)}}</td>
-		<td style="text-align:center">{{alumno.diciembre}}</td>
-		<td style="text-align:center">{{alumno.marzo}}</td>
-		<td style="text-align:center">dic||mar?</td>
-		<td style="text-align:center">{{alumno.cantFaltas}}</td>					
-	</tr>
-</table>
 
-<div class="row">
-  <hr>
-  <div class="col-md panel panel-default">
-  	<div id="MateriaDrillDown"></div>
-  </div>
-  <hr>
-  <div class="col-md panel panel-default">
-  	<div id="MateriaHistoricoStackedBar"></div>
-  </div>  
+<div ng-show="toggleView">
+	<h3>Materia {{estadisticaPorMateria.nombre}}</h3>
+	<table class="table table-hover table-striped">
+		<thead>
+			<tr>
+				<th>Apellido</th>
+				<th>Nombre</th>
+				<th>DNI</th>
+				<th>1°Trim</th>
+				<th>2°Trim</th>
+				<th>3°Trim</th>
+				<th>Nota</th>
+				<th>Diciembre</th>
+				<th>Marzo</th>
+				<th>Nota Final</th>
+				<th>Inasistencias</th>
+			</tr>
+		</thead>
+		<tr ng-repeat="alumno in alumnosMat">
+			<td>{{alumno.surName}}</td>
+			<td>{{alumno.name}}</td>
+			<td>{{alumno.DNI}}</td>
+			<td style="text-align:center">{{alumno.primerTrim}}</td>
+			<td style="text-align:center">{{alumno.segundoTrim}}</td>
+			<td style="text-align:center">{{alumno.tercerTrim}}</td>
+			<td style="text-align:center">{{calcNota(alumno.primerTrim, alumno.segundoTrim,  alumno.tercerTrim)}}</td>
+			<td style="text-align:center">{{alumno.diciembre}}</td>
+			<td style="text-align:center">{{alumno.marzo}}</td>
+			<td style="text-align:center">dic||mar?</td>
+			<td style="text-align:center">{{alumno.cantFaltas}}</td>					
+		</tr>
+	</table>
+
+	<div class="row">
+	  <hr>
+	  <div class="col-md panel panel-default">
+	  	<div id="MateriaDrillDown"></div>
+	  </div>
+	  <hr>
+	  <div class="col-md panel panel-default">
+	  	<div id="MateriaHistoricoStackedBar"></div>
+	  </div>  
+	</div>
 </div>
