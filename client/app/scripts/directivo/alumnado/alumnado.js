@@ -23,7 +23,7 @@
 
 
 
-  
+
 
  .directive('loading', function () {
  	return {
@@ -40,7 +40,7 @@
  		}
  	}
  })
- .controller('AlumnadoCtrl', function ($scope, $q, $http, boletinInasistenciasData, $alert, libCalificacionesdata, plantillaTrimestralData, alumnoService, Upload, $timeout, alumnoData, ModalService) {
+ .controller('AlumnadoCtrl', function ($scope, $q, $http, boletinInasistenciasData, $alert, libCalificacionesdata, plantillaTrimestralData, alumnoService, Upload, $timeout, alumnoData, ModalService, ObjectsFactory) {
  	$scope.listado = true;
  	$scope.listFilterIsEnabled = false;
 
@@ -67,68 +67,64 @@ $scope.tooltip = {
 
 //modals
 
-$scope.modalx = {}; //inicializa un objeto para pasar data al modal
-var myModal = {};
-
-$scope.showAddresModal = function() {
-	myModal =  $modal({
-		controller: 'AlumnadoCtrl', 
-		title: 'Nuevo Domicilio', 
-		content: 'Opciones Avanzadas', 
-		templateUrl: '/views/templates/addaddressdetails.tpl.html', 
-		show: false
-	});
-
-	myModal.$promise.then(myModal.show);
-};
-
-$scope.modalx.addressData = {};
-$scope.modalx.addressData.calle = "";
-$scope.afsdkjakfshkasjfha = 'hola che todo bien?';
-
-
-$scope.telefonoAvanzado = function () {
-
-	myModal =  $modal({
-		controller: 'AlumnadoCtrl', 
-		title: 'Teléfonos', 
-		content: 'Opciones Avanzadas', 
-		templateUrl: '/views/templates/addphonedetails.tpl.html', 
-		show: false
-	});
-	myModal.$promise.then(myModal.show);		 
-}
-
-
-$scope.showModalProfile = function(alumno){
+$scope.domicilioAvanzado = function() {
 	ModalService.showModal({
-		templateUrl: 'scripts/directivo/alumnado/modal/showProfileAlumno.tpl.html',
-		controller: 'showProfileAlumnoModalController',
+		templateUrl: 'scripts/directivo/alumnado/modal/addaddressdetails.tpl.html',
+		controller: 'addAddressDetailsModalController',
 		inputs: {
-			title: "Perfil",
-			alumno: alumno
+			title: "Nuevo Domicilio",
 		}
 	}).then(function(modal) {
 		modal.element.modal();
-		modal.close.then(function(result) {        
-        $scope.editProfile(result); //$scope.algo.nroDocumento = result;
-    });
+		modal.close.then(function(result){
+
+		});
+     /* modal.close.then(function(result) {        
+        console.log('el resultado es: ' + result); //$scope.algo.nroDocumento = result;
+    });*/
+});
+};
+
+$scope.alumno = ObjectsFactory.newAlumno();
+
+	$scope.telefonoAvanzado = function(){//esta deberia ser una funcion que pida la libreta de inasistencias del alumno que recibe
+		ModalService.showModal({
+			templateUrl: 'scripts/directivo/alumnado/modal/addphonedetails.tpl.html',
+			controller: 'telefonoAvanzadoModalController',
+			inputs: {
+				title: "Teléfono",
+				listaTelefonos: $scope.alumno.listaTelefonos,
+				ObjectsFactory: ObjectsFactory,
+			}
+		}).then(function(modal) {
+			modal.element.modal();
+			modal.close.then(function(result){
+				$scope.alumno.listaTelefonos = result;
+				console.log ($scope.alumno.listaTelefonos);
+			});
+     /* modal.close.then(function(result) {        
+        console.log('el resultado es: ' + result); //$scope.algo.nroDocumento = result;
+    });*/
 	});
 
-}; 
+	}; 
 
-/*	$scope.showLibretaInasistencias = function(alumno) {
-		var myModal2 = {};
-		myModal2 = $modal({
-			controller: 'AlumnadoCtrl', 
-			title: 'Inasistencias', 
-			content: 'Boletín de Inasistencias', 
-			templateUrl: '/views/templates/boletinInasistencias.tpl.html', 
-			show: false
-		})
+	$scope.showModalProfile = function(alumno){
+		ModalService.showModal({
+			templateUrl: 'scripts/directivo/alumnado/modal/showProfileAlumno.tpl.html',
+			controller: 'showProfileAlumnoModalController',
+			inputs: {
+				title: "Perfil",
+				alumno: alumno
+			}
+		}).then(function(modal) {
+			modal.element.modal();
+			modal.close.then(function(result) {        
+        $scope.editProfile(result); //$scope.algo.nroDocumento = result;
+    });
+		});
 
-		myModal2.$promise.then(myModal2.show);
-	};*/
+	}; 
 
 	$scope.showModalInasistencias = function(alumno){//esta deberia ser una funcion que pida la libreta de inasistencias del alumno que recibe
 		ModalService.showModal({
@@ -141,7 +137,7 @@ $scope.showModalProfile = function(alumno){
 		}).then(function(modal) {
 			modal.element.modal();
 			modal.close.then(function(result){
-				boletinInasistenciasData = result;
+				boletinInasistenciasData = result;//llamada al servicio para update en la BD
 			});
      /* modal.close.then(function(result) {        
         console.log('el resultado es: ' + result); //$scope.algo.nroDocumento = result;
@@ -149,32 +145,7 @@ $scope.showModalProfile = function(alumno){
 	});
 
 	}; 
-/*	$scope.libInasistencias = {};
-	$scope.libretaInasistencias = function(alumno){
-		$scope.libInasistencias = boletinInasistenciasData;//esta deberia ser una funcion que pida la libreta de inasistencias del alumno que recibe
-		$scope.libInasistencias.tooltip = $scope.tooltip;
-		$scope.libInasistencias.listaInasistencias.addRow = function(){		
-			$scope.libInasistencias.listaInasistencias.push({
-				'fecha':$scope.libInasistencias.listaInasistencias.fecha, 
-				'faltoA': $scope.libInasistencias.listaInasistencias.faltoA, 
-				'cantidad':$scope.libInasistencias.listaInasistencias.cantidad, 
-				'justificada':$scope.libInasistencias.listaInasistencias.justificada.toUpperCase() });
-		};	
-		modalService.set($scope.libInasistencias);
-		var modalInstance = $modal({
-			controller: ["$scope", "modalService", "libInasistencias", function($scope, modalService, libInasistencias){this.libInasistencias = libInasistencias;}],
-			controllerAs: 'modalCtrl',
-			templateUrl: '/views/templates/boletinInasistencias.tpl.html',
-			title: 'Inasistencias', 
-			content: 'Boletín de Inasistencias', 
-			resolve: {
-				libInasistencias: function(){
-					return modalService.get();
-				}
-			}
-		});
-		modalInstance.$promise.then(modalInstance.show);
-	}*/
+
 	$scope.showModalLibreta = function(alumno){//esta deberia ser una funcion que pida la libreta de calificaciones del alumno que recibe
 		ModalService.showModal({
 			templateUrl: 'scripts/directivo/alumnado/modal/showLibretaAlumno.tpl.html',
@@ -190,27 +161,7 @@ $scope.showModalProfile = function(alumno){
     });*/
 	});
 	};
-/*	$scope.libCalificaciones = libCalificacionesdata;
-	$scope.libretaCalificaciones = function(alumno){
-		$scope.libCalificaciones = {};
-		$scope.libCalificaciones = libCalificacionesdata;//esta deberia ser una funcion que pida la libreta de calificaciones del alumno que recibe
-		//$scope.libCalificaciones.tooltip = $scope.tooltip;
-		modalService.set($scope.libCalificaciones);
-		var modalInstance2 = $modal({
-			controller: ["$scope", "modalService", "libCalificaciones", function($scope, modalService, libCalificaciones){this.libCalificaciones = libCalificaciones;}],
-			controllerAs: 'modalCtrl',
-			templateUrl: '/views/templates/libretaCalificaciones.tpl.html',
-			title: 'Boletín de calificaciones', 
-			content: 'Notas', 
-			resolve: {
-				libCalificaciones: function(){
-					return modalService.get();
-				}
-			}
-		});
 
-		modalInstance2.$promise.then(modalInstance2.show);
-	}*/
 //File-Select
 
 $scope.upload = function (dataUrl) {
@@ -279,27 +230,27 @@ $scope.subtitle = "Listado";
 $scope.seleccionar = function (id){
 	switch (id){
 		case 'listado':
-			$scope.nuevoPerfil = false;
-			$scope.subtitle = "Listado";
-			$scope.showEditProfileMenuIzq = false;
-			$scope.notas = false;
-			$scope.listado = true;
-			break;
+		$scope.nuevoPerfil = false;
+		$scope.subtitle = "Listado";
+		$scope.showEditProfileMenuIzq = false;
+		$scope.notas = false;
+		$scope.listado = true;
+		break;
 		case 'nuevoPerfil':
-			$scope.listado = false;
-			$scope.subtitle = "Nuevo Alumno";
-			$scope.nuevoAlumno = null;
-			$scope.showEditProfileMenuIzq = false; 
-			$scope.notas = false;
-			$scope.nuevoPerfil = true;
-			break;
+		$scope.listado = false;
+		$scope.subtitle = "Nuevo Alumno";
+		$scope.nuevoAlumno = null;
+		$scope.showEditProfileMenuIzq = false; 
+		$scope.notas = false;
+		$scope.nuevoPerfil = true;
+		break;
 		case 'notas':
-			$scope.listado = false;
-			$scope.nuevoPerfil = false;
-			$scope.subtitle = "Notas";
-			$scope.showEditProfileMenuIzq = false;
-			$scope.notas = true;
-			break;
+		$scope.listado = false;
+		$scope.nuevoPerfil = false;
+		$scope.subtitle = "Notas";
+		$scope.showEditProfileMenuIzq = false;
+		$scope.notas = true;
+		break;
 
 
 	}
@@ -397,28 +348,28 @@ var alumnoJson = {
 
 /*collapse*/
 $scope.panels = {};
-  $scope.panels.activePanel = 0;
+$scope.panels.activePanel = 0;
 
-  $scope.multiplePanels = {
-    activePanels: [null]
-  };
-
-  $scope.asignarPlantillaTrim = function (trim){//esto debería consultar la planilla del trim
-$scope.notasTrim = {};
-$scope.notasTrim = plantillaTrimestralData;
-
-  };
-
-
-$scope.showAsignarNotas = function () {
-if (!$scope.asignarNotas) {
-		$scope.asignarNotas = true;
-	};
+$scope.multiplePanels = {
+	activePanels: [null]
 };
 
-$scope.answer = [];
-$scope.alumnoData = [];
-$scope.showData = function() {
+  $scope.asignarPlantillaTrim = function (trim){//esto debería consultar la planilla del trim
+  	$scope.notasTrim = {};
+  	$scope.notasTrim = plantillaTrimestralData;
+
+  };
+
+
+  $scope.showAsignarNotas = function () {
+  	if (!$scope.asignarNotas) {
+  		$scope.asignarNotas = true;
+  	};
+  };
+
+  $scope.answer = [];
+  $scope.alumnoData = [];
+  $scope.showData = function() {
 	/*$scope.loading = true;
 	  $http.get(alumnoData) esto es para que muestre el loading mientras carga, el http da 404 xq no tengo servidor
 	   .success(function(data) {

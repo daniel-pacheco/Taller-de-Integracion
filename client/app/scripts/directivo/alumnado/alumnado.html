@@ -65,12 +65,12 @@
 		
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<label>A&ntilde;o lectivo: </label> <select
-				class="dropdown-toggle form-control-inline" name="" ng-model="dropDownValue"> <!-- ng-change="update(dropDownValue, option)"> -->
-				<option value="" disabled selected>Seleccione una opci&oacute;n</option>
-				<option value="">Todos</option>
-				<option ng-repeat="option in dropDownOptions" value="{{option}}">{{option}}</option>
-			</select>{{dropDownValue}}
+				<label>A&ntilde;o lectivo: </label> 
+				<select class="dropdown-toggle form-control-inline" name="" ng-model="dropDownValue"> <!-- ng-change="update(dropDownValue, option)"> -->
+					<option value="" disabled selected>Seleccione una opci&oacute;n</option>
+					<option value="">Todos</option>
+					<option ng-repeat="option in dropDownOptions" value="{{option}}">{{option}}</option>
+				</select>{{dropDownValue}}
 			<input type="text" class="form-control-inline" ng-show="dropDownValue === 'DNI/MAT'">
 			<button class="btn btn-default" ng-click="search()"  title="Ayuda: " data-content="Selecciones uno o varios alumnos para colocar multiples inasistencias" data-type="info" data-duration="4" data-container="#alerts-container" bs-alert>Buscar</button>
 			<div id="alerts-container" style="width:60%; float:right;" class="small"></div>
@@ -173,7 +173,7 @@
 								<!-- Valida 8 digitos -->
 
 								<div class="col-sm-3">
-									<select class="form-control" ng-model="nuevoAlumno.tipoDocumento" name="Tipo documento">
+									<select class="form-control" ng-model="nuevoAlumno.tipoDocumento" name="TipoDocumento">
 										<option value="" disabled selected>Tipo</option>
 										<option value="DNI">DNI</option>
 										<option value="LC">LC</option>
@@ -251,7 +251,7 @@
 							 Valida letras, numeros y espacios
 							</div> -->
 							<div class="col-sm-1">
-								<input type="button" class="btn btn-default" value="Avanzado" ng-click="showAddresModal()">
+								<input type="button" class="btn btn-default" value="Avanzado" ng-click="domicilioAvanzado()">
 							</div><!-- {{modalx.addressData}} -->
 						</div>
 						<!-- /form-group-->

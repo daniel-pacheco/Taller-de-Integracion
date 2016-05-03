@@ -3,11 +3,11 @@ angular.module('clientAppApp')
   '$scope', '$element', 'title', 'libInasistencias', 'close', 
   function($scope, $element, title, libInasistencias, close) {//acá se inyecta las variables necesarias y luego la función close
 
-    $scope.title = title;
-    $scope.libInasistencias = {}; 
-    $scope.nuevaInasistencia = {};
+  $scope.title = title;
+  $scope.libInasistencias = {}; 
+  $scope.nuevaInasistencia = {};
   //$scope.dni = docente.nroDocumento;
-  var copiaLibInasistencias = angular.copy (libInasistencias)
+  var copiaLibInasistencias = angular.copy (libInasistencias); //deberia ser al revez
 $scope.libInasistencias = libInasistencias;//creo la copia para poder editarla tranquilo
     angular.forEach($scope.libInasistencias.listaInasistencias, function (item) {//funcion que crea el campo fechasort con la forma YYYYmmdd para poder ordenarlo en el boletin de inassitencias
       var year = item.fecha.substr(6,4);
@@ -65,8 +65,7 @@ currentDay = dd+"/"+mm+"/"+yyyy;
 
 $scope.nuevaInasistencia.fecha = currentDay;
 
-$scope.addInasistencia = function
-(){//Esto agrega una fila dinamicamente en el boletin de inasistencias
+$scope.addInasistencia = function(){//Esto agrega una fila dinamicamente en el boletin de inasistencias
   libInasistencias.listaInasistencias.push({
     'fecha':$scope.nuevaInasistencia.fecha, 
     'faltoA': $scope.nuevaInasistencia.faltoA, 
