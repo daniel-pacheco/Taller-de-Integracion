@@ -51,47 +51,31 @@
 											<div ng-if="!inasistencia.show">{{inasistencia.fecha}}</div>
 											<div ng-if="inasistencia.show" ng-class="{ 'has-error': formRow.fecha.$touched && formRow.fecha.$invalid }">
 												<input class="form-control" name="fecha" type="text" ng-model="copiaInasistencia.fecha" maxlength="10" required pattern="^(0?[1-9]|[12][0-9]|3[01])[\/](0?[1-9]|1[012])[/\\/](19|20)\d{2}"/>
-													<!-- <div ng-messages="formRow.fecha.$error" style="position: fixed; text-align: center;">
-														<div ng-message="pattern" class="help-block alert alert-danger">Formato de fecha invalido</div>
-														<div ng-message="required" class="help-block alert alert-danger">Complete la fecha</div>
-													</div> -->
-												</div>
-											</td>
-											<td>
-												<div ng-if="!inasistencia.show">{{inasistencia.faltoA}}</div>
-												<div ng-if="inasistencia.show" ng-class="{ 'has-error': formRow.faltoA.$touched && formRow.faltoA.$invalid }">
-													<input class="form-control" name="faltoA" type="text" ng-model="copiaInasistencia.faltoA" required pattern="[a-zA-Zí ]*" maxlength="18"/>
-												<!-- <div ng-messages="formRow.faltoA.$error" ng-if="formRow.faltoA.$touched && form.faltoA.$invalid">
-													<div ng-message="pattern" class="help-block alert alert-danger" style="position: fixed; text-align: center;">Formato invalido</div>
-													<div ng-message="required" class="help-block alert alert-danger">Complete este campo</div>
-												</div> -->
+											</div>
+										</td>
+										<td>
+											<div ng-if="!inasistencia.show">{{inasistencia.faltoA}}</div>
+											<div ng-if="inasistencia.show" ng-class="{ 'has-error': formRow.faltoA.$touched && formRow.faltoA.$invalid }">
+												<input class="form-control" name="faltoA" type="text" ng-model="copiaInasistencia.faltoA" required pattern="[a-zA-Zí ]*" maxlength="18"/>
 											</div>
 										</td>
 										<td>
 											<div ng-if="!inasistencia.show">{{inasistencia.cantidad}}</div>
 											<div ng-if="inasistencia.show" ng-class="{ 'has-error': formRow.cantidad.$touched && formRow.cantidad.$invalid }">
 												<input class="form-control" name="cantidad" type="text" ng-model="copiaInasistencia.cantidad" maxlength="4" required pattern="^\d{1,3}(?:,\s?\d{3})*(?:\.\d*)?$">
-												<!-- <div ng-messages="form.cantidad.$error" ng-if="form.cantidad.$touched && form.cantidad.$invalid">
-													<div ng-message="pattern" class="help-block">Formato invalido</div>
-													<div ng-message="required" class="help-block">Complete este campo</div>
-												</div> -->
 											</div>
-
 										</td>
 										<td>
 											<div ng-if="!inasistencia.show">{{inasistencia.justificada}}</div>
 											<div ng-if="inasistencia.show" ng-class="{ 'has-error': formRow.justificada.$touched && formRow.justificada.$invalid }">
 												<input class="form-control" name="justificada" type="text" ng-model="copiaInasistencia.justificada" maxlength="1" style="text-transform:uppercase;" required pattern="[ijIJ]">
-												<!-- <div ng-messages="form.justificada.$error" ng-if="form.justificada.$touched && form.justificada.$invalid">
-													<div ng-message="pattern" class="help-block">Formato invalido</div>
-													<div ng-message="required" class="help-block">Complete este campo</div>
-												</div> -->
 											</div>
 										</td>
 										<td>
 											<div ng-if="!inasistencia.show">{{inasistencia.totalAcum}}</div>
 										</td>
 										<td>
+											<!-- El editar no edita, crea otro con las ediciones -->
 											<!-- Botones de la lista-->
 											<button ng-if="!inasistencia.show" class="btn btn-default btn-xs" ng-click="inasistencia.show=true; edit(inasistencia)" bs-tooltip="tooltip.tooltipEdit">
 												<span data-animation="am-flip-x" class="glyphicon glyphicon-edit"></span>
@@ -100,7 +84,7 @@
 												<span class="glyphicon glyphicon-trash"></span>
 											</button>
 											<!-- Botones editando inasistencia -->
-											<button ng-if="inasistencia.show" class="btn btn-primary btn-sm" bs-tooltip="tooltip.tooltipSaveEdit" ng-click="saveEditInasistencia($index);   inasistencia.show=false" ng-disabled="formRow.fecha.$invalid || formRow.faltoA.$invalid || formRow.cantidad.$invalid || formRow.justificada.$invalid">
+											<button ng-if="inasistencia.show" class="btn btn-primary btn-sm" bs-tooltip="tooltip.tooltipSaveEdit" ng-click="saveEditInasistencia(libInasistencias.listaInasistencias.indexOf(inasistencia));   inasistencia.show=false" ng-disabled="formRow.fecha.$invalid || formRow.faltoA.$invalid || formRow.cantidad.$invalid || formRow.justificada.$invalid">
 												<span class="glyphicon glyphicon-ok"></span>
 											</button>
 											<button ng-if="inasistencia.show" class="btn btn-default btn-sm" ng-click="inasistencia.show=false" bs-tooltip="tooltip.tooltipCancelEdit"
@@ -126,7 +110,7 @@
 								</div>
 							</div>
 							<div class="form-group  col-sm-2 col-md-2 col-xs-2 col-lg-2" ng-class="{ 'has-error': form.faltoA.$touched && form.faltoA.$invalid }">
-								<input type="text" name="faltoA" class="form-control"ng-model="nuevaInasistencia.faltoA" placeholder="Ed física" required pattern="[a-zA-Z ]*" maxlength="18"/>
+								<input type="text" name="faltoA" class="form-control"ng-model="nuevaInasistencia.faltoA" placeholder="Ed física" required pattern="[a-zA-Zí ]*" maxlength="18"/>
 								<div ng-messages="form.faltoA.$error" ng-if="form.faltoA.$touched && form.faltoA.$invalid">
 									<div ng-message="pattern" class="help-block" style="position: fixed;">Formato invalido</div>
 									<div ng-message="required" class="help-block" style="position: fixed;">Complete este campo</div>
@@ -156,8 +140,8 @@
 			</div>
 		</div>
 		<div class="modal-footer">
-			<button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="close(false); $hide()">Cerrar</button>
-			<button type="button" class="btn btn-primary" data-dismiss="modal" autofocus ng-click="close(true); $hide()">Guardar</button>
+			<button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="close(false)">Cerrar</button>
+			<button type="button" class="btn btn-primary" data-dismiss="modal" autofocus ng-click="close(true)">Guardar</button>
 		</div>
 	</div>
 </div>

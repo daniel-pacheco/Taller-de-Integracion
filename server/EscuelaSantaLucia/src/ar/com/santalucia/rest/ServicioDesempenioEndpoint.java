@@ -9,6 +9,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
+
+import ar.com.santalucia.dominio.dto.GetPlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotas;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotasHist;
 import ar.com.santalucia.dominio.modelo.desempenio.Nota;
@@ -274,5 +276,15 @@ public class ServicioDesempenioEndpoint {
 		}
 	}
 	
+	@POST
+	@Path("/planillaTrimestral")
+	public Response getPlanillaTrimestral(GetPlanillaTrimestralDTO gptDTO) {
+		try {
+			setInstance();
+			return Response.ok(servicioDesempenio.getPlanillaTrimestral(gptDTO)).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
 	
 }

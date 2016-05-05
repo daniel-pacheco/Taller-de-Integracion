@@ -3,22 +3,23 @@ package ar.com.santalucia.dominio.dto;
 import java.util.ArrayList;
 
 /**
- * PlanillaTrimestralDTO: contiene información de la planilla trimestral (grilla de doble entrada)
+ * ItemPlanillaTrimestralDTO: contiene información de la planilla trimestral (grilla de doble entrada)
  * 
  * @author Eric
  * @version 1.0
  *
  */
-public class PlanillaTrimestralDTO {
+public class ItemPlanillaTrimestralDTO {
 
 	private String alumno;
 	private ArrayList<MateriaNotaDTO> notas;
 
-	public PlanillaTrimestralDTO() {
+	public ItemPlanillaTrimestralDTO() {
 		super();
+		notas = new ArrayList<MateriaNotaDTO>();
 	}
 
-	public PlanillaTrimestralDTO(String alumno, ArrayList<MateriaNotaDTO> notas) {
+	public ItemPlanillaTrimestralDTO(String alumno, ArrayList<MateriaNotaDTO> notas) {
 		super();
 		this.alumno = alumno;
 		this.notas = notas;

@@ -12,7 +12,11 @@ import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinNotasHist;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorNota;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorTrimestre;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
+import ar.com.santalucia.dominio.dto.GetPlanillaTrimestralDTO;
+import ar.com.santalucia.dominio.dto.ItemPlanillaTrimestralDTO;
+import ar.com.santalucia.dominio.dto.MateriaNotaDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
+import ar.com.santalucia.dominio.modelo.academico.Curso;
 import ar.com.santalucia.dominio.modelo.academico.Inscripcion;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotas;
@@ -292,6 +296,58 @@ public class ServicioDesempenio {
 		return true;
 	}
 
-	
-
+	/**
+	 * Retorna una lista de alumnos con sus notas. Nótese que se retorna un arreglo de items
+	 * @param gptDTO
+	 * @return
+	 * @throws Exception
+	 */
+	public ArrayList<ItemPlanillaTrimestralDTO> getPlanillaTrimestral(GetPlanillaTrimestralDTO gptDTO) throws Exception {
+		//TODO: ¿Qué se necesita para obtener la planilla trimestral?
+		/*
+		 * turno del curso // OJO !! en vez de división puse el turno ("Único", "Generico", ...)
+		 * nro de trimestre
+		 * nombre del año
+		 * ciclo lectivo
+		 */
+		
+		ArrayList<ItemPlanillaTrimestralDTO> planillaTrimestral;
+		try {
+			planillaTrimestral = new ArrayList<ItemPlanillaTrimestralDTO>();
+			Anio anio = new Anio();
+			anio.setNombre(gptDTO.getNombreAnio());
+			ArrayList<Anio> anios = gAnio.getByExample(anio);
+			anio = anios.get(0);
+			Set<Curso> listaCursos = anio.getListaCursos();
+			Curso curso = new Curso();
+			
+			for (Curso c : listaCursos) {
+				if (c.getTurno().equals(gptDTO.getCurso())) {
+					curso = c;
+				}
+			}
+			
+			BoletinNotas boletinNotas = new BoletinNotas();
+			boletinNotas.setAnio(gptDTO.getNombreAnio());
+			boletinNotas.setCurso(gptDTO.getCurso());
+			ArrayList<BoletinNotas> listaBoletinNotas = gBoletin.getByExample(boletinNotas);
+			
+			for (BoletinNotas bn : listaBoletinNotas) {
+				ItemPlanillaTrimestralDTO itemPlanillaTrimestralDTO = new ItemPlanillaTrimestralDTO();
+				itemPlanillaTrimestralDTO.setAlumno(bn.getPropietario().toString());
+				ArrayList<Trimestre> trimestres = new ArrayList<Trimestre>();
+				for (Trimestre t : bn.getListaTrimestres()) {
+					if (t.getOrden() == gptDTO.getNroTrimestre()) {
+						MateriaNotaDTO mnDTO = new MateriaNotaDTO(t.getMateria().getNombre(),t.getNotaFinal().getCalificacion());
+						itemPlanillaTrimestralDTO.getNotas().add(mnDTO);
+					}
+				}
+				planillaTrimestral.add(itemPlanillaTrimestralDTO);
+			}
+			return planillaTrimestral;
+		} catch (Exception ex) {
+			throw new Exception("No se pudo obtener la PLANILLA TRIMESTRAL del trimestre " 
+									+ gptDTO.getNroTrimestre() + ": " + ex.getMessage());
+		}
+	}
 }

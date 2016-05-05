@@ -1,0 +1,127 @@
+<div class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" style="width: 55%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">{{title}}</h4><!-- {{modalx.phoneData}} -->
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-warning alert-dismissible" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<span class="glyphicon glyphicon-asterisk small"></span>Campos obligatorios
+				</div>
+				<div class="container">
+
+					<!-- edit form column -->
+					<div class="row">
+						<div class="col-md-11 box-margin-lib personal-info table-responsive">
+							<table class="table table-hover table-striped table-condensed">
+								<thead>
+									<tr>
+										<th class="col-md-3">Cararcter&iacute;stica</th>
+										<th class="col-md-3">N&uacute;mero</th>
+										<th class="col-md-2">Tipo</th>
+										<th class="col-md-2">Acciones</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="telefono in copiaListaTelefonos" ng-form="formRow">
+										<td>
+											<div ng-if="!telefono.show">{{telefono.caracteristica}}</div>
+											<div ng-if="telefono.show" ng-class="{ 'has-error': formRow.caracteristica.$touched && formRow.caracteristica.$invalid }">
+												<input class="form-control" name="caracteristica" type="number" ng-model="copiaTelefono.caracteristica" maxlength="5" placeholder="343" required pattern="^\d+$"/>
+											</div>
+										</td>
+										<td>
+											<div ng-if="!telefono.show">{{telefono.nroTelefono}}</div>
+											<div ng-if="telefono.show" ng-class="{ 'has-error': formRow.nroTelefono.$touched && formRow.nroTelefono.$invalid }">
+												<input class="form-control" name="nroTelefono" type="number" ng-model="copiaTelefono.nroTelefono" required pattern="^\d+$" maxlength="10"/>
+											</div>
+										</td>
+										<td>
+											<div ng-if="!telefono.show">{{telefono.tipoTelefono}}</div>
+											<div ng-if="telefono.show" ng-class="{ 'has-error': formRow.tipoTelefono.$touched && formRow.tipoTelefono.$invalid }">
+												<select name="tipoTelefono"  class="form-control" ng-model="copiaTelefono.tipoTelefono">
+													<option value="Casa">Casa</option>
+													<option value="Celular">Celular</option>
+													<option value="Padre">Padre</option>
+													<option value="Madre">Madre</option>
+													<option value="Otro">Otro</option>
+												</select>
+											</div>
+
+										</td>
+										
+										<td>
+											<!-- Botones de la lista-->
+											<button ng-if="!telefono.show" class="btn btn-default btn-xs" ng-click="telefono.show=true; edit(telefono)" bs-tooltip="tooltip.tooltipEdit">
+												<span data-animation="am-flip-x" class="glyphicon glyphicon-edit"></span>
+											</button>
+											<button ng-if="!telefono.show" class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipDelete" ng-click="deleteTelefono(telefono)">
+												<span class="glyphicon glyphicon-trash"></span>
+											</button>
+											<!-- Botones editando telefono -->
+											<button ng-if="telefono.show" class="btn btn-primary btn-sm" bs-tooltip="tooltip.tooltipSaveEdit" ng-click="saveEditTelefono($index); telefono.show=false" ng-disabled="formRow.caracteristica.$invalid || formRow.nroTelefono.$invalid || formRow.tipoTelefono.$invalid">
+												<span class="glyphicon glyphicon-ok"></span>
+											</button>
+											<button ng-if="telefono.show" class="btn btn-default btn-sm" ng-click="telefono.show=false" bs-tooltip="tooltip.tooltipCancelEdit"
+											><span class="glyphicon glyphicon-remove"></span>
+										</button>
+
+									</td> 
+
+								</tr>
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="row">
+					<form name="form" novalidate ng-submit="addTelefono()">	
+						<div class="panel-heading">
+							<div class="form-group  col-sm-3 col-md-3 col-xs-3 col-lg-3" ng-class="{ 'has-error': form.caracteristica.$touched && form.caracteristica.$invalid }">
+								<input class="form-control" name="caracteristica" type="number" ng-model="nuevoTelefono.caracteristica" maxlength="5" placeholder="343" value="343" required pattern="^\d+$"/>
+								<div ng-messages="form.caracteristica.$error" ng-if="form.caracteristica.$touched && form.caracteristica.$invalid">
+									<div ng-message="maxlength" class="help-block" style="position: fixed;">Demasiado largo</div>
+									<div ng-message="required" class="help-block" style="position: fixed;">Complete este campo</div>
+								</div>
+							</div>
+							<div class="form-group  col-sm-3 col-md-3 col-xs-3 col-lg-3" ng-class="{ 'has-error': form.nroTelefono.$touched && form.nroTelefono.$invalid }">
+								<input class="form-control" name="nroTelefono" type="number" ng-model="nuevoTelefono.nroTelefono" required pattern="^\d+$" maxlength="10"/>
+								<div ng-messages="form.nroTelefono.$error" ng-if="form.nroTelefono.$touched && form.nroTelefono.$invalid">
+									<div ng-message="pattern" class="help-block" style="position: fixed;">Formato invalido</div>
+									<div ng-message="required" class="help-block" style="position: fixed;">Complete este campo</div>
+								</div>
+							</div>
+							<div class="form-group  col-sm-2 col-md-2 col-xs-2 col-lg-2" ng-class="{ 'has-error': form.tipoTelefono.$touched && form.tipoTelefono.$invalid }">
+								<select name="tipoTelefono"  class="form-control" ng-model="nuevoTelefono.tipoTelefono" required>
+									<option value="" disabled selected>Tipo</option>
+									<option value="Casa">Casa</option>
+									<option value="Celular">Celular</option>
+									<option value="Padre">Padre</option>
+									<option value="Madre">Madre</option>
+									<option value="Otro">Otro</option>
+								</select>
+								<div ng-messages="form.tipoTelefono.$error" ng-if="form.tipoTelefono.$touched && form.tipoTelefono.$invalid">
+									<div ng-message="pattern" class="help-block" style="position: fixed;">Formato invalido</div>
+									<div ng-message="required" class="help-block" style="position: fixed;">Complete este campo</div>
+								</div>
+							</div>
+							
+							<div class="form-group  col-sm-2 col-md-2 col-xs-2 col-lg-2">
+								<button class="form-control btn btn-primary" type="submit" ng-disabled="!form.$valid" ng-click="reset()">Agregar</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="close(false)">Cerrar</button>
+			<button type="button" class="btn btn-primary" data-dismiss="modal" autofocus ng-click="close(true)">Guardar</button>
+		</div>
+	</div>
+</div>
+</div>
