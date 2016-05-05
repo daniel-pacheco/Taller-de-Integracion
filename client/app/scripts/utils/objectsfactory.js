@@ -109,6 +109,20 @@ angular.module('clientAppApp')
     return titulo;
   };
 
+  var newMateria = function(){
+    var materia = {
+      "nombre": '',
+      "descripcion": '',
+      "docenteTitular": {}, //docenteLight
+      "docenteSuplente": [], //docenteLight
+      "anio":'',
+      "area": ''
+    };
+    return materia;
+  };
+
+  //-- Estadisticas
+
   var newEstadisticaAnioCurso = function(){
     var estadisticaAnioCurso = {
       "cicloLectivo": 0,
@@ -165,15 +179,22 @@ angular.module('clientAppApp')
 
   return {
     newAlumno: newAlumno,
+    newAlumnoLight: newAlumnoLight,
     newTelefono: newTelefono,
     newMail: newMail,
     newDomicilio: newDomicilio,
     newDocente: newDocente,
+    newDocenteLight: newDocenteLight,
+    newTitulo: newTitulo,
+    newMateria: newMateria,
+    
+
+    //-- Estadisticas
+
     newEstadisticaAnioCurso: newEstadisticaAnioCurso,
     newEstadisticaMateria: newEstadisticaMateria,
     newEstadisticaTrimestre: newEstadisticaTrimestre,
     newEstadisticaPorMateria: newEstadisticaPorMateria,
     newHistoricoPorMateria, newHistoricoPorMateria
   }
-//};
 })

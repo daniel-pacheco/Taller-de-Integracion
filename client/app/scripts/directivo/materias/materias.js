@@ -47,6 +47,10 @@ $scope.setActiveAlu = function(menuItemAlu) {
   $scope.activeMenuIzqAlu = menuItemAlu;
 };
 
+//-- Llamadas al servicio
+
+
+
 //Test
 $scope.friends = [{nombre:'Educación Fisica', docenteTitular:'María Laura', anioPertenece: '4º', area: 'cs sociales'},
 {nombre:'Matemática', docenteTitular:'Marta Blanco', anioPertenece: '4', area: 'cs sociales'},
