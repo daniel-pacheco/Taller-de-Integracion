@@ -63,7 +63,7 @@
 												<span class="glyphicon glyphicon-trash"></span>
 											</button>
 											<!-- Botones editando telefono -->
-											<button ng-if="telefono.show" class="btn btn-primary btn-sm" bs-tooltip="tooltip.tooltipSaveEdit" ng-click="saveEditTelefono($index); telefono.show=false" ng-disabled="formRow.caracteristica.$invalid || formRow.nroTelefono.$invalid || formRow.tipoTelefono.$invalid">
+											<button ng-if="telefono.show" class="btn btn-primary btn-sm" bs-tooltip="tooltip.tooltipSaveEdit" ng-click="saveEditTelefono(copiaListaTelefonos.indexOf(telefono)); telefono.show=false" ng-disabled="formRow.caracteristica.$invalid || formRow.nroTelefono.$invalid || formRow.tipoTelefono.$invalid">
 												<span class="glyphicon glyphicon-ok"></span>
 											</button>
 											<button ng-if="telefono.show" class="btn btn-default btn-sm" ng-click="telefono.show=false" bs-tooltip="tooltip.tooltipCancelEdit"
@@ -95,7 +95,7 @@
 									<div ng-message="required" class="help-block" style="position: fixed;">Complete este campo</div>
 								</div>
 							</div>
-							<div class="form-group  col-sm-2 col-md-2 col-xs-2 col-lg-2" ng-class="{ 'has-error': form.tipoTelefono.$touched && form.tipoTelefono.$invalid }">
+							<div class="form-group  col-sm-3 col-md-3 col-xs-3 col-lg-3" ng-class="{ 'has-error': form.tipoTelefono.$touched && form.tipoTelefono.$invalid }">
 								<select name="tipoTelefono"  class="form-control" ng-model="nuevoTelefono.tipoTelefono" required>
 									<option value="" disabled selected>Tipo</option>
 									<option value="Casa">Casa</option>

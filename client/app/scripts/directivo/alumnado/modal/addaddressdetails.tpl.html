@@ -6,88 +6,106 @@
 				<h4 class="modal-title">{{title}}</h4><!-- {{modalx.addressData.nombre}} {{afsdkjakfshkasjfha}} -->
 			</div>
 			<div class="modal-body">
-				<div class="alert alert-danger" role="alert">* Campos obligatorios</div>
-				<form class="form-horizontal media">
+				<div class="alert alert-warning alert-dismissible" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<span class="glyphicon glyphicon-asterisk small"></span>Campos obligatorios
+				</div>
+				
+				<form class="form-horizontal media" name="formDom">
 					<div class="formulario media-body">
+
 						<div class="form-group">
-							<div class="col-sm-3 control-label">
-								<label for=""><a style="color: red">*</a>Calle:</label>
+							<div ng-class="{ 'has-error': formDom.calle.$touched && formDom.calle.$invalid }">
+								<div class="col-sm-3 control-label">
+									<span class="glyphicon glyphicon-asterisk alert-warning small"></span>
+									<label for=""> Calle:</label>
+								</div>
+								<div class="col-sm-4">
+									<input name="calle" ng-model="domicilioCopia.calle" class="form-control" placeholder="Sarobe" type="text" maxlength="254" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*"/>
+								</div>
 							</div>
-							<div class="col-sm-4">
-								<input ng-model="modalx.addressData.calle" class="form-control" placeholder="Sarobe" type="tel" maxlength="254" required pattern="[a-zA-Z 0-9]*"/>
-							</div>
-							<div class="col-sm-2 control-label">
-								<label for="">N&uacute;mero:</label>
-							</div>
-							<div class="col-sm-2">
-								<input ng-model="modalx.addressData.numero" class="form-control" placeholder="123" type="tel" maxlength="6" required pattern="[0-9]*"/>
+							<div ng-class="{ 'has-error': formDom.numero.$touched && formDom.numero.$invalid }">
+								<div class="col-sm-2 control-label">
+									<label for="">N&uacute;mero:</label>
+								</div>
+								<div class="col-sm-2">
+									<input ng-model="domicilioCopia.numero" name="numero" class="form-control" placeholder="2" type="number" maxlength="6" pattern="[0-9]*"/>
+								</div>
 							</div>
 						</div>
-						<div class="form-group">
+
+						<div class="form-group" ng-class="{ 'has-error': formDom.piso.$touched && formDom.piso.$invalid }">
 							<div class="col-sm-3 control-label">
 								<label for="">Piso:</label>
 							</div>
 							<div class="col-sm-2">
-								<input ng-model="modalx.addressData.piso" class="form-control" placeholder="12" type="tel" maxlength="3" required pattern="[0-9]*"/>
+								<input ng-model="domicilioCopia.piso" name="piso" class="form-control" placeholder="12" type="number" maxlength="2" pattern="[0-9]*"/>
 							</div>
 						</div>
 
-						<div class="form-group">
+						<div class="form-group"  ng-class="{ 'has-error': formDom.localidad.$touched && formDom.localidad.$invalid }">
 							<div class="col-sm-3 control-label">
 								<label for="">Localidad:</label>
 							</div>
 							<div class="col-sm-5">
-								<input ng-model="modalx.addressData.localidad" class="form-control" placeholder="Parana" type="tel" maxlength="254" required pattern="[a-zA-Z ]*"/>
+								<input ng-model="domicilioCopia.localidad" name="localidad" class="form-control" placeholder="Parana" type="text" maxlength="254" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*"/>
 							</div>
 						</div>
 
-						<div class="form-group">
+						<div class="form-group" ng-class="{ 'has-error': formDom.dpto.$touched && formDom.dpto.$invalid }">
 							<div class="col-sm-3 control-label">
 								<label for="">Departamento:</label>
 							</div>
 							<div class="col-sm-5">
-								<input ng-model="modalx.addressData.dpto" class="form-control" placeholder="Piso" type="tel" maxlength="254" required pattern="[0-9]*"/>
+								<input ng-model="domicilioCopia.dpto" name="dpto" class="form-control" placeholder="Piso" type="text" maxlength="254"/>
 							</div>
 						</div>
 
-						<div class="form-group">
+						<div class="form-group" ng-class="{ 'has-error': formDom.departamento.$touched && formDom.departamento.$invalid }">
 							<div class="col-sm-3 control-label">
 								<label for="">Departamento:</label>
 							</div>
 							<div class="col-sm-5">
-								<input ng-model="modalx.addressData.departamento" class="form-control" placeholder="Parana" type="tel" maxlength="254" required pattern="[a-zA-Z ]*"/>
+								<input ng-model="domicilioCopia.departamento" name="departamento"class="form-control" placeholder="Parana" type="text" maxlength="254"  pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*"/>
 							</div>
 						</div>
 
 						<div class="form-group">
-							<div class="col-sm-3 control-label">
-								<label for="">Provincia:</label>
+							<div ng-class="{ 'has-error': formDom.provincia.$touched && formDom.provincia.$invalid }">
+								<div class="col-sm-3 control-label">
+									<span class="glyphicon glyphicon-asterisk alert-warning small"></span>
+									<label for=""> Provincia:</label>
+								</div>
+								<div class="col-sm-4">
+									<input ng-model="domicilioCopia.provincia" name="provincia" class="form-control" placeholder="Entre Rios" type="text" maxlength="254" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*"/>
+								</div>
 							</div>
-							<div class="col-sm-4">
-								<input ng-model="modalx.addressData.provincia" class="form-control" placeholder="Entre Rios" type="tel" maxlength="254" required pattern="[a-zA-Z ]*"/>
-							</div>
-							<div class="col-sm-3 control-label">
-								<label for="">C&oacute;digo Postal:</label>
-							</div>
-							<div class="col-sm-2">
-								<input ng-model="modalx.addressData.codigoPostal" class="form-control" placeholder="3100" type="tel" maxlength="6" required pattern="[0-9]*"/>
+							<div ng-class="{ 'has-error': formDom.codigoPostal.$touched && formDom.codigoPostal.$invalid }">
+								<div class="col-sm-3 control-label">
+									<span class="glyphicon glyphicon-asterisk alert-warning small"></span>
+									<label for=""> C&oacute;digo Postal:</label>
+								</div>
+								<div class="col-sm-2">
+									<input ng-model="domicilioCopia.codigoPostal" name="codigoPostal" class="form-control" placeholder="3100" type="number" maxlength="6" required pattern="[0-9]*"/>
+								</div>
 							</div>
 						</div>
-						<div class="form-group">
+						<div class="form-group" ng-class="{ 'has-error': formDom.barrio.$touched && formDom.barrio.$invalid }">
 							<div class="col-sm-3 control-label">
 								<label for="">Barrio:</label>
 							</div>
 							<div class="col-sm-5">
-								<input ng-model="modalx.addressData.barrio" class="form-control" placeholder="Barrio" type="tel" maxlength="254" required pattern="[a-zA-Z 0-9]*"/>
+								<input ng-model="domicilioCopia.barrio" name="barrio" class="form-control" placeholder="Barrio" type="text" maxlength="254" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*"/>
 							</div>
 						</div>
 					</div>
 				</form>
-				<div class="alert alert-danger" role="alert" style="margin-bottom: 0px;">* Campos obligatorios</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
-				<button type="button" class="btn btn-primary" autofocus ng-click="">Si</button><!--incluir llamada a funcion aceptar-->
+				<button type="button" class="btn btn-danger" ng-click="close(false)"  data-dismiss="modal">Cerrar</button>
+				<button type="button" class="btn btn-primary" autofocus ng-click="close(true)" data-dismiss="modal" ng-disabled="!formDom.$valid">Guardar</button><!--incluir llamada a funcion aceptar-->
 			</div>
 		</div>
 	</div>
