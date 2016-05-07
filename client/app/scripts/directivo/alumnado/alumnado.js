@@ -105,6 +105,23 @@ $scope.alumno.domicilio = ObjectsFactory.newDomicilio();
 
 	}; 
 
+	$scope.mailAvanzado = function(){
+		ModalService.showModal({
+			templateUrl: 'scripts/directivo/alumnado/modal/addmaildetails.tpl.html',
+			controller: 'mailAvanzadoModalController',
+			inputs: {
+				title: "Mails",
+				listaMails: $scope.alumno.listaMails,
+				ObjectsFactory: ObjectsFactory,
+			}
+		}).then(function(modal) {
+			modal.element.modal();
+			modal.close.then(function(result){
+				$scope.alumno.listaMails = result;
+			});
+		});
+	};
+
 	$scope.showModalProfile = function(alumno){
 		ModalService.showModal({
 			templateUrl: 'scripts/directivo/alumnado/modal/showProfileAlumno.tpl.html',

@@ -254,6 +254,9 @@
 										<div ng-message="required" class="help-block">Complete este campo</div>
 									</div>
 								</div>
+								<div class="col-sm-1">
+									<input type="button" class="btn btn-default" value="Avanzado" ng-click="mailAvanzado()">
+								</div>
 							</div>
 							<!-- /form-group-->
 
@@ -308,12 +311,10 @@
 			</div><!-- /formulario-->
 			<div class="form-group">
 				<div class="col-sm-2 col-sm-offset-3">
-					<input class="btn btn-danger" type="button" name=""
-					onclick="cargarAlumnoPrincipal()" value="Cancelar" />
+					<input class="btn btn-danger" type="button" name="" onclick="cargarAlumnoPrincipal()" value="Cancelar" />
 				</div>
 				<div class="col-sm-1">
-					<input class="btn btn-primary" ng-click="upload(croppedDataUrl)" type="submit" name=""
-					value="Guardar" />
+					<input class="btn btn-primary" ng-click="upload(croppedDataUrl)" type="submit" name="" value="Guardar" ng-disabled="!formAlu.$valid"/>
 				</div>
 			</div>
 

@@ -5,11 +5,6 @@ angular.module('clientAppApp')
 
     $scope.copiaListaTelefonos = angular.copy (listaTelefonos);
 
-    $scope.title = title;
-    if (listaTelefonos.length < 1)
-      listaTelef = false;
-    else listaTelef = true;
-
     $scope.tooltip = {
      tooltipEdit : {
       'title' : 'Editar'
