@@ -17,4 +17,5 @@ select * from docente_mesa;
 
 select * from trimestre;
 select * from boletinnotashist;
+select * from boletinnotas;
 select * from materianotasboletin;

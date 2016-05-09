@@ -1,6 +1,6 @@
-delete from TELEFONO where IDUSUARIO=4;
-delete from MAIL where IDUSUARIO=4;
-delete from TITULO where IDUSUARIO=4;
+delete from TELEFONO;
+delete from MAIL;
+delete from TITULO;
 delete from ALUMNO;
 delete from MATERIA;
 delete from DOCENTE;
