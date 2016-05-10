@@ -3,103 +3,91 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="$hide()"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">{{title}}</h4>
+				<h4 class="modal-title">{{title}}<small> (ID: {{alumno.idUsuario}})</small></h4>
 			</div>
 			
 			<div class="modal-body">
-				<!-- <form class="form-horizontal media">
-					<div class="formulario media-body">
-						<div class="form-group">
-							<div class="col-sm-3 control-label">
-								<label for="">DNI:</label>
-							</div>
-							<div class="col-sm-3 control-label">
-								<span for="">36406068</span>
-							</div>
-							</div>
-							<div class="form-group">
-							<div class="col-sm-3 control-label">
-								<label for="">Apellido:</label>
-							</div>
-							<div class="col-sm-3 control-label">
-								<span for="">Herrlein</span>
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="col-sm-3 control-label">
-								<label for="">Nombre:</label>
-							</div>
-							<div class="col-sm-3 control-label">
-								<span for="">Martin Gerardo</span>
+
+				<div class="container">
+					<div class="row">
+						<!-- left column -->
+						<div class="col-md-4">
+							<div class="text-center">
+								<img src="//placehold.it/200" class="avatar img-circle" alt="avatar">
 							</div>
 						</div>
 
-						<div class="form-group">
-							<div class="col-sm-3 control-label">
-								<label for="">Tel&eacute;fonos:</label>
-							</div>
-							<div class="col-sm-3 control-label">
-								<span for="">3434354755 - 343155013187</span>
-							</div>
-						</div>
-
-						
-							
-						</div>
-					
-					</form> -->
-					<div class="container">
-						<div class="row">
-							<!-- left column -->
-							<div class="col-md-4">
-								<div class="text-center">
-									<img src="//placehold.it/200" class="avatar img-circle" alt="avatar">
+						<!-- edit form column -->
+						<div class="col-md-8 personal-info">
+							<form class="form-horizontal" role="form">
+								<div class="form-group">
+									<label class="col-lg-4">DNI: </label>
+									<span class="col-lg-3">{{alumno.nroDocumento}}</span>
 								</div>
-							</div>
-							
-							<!-- edit form column -->
-							<div class="col-md-8 personal-info">
-								<form class="form-horizontal" role="form">
-									<div class="form-group">
-										<label class="col-lg-4">DNI: </label>
-										<span class="col-lg-3">{{alumno.nroDocumento}}</span>
-									</div>
-									<div class="form-group">
-										<label class="col-lg-4">Apellido: </label>
-										<span class="col-lg-3">{{alumno.apellido}}</span>
-									</div>
-									<div class="form-group">
-										<label class="col-lg-4">Nombre: </label>
-										<span type="text" class="col-lg-5">{{alumno.nombre}}</span>
-									</div>
-									<div class="form-group">
-										<label class="col-lg-4">Telefonos: </label>
-										<span class="col-lg-5">{{alumno.listaTelefonos[0].nroTelefono}} - {{alumno.listaTelefonos[1].nroTelefono}} </span>
-									</div>
-									<div class="form-group">
-										<label class="col-lg-4">Domicilio: </label>
-										<span class="col-lg-5">{{alumno.domicilio.calle}} - {{alumno.domicilio.numero}}</span>
-									</div>
-									<div class="form-group">
-										<label class="col-lg-4">Correo electr&oacute;nico: </label>
-										<span class="col-lg-5">{{alumno.listaMails[0].direccionMail}}</span>
-									</div>
-									<div class="form-group">
-										<div class="col-lg-7">
-											<a href="#" class="btn btn-success btn-block"ng-click="close()" data-dismiss="modal"><span class="glyphicon glyphicon-edit"></span> Editar perfil</a>
+								<div class="form-group">
+									<label class="col-lg-4">Apellido: </label>
+									<span class="col-lg-3">{{alumno.apellido}}</span>
+								</div>
+								<div class="form-group">
+									<label class="col-lg-4">Nombre: </label>
+									<span type="text" class="col-lg-5">{{alumno.nombre}}</span>
+								</div>
+								<div class="form-group">
+									<label class="col-lg-4">Telefonos: </label>
+									<span class="col-lg-5">
+										<div ng-repeat="telefono in alumno.listaTelefonos">
+											{{telefono.caracteristica}} - {{telefono.nroTelefono}} ({{telefono.tipoTelefono}})
 										</div>
+									</span>
+								</div>
+								<div class="form-group">
+									<label class="col-lg-4">Sexo: </label>
+									<span type="text" class="col-lg-5">{{alumno.sexo}}</span>
+								</div>
+								<div class="form-group">
+									<label class="col-lg-4">Fecha de nacimiento: </label>
+									<span type="text" class="col-lg-5">{{alumno.fechaNacimiento}}</span>
+								</div>
+								<div class="form-group">
+									<label class="col-lg-4">Domicilio: </label>
+									<span class="col-lg-5" ng-if="!alumno.detailsDomicilio">{{alumno.domicilio.calle}} {{alumno.domicilio.numero}}
+										<div class="glyphicon glyphicon-option-horizontal" style="vertical-align: bottom; cursor:pointer;" ng-click="alumno.detailsDomicilio=true" bs-tooltip="tooltip.tooltipDetailsDom"></div>
+									</span>
+									<span class="col-lg-8" ng-if="alumno.detailsDomicilio">
+										<label>Calle: </label> <span>{{alumno.domicilio.calle}}</span>
+										<label> N°: </label> <span>{{alumno.domicilio.numero}}</span></br>
+										<label>Piso: </label> <span>{{alumno.domicilio.piso}}</span>
+										<label> Localidad: </label> <span>{{alumno.domicilio.localidad}}</span></br>
+										<label>Departamento: </label> <span>{{alumno.domicilio.dpto}}</span></br>
+										<label>Departamento: </label> <span>{{alumno.domicilio.departamento}}</span></br>
+										<label>Provincia: </label> <span>{{alumno.domicilio.provincia}}</span>
+										<label> CP: </label> <span>{{alumno.domicilio.codigoPostal}}</span></br>
+										<label>Barrio: </label> <span>{{alumno.domicilio.barrio}}</span></br>
+									</span>
+								</div>
+								<div class="form-group">
+									<label class="col-lg-4">Correo electr&oacute;nico: </label>
+									<span class="col-lg-8">
+										<div ng-repeat="mail in alumno.listaMails">
+											{{mail.direccionMail}} ({{mail.tipoMail}})
+										</div>
+									</span>
+								</div>
+								<div class="form-group">
+									<div class="col-lg-7">
+										<a type="button" class="btn btn-success btn-block" ng-click="close()" data-dismiss="modal"><span class="glyphicon glyphicon-edit"></span> Editar perfil</a>
 									</div>
-								</form>
-							</div>
+								</div>
+							</form>
 						</div>
 					</div>
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-					<!--<button type="button" class="btn btn-primary" autofocus ng-click="$hide()">Si</button>incluir llamada a funcion aceptar-->
-				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
 			</div>
 		</div>
 	</div>
+</div>
 
 

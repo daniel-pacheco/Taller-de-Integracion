@@ -47,9 +47,6 @@
 					<div id="alerts-container" style="width:60%; float:right;" class="small"></div>
 				</div>
 			</div>
-			<div ng-show="loading">
-				<loading></loading>
-			</div>
 
 			<div id="listFilters" ng-show="listFilterIsEnabled">
 
@@ -97,14 +94,12 @@
 						<td ng-click="seleccionarCheckbox(alumno)">{{alumno.nroDocumento}}</td>
 						<td ng-click = "deleteAlumno(alumno.idUsuario)">{{alumno.idUsuario}}</td>
 						<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%; cursor: pointer" class="glyphicon glyphicon-user" ng-click="showModalProfile(alumno)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAttendance" ng-click="showModalInasistencias(alumno)" style="width:25%; cursor: pointer" class="glyphicon glyphicon-calendar"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipReportCard" style="width:25%; cursor: pointer" class="glyphicon glyphicon-list-alt" ng-click="showModalLibreta(alumno)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAcademicPerformance" style="width:25%; cursor: pointer" class="glyphicon glyphicon-education"></span></td> 
-					<!--<td>{{alumno.name}}</td>
-					<td>{{alumno.phone}}</td>
-					<td>{{$index}}</td> -->
-				</tr>
-			</tbody>
-		</table>
-	</div>
-</fieldset>
+
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</fieldset>
 </div>
 
 <div id="nuevoPerfil" ng-show="nuevoPerfil">
@@ -231,7 +226,10 @@
 								</div>
 
 								<div class="col-sm-4">
-									<input name="listaTelefono" class="form-control" ng-model="nuevoAlumno.listaTelefono[0]" placeholder="0343-4353535" type="tel">
+									<input name="listaTelefono" class="form-control" ng-model="nuevoAlumno.listaTelefono[0]" placeholder="0343-4353535" type="tel" ng-show="!mostrarListaTelefonos">
+									<select multiple class="form-control" ng-show="mostrarListaTelefonos">
+										<option ng-repeat="telefono in alumno.listaTelefonos">{{telefono.caracteristica}}-{{telefono.nroTelefono}}({{telefono.tipoTelefono}})</option>
+									</select> 
 									<div ng-messages="formAlu.listaTelefono.$error" ng-if="formAlu.listaTelefono.$touched && formAlu.listaTelefono.$invalid">
 										<div ng-message="tel" class="help-block"> 
 											Formato invalido  
@@ -272,27 +270,25 @@
 											Formato invalido  
 										</div>
 									</div>
-							<!--<input class="form-control"
-							type="text" maxlength="255" required pattern="[a-zA-Z ]*">-->
-							<!-- Valida letras y espacios-->
-						</div>
-					</div>
-					
-				</div>
-				<!-- /form-group-->
-				<div class="col-md-3">
-					<div class="form-group">
-						<div class="col-sm-1">
-						</div>
-						<div class="col-sm-2">
-							<button class="btn btn-default" ngf-select ng-model="picFile" accept="image/*" ngf-max-size="2MB" ngf-min-height="100" style="margin: 5px auto">Seleccione imagen de perfil</button>
 
-							<div ngf-drop ng-model="picFile" ngf-pattern="image/*" class="cropArea"><!--{{picFile}}-->
-								<img-crop image="picFile  | ngfDataUrl"                 
-								result-image="croppedDataUrl" ng-init="croppedDataUrl=''">
-							</img-crop>
+								</div>
+							</div>
+							
 						</div>
-					</div>
+						<!-- /form-group-->
+						<div class="col-md-3">
+							<div class="form-group">
+								<div class="col-sm-1">
+								</div>
+								<div class="col-sm-2">
+									<button class="btn btn-default" ngf-select ng-model="picFile" accept="image/*" ngf-max-size="2MB" ngf-min-height="100" style="margin: 5px auto">Seleccione imagen de perfil</button>
+
+									<div ngf-drop ng-model="picFile" ngf-pattern="image/*" class="cropArea"><!--{{picFile}}-->
+										<img-crop image="picFile  | ngfDataUrl"                 
+										result-image="croppedDataUrl" ng-init="croppedDataUrl=''">
+									</img-crop>
+								</div>
+							</div>
 
 							<!--<div>
 								<img ng-src="{{croppedDataUrl}}">
