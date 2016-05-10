@@ -57,7 +57,7 @@ angular.module('clientAppApp')
       "calle": "",
       "numero": 0,
       "piso": 0,
-      "localidad": "",
+      "localidad": "Paraná",
       "dpto": "-",
       "departamento": "Paraná",
       "provincia": "Entre Ríos",

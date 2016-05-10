@@ -66,26 +66,26 @@ $scope.tooltip = {
 };
 
 //modals
-
 $scope.domicilioAvanzado = function() {
 	ModalService.showModal({
 		templateUrl: 'scripts/directivo/alumnado/modal/addaddressdetails.tpl.html',
 		controller: 'addAddressDetailsModalController',
 		inputs: {
 			title: "Nuevo Domicilio",
+			domicilioAvanzado: $scope.alumno.domicilio,
+
 		}
 	}).then(function(modal) {
 		modal.element.modal();
 		modal.close.then(function(result){
-
+			$scope.alumno.domicilio = result;
+			$scope.alumnoDomicilioLight = result.calle+" "+result.numero; 
 		});
-     /* modal.close.then(function(result) {        
-        console.log('el resultado es: ' + result); //$scope.algo.nroDocumento = result;
-    });*/
-});
+	});
 };
 
 $scope.alumno = ObjectsFactory.newAlumno();
+$scope.alumno.domicilio = ObjectsFactory.newDomicilio();
 
 	$scope.telefonoAvanzado = function(){//esta deberia ser una funcion que pida la libreta de inasistencias del alumno que recibe
 		ModalService.showModal({
@@ -100,12 +100,8 @@ $scope.alumno = ObjectsFactory.newAlumno();
 			modal.element.modal();
 			modal.close.then(function(result){
 				$scope.alumno.listaTelefonos = result;
-				console.log ($scope.alumno.listaTelefonos);
 			});
-     /* modal.close.then(function(result) {        
-        console.log('el resultado es: ' + result); //$scope.algo.nroDocumento = result;
-    });*/
-	});
+		});
 
 	}; 
 
@@ -139,10 +135,7 @@ $scope.alumno = ObjectsFactory.newAlumno();
 			modal.close.then(function(result){
 				boletinInasistenciasData = result;//llamada al servicio para update en la BD
 			});
-     /* modal.close.then(function(result) {        
-        console.log('el resultado es: ' + result); //$scope.algo.nroDocumento = result;
-    });*/
-	});
+		});
 
 	}; 
 
@@ -156,10 +149,7 @@ $scope.alumno = ObjectsFactory.newAlumno();
 			}
 		}).then(function(modal) {
 			modal.element.modal();
-     /* modal.close.then(function(result) {        
-        console.log('el resultado es: ' + result); //$scope.algo.nroDocumento = result;
-    });*/
-	});
+		});
 	};
 
 //File-Select

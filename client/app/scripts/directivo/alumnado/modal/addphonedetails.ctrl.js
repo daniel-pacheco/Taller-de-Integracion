@@ -21,9 +21,7 @@ angular.module('clientAppApp')
       'title' : 'Cancelar edición'
     }
   };
- 
-  //  This close function doesn't need to use jQuery or bootstrap, because
-  //  the button has the 'data-dismiss' attribute.
+
   $scope.close = function(modif) {
     if (modif)
       close ($scope.copiaListaTelefonos , 500);
@@ -51,6 +49,7 @@ angular.module('clientAppApp')
       $scope.copiaTelefono = angular.copy (telefono);
   }
 $scope.saveEditTelefono = function (position){
+  console.log(position);
   $scope.copiaListaTelefonos[position].caracteristica = $scope.copiaTelefono.caracteristica;
   $scope.copiaListaTelefonos[position].nroTelefono = $scope.copiaTelefono.nroTelefono;
   $scope.copiaListaTelefonos[position].tipoTelefono = $scope.copiaTelefono.tipoTelefono;

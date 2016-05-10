@@ -28,110 +28,83 @@
 
 
 <div class="col-md-10">
-	
-	<!--<h1>Alumnado</h1>{{postAnswer}} {{nuevoAlumno}}
-	
-	<button data-ng-click="getAlumnoById(302)" type="button" class="btn btn-lg btn-danger">Custom Modal
-		<br />
-		<small>getAlumnoById(302)</small>
-	</button>
-	{{postAnswer}}
-	<button type="button" class="btn btn-lg btn-danger" ng-click="setM(modalx)">Modal
-		<br />
-		<small>(using service)</small>
-	</button>
-	<button data-ng-click="getAlumnoById(302)" type="button" class="btn btn-info" data-animation="am-fade-and-slide-top">
-		BRN Lookup
-	</button>-->
-	<!--<button ng-click="setM(modalxi)" type="button" class="btn btn-info">
-		Post
-	</button> <br>
-	<button ng-click="performValidRequest()" type="button" class="btn btn-info">
-		valid request
-	</button>
-	<button ng-click="performUnauthorizedRequest()" type="button" class="btn btn-info">
-		unauthorized resource
-	</button>
-	<button ng-click="performInvalidRequest()" type="button" class="btn btn-info">
-		Make Request without valid token
-	</button>
-	<br>
-	{{response}}
--->
-<div id="listado" ng-show="listado">
-	<fieldset class="">
-		<h1>{{subtitle}}: <small>Seleccione el a&ntilde;o lectivo del que desa listar los alumnos</small></h1>
-		<hr>
-		
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<label>A&ntilde;o lectivo: </label> 
-				<select class="dropdown-toggle form-control-inline" name="" ng-model="dropDownValue"> <!-- ng-change="update(dropDownValue, option)"> -->
-					<option value="" disabled selected>Seleccione una opci&oacute;n</option>
-					<option value="">Todos</option>
-					<option ng-repeat="option in dropDownOptions" value="{{option}}">{{option}}</option>
-				</select>{{dropDownValue}}
-			<input type="text" class="form-control-inline" ng-show="dropDownValue === 'DNI/MAT'">
-			<button class="btn btn-default" ng-click="search()"  title="Ayuda: " data-content="Selecciones uno o varios alumnos para colocar multiples inasistencias" data-type="info" data-duration="4" data-container="#alerts-container" bs-alert>Buscar</button>
-			<div id="alerts-container" style="width:60%; float:right;" class="small"></div>
-		</div>
-	</div>
-	<div ng-show="loading">
-		<loading></loading>
-	</div>
 
-	<div id="listFilters" ng-show="listFilterIsEnabled">
+	<div id="listado" ng-show="listado">
+		<fieldset class="">
+			<h1>{{subtitle}}: <small>Seleccione el a&ntilde;o lectivo del que desa listar los alumnos</small></h1>
+			<hr>
 
-		<h2>Filtros de búsqueda</h2>
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<label>Nombre: </label> 
-				<input class="form-control-inline" type="text" maxlength="255" pattern="[a-zA-Z 0-9]*" ng-model="filterByName">{{filterByName}} 
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<label>A&ntilde;o lectivo: </label> 
+					<select class="dropdown-toggle form-control-inline" name="" ng-model="dropDownValue"> <!-- ng-change="update(dropDownValue, option)"> -->
+						<option value="" disabled selected>Seleccione una opci&oacute;n</option>
+						<option value="">Todos</option>
+						<option ng-repeat="option in dropDownOptions" value="{{option}}">{{option}}</option>
+					</select>
+					<input type="text" class="form-control-inline" ng-show="dropDownValue === 'DNI/MAT'">
+					<button class="btn btn-default" ng-click="search()"  title="Ayuda: " data-content="Selecciones uno o varios alumnos para colocar multiples inasistencias" data-type="info" data-duration="4" data-container="#alerts-container" bs-alert>Buscar</button>
+					<div id="alerts-container" style="width:60%; float:right;" class="small"></div>
+				</div>
+			</div>
+			<div ng-show="loading">
+				<loading></loading>
+			</div>
 
-				<label>Curso: </label>
-				<select class="dropdown-toggle form-control-inline" name="" ng-model="dropDownCursoValue">
-					<option value="" disabled selected>Seleccione un curso</option>
-					<option ng-repeat="cursoOption in dropDownCursoOptions" value="{{cursoOption}}">{{cursoOption}}</option>
-				</select> 
+			<div id="listFilters" ng-show="listFilterIsEnabled">
 
-				<label>División: </label><select
-				class="dropdown-toggle form-control-inline" name="" ng-model="dropDownDivisionValue">
-				<option value="" disabled selected>Seleccione una divisi&oacute;n</option>
-				<option ng-repeat="divisionOption in dropDownDivisionOptions" value="{{divisionOption}}">{{divisionOption}}</option>
-			</select>
-		</div>
-	</div>
-	<div ng-show="mostrarBtnInasistencias" class="affix" role="complementary" data-offset-top="-60" bs-affix style="position: relative; text-align: center;">
-		<button ng-click="checkAll()"class="btn btn-info">Desmarcar Todos</button>
-		<button class="btn btn-warning">Colocar Inasistencias</button>
-	</div>
-	<table class="table table-hover table-striped">
-		<thead>
-			<tr>
-				<th><input type="checkbox"></th>
-				<th>Nro</th>
-				<th>Apellido</th>
-				<th>Nombre</th>
-				<th>DNI</th>
-				<th>Id</th>
-				<th>Acciones</th>						
-			</tr>
-		</thead>
-		<tr ng-repeat="alumno in alumnoData | filter:alumnoFilter" ng-style="alumno.selected && {'background-color': '#ddd'}">
-			<td><input type="checkbox" ng-init="true" ng-model="selectAlumno" ng-checked="alumno.selected"></td>
-			<td ng-click="seleccionarCheckbox(alumno)">{{alumno.matricula}}</td>
-			<td ng-click="seleccionarCheckbox(alumno)">{{alumno.nombre}}</td>
-			<td ng-click="seleccionarCheckbox(alumno)">{{alumno.apellido}}</td>
-			<td ng-click="seleccionarCheckbox(alumno)">{{alumno.nroDocumento}}</td>
-			<td ng-click = "deleteAlumno(alumno.idUsuario)">{{alumno.idUsuario}}</td>
-			<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%; cursor: pointer" class="glyphicon glyphicon-user" ng-click="showModalProfile(alumno)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAttendance" ng-click="showModalInasistencias(alumno)" style="width:25%; cursor: pointer" class="glyphicon glyphicon-calendar"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipReportCard" style="width:25%; cursor: pointer" class="glyphicon glyphicon-list-alt" ng-click="showModalLibreta(alumno)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAcademicPerformance" style="width:25%; cursor: pointer" class="glyphicon glyphicon-education"></span></td> 
+				<h2>Filtros de búsqueda</h2>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<label>Nombre: </label> 
+						<input class="form-control-inline" type="text" maxlength="255" pattern="[a-zA-Z 0-9]*" ng-model="filterByName">{{filterByName}} 
+
+						<label>Curso: </label>
+						<select class="dropdown-toggle form-control-inline" name="" ng-model="dropDownCursoValue">
+							<option value="" disabled selected>Seleccione un curso</option>
+							<option ng-repeat="cursoOption in dropDownCursoOptions" value="{{cursoOption}}">{{cursoOption}}</option>
+						</select> 
+
+						<label>División: </label><select
+						class="dropdown-toggle form-control-inline" name="" ng-model="dropDownDivisionValue">
+						<option value="" disabled selected>Seleccione una divisi&oacute;n</option>
+						<option ng-repeat="divisionOption in dropDownDivisionOptions" value="{{divisionOption}}">{{divisionOption}}</option>
+					</select>
+				</div>
+			</div>
+			<div ng-show="mostrarBtnInasistencias" class="affix" role="complementary" data-offset-top="-60" bs-affix style="position: relative; text-align: center;">
+				<button ng-click="checkAll()"class="btn btn-info">Desmarcar Todos</button>
+				<button class="btn btn-warning">Colocar Inasistencias</button>
+			</div>
+			<table class="table table-hover table-striped">
+				<thead>
+					<tr>
+						<th><input type="checkbox"></th>
+						<th>Nro</th>
+						<th>Apellido</th>
+						<th>Nombre</th>
+						<th>DNI</th>
+						<th>Id</th>
+						<th>Acciones</th>						
+					</tr>
+				</thead>
+				<tbody style="overflow-y: scroll;">
+					<tr ng-repeat="alumno in alumnoData | filter:alumnoFilter" ng-style="alumno.selected && {'background-color': '#ddd'}">
+						<td ng-click="seleccionarCheckbox(alumno)"><input type="checkbox" ng-init="true" ng-model="selectAlumno" ng-checked="alumno.selected"></td>
+						<td ng-click="seleccionarCheckbox(alumno)">{{alumno.matricula}}</td>
+						<td ng-click="seleccionarCheckbox(alumno)">{{alumno.nombre}}</td>
+						<td ng-click="seleccionarCheckbox(alumno)">{{alumno.apellido}}</td>
+						<td ng-click="seleccionarCheckbox(alumno)">{{alumno.nroDocumento}}</td>
+						<td ng-click = "deleteAlumno(alumno.idUsuario)">{{alumno.idUsuario}}</td>
+						<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%; cursor: pointer" class="glyphicon glyphicon-user" ng-click="showModalProfile(alumno)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAttendance" ng-click="showModalInasistencias(alumno)" style="width:25%; cursor: pointer" class="glyphicon glyphicon-calendar"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipReportCard" style="width:25%; cursor: pointer" class="glyphicon glyphicon-list-alt" ng-click="showModalLibreta(alumno)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAcademicPerformance" style="width:25%; cursor: pointer" class="glyphicon glyphicon-education"></span></td> 
 					<!--<td>{{alumno.name}}</td>
 					<td>{{alumno.phone}}</td>
 					<td>{{$index}}</td> -->
 				</tr>
-			</table>
-		</div>
-	</fieldset>
+			</tbody>
+		</table>
+	</div>
+</fieldset>
 </div>
 
 <div id="nuevoPerfil" ng-show="nuevoPerfil">
@@ -139,17 +112,7 @@
 		<h1>{{subtitle}}: <small>Ingrese los datos para crear un nuevo perfil
 			de alumno y haga clic en guardar cuando finalice</small></h1>
 			<hr>
-			<!--<div class="cargar_imagen">
-				<img src="images/defaultUser.png" alt="Usuario" width="190px" height="auto"/>
-				<span class="btn btn-primary btn-file">Examinar<input type="file"></span>
-			</div>-->
-
 			<form class="form-horizontal media" name="formAlu" novalidate>
-				<!--<div class="pull-right">
-						<img class="img-rounded" src="images/defaultUser.png" alt="Usuario" width="220px" height="auto"/>
-					<div class="btn btn-primary btn-file" id="boton">Examinar<input type="file"></div>
-				</div>	-->
-				
 				<div class="formulario media-body">
 					<!-- <div class="container"> Pachec: probar esto en la resolución grande -->
 					<div class="row">
@@ -189,8 +152,7 @@
 									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Nombre/s:</label>
 								</div>
 								<div class="col-sm-5">
-									<input name="nombre" class="form-control" ng-model="nuevoAlumno.nombre" placeholder="Nombre"
-									type="text" maxlength="255" required pattern="[a-zA-Z ]*">
+									<input name="nombre" class="form-control" ng-model="nuevoAlumno.nombre" placeholder="Nombre" type="text" maxlength="255" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
 									<!-- Valida letras y espacios -->
 									<div ng-messages="formAlu.nombre.$error" ng-if="formAlu.nombre.$touched && formAlu.nombre.$invalid">
 										<div ng-message="pattern" class="help-block">Formato invalido</div>
@@ -207,7 +169,7 @@
 									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Apellido/s:</label>
 								</div>
 								<div class="col-sm-5">
-									<input name="apellido" class="form-control" ng-model="nuevoAlumno.apellido" placeholder="Apellido" type="text" maxlength="255" required pattern="[a-zA-Z ]*">
+									<input name="apellido" class="form-control" ng-model="nuevoAlumno.apellido" placeholder="Apellido" type="text" maxlength="255" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
 									<!-- Valida letras y espacios-->
 									<div ng-messages="formAlu.apellido.$error" ng-if="formAlu.apellido.$touched && formAlu.apellido.$invalid">
 										<div ng-message="pattern" class="help-block">Formato invalido</div>
@@ -235,134 +197,78 @@
 									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Domicilio:</label>
 								</div>
 								<div class="col-sm-6">
-									<input name="domicilio" class="form-control" placeholder="Domicilio 123" type="text" maxlength="255" required pattern="[a-zA-Z 0-9]*" />
+									<input name="domicilio" class="form-control" placeholder="Domicilio 123" type="text" maxlength="255" ng-model="alumnoDomicilioLight" required/> <!-- pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*" -->
 									<!-- Valida letras, numeros y espacios-->
 									<div ng-messages="formAlu.domicilio.$error" ng-if="formAlu.domicilio.$touched && formAlu.domicilio.$invalid">
 										<div ng-message="pattern" class="help-block">Formato invalido</div>
 										<div ng-message="required" class="help-block">Complete este campo</div>
 									</div>
 								</div>
-						<!-- <div class="col-sm-1 control-label">
-							<label for="">N&uacute;mero:</label>
-						</div>
-						<div class="col-sm-2">
-							<input class="form-control" placeholder="123"
-							type="text" maxlength="255" required pattern="[0-9]*" />
-							 Valida letras, numeros y espacios
-							</div> -->
-							<div class="col-sm-1">
-								<input type="button" class="btn btn-default" value="Avanzado" ng-click="domicilioAvanzado()">
-							</div><!-- {{modalx.addressData}} -->
-						</div>
-						<!-- /form-group-->
-
-
-
-						<div class="form-group" ng-class="{ 'has-error': formAlu.fechaNacimiento.$touched && formAlu.fechaNacimiento.$invalid }">
-							<div class="col-sm-4 control-label">
-								<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Fecha de nac.:</label>
+								<div class="col-sm-1">
+									<input type="button" class="btn btn-default" value="Avanzado" ng-click="domicilioAvanzado()">
+								</div>
 							</div>
-							<div class="col-sm-6">
-								<input name="fechaNacimiento"class="form-control" ng-model="nuevoAlumno.fechaNacimiento" placeholder="10/10/1010" type="date"
-								step="1" value="01-01-2000" />
-								<div ng-messages="formAlu.fechaNacimiento.$error" ng-if="formAlu.fechaNacimiento.$touched && formAlu.fechaNacimiento.$invalid">
-									<div ng-message="pattern" class="help-block"> 
-										Formato invalido  
+							<!-- /form-group-->
+
+							<div class="form-group" ng-class="{ 'has-error': formAlu.fechaNacimiento.$touched && formAlu.fechaNacimiento.$invalid }">
+								<div class="col-sm-4 control-label">
+									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Fecha de nac.:</label>
+								</div>
+								<div class="col-sm-6">
+									<input name="fechaNacimiento"class="form-control" ng-model="nuevoAlumno.fechaNacimiento" placeholder="10/10/1010" type="date"
+									step="1" value="01-01-2000" />
+									<div ng-messages="formAlu.fechaNacimiento.$error" ng-if="formAlu.fechaNacimiento.$touched && formAlu.fechaNacimiento.$invalid">
+										<div ng-message="pattern" class="help-block"> 
+											Formato invalido  
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						<!-- /form-group-->
 
+							<div class="form-group" ng-class="{ 'has-error': formAlu.listaTelefono.$touched && formAlu.listaTelefono.$invalid }">
+								<div class="col-sm-4 control-label">
+									<label for="">Teléfono:</label>
+								</div>
 
-						<!-- <div class="form-group">
-							<div class="col-sm-4 control-label">
-								<label for="">Año curso:</label>
-							</div>
-							<div class="col-sm-3">
-								<select class="form-control" name="Año">
-									<option value="">elemento 1</option>
-									<option value="">elemento 2</option>
-								</select>
-							</div>
-						</div>
-						 /form-group
-
-
-
-						<div class="form-group">
-							<div class="col-sm-4 control-label">
-								<label for="">Nombre curso:</label>
-							</div>
-							<div class="col-sm-3">
-								<select class="form-control" name="Curso">
-									<option value="">elemento 3</option>
-									<option value="">elemento 4</option>
-								</select>
-							</div>
-						</div> -->
-						<!-- /form-group-->
-
-
-						<div class="form-group" ng-class="{ 'has-error': formAlu.listaTelefono.$touched && formAlu.listaTelefono.$invalid }">
-							<div class="col-sm-4 control-label">
-								<label for="">Teléfono:</label>
+								<div class="col-sm-4">
+									<input name="listaTelefono" class="form-control" ng-model="nuevoAlumno.listaTelefono[0]" placeholder="0343-4353535" type="tel">
+									<div ng-messages="formAlu.listaTelefono.$error" ng-if="formAlu.listaTelefono.$touched && formAlu.listaTelefono.$invalid">
+										<div ng-message="tel" class="help-block"> 
+											Formato invalido  
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-1">
+									<input type="button" class="btn btn-default" value="Avanzado" ng-click="telefonoAvanzado()">
+								</div>
 							</div>
 
-							<div class="col-sm-4">
-								<input name="listaTelefono" class="form-control" ng-model="nuevoAlumno.listaTelefono[0]" placeholder="0343-4353535" type="tel">
-								<div ng-messages="formAlu.listaTelefono.$error" ng-if="formAlu.listaTelefono.$touched && formAlu.listaTelefono.$invalid">
-									<div ng-message="tel" class="help-block"> 
-										Formato invalido  
+							<div class="form-group" ng-class="{ 'has-error': formAlu.email.$touched && formAlu.email.$invalid }">
+								<div class="col-sm-4 control-label">
+									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Mail:</label>
+								</div>
+								<div class="col-sm-6">
+									<input name="email" type="email" class="form-control" placeholder="nombre@nombre.com" maxlength="255" required/>
+									<div ng-messages="formAlu.email.$error" ng-if="formAlu.email.$touched && formAlu.email.$invalid">
+										<div ng-message="email" class="help-block">Formato invalido</div>
+										<div ng-message="required" class="help-block">Complete este campo</div>
 									</div>
 								</div>
 							</div>
-							<div class="col-sm-1">
-								<input type="button" class="btn btn-default" value="Avanzado" ng-click="telefonoAvanzado()">
-							</div>
-						</div>
-						<!-- /form-group-->
+							<!-- /form-group-->
 
 
-				<!-- 	<div class="form-group">
-						<div class="col-sm-2 control-label">
-							<label for="">Celular:</label>
-						</div>
-
-						<div class="col-sm-5">
-							<input class="form-control" ng-model="nuevoAlumno.listaTelefono[1]" placeholder="0343-155555555"
-							type="tel" />
-						</div>
-					</div> -->
-					<!-- /form-group-->
-
-
-					<div class="form-group" ng-class="{ 'has-error': formAlu.email.$touched && formAlu.email.$invalid }">
-						<div class="col-sm-4 control-label">
-							<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Mail:</label>
-						</div>
-						<div class="col-sm-6">
-							<input name="email" type="email" class="form-control" placeholder="nombre@nombre.com" maxlength="255" required/>
-							<div ng-messages="formAlu.email.$error" ng-if="formAlu.email.$touched && formAlu.email.$invalid">
-								<div ng-message="email" class="help-block">Formato invalido</div>
-								<div ng-message="required" class="help-block">Complete este campo</div>
-							</div>
-						</div>
-					</div>
-					<!-- /form-group-->
-
-
-					<div class="form-group" ng-class="{ 'has-error': formAlu.observacion.$touched && formAlu.observacion.$invalid }">
-						<div class="col-sm-4 control-label">
-							<label for="">Observaciones:</label>
-						</div>
-						<div class="col-sm-7">
-							<textarea name="observacion" class="form-control" rows="4" maxlength="255" pattern="[a-zA-Z 0-9]*"></textarea>
-							<div ng-messages="formAlu.observacion.$error" ng-if="formAlu.observacion.$touched && formAlu.observacion.$invalid">
-								<div ng-message="pattern" class="help-block"> 
-									Formato invalido  
+							<div class="form-group" ng-class="{ 'has-error': formAlu.observacion.$touched && formAlu.observacion.$invalid }">
+								<div class="col-sm-4 control-label">
+									<label for="">Observaciones:</label>
 								</div>
-							</div>
+								<div class="col-sm-7">
+									<textarea name="observacion" class="form-control" rows="4" maxlength="255" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*"></textarea>
+									<div ng-messages="formAlu.observacion.$error" ng-if="formAlu.observacion.$touched && formAlu.observacion.$invalid">
+										<div ng-message="pattern" class="help-block"> 
+											Formato invalido  
+										</div>
+									</div>
 							<!--<input class="form-control"
 							type="text" maxlength="255" required pattern="[a-zA-Z ]*">-->
 							<!-- Valida letras y espacios-->
@@ -455,53 +361,54 @@
 					</div>
 					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
 						<div class="panel-body form-group table-responsive">
-							<table class="table table-hover table-striped table-condensed table-bordered">
+							<table class="table-hover table-striped table-condensed table-bordered">
 								<thead>
-									<tr style="height: 95px; position: relative;">
+									<tr style="height: 95px; position: relative;" class="affix" data-offset-top="-60">
 										<th class="col-md-3">
 											<button type="button" class="btn btn-success btn-block btn-md" style="float: top">Editar Plantilla</button>
 										</th>
-									</th>	
-									<th class="Rotate-90 col-md-1" ng-repeat="mate in notasTrim.listaTrimestres[0].notas" style="vertical-align: middle; padding: inherit;" >{{mate.materia}}</th>	<!--Esto toma del primer alumno la lista de materias y las muestra en el head-->
-								</tr>
-							</thead>
-							<tr ng-repeat="lista in notasTrim.listaTrimestres">
-								<td class="col-md-3">{{$index+1}} - {{lista.alumno}}</td>
-								<!-- <td ng-repeat="nota in lista.notas"><input ng-model="nota.nota" type="text" class="form-control" style="width: 48px; height: 27px; margin: auto"></td> -->
-								<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">{{nota.nota}}</td>
-							</tr>
-						</table>
+										<th class="Rotate-90 col-md-1" ng-repeat="mate in notasTrim.listaTrimestres[0].notas" style="vertical-align: middle; padding: inherit;">{{mate.materia}}</th>	<!--Esto toma del primer alumno la lista de materias y las muestra en el head-->
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="lista in notasTrim.listaTrimestres">
+										<td class="col-md-3">{{$index+1}} - {{lista.alumno}}</td>
+										<!-- <td ng-repeat="nota in lista.notas"><input ng-model="nota.nota" type="text" class="form-control" style="width: 48px; height: 27px; margin: auto"></td> -->
+										<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">{{nota.nota}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="panel panel-default">
-				<div class="panel-heading" style="cursor: pointer" ng-click="asignarPlantillaTrim(2)" bs-collapse-toggle>
-					<div class="panel-title">
-						Segundo Trimestre
+				<div class="panel panel-default">
+					<div class="panel-heading" style="cursor: pointer" ng-click="asignarPlantillaTrim(2)" bs-collapse-toggle>
+						<div class="panel-title">
+							Segundo Trimestre
 
+						</div>
+					</div>
+					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
+						<div class="panel-body">
+							<!-- {{ panels[1].body }} -->
+						</div>
 					</div>
 				</div>
-				<div class="panel-collapse" role="tabpanel" bs-collapse-target>
-					<div class="panel-body">
-						<!-- {{ panels[1].body }} -->
+				<div class="panel panel-default">
+					<div class="panel-heading" style="cursor: pointer" ng-click="asignarPlantillaTrim(3)" bs-collapse-toggle>
+						<div class="panel-title">
+							Tercer Trimestre
+
+						</div>
 					</div>
-				</div>
-			</div>
-			<div class="panel panel-default">
-				<div class="panel-heading" style="cursor: pointer" ng-click="asignarPlantillaTrim(3)" bs-collapse-toggle>
-					<div class="panel-title">
-						Tercer Trimestre
-						
-					</div>
-				</div>
-				<div class="panel-collapse" role="tabpanel" bs-collapse-target>
-					<div class="panel-body">
-						<!-- {{ panels[2].body }} -->
+					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
+						<div class="panel-body">
+							<!-- {{ panels[2].body }} -->
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</fieldset>
+	</fieldset>
 
 </div>
