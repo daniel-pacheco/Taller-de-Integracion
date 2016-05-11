@@ -19,7 +19,7 @@
         }
     });
 })
- .controller('MateriasCtrl', function ($scope) {
+ .controller('MateriasCtrl', function ($scope, ModalService) {
   $scope.listado1 = true;
 
   $scope.seleccionar = function(id) {
@@ -46,6 +46,30 @@ $scope.activeMenuIzqAlu = 1;
 $scope.setActiveAlu = function(menuItemAlu) {
   $scope.activeMenuIzqAlu = menuItemAlu;
 };
+
+//-- Modals
+
+$scope.addArea = function() {
+  ModalService.showModal({
+    templateUrl: 'scripts/directivo/materias/modal/addareadetails.tpl.html',
+    controller: 'addAreaDetailsModalController',
+    inputs: {
+      title: "Agregar Area",
+    }
+  }).then(function(modal) {
+    modal.element.modal();
+    modal.close.then(function(result){
+
+    });
+     /* modal.close.then(function(result) {        
+        console.log('el resultado es: ' + result); //$scope.algo.nroDocumento = result;
+    });*/
+});
+};
+
+//-- Llamadas al servicio
+
+
 
 //Test
 $scope.friends = [{nombre:'Educación Fisica', docenteTitular:'María Laura', anioPertenece: '4º', area: 'cs sociales'},

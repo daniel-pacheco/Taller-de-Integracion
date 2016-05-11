@@ -446,7 +446,7 @@ $(function () {
             type: 'column'
         },
         title: {
-            text: 'Desempeño historico de la división ' + $scope.estadisticaPorMateria.dvision + ' en la materia: ' + $scope.estadisticaPorMateria.nombre
+            text: 'Desempeño historico de la división ' + $scope.estadisticaPorMateria.division + ' en la materia: ' + $scope.estadisticaPorMateria.nombre
         },
         xAxis: {
             categories: $scope.historicoCiclos

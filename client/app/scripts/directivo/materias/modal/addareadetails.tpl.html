@@ -1,0 +1,40 @@
+<div class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" style="width: 40%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">{{title}}</h4><!-- {{modalx.phoneData}} -->
+			</div>
+			<div class="modal-body">
+				
+				<div class="container">
+
+					<fieldset class="form-group" style="margin-bottom:0px">
+						<label for="exampleSelect2">Seleccione un &aacute;rea</label>
+						<select  class="form-control" style="width: 100%" size="6" id="exampleSelect2" ng-model="selectedArea">
+							<option ng-repeat="area in listaAreas">{{area}}</option>
+						</select>
+					</fieldset>
+					<hr>
+					<fieldset class="form-group" style="margin-bottom:0px">
+						<div class="col-sm-4">
+							<input ng-model="nuevaArea" class="form-control" placeholder="Nueva &aacute;rea" type="text" maxlength="25" required pattern="[a-zA-Z]*"/>
+						</div>
+						<div class="col-sm-2 col-md-2 col-xs-2 col-lg-2">
+							<button class="form-control btn btn-primary" type="submit" ng-click="agregarArea(nuevaArea)">Agregar</button>
+						</div>
+						<div class="col-sm-2 col-md-2 col-xs-2 col-lg-2">
+							<button class="form-control btn btn-primary" type="submit" ng-click="eliminarArea(nuevaArea)">Agregar</button>
+						</div>
+						
+					</fieldset>
+					
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="close(false)">Cerrar</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal" autofocus ng-click="close(true)">Guardar</button>{{selectedArea}}
+			</div>
+		</div>
+	</div>
+</div>
