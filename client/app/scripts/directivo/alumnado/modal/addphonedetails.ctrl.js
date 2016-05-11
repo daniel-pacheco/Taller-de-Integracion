@@ -31,10 +31,12 @@ angular.module('clientAppApp')
 
    $scope.nuevoTelefono = ObjectsFactory.newTelefono();
   $scope.addTelefono = function(){
-    $scope.copiaListaTelefonos.push({
+    //pedir obj y hacerle copy
+    $scope.copiaListaTelefonos.push({//pushear el objeto copiado
       'caracteristica':$scope.nuevoTelefono.caracteristica, 
       'nroTelefono': $scope.nuevoTelefono.nroTelefono, 
       'tipoTelefono':$scope.nuevoTelefono.tipoTelefono, });
+    //asignar a nuevo telefono un objeto pedido a la factory
     $scope.nuevoTelefono.caracteristica = "";
     $scope.nuevoTelefono.nroTelefono = "";
     $scope.nuevoTelefono.tipoTelefono = "";

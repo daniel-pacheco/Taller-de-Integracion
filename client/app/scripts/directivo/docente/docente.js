@@ -48,12 +48,12 @@ $scope.subtitle = "Nuevo Docente"
     case 'listado':
     $scope.listado = true;
     this.showData();
-    $scope.docenteEdit = null;
+    $scope.nuevoDocente = null;
     break;
     case 'nuevoPerfil':
     $scope.nuevoPerfil = true;
       $scope.subtitle = "Nuevo Docente"
-          $scope.docenteEdit = null;
+          $scope.nuevoDocente = null;
     break;
   }
 };
@@ -94,12 +94,12 @@ $scope.setActiveDoc = function(menuItemDoc) {
   }; 
 
 
-$scope.docenteEdit = null;
+$scope.nuevoDocente = null;
 $scope.editProfile = function(docente) {
   $scope.listado = false;
   $scope.subtitle = "Editar Docente"
   $scope.nuevoPerfil = true;
-  $scope.docenteEdit = docente;
+  $scope.nuevoDocente = docente;
 }
     /*$scope.docentes = [{name:'John', surname:'lenono', area:'Cs. Sociales', cuil:'252525', materia:'Historia'},
 {name:'Mary', surname:'yein', area:'Cs. Naturales', cuil:'434343', materia:'Biologia' },

@@ -127,9 +127,7 @@
 										<div ng-message="pattern" class="help-block">Formato invalido</div>
 									</div>
 								</div>
-
 								<!-- Valida 8 digitos -->
-
 								<div class="col-sm-3">
 									<select class="form-control" ng-model="nuevoAlumno.tipoDocumento" name="TipoDocumento">
 										<option value="" disabled selected>Tipo</option>
@@ -140,7 +138,6 @@
 								</div>
 							</div>
 							<!-- /form-group-->
-
 
 							<div class="form-group" ng-class="{ 'has-error': formAlu.nombre.$touched && formAlu.nombre.$invalid }">
 								<div class="col-sm-4 control-label">
@@ -158,7 +155,6 @@
 							</div>
 							<!-- /form-group-->
 
-
 							<div class="form-group" ng-class="{ 'has-error': formAlu.apellido.$touched && formAlu.apellido.$invalid }">
 								<div class="col-sm-4 control-label">
 									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Apellido/s:</label>
@@ -172,8 +168,7 @@
 									</div>
 								</div>
 							</div>
-
-
+							<!-- /form-group-->
 
 							<div class="form-group">
 								<div class="col-sm-4 control-label">
@@ -185,7 +180,6 @@
 								</div>
 							</div>
 							<!-- /form-group-->
-
 
 							<div class="form-group" ng-class="{ 'has-error': formAlu.domicilio.$touched && formAlu.domicilio.$invalid }">
 								<div class="col-sm-4 control-label">
@@ -218,6 +212,7 @@
 										</div>
 									</div>
 								</div>
+								{{nuevoAlumno.fechaNacimiento}}
 							</div>
 
 							<div class="form-group" ng-class="{ 'has-error': formAlu.listaTelefono.$touched && formAlu.listaTelefono.$invalid }">
@@ -240,6 +235,7 @@
 									<input type="button" class="btn btn-default" value="Avanzado" ng-click="telefonoAvanzado()">
 								</div>
 							</div>
+							<!-- /form-group-->
 
 							<div class="form-group" ng-class="{ 'has-error': formAlu.email.$touched && formAlu.email.$invalid }">
 								<div class="col-sm-4 control-label">
@@ -258,7 +254,6 @@
 							</div>
 							<!-- /form-group-->
 
-
 							<div class="form-group" ng-class="{ 'has-error': formAlu.observacion.$touched && formAlu.observacion.$invalid }">
 								<div class="col-sm-4 control-label">
 									<label for="">Observaciones:</label>
@@ -270,12 +265,10 @@
 											Formato invalido  
 										</div>
 									</div>
-
 								</div>
-							</div>
-							
-						</div>
-						<!-- /form-group-->
+							</div><!-- /form-group-->
+						</div><!--personal-info-->
+						
 						<div class="col-md-3">
 							<div class="form-group">
 								<div class="col-sm-1">
@@ -286,25 +279,22 @@
 									<div ngf-drop ng-model="picFile" ngf-pattern="image/*" class="cropArea"><!--{{picFile}}-->
 										<img-crop image="picFile  | ngfDataUrl"                 
 										result-image="croppedDataUrl" ng-init="croppedDataUrl=''">
-									</img-crop>
+										</img-crop>
+									</div>
 								</div>
-							</div>
-
 							<!--<div>
 								<img ng-src="{{croppedDataUrl}}">
 							</div>-->
 							<!--<button ng-click="upload(croppedDataUrl)">Submit</button> -->
-							<span class="progress" ng-show="progress >= 0">
-								<div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
-							</span>
-							<span ng-show="result">Carga completa</span>
-							<span class="err" ng-show="errorMsg">{{errorMsg}}</span>
+								<span class="progress" ng-show="progress >= 0">
+									<div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
+								</span>
+								<span ng-show="result">Carga completa</span>
+								<span class="err" ng-show="errorMsg">{{errorMsg}}</span>
+							</div>
 						</div>
-					</div>
-
-				</div>
-				<!-- </div> -->
-			</div><!-- /formulario-->
+				</div><!--row-->
+			</div><!--formulario media-body-->
 			<div class="form-group">
 				<div class="col-sm-2 col-sm-offset-3">
 					<input class="btn btn-danger" type="button" name="" onclick="cargarAlumnoPrincipal()" value="Cancelar" />
@@ -313,11 +303,9 @@
 					<input class="btn btn-primary" ng-click="upload(croppedDataUrl)" type="submit" name="" value="Guardar" ng-disabled="!formAlu.$valid"/>
 				</div>
 			</div>
-
 		</form>
 	</fieldset>
-
-</div>
+</div><!--id="nuevoPerfil" ng-show="nuevoPerfil"-->
 
 <div id="notas" ng-show="notas">
 	<fieldset class="navbar">
