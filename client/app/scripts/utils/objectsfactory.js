@@ -6,7 +6,7 @@ angular.module('clientAppApp')
   var newAlumno = function(){
     var alumno = {
       "matricula": 0,
-      "idUsuario": 0,
+      "idUsuario": null,
       "nroDocumento": 0,
       "tipoDocumento": "DU/DNI",
       "nombre": "",
@@ -44,7 +44,7 @@ angular.module('clientAppApp')
 
   var newMail = function(){
     var mail = {
-      "idMail": 0,
+      "idMail": null,
       "direccionMail": "",
       "tipoMail": ""
     };
@@ -53,7 +53,7 @@ angular.module('clientAppApp')
 
   var newDomicilio = function(){
     var domicilio = {
-      "idDomicilio": 0,
+      "idDomicilio": null,
       "calle": "",
       "numero": 0,
       "piso": 0,
@@ -69,7 +69,7 @@ angular.module('clientAppApp')
 
   var newDocente = function(){
     var docente = {
-      "idUsuario"     : 0,
+      "idUsuario"     : null,
       "nroDocumento"  : 0,
       "tipoDocumento" : "DU/DNI",
       "nombre"        : "",
@@ -102,7 +102,7 @@ angular.module('clientAppApp')
 
   var newTitulo = function(){
     var titulo = {
-      "idTitulo"         : 0,
+      "idTitulo"         : null,
       "nombreTitulo"     : "",
       "descripcionTitulo": ""
     };
@@ -111,15 +111,52 @@ angular.module('clientAppApp')
 
   var newMateria = function(){
     var materia = {
+      "idMateria": null,
       "nombre": '',
       "descripcion": '',
       "docenteTitular": {}, //docenteLight
-      "docenteSuplente": [], //docenteLight
-      "anio":'',
-      "area": ''
+      "docenteSuplente": {}, //docenteLight
+      "area": {},
+      "activo": true,
+      "idAnio": null
     };
     return materia;
   };
+
+  var newArea = function(){
+    var area = {
+      "idArea": null,
+      "nombre": ''
+    };
+    return area;
+  };
+
+  var newAnio = function(){
+    var anio = {
+      "idAanio": null,
+      "nombre": '',
+      "descripcion": '',
+      "listaCursos": [],
+      "listaMaterias": [],
+      "activo": true
+    };
+    return anio;
+  };
+
+  var newCurso = function(){
+    var curso = {
+      "idCurso": null,
+      "division": '',
+      "turno": '',
+      "cicloLectivo": 0,
+      "listaAlumnos": []
+    };
+    return curso;
+  };
+
+
+
+  
 
   //-- Estadisticas
 
@@ -187,6 +224,9 @@ angular.module('clientAppApp')
     newDocenteLight: newDocenteLight,
     newTitulo: newTitulo,
     newMateria: newMateria,
+    newArea: newArea,
+    newAnio: newAnio,
+    newCurso: newCurso,
     
 
     //-- Estadisticas
