@@ -27,8 +27,8 @@
 	<h1>A&ntilde;o</h1>
 	<hr>
 
-	<div id="listadoAnio" ng-show="listadoAnio" style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
-		<fieldset class="navbar">
+	<div id="listadoAnio" ng-show="listadoAnio" style="margin-left: 0px; margin-right: 20%;">  <!--lista centrada -->
+		<fieldset>
 			<legend>Listado</legend>
 			
 			<!--<button ng-click="search()">Buscar</button>-->
@@ -75,7 +75,7 @@
 						<div class="col-sm-2 control-label">
 							<label for="">Nombre:</label>
 						</div>
-						<div class="col-sm-3">
+						<div class="col-sm-4">
 							<input class="form-control" placeholder="Año" type="text"
 							maxlength="10" required pattern="[a-zA-Z ]*">
 						</div>
@@ -94,39 +94,32 @@
 						<!-- Valida 8 digitos -->
 					</div>
 					<!-- /form-group-->
-					<div class="form-group">
-						<div class="col-sm-2">
-						</div>
-						<div class="col-sm-2">
-							<label>Divisiones</label>
-							<select multiple class="form-control">
-								<option autofocus>U - Tarde</option>
-								<option>A - Tarde</option>
-							</select> 
-							<div class="">
-								<span class="glyphicon glyphicon-plus shadowRed" style="margin:0 10%;"></span> 
-								<span class="glyphicon glyphicon-minus shadowGreen"></span> 
+
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label for="selectCurso" >Existentes</label>
+								<select id="selectCurso" size="3" class="form-control">
+									<option> A - Matutino</option>
+									<option> B - Vespertino</option>
+									<option> C - Nocturno</option>
+								</select>
 							</div>
+							<button class="pull-left">Eliminar</button>
 						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-sm-2 control-label">
-							<label for="">Nombre</label>
-						</div>
-						<div class="col-sm-2">
-							<input class="form-control" placeholder="U" type="text" maxlength="10" required pattern="[a-zA-Z ]*">
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-sm-2 control-label">
-							<label for="">Turno</label>
-						</div>
-						<div class="col-sm-2">
-							<select class="form-control" name="Año">
-								<option value="">Ma&ntilde;ana</option>
-								<option value="">Tarde</option>
-								<option value="">Noche</option>
-							</select>
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label for="inputCurso">Nombre</label>
+								<input id="inputCurso" type="text" class="form-control">
+								<label for="selectTurno">Turno</label>
+								<select id="selectTurno" class="form-control">
+									<option>Matutino</option>
+									<option>Vespertino</option>
+									<option>Nocturno</option>
+								</select>
+							</div>
+							<button class="pull-left">Agregar</button>
 						</div>
 					</div>
 				</div>
