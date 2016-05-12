@@ -15,19 +15,19 @@ public class Inasistencia {
 	private Float cantidad;
 	private Date fecha;
 	private Boolean justificada;
-	private String descripcion;
+	private String concepto; // concepto, o "falto a"
 
 	public Inasistencia() {
 		super();
 	}
 
-	public Inasistencia(Long idInasistencia, Float cantidad, Date fecha, Boolean justificada, String descripcion) {
+	public Inasistencia(Long idInasistencia, Float cantidad, Date fecha, Boolean justificada, String concepto) {
 		super();
 		this.idInasistencia = idInasistencia;
 		this.cantidad = cantidad;
 		this.fecha = fecha;
 		this.justificada = justificada;
-		this.descripcion = descripcion;
+		this.concepto = concepto;
 	}
 
 	public Long getIdInasistencia() {
@@ -62,12 +62,12 @@ public class Inasistencia {
 		this.justificada = justificada;
 	}
 
-	public String getDescripcion() {
-		return descripcion;
+	public String getConcepto() {
+		return concepto;
 	}
 
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	public void setConcepto(String concepto) {
+		this.concepto = concepto;
 	}
 
 }

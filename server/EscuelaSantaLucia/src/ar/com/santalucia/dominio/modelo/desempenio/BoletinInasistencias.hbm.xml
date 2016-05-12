@@ -25,5 +25,8 @@
         <property name="cicloLectivo" type="java.lang.Integer">
             <column name="CICLOLECTIVO" />
         </property>
+        <property name="activo" type="java.lang.Boolean">
+            <column name="ACTIVO" />
+        </property>
     </class>
 </hibernate-mapping>
