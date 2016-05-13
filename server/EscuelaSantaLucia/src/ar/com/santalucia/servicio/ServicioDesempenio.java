@@ -12,6 +12,7 @@ import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinNotasHist;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorNota;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorTrimestre;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
+import ar.com.santalucia.dominio.dto.DetallePreviaDTO;
 import ar.com.santalucia.dominio.dto.GetPlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.dto.ItemPlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.dto.MateriaNotaDTO;
@@ -268,9 +269,7 @@ public class ServicioDesempenio {
 			throw new Exception("No se pudo asignar la NOTA al TRIMESTRE: " + ex.getMessage());
 		}
 		return true;
-	}
-	
-	
+	}	 
 	
 	public Boolean asignarTrimestreABoletin(Trimestre trimestre, Long idBoletin) throws Exception {
 		try {
