@@ -7,7 +7,7 @@ import java.util.Set;
 
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
 import ar.com.santalucia.dominio.dto.DocenteMateriasDTO;
-import ar.com.santalucia.dominio.dto.MateriaAreaDTO;
+import ar.com.santalucia.dominio.dto.MateriaAreaCondDocenteDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
@@ -192,15 +192,15 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 							anios.add(a.getNombre());
 						}
 						docenteDTO.setAnios(anios);
-						ArrayList<MateriaAreaDTO> materias = (docenteDTO.getMaterias() == null) 
-																? new ArrayList<MateriaAreaDTO>() 
+						ArrayList<MateriaAreaCondDocenteDTO> materias = (docenteDTO.getMaterias() == null) 
+																? new ArrayList<MateriaAreaCondDocenteDTO>() 
 																: docenteDTO.getMaterias();
 						if ((m.getDocenteTitular() != null) && (m.getDocenteTitular().equals(p))) {
-							materias.add(new MateriaAreaDTO(m.getNombre(), MateriaAreaDTO.TITULAR, m.getArea().getNombre()));
+							materias.add(new MateriaAreaCondDocenteDTO(m.getNombre(), MateriaAreaCondDocenteDTO.TITULAR, m.getArea().getNombre()));
 							docenteDTO.setMaterias(materias);
 						}
 						if ((m.getDocenteSuplente() != null) && (m.getDocenteSuplente().equals(p))) {
-							materias.add(new MateriaAreaDTO(m.getNombre(), MateriaAreaDTO.SUPLENTE, m.getArea().getNombre()));
+							materias.add(new MateriaAreaCondDocenteDTO(m.getNombre(), MateriaAreaCondDocenteDTO.SUPLENTE, m.getArea().getNombre()));
 							docenteDTO.setMaterias(materias);
 						}
 					}

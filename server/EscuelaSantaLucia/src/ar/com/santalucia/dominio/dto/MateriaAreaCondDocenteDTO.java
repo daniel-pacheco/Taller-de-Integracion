@@ -1,13 +1,14 @@
 package ar.com.santalucia.dominio.dto;
 
 /**
- * MateriaAreaDTO: contiene información sobre el nombre de una materia y el área al que pertenece.
+ * MateriaAreaCondDocenteDTO: contiene información sobre el nombre de una materia y el área al que pertenece.
+ * Estas materias son para un docente determinado, su condición se especifica en el campo 'condicion'.
  * 
  * @author Eric
  * @version 1.0
  *
  */
-public class MateriaAreaDTO {
+public class MateriaAreaCondDocenteDTO {
 
 	private String materia;
 	private String condicion;
@@ -16,11 +17,11 @@ public class MateriaAreaDTO {
 	public static String TITULAR = "Titular";
 	public static String SUPLENTE = "Suplente";
 
-	public MateriaAreaDTO() {
+	public MateriaAreaCondDocenteDTO() {
 		super();
 	}
 
-	public MateriaAreaDTO(String materia, String condicion, String area) {
+	public MateriaAreaCondDocenteDTO(String materia, String condicion, String area) {
 		super();
 		this.materia = materia;
 		this.condicion = condicion;

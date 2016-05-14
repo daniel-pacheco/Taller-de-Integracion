@@ -8,7 +8,7 @@ import ar.com.santalucia.aplicacion.gestor.academico.GestorCurso;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
 import ar.com.santalucia.dominio.dto.AlumnoDTO;
 import ar.com.santalucia.dominio.dto.DocenteMateriasDTO;
-import ar.com.santalucia.dominio.dto.MateriaAreaDTO;
+import ar.com.santalucia.dominio.dto.MateriaAreaCondDocenteDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
 import ar.com.santalucia.dominio.modelo.academico.Materia;

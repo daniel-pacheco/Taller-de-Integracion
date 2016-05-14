@@ -16,14 +16,14 @@ public class DocenteMateriasDTO {
 	private String apellidoDocente;
 	private ArrayList<String> anios;
 	//private ArrayList<String> areas;
-	private ArrayList<MateriaAreaDTO> materias;
+	private ArrayList<MateriaAreaCondDocenteDTO> materias;
 
 	public DocenteMateriasDTO() {
 		super();
 	}
 
 	public DocenteMateriasDTO(Long dniDocente, String nombreDocente, String apellidoDocente, ArrayList<String> anios,
-			/*ArrayList<String> areas,*/ArrayList<MateriaAreaDTO> materias) {
+			/*ArrayList<String> areas,*/ArrayList<MateriaAreaCondDocenteDTO> materias) {
 		super();
 		this.dniDocente = dniDocente;
 		this.nombreDocente = nombreDocente;
@@ -73,11 +73,11 @@ public class DocenteMateriasDTO {
 		this.areas = areas;
 	}
 	*/
-	public ArrayList<MateriaAreaDTO> getMaterias() {
+	public ArrayList<MateriaAreaCondDocenteDTO> getMaterias() {
 		return materias;
 	}
 
-	public void setMaterias(ArrayList<MateriaAreaDTO> materias) {
+	public void setMaterias(ArrayList<MateriaAreaCondDocenteDTO> materias) {
 		this.materias = materias;
 	}
 
