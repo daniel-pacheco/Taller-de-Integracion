@@ -1,4 +1,7 @@
 package ar.com.santalucia.dominio.dto;
+
+import java.util.Date;
+
 /**
  * DetallePreviaDTO proporciona un objeto simplificado para devolver al frontend
  * información resumida de materias previas.
@@ -12,6 +15,9 @@ public class DetallePreviaDTO {
 	private Long dniAlumno;
 	private Integer cicloLectivoMateria;
 	private String anio;
+	private Boolean asistencia;
+	private Date inicioMesa; 
+	private Date finMesa;
 	private Float nota;
 	
 	public DetallePreviaDTO() {
@@ -64,6 +70,30 @@ public class DetallePreviaDTO {
 
 	public void setAnio(String anio) {
 		this.anio = anio;
+	}
+
+	public Boolean getAsistencia() {
+		return asistencia;
+	}
+
+	public void setAsistencia(Boolean asistencia) {
+		this.asistencia = asistencia;
+	}
+
+	public Date getInicio() {
+		return inicioMesa;
+	}
+
+	public void setInicioMesa(Date inicioMesa) {
+		this.inicioMesa = inicioMesa;
+	}
+
+	public Date getFinMesa() {
+		return finMesa;
+	}
+
+	public void setFinMesa(Date finMesa) {
+		this.finMesa = finMesa;
 	}
 
 	public Float getNota() {

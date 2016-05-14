@@ -597,13 +597,31 @@ public class ServicioAcademico {
 	 * @param nombreMateria
 	 * @return
 	 */
-	public ArrayList<DetallePreviaDTO> getPreviasDesaprobadas(Long numeroDni){
-		// Obtener las previas con getPrevias
-		// 
+	public ArrayList<DetallePreviaDTO> getPreviasDesaprobadas(Long numeroDni) throws Exception{
+		// Obtener los nombre de materias sin duplicados
+		// Por cada nombre de materia, comprobar si en alguna rendida la aprobó (bucles anidados luego de obtener los no duplicados)
 		ArrayList<DetallePreviaDTO> detallePreviasDesaprobadas = new ArrayList<DetallePreviaDTO>();
+		Set<String> listaSetMaterias = new HashSet<String>();
+		ArrayList<DetallePreviaDTO> detallePrevias = getPrevias(numeroDni);
+		for(DetallePreviaDTO dpdto : detallePrevias)
+		{
+			listaSetMaterias.add(dpdto.getNombreMateria());
+		}
 		
+		for (String nombreMateria : listaSetMaterias){
+			// Resolver como descartar las aprobadas
+			Boolean aprobada = false;
+			for(DetallePreviaDTO dpdto : detallePrevias){
+				if(dpdto.getNombreMateria().equals(nombreMateria)){
+					if(dpdto.getNota() > 6){
+						aprobada = true;
+					}
+				}
+			}
+			
+		}
 		
-		return null;
+		return detallePreviasDesaprobadas;
 	}
 	
 	/**
@@ -632,16 +650,27 @@ public class ServicioAcademico {
 						if( (mnb.getNotaMarzo()==null) || mnb.getNotaMarzo() < 6) {
 							// HAY QUE BUSCAR EL REGISTRO HISTÓRICO DE "RENDIDAS"
 							ArrayList<MesaExamenHist> listadoMEH = obtenerHistoricoRendidas(numeroDni, mnb.getMateria(), bnh.getCicloLectivo());
-							for (MesaExamenHist lmeh : listadoMEH){
-								/*if ( lmeh.getNota() > 6 ){
-									break;
-								}*/
-								DetallePreviaDTO detallePreviaDTO = new DetallePreviaDTO(); // Lo puse aca porque sino se reescribía el objeto
-								detallePreviaDTO.setNombreMateria(lmeh.getNombreMateria());
-								detallePreviaDTO.setCicloLectivoMateria(lmeh.getCicloLectivoMateria());
-								detallePreviaDTO.setDniAlumno(lmeh.getDniAlumno());
-								detallePreviaDTO.setAnio(lmeh.getAnio());
-								detallePreviaDTO.setNota(lmeh.getNota());
+							// Para comprobar si lo rindió alguna vez, se busca en el historico de mesas
+							// Si no lo rindió nunca (historico vacio) entonces se toman los datos de la libreta
+							if (!listadoMEH.isEmpty()) {
+								for (MesaExamenHist lmeh : listadoMEH) {
+									DetallePreviaDTO detallePreviaDTO = new DetallePreviaDTO(); // Lo puse aca porque sino se reescribía el objeto
+									detallePreviaDTO.setNombreMateria(lmeh.getNombreMateria());
+									detallePreviaDTO.setCicloLectivoMateria(lmeh.getCicloLectivoMateria());
+									detallePreviaDTO.setDniAlumno(lmeh.getDniAlumno());
+									detallePreviaDTO.setAnio(lmeh.getAnio());
+									detallePreviaDTO.setAsistencia(lmeh.getAsistencia());
+									detallePreviaDTO.setInicioMesa(lmeh.getFechaHoraInicioMesa());
+									detallePreviaDTO.setFinMesa(lmeh.getFechaHoraFinMesa());
+									detallePreviaDTO.setNota(lmeh.getNota());
+									listadoPrevias.add(detallePreviaDTO);
+								}
+							}else{
+								DetallePreviaDTO detallePreviaDTO = new DetallePreviaDTO();
+								detallePreviaDTO.setNombreMateria(mnb.getMateria());
+								detallePreviaDTO.setCicloLectivoMateria(bnh.getCicloLectivo());
+								detallePreviaDTO.setDniAlumno(bnh.getDniAlumno());
+								detallePreviaDTO.setAnio(bnh.getAnio());
 								listadoPrevias.add(detallePreviaDTO);
 							}
 						}

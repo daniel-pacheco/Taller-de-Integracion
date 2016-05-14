@@ -502,7 +502,7 @@ public class ServicioAcademicoEndpoint {
 	public Response getPrevia(@PathParam("doc") final Long doc){
 		try{
 			setInstance();
-			return Response.ok(servicioAcademico.getPrevias(doc)).build();
+			return Response.ok(servicioAcademico.getPreviasDesaprobadas(doc)).build();
 		}catch(Exception ex){
 			return Response.ok(ex).build();
 		}
