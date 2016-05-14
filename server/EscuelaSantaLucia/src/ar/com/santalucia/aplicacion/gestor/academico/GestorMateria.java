@@ -109,37 +109,6 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 			throw new Exception("Ha ocurrido un error al buscar la MATERIA por su ID: " + ex.getMessage());
 		}
 	}
-
-	/*
-	public ArrayList<Materia> getByExample(Materia example) throws Exception {
-		try {
-			setSession();
-			setTransaction();
-			ArrayList<Materia> listaMateriasDevolver = (ArrayList<Materia>) materiaDAO.findByExample((Materia) example);
-			sesionDeHilo.getTransaction().commit();
-			return listaMateriasDevolver;
-		} catch (Exception ex) {
-			closeSession();
-			throw new Exception(
-					"Ha ocurrido un error al buscar MATERIAS que coincidan con el ejemplo dado: " + ex.getMessage());
-		}
-	}
-
-	
-	public ArrayList<Materia> List() throws Exception {
-		try {
-			setSession();
-			setTransaction();
-			Materia criterioVacio = new Materia();
-			ArrayList<Materia> listaMateriasDevolver = new ArrayList<Materia>();
-			listaMateriasDevolver = (ArrayList<Materia>) materiaDAO.findByExample(criterioVacio);
-			sesionDeHilo.getTransaction().commit();
-			return listaMateriasDevolver;
-		} catch (Exception ex) {
-			throw new Exception("Ha ocurrido un error al listar las MATERIAS: " + ex.getMessage());
-		}
-	}
-	*/ 
 	
 	@Override
 	public ArrayList<Materia> getByExample(Materia example) throws Exception {

@@ -90,7 +90,7 @@ public class GestorTrimestre extends Gestor<Trimestre> implements IListable<Trim
 			return trimestreDevolver;
 		} catch (Exception ex) {
 			closeSession();
-			throw new Exception("Ha ocurrido un error al buscar la NOTA por su ID: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al buscar el TRIMESTRE por su ID: " + ex.getMessage());
 		}
 	}
 

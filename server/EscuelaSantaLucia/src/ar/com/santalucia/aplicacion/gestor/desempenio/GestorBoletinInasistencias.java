@@ -15,20 +15,7 @@ public class GestorBoletinInasistencias extends Gestor<BoletinInasistencias>
 	}
 
 	@Override
-	public ArrayList<BoletinInasistencias> getByExample(BoletinInasistencias example) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ArrayList<BoletinInasistencias> List() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public void add(BoletinInasistencias object) throws Exception {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -46,6 +33,18 @@ public class GestorBoletinInasistencias extends Gestor<BoletinInasistencias>
 
 	@Override
 	public BoletinInasistencias getById(Long id) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<BoletinInasistencias> getByExample(BoletinInasistencias example) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<BoletinInasistencias> List() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
