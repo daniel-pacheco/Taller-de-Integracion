@@ -11,7 +11,7 @@ Trabajar offline
 <!--   <property name="hibernate.connection.password">remoto</property> -->
 <!--   <property name="hibernate.connection.url">jdbc:mysql://dominiotestariel.ddns.net:3306/escuelabd</property> -->
 <!--   <property name="hibernate.connection.username">remoto</property> -->
-  <property name="hibernate.connection.password">linuxalpoder</property>
+  <property name="hibernate.connection.password">mysqlwindows</property>
   <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/escuelabd</property>
   <property name="hibernate.connection.username">root</property>
   <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
@@ -57,7 +57,7 @@ Trabajar offline
   <mapping class="ar.com.santalucia.dominio.modelo.academico.Area" resource="ar/com/santalucia/dominio/modelo/academico/Area.hbm.xml"/>
   <mapping class="ar.com.santalucia.dominio.modelo.usuarios.Personal" resource="ar/com/santalucia/dominio/modelo/usuarios/Personal.hbm.xml"/>
   <mapping class="ar.com.santalucia.dominio.modelo.sistema.login.Login" resource="ar/com/santalucia/dominio/modelo/sistema/login/Login.hbm.xml"/>
-  <mapping
+  <!-- <mapping
    class="ar.com.santalucia.dominio.modelo.aulavirtual.AulaVirtual" resource="ar/com/santalucia/dominio/modelo/aulavirtual/AulaVirtual.hbm.xml"/>
   <mapping
    class="ar.com.santalucia.dominio.modelo.aulavirtual.ConfiguracionEntrega" resource="ar/com/santalucia/dominio/modelo/aulavirtual/ConfiguracionEntrega.hbm.xml"/>
@@ -65,7 +65,7 @@ Trabajar offline
   <mapping class="ar.com.santalucia.dominio.modelo.aulavirtual.Muro" resource="ar/com/santalucia/dominio/modelo/aulavirtual/Muro.hbm.xml"/>
   <mapping
    class="ar.com.santalucia.dominio.modelo.aulavirtual.Publicacion" resource="ar/com/santalucia/dominio/modelo/aulavirtual/Publicacion.hbm.xml"/>
-  <mapping class="ar.com.santalucia.dominio.modelo.aulavirtual.Recurso" resource="ar/com/santalucia/dominio/modelo/aulavirtual/Recurso.hbm.xml"/>
+  <mapping class="ar.com.santalucia.dominio.modelo.aulavirtual.Recurso" resource="ar/com/santalucia/dominio/modelo/aulavirtual/Recurso.hbm.xml"/> -->
   <mapping
    class="ar.com.santalucia.dominio.modelo.desempenio.BoletinNotasHist" resource="ar/com/santalucia/dominio/modelo/desempenio/BoletinNotasHist.hbm.xml"/>
   <mapping
