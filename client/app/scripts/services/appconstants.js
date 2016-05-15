@@ -25,6 +25,12 @@
  	directivo: 'DIRECTIVO'
  })
 
+ .constant('MENU_ALUMNO',{ //la dirección relativa entre los estados anidados se separa por .
+ 	operaciones: ['.operaciones', 'Operaciones'],
+ 	micuenta: ['.micuenta', 'Mi Cuenta'],
+ 	aula: ['.aula', 'Aula']
+ })
+
  .constant('MENU_DIRECTIVO',{ //la dirección relativa entre los estados anidados se separa por .
  	alumnado: ['.alumnado', 'Alumnado'],
  	materias: ['.materias', 'Materias'],
