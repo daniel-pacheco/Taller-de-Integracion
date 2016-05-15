@@ -7,6 +7,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 
 /**
  * Clase BoletinInasistencias: maneja un boletín de inasistencias
+ * 
  * @author ericpennachini
  * @version 1.0
  *
@@ -19,6 +20,7 @@ public class BoletinInasistencias {
 	private Float total;
 	private Set<Inasistencia> listaInasistencias;
 	private Integer cicloLectivo;
+	private Boolean activo;
 
 	public BoletinInasistencias() {
 		super();
@@ -26,13 +28,14 @@ public class BoletinInasistencias {
 	}
 
 	public BoletinInasistencias(Long idBoletinInasistencias, Alumno propietario, Float total,
-			Set<Inasistencia> listaInasistencias, Integer cicloLectivo) {
+			Set<Inasistencia> listaInasistencias, Integer cicloLectivo, Boolean activo) {
 		super();
 		this.idBoletinInasistencias = idBoletinInasistencias;
 		this.propietario = propietario;
 		this.total = total;
 		this.setListaInasistencias(listaInasistencias);
 		this.cicloLectivo = cicloLectivo;
+		this.activo = activo;
 	}
 
 	public Long getIdBoletinInasistencias() {
@@ -73,6 +76,14 @@ public class BoletinInasistencias {
 
 	public void setCicloLectivo(Integer cicloLectivo) {
 		this.cicloLectivo = cicloLectivo;
+	}
+
+	public Boolean getActivo() {
+		return activo;
+	}
+
+	public void setActivo(Boolean activo) {
+		this.activo = activo;
 	}
 
 }

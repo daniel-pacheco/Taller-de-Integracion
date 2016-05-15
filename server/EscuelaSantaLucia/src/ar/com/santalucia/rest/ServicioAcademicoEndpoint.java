@@ -497,6 +497,16 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 	
+	@GET
+	@Path("/previas/{doc:[0-9][0-9]*}")
+	public Response getPrevia(@PathParam("doc") final Long doc){
+		try{
+			setInstance();
+			return Response.ok(servicioAcademico.getPreviasDesaprobadas(doc)).build();
+		}catch(Exception ex){
+			return Response.ok(ex).build();
+		}
+	}
 	
 	@PUT
 	@Path("/mes/")

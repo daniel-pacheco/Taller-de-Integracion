@@ -12,15 +12,17 @@ import ar.com.santalucia.dominio.modelo.desempenio.Nota;
  *
  */
 
-// Ultimo modificador: Eric Pennachini @ 10-03-2016 17:07
+// Ultimo modificador: Ariel Ramirez @ 06-05-2016 21:25
 
 public class MesaExamenHist {
 	private Long idMesaExamenHist;
 	private String nroActa;
-	private Float nota; // o Nota en vez de Long
+	private Float nota;
 	private Boolean asistencia;
 	private Date fechaInscripcion;
 	private String nombreMateria;
+	private String anio;
+	private Integer cicloLectivoMateria;
 	private Long dniDocente1;
 	private String nombreDocente1;
 	private String apellidoDocente1;
@@ -114,6 +116,22 @@ public class MesaExamenHist {
 
 	public void setNombreMateria(String nombreMateria) {
 		this.nombreMateria = nombreMateria;
+	}
+
+	public String getAnio() {
+		return anio;
+	}
+
+	public void setAnio(String anio) {
+		this.anio = anio;
+	}
+
+	public Integer getCicloLectivoMateria() {
+		return cicloLectivoMateria;
+	}
+
+	public void setCicloLectivoMateria(Integer cicloLectivo) {
+		this.cicloLectivoMateria = cicloLectivo;
 	}
 
 	public Long getDniDocente1() {

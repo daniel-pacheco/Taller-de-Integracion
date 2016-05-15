@@ -4,13 +4,10 @@
 <!-- Generated 10/03/2016 16:13:43 by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
     <class name="ar.com.santalucia.dominio.modelo.academico.MesaExamenHist" table="MESAEXAMENHIST">
-        <id name="dniDocente1" type="java.lang.Long">
-            <column name="DNIDOCENTE1" />
+        <id name="idMesaExamenHist" type="java.lang.Long">
+            <column name="IDMESAEXAMENHIST" />
             <generator class="identity" />
         </id>
-        <property name="idMesaExamenHist" type="java.lang.Long">
-            <column name="IDMESAEXAMENHIST" />
-        </property>
         <property name="nroActa" type="java.lang.String">
             <column name="NROACTA" />
         </property>
@@ -25,6 +22,15 @@
         </property>
         <property name="nombreMateria" type="java.lang.String">
             <column name="NOMBREMATERIA" />
+        </property>
+        <property name="anio" type="java.lang.String">
+            <column name="ANIO" />
+        </property>
+        <property name="cicloLectivoMateria" type="java.lang.Integer">
+            <column name="CICLOLECTIVOMATERIA" />
+        </property>
+         <property name="dniDocente1" type="java.lang.Long">
+            <column name="DNIDOCENTE1" />
         </property>
         <property name="nombreDocente1" type="java.lang.String">
             <column name="NOMBREDOCENTE1" />

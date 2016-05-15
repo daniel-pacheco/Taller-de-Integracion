@@ -7,11 +7,14 @@ import java.util.Set;
 
 import ar.com.santalucia.aplicacion.gestor.academico.GestorAnio;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMateria;
+import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinInasistencias;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinNotas;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinNotasHist;
+import ar.com.santalucia.aplicacion.gestor.desempenio.GestorInasistencia;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorNota;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorTrimestre;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
+import ar.com.santalucia.dominio.dto.DetallePreviaDTO;
 import ar.com.santalucia.dominio.dto.GetPlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.dto.ItemPlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.dto.MateriaNotaDTO;
@@ -19,12 +22,15 @@ import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
 import ar.com.santalucia.dominio.modelo.academico.Inscripcion;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
+import ar.com.santalucia.dominio.modelo.desempenio.BoletinInasistencias;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotas;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotasHist;
+import ar.com.santalucia.dominio.modelo.desempenio.Inasistencia;
 import ar.com.santalucia.dominio.modelo.desempenio.MateriaNotasBoletin;
 import ar.com.santalucia.dominio.modelo.desempenio.Nota;
 import ar.com.santalucia.dominio.modelo.desempenio.Trimestre;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
+import ar.com.santalucia.excepciones.ValidacionException;
 
 /**
  * Clase ServicioDesempenio: manejo del boletin de notas del alumno, además maneja el boletín histórico
@@ -43,6 +49,8 @@ public class ServicioDesempenio {
 	private GestorBoletinNotasHist gBoletinHist;
 	private GestorAlumno gAlumno; // ¿?
 	private GestorAnio gAnio;
+	private GestorInasistencia gInasistencia;
+	private GestorBoletinInasistencias gBoletinInasistencias;
 	
 	public ServicioDesempenio() throws Exception {
 		try {
@@ -53,6 +61,8 @@ public class ServicioDesempenio {
 			gBoletinHist = new GestorBoletinNotasHist();
 			//gAlumno = new GestorAlumno();
 			gAnio = new GestorAnio();
+			gInasistencia = new GestorInasistencia();
+			gBoletinInasistencias = new GestorBoletinInasistencias();
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un problema al inicializar el servicio de operaciones básicas: "
 					+ ex.getMessage());
@@ -172,7 +182,7 @@ public class ServicioDesempenio {
 		} catch (Exception ex) {
 			throw new Exception("No se pudo dar de alta la NOTA: " + ex.getMessage());
 		}
-		return false;
+		return true;
 	}
 		
 	public Boolean deleteNota(Nota nota) throws Exception { // EN ENDPOINT
@@ -211,7 +221,7 @@ public class ServicioDesempenio {
 		} catch (Exception ex) {
 			throw new Exception("No se pudo dar de alta el TRIMESTRE: " + ex.getMessage());
 		}
-		return false;
+		return true;
 	}
 		
 	public Boolean deleteTrimestre(Trimestre trimestre) throws Exception { // EN ENDPOINT
@@ -268,9 +278,7 @@ public class ServicioDesempenio {
 			throw new Exception("No se pudo asignar la NOTA al TRIMESTRE: " + ex.getMessage());
 		}
 		return true;
-	}
-	
-	
+	}	 
 	
 	public Boolean asignarTrimestreABoletin(Trimestre trimestre, Long idBoletin) throws Exception {
 		try {
@@ -350,4 +358,50 @@ public class ServicioDesempenio {
 									+ gptDTO.getNroTrimestre() + ": " + ex.getMessage());
 		}
 	}
+
+	public Boolean addInasistencia(Inasistencia inasistencia) throws Exception { // test
+		try {
+			if (inasistencia.getIdInasistencia() != null) {
+				gInasistencia.add(inasistencia);
+			} else {
+				gInasistencia.modify(inasistencia);
+			}
+		} catch (ValidacionException vEx) {
+			throw vEx;
+		} catch (Exception ex) {
+			throw new Exception("No se pudo dar de alta la INASISTENCIA: " + ex.getMessage());
+		}
+		return true;
+	}
+	
+	public Boolean procesarBoletinInasistencias(BoletinInasistencias bolInasistencias) throws Exception {
+		/*
+		 * Pasos para procesar un boletin de inasistencias:
+		 * 1) Obtener el boletin de inasistencias .................................................. OK
+		 * 2) Rescatar el listado del boletín que obtuve. .......................................... OK
+		 * 3) Rescatar el listado del boletín persistente. ......................................... OK
+		 * 4) Recorrer el listado de inasistencias obtenido viendo los IDs
+		 * 	4.1) 
+		 * 		- Si el id es null, agregar la inasistencia a su gestor y agregarla a la 
+		 * 		lista de inasistencias del boletin. 
+		 * 		- Si el id no es null, modificar la inasistencia. Devolverá un mensaje de error
+		 * 		si el concepto está para la misma fecha.
+		 * 	4.2) Modificar el boletín.
+		 * 	4.3) ...
+		 */
+		
+		BoletinInasistencias bolPersistente = gBoletinInasistencias.getById(bolInasistencias.getIdBoletinInasistencias());
+		Set<Inasistencia> listaInasistencias = bolInasistencias.getListaInasistencias();
+		Set<Inasistencia> listaInasistenciasPer = bolPersistente.getListaInasistencias();		
+		
+		for (Inasistencia i : listaInasistencias) {
+			if (i.getIdInasistencia() == null) {
+				gInasistencia.add(i);
+			}
+		}
+		
+		return true;
+	}
+	
+
 }

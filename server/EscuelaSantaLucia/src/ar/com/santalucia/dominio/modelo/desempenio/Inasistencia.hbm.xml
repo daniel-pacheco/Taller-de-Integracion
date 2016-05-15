@@ -19,8 +19,8 @@
         <property name="justificada" type="java.lang.Boolean">
             <column name="JUSTIFICADA" />
         </property>
-        <property name="descripcion" type="java.lang.String">
-            <column name="DESCRIPCION" />
+        <property name="concepto" type="java.lang.String">
+            <column name="CONCEPTO" />
         </property>
     </class>
 </hibernate-mapping>
