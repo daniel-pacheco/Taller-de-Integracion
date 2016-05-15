@@ -12,8 +12,11 @@ import ar.com.santalucia.aplicacion.gestor.academico.GestorLlamado;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMateria;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMateriaHist;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMesa;
+import ar.com.santalucia.aplicacion.gestor.academico.GestorMesaExamenHist;
+import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinNotasHist;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
+import ar.com.santalucia.dominio.dto.DetallePreviaDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Area;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
@@ -21,6 +24,9 @@ import ar.com.santalucia.dominio.modelo.academico.Llamado;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.academico.MateriaHist;
 import ar.com.santalucia.dominio.modelo.academico.Mesa;
+import ar.com.santalucia.dominio.modelo.academico.MesaExamenHist;
+import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotasHist;
+import ar.com.santalucia.dominio.modelo.desempenio.MateriaNotasBoletin;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.excepciones.ValidacionException;
@@ -46,6 +52,8 @@ public class ServicioAcademico {
 	private GestorLlamado gLlamado;
 	private GestorMesa gMesa;
 	private GestorMateriaHist gMateriaHistorica;
+	private GestorMesaExamenHist gMEHist;
+	private GestorBoletinNotasHist gBoletinHist;
 
 	public ServicioAcademico() throws Exception {
 		try {
@@ -58,6 +66,8 @@ public class ServicioAcademico {
 			gLlamado = new GestorLlamado();
 			gMesa = new GestorMesa();
 			gMateriaHistorica = new GestorMateriaHist();
+			gMEHist = new GestorMesaExamenHist();
+			gBoletinHist = new GestorBoletinNotasHist();
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un problema al inicializar el servicio de operaciones básicas: "
 					+ ex.getMessage());
@@ -581,8 +591,97 @@ public class ServicioAcademico {
 			throw new Exception("No se pudo desvincular la MATERIA de la MESA: " + ex.getMessage());
 		}
 	}
+	/**
+	 * Obtiene sólo las previas que no han sido aprobadas aún.
+	 * @param numeroDni
+	 * @param nombreMateria
+	 * @return
+	 */
+	public ArrayList<DetallePreviaDTO> getPreviasDesaprobadas(Long numeroDni) throws Exception{
+		// Obtener los nombre de materias sin duplicados
+		// Por cada nombre de materia, comprobar si en alguna rendida la aprobó (bucles anidados luego de obtener los no duplicados)
+		ArrayList<DetallePreviaDTO> detallePreviasDesaprobadas = new ArrayList<DetallePreviaDTO>();
+		Set<String> listaSetMaterias = new HashSet<String>();
+		ArrayList<DetallePreviaDTO> detallePrevias = getPrevias(numeroDni);
+		for(DetallePreviaDTO dpdto : detallePrevias)
+		{
+			listaSetMaterias.add(dpdto.getNombreMateria());
+		}
+		
+		for (String nombreMateria : listaSetMaterias){
+			// Resolver como descartar las aprobadas
+			Boolean aprobada = false;
+			for(DetallePreviaDTO dpdto : detallePrevias){
+				if(dpdto.getNombreMateria().equals(nombreMateria)){
+					if(dpdto.getNota() > 6){
+						aprobada = true;
+					}
+				}
+			}
+			
+		}
+		
+		return detallePreviasDesaprobadas;
+	}
 	
-
+	/**
+	 * Obtiene todas las previas y la historia de su rendida, desde el momento que se debió la materia hasta que la aprobó.
+	 * @param numeroDni
+	 * @return
+	 * @throws Exception
+	 */
+	public ArrayList<DetallePreviaDTO> getPrevias(Long numeroDni) throws Exception{
+		Float promedio = 0F;
+		ArrayList<DetallePreviaDTO> listadoPrevias = new ArrayList<DetallePreviaDTO>();
+		//DetallePreviaDTO detallePreviaDTO = new DetallePreviaDTO();
+		BoletinNotasHist boletin = new BoletinNotasHist();
+		// CAPTURO LOS BOLETINES HISTÓRICOS DEL ALUMNO
+		boletin.setDniAlumno(numeroDni);
+		ArrayList<BoletinNotasHist> listaBoletines = gBoletinHist.getByExample(boletin);
+		// INICIALIZO PARA EL ARREGLO DE NOTAS TRIMESTRALES (FILA MATERIA, NOTAS TRIMESTRES)
+		Set<MateriaNotasBoletin> listaMnb = new HashSet<MateriaNotasBoletin>();
+		for (BoletinNotasHist bnh : listaBoletines){
+			listaMnb = bnh.getListaMateriasNotasBoletin();
+			// RECORRO CADA bhn BoletinNotaHistorico
+			for(MateriaNotasBoletin mnb : listaMnb){
+				promedio = (float) (mnb.getNotaTrimestre1() + mnb.getNotaTrimestre2() + mnb.getNotaTrimestre3())/3F;
+				if( (mnb.getNotaTrimestre3() < 6) || (promedio < 6) ){
+					if ( (mnb.getNotaDiciembre()==null) || (mnb.getNotaDiciembre() < 6) ) {
+						if( (mnb.getNotaMarzo()==null) || mnb.getNotaMarzo() < 6) {
+							// HAY QUE BUSCAR EL REGISTRO HISTÓRICO DE "RENDIDAS"
+							ArrayList<MesaExamenHist> listadoMEH = obtenerHistoricoRendidas(numeroDni, mnb.getMateria(), bnh.getCicloLectivo());
+							// Para comprobar si lo rindió alguna vez, se busca en el historico de mesas
+							// Si no lo rindió nunca (historico vacio) entonces se toman los datos de la libreta
+							if (!listadoMEH.isEmpty()) {
+								for (MesaExamenHist lmeh : listadoMEH) {
+									DetallePreviaDTO detallePreviaDTO = new DetallePreviaDTO(); // Lo puse aca porque sino se reescribía el objeto
+									detallePreviaDTO.setNombreMateria(lmeh.getNombreMateria());
+									detallePreviaDTO.setCicloLectivoMateria(lmeh.getCicloLectivoMateria());
+									detallePreviaDTO.setDniAlumno(lmeh.getDniAlumno());
+									detallePreviaDTO.setAnio(lmeh.getAnio());
+									detallePreviaDTO.setAsistencia(lmeh.getAsistencia());
+									detallePreviaDTO.setInicioMesa(lmeh.getFechaHoraInicioMesa());
+									detallePreviaDTO.setFinMesa(lmeh.getFechaHoraFinMesa());
+									detallePreviaDTO.setNota(lmeh.getNota());
+									listadoPrevias.add(detallePreviaDTO);
+								}
+							}else{
+								DetallePreviaDTO detallePreviaDTO = new DetallePreviaDTO();
+								detallePreviaDTO.setNombreMateria(mnb.getMateria());
+								detallePreviaDTO.setCicloLectivoMateria(bnh.getCicloLectivo());
+								detallePreviaDTO.setDniAlumno(bnh.getDniAlumno());
+								detallePreviaDTO.setAnio(bnh.getAnio());
+								listadoPrevias.add(detallePreviaDTO);
+							}
+						}
+					}
+				}
+			}
+		}
+		return listadoPrevias;
+	};
+	
+	
 	// ##### MÉTODOS AUXILIARES #####
 	
 	/**
@@ -682,6 +781,24 @@ public class ServicioAcademico {
 		anioAux.setCicloLectivo(anioModif.getCicloLectivo());
 		anioAux.setActivo(anioModif.getActivo());
 		return anioAux;
+	}
+	
+	/**
+	 * Obtiene registros históricos de rendidas del alumno.
+	 * @param numeroDni
+	 * @param nombreMateria
+	 * @param cicloLectivoMateria
+	 * @return
+	 * @throws Exception
+	 */
+	private ArrayList<MesaExamenHist> obtenerHistoricoRendidas(Long numeroDni, String nombreMateria, Integer cicloLectivoMateria) throws Exception{
+		MesaExamenHist ejemplo = new MesaExamenHist();
+		ejemplo.setDniAlumno(numeroDni);
+		ejemplo.setCicloLectivoMateria(cicloLectivoMateria);
+		if(!nombreMateria.equals("")){
+			ejemplo.setNombreMateria(nombreMateria);
+		}
+		return (ArrayList<MesaExamenHist>) gMEHist.getByExample(ejemplo);
 	}
 	
 	public void closeSession() throws Exception {

@@ -1,0 +1,109 @@
+<div class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" style="width: 55%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">{{title}}</h4><!-- {{modalx.phoneData}} -->
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-warning alert-dismissible" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<span class="glyphicon glyphicon-asterisk small"></span>Campos obligatorios
+				</div>
+				<div class="container">
+
+					<!-- edit form column -->
+					<div class="row">
+						<div class="col-md-11 box-margin-lib personal-info table-responsive">
+							<table class="table table-hover table-striped table-condensed">
+								<thead>
+									<tr>
+										<th class="col-md-4">Mail</th>
+										<th class="col-md-2">Tipo</th>
+										<th class="col-md-2">Acciones</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="mail in copiaListaMails" ng-form="formRow">
+										<td>
+											<div ng-if="!mail.show">{{mail.direccionMail}}</div>
+											<div ng-if="mail.show" ng-class="{ 'has-error': formRow.direccionMail.$touched && formRow.direccionMail.$invalid }">
+												<input class="form-control" name="direccionMail" type="email" ng-model="copiaMail.direccionMail" required/>
+											</div>
+										</td>
+										<td>
+											<div ng-if="!mail.show">{{mail.tipoMail}}</div>
+											<div ng-if="mail.show" ng-class="{ 'has-error': formRow.tipoMail.$touched && formRow.tipoMail.$invalid }">
+												<select name="tipoMail"  class="form-control" ng-model="copiaMail.tipoMail">
+													<option value="Alumno">Alumno</option>
+													<option value="Padre">Padre</option>
+													<option value="Madre">Madre</option>
+													<option value="Otro">Otro</option>
+												</select>
+											</div>
+
+										</td>
+										
+										<td>
+											<!-- Botones de la lista-->
+											<button ng-if="!mail.show" class="btn btn-default btn-xs" ng-click="mail.show=true; edit(mail)" bs-tooltip="tooltip.tooltipEdit">
+												<span data-animation="am-flip-x" class="glyphicon glyphicon-edit"></span>
+											</button>
+											<button ng-if="!mail.show" class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipDelete" ng-click="deleteMail(mail)">
+												<span class="glyphicon glyphicon-trash"></span>
+											</button>
+											<!-- Botones editando Mail -->
+											<button ng-if="mail.show" class="btn btn-primary btn-sm" bs-tooltip="tooltip.tooltipSaveEdit" ng-click="saveEditMail(copiaListaMails.indexOf(mail)); mail.show=false" ng-disabled="formRow.direccionMail.$invalid || formRow.tipoMail.$invalid || formRow.tipoMail.$invalid">
+												<span class="glyphicon glyphicon-ok"></span>
+											</button>
+											<button ng-if="mail.show" class="btn btn-default btn-sm" ng-click="mail.show=false" bs-tooltip="tooltip.tooltipCancelEdit">
+												<span class="glyphicon glyphicon-remove"></span>
+											</button>
+										</td> 
+									</tr>
+								</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="row">
+					<form name="form" novalidate ng-submit="addMail()">	
+						<div class="panel-heading">
+
+							<div class="form-group  col-sm-4 col-md-4 col-xs-4 col-lg-4" ng-class="{ 'has-error': form.direccionMail.$touched && form.direccionMail.$invalid }">
+								<input class="form-control" name="direccionMail" type="email" ng-model="nuevoMail.direccionMail" required placeholder="numbre@mail.com"/>
+								<div ng-messages="form.direccionMail.$error" ng-if="form.direccionMail.$touched && form.direccionMail.$invalid">
+									<div ng-message="email" class="help-block" style="position: fixed;">Formato invalido</div>
+									<div ng-message="required" class="help-block" style="position: fixed;">Complete este campo</div>
+								</div>
+							</div>
+							<div class="form-group  col-sm-3 col-md-3 col-xs-3 col-lg-3" ng-class="{ 'has-error': form.tipoMail.$touched && form.tipoMail.$invalid }">
+								<select name="tipoMail"  class="form-control" ng-model="nuevoMail.tipoMail" required>
+									<option value="" disabled selected>Tipo</option>
+													<option value="Alumno">Alumno</option>
+													<option value="Padre">Padre</option>
+													<option value="Madre">Madre</option>
+													<option value="Otro">Otro</option>
+								</select>
+								<div ng-messages="form.tipoMail.$error" ng-if="form.tipoMail.$touched && form.tipoMail.$invalid">
+									<div ng-message="pattern" class="help-block" style="position: fixed;">Formato invalido</div>
+									<div ng-message="required" class="help-block" style="position: fixed;">Complete este campo</div>
+								</div>
+							</div>
+							
+							<div class="form-group  col-sm-2 col-md-2 col-xs-2 col-lg-2">
+								<button class="form-control btn btn-primary" type="submit" ng-disabled="!form.$valid" ng-click="reset()">Agregar</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="close(false)">Cerrar</button>
+			<button type="button" class="btn btn-primary" data-dismiss="modal" autofocus ng-click="close(true)">Guardar</button>
+		</div>
+	</div>
+</div>
+</div>

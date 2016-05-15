@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 import ar.com.santalucia.dominio.dto.GetPlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotas;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotasHist;
+import ar.com.santalucia.dominio.modelo.desempenio.Inasistencia;
 import ar.com.santalucia.dominio.modelo.desempenio.Nota;
 import ar.com.santalucia.dominio.modelo.desempenio.Trimestre;
 import ar.com.santalucia.servicio.ServicioAcademico;
@@ -287,4 +288,16 @@ public class ServicioDesempenioEndpoint {
 		}
 	}
 	
+	@PUT
+	@Path("/inasistencia/")
+	public Response updateInasistencia(final Inasistencia inasistencia) { // test
+		try {
+			setInstance();
+			servicioDesempenio.addInasistencia(inasistencia);
+			return Response.ok(inasistencia.getIdInasistencia()).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
+
 }

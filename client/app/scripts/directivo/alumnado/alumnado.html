@@ -47,9 +47,6 @@
 					<div id="alerts-container" style="width:60%; float:right;" class="small"></div>
 				</div>
 			</div>
-			<div ng-show="loading">
-				<loading></loading>
-			</div>
 
 			<div id="listFilters" ng-show="listFilterIsEnabled">
 
@@ -97,14 +94,12 @@
 						<td ng-click="seleccionarCheckbox(alumno)">{{alumno.nroDocumento}}</td>
 						<td ng-click = "deleteAlumno(alumno.idUsuario)">{{alumno.idUsuario}}</td>
 						<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%; cursor: pointer" class="glyphicon glyphicon-user" ng-click="showModalProfile(alumno)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAttendance" ng-click="showModalInasistencias(alumno)" style="width:25%; cursor: pointer" class="glyphicon glyphicon-calendar"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipReportCard" style="width:25%; cursor: pointer" class="glyphicon glyphicon-list-alt" ng-click="showModalLibreta(alumno)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAcademicPerformance" style="width:25%; cursor: pointer" class="glyphicon glyphicon-education"></span></td> 
-					<!--<td>{{alumno.name}}</td>
-					<td>{{alumno.phone}}</td>
-					<td>{{$index}}</td> -->
-				</tr>
-			</tbody>
-		</table>
-	</div>
-</fieldset>
+
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</fieldset>
 </div>
 
 <div id="nuevoPerfil" ng-show="nuevoPerfil">
@@ -132,9 +127,7 @@
 										<div ng-message="pattern" class="help-block">Formato invalido</div>
 									</div>
 								</div>
-
 								<!-- Valida 8 digitos -->
-
 								<div class="col-sm-3">
 									<select class="form-control" ng-model="nuevoAlumno.tipoDocumento" name="TipoDocumento">
 										<option value="" disabled selected>Tipo</option>
@@ -145,7 +138,6 @@
 								</div>
 							</div>
 							<!-- /form-group-->
-
 
 							<div class="form-group" ng-class="{ 'has-error': formAlu.nombre.$touched && formAlu.nombre.$invalid }">
 								<div class="col-sm-4 control-label">
@@ -163,7 +155,6 @@
 							</div>
 							<!-- /form-group-->
 
-
 							<div class="form-group" ng-class="{ 'has-error': formAlu.apellido.$touched && formAlu.apellido.$invalid }">
 								<div class="col-sm-4 control-label">
 									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Apellido/s:</label>
@@ -177,8 +168,7 @@
 									</div>
 								</div>
 							</div>
-
-
+							<!-- /form-group-->
 
 							<div class="form-group">
 								<div class="col-sm-4 control-label">
@@ -190,7 +180,6 @@
 								</div>
 							</div>
 							<!-- /form-group-->
-
 
 							<div class="form-group" ng-class="{ 'has-error': formAlu.domicilio.$touched && formAlu.domicilio.$invalid }">
 								<div class="col-sm-4 control-label">
@@ -223,6 +212,7 @@
 										</div>
 									</div>
 								</div>
+								{{nuevoAlumno.fechaNacimiento}}
 							</div>
 
 							<div class="form-group" ng-class="{ 'has-error': formAlu.listaTelefono.$touched && formAlu.listaTelefono.$invalid }">
@@ -231,7 +221,10 @@
 								</div>
 
 								<div class="col-sm-4">
-									<input name="listaTelefono" class="form-control" ng-model="nuevoAlumno.listaTelefono[0]" placeholder="0343-4353535" type="tel">
+									<input name="listaTelefono" class="form-control" ng-model="nuevoAlumno.listaTelefono[0]" placeholder="0343-4353535" type="tel" ng-show="!mostrarListaTelefonos">
+									<select multiple class="form-control" ng-show="mostrarListaTelefonos">
+										<option ng-repeat="telefono in alumno.listaTelefonos">{{telefono.caracteristica}}-{{telefono.nroTelefono}}({{telefono.tipoTelefono}})</option>
+									</select> 
 									<div ng-messages="formAlu.listaTelefono.$error" ng-if="formAlu.listaTelefono.$touched && formAlu.listaTelefono.$invalid">
 										<div ng-message="tel" class="help-block"> 
 											Formato invalido  
@@ -242,6 +235,7 @@
 									<input type="button" class="btn btn-default" value="Avanzado" ng-click="telefonoAvanzado()">
 								</div>
 							</div>
+							<!-- /form-group-->
 
 							<div class="form-group" ng-class="{ 'has-error': formAlu.email.$touched && formAlu.email.$invalid }">
 								<div class="col-sm-4 control-label">
@@ -254,9 +248,11 @@
 										<div ng-message="required" class="help-block">Complete este campo</div>
 									</div>
 								</div>
+								<div class="col-sm-1">
+									<input type="button" class="btn btn-default" value="Avanzado" ng-click="mailAvanzado()">
+								</div>
 							</div>
 							<!-- /form-group-->
-
 
 							<div class="form-group" ng-class="{ 'has-error': formAlu.observacion.$touched && formAlu.observacion.$invalid }">
 								<div class="col-sm-4 control-label">
@@ -269,58 +265,47 @@
 											Formato invalido  
 										</div>
 									</div>
-							<!--<input class="form-control"
-							type="text" maxlength="255" required pattern="[a-zA-Z ]*">-->
-							<!-- Valida letras y espacios-->
-						</div>
-					</div>
-					
-				</div>
-				<!-- /form-group-->
-				<div class="col-md-3">
-					<div class="form-group">
-						<div class="col-sm-1">
-						</div>
-						<div class="col-sm-2">
-							<button class="btn btn-default" ngf-select ng-model="picFile" accept="image/*" ngf-max-size="2MB" ngf-min-height="100" style="margin: 5px auto">Seleccione imagen de perfil</button>
+								</div>
+							</div><!-- /form-group-->
+						</div><!--personal-info-->
+						
+						<div class="col-md-3">
+							<div class="form-group">
+								<div class="col-sm-1">
+								</div>
+								<div class="col-sm-2">
+									<button class="btn btn-default" ngf-select ng-model="picFile" accept="image/*" ngf-max-size="2MB" ngf-min-height="100" style="margin: 5px auto">Seleccione imagen de perfil</button>
 
-							<div ngf-drop ng-model="picFile" ngf-pattern="image/*" class="cropArea"><!--{{picFile}}-->
-								<img-crop image="picFile  | ngfDataUrl"                 
-								result-image="croppedDataUrl" ng-init="croppedDataUrl=''">
-							</img-crop>
-						</div>
-					</div>
-
+									<div ngf-drop ng-model="picFile" ngf-pattern="image/*" class="cropArea"><!--{{picFile}}-->
+										<img-crop image="picFile  | ngfDataUrl"                 
+										result-image="croppedDataUrl" ng-init="croppedDataUrl=''">
+										</img-crop>
+									</div>
+								</div>
 							<!--<div>
 								<img ng-src="{{croppedDataUrl}}">
 							</div>-->
 							<!--<button ng-click="upload(croppedDataUrl)">Submit</button> -->
-							<span class="progress" ng-show="progress >= 0">
-								<div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
-							</span>
-							<span ng-show="result">Carga completa</span>
-							<span class="err" ng-show="errorMsg">{{errorMsg}}</span>
+								<span class="progress" ng-show="progress >= 0">
+									<div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
+								</span>
+								<span ng-show="result">Carga completa</span>
+								<span class="err" ng-show="errorMsg">{{errorMsg}}</span>
+							</div>
 						</div>
-					</div>
-
-				</div>
-				<!-- </div> -->
-			</div><!-- /formulario-->
+				</div><!--row-->
+			</div><!--formulario media-body-->
 			<div class="form-group">
 				<div class="col-sm-2 col-sm-offset-3">
-					<input class="btn btn-danger" type="button" name=""
-					onclick="cargarAlumnoPrincipal()" value="Cancelar" />
+					<input class="btn btn-danger" type="button" name="" onclick="cargarAlumnoPrincipal()" value="Cancelar" />
 				</div>
 				<div class="col-sm-1">
-					<input class="btn btn-primary" ng-click="upload(croppedDataUrl)" type="submit" name=""
-					value="Guardar" />
+					<input class="btn btn-primary" ng-click="upload(croppedDataUrl)" type="submit" name="" value="Guardar" ng-disabled="!formAlu.$valid"/>
 				</div>
 			</div>
-
 		</form>
 	</fieldset>
-
-</div>
+</div><!--id="nuevoPerfil" ng-show="nuevoPerfil"-->
 
 <div id="notas" ng-show="notas">
 	<fieldset class="navbar">

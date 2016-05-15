@@ -21,25 +21,6 @@
  	});
  })
 
-
-
-
-
- .directive('loading', function () {
- 	return {
- 		restrict: 'E',
- 		replace:true,
- 		template: '<div class="loading"><img src="http://www.nasa.gov/multimedia/videogallery/ajax-loader.gif" width="20" height="20" />LOADING...</div>',
- 		link: function (scope, element, attr) {
- 			scope.$watch('loading', function (val) {
- 				if (val)
- 					$(element).show();
- 				else
- 					$(element).hide();
- 			});
- 		}
- 	}
- })
  .controller('AlumnadoCtrl', function ($scope, $q, $http, boletinInasistenciasData, $alert, libCalificacionesdata, plantillaTrimestralData, alumnoService, Upload, $timeout, alumnoData, ModalService, ObjectsFactory) {
  	$scope.listado = true;
  	$scope.listFilterIsEnabled = false;
@@ -100,12 +81,35 @@ $scope.alumno.domicilio = ObjectsFactory.newDomicilio();
 			modal.element.modal();
 			modal.close.then(function(result){
 				$scope.alumno.listaTelefonos = result;
+
+				if ($scope.alumno.listaTelefonos.length > 0){//Esto es para listar los telefonos en una lista en el form principal	
+					$scope.mostrarListaTelefonos = true;
+				}else{ 
+					$scope.mostrarListaTelefonos = false;
+				}
 			});
 		});
-
 	}; 
 
+	$scope.mailAvanzado = function(){
+		ModalService.showModal({
+			templateUrl: 'scripts/directivo/alumnado/modal/addmaildetails.tpl.html',
+			controller: 'mailAvanzadoModalController',
+			inputs: {
+				title: "Mails",
+				listaMails: $scope.alumno.listaMails,
+				ObjectsFactory: ObjectsFactory,
+			}
+		}).then(function(modal) {
+			modal.element.modal();
+			modal.close.then(function(result){
+				$scope.alumno.listaMails = result;
+			});
+		});
+	};
+
 	$scope.showModalProfile = function(alumno){
+		//consultar al back toda la info del alumno
 		ModalService.showModal({
 			templateUrl: 'scripts/directivo/alumnado/modal/showProfileAlumno.tpl.html',
 			controller: 'showProfileAlumnoModalController',
@@ -173,6 +177,14 @@ $scope.upload = function (dataUrl) {
 };
 
 //filters
+
+
+if ($scope.alumno.listaTelefonos.length > 0){	//Esto es para listar los telefonos en una lista en el form principal
+	$scope.mostrarListaTelefonos = true;
+}else{ 
+	$scope.mostrarListaTelefonos = false;
+}
+
 var count = 0;
 $scope.seleccionarCheckbox = function(alumno) {//al presionar un td de la lista de alumnos pone checkbox en true y muestra boton colocar inasistencias
 	if (alumno.selected) {
@@ -244,19 +256,7 @@ $scope.seleccionar = function (id){
 
 
 	}
-	if (id === 'listado') {
-		$scope.nuevoPerfil = false;
-		$scope.subtitle = "Listado";
-		$scope.listado = true;
-		$scope.showEditProfileMenuIzq = false;
 
-	}else if (id === 'nuevoPerfil'){
-		$scope.listado = false;
-		$scope.nuevoPerfil = true;
-		$scope.subtitle = "Nuevo Alumno"
-		$scope.nuevoAlumno = null;
-		$scope.showEditProfileMenuIzq = false;
-	};
 }
 
 $scope.search = function () {
@@ -360,16 +360,10 @@ $scope.multiplePanels = {
   $scope.answer = [];
   $scope.alumnoData = [];
   $scope.showData = function() {
-	/*$scope.loading = true;
-	  $http.get(alumnoData) esto es para que muestre el loading mientras carga, el http da 404 xq no tengo servidor
-	   .success(function(data) {
-           $scope.alumnoData = data[0].alumnoData;
-            $scope.loading = false;
-        });*/
-$scope.alumnoData = alumnoData;
-$scope.loading = false;
 
-}
+  	$scope.alumnoData = alumnoData;
+
+  }
 
 
 /*$scope.getAll = alumnoService.alumnoGetAll().then(function(response){
