@@ -18,4 +18,16 @@
   </span>
   <span ng-show="result">Upload Successful</span>
   <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
+  <hr>
+  {{date}}
+  <hr>
+  <span am-time-ago="date"></span>
+  <hr>
+  <span>{{date | amUtc | amDateFormat:'MM.DD.YYYY HH:mm:ss'}}</span>
+  <hr>
+  <span>{{date | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}</span>
+  <hr>
+  <span>{{date | amDateFormat:'YYYY-MM-DD'}}</span>
+  <hr>
+  <span>{{date | amDateFormat:'MM/YYYY/DD'}}</span>
 </form>

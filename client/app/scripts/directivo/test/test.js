@@ -46,4 +46,6 @@
     }
 
 
+
+$scope.date = new Date();
 });
