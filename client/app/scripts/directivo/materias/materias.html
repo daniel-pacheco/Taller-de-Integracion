@@ -49,10 +49,6 @@
 				<td>{{materia.docenteTitular}}</td>
 				<td>{{materia.area}}</td>
 				<td style="width:10%;"><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipEdit" style="width:50%; cursor: pointer" class="glyphicon glyphicon-edit" ></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipRemove" style="width:50%; cursor: pointer" class="glyphicon glyphicon-remove-circle"></span></td> 
-					<!--<td>{{alumno.name}}</td>
-					<td>{{alumno.phone}}</td>
-					<td>{{alumno.anio}}</td>
-					<td>{{$index}}</td> -->
 				</tr>
 			</table>
 		</fieldset>
@@ -63,19 +59,8 @@
 			<legend>Nueva Materia</legend>
 			<span class="help-block">Complete los datos para dar de alta una 
 				nueva materia y presione guardar al finalizar</span>
-			<!--<div class="cargar_imagen">
-				<img src="images/defaultUser.png" alt="Usuario" width="190px" height="auto"/>
-				<span class="btn btn-primary btn-file">Examinar<input type="file"></span>
-			</div>-->
-
 			<form class="form-horizontal media">
-				<!--<div class="pull-right">
-						<img class="img-rounded" src="images/defaultUser.png" alt="Usuario" width="220px" height="auto"/>
-					<div class="btn btn-primary btn-file" id="boton">Examinar<input type="file"></div>
-				</div>	-->
-
 				<div class="formulario media-body">
-
 					<div class="form-group">
 						<div class="col-sm-3 control-label">
 							<label for="">Nombre:</label>
@@ -143,12 +128,14 @@
 							<label for="">Área:</label>
 						</div>
 						<div class="col-sm-2">
-							<input class="form-control" style="width:100%" placeholder="Cs. Exactas" type="text"
-							maxlength="10" required pattern="[a-zA-Z ]*" readonly>
+							<select class="form-control" name="Año">
+								<option value="" disabled selected>Seleccione una opci&oacute;n</option>
+								<option value="area.nombre" ng-repeat="area in listaAreas">{{area.nombre}}</option>
+							</select>
 						</div>
 						<div class="col-sm-1">
 							<input class="btn btn-info" type="button" ng-click="addArea()" name=""
-							value="Elegir" />
+							value="Administrar"/>
 						</div>
 					</div><!-- /form-group-->
 					<div class="form-group">

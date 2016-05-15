@@ -55,17 +55,15 @@
 												<span class="glyphicon glyphicon-trash"></span>
 											</button>
 											<!-- Botones editando Mail -->
-											<button ng-if="mail.show" class="btn btn-primary btn-sm" bs-tooltip="tooltip.tooltipSaveEdit" ng-click="saveEditMail(copiaListaMails.indexOf(mail)); mail.show=false" ng-disabled="formRow.caracteristica.$invalid || formRow.nroMail.$invalid || formRow.tipoMail.$invalid">
+											<button ng-if="mail.show" class="btn btn-primary btn-sm" bs-tooltip="tooltip.tooltipSaveEdit" ng-click="saveEditMail(copiaListaMails.indexOf(mail)); mail.show=false" ng-disabled="formRow.direccionMail.$invalid || formRow.tipoMail.$invalid || formRow.tipoMail.$invalid">
 												<span class="glyphicon glyphicon-ok"></span>
 											</button>
-											<button ng-if="mail.show" class="btn btn-default btn-sm" ng-click="mail.show=false" bs-tooltip="tooltip.tooltipCancelEdit"
-											><span class="glyphicon glyphicon-remove"></span>
-										</button>
-									</td> 
-
-								</tr>
-
-							</tbody>
+											<button ng-if="mail.show" class="btn btn-default btn-sm" ng-click="mail.show=false" bs-tooltip="tooltip.tooltipCancelEdit">
+												<span class="glyphicon glyphicon-remove"></span>
+											</button>
+										</td> 
+									</tr>
+								</tbody>
 						</table>
 					</div>
 				</div>

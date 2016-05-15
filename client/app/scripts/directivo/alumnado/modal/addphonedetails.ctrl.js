@@ -4,7 +4,7 @@ angular.module('clientAppApp')
   function($scope, $element, title, listaTelefonos, close, ObjectsFactory) {//acá se inyecta las variables necesarias y luego la función close
 
     $scope.copiaListaTelefonos = angular.copy (listaTelefonos);
-
+    $scope.title = title;
     $scope.tooltip = {
      tooltipEdit : {
       'title' : 'Editar'
@@ -46,7 +46,7 @@ angular.module('clientAppApp')
       $scope.copiaTelefono = angular.copy (telefono);
   }
 $scope.saveEditTelefono = function (position){
-  console.log(position);
+  //console.log(position);
   $scope.copiaListaTelefonos[position].caracteristica = $scope.copiaTelefono.caracteristica;
   $scope.copiaListaTelefonos[position].nroTelefono = $scope.copiaTelefono.nroTelefono;
   $scope.copiaListaTelefonos[position].tipoTelefono = $scope.copiaTelefono.tipoTelefono;

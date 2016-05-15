@@ -19,7 +19,7 @@
         }
     });
 })
- .controller('MateriasCtrl', function ($scope, ModalService) {
+ .controller('MateriasCtrl', function ($scope, ModalService, areasData) {
   $scope.listado1 = true;
 
   $scope.seleccionar = function(id) {
@@ -48,18 +48,20 @@ $scope.setActiveAlu = function(menuItemAlu) {
 };
 
 //-- Modals
+  $scope.listaAreas = areasData;
 
 $scope.addArea = function() {
   ModalService.showModal({
     templateUrl: 'scripts/directivo/materias/modal/addareadetails.tpl.html',
     controller: 'addAreaDetailsModalController',
     inputs: {
-      title: "Agregar Area",
+      title: "Administrar Areas",
+      listaAreas: $scope.listaAreas,
     }
   }).then(function(modal) {
     modal.element.modal();
     modal.close.then(function(result){
-
+      $scope.listaAreas = result;
     });
      /* modal.close.then(function(result) {        
         console.log('el resultado es: ' + result); //$scope.algo.nroDocumento = result;

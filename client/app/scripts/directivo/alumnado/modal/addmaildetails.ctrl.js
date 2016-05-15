@@ -4,7 +4,7 @@ angular.module('clientAppApp')
   function($scope, $element, title, listaMails, close, ObjectsFactory) {//acá se inyecta las variables necesarias y luego la función close
 
     $scope.copiaListaMails = angular.copy (listaMails);
-
+    $scope.title = title;
     $scope.tooltip = {
      tooltipEdit : {
       'title' : 'Editar'
