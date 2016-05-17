@@ -29,27 +29,23 @@ angular.module('clientAppApp')
     close('cancel', 500); // close, but give 500ms for bootstrap to animate
   };
 
-   $scope.nuevoMail = ObjectsFactory.newMail();
+  $scope.nuevoMail = ObjectsFactory.newMail();
   $scope.addMail = function(){
-    $scope.copiaListaMails.push({
-      'direccionMail':$scope.nuevoMail.direccionMail, 
-      'tipoMail': $scope.nuevoMail.tipoMail, 
-    });
-    $scope.nuevoMail.direccionMail = "";
-    $scope.nuevoMail.tipoMail = "";
+    $scope.copiaListaMails.push($scope.nuevoMail);
+    $scope.nuevoMail = ObjectsFactory.newMail();
     $scope.form.$setUntouched();
   }
 
   $scope.edit = function(mail){
-      $scope.copiaMail = angular.copy (mail);
+    $scope.copiaMail = angular.copy (mail);
   }
-$scope.saveEditMail = function (position){
-  console.log(position);
-  $scope.copiaListaMails[position].direccionMail = $scope.copiaMail.direccionMail;
-  $scope.copiaListaMails[position].tipoMail = $scope.copiaMail.tipoMail;
-}
-$scope.deleteMail = function (mail){
+  $scope.saveEditMail = function (position){
+    console.log(position);
+    $scope.copiaListaMails[position].direccionMail = $scope.copiaMail.direccionMail;
+    $scope.copiaListaMails[position].tipoMail = $scope.copiaMail.tipoMail;
+  }
+  $scope.deleteMail = function (mail){
     $scope.copiaListaMails.splice($scope.copiaListaMails.indexOf(mail),1);
-}
+  }
 
 }]);

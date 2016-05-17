@@ -54,7 +54,6 @@ $scope.domicilioAvanzado = function() {
 		inputs: {
 			title: "Nuevo Domicilio",
 			domicilioAvanzado: $scope.alumno.domicilio,
-
 		}
 	}).then(function(modal) {
 		modal.element.modal();
@@ -75,13 +74,11 @@ $scope.alumno.domicilio = ObjectsFactory.newDomicilio();
 			inputs: {
 				title: "Teléfono",
 				listaTelefonos: $scope.alumno.listaTelefonos,
-				ObjectsFactory: ObjectsFactory,
 			}
 		}).then(function(modal) {
 			modal.element.modal();
 			modal.close.then(function(result){
 				$scope.alumno.listaTelefonos = result;
-
 				if ($scope.alumno.listaTelefonos.length > 0){//Esto es para listar los telefonos en una lista en el form principal	
 					$scope.mostrarListaTelefonos = true;
 				}else{ 
@@ -98,12 +95,16 @@ $scope.alumno.domicilio = ObjectsFactory.newDomicilio();
 			inputs: {
 				title: "Mails",
 				listaMails: $scope.alumno.listaMails,
-				ObjectsFactory: ObjectsFactory,
 			}
 		}).then(function(modal) {
 			modal.element.modal();
 			modal.close.then(function(result){
 				$scope.alumno.listaMails = result;
+				if ($scope.alumno.listaMails.length > 0){//Esto es para listar los telefonos en una lista en el form principal	
+					$scope.mostrarListaMails = true;
+				}else{ 
+					$scope.mostrarListaMails = false;
+				}
 			});
 		});
 	};

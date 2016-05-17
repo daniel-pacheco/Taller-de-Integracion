@@ -12,7 +12,6 @@ angular.module('clientAppApp')
         close ($scope.domicilioCopia , 500);}
         else{ 
           close (domicilioAvanzado , 500);}
-
         };
 
         $scope.cancel = function() {
