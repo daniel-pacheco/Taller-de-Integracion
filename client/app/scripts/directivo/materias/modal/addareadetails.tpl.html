@@ -50,7 +50,7 @@
 					<form name="form" novalidate ng-submit="addArea()">	
 						<div class="panel-heading">
 							<div class="form-group  col-sm-6 col-md-6 col-xs-6 col-lg-6" ng-class="{ 'has-error': form.area.$touched && form.area.$invalid }">
-								<input type="text" name="area" class="form-control" ng-model="nuevaArea.nombre"  placeholder="Ciencias Naturales" maxlength="185" required pattern="[a-zA-Z 0-9]*"/>
+								<input type="text" name="area" class="form-control" ng-model="nuevaArea.nombre"  placeholder="Nombre área" maxlength="185" required pattern="[a-zA-Z 0-9]*"/>
 								<div ng-messages="form.area.$error" ng-if="form.area.$touched && form.area.$invalid">
 									<!-- <div ng-message="pattern" class="help-block" style="position: fixed;">Formato invalido</div> -->
 									<div ng-message="required" class="help-block" style="position: fixed;">Complete este campo</div>

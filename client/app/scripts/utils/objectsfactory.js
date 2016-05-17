@@ -154,6 +154,17 @@ angular.module('clientAppApp')
     return curso;
   };
 
+  var newInasistencia = function(){
+    var inasistencia = {
+      "idInasistencia" : null,
+      "cantidad" : 0.0,
+      "fecha" : "mmm dd, aaaa hh:mm:ss AM/PM",
+      "concepto" : "",
+      "justificada" : true,
+      "totalAcum" : 0.0
+    };
+    return inasistencia;
+  };
 
 
   
@@ -227,6 +238,7 @@ angular.module('clientAppApp')
     newArea: newArea,
     newAnio: newAnio,
     newCurso: newCurso,
+    newInasistencia: newInasistencia,
     
 
     //-- Estadisticas

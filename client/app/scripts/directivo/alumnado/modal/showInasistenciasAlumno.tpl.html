@@ -14,19 +14,19 @@
 							<div class="form-horizontal margin-lib">
 								<div class="form-group">
 									<label class="col-lg-4">Nombre y Apellido: </label>
-									<span class="col-lg-8">{{libInasistencias.nombre}} {{libInasistencias.apellido}}</span>
+									<span class="col-lg-8">{{copiaLibInasistencias.nombre}} {{copiaLibInasistencias.apellido}}</span>
 								</div>
 								<div class="form-group">
 									<label class="col-lg-4">DNI: </label>
-									<span class="col-lg-5">{{libInasistencias.nroDocumento}}</span>
+									<span class="col-lg-5">{{copiaLibInasistencias.nroDocumento}}</span>
 								</div>
 								<div class="form-group">
 									<label class="col-lg-4">Cursa actualmente: </label>
-									<span class="col-lg-5">{{libInasistencias.cursaActualmente}}</span>
+									<span class="col-lg-5">{{copiaLibInasistencias.anio}} {{copiaLibInasistencias.curso}}</span>
 								</div>
 								<div class="form-group">
 									<label class="col-lg-4">A&ntilde;o: </label>
-									<span class="col-lg-5">{{libInasistencias.anioAcademico}}</span>
+									<span class="col-lg-5">{{copiaLibInasistencias.cicloLectivo}}</span>
 								</div>
 							</div>
 						</div>
@@ -46,7 +46,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr ng-repeat="inasistencia in libInasistencias.listaInasistencias | orderBy:'fechaSort'" ng-form="formRow">
+									<tr ng-repeat="inasistencia in copiaLibInasistencias.listaInasistencias | orderBy:'fechaSort'" ng-form="formRow">
 										<td>
 											<div ng-if="!inasistencia.show">{{inasistencia.fecha}}</div>
 											<div ng-if="inasistencia.show" ng-class="{ 'has-error': formRow.fecha.$touched && formRow.fecha.$invalid }">
@@ -54,9 +54,9 @@
 											</div>
 										</td>
 										<td>
-											<div ng-if="!inasistencia.show">{{inasistencia.faltoA}}</div>
-											<div ng-if="inasistencia.show" ng-class="{ 'has-error': formRow.faltoA.$touched && formRow.faltoA.$invalid }">
-												<input class="form-control" name="faltoA" type="text" ng-model="copiaInasistencia.faltoA" required pattern="[a-zA-Zí ]*" maxlength="18"/>
+											<div ng-if="!inasistencia.show">{{inasistencia.concepto}}</div>
+											<div ng-if="inasistencia.show" ng-class="{ 'has-error': formRow.concepto.$touched && formRow.concepto.$invalid }">
+												<input class="form-control" name="concepto" type="text" ng-model="copiaInasistencia.concepto" required pattern="[a-zA-Zí ]*" maxlength="18"/>
 											</div>
 										</td>
 										<td>
@@ -84,7 +84,7 @@
 												<span class="glyphicon glyphicon-trash"></span>
 											</button>
 											<!-- Botones editando inasistencia -->
-											<button ng-if="inasistencia.show" class="btn btn-primary btn-sm" bs-tooltip="tooltip.tooltipSaveEdit" ng-click="saveEditInasistencia(libInasistencias.listaInasistencias.indexOf(inasistencia));   inasistencia.show=false" ng-disabled="formRow.fecha.$invalid || formRow.faltoA.$invalid || formRow.cantidad.$invalid || formRow.justificada.$invalid">
+											<button ng-if="inasistencia.show" class="btn btn-primary btn-sm" bs-tooltip="tooltip.tooltipSaveEdit" ng-click="saveEditInasistencia(copiaLibInasistencias.listaInasistencias.indexOf(inasistencia));   inasistencia.show=false" ng-disabled="formRow.fecha.$invalid || formRow.concepto.$invalid || formRow.cantidad.$invalid || formRow.justificada.$invalid">
 												<span class="glyphicon glyphicon-ok"></span>
 											</button>
 											<button ng-if="inasistencia.show" class="btn btn-default btn-sm" ng-click="inasistencia.show=false" bs-tooltip="tooltip.tooltipCancelEdit"
@@ -109,9 +109,9 @@
 									<div ng-message="required" class="help-block" style="position: fixed;">Complete este campo</div>
 								</div>
 							</div>
-							<div class="form-group  col-sm-2 col-md-2 col-xs-2 col-lg-2" ng-class="{ 'has-error': form.faltoA.$touched && form.faltoA.$invalid }">
-								<input type="text" name="faltoA" class="form-control"ng-model="nuevaInasistencia.faltoA" placeholder="Ed física" required pattern="[a-zA-Zí ]*" maxlength="18"/>
-								<div ng-messages="form.faltoA.$error" ng-if="form.faltoA.$touched && form.faltoA.$invalid">
+							<div class="form-group  col-sm-2 col-md-2 col-xs-2 col-lg-2" ng-class="{ 'has-error': form.concepto.$touched && form.concepto.$invalid }">
+								<input type="text" name="concepto" class="form-control"ng-model="nuevaInasistencia.concepto" placeholder="Ed física" required pattern="[a-zA-Zí ]*" maxlength="18"/>
+								<div ng-messages="form.concepto.$error" ng-if="form.concepto.$touched && form.concepto.$invalid">
 									<div ng-message="pattern" class="help-block" style="position: fixed;">Formato invalido</div>
 									<div ng-message="required" class="help-block" style="position: fixed;">Complete este campo</div>
 								</div>

@@ -1,15 +1,14 @@
 angular.module('clientAppApp')
 .controller('showInasistenciasModalController', [
-  '$scope', '$element', 'title', 'libInasistencias', 'close', 
-  function($scope, $element, title, libInasistencias, close) {//acá se inyecta las variables necesarias y luego la función close
+  '$scope', '$element', 'title', 'libInasistencias', 'close', 'ObjectsFactory', 
+  function($scope, $element, title, libInasistencias, close, ObjectsFactory) {//acá se inyecta las variables necesarias y luego la función close
 
   $scope.title = title;
   $scope.libInasistencias = {}; 
   $scope.nuevaInasistencia = {};
-  //$scope.dni = docente.nroDocumento;
-  var copiaLibInasistencias = angular.copy (libInasistencias); //deberia ser al revez
-$scope.libInasistencias = libInasistencias;//creo la copia para poder editarla tranquilo
-    angular.forEach($scope.libInasistencias.listaInasistencias, function (item) {//funcion que crea el campo fechasort con la forma YYYYmmdd para poder ordenarlo en el boletin de inassitencias
+  var copiaLibInasistencias = angular.copy (libInasistencias);
+$scope.copiaLibInasistencias = copiaLibInasistencias;//creo la copia para poder editarla tranquilo
+    angular.forEach($scope.copiaLibInasistencias.listaInasistencias, function (item) {//funcion que crea el campo fechasort con la forma YYYYmmdd para poder ordenarlo en el boletin de inassitencias
       var year = item.fecha.substr(6,4);
       var month = item.fecha.substr(3,2);
       var day = item.fecha.substr(0,2);
@@ -19,13 +18,13 @@ $scope.libInasistencias = libInasistencias;//creo la copia para poder editarla t
 
 $scope.close = function(modif) {
     if (modif){
-      close ($scope.libInasistencias , 500);}
+      close ($scope.copiaLibInasistencias , 500);}
       else{
-        close (copiaLibInasistencias , 500);}
+        close (libInasistencias , 500);}
       };
 
   $scope.cancel = function() {
-    close('cancel', 500); // close, but give 500ms for bootstrap to animate
+    close('cancel', 500);
   };
   $scope.tooltip = {
    tooltipEdit : {
@@ -37,7 +36,6 @@ $scope.close = function(modif) {
   }, tooltipCancelEdit : {
     'title' : 'Cancelar edición'
   }
-
 };
 var today = new Date();
 var dd = today.getDate(); 
@@ -55,29 +53,24 @@ currentDay = dd+"/"+mm+"/"+yyyy;
 
 $scope.nuevaInasistencia.fecha = currentDay;
 
-$scope.addInasistencia = function(){//Esto agrega una fila dinamicamente en el boletin de inasistencias
-  libInasistencias.listaInasistencias.push({
-    'fecha':$scope.nuevaInasistencia.fecha, 
-    'faltoA': $scope.nuevaInasistencia.faltoA, 
-    'cantidad':$scope.nuevaInasistencia.cantidad, 
-    'justificada':$scope.nuevaInasistencia.justificada.toUpperCase() });
-  $scope.nuevaInasistencia.faltoA = "";
-  $scope.nuevaInasistencia.cantidad = "";
-  $scope.nuevaInasistencia.justificada = "";
-  $scope.nuevaInasistencia.fecha = "";
+$scope.nuevaInasistencia = new ObjectsFactory.newInasistencia();
+
+$scope.addInasistencia = function(){
+  copiaLibInasistencias.listaInasistencias.push($scope.nuevaInasistencia);
+  $scope.nuevaInasistencia = new ObjectsFactory.newInasistencia();
   $scope.form.$setUntouched();
   $scope.nuevaInasistencia.fecha = currentDay;
 };
 
 $scope.saveEditInasistencia = function(position) {
-  $scope.libInasistencias.listaInasistencias[position].fecha = $scope.copiaInasistencia.fecha;
-  $scope.libInasistencias.listaInasistencias[position].faltoA = $scope.copiaInasistencia.faltoA;
-  $scope.libInasistencias.listaInasistencias[position].cantidad = $scope.copiaInasistencia.cantidad;
-  $scope.libInasistencias.listaInasistencias[position].justificada = $scope.copiaInasistencia.justificada;
+  $scope.copiaLibInasistencias.listaInasistencias[position].fecha = $scope.copiaInasistencia.fecha;
+  $scope.copiaLibInasistencias.listaInasistencias[position].concepto = $scope.copiaInasistencia.concepto;
+  $scope.copiaLibInasistencias.listaInasistencias[position].cantidad = $scope.copiaInasistencia.cantidad;
+  $scope.copiaLibInasistencias.listaInasistencias[position].justificada = $scope.copiaInasistencia.justificada;
 };
 
 $scope.deleteInasistencia = function(inasistencia) {
-  $scope.libInasistencias.listaInasistencias.splice($scope.libInasistencias.listaInasistencias.indexOf(inasistencia),1);
+  $scope.copiaLibInasistencias.listaInasistencias.splice($scope.copiaLibInasistencias.listaInasistencias.indexOf(inasistencia),1);
 };
 
 $scope.edit = function(inasistencia) {
