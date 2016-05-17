@@ -21,7 +21,8 @@ angular
     'ngAnimate',
     'ngFileUpload',
     'ngImgCrop',
-    'angularModalService'
+    'angularModalService',
+    'angularMoment'
 
   ])
   
