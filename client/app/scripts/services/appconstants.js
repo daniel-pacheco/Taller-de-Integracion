@@ -31,6 +31,13 @@
  	aula: ['.aula', 'Aula']
  })
 
+.constant('LANDING_ROUTES',{ //la dirección relativa entre los estados anidados se separa por .
+ 	ADMINISTRADOR: 'administrador.principal',
+ 	DOCENTE: 'docente.principal',
+ 	ALUMNO: 'alumno.micuenta',
+ 	DIRECTIVO: 'directivo.alumnado'
+ })
+
  .constant('MENU_DIRECTIVO',{ //la dirección relativa entre los estados anidados se separa por .
  	alumnado: ['.alumnado', 'Alumnado'],
  	materias: ['.materias', 'Materias'],

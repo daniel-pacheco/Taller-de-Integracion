@@ -94,12 +94,68 @@
 			<!-- right column -->
 			<div class="col-md-4">
 				<div class="text-center">
-					<img src="//placehold.it/200" class="avatar img-circle" alt="avatar">
+					<img style="float:left" src="//placehold.it/200" class="avatar img-circle" alt="avatar">
 				</div>
 			</div>
 
 		</div>
-		<div ng-show="actualizarMisDatos">actualizar mis datos</div>
+		<div ng-show="actualizarMisDatos">
+			<fieldset>
+				<div class="col-md-9">
+					<div class="row" style="padding-bottom: 30px">
+						<div class="col-md-3 col-md-offset-3">
+							<button style="align:center" class="btn btn-default" ngf-select ng-model="picFile" accept="image/*" ngf-max-size="2MB" ngf-min-height="100" style="margin: 5px auto">Seleccione imagen de perfil</button>
+							<div style="max-height: 150px; max-width: 150px; align:center" ngf-drop ng-model="picFile" ngf-pattern="image/*" class="cropArea"><!--{{picFile}}-->
+								<img-crop style="max-height: 150px; max-width: 150px; align:center" image="picFile  | ngfDataUrl" result-image="croppedDataUrl" ng-init="croppedDataUrl=''"></img-crop>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-10"> <!-- no esta tomando los form-group -->
+							<div class="form-group" ng-class="{ 'has-error': formAlu.email.$touched && formAlu.email.$invalid }">
+								<div class="col-sm-2 control-label">
+									<label for="mailActual"><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Mail actual:</label>
+								</div>
+								<div class="col-sm-4">
+									<input id="mailActual" name="email" type="email" class="form-control" placeholder="nombre@nombre.com" maxlength="255" required/>
+									<div ng-messages="formAlu.email.$error" ng-if="formAlu.email.$touched && formAlu.email.$invalid">
+										<div ng-message="email" class="help-block">Formato invalido</div>
+										<div ng-message="required" class="help-block">Complete este campo</div>
+									</div>
+								</div>
+							</div>
+							<!-- /form-group-->
+							<div class="form-group" ng-class="{ 'has-error': formAlu.email.$touched && formAlu.email.$invalid }">
+								<div class="col-sm-2 control-label">
+									<label for="mailNuevo"><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Mail nuevo:</label>
+								</div>
+								<div class="col-sm-4">
+									<input id="mailNuevo"name="email" type="email" class="form-control" placeholder="nombre@nombre.com" maxlength="255" required/>
+									<div ng-messages="formAlu.email.$error" ng-if="formAlu.email.$touched && formAlu.email.$invalid">
+										<div ng-message="email" class="help-block">Formato invalido</div>
+										<div ng-message="required" class="help-block">Complete este campo</div>
+									</div>
+								</div>
+							</div>
+							<!-- /form-group-->
+							<div class="form-group" ng-class="{ 'has-error': formAlu.email.$touched && formAlu.email.$invalid }">
+								<div class="col-sm-2 control-label">
+									<label for="mailNuevoConf"><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Mail nuevo:</label>
+								</div>
+								<div class="col-sm-4">
+									<input id="mailNuevoConf" name="email" type="email" class="form-control" placeholder="nombre@nombre.com" maxlength="255" required/>
+									<div ng-messages="formAlu.email.$error" ng-if="formAlu.email.$touched && formAlu.email.$invalid">
+										<div ng-message="email" class="help-block">Formato invalido</div>
+										<div ng-message="required" class="help-block">Complete este campo</div>
+									</div>
+								</div>
+							</div>
+							<!-- /form-group-->
+						</div>
+					</div>
+				</div>
+			</fieldset>
+		</div>
 		<div ng-show="cambiarPass"> cambiar pass</div>
 
 	</div>
