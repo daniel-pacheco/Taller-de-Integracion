@@ -37,7 +37,8 @@ $scope.close = function(modif) {
     'title' : 'Cancelar edición'
   }
 };
-var today = new Date();
+
+/*var today = new Date();
 var dd = today.getDate(); 
 
 if (dd < 10)//para poder ordenar con el fechasort necesitamos tener el dia y el mes de dos caracteres siempre
@@ -50,16 +51,17 @@ if (mm < 10)
 var yyyy = today.getFullYear(); 
 
 currentDay = dd+"/"+mm+"/"+yyyy;
-
-$scope.nuevaInasistencia.fecha = currentDay;
+*/
+$scope.date = new Date();
 
 $scope.nuevaInasistencia = new ObjectsFactory.newInasistencia();
+$scope.nuevaInasistencia.fecha = $scope.date;
 
 $scope.addInasistencia = function(){
   copiaLibInasistencias.listaInasistencias.push($scope.nuevaInasistencia);
   $scope.nuevaInasistencia = new ObjectsFactory.newInasistencia();
   $scope.form.$setUntouched();
-  $scope.nuevaInasistencia.fecha = currentDay;
+  $scope.nuevaInasistencia.fecha = $scope.date;
 };
 
 $scope.saveEditInasistencia = function(position) {
