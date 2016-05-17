@@ -45,12 +45,12 @@
 										<th class="col-md-3">Acciones</th>
 									</tr>
 								</thead>
-								<tbody>
-									<tr ng-repeat="inasistencia in copiaLibInasistencias.listaInasistencias | orderBy:'fechaSort'" ng-form="formRow">
+								<tbody>{{copiaLibInasistencias.listaInasistencias[2].fecha}}  *  {{date}}
+									<tr ng-repeat="inasistencia in copiaLibInasistencias.listaInasistencias | orderBy:'fecha'" ng-form="formRow">
 										<td>
-											<div ng-if="!inasistencia.show">{{inasistencia.fecha}}</div>
-											<div ng-if="inasistencia.show" ng-class="{ 'has-error': formRow.fecha.$touched && formRow.fecha.$invalid }">
-												<input class="form-control" name="fecha" type="text" ng-model="copiaInasistencia.fecha" maxlength="10" required pattern="^(0?[1-9]|[12][0-9]|3[01])[\/](0?[1-9]|1[012])[/\\/](19|20)\d{2}"/>
+											<div ng-if="!inasistencia.show">{{inasistencia.fecha | amDateFormat:'DD/MM/YYYY'}}</div>
+											<div ng-if="inasistencia.show" ng-class="{ 'has-error': formRow.fecha.$touched && formRow.fecha.$invalid}">
+												<input class="form-control" name="fecha" type="date" ng-model="copiaInasistencia.fecha" required/>
 											</div>
 										</td>
 										<td>
@@ -103,7 +103,7 @@
 					<form name="form" novalidate ng-submit="addInasistencia()">	
 						<div class="panel-heading">
 							<div class="form-group  col-sm-3 col-md-3 col-xs-3 col-lg-3" ng-class="{ 'has-error': form.fecha.$touched && form.fecha.$invalid }">
-								<input type="text" name="fecha" class="form-control" ng-model="nuevaInasistencia.fecha" value="{{currentDate}}" placeholder="10/10/1010" maxlength="10" required pattern="^(0?[1-9]|[12][0-9]|3[01])[\/](0?[1-9]|1[012])[/\\/](19|20)\d{2}"/>
+								<input type="date" name="fecha" class="form-control" ng-model="nuevaInasistencia.fecha" value="inasistencia.fecha | amDateFormat:'DD/MM/YYYY'" placeholder="10/10/1010" maxlength="10" required/> <!--pattern="^(0?[1-9]|[12][0-9]|3[01])[\/](0?[1-9]|1[012])[/\\/](19|20)\d{2}" -->
 								<div ng-messages="form.fecha.$error" ng-if="form.fecha.$touched && form.fecha.$invalid">
 									<div ng-message="pattern" class="help-block" style="position: fixed;">Formato invalido</div>
 									<div ng-message="required" class="help-block" style="position: fixed;">Complete este campo</div>
@@ -124,6 +124,9 @@
 								</div>
 							</div>
 							<div class="form-group col-sm-2 col-md-2 col-xs-2 col-lg-2" ng-class="{ 'has-error': form.justificada.$touched && form.justificada.$invalid }">
+								<!--<div class="checkbox">
+								  <label><input type="checkbox" ng-model="nuevaInasistencia.justificada"></label>
+								</div>-->
 								<input type="text" class="form-control" name="justificada"
 								ng-model="nuevaInasistencia.justificada" placeholder="J/I"  maxlength="1" style="text-transform:uppercase;" required pattern="[ijIJ]">
 								<div ng-messages="form.justificada.$error" ng-if="form.justificada.$touched && form.justificada.$invalid">
