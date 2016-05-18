@@ -377,28 +377,11 @@ public class ServicioDesempenio {
 	public Boolean procesarBoletinInasistencias(BoletinInasistencias bolInasistencias) throws Exception {
 		/*
 		 * Pasos para procesar un boletin de inasistencias:
-		 * 1) Obtener el boletin de inasistencias .................................................. OK
-		 * 2) Rescatar el listado del boletín que obtuve. .......................................... OK
-		 * 3) Rescatar el listado del boletín persistente. ......................................... OK
-		 * 4) Recorrer el listado de inasistencias obtenido viendo los IDs
-		 * 	4.1) 
-		 * 		- Si el id es null, agregar la inasistencia a su gestor y agregarla a la 
-		 * 		lista de inasistencias del boletin. 
-		 * 		- Si el id no es null, modificar la inasistencia. Devolverá un mensaje de error
-		 * 		si el concepto está para la misma fecha.
-		 * 	4.2) Modificar el boletín.
-		 * 	4.3) ...
+		 * 1) Obtener el boletín de inasistencias (viene por parámetro)
+		 * 2) 
 		 */
 		
-		BoletinInasistencias bolPersistente = gBoletinInasistencias.getById(bolInasistencias.getIdBoletinInasistencias());
-		Set<Inasistencia> listaInasistencias = bolInasistencias.getListaInasistencias();
-		Set<Inasistencia> listaInasistenciasPer = bolPersistente.getListaInasistencias();		
 		
-		for (Inasistencia i : listaInasistencias) {
-			if (i.getIdInasistencia() == null) {
-				gInasistencia.add(i);
-			}
-		}
 		
 		return true;
 	}

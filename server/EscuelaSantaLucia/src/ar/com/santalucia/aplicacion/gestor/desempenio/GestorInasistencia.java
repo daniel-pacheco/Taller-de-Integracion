@@ -7,9 +7,9 @@ import ar.com.santalucia.aplicacion.gestor.Gestor;
 import ar.com.santalucia.aplicacion.gestor.IListable;
 import ar.com.santalucia.dominio.modelo.desempenio.Inasistencia;
 import ar.com.santalucia.excepciones.ValidacionException;
-import ar.com.santalucia.validaciones.IValidacionInasistencia;
+import ar.com.santalucia.validaciones.IValidacionBoletinInasistencias;
 
-public class GestorInasistencia extends Gestor<Inasistencia> implements IListable<Inasistencia>, IValidacionInasistencia {
+public class GestorInasistencia extends Gestor<Inasistencia> implements IListable<Inasistencia> {
 
 	private InasistenciaHome inasistenciaDAO;
 	
@@ -26,11 +26,9 @@ public class GestorInasistencia extends Gestor<Inasistencia> implements IListabl
 	@Override
 	public void add(Inasistencia object) throws Exception {
 		try {
-			this.validar(object);
 			setSession();
 			setTransaction();
 			inasistenciaDAO.persist(object);
-			sesionDeHilo.getTransaction().commit();
 		} catch (ValidacionException vEx) {
 			throw vEx;
 		} catch (Exception ex) {
@@ -44,7 +42,6 @@ public class GestorInasistencia extends Gestor<Inasistencia> implements IListabl
 	@Override
 	public void modify(Inasistencia object) throws Exception {
 		try {
-			this.validar(object);
 			setSession();
 			setTransaction();
 			inasistenciaDAO.attachDirty(object);
@@ -117,38 +114,5 @@ public class GestorInasistencia extends Gestor<Inasistencia> implements IListabl
 		}
 	}
 
-	@Override
-	public Boolean existeConceptoEnFecha(Inasistencia inasistencia) throws Exception {
-		Boolean resultado = false;
-		Inasistencia inasistenciaEjemplo = new Inasistencia();
-		inasistenciaEjemplo.setConcepto(inasistencia.getConcepto());
-		ArrayList<Inasistencia> listaInasistencia;
-		try {
-			listaInasistencia = this.getByExample(inasistenciaEjemplo);
-		} catch (Exception ex) {
-			throw ex;
-		}
-		if (!listaInasistencia.isEmpty()) { // si no está vacía
-			resultado = true;
-		}
-		return resultado;
-	}
-
-	@Override
-	public void validar(Object object) throws Exception {
-		Inasistencia inasistencia = (Inasistencia) object;
-		Boolean vInasistencia;
-		ValidacionException validacionException = new ValidacionException();
-		
-		vInasistencia = this.existeConceptoEnFecha(inasistencia);
-		
-		validacionException.addMensajeError(vInasistencia 
-												? "Ya existe una inasistencia con el mismo concepto para la misma fecha" 
-												: null);
-		
-		if (!validacionException.getMensajesError().isEmpty()) {
-			throw validacionException;
-		}
-	}
 
 }

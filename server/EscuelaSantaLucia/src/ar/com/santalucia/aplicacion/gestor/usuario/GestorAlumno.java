@@ -191,22 +191,6 @@ public class GestorAlumno extends GestorUsuario implements IValidacionUsuarioAlu
 					"Ha ocurrido un error al buscar ALUMNOS que coincidan con el ejemplo dado: " + ex.getMessage());
 		}
 
-	}
-
-	// SUPRIMIDO
-//	public ArrayList<Alumno> List() throws Exception {
-//		try {
-//			setSession();
-//			setTransaction();
-//			Alumno criterioVacio = new Alumno();
-//			ArrayList<Alumno> listadoAlumnosDevolver = new ArrayList<Alumno>();
-//			listadoAlumnosDevolver = (ArrayList<Alumno>) alumnoDAO.findByExample(criterioVacio);
-//			sesionDeHilo.getTransaction().commit();
-//			return listadoAlumnosDevolver;
-//		} catch (Exception ex) {
-//			throw new Exception("Ha ocurrido un error al listar los directivos: " + ex.getMessage());
-//		}
-//	}
-	
+	}	
 
 }
