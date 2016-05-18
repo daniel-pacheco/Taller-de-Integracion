@@ -7,13 +7,9 @@ angular.module('clientAppApp')
   $scope.libInasistencias = {}; 
   $scope.nuevaInasistencia = {};
   var copiaLibInasistencias = angular.copy (libInasistencias);
-$scope.copiaLibInasistencias = copiaLibInasistencias;//creo la copia para poder editarla tranquilo
-    angular.forEach($scope.copiaLibInasistencias.listaInasistencias, function (item) {//funcion que crea el campo fechasort con la forma YYYYmmdd para poder ordenarlo en el boletin de inassitencias
-      var year = item.fecha.substr(6,4);
-      var month = item.fecha.substr(3,2);
-      var day = item.fecha.substr(0,2);
-    item.fechaSort = year+month+day;//22/02/1995
-    item.show=false;
+  $scope.copiaLibInasistencias = copiaLibInasistencias;//creo la copia para poder editarla tranquilo
+    angular.forEach($scope.copiaLibInasistencias.listaInasistencias, function (item) {
+      item.fecha = new Date(item.fecha);
   });
 
 $scope.close = function(modif) {
@@ -77,6 +73,7 @@ $scope.deleteInasistencia = function(inasistencia) {
 
 $scope.edit = function(inasistencia) {
   $scope.copiaInasistencia = angular.copy (inasistencia);
+  $scope.copiaInasistencia.fecha = new Date(inasistencia.fecha);
 }
 
 

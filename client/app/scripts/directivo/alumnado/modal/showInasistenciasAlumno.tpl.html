@@ -45,7 +45,7 @@
 										<th class="col-md-3">Acciones</th>
 									</tr>
 								</thead>
-								<tbody>{{copiaLibInasistencias.listaInasistencias[2].fecha}}  *  {{date}}
+								<tbody>{{date}}
 									<tr ng-repeat="inasistencia in copiaLibInasistencias.listaInasistencias | orderBy:'fecha'" ng-form="formRow">
 										<td>
 											<div ng-if="!inasistencia.show">{{inasistencia.fecha | amDateFormat:'DD/MM/YYYY'}}</div>
