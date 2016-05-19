@@ -9,27 +9,31 @@ import java.util.Date;
  * @author Ariel
  * @version 1.0
  */
-public class DetallePreviaDTO {
+public class DetallePreviaDTO implements Comparable<DetallePreviaDTO> {
 	private Long idDetallePrevia;
 	private String nombreMateria;
 	private Long dniAlumno;
 	private Integer cicloLectivoMateria;
 	private String anio;
 	private Boolean asistencia;
-	private Date inicioMesa; 
-	private Date finMesa;
+	private Date fechaInscripcion; 
 	private Float nota;
 	
 	public DetallePreviaDTO() {
 		super();
 	}
 
-	public DetallePreviaDTO(Long idDetallePrevia, String nombreMateria, Integer cicloLectivoMateria, String anio) {
+	public DetallePreviaDTO(Long idDetallePrevia, String nombreMateria, Long dniAlumno, Integer cicloLectivoMateria,
+			String anio, Boolean asistencia, Date fechaInscripcion, Float nota) {
 		super();
 		this.idDetallePrevia = idDetallePrevia;
 		this.nombreMateria = nombreMateria;
+		this.dniAlumno = dniAlumno;
 		this.cicloLectivoMateria = cicloLectivoMateria;
 		this.anio = anio;
+		this.asistencia = asistencia;
+		this.fechaInscripcion = fechaInscripcion;
+		this.nota = nota;
 	}
 
 	public Long getIdDetallePrevia() {
@@ -80,20 +84,12 @@ public class DetallePreviaDTO {
 		this.asistencia = asistencia;
 	}
 
-	public Date getInicio() {
-		return inicioMesa;
+	public Date getFechaInscripcion() {
+		return fechaInscripcion;
 	}
 
-	public void setInicioMesa(Date inicioMesa) {
-		this.inicioMesa = inicioMesa;
-	}
-
-	public Date getFinMesa() {
-		return finMesa;
-	}
-
-	public void setFinMesa(Date finMesa) {
-		this.finMesa = finMesa;
+	public void setFechaInscripcion(Date fechaInscripcion) {
+		this.fechaInscripcion = fechaInscripcion;
 	}
 
 	public Float getNota() {
@@ -103,5 +99,38 @@ public class DetallePreviaDTO {
 	public void setNota(Float nota) {
 		this.nota = nota;
 	}
+
+	@Override
+	public boolean equals(Object objeto) {
+		if(objeto instanceof DetallePreviaDTO){
+			if ((this.nombreMateria).equals(((DetallePreviaDTO) objeto).getNombreMateria()) &&
+			(this.anio).equals(((DetallePreviaDTO) objeto).getAnio()) ){
+				return true;     
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public int compareTo(DetallePreviaDTO objeto) {
+		if(objeto instanceof DetallePreviaDTO && this.equals(objeto)){ // Que sean el mismo tipo y se cumpla lo de equals
+			if( (this.fechaInscripcion).equals(((DetallePreviaDTO)objeto).getFechaInscripcion()) ){
+				return 0; // Si es igual
+			}else{
+				if( (this.fechaInscripcion).before( ((DetallePreviaDTO)objeto).getFechaInscripcion() )  ){
+					return 1; // Si es mayor
+				}else{
+					return -1; // Si es menor
+				}
+			}
+		}
+		return -2; // No fue posible comparar los objetos
+	}
+
+	@Override
+	public int hashCode() {
+		return (nombreMateria+anio).hashCode();
+	}
+	
 	
 }

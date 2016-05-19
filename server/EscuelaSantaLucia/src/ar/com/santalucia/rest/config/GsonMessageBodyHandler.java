@@ -5,9 +5,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.util.Date;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
@@ -44,7 +44,7 @@ public final class GsonMessageBodyHandler implements MessageBodyWriter<Object>, 
 
 	private Gson getGson() {
 		if (gson == null) {
-			final GsonBuilder gsonBuilder = new GsonBuilder();
+			final GsonBuilder gsonBuilder = new GsonBuilder().registerTypeAdapter(Date.class, new SerializadorDate());
 			gson = gsonBuilder.create();
 		}
 		return gson;

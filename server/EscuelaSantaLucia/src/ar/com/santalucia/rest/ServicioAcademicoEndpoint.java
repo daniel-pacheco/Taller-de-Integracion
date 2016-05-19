@@ -508,6 +508,17 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 	
+	@GET
+	@Path("/histPrevias/{doc:[0-9][0-9]*}")
+	public Response getHistorialPrevia(@PathParam("doc") final Long doc){
+		try{
+			setInstance();
+			return Response.ok(servicioAcademico.getPrevias(doc)).build();
+		}catch(Exception ex){
+			return Response.ok(ex).build();
+		}
+	}
+	
 	@PUT
 	@Path("/mes/")
 	public Response updateMesa(Mesa mesa) {
