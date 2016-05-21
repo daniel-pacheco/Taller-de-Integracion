@@ -38,7 +38,11 @@ public class GestorBoletinInasistencias extends Gestor<BoletinInasistencias>
 			setTransaction();
 			if (listaInasistencias != null) {
 				for (Inasistencia i : listaInasistencias) {
-					GInasistencia.add(i);
+					if (i.getIdInasistencia() == null) {
+						GInasistencia.add(i);
+					} else {
+						GInasistencia.modify(i);
+					}
 				}
 			}
 			boletinInasistenciasDAO.persist(object);
@@ -53,10 +57,20 @@ public class GestorBoletinInasistencias extends Gestor<BoletinInasistencias>
 
 	@Override
 	public void modify(BoletinInasistencias object) throws Exception {
+		Set<Inasistencia> listaInasistencias = object.getListaInasistencias();
 		try {
 			this.validar(object);
 			setSession();
 			setTransaction();
+			if (listaInasistencias != null) {
+				for (Inasistencia i : listaInasistencias) {
+					if (i.getIdInasistencia() == null) {
+						GInasistencia.add(i);
+					} else {
+						GInasistencia.modify(i);
+					}
+				}
+			}
 			boletinInasistenciasDAO.attachDirty(object);
 			sesionDeHilo.getTransaction().commit();
 		} catch (ValidacionException ex) {
@@ -76,20 +90,47 @@ public class GestorBoletinInasistencias extends Gestor<BoletinInasistencias>
 
 	@Override
 	public BoletinInasistencias getById(Long id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			setSession();
+			setTransaction();
+			BoletinInasistencias boletinInasistenciaDevolver = new BoletinInasistencias();
+			boletinInasistenciaDevolver = boletinInasistenciasDAO.findById(id);
+			return boletinInasistenciaDevolver;
+		} catch (Exception ex) {
+			closeSession();
+			throw new Exception("Ha ocurrido un error al buscar el BOLETIN DE INASISTENCIAS por su ID: " + ex.getMessage());
+		}
 	}
 
 	@Override
 	public ArrayList<BoletinInasistencias> getByExample(BoletinInasistencias example) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			setSession();
+			setTransaction();
+			ArrayList<BoletinInasistencias> listaBoletinInasistenciasDevolver = 
+					(ArrayList<BoletinInasistencias>) boletinInasistenciasDAO.findByExample((BoletinInasistencias) example);
+			sesionDeHilo.getTransaction().commit();
+			return listaBoletinInasistenciasDevolver;
+		} catch (Exception ex) {
+			closeSession();
+			throw new Exception(
+					"Ha ocurrido un error al buscar BOLETINES DE INASISTENCIAS que coincidan con el ejemplo dado: " + ex.getMessage());
+		}
 	}
 
 	@Override
 	public ArrayList<BoletinInasistencias> List() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			setSession();
+			setTransaction();
+			BoletinInasistencias criterioVacio = new BoletinInasistencias();
+			ArrayList<BoletinInasistencias> listaBoletinInasistenciasDevolver = new ArrayList<BoletinInasistencias>();
+			listaBoletinInasistenciasDevolver = (ArrayList<BoletinInasistencias>) boletinInasistenciasDAO.findByExample(criterioVacio);
+			sesionDeHilo.getTransaction().commit();
+			return listaBoletinInasistenciasDevolver;
+		} catch (Exception ex) {
+			throw new Exception("Ha ocurrido un error al listar los BOLETINES DE INASISTENCIAS: " + ex.getMessage());
+		}
 	}
 	
 	@Override
