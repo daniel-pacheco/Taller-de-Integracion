@@ -10,7 +10,7 @@ angular.module('clientAppApp')
 
   	[
 {	
-	"idUsuario"     : null,
+	"idUsuario"     : 0,
 	"nroDocumento"  : 12306952,
 	"tipoDocumento" : "DNI",
 	"nombre"        : "Mariano Eliseo",
@@ -75,7 +75,7 @@ angular.module('clientAppApp')
 	
 /* SEGUNDO */
 {	
-	"idUsuario"     : null,
+	"idUsuario"     : 1,
 	"nroDocumento"  : 17365441,
 	"tipoDocumento" : "DNI",
 	"nombre"        : "Paola Lucrecia Anabela",
@@ -140,7 +140,7 @@ angular.module('clientAppApp')
     
 /* TERCERO */
     {	
-	"idUsuario"     : null,
+	"idUsuario"     : 2,
 	"nroDocumento"  : 20111333,
 	"tipoDocumento" : "DNI",
 	"nombre"        : "Alejandro",
@@ -196,7 +196,7 @@ angular.module('clientAppApp')
     
     /* CUARTO */
     {	
-	"idUsuario"     : null,
+	"idUsuario"     : 3,
 	"nroDocumento"  : 16444888,
 	"tipoDocumento" : "DNI",
 	"nombre"        : "Victor",
@@ -253,7 +253,7 @@ angular.module('clientAppApp')
 
 /* PRIMERO */
 {	
-	"idUsuario"     : null,
+	"idUsuario"     : 4,
 	"nroDocumento"  : 15966412,
 	"tipoDocumento" : "DNI",
 	"nombre"        : "Graciela Ema Dora",
@@ -325,7 +325,7 @@ angular.module('clientAppApp')
  
  /* PRIMERO */
  {	
-	"idUsuario"     : null,
+	"idUsuario"     : 5,
 	"nroDocumento"  : 22695247,
 	"tipoDocumento" : "DNI",
 	"nombre"        : "Javier Exequiel",

@@ -254,10 +254,7 @@ $scope.seleccionar = function (id){
 		$scope.showEditProfileMenuIzq = false;
 		$scope.notas = true;
 		break;
-
-
 	}
-
 }
 
 $scope.search = function () {

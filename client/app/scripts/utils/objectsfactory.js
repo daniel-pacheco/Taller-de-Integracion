@@ -112,16 +112,21 @@ angular.module('clientAppApp')
   var newMateria = function(){
     var materia = {
       "idMateria": null,
-      "nombre": '',
+      "nombreMateria": '',
       "descripcion": '',
-      "docenteTitular": {}, //docenteLight
-      "docenteSuplente": {}, //docenteLight
-      "area": {},
+      "idDocenteTitular": null,
+      "idDocenteSuplente": null,
+      "area": {
+        "idArea": null, 
+        "nombre": ''
+      },
       "activo": true,
       "idAnio": null
     };
     return materia;
   };
+
+//Necesitamos materia ligth para listar materias
 
   var newArea = function(){
     var area = {
