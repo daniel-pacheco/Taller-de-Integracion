@@ -14,8 +14,10 @@ import ar.com.santalucia.aplicacion.gestor.desempenio.GestorInasistencia;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorNota;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorTrimestre;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
+import ar.com.santalucia.dominio.dto.BoletinInasistenciasDTO;
 import ar.com.santalucia.dominio.dto.DetallePreviaDTO;
 import ar.com.santalucia.dominio.dto.GetPlanillaTrimestralDTO;
+import ar.com.santalucia.dominio.dto.InasistenciaDTO;
 import ar.com.santalucia.dominio.dto.ItemPlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.dto.MateriaNotaDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
@@ -359,45 +361,72 @@ public class ServicioDesempenio {
 		}
 	}
 
-	public Boolean addInasistencia(Inasistencia inasistencia) throws Exception { // test
+	/**
+	 * Test method
+	 * @param inasistencia
+	 * @return
+	 * @throws Exception
+	 */
+	public Boolean addInasistencia(Inasistencia inasistencia) throws Exception {
 		try {
-			if (inasistencia.getIdInasistencia() != null) {
+			if (inasistencia.getIdInasistencia() == null) {
 				gInasistencia.add(inasistencia);
 			} else {
 				gInasistencia.modify(inasistencia);
 			}
-		} catch (ValidacionException vEx) {
-			throw vEx;
 		} catch (Exception ex) {
 			throw new Exception("No se pudo dar de alta la INASISTENCIA: " + ex.getMessage());
 		}
 		return true;
 	}
 	
-	public Boolean procesarBoletinInasistencias(BoletinInasistencias bolInasistencias) throws Exception {
+	/**
+	 * Test method
+	 * @param boletinInasistencias
+	 * @return
+	 * @throws Exception
+	 */
+	public Boolean addBoletinInasistencias(BoletinInasistencias boletinInasistencias) throws Exception {
+		try {
+			if (boletinInasistencias.getIdBoletinInasistencias() == null) {
+				gBoletinInasistencias.add(boletinInasistencias);
+			} else {
+				gBoletinInasistencias.modify(boletinInasistencias);
+			}
+		} catch (ValidacionException vEx) {
+			throw vEx;
+		} catch (Exception ex) {
+			throw new Exception("No se pudo dar de alta el BOLETÍN DE INASISTENCIAS: " + ex.getMessage());
+		}
+		return true;
+	}
+	
+	// OJO!!! >> recibir un DTO del boletin en vez de el boletin completo
+	public Boolean procesarBoletinInasistencias(BoletinInasistenciasDTO bolInasistenciasDTO) throws Exception {
 		/*
 		 * Pasos para procesar un boletin de inasistencias:
-		 * 1) Obtener el boletin de inasistencias .................................................. OK
-		 * 2) Rescatar el listado del boletín que obtuve. .......................................... OK
-		 * 3) Rescatar el listado del boletín persistente. ......................................... OK
-		 * 4) Recorrer el listado de inasistencias obtenido viendo los IDs
-		 * 	4.1) 
-		 * 		- Si el id es null, agregar la inasistencia a su gestor y agregarla a la 
-		 * 		lista de inasistencias del boletin. 
-		 * 		- Si el id no es null, modificar la inasistencia. Devolverá un mensaje de error
-		 * 		si el concepto está para la misma fecha.
-		 * 	4.2) Modificar el boletín.
-		 * 	4.3) ...
+		 * 1) Obtener el boletín de inasistencias a partir del DTO (que viene por parámetro) ... OK
+		 * 2) Obtener el alumno propietario en base al nombre y apellido del DTO
+		 * 3) Recorrer las inasistencias
+		 * 	3.1) Si el id != null, obtener la inasistencia persistida
+		 * 	3.2) Asignar la inasistencia obtenida al boletin
+		 * 4) Mandar el boletín al modify del gestor
 		 */
 		
-		BoletinInasistencias bolPersistente = gBoletinInasistencias.getById(bolInasistencias.getIdBoletinInasistencias());
-		Set<Inasistencia> listaInasistencias = bolInasistencias.getListaInasistencias();
-		Set<Inasistencia> listaInasistenciasPer = bolPersistente.getListaInasistencias();		
-		
-		for (Inasistencia i : listaInasistencias) {
-			if (i.getIdInasistencia() == null) {
-				gInasistencia.add(i);
-			}
+		// 1)
+		BoletinInasistencias bolInasistencias = new BoletinInasistencias();
+		bolInasistencias = gBoletinInasistencias.getById(bolInasistenciasDTO.getIdBoletinInasistencias());
+		// 2)
+//		Alumno propietario = new Alumno();
+//		propietario.setApellido(bolInasistenciasDTO.getApellido());
+//		propietario.setNombre(bolInasistenciasDTO.getNombre());
+//		ArrayList<Alumno> alumnos = gAlumno.getByExample(propietario);
+//		bolInasistencias.setPropietario(alumnos.get(0));
+		// 3)
+		Set<Inasistencia> listaInasistencia = bolInasistencias.getListaInasistencias();
+		ArrayList<InasistenciaDTO> listaInasistenciasDTO = bolInasistenciasDTO.getListaInasistenciasDTO();
+		for (InasistenciaDTO iDTO : listaInasistenciasDTO) {
+			
 		}
 		
 		return true;

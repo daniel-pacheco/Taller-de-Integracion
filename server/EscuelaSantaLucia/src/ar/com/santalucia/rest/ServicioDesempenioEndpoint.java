@@ -10,7 +10,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import ar.com.santalucia.dominio.dto.BoletinInasistenciasDTO;
 import ar.com.santalucia.dominio.dto.GetPlanillaTrimestralDTO;
+import ar.com.santalucia.dominio.modelo.desempenio.BoletinInasistencias;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotas;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotasHist;
 import ar.com.santalucia.dominio.modelo.desempenio.Inasistencia;
@@ -288,6 +290,11 @@ public class ServicioDesempenioEndpoint {
 		}
 	}
 	
+	/**
+	 * Test method
+	 * @param inasistencia
+	 * @return
+	 */
 	@PUT
 	@Path("/inasistencia/")
 	public Response updateInasistencia(final Inasistencia inasistencia) { // test
@@ -299,5 +306,19 @@ public class ServicioDesempenioEndpoint {
 			return Response.ok(ex).build();
 		}
 	}
+	
+	
+	@POST
+	@Path("/inasistencia/procesar")
+	public Response procesarBoletinInasistencias(BoletinInasistenciasDTO boletinInasistenciasDTO) throws Exception {
+		try {
+			setInstance();
+			return Response.ok(servicioDesempenio.procesarBoletinInasistencias(boletinInasistenciasDTO)).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
+	
+	
 
 }

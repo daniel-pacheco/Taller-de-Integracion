@@ -597,31 +597,40 @@ public class ServicioAcademico {
 	 * @param nombreMateria
 	 * @return
 	 */
-	public ArrayList<DetallePreviaDTO> getPreviasDesaprobadas(Long numeroDni) throws Exception{
-		// Obtener los nombre de materias sin duplicados
-		// Por cada nombre de materia, comprobar si en alguna rendida la aprobó (bucles anidados luego de obtener los no duplicados)
-		ArrayList<DetallePreviaDTO> detallePreviasDesaprobadas = new ArrayList<DetallePreviaDTO>();
-		Set<String> listaSetMaterias = new HashSet<String>();
-		ArrayList<DetallePreviaDTO> detallePrevias = getPrevias(numeroDni);
-		for(DetallePreviaDTO dpdto : detallePrevias)
-		{
-			listaSetMaterias.add(dpdto.getNombreMateria());
-		}
+	public List<DetallePreviaDTO> getPreviasDesaprobadas(Long numeroDni) throws Exception{
+		// Recorrer el listado de DTOs en busca de nota mayor o igual a 6
+		// Si nota es mayor a 6, agregar al listado de aprobadas
+		// Luego, por cada aprobada eliminar del listado original de Previas (previa sobrecarga del equals, atributo anio y nombremateria)
 		
-		for (String nombreMateria : listaSetMaterias){
-			// Resolver como descartar las aprobadas
-			Boolean aprobada = false;
-			for(DetallePreviaDTO dpdto : detallePrevias){
-				if(dpdto.getNombreMateria().equals(nombreMateria)){
-					if(dpdto.getNota() > 6){
-						aprobada = true;
-					}
+		// Preparo la lista para las aprobadas
+		List<DetallePreviaDTO> listaAprobadas = new ArrayList<DetallePreviaDTO>();
+		// Pido a getPrevias que traiga el historial de desaprobadas e histórico de previas
+		List<DetallePreviaDTO> listaPreviaDto = getPrevias(numeroDni);
+		for (DetallePreviaDTO dpdto : listaPreviaDto){
+			if (dpdto.getNota() != null) {
+				if (dpdto.getNota() >= 6) {
+					listaAprobadas.add(dpdto);
 				}
 			}
-			
+		}
+		// Quito las aprobadas del listado de previa
+		if(!listaAprobadas.isEmpty()){
+			listaPreviaDto.removeAll(listaAprobadas);
 		}
 		
-		return detallePreviasDesaprobadas;
+		// Elimino los duplicados, si existiera
+		Set<DetallePreviaDTO> setListadoDevolver = new HashSet<DetallePreviaDTO>();
+		if (!listaPreviaDto.isEmpty()) {
+			for (DetallePreviaDTO dpdto : listaPreviaDto) {
+				dpdto.setNota(null);
+				dpdto.setFechaInscripcion(null);
+				dpdto.setAsistencia(null);
+				setListadoDevolver.add(dpdto);
+			}
+		}
+		List<DetallePreviaDTO>listaPreviaDtoDevolver = new ArrayList<DetallePreviaDTO>();
+		listaPreviaDtoDevolver.addAll(setListadoDevolver);
+		return listaPreviaDtoDevolver;
 	}
 	
 	/**
@@ -660,8 +669,7 @@ public class ServicioAcademico {
 									detallePreviaDTO.setDniAlumno(lmeh.getDniAlumno());
 									detallePreviaDTO.setAnio(lmeh.getAnio());
 									detallePreviaDTO.setAsistencia(lmeh.getAsistencia());
-									detallePreviaDTO.setInicioMesa(lmeh.getFechaHoraInicioMesa());
-									detallePreviaDTO.setFinMesa(lmeh.getFechaHoraFinMesa());
+									detallePreviaDTO.setFechaInscripcion(lmeh.getFechaInscripcion());
 									detallePreviaDTO.setNota(lmeh.getNota());
 									listadoPrevias.add(detallePreviaDTO);
 								}
