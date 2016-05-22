@@ -8,6 +8,7 @@ package ar.com.santalucia.dominio.dto;
  * @version 1.0
  *
  */
+
 public class MateriaAreaCondDocenteDTO {
 
 	private String materia;

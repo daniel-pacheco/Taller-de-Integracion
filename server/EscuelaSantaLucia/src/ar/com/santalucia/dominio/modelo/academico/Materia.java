@@ -9,7 +9,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.Personal;
  * 
  */
 
-// Ultimo modificador: Eric Pennachini @ 05-11-2015 18:46
+// Ultimo modificador: Ariel Ramirez @ 22-05-2016 0:48
 
 public class Materia {
 	private Long idMateria;
@@ -91,5 +91,23 @@ public class Materia {
 	public void setActivo(Boolean activo) {
 		this.activo = activo;
 	}
+
+	
+	@Override
+	public boolean equals(Object materia) {
+		if(materia instanceof Materia){
+			if(this.idMateria.equals(((Materia) materia).getIdMateria())){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return this.idMateria.hashCode();
+	}
+	
+	
 	
 }
