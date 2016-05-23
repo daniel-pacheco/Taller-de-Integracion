@@ -18,6 +18,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import ar.com.santalucia.dominio.dto.MateriaAltaDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Area;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
@@ -197,13 +198,12 @@ public class ServicioAcademicoEndpoint {
 	 */
 	@PUT
 	@Path("/mat/")
-	public Response updateMateria(Materia materia) {
+	public Response updateMateria(MateriaAltaDTO materiaAltaDTO) {
 		try {
 			setInstance();
-			servicioAcademico.addMateria(materia);
-			return Response.ok(materia.getIdMateria()).build();
+			servicioAcademico.addMateria(materiaAltaDTO);
+			return Response.ok(materiaAltaDTO.getIdMateria()).build();
 		} catch (Exception ex) {
-			// TODO Auto-generated catch block
 			return Response.ok(ex).build();
 		}
 	}

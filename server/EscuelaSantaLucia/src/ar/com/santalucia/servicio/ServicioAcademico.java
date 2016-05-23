@@ -17,6 +17,7 @@ import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinNotasHist;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
 import ar.com.santalucia.dominio.dto.DetallePreviaDTO;
+import ar.com.santalucia.dominio.dto.MateriaAltaDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Area;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
@@ -263,28 +264,51 @@ public class ServicioAcademico {
 		return false;
 	}
 
-	
-	public Boolean addMateria(Materia materia) throws Exception { 		// EN ENDPOINT
-		// TODO
-		// 1 - Llamar al método add para agregar la nueva materia
-		try {
-			if (materia.getIdMateria() ==  null) {
-				gMateria.add(materia);
-			}
-			else {
-				Materia materiaAux = getMateria(materia.getIdMateria());
-				if( !(materiaAux.getNombre()).equals(materia.getNombre()) ) // Comparar nombre viejo y nuevo
-				{
-					crearMateriaHistorica(materiaAux);
-				}
-				gMateria.modify(materia);
-			}
-			return true;
-		} catch (Exception ex) {
-			throw new Exception("No se pudo agregar la MATERIA: " + ex.getMessage());
+	public Boolean addMateria(MateriaAltaDTO materiaAltaDTO) throws Exception {
+		// DECLARO AUXILIARES
+		Area areaAux = new Area();
+		Anio anioAux = new Anio();
+		Materia materiaAux = new Materia();
+		Personal docenteTitular = new Personal();
+		Personal docenteSuplente = new Personal();
+		
+		// VERIFICO EXISTENCIA DEL ANIO. SI NO SE ENCUENTRA LANZO UNA EXCEPCIÓN 
+		anioAux = gAnio.getById(materiaAltaDTO.getIdAnio());
+		if (anioAux == null){
+			throw new Exception("SERVICIO: No se pudo dar de alta la materia. No se encontró el año.");
 		}
-	}
+		// TOMO EL AREA, SI ES NULL, CARGA NULL Y NO HAY PROBLEMA
+		areaAux = materiaAltaDTO.getArea();
 
+		// BUSQUEDA DE DOCENTES (POR ID)
+		if(materiaAltaDTO.getIdDocenteTitular() != null){
+			docenteTitular = (Personal) gDocente.getById(materiaAltaDTO.getIdDocenteTitular());
+		}
+		if (materiaAltaDTO.getIdDocenteSuplente() != null){
+			docenteSuplente = (Personal) gDocente.getById(materiaAltaDTO.getIdDocenteSuplente());
+		}
+		// ARMO LA MATERIA PARA PERSISTIR
+		materiaAux.setIdMateria(materiaAltaDTO.getIdMateria());			//PUEDE SER NULL O VENIR CON VALOR (MODIFY)
+		materiaAux.setNombre(materiaAltaDTO.getNombreMateria());
+		materiaAux.setDescripcion(materiaAltaDTO.getDescripcion());
+		materiaAux.setDocenteTitular(docenteTitular);
+		materiaAux.setDocenteSuplente(docenteSuplente);
+		materiaAux.setArea(areaAux);
+		materiaAux.setActivo(materiaAltaDTO.getActivo());
+		if(materiaAux.getIdMateria() != null){						// SI YA EXISTE LA MATERIA
+			if(materiaAltaDTO.getIdAnio() != null){					// Y ADEMÁS VIENE CON AÑO
+				desvincularMateriaDeAnio(materiaAux, materiaPerteneceAnio(materiaAux));	// SI EXISTE LA MATERIA, VIENE CON AÑO, ENTONCES DESVINCULO ANTES
+				asignarMateriaAAnio(materiaAux, materiaAltaDTO.getIdAnio());			// VUELVO A VINCULAR AL NUEVO AÑO
+				}
+			gMateria.modify(materiaAux);
+			return true;
+		}else{														// SI NO EXISTE LA MATERIA CREO Y VINCULO
+			gMateria.add(materiaAux);
+			asignarMateriaAAnio(materiaAux, materiaAltaDTO.getIdAnio());
+			return true;
+		} 
+	}
+	
 	public Boolean deleteMateria(Materia materia) throws Exception { // EN ENDPOINT
 		try {
 			gMateria.delete(materia);
@@ -807,6 +831,21 @@ public class ServicioAcademico {
 			ejemplo.setNombreMateria(nombreMateria);
 		}
 		return (ArrayList<MesaExamenHist>) gMEHist.getByExample(ejemplo);
+	}
+	
+	private Long materiaPerteneceAnio(Materia materia) throws Exception{
+		// Devolver el año al que pertenece la materia
+		// Obtener los años activo
+		// Eecorrer las materias y devolver el id de año (si se encuentra)
+		List<Anio>listaAnio = new ArrayList<Anio>();
+		List<Materia> listaMateria = new ArrayList<Materia>(); 
+		listaAnio = gAnio.getByExample(new Anio(null,null,null,null,null,true));
+		for(Anio a: listaAnio){
+			if(a.getListaMaterias().contains(materia)){
+				return a.getIdAnio();
+			}
+		}
+		return 0L; // DEVUELVE 0 SI LA MATERIA NO PERTENECE A UN ANIO
 	}
 	
 	public void closeSession() throws Exception {
