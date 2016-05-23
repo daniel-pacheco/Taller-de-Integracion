@@ -19,7 +19,7 @@
         }
     });
 })
- .controller('MateriasCtrl', function ($scope, ModalService, areasData, materiasData, ObjectsFactory, docenteData) {
+ .controller('MateriasCtrl', function ($scope, ModalService, areasData, $timeout, $alert, materiasData, ObjectsFactory, docenteData) {
   $scope.listado = true;
     $scope.subtitle = "Listado";
     $scope.listaMaterias = materiasData;
@@ -81,10 +81,27 @@ $scope.addArea = function() {
 });
 };
 
+$scope.confirmModal = function(mesagge , materia) {
+  ModalService.showModal({
+    templateUrl: 'scripts/utils/confirm/modalConfirm.tpl.html',
+    controller: 'modalConfirmController',
+    inputs: {
+      mensaje: mesagge,
+    }
+  }).then(function(modal) {
+    modal.element.modal();
+    modal.close.then(function(result){
+      if (result) {
+        $scope.listaMaterias.splice($scope.listaMaterias.indexOf(materia),1);//esto tiene que ser una llamada al service que elimine la materia
+        //$scope.todoOk = true;
+        }
+    });
+});
+};
+
 //-- Llamadas al servicio
 $scope.deleteMateria = function (materia) {
-  //Deberia preguntar si desea eliminar primero
-  $scope.listaMaterias.splice($scope.listaMaterias.indexOf(materia),1);//esto tiene que ser una llamada al service que elimine la materia
+  $scope.confirmModal("¿Desea eliminar "+materia.nombre+" de "+materia.ano+" "+materia.division+"?" , materia);
   //Hay que actualizar de nuevo la lista de docentes
 };
 
@@ -92,7 +109,6 @@ $scope.agregarMateria = function () {
   //agregar el alumno
   //actualizar la lista
   $scope.listaMaterias.push ($scope.nuevaMateria);
-  console.log ($scope.nuevaMateria);
   $scope.formMat.$setUntouched();
   $scope.nuevaMateria = new ObjectsFactory.newMateria();
 };
