@@ -93,8 +93,30 @@
 						<td ng-click="seleccionarCheckbox(alumno)">{{alumno.apellido}}</td>
 						<td ng-click="seleccionarCheckbox(alumno)">{{alumno.nroDocumento}}</td>
 						<td ng-click = "deleteAlumno(alumno.idUsuario)">{{alumno.idUsuario}}</td>
-						<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%; cursor: pointer" class="glyphicon glyphicon-user" ng-click="showModalProfile(alumno)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAttendance" ng-click="showModalInasistencias(alumno)" style="width:25%; cursor: pointer" class="glyphicon glyphicon-calendar"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipReportCard" style="width:25%; cursor: pointer" class="glyphicon glyphicon-list-alt" ng-click="showModalLibreta(alumno)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAcademicPerformance" style="width:25%; cursor: pointer" class="glyphicon glyphicon-education"></span></td> 
-
+						<td>
+							<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipProfile" ng-click="showModalProfile(alumno)" style="width: 22%">
+								<span data-animation="am-flip-x" class="glyphicon glyphicon-user"></span>
+							</button>
+					
+							<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipAttendance" ng-click="showModalInasistencias(alumno)" style="width: 22%">
+								<span class="glyphicon glyphicon-calendar"></span>
+							</button>
+					
+							<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipReportCard" ng-click="showModalLibreta(alumno)" style="width: 22%">
+								<span data-animation="am-flip-x" class="glyphicon glyphicon-list-alt"></span>
+							</button>
+				
+							<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipDelete" ng-click="" style="width: 22%">
+								<span class="glyphicon glyphicon-trash"></span>
+							</button>
+						</td>
+						<!-- 
+							<span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%; cursor: pointer" class="glyphicon glyphicon-user" ng-click="showModalProfile(alumno)"></span>
+							<span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAttendance" ng-click="showModalInasistencias(alumno)" style="width:25%; cursor: pointer" class="glyphicon glyphicon-calendar"></span>
+							<span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipReportCard" style="width:25%; cursor: pointer" class="glyphicon glyphicon-list-alt" ng-click="showModalLibreta(alumno)"></span>
+							<span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAcademicPerformance" style="width:25%; cursor: pointer" class="glyphicon glyphicon-trash"></span>
+						</td> 
+ -->
 					</tr>
 				</tbody>
 			</table>
