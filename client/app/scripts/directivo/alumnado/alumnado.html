@@ -246,7 +246,7 @@
 								<div class="col-sm-6">
 									<input name="listaTelefono" class="form-control" ng-model="nuevoAlumno.listaTelefono[0]" placeholder="0343-4353535" type="tel" ng-show="!mostrarListaTelefonos">
 									<select multiple class="form-control" ng-show="mostrarListaTelefonos">
-										<option ng-repeat="telefono in alumno.listaTelefonos">{{telefono.caracteristica}}-{{telefono.nroTelefono}} ({{telefono.tipoTelefono}})</option>
+										<option ng-repeat="telefono in nuevoAlumno.listaTelefonos">{{telefono.caracteristica}}-{{telefono.nroTelefono}} ({{telefono.tipoTelefono}})</option>
 									</select> 
 									<div ng-messages="formAlu.listaTelefono.$error" ng-if="formAlu.listaTelefono.$touched && formAlu.listaTelefono.$invalid">
 										<div ng-message="tel" class="help-block"> 
@@ -267,7 +267,7 @@
 								<div class="col-sm-7">
 									<input name="email" type="email" class="form-control" placeholder="nombre@nombre.com" maxlength="255" ng-show="!mostrarListaMails" required/>
 									<select multiple class="form-control" ng-show="mostrarListaMails">
-										<option ng-repeat="mail in alumno.listaMails">{{mail.direccionMail}} ({{mail.tipoMail}})</option>
+										<option ng-repeat="mail in nuevoAlumno.listaMails">{{mail.direccionMail}} ({{mail.tipoMail}})</option>
 									</select> 
 									
 									<div ng-messages="formAlu.email.$error" ng-if="formAlu.email.$touched && formAlu.email.$invalid">
@@ -327,7 +327,7 @@
 					<input class="btn btn-danger" type="button" name="" onclick="cargarAlumnoPrincipal()" value="Cancelar" />
 				</div>
 				<div class="col-sm-1">
-					<input class="btn btn-primary" ng-click="upload(croppedDataUrl)" type="submit" name="" value="Guardar" ng-disabled="!formAlu.$valid"/>
+					<input class="btn btn-primary" ng-click="upload(croppedDataUrl); prueba()" type="submit" name="" value="Guardar" ng-disabled="!formAlu.$valid"/>
 				</div>
 			</div>
 		</form>
