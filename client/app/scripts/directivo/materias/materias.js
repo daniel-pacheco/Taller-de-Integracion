@@ -9,50 +9,50 @@
  */
  angular.module('clientAppApp')
  .config(function($stateProvider) {
-    $stateProvider
-    .state('directivo.materias', {
-        url: '/materias',
-        templateUrl: 'scripts/directivo/materias/materias.html',
-        controller: 'MateriasCtrl',
-        data: {
-          pageTitle: 'Materias'
-        }
-    });
+  $stateProvider
+  .state('directivo.materias', {
+    url: '/materias',
+    templateUrl: 'scripts/directivo/materias/materias.html',
+    controller: 'MateriasCtrl',
+    data: {
+      pageTitle: 'Materias'
+    }
+  });
 })
  .controller('MateriasCtrl', function ($scope, ModalService, areasData, $timeout, $alert, materiasData, ObjectsFactory, docenteData) {
   $scope.listado = true;
-    $scope.subtitle = "Listado";
-    $scope.listaMaterias = materiasData;
+  $scope.subtitle = "Listado";
+  $scope.listaMaterias = materiasData;
 
   $scope.seleccionar = function(id) {
     switch (id){
-    case 'listado':
-    $scope.showNuevaMateria = false;
-    $scope.subtitle = "Listado";
-    $scope.listado = true;
-    break;
-    case 'nuevaMateria':
-    $scope.listado = false;
-    $scope.subtitle = "Nueva materia";
-    $scope.showNuevaMateria = true;
-    $scope.nuevaMateria = new ObjectsFactory.newMateria();
+      case 'listado':
+      $scope.showNuevaMateria = false;
+      $scope.subtitle = "Listado";
+      $scope.listado = true;
+      break;
+      case 'nuevaMateria':
+      $scope.listado = false;
+      $scope.subtitle = "Nueva materia";
+      $scope.showNuevaMateria = true;
+      $scope.nuevaMateria = new ObjectsFactory.newMateria();
     $scope.listaDocentes = docenteData;//Esta lista de docentes deberia tener solo el docente y el ID
     break;
 
   }
-  };
+};
 
-  $scope.tooltip = {
-    tooltipEdit : {
-      'title' : 'Editar'
-    }, tooltipDelete : {
-      'title' : 'Eliminar'
-    }
-  };
-  $scope.dropDownOptions = ['1', '2', '3', '4', '5', '6', '7', '8'];
-  $scope.dropDownValue = '';
+$scope.tooltip = {
+  tooltipEdit : {
+    'title' : 'Editar'
+  }, tooltipDelete : {
+    'title' : 'Eliminar'
+  }
+};
+$scope.dropDownOptions = ['1', '2', '3', '4', '5', '6', '7', '8'];
+$scope.dropDownValue = '';
 
-  
+
 $scope.activeMenuIzqAlu = 1;
 $scope.setActiveAlu = function(menuItemAlu) {
   $scope.activeMenuIzqAlu = menuItemAlu;
@@ -60,7 +60,7 @@ $scope.setActiveAlu = function(menuItemAlu) {
 
 
 //-- Modals
-  $scope.listaAreas = areasData;
+$scope.listaAreas = areasData;
 
 $scope.addArea = function() {
   ModalService.showModal({
@@ -77,11 +77,11 @@ $scope.addArea = function() {
     });
      /* modal.close.then(function(result) {        
         console.log('el resultado es: ' + result); //$scope.algo.nroDocumento = result;
-    });*/
+      });*/
 });
 };
 
-$scope.confirmModal = function(mesagge , materia) {
+$scope.confirmModal = function(mesagge, funcion, parametro) {
   ModalService.showModal({
     templateUrl: 'scripts/utils/confirm/modalConfirm.tpl.html',
     controller: 'modalConfirmController',
@@ -90,19 +90,22 @@ $scope.confirmModal = function(mesagge , materia) {
     }
   }).then(function(modal) {
     modal.element.modal();
-    modal.close.then(function(result){
-      if (result) {
-        $scope.listaMaterias.splice($scope.listaMaterias.indexOf(materia),1);//esto tiene que ser una llamada al service que elimine la materia
-        //$scope.todoOk = true;
-        }
+   modal.close.then(function(result){
+      funcion(parametro);
     });
 });
 };
 
 //-- Llamadas al servicio
 $scope.deleteMateria = function (materia) {
-  $scope.confirmModal("¿Desea eliminar "+materia.nombre+" de "+materia.ano+" "+materia.division+"?" , materia);
+  $scope.confirmModal("¿Desea eliminar "+materia.nombre+" de "+materia.ano+" "+materia.division+"?", $scope.eliminarMateria, materia);
   //Hay que actualizar de nuevo la lista de docentes
+};
+
+//esto tiene que ser una llamada al service que elimine la materia
+$scope.eliminarMateria = function(materia){
+  $scope.listaMaterias.splice($scope.listaMaterias.indexOf(materia),1);
+  $scope.showAlert("Materia eliminada con éxito");
 };
 
 $scope.agregarMateria = function () {
@@ -113,6 +116,26 @@ $scope.agregarMateria = function () {
   $scope.nuevaMateria = new ObjectsFactory.newMateria();
 };
 
+//-- Alert
+
+$scope.showAlert = function(message) {
+  myAlert.$options.content = message;//no anda
+  myAlert.$options.type = 'danger';//no anda
+  myAlert.show();
+};
+
+var myAlert = $alert({
+  title: 'Mensaje:', 
+  placement: 'top',
+  content: 'mensaje', 
+  type: 'info', 
+  keyboard: true, 
+  show: false,
+  duration: 3,
+  container: '#alerta'
+});
+//-- Fin alert
+
 //Test
 $scope.friends = [{nombre:'Educación Fisica', docenteTitular:'María Laura', anioPertenece: '4º', area: 'cs sociales'},
 {nombre:'Matemática', docenteTitular:'Marta Blanco', anioPertenece: '4', area: 'cs sociales'},
@@ -122,26 +145,26 @@ $scope.friends = [{nombre:'Educación Fisica', docenteTitular:'María Laura', an
 {nombre:'Historia', docenteTitular:'Gloria Herrlein', anioPertenece: '4º', area: 'cs exsactas'}];
 
 $scope.listaAnios = [
-  {
-    "idAnio": 0,
-    "nombre": "4to"
-  },
-    {
-    "idAnio": 1,
-    "nombre": "5to"
-  },
-    {
-    "idAnio": 2,
-    "nombre": "6to"
-  },
-    {
-    "idAnio": 3,
-    "nombre": "1ro"
-  },
-    {
-    "idAnio": 4,
-    "nombre": "3roto"
-  },
+{
+  "idAnio": 0,
+  "nombre": "4to"
+},
+{
+  "idAnio": 1,
+  "nombre": "5to"
+},
+{
+  "idAnio": 2,
+  "nombre": "6to"
+},
+{
+  "idAnio": 3,
+  "nombre": "1ro"
+},
+{
+  "idAnio": 4,
+  "nombre": "3roto"
+},
 ];
 });
 

@@ -25,6 +25,7 @@
  	$scope.listado = true;
  	$scope.listFilterIsEnabled = false;
 
+
 //tooltips
 $scope.tooltip = {
 	tooltipProfile : {
@@ -432,3 +433,4 @@ $scope.friends = [{name:'John', phone:'555-1276'},
 {name:'Juliette', phone:'555-5678'}];
 
 });
+

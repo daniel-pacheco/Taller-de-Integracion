@@ -43,10 +43,12 @@
 						<option ng-repeat="option in dropDownOptions" value="{{option}}">{{option}}</option>
 					</select>
 					<input type="text" class="form-control-inline" ng-show="dropDownValue === 'DNI/MAT'">
-					<button class="btn btn-default" ng-click="search()"  title="Ayuda: " data-content="Selecciones uno o varios alumnos para colocar multiples inasistencias" data-type="info" data-duration="4" data-container="#alerts-container" bs-alert>Buscar</button>
+					<button class="btn btn-default" ng-click="search()"  title="Ayuda: " data-content="Seleccione uno o varios alumnos para colocar multiples inasistencias" data-type="info" data-duration="4" data-container="#alerts-container" bs-alert>Buscar</button>
 					<div id="alerts-container" style="width:60%; float:right;" class="small"></div>
 				</div>
 			</div>
+			
+
 
 			<div id="listFilters" ng-show="listFilterIsEnabled">
 
@@ -73,6 +75,7 @@
 				<button ng-click="checkAll()"class="btn btn-info">Desmarcar Todos</button>
 				<button class="btn btn-warning">Colocar Inasistencias</button>
 			</div>
+			<div></div>
 			<table class="table table-hover table-striped">
 				<thead>
 					<tr>
