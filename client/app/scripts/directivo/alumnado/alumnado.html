@@ -43,10 +43,12 @@
 						<option ng-repeat="option in dropDownOptions" value="{{option}}">{{option}}</option>
 					</select>
 					<input type="text" class="form-control-inline" ng-show="dropDownValue === 'DNI/MAT'">
-					<button class="btn btn-default" ng-click="search()"  title="Ayuda: " data-content="Selecciones uno o varios alumnos para colocar multiples inasistencias" data-type="info" data-duration="4" data-container="#alerts-container" bs-alert>Buscar</button>
+					<button class="btn btn-default" ng-click="search()"  title="Ayuda: " data-content="Seleccione uno o varios alumnos para colocar multiples inasistencias" data-type="info" data-duration="4" data-container="#alerts-container" bs-alert>Buscar</button>
 					<div id="alerts-container" style="width:60%; float:right;" class="small"></div>
 				</div>
 			</div>
+			
+
 
 			<div id="listFilters" ng-show="listFilterIsEnabled">
 
@@ -73,6 +75,7 @@
 				<button ng-click="checkAll()"class="btn btn-info">Desmarcar Todos</button>
 				<button class="btn btn-warning">Colocar Inasistencias</button>
 			</div>
+			<div></div>
 			<table class="table table-hover table-striped">
 				<thead>
 					<tr>
@@ -93,8 +96,30 @@
 						<td ng-click="seleccionarCheckbox(alumno)">{{alumno.apellido}}</td>
 						<td ng-click="seleccionarCheckbox(alumno)">{{alumno.nroDocumento}}</td>
 						<td ng-click = "deleteAlumno(alumno.idUsuario)">{{alumno.idUsuario}}</td>
-						<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%; cursor: pointer" class="glyphicon glyphicon-user" ng-click="showModalProfile(alumno)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAttendance" ng-click="showModalInasistencias(alumno)" style="width:25%; cursor: pointer" class="glyphicon glyphicon-calendar"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipReportCard" style="width:25%; cursor: pointer" class="glyphicon glyphicon-list-alt" ng-click="showModalLibreta(alumno)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAcademicPerformance" style="width:25%; cursor: pointer" class="glyphicon glyphicon-education"></span></td> 
-
+						<td>
+							<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipProfile" ng-click="showModalProfile(alumno)" style="width: 22%">
+								<span data-animation="am-flip-x" class="glyphicon glyphicon-user"></span>
+							</button>
+					
+							<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipAttendance" ng-click="showModalInasistencias(alumno)" style="width: 22%">
+								<span class="glyphicon glyphicon-calendar"></span>
+							</button>
+					
+							<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipReportCard" ng-click="showModalLibreta(alumno)" style="width: 22%">
+								<span data-animation="am-flip-x" class="glyphicon glyphicon-list-alt"></span>
+							</button>
+				
+							<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipDelete" ng-click="" style="width: 22%">
+								<span class="glyphicon glyphicon-trash"></span>
+							</button>
+						</td>
+						<!-- 
+							<span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%; cursor: pointer" class="glyphicon glyphicon-user" ng-click="showModalProfile(alumno)"></span>
+							<span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAttendance" ng-click="showModalInasistencias(alumno)" style="width:25%; cursor: pointer" class="glyphicon glyphicon-calendar"></span>
+							<span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipReportCard" style="width:25%; cursor: pointer" class="glyphicon glyphicon-list-alt" ng-click="showModalLibreta(alumno)"></span>
+							<span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAcademicPerformance" style="width:25%; cursor: pointer" class="glyphicon glyphicon-trash"></span>
+						</td> 
+ -->
 					</tr>
 				</tbody>
 			</table>
@@ -224,7 +249,7 @@
 								<div class="col-sm-6">
 									<input name="listaTelefono" class="form-control" ng-model="nuevoAlumno.listaTelefono[0]" placeholder="0343-4353535" type="tel" ng-show="!mostrarListaTelefonos">
 									<select multiple class="form-control" ng-show="mostrarListaTelefonos">
-										<option ng-repeat="telefono in alumno.listaTelefonos">{{telefono.caracteristica}}-{{telefono.nroTelefono}} ({{telefono.tipoTelefono}})</option>
+										<option ng-repeat="telefono in nuevoAlumno.listaTelefonos">{{telefono.caracteristica}}-{{telefono.nroTelefono}} ({{telefono.tipoTelefono}})</option>
 									</select> 
 									<div ng-messages="formAlu.listaTelefono.$error" ng-if="formAlu.listaTelefono.$touched && formAlu.listaTelefono.$invalid">
 										<div ng-message="tel" class="help-block"> 
@@ -245,7 +270,7 @@
 								<div class="col-sm-7">
 									<input name="email" type="email" class="form-control" placeholder="nombre@nombre.com" maxlength="255" ng-show="!mostrarListaMails" required/>
 									<select multiple class="form-control" ng-show="mostrarListaMails">
-										<option ng-repeat="mail in alumno.listaMails">{{mail.direccionMail}} ({{mail.tipoMail}})</option>
+										<option ng-repeat="mail in nuevoAlumno.listaMails">{{mail.direccionMail}} ({{mail.tipoMail}})</option>
 									</select> 
 									
 									<div ng-messages="formAlu.email.$error" ng-if="formAlu.email.$touched && formAlu.email.$invalid">
@@ -305,7 +330,7 @@
 					<input class="btn btn-danger" type="button" name="" onclick="cargarAlumnoPrincipal()" value="Cancelar" />
 				</div>
 				<div class="col-sm-1">
-					<input class="btn btn-primary" ng-click="upload(croppedDataUrl)" type="submit" name="" value="Guardar" ng-disabled="!formAlu.$valid"/>
+					<input class="btn btn-primary" ng-click="upload(croppedDataUrl); prueba()" type="submit" name="" value="Guardar" ng-disabled="!formAlu.$valid"/>
 				</div>
 			</div>
 		</form>

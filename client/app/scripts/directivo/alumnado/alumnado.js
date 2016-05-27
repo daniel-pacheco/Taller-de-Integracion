@@ -25,10 +25,7 @@
  	$scope.listado = true;
  	$scope.listFilterIsEnabled = false;
 
- 	$scope.nuevoAlumno = {
- 		"listaTelefonos": [],
- 		"listaMails": []
- 	}
+
 //tooltips
 $scope.tooltip = {
 	tooltipProfile : {
@@ -48,24 +45,23 @@ $scope.tooltip = {
 
 //modals
 $scope.domicilioAvanzado = function() {
+	$scope.nuevoAlumno.domicilio = ObjectsFactory.newDomicilio();
 	ModalService.showModal({
 		templateUrl: 'scripts/directivo/alumnado/modal/addaddressdetails.tpl.html',
 		controller: 'addAddressDetailsModalController',
 		inputs: {
 			title: "Nuevo Domicilio",
-			domicilioAvanzado: $scope.alumno.domicilio,
+			domicilioAvanzado: $scope.nuevoAlumno.domicilio,
 		}
 	}).then(function(modal) {
 		modal.element.modal();
 		modal.close.then(function(result){
-			$scope.alumno.domicilio = result;
+			$scope.nuevoAlumno.domicilio = result;
 			$scope.alumnoDomicilioLight = result.calle+" "+result.numero; 
 		});
 	});
 };
 
-$scope.alumno = ObjectsFactory.newAlumno();
-$scope.alumno.domicilio = ObjectsFactory.newDomicilio();
 
 	$scope.telefonoAvanzado = function(){//esta deberia ser una funcion que pida la libreta de inasistencias del alumno que recibe
 		ModalService.showModal({
@@ -73,13 +69,13 @@ $scope.alumno.domicilio = ObjectsFactory.newDomicilio();
 			controller: 'telefonoAvanzadoModalController',
 			inputs: {
 				title: "Teléfono",
-				listaTelefonos: $scope.alumno.listaTelefonos,
+				listaTelefonos: $scope.nuevoAlumno.listaTelefonos,
 			}
 		}).then(function(modal) {
 			modal.element.modal();
 			modal.close.then(function(result){
-				$scope.alumno.listaTelefonos = result;
-				if ($scope.alumno.listaTelefonos.length > 0){//Esto es para listar los telefonos en una lista en el form principal	
+				$scope.nuevoAlumno.listaTelefonos = result;
+				if ($scope.nuevoAlumno.listaTelefonos.length > 0){//Esto es para listar los telefonos en una lista en el form principal	
 					$scope.mostrarListaTelefonos = true;
 				}else{ 
 					$scope.mostrarListaTelefonos = false;
@@ -94,13 +90,13 @@ $scope.alumno.domicilio = ObjectsFactory.newDomicilio();
 			controller: 'mailAvanzadoModalController',
 			inputs: {
 				title: "Mails",
-				listaMails: $scope.alumno.listaMails,
+				listaMails: $scope.nuevoAlumno.listaMails,
 			}
 		}).then(function(modal) {
 			modal.element.modal();
 			modal.close.then(function(result){
-				$scope.alumno.listaMails = result;
-				if ($scope.alumno.listaMails.length > 0){//Esto es para listar los telefonos en una lista en el form principal	
+				$scope.nuevoAlumno.listaMails = result;
+				if ($scope.nuevoAlumno.listaMails.length > 0){//Esto es para listar los telefonos en una lista en el form principal	
 					$scope.mostrarListaMails = true;
 				}else{ 
 					$scope.mostrarListaMails = false;
@@ -108,6 +104,7 @@ $scope.alumno.domicilio = ObjectsFactory.newDomicilio();
 			});
 		});
 	};
+
 
 	$scope.showModalProfile = function(alumno){
 		//consultar al back toda la info del alumno
@@ -180,12 +177,6 @@ $scope.upload = function (dataUrl) {
 //filters
 
 
-if ($scope.alumno.listaTelefonos.length > 0){	//Esto es para listar los telefonos en una lista en el form principal
-	$scope.mostrarListaTelefonos = true;
-}else{ 
-	$scope.mostrarListaTelefonos = false;
-}
-
 var count = 0;
 $scope.seleccionarCheckbox = function(alumno) {//al presionar un td de la lista de alumnos pone checkbox en true y muestra boton colocar inasistencias
 	if (alumno.selected) {
@@ -245,6 +236,7 @@ $scope.seleccionar = function (id){
 		$scope.nuevoAlumno = null;
 		$scope.showEditProfileMenuIzq = false; 
 		$scope.notas = false;
+		$scope.nuevoAlumno = ObjectsFactory.newAlumno();
 		$scope.nuevoPerfil = true;
 		break;
 		case 'notas':
@@ -368,6 +360,11 @@ $scope.multiplePanels = {
 	$scope.answer = response.data;  
 });*/
 
+	$scope.prueba = function (){
+		console.log($scope.nuevoAlumno);//esto se deberia guardar
+	}
+
+
 $scope.getAlumnoById = function (id) {
 	alumnoService.alumnoGetById(id)
 	.then(function(response){
@@ -436,3 +433,4 @@ $scope.friends = [{name:'John', phone:'555-1276'},
 {name:'Juliette', phone:'555-5678'}];
 
 });
+
