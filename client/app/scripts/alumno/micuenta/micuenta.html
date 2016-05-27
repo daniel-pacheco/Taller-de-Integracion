@@ -23,9 +23,11 @@
 	</div>
 </div>
 
-<div class="col-md-10">
+<div class="col-md-10" style="padding: 30px 30px 0px 0px">
 	<div ng-show="misDatos">
-		
+		<fieldset>
+		<h1>{{subtitle}}: <small>Informaci&oacute;n personal del usuario.</small></h1>
+			<hr>		
 		<!-- edit form column -->
 		<div class="col-md-6 personal-info">
 			<form class="form-horizontal" role="form">
@@ -96,16 +98,17 @@
 				<img style="float:left" src="//placehold.it/200" class="avatar img-circle" alt="avatar">
 			</div>
 		</div>
-
+	</fieldset>
 	</div>
+
 	<div ng-show="actualizarMisDatos">
 		<fieldset>
-		<h1>{{subtitle}}: <small>Cambie la imagen de perfil o la direcci&oacute;n de Mail actual</small></h1>
+		<h1>{{subtitle}}: <small>Cambie la imagen de perfil o la direcci&oacute;n de Mail actual.</small></h1>
 			<hr>
 			<div class="formulario media-body">
 				<div class="row" style="padding-bottom: 30px">
 					<div class="col-md-3 col-md-offset-3">
-						<button style="align:center" class="btn btn-default" ngf-select ng-model="picFile" accept="image/*" ngf-max-size="2MB" ngf-min-height="100" style="margin: 5px auto">Seleccione imagen de perfil</button>
+						<button style="align:center" class="btn btn-default" ngf-select ng-model="picFile" accept="image/*" ngf-max-size="2MB" ngf-min-height="100" style="margin: 5px auto">Examinar</button>
 						<div style="max-height: 150px; max-width: 150px;" ngf-drop ng-model="picFile" ngf-pattern="image/*" class="cropArea"><!--{{picFile}}-->
 							<img-crop style="max-height: 150px; max-width: 150px;" image="picFile  | ngfDataUrl" result-image="croppedDataUrl" ng-init="croppedDataUrl=''"></img-crop>
 						</div>
@@ -114,41 +117,45 @@
 				<form class="form-horizontal media" name="formModifMail" novalidate>
 				<div class="row">
 					<div class="col-md-8 personal-info"> 
-						<div class="form-group" ng-class="{ 'has-error': formAlu.email.$touched && formAlu.email.$invalid }">
+						<div class="form-group" ng-class="{ 'has-error': formModifMail.mailActual.$touched && formModifMail.mailActual.$invalid }">
 							<div class="col-sm-3 control-label">
 								<label for="mailActual"><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Mail actual:</label>
 							</div>
 							<div class="col-sm-4">
-								<input id="mailActual" name="email" type="email" class="form-control" placeholder="nombre@nombre.com" maxlength="255" required/>
-								<div ng-messages="formAlu.email.$error" ng-if="formAlu.email.$touched && formAlu.email.$invalid">
+								<input id="mailActual" name="mailActual" type="email" class="form-control" placeholder="mail@dominio.com" ng-model="mails.mailActual" maxlength="255" required/>
+								<div ng-messages="formModifMail.mailActual.$error" ng-if="formModifMail.mailActual.$touched && formModifMail.mailActual.$invalid">
 									<div ng-message="email" class="help-block">Formato invalido</div>
 									<div ng-message="required" class="help-block">Complete este campo</div>
 								</div>
 							</div>
 						</div>
 						<!-- /form-group-->
-						<div class="form-group" ng-class="{ 'has-error': formAlu.email.$touched && formAlu.email.$invalid }">
+						<div class="form-group" ng-class="{ 'has-error': formModifMail.mailNuevo.$touched && formModifMail.mailNuevo.$invalid }">
 							<div class="col-sm-3 control-label">
 								<label for="mailNuevo"><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Mail nuevo:</label>
 							</div>
 							<div class="col-sm-4">
-								<input id="mailNuevo"name="email" type="email" class="form-control" placeholder="nombre@nombre.com" maxlength="255" required/>
-								<div ng-messages="formAlu.email.$error" ng-if="formAlu.email.$touched && formAlu.email.$invalid">
+								<input id="mailNuevo" name="mailNuevo" type="email" class="form-control" placeholder="mail@dominio.com" ng-model="mails.mailNuevo" maxlength="255" required/>
+								<div ng-messages="formModifMail.mailNuevo.$error" ng-if="formModifMail.mailNuevo.$touched && formModifMail.mailNuevo.$invalid">
 									<div ng-message="email" class="help-block">Formato invalido</div>
 									<div ng-message="required" class="help-block">Complete este campo</div>
 								</div>
 							</div>
 						</div>
 						<!-- /form-group-->
-						<div class="form-group" ng-class="{ 'has-error': formAlu.email.$touched && formAlu.email.$invalid }">
+						<div class="form-group" ng-class="{ 'has-error': formModifMail.mailNuevoConf.$touched && formModifMail.mailNuevoConf.$invalid }">
 							<div class="col-sm-3 control-label">
 								<label for="mailNuevoConf"><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Mail nuevo:</label>
 							</div>
 							<div class="col-sm-4">
-								<input id="mailNuevoConf" name="email" type="email" class="form-control" placeholder="nombre@nombre.com" maxlength="255" required/>
-								<div ng-messages="formAlu.email.$error" ng-if="formAlu.email.$touched && formAlu.email.$invalid">
+								<input id="mailNuevoConf" name="mailNuevoConf" type="email" class="form-control" placeholder="mail@dominio.com" maxlength="255" ng-model="mails.mailNuevoConf" pw-check="mailNuevo" required/>
+								<div ng-messages="formModifMail.mailNuevoConf.$error" ng-if="formModifMail.mailNuevoConf.$touched && formModifMail.mailNuevoConf.$invalid">
 									<div ng-message="email" class="help-block">Formato invalido</div>
 									<div ng-message="required" class="help-block">Complete este campo</div>
+									<span class="msg-error" ng-show="myForm.pw2.$error.pwmatch">Passwords don't match.</span>
+								</div>
+								<div ng-messages="formModifMail.mailNuevoConf.$error" ng-if="formModifMail.mailNuevoConf.$touched && formModifMail.mailNuevoConf.$invalid">
+								  <div ng-messages="pwmatch" class="help-block" >Los emails no coninciden.</div>
 								</div>
 							</div>
 						</div>
@@ -159,6 +166,61 @@
 			</div>
 		</fieldset>
 	</div>
-	<div ng-show="cambiarPass"> cambiar pass</div>
+	<div ng-show="cambiarPass">
+		<fieldset>
+		<h1>{{subtitle}}: <small>Cambie la contrase&ntilde;a de la cuenta actual.</small></h1>
+			<hr>
+			<div class="formulario media-body">
+				<form class="form-horizontal media" name="formModifPass" novalidate>
+				<div class="row">
+					<div class="col-md-8 personal-info"> 
+						<div class="form-group" ng-class="{ 'has-error': formModifPass.passActual.$touched && formModifPass.passActual.$invalid }">
+							<div class="col-sm-3 control-label">
+								<label for="passActual"><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Clave actual:</label>
+							</div>
+							<div class="col-sm-4">
+								<input id="passActual" name="passActual" type="password" class="form-control" placeholder="Password" maxlength="255" required/>
+								<div ng-messages="formModifPass.passActual.$error" ng-if="formModifPass.passActual.$touched && formModifPass.passActual.$invalid">
+									<div ng-message="passActual" class="help-block">Formato invalido</div>
+									<div ng-message="required" class="help-block">Complete este campo</div>
+								</div>
+							</div>
+						</div>
+						<!-- /form-group-->
+						<div class="form-group" ng-class="{ 'has-error': formModifPass.passNuevo.$touched && formModifPass.passNuevo.$invalid }">
+							<div class="col-sm-3 control-label">
+								<label for="mailNuevo"><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Clave nueva:</label>
+							</div>
+							<div class="col-sm-4">
+								<input id="passNuevo" name="passNuevo" type="password" class="form-control" placeholder="Password" maxlength="255" ng-model="passwords.passNuevo" required/>
+								<div ng-messages="formModifPass.passNuevo.$error" ng-if="formModifPass.passNuevo.$touched && formModifPass.passNuevo.$invalid">
+									<div ng-message="passNuevo" class="help-block">Formato invalido</div>
+									<div ng-message="required" class="help-block">Complete este campo</div>
+								</div>
+							</div>
+						</div>
+						<!-- /form-group-->
+						<div class="form-group" ng-class="{ 'has-error': formModifPass.passNuevoConf.$touched && formModifPass.passNuevoConf.$invalid }">
+							<div class="col-sm-3 control-label">
+								<label for="mailNuevoConf"><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Confirmar Clave :</label>
+							</div>
+							<div class="col-sm-4">
+								<input id="passNuevoConf" name="passNuevoConf" type="password" class="form-control" placeholder="Password" maxlength="255" pw-check="passNuevo" ng-model="passwords.passNuevoConf" required/>
+								<div ng-messages="formModifPass.passNuevoConf.$error" ng-if="formModifPass.passNuevoConf.$touched && formModifPass.passNuevoConf.$invalid">
+									<div ng-message="passNuevoConf" class="help-block">Formato invalido</div>
+									<div ng-message="required" class="help-block">Complete este campo</div>
+								</div>
+								<div ng-messages="formModifPass.passNuevoConf.$error" ng-if="formModifPass.passNuevoConf.$touched && formModifPass.passNuevoConf.$invalid">
+								  <div ng-messages="pwmatch" class="help-block" >Los passwords no coninciden.</div>
+								</div>
+							</div>
+						</div>
+						<!-- /form-group-->
+					</div>
+				</div><!--row--><button type="submit">submit</button>
+			</form>
+			</div>
+		</fieldset>
+	</div>
 
 </div>
