@@ -8,7 +8,7 @@ angular.module('clientAppApp')
       "matricula": 0,
       "idUsuario": null,
       "nroDocumento": 0,
-      "tipoDocumento": "DU/DNI",
+      "tipoDocumento": "DNI",
       "nombre": "",
       "apellido": "",
       "listaTelefonos": [],
@@ -71,21 +71,21 @@ angular.module('clientAppApp')
     var docente = {
       "idUsuario"     : null,
       "nroDocumento"  : 0,
-      "tipoDocumento" : "DU/DNI",
+      "tipoDocumento" : "DNI",
       "nombre"        : "",
       "apellido"      : "",
       "cuil"          : 0,
       "rol"           : "",
       "listaTelefonos" :[],
       "listaMails"    :[],
-      "domicilio"         :{},
+      "domicilio"     :this.newDomicilio(),
       "listaTitulos": [],
       "sexo"            : "",
       "nombreUsuario"   : "",
       "fechaNacimiento" : "",
       "activo"          : false
     };
-    return doncente;
+    return docente;
   };
 
   var newDocenteLight = function(){ //no creo que se use pero queda de referencia
@@ -102,9 +102,10 @@ angular.module('clientAppApp')
 
   var newTitulo = function(){
     var titulo = {
-      "idTitulo"         : null,
-      "nombreTitulo"     : "",
-      "descripcionTitulo": ""
+      "idTitulo" : null,
+      "nombreTitulo" : "",
+      "tipo" : "",
+      "anio" : '0'
     };
     return titulo;
   };

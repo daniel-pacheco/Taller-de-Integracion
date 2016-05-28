@@ -81,7 +81,7 @@ $scope.addArea = function() {
 });
 };
 
-$scope.confirmModal = function(mesagge, funcion, parametro) {
+$scope.confirmModal = function(mesagge, funcion, parametro) { //este confirm recibe una funcion y un parametro para que despues de confirmar se pueda llamar a la funcion que se necesite
   ModalService.showModal({
     templateUrl: 'scripts/utils/confirm/modalConfirm.tpl.html',
     controller: 'modalConfirmController',
@@ -118,23 +118,22 @@ $scope.agregarMateria = function () {
 
 //-- Alert
 
-$scope.showAlert = function(message) {
-  myAlert.$options.content = message;//no anda
-  myAlert.$options.type = 'danger';//no anda
-  myAlert.show();
+$scope.showAlert = function() {
+  //la idea seria poder mandarle el mensaje a la variable pero por ahora solo tenemos una variable por alert
+  eliminarMateriaAlert.show();
 };
 
-var myAlert = $alert({
+var eliminarMateriaAlert = $alert({
   title: 'Mensaje:', 
   placement: 'top',
-  content: 'mensaje', 
+  content: 'Materia eliminada con éxito', 
   type: 'info', 
   keyboard: true, 
   show: false,
   duration: 3,
   container: '#alerta'
 });
-//-- Fin alert
+//-- Fin Alert
 
 //Test
 $scope.friends = [{nombre:'Educación Fisica', docenteTitular:'María Laura', anioPertenece: '4º', area: 'cs sociales'},

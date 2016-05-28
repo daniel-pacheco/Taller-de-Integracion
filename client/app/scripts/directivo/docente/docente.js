@@ -38,6 +38,13 @@
 $scope.subtitle = "Nuevo Docente"
   $scope.dropDownAreas = ['Cs. Sociales', 'Cs. Naturales', 'Cs. Exactas','Artes'];
 
+  $scope.nuevoDocente = ObjectsFactory.newDocente();
+
+  $scope.clearFormDoc = function(){
+    $scope.formDoc.$setUntouched();
+    $scope.nuevoDocente = ObjectsFactory.newDocente();
+
+  }
 
   $scope.listado = true;
   $scope.seleccionar = function(id){
@@ -52,8 +59,8 @@ $scope.subtitle = "Nuevo Docente"
     break;
     case 'nuevoPerfil':
     $scope.nuevoPerfil = true;
-      $scope.subtitle = "Nuevo Docente"
-          $scope.nuevoDocente = null;
+    $scope.subtitle = "Nuevo Docente"
+    //$scope.nuevoDocente = ObjectsFactory.newDocente();
     break;
   }
 };
@@ -74,7 +81,7 @@ $scope.setActiveDoc = function(menuItemDoc) {
 };
 
 
-//Modal
+//-- Modal
  $scope.showModal = function(docente) {
 
     ModalService.showModal({
@@ -93,8 +100,91 @@ $scope.setActiveDoc = function(menuItemDoc) {
 
   }; 
 
+$scope.domicilioAvanzado = function() {
+  //$scope.nuevoDocente.domicilio = ObjectsFactory.newDomicilio();
+  ModalService.showModal({
+    templateUrl: 'scripts/directivo/docente/modal/addaddressdetails.tpl.html',
+    controller: 'addAddressDetailsModalController',
+    inputs: {
+      title: "Nuevo Domicilio",
+      domicilioAvanzado: $scope.nuevoDocente.domicilio,
+    }
+  }).then(function(modal) {
+    modal.element.modal();
+    modal.close.then(function(result){
+      $scope.nuevoDocente.domicilio = result;
+    });
+  });
+};
 
-$scope.nuevoDocente = null;
+$scope.telefonoAvanzado = function(){//esta deberia ser una funcion que pida la libreta de inasistencias del alumno que recibe
+  ModalService.showModal({
+    templateUrl: 'scripts/directivo/docente/modal/addphonedetails.tpl.html',
+    controller: 'telefonoAvanzadoModalController',
+    inputs: {
+      title: "Teléfono",
+      listaTelefonos: $scope.nuevoDocente.listaTelefonos,
+    }
+  }).then(function(modal) {
+    modal.element.modal();
+    modal.close.then(function(result){
+      $scope.nuevoDocente.listaTelefonos = result;
+      if ($scope.nuevoDocente.listaTelefonos.length > 0){//Esto es para listar los telefonos en una lista en el form principal 
+        $scope.mostrarListaTelefonos = true;
+      }else{ 
+        $scope.mostrarListaTelefonos = false;
+      }
+    });
+  });
+};
+
+$scope.mailAvanzado = function(){
+  ModalService.showModal({
+    templateUrl: 'scripts/directivo/docente/modal/addmaildetails.tpl.html',
+    controller: 'mailAvanzadoModalController',
+    inputs: {
+      title: "Mails",
+      listaMails: $scope.nuevoDocente.listaMails,
+    }
+  }).then(function(modal) {
+    modal.element.modal();
+    modal.close.then(function(result){
+      $scope.nuevoDocente.listaMails = result;
+      if ($scope.nuevoDocente.listaMails.length > 0){//Esto es para listar los telefonos en una lista en el form principal 
+        $scope.mostrarListaMails = true;
+      }else{ 
+        $scope.mostrarListaMails = false;
+      }
+    });
+  });
+};
+
+$scope.tituloAvanzado = function(){
+  ModalService.showModal({
+    templateUrl: 'scripts/directivo/docente/modal/addtitulodetails.tpl.html',
+    controller: 'tituloAvanzadoModalController',
+    inputs: {
+      title: "Títulos",
+      listaTitulos: $scope.nuevoDocente.listaTitulos,
+    }
+  }).then(function(modal) {
+    modal.element.modal();
+    modal.close.then(function(result){
+      $scope.nuevoDocente.listaTitulos = result;
+      if ($scope.nuevoDocente.listaTitulos.length > 0){//Esto es para listar los telefonos en una lista en el form principal 
+        $scope.mostrarListaTitulos = true;
+      }else{ 
+        $scope.mostrarListaTitulos = false;
+      }
+    });
+  });
+};
+//-- fin Modal
+
+$scope.saveDocente = function (){
+console.log ($scope.nuevoDocente);
+};
+
 $scope.editProfile = function(docente) {
   $scope.listado = false;
   $scope.subtitle = "Editar Docente"

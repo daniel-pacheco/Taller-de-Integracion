@@ -233,7 +233,6 @@ $scope.seleccionar = function (id){
 		case 'nuevoPerfil':
 		$scope.listado = false;
 		$scope.subtitle = "Nuevo Alumno";
-		$scope.nuevoAlumno = null;
 		$scope.showEditProfileMenuIzq = false; 
 		$scope.notas = false;
 		$scope.nuevoAlumno = ObjectsFactory.newAlumno();

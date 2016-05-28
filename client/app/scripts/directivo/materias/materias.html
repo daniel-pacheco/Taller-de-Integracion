@@ -24,15 +24,16 @@
 		<fieldset>
 			<h1>{{subtitle}}: <small>Selecciones un a&ntilde;o para mostrar las materias asociadas</small></h1>
 			<hr>
-			<label for="">A&ntilde;o:</label> 
-			<select class="dropdown-toggle form-control-inline" name="" ng-model="filterByYear.ano"> <!-- ng-change="update(dropDownValue, option)"> -->
-				<option value="" disabled selected>Seleccione una opci&oacute;n</option>
-				<option value="">Todos</option>
-				<option ng-repeat="option in dropDownOptions"  value="{{option}}">{{option}}</option>
-			</select>
-
+			<div class="row">
+				<label for="">A&ntilde;o:</label> 
+				<select class="dropdown-toggle form-control-inline" name="" ng-model="filterByYear.ano"> <!-- ng-change="update(dropDownValue, option)"> -->
+					<option value="" disabled selected>Seleccione una opci&oacute;n</option>
+					<option value="">Todos</option>
+					<option ng-repeat="option in dropDownOptions"  value="{{option}}">{{option}}</option>
+				</select>
+				<div id="alerta" bs-affix style="position: relative; width: 50%; float: right;"></div>
+			</div>
 			<!--Alerts no pude hacer andar el data duration-->
-
 			<table class="table table-hover table-striped">
 				<thead>
 					<tr>
@@ -66,7 +67,6 @@
 					</td>
 				</tr>
 			</table>
-			<div id="alerta"></div>
 		</fieldset>
 	</div>
 
