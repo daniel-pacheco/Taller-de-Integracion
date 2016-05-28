@@ -82,7 +82,7 @@ $scope.setActiveDoc = function(menuItemDoc) {
 
 
 //-- Modal
- $scope.showModal = function(docente) {
+ $scope.showModalProfile = function(docente) {
 
     ModalService.showModal({
       templateUrl: 'scripts/directivo/docente/modal/showProfileDocente.tpl.html',
@@ -94,7 +94,7 @@ $scope.setActiveDoc = function(menuItemDoc) {
     }).then(function(modal) {
       modal.element.modal();
       modal.close.then(function(result) {        
-        console.log('el resultado es: ' + result); //$scope.algo.nroDocumento = result;
+        $scope.editProfile(result);
       });
     });
 
@@ -181,6 +181,7 @@ $scope.tituloAvanzado = function(){
 };
 //-- fin Modal
 
+//-- filters
 $scope.saveDocente = function (){
 console.log ($scope.nuevoDocente);
 };
@@ -189,7 +190,10 @@ $scope.editProfile = function(docente) {
   $scope.listado = false;
   $scope.subtitle = "Editar Docente"
   $scope.nuevoPerfil = true;
-  $scope.nuevoDocente = docente;
+  $scope.nuevoDocente = angular.copy(docente);
+  $scope.showEditProfileMenuIzq = true;
+  $scope.setActiveDoc(3); //muestra en el menu izq editar perfil
+
 }
     /*$scope.docentes = [{name:'John', surname:'lenono', area:'Cs. Sociales', cuil:'252525', materia:'Historia'},
 {name:'Mary', surname:'yein', area:'Cs. Naturales', cuil:'434343', materia:'Biologia' },

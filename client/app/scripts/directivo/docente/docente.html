@@ -13,6 +13,9 @@
 				<li ng-class="{active : activeMenuIzqDoc === 2}" data-target="#nuevoPerfil">
 					<a href="" ng-click="seleccionar('nuevoPerfil'); setActiveDoc(2)">Nuevo Perfil</a>
 				</li>
+				<li ng-class="{active : activeMenuIzqDoc === 3}" ng-show="showEditProfileMenuIzq" data-target="#editarPerfil">
+					<a href="">Editar Perfil</a>
+				</li>
 			</ul>
 		</div>
 		<!--/ngInclude: 'views/partials/affixed-sidebar.html' -->
@@ -51,7 +54,15 @@
 				<td>{{docente.apellido}}</td>
 				<td>{{docente.nombre}}</td>
 				<td>{{docente.cuil}}</td>
-				<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:40%; cursor: pointer" class="glyphicon glyphicon-user" ng-click="showModal(docente)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipDelete" style="width:40%; cursor: pointer" class="glyphicon glyphicon-remove"></span></td> 
+				<td>
+					<!--<span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:40%; cursor: pointer" class="glyphicon glyphicon-user" ng-click="showModal(docente)"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipDelete" style="width:40%; cursor: pointer" class="glyphicon glyphicon-remove"></span>-->
+					<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipProfile" ng-click="showModalProfile(docente)" style="width: 40%">
+						<span data-animation="am-flip-x" class="glyphicon glyphicon-user"></span>
+					</button>
+					<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipDelete" ng-click="" style="width: 40%">
+						<span class="glyphicon glyphicon-trash"></span>
+					</button>
+				</td> 
 			</tr>
 		</table>
 	</fieldset>
@@ -218,8 +229,8 @@
 										<option ng-repeat="mail in nuevoDocente.listaMails">{{mail.direccionMail}} ({{mail.tipoMail}})</option>
 									</select>
 									<div ng-messages="formDoc.dirMail.$error" ng-if="formDoc.dirMail.$touched && formDoc.dirMail.$invalid">
-										<div ng-message="email" class="help-block" style="position: fixed;">Formato invalido</div>
-										<div ng-message="required" class="help-block" style="position: fixed;">Complete este campo</div>
+										<div ng-message="email" class="help-block">Formato invalido</div>
+										<div ng-message="required" class="help-block">Complete este campo</div>
 									</div>
 								</div>
 								<div class="col-sm-1">

@@ -25,6 +25,7 @@
  	$scope.listado = true;
  	$scope.listFilterIsEnabled = false;
 
+	$scope.nuevoAlumno = ObjectsFactory.newAlumno();
 
 //tooltips
 $scope.tooltip = {
@@ -176,7 +177,10 @@ $scope.upload = function (dataUrl) {
 
 //filters
 
-
+$scope.clearFormAlu = function (){
+	$scope.formAlu.$setUntouched();
+	$scope.nuevoAlumno = ObjectsFactory.newAlumno();
+}
 var count = 0;
 $scope.seleccionarCheckbox = function(alumno) {//al presionar un td de la lista de alumnos pone checkbox en true y muestra boton colocar inasistencias
 	if (alumno.selected) {
@@ -235,7 +239,6 @@ $scope.seleccionar = function (id){
 		$scope.subtitle = "Nuevo Alumno";
 		$scope.showEditProfileMenuIzq = false; 
 		$scope.notas = false;
-		$scope.nuevoAlumno = ObjectsFactory.newAlumno();
 		$scope.nuevoPerfil = true;
 		break;
 		case 'notas':
@@ -267,7 +270,7 @@ $scope.editProfile = function(alumno) {
 	$scope.listado = false;
 	$scope.subtitle = "Editar Alumno"
 	$scope.nuevoPerfil = true;
-	$scope.nuevoAlumno = alumno;
+	$scope.nuevoAlumno = angular.copy(alumno);
 	$scope.showEditProfileMenuIzq = true;
 	$scope.setActiveAlu(4);//esto pinta editar perfil en el menú izq
 }
