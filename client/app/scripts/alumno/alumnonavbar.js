@@ -25,11 +25,11 @@
  	$scope.menuAlumno = MENU_ALUMNO;
  	
  	$scope.setActive = function(menuItem) {
- 		$scope.activeMenu = menuItem
+ 		$scope.activeMenu = menuItem;
  	};
 
  	$scope.popover = {
- 		"title": "Despedirse",   
+ 		"title": "Despedirse"   
  	};
 
- })
+ });

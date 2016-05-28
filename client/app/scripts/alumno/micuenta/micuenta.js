@@ -1,3 +1,4 @@
+
 angular.module('clientAppApp')
 .config(function($stateProvider) {
 	$stateProvider
@@ -11,10 +12,15 @@ angular.module('clientAppApp')
 	});
 })
 
-.controller('MiCuentaCtrl', function ($scope, alumnoData) {
+.controller('MiCuentaCtrl', function ($scope, alumnoData, alumnoService) {
 
 	$scope.titulo = 'Mi Cuenta';
-	$scope.alumno = alumnoData[0];
+	// $scope.alumno = alumnoData[0];
+	$scope.call = function(){
+		alumnoService.alumnoGetById(7).then(function(response){$scope.alumno = response.data});
+		console.log(alumno);
+	};
+
 	$scope.misDatos = true;
 
 	$scope.subtitle = "Mis Datos";
@@ -28,7 +34,7 @@ angular.module('clientAppApp')
 			break;
 			case 'actualizarMisDatos':
 			$scope.misDatos = false;
-			$scope.subtitle = "Actualiza Mis Datos";
+			$scope.subtitle = "Actualizar Mis Datos";
 			$scope.nuevoAlumno = null;
 			$scope.cambiarPass = false;
 			$scope.actualizarMisDatos = true;
@@ -36,7 +42,7 @@ angular.module('clientAppApp')
 			case 'cambiarPass':
 			$scope.misDatos = false;
 			$scope.actualizarMisDatos = false;
-			$scope.subtitle = "Cambiar Contrase&acute;a";
+			$scope.subtitle = "Cambiar Clave";
 			$scope.cambiarPass = true;
 			break;
 
@@ -51,6 +57,13 @@ angular.module('clientAppApp')
 		$scope.activeMenuIzqAlu = menuItemAlu;
 	};
 
+//-- variables
+$scope.mails = {};
+$scope.mails.mailNuevo = '';
+$scope.mails.mailNuevoConf = '';
 
+$scope.passwords = {};
+$scope.passwords.passNuevo = '';
+$scope.passwords.passNuevoConf = '';
 
 })
