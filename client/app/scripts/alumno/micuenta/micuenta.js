@@ -12,10 +12,15 @@ angular.module('clientAppApp')
 	});
 })
 
-.controller('MiCuentaCtrl', function ($scope, alumnoData) {
+.controller('MiCuentaCtrl', function ($scope, alumnoData, alumnoService) {
 
 	$scope.titulo = 'Mi Cuenta';
-	$scope.alumno = alumnoData[0];
+	// $scope.alumno = alumnoData[0];
+	$scope.call = function(){
+		alumnoService.alumnoGetById(7).then(function(response){$scope.alumno = response.data});
+		console.log(alumno);
+	};
+
 	$scope.misDatos = true;
 
 	$scope.subtitle = "Mis Datos";

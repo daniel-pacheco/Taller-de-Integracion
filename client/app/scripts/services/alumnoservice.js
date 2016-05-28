@@ -22,7 +22,7 @@ angular.module('clientAppApp')
         var token = loginService.authToken();
         var rol = loginService.userRole();
 
-        return $http.get(server + getByIdQuery + id, {headers:{"auth0": token, "rol": rol, "Access-Control-Allow-Origin":"*"}});
+        return $http.get(server + getByIdQuery + id, {headers:{"auth0": token, "rol": rol}});
     }
 
     this.alumnoGetAll = function () {

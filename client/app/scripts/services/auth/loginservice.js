@@ -87,8 +87,8 @@
     logout: logout,
     isAuthorized: isAuthorized,
     isAuthenticated: function() {return isAuthenticated;},
-    userName: function() {return userName;},
-    userRole: function() {return userRole;},
-    authToken: function() {return authToken;}
+    userName: function() {return window.sessionStorage.getItem('USER_NAME');},
+    userRole: function() {return window.localStorage.getItem('USER_ROLE');},
+    authToken: function() {return window.sessionStorage.getItem('LOCAL_TOKEN_KEY');}
   };
 });
