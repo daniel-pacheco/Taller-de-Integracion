@@ -68,6 +68,44 @@ public class ServicioAlumnoEndpoint{
 	 * mail y domicilio o null si no existe.
 	 */
 	
+	@GET
+	@Path("/DatosPersonales")
+	public Response obtenerDatosPersoales(@HeaderParam("rol") String rolIn, @HeaderParam("auth0") String token){
+		String nuevoToken = new String();
+		Long usuarioDni;
+		Alumno alumno = new Alumno();
+		try {
+			//ServicioLogin.comprobar(token, rolIn); //Hace la comprobacion de la credencial
+			nuevoToken = ServicioLogin.comprobar(token, rolIn);
+			setInstance();
+			if(nuevoToken == null){
+				usuarioDni = Long.valueOf(ServicioLogin.obtenerIdentificacionUsuario(rolIn, token));
+				alumno = servicioAlumno.getUsuarioByDni(usuarioDni);
+			}else{
+				usuarioDni = Long.valueOf(ServicioLogin.obtenerIdentificacionUsuario(rolIn, nuevoToken));
+				alumno = servicioAlumno.getUsuarioByDni(usuarioDni);
+			}
+			}catch (LoginError ex){
+				switch (ex.getDetalles()) {
+				case LoginError.ROLERROR: 
+					return Response.status(Status.UNAUTHORIZED).build();
+				case LoginError.FIRMAERROR:
+					return Response.status(Status.FORBIDDEN).build();
+				case LoginError.EXPIRADO:
+					return Response.ok(ex).build();
+				default:
+					break;
+				}
+			} catch (Exception ex) {
+				return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+			}
+		if(nuevoToken == null){
+			return Response.ok(alumno).build();
+		}else{
+			return Response.ok(alumno).header("auth0", nuevoToken).build();
+		}
+	}
+	
 	
 	@GET
 	@Path("/alu/{id:[0-9][0-9]*}")

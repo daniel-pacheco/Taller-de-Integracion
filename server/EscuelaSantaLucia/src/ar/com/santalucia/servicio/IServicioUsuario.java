@@ -32,6 +32,9 @@ public interface IServicioUsuario<T> {
 	 * @return Lista de todos los usuarios del tipo solicitado.
 	 * @throws Exception Lanzada en caso de existir un problema.
 	 */ 
+	
+	T getUsuarioByDni(Long dni) throws Exception;
+	
 	List <T> getUsuarios(T example) throws Exception;
 	/**
 	 * Agrega a un objeto de tipo Usuario en la base de datos. Si el Usuario tiene asignado un valor de ID, se llamará al método modifyUsuario(T usuarioModificado) automáticamente.

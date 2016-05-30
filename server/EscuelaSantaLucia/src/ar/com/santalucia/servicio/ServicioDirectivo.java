@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
+import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
@@ -166,6 +167,16 @@ public class ServicioDirectivo extends ServicioUsuario<Personal> {
 	@Override
 	public void closeSession() throws Exception {
 		gPersonal.closeSession();
+	}
+
+	@Override
+	public Personal getUsuarioByDni(Long dni) throws Exception {
+		List<Personal> directivoLista = new ArrayList<Personal>();
+		directivoLista = gPersonal.getByExample(new Personal(dni,null,null,null,null,null,null,null,null,null,true,null,null,"DIRECTIVO"));
+		for (Personal p: directivoLista){
+			return p;
+		}
+		throw new Exception ("Ocurrió un error al recuperar los datos del directivo");
 	}
 
 }

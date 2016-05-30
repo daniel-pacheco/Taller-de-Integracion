@@ -212,6 +212,12 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 		}
 		return listaDocentesMateriasDTO;
 	}
+
+	@Override
+	public Personal getUsuarioByDni(Long dni) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 }

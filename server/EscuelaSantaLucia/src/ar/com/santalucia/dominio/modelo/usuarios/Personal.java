@@ -36,7 +36,7 @@ public class Personal extends Usuario {
 	}
 
 	public Personal(Long nroDocumento, String tipoDocumento, String nombre, String apellido,
-			Set<Telefono> listaTelefonos, Set<Mail> listaMails, Domicilio domicilio, char sexo, String nombreUsuario,
+			Set<Telefono> listaTelefonos, Set<Mail> listaMails, Domicilio domicilio, Character sexo, String nombreUsuario,
 			Date fechaNacimiento, Boolean activo, Set<Titulo> listaTitulos, Long cuil, String rol) {
 		super(nroDocumento, tipoDocumento, nombre, apellido, listaTelefonos, listaMails, domicilio, sexo,
 				nombreUsuario, fechaNacimiento, activo);

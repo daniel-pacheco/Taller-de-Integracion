@@ -88,8 +88,9 @@ public class ServicioLogin {
 			Map<String, Object> claimDev = new HashMap<String, Object>();
 			JWTVerifier verifier = new JWTVerifier(obtenerFirma(rol));
 			claimDev = verifier.verify(token);
+			System.out.println(">> Se requirió verificación para " + (claimDev.get("aud")).toString());					// CONSOLA
 			return renovarToken(Long.valueOf((claimDev.get("exp")).toString()), (claimDev.get("aud")).toString(), rol);
-			
+		
 			//claimDev se puede usar para necesidades futuras, como verificar la expiracion
 		}catch(SignatureException ex){
 			throw new LoginError(LoginError.FIRMAERROR);
@@ -177,10 +178,27 @@ public class ServicioLogin {
 	private static String renovarToken(Long tExpiracion, String usuario, String rol) throws Exception {
 		Long diferencia = tExpiracion - System.currentTimeMillis();
 		if (diferencia <= (1000*600)){ //Unidades en milisegundos (1000 * segundos antes de que expire) actual: 10 minutos
-			System.out.println(">> Token renovado!");
+			System.out.println(">> Token renovado para " + usuario + " !"); 	// CONSOLA
 			return generarToken(usuario, rol);
 		}
 		return null;
+	}
+	
+	/**
+	 * Devuelve el nombre del rol (aud del token)
+	 * @param rol
+	 * @param token
+	 * @return
+	 */
+	public static String obtenerIdentificacionUsuario(String rol, String token) throws Exception{
+		try{
+			Map<String, Object> claimDev = new HashMap<String, Object>();
+			JWTVerifier verifier = new JWTVerifier(obtenerFirma(rol));
+			claimDev = verifier.verify(token);
+				return (claimDev.get("aud")).toString();
+			}catch(Exception ex){
+				throw new Exception("Seguridad: No se pudo recuperar el usuario");
+			}
 	}
 	
 }

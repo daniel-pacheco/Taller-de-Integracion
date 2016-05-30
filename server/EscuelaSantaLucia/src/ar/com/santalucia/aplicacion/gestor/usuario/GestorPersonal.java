@@ -242,8 +242,8 @@ public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioD
 		ValidacionException exception = new ValidacionException();
 		SugerenciaPersonalException sugPerException = new SugerenciaPersonalException();
 
-		switch (personal.getRol()) {
-		case "DIRECTIVO":
+		switch (personal.getRol()) { // getRol()[0]
+		case "DIRECTIVO": // ["DOCENTE","DIRECTIVO"]  ["DIRECTIVO","DOCENTE"] 
 			if (existeDniEnPersonal(personal)) {
 				if (!mismoUsuario(personal)) {
 					// Lógica para localizar al docente para devolver
@@ -265,7 +265,7 @@ public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioD
 				}
 			}
 			break;
-		case "DOCENTE":
+		case "DOCENTE": // ["","ROL"] ""
 			if (existeDniEnPersonal(personal)) {
 				if (!mismoUsuario(personal)) {
 					// Lógica para localizar al directivo para devolver
@@ -287,7 +287,7 @@ public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioD
 				}
 			}
 			break;
-		case "DOCENTE/DIRECTIVO":
+		case "DOCENTE/DIRECTIVO": // ["ROL","ROL"]
 			// personal.setActivo(true);
 			if (existeDocumento(personal)) {
 				// Recomendación del 1-12-2015

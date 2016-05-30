@@ -189,4 +189,14 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 		return listaAlumnosDTO;
 	}
 
+	@Override
+	public Alumno getUsuarioByDni(Long dni) throws Exception {
+		List<Alumno> alumnoLista = new ArrayList<Alumno>();
+		alumnoLista = gAlumno.getByExample(new Alumno(dni,null,null,null,null,null,null,null,null,null,true,null));
+		for (Alumno a: alumnoLista){
+			return a;
+		}
+		throw new Exception ("Ocurrió un error al recuperar los datos del alumno");
+	}
+
 }
