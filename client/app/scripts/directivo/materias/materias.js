@@ -105,7 +105,7 @@ $scope.deleteMateria = function (materia) {
 //esto tiene que ser una llamada al service que elimine la materia
 $scope.eliminarMateria = function(materia){
   $scope.listaMaterias.splice($scope.listaMaterias.indexOf(materia),1);
-  $scope.showAlert("Materia eliminada con éxito");
+  $scope.showAlert();
 };
 
 $scope.agregarMateria = function () {

@@ -20,7 +20,7 @@
  		}
  	});
  })
- .controller('DocenteCtrl', function ($scope, docenteData, $timeout, ModalService, SERVER, ObjectsFactory) {
+ .controller('DocenteCtrl', function ($scope, docenteData, $timeout, ModalService, SERVER, ObjectsFactory, $alert) {
 
   $scope.tooltip = {
     tooltipProfile : {
@@ -46,39 +46,6 @@ $scope.subtitle = "Nuevo Docente"
 
   }
 
-  $scope.listado = true;
-  $scope.seleccionar = function(id){
-   $scope.listado = false;
-   $scope.nuevoPerfil = false;
-
-   switch (id) {
-    case 'listado':
-    $scope.listado = true;
-    this.showData();
-    $scope.nuevoDocente = null;
-    break;
-    case 'nuevoPerfil':
-    $scope.nuevoPerfil = true;
-    $scope.subtitle = "Nuevo Docente"
-    //$scope.nuevoDocente = ObjectsFactory.newDocente();
-    break;
-  }
-};
-$scope.docenteFilter = function (docente) {//la clave de este comparador es q transofrma todo a string y va comparando las posiciones, no tiene en cuenta los espacios
-  return (/*angular.lowercase(docente.materia).indexOf(angular.lowercase($scope.filterByName) || '') !== -1 ||*/
-    angular.lowercase(docente.nombre).indexOf(angular.lowercase($scope.filterByName) || '') !== -1 ||
-    angular.lowercase(docente.apellido).indexOf(angular.lowercase($scope.filterByName) || '') !== -1 ||
-    angular.lowercase(docente.cuil.toString()).indexOf(angular.lowercase($scope.filterByName) || '') !== -1
-    );
-};
-$scope.showData = function() {
-  $scope.docentes = docenteData;
-}
-$scope.showData();
-$scope.activeMenuIzqDoc = 1;
-$scope.setActiveDoc = function(menuItemDoc) {
-  $scope.activeMenuIzqDoc = menuItemDoc;
-};
 
 
 //-- Modal
@@ -179,8 +146,54 @@ $scope.tituloAvanzado = function(){
     });
   });
 };
+
+$scope.confirmModal = function(mesagge, funcion, parametro) { //este confirm recibe una funcion y un parametro para que despues de confirmar se pueda llamar a la funcion que se necesite
+  ModalService.showModal({
+    templateUrl: 'scripts/utils/confirm/modalConfirm.tpl.html',
+    controller: 'modalConfirmController',
+    inputs: {
+      mensaje: mesagge,
+    }
+  }).then(function(modal) {
+    modal.element.modal();
+   modal.close.then(function(result){
+      funcion(parametro);
+    });
+});
+};
+
 //-- fin Modal
 
+//-- Llamadas al servicio
+$scope.deleteDocente = function (docente) {
+  $scope.confirmModal("¿Desea eliminar al docente"+docente.nombre+" "+docente.apellido+"?", $scope.eliminarDocente, docente);
+  //Hay que actualizar de nuevo la lista de docentes
+};
+//esto tiene que ser una llamada al service que elimine el docente
+$scope.eliminarDocente = function(docente){
+  $scope.docentes.splice($scope.docentes.indexOf(docente),1);
+  $scope.showAlert();
+};
+//-- fin Llamadas al servicio
+
+//-- Alert
+
+$scope.showAlert = function() {
+  //la idea seria poder mandarle el mensaje a la variable pero por ahora solo tenemos una variable por alert
+  eliminarDocenteAlert.show();
+};
+
+var eliminarDocenteAlert = $alert({
+  title: 'Mensaje:', 
+  placement: 'top',
+  content: 'Docente eliminado con éxito', 
+  type: 'info', 
+  keyboard: true, 
+  show: false,
+  duration: 3,
+  container: '#alerta'
+});
+//-- Fin Alert
 //-- filters
 $scope.saveDocente = function (){
 console.log ($scope.nuevoDocente);
@@ -195,6 +208,39 @@ $scope.editProfile = function(docente) {
   $scope.setActiveDoc(3); //muestra en el menu izq editar perfil
 
 }
+  $scope.listado = true;
+  $scope.seleccionar = function(id){
+   $scope.listado = false;
+   $scope.nuevoPerfil = false;
+
+   switch (id) {
+    case 'listado':
+    $scope.listado = true;
+    this.showData();
+    $scope.nuevoDocente = null;
+    break;
+    case 'nuevoPerfil':
+    $scope.nuevoPerfil = true;
+    $scope.subtitle = "Nuevo Docente"
+    //$scope.nuevoDocente = ObjectsFactory.newDocente();
+    break;
+  }
+};
+$scope.docenteFilter = function (docente) {//la clave de este comparador es q transofrma todo a string y va comparando las posiciones, no tiene en cuenta los espacios
+  return (/*angular.lowercase(docente.materia).indexOf(angular.lowercase($scope.filterByName) || '') !== -1 ||*/
+    angular.lowercase(docente.nombre).indexOf(angular.lowercase($scope.filterByName) || '') !== -1 ||
+    angular.lowercase(docente.apellido).indexOf(angular.lowercase($scope.filterByName) || '') !== -1 ||
+    angular.lowercase(docente.cuil.toString()).indexOf(angular.lowercase($scope.filterByName) || '') !== -1
+    );
+};
+$scope.showData = function() {
+  $scope.docentes = docenteData;
+}
+$scope.showData();
+$scope.activeMenuIzqDoc = 1;
+$scope.setActiveDoc = function(menuItemDoc) {
+  $scope.activeMenuIzqDoc = menuItemDoc;
+};
     /*$scope.docentes = [{name:'John', surname:'lenono', area:'Cs. Sociales', cuil:'252525', materia:'Historia'},
 {name:'Mary', surname:'yein', area:'Cs. Naturales', cuil:'434343', materia:'Biologia' },
 {name:'Mike', surname:'chumajer', area:'Cs. Sociales', cuil:'111111', materia:'Geografia'},

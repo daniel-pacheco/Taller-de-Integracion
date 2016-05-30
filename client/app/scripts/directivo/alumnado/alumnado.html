@@ -92,10 +92,10 @@
 					<tr ng-repeat="alumno in alumnoData | filter:alumnoFilter" ng-style="alumno.selected && {'background-color': '#ddd'}">
 						<td ng-click="seleccionarCheckbox(alumno)"><input type="checkbox" ng-init="true" ng-model="selectAlumno" ng-checked="alumno.selected"></td>
 						<td ng-click="seleccionarCheckbox(alumno)">{{alumno.matricula}}</td>
-						<td ng-click="seleccionarCheckbox(alumno)">{{alumno.nombre}}</td>
 						<td ng-click="seleccionarCheckbox(alumno)">{{alumno.apellido}}</td>
+						<td ng-click="seleccionarCheckbox(alumno)">{{alumno.nombre}}</td>
 						<td ng-click="seleccionarCheckbox(alumno)">{{alumno.nroDocumento}}</td>
-						<td ng-click = "deleteAlumno(alumno.idUsuario)">{{alumno.idUsuario}}</td>
+						<td ng-click="seleccionarCheckbox(alumno)">{{alumno.idUsuario}}</td>
 						<td>
 							<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipProfile" ng-click="showModalProfile(alumno)" style="width: 22%">
 								<span data-animation="am-flip-x" class="glyphicon glyphicon-user"></span>
@@ -109,7 +109,7 @@
 								<span data-animation="am-flip-x" class="glyphicon glyphicon-list-alt"></span>
 							</button>
 				
-							<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipDelete" ng-click="" style="width: 22%">
+							<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipDelete" ng-click="deleteAlumno(alumno.idUsuario)" style="width: 22%">
 								<span class="glyphicon glyphicon-trash"></span>
 							</button>
 						</td>
@@ -272,7 +272,6 @@
 									<select multiple class="form-control" ng-show="mostrarListaMails">
 										<option ng-repeat="mail in nuevoAlumno.listaMails">{{mail.direccionMail}} ({{mail.tipoMail}})</option>
 									</select> 
-									
 									<div ng-messages="formAlu.email.$error" ng-if="formAlu.email.$touched && formAlu.email.$invalid">
 										<div ng-message="email" class="help-block">Formato invalido</div>
 										<div ng-message="required" class="help-block">Complete este campo</div>
@@ -289,7 +288,7 @@
 									<label for="">Observaciones:</label>
 								</div>
 								<div class="col-sm-7">
-									<textarea name="observacion" class="form-control" rows="4" maxlength="255" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*"></textarea>
+									<textarea name="observacion" class="form-control" rows="4" maxlength="255" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*" ng-model="observaciones"></textarea>
 									<div ng-messages="formAlu.observacion.$error" ng-if="formAlu.observacion.$touched && formAlu.observacion.$invalid">
 										<div ng-message="pattern" class="help-block"> 
 											Formato invalido  
