@@ -204,7 +204,7 @@
 									<label for="">Teléfono:</label>
 								</div>
 								<div class="col-sm-5">
-									<input name="listaTelefono" class="form-control" ng-model="nuevoDocente.listaTelefono[0]" placeholder="0343-4353535" type="tel" ng-show="!mostrarListaTelefonos">
+									<input name="listaTelefono" class="form-control" ng-model="nuevoDocente.listaTelefonos[0]" placeholder="0343-4353535" type="tel" ng-show="!mostrarListaTelefonos">
 									<select multiple class="form-control" ng-show="mostrarListaTelefonos">
 										<option ng-repeat="telefono in nuevoDocente.listaTelefonos">{{telefono.caracteristica}}-{{telefono.nroTelefono}}({{telefono.tipoTelefono}})</option>
 									</select> 

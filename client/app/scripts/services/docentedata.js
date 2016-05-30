@@ -33,14 +33,14 @@ angular.module('clientAppApp')
 	],
 	"listaMails"		:[
 		{
-		"idMail	      " : null,
+		"idMail" : null,
 		"direccionMail" : "m.eliseorodriguez@live.com.ar",
-		"tipoMail	  " : "Personal"
+		"tipoMail" : "Personal"
 		},                
 		{                 
-		"idMail	      " : null,
+		"idMail" : null,
 		"direccionMail" : "elisearodriguezduque@gmail.com",
-		"tipoMail	  " : "Académico"
+		"tipoMail" : "Académico"
 		}
 	],
 	"domicilio"         :{
@@ -98,14 +98,14 @@ angular.module('clientAppApp')
 	],
 	"listaMails"		:[
 		{
-		"idMail	      " : null,
+		"idMail" : null,
 		"direccionMail" : "m.eliseorodriguez@live.com.ar",
-		"tipoMail	  " : "Personal"
+		"tipoMail" : "Personal"
 		},                
 		{                 
-		"idMail	      " : null,
+		"idMail" : null,
 		"direccionMail" : "elisearodriguezduque@gmail.com",
-		"tipoMail	  " : "Académico"
+		"tipoMail" : "Académico"
 		}
 	],
 	"domicilio"         :{
@@ -163,9 +163,9 @@ angular.module('clientAppApp')
 	],
 	"listaMails"		:[
 		{
-		"idMail	      " : null,
+		"idMail" : null,
 		"direccionMail" : "alehadad@live.com.ar",
-		"tipoMail	  " : "Personal"
+		"tipoMail" : "Personal"
 		}
 	],
 	"domicilio"         :{
@@ -219,9 +219,9 @@ angular.module('clientAppApp')
 	],
 	"listaMails"		:[
 		{
-		"idMail	      " : null,
+		"idMail" : null,
 		"direccionMail" : "victor_valotto@microsoft.com.ar",
-		"tipoMail	  " : "Personal"
+		"tipoMail" : "Personal"
 		}
 	],
 	"domicilio"         :{
@@ -276,14 +276,14 @@ angular.module('clientAppApp')
 	],
 	"listaMails"		:[
 		{
-		"idMail	      " : null,
+		"idMail" : null,
 		"direccionMail" : "graciela_ema_21@live.com.ar",
-		"tipoMail	  " : "Personal"
+		"tipoMail" : "Personal"
 		},                
 		{                 
-		"idMail	      " : null,
+		"idMail" : null,
 		"direccionMail" : "emadoralopez@gmail.com",
-		"tipoMail	  " : "Académico"
+		"tipoMail" : "Académico"
 		}
 	],
 	"domicilio"         :{
@@ -348,14 +348,14 @@ angular.module('clientAppApp')
 	],
 	"listaMails"		:[
 		{
-		"idMail	      " : null,
+		"idMail" : null,
 		"direccionMail" : "javier_exequiel@yahoo.com.ar",
-		"tipoMail	  " : "Personal"
+		"tipoMail" : "Personal"
 		},            
 		{                 
-		"idMail	      " : null,
+		"idMail" : null,
 		"direccionMail" : "je_Marce@gmail.com",
-		"tipoMail	  " : "Académico"
+		"tipoMail" : "Académico"
 		}
 	],
 	"domicilio"         :{

@@ -13,7 +13,7 @@ angular.module('clientAppApp')
       "apellido": "",
       "listaTelefonos": [],
       "listaMails": [],
-      "domicilio": {},
+      "domicilio": this.newDomicilio(),
       "sexo": "",
       "nombreUsuario": "",
       "fechaNacimiento": ""

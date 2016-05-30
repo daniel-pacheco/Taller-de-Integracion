@@ -202,11 +202,25 @@ console.log ($scope.nuevoDocente);
 $scope.editProfile = function(docente) {
   $scope.listado = false;
   $scope.subtitle = "Editar Docente"
-  $scope.nuevoPerfil = true;
   $scope.nuevoDocente = angular.copy(docente);
   $scope.showEditProfileMenuIzq = true;
   $scope.setActiveDoc(3); //muestra en el menu izq editar perfil
-
+   if ($scope.nuevoDocente.listaMails.length > 0){//Esto es para listar los telefonos en una lista en el form principal 
+    $scope.mostrarListaMails = true;
+  }else{ 
+    $scope.mostrarListaMails = false;
+  }
+  if ($scope.nuevoDocente.listaTelefonos.length > 0){//Esto es para listar los telefonos en una lista en el form principal 
+    $scope.mostrarListaTelefonos = true;
+  }else{ 
+    $scope.mostrarListaTelefonos = false;
+  }
+  if ($scope.nuevoDocente.listaTitulos.length > 0){//Esto es para listar los telefonos en una lista en el form principal 
+    $scope.mostrarListaTitulos = true;
+  }else{ 
+    $scope.mostrarListaTitulos = false;
+  }
+  $scope.nuevoPerfil = true;
 }
   $scope.listado = true;
   $scope.seleccionar = function(id){
