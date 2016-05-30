@@ -157,7 +157,7 @@
 								<div class="col-sm-3">
 									<select class="form-control" ng-model="nuevoAlumno.tipoDocumento" name="TipoDocumento">
 										<option value="" disabled selected>Tipo</option>
-										<option value="DNI">DNI</option>
+										<option value="DU/DNI">DNI</option>
 										<option value="LC">LC</option>
 										<option value="Otro">Otro</option>
 									</select>
@@ -178,8 +178,7 @@
 									</div>
 								</div>
 
-							</div>
-							<!-- /form-group-->
+							</div><!-- /form-group-->
 
 							<div class="form-group" ng-class="{ 'has-error': formAlu.apellido.$touched && formAlu.apellido.$invalid }">
 								<div class="col-sm-4 control-label">
@@ -201,8 +200,8 @@
 									<label for="">Sexo:</label>
 								</div>
 								<div class="col-sm-7">
-									<input type="radio" name="sexo" ng-model="nuevoAlumno.sexo" id="F"><label class="text-radio" for="F"><span></span>Femenino </label>
-									<input type="radio" name="sexo" ng-model="nuevoAlumno.sexo" checked id="M"><label class="text-radio" for="M"><span></span>Masculino </label>
+									<input type="radio" name="sexo" ng-model="nuevoAlumno.sexo" id="F" value="f"><label class="text-radio" for="F"><span></span>Femenino </label>
+									<input type="radio" name="sexo" ng-model="nuevoAlumno.sexo" checked id="M" value="m"><label class="text-radio" for="M"><span></span>Masculino </label>
 								</div>
 							</div>
 							<!-- /form-group-->
@@ -211,11 +210,18 @@
 								<div class="col-sm-4 control-label">
 									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Domicilio:</label>
 								</div>
-								<div class="col-sm-6">
-									<input name="domicilio" class="form-control" placeholder="Domicilio 123" type="text" maxlength="255" ng-model="alumnoDomicilioLight" required/> <!-- pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*" -->
+								<div class="col-sm-4">
+									<input name="domicilio" class="form-control" placeholder="Calle" type="text" maxlength="255" ng-model="nuevoAlumno.domicilio.calle" required/> <!-- pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*" -->
 									<!-- Valida letras, numeros y espacios-->
 									<div ng-messages="formAlu.domicilio.$error" ng-if="formAlu.domicilio.$touched && formAlu.domicilio.$invalid">
 										<div ng-message="pattern" class="help-block">Formato invalido</div>
+										<div ng-message="required" class="help-block">Complete este campo</div>
+									</div>
+								</div>
+								<div class="col-sm-2">
+									<input name="numeroDomicilio" class="form-control" placeholder="Número" type="number" maxlength="6" ng-model="nuevoAlumno.domicilio.numero"/> 
+									<div ng-messages="formAlu.numeroDomicilio.$error" ng-if="formAlu.numeroDomicilio.$touched && formAlu.numeroDomicilio.$invalid">
+										<div ng-message="type" class="help-block">Formato invalido</div>
 										<div ng-message="required" class="help-block">Complete este campo</div>
 									</div>
 								</div>
@@ -246,7 +252,7 @@
 									<label for="">Teléfono:</label>
 								</div>
 
-								<div class="col-sm-6">
+								<div class="col-sm-5">
 									<input name="listaTelefono" class="form-control" ng-model="nuevoAlumno.listaTelefono[0]" placeholder="0343-4353535" type="tel" ng-show="!mostrarListaTelefonos">
 									<select multiple class="form-control" ng-show="mostrarListaTelefonos">
 										<option ng-repeat="telefono in nuevoAlumno.listaTelefonos">{{telefono.caracteristica}}-{{telefono.nroTelefono}} ({{telefono.tipoTelefono}})</option>
@@ -268,7 +274,7 @@
 									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Mail:</label>
 								</div>
 								<div class="col-sm-7">
-									<input name="email" type="email" class="form-control" placeholder="nombre@nombre.com" maxlength="255" ng-show="!mostrarListaMails" required/>
+									<input name="email" type="email" class="form-control" placeholder="nombre@nombre.com" ng-model="nuevoAlumno.listaMails[0].direccionMail" maxlength="255" ng-show="!mostrarListaMails" required/>
 									<select multiple class="form-control" ng-show="mostrarListaMails">
 										<option ng-repeat="mail in nuevoAlumno.listaMails">{{mail.direccionMail}} ({{mail.tipoMail}})</option>
 									</select> 
@@ -288,7 +294,7 @@
 									<label for="">Observaciones:</label>
 								</div>
 								<div class="col-sm-7">
-									<textarea name="observacion" class="form-control" rows="4" maxlength="255" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*" ng-model="observaciones"></textarea>
+									<textarea name="observacion" class="form-control" rows="4" maxlength="255" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*" ng-model="nuevoAlumno.observaciones"></textarea>
 									<div ng-messages="formAlu.observacion.$error" ng-if="formAlu.observacion.$touched && formAlu.observacion.$invalid">
 										<div ng-message="pattern" class="help-block"> 
 											Formato invalido  

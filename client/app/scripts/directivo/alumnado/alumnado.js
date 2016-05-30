@@ -58,7 +58,6 @@ $scope.domicilioAvanzado = function() {
 		modal.element.modal();
 		modal.close.then(function(result){
 			$scope.nuevoAlumno.domicilio = result;
-			$scope.alumnoDomicilioLight = result.calle+" "+result.numero; 
 		});
 	});
 };
@@ -269,10 +268,21 @@ $scope.alumnoEdit = null;
 $scope.editProfile = function(alumno) {
 	$scope.listado = false;
 	$scope.subtitle = "Editar Alumno"
-	$scope.nuevoPerfil = true;
 	$scope.nuevoAlumno = angular.copy(alumno);
 	$scope.showEditProfileMenuIzq = true;
 	$scope.setActiveAlu(4);//esto pinta editar perfil en el menú izq
+	if ($scope.nuevoAlumno.listaTelefonos.length > 0){//Esto es para listar los telefonos en una lista en el form principal	
+		$scope.mostrarListaTelefonos = true;
+	}else{ 
+		$scope.mostrarListaTelefonos = false;
+		}
+	if ($scope.nuevoAlumno.listaMails.length > 0){//Esto es para listar los telefonos en una lista en el form principal	
+		$scope.mostrarListaMails = true;
+	}else{ 
+		$scope.mostrarListaMails = false;
+		}
+	$scope.nuevoPerfil = true;
+
 }
 
 
