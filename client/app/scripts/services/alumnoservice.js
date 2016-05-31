@@ -13,24 +13,27 @@ angular.module('clientAppApp')
 
     var server = SERVER.address;/*'http://localhost:8080/'; 'http://192.168.1.8:8080/';//EscuelaSantaLucia/rest/sAlumno/listAll //http://localhost:8080/EscuelaSantaLucia/rest/sAlumno/listAll'*/
     console.log('server address: ' + server);
-    var getByIdQuery = 'EscuelaSantaLucia/rest/sAlumno/alu/';
-    var getQuery = 'EscuelaSantaLucia/rest/sAlumno/listAll';
-    var postQuery = 'EscuelaSantaLucia/rest/sAlumno/alu/';
-    var delQuery = 'EscuelaSantaLucia/rest/sAlumno/alu/';
+    var sAlumno = SERVER.sAlumno;
+    console.log('sAlumno route: ' + sAlumno);
 
-    this.alumnoGetById = function (id) {
-        var token = loginService.authToken();
-        var rol = loginService.userRole();
+    var expectParam = 'alu/';
+    var listAll = 'listAll';
+    var listAllMin = 'listAllMin';
 
-        return $http.get(server + getByIdQuery + id, {headers:{"auth0": token, "rol": rol}});
+    this.getById = function (id) {
+        return $http.get(server + sAlumno + expectParam + id);
     }
 
-    this.alumnoGetAll = function () {
-    	return $http.get(server + getQuery);
+    this.getAll = function () {
+    	return $http.get(server + sAlumno + listAll);
     }
 
-	this.alumnoPut = function(alumno){	  
-	  return $http.put(server + postQuery, alumno);
+    this.getAllMin = function () {
+        return $http.get(server + sAlumno + listAllMin);
+    }
+
+	this.putNew = function(alumno){	  
+	  return $http.put(server + sAlumno + expectParam, alumno);
 	}
 
 	this.alumnoDel = function(alumnoId){	  

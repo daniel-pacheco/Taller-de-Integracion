@@ -18,7 +18,7 @@ angular.module('clientAppApp')
 	// $scope.alumno = alumnoData[0];
 	$scope.call = function(){
 		alumnoService.alumnoGetById(7).then(function(response){$scope.alumno = response.data});
-		console.log(alumno);
+		console.log($scope.alumno);
 	};
 
 	$scope.misDatos = true;

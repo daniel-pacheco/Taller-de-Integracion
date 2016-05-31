@@ -26,8 +26,8 @@ angular.module('clientAppApp')
       "nroDocumento": 0,
       "nombre": "",
       "apellido": "",
-      "curso" : "",
-      "division" : "" 
+      "anio" : "",
+      "curso" : "" 
     };
     return alumno;
   };
@@ -152,7 +152,7 @@ angular.module('clientAppApp')
   var newCurso = function(){
     var curso = {
       "idCurso": null,
-      "division": '',
+      "curso": '',
       "turno": '',
       "cicloLectivo": 0,
       "listaAlumnos": []
@@ -181,7 +181,7 @@ angular.module('clientAppApp')
     var estadisticaAnioCurso = {
       "cicloLectivo": 0,
       "anio": '',
-      "division": 'U',
+      "curso": 'U',
       "cantAlumnos": 0,
       "materias":[],
       "trimestres":[],
@@ -213,7 +213,7 @@ angular.module('clientAppApp')
       "cicloLectivo": 0,
       "nombre": '',
       "anio": '',
-      "division": 'U',
+      "curso": 'U',
       "cantAlumnos": 0,
       "notas": [], //length === cantAlumnos
       "historico": []
