@@ -85,7 +85,7 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 			} else {
 				Long dniViejo = gAlumno.getById(usuario.getIdUsuario()).getNroDocumento(); 
 				gAlumno.modify(usuario);
-				sLogin.actualizarUsuario(dniViejo, usuario.getNroDocumento());
+				sLogin.actualizarUsuario(dniViejo, usuario.getNroDocumento(), Login.ALUMNO);
 			}
 			return true;
 		} catch (ValidacionException ex) {

@@ -14,12 +14,15 @@
         </property>
         <set name="listaTitulos" table="TITULO" inverse="false" lazy="false" cascade="all">
             <key>
-                <column name="IDUSUARIOPERSONAL" />
+                <column name="IDUSUARIOPERSONAL" />  
             </key>
             <one-to-many class="ar.com.santalucia.dominio.modelo.usuarios.info.Titulo" />
         </set>
-        <property name="rol" type="java.lang.String">
-            <column name="ROL" />
+        <property name="rolDirectivo" type="java.lang.Boolean">
+            <column name="ROLDIRECTIVO" />
+        </property>
+        <property name="rolDocente" type="java.lang.Boolean">
+            <column name="ROLDOCENTE" />
         </property>
     </joined-subclass>
 </hibernate-mapping>

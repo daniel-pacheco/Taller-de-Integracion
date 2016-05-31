@@ -20,7 +20,7 @@ import ar.com.santalucia.validaciones.IValidacionUsuarioDocDir;
  *
  */
 
-// UltimoModificador: Ariel Ramirez @ 1-12-15 17:14
+// UltimoModificador: Ariel Ramirez @ 31-05-16 17:38
 
 public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioDocDir {
 	private PersonalHome docenteDAO;
@@ -72,7 +72,10 @@ public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioD
 			setSession();
 			setTransaction();
 			sesionDeHilo.getTransaction().rollback();
-			throw new Exception("Ha ocurrido un problema al agregar el " + personal.getRol() + ": " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al agregar el" 
+					+ (personal.getRolDirectivo()?" DIRECTIVO":"") 
+					+ (personal.getRolDocente()?" DOCENTE":"")
+					+ ": " + ex.getMessage());
 		}
 	}
 
@@ -91,7 +94,10 @@ public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioD
 			setSession();
 			setTransaction();
 			sesionDeHilo.getTransaction().rollback();
-			throw new Exception("Ha ocurrido un problema al actualizar el " + personal.getRol() + ": " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al modificar el" 
+					+ (personal.getRolDirectivo()?" DIRECTIVO":"") 
+					+ (personal.getRolDocente()?" DOCENTE":"")
+					+ ": " + ex.getMessage());
 		}
 	}
 
@@ -104,8 +110,10 @@ public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioD
 			return listaPersonalDevolver;
 		} catch (Exception ex) {
 			closeSession();
-			throw new Exception(
-					"Ha ocurrido un error al buscar " + object.getRol() + "S que coincidan con el ejemplo dado: " + ex.getMessage());
+			throw new Exception("Ha ocurrido un error al buscar" 
+					+ (object.getRolDirectivo()?" DIRECTIVOS":"") 
+					+ (object.getRolDocente()?" DOCENTE":"")
+					+ " que coincidan con el ejemplo dado: " + ex.getMessage());
 		}
 	}
 
@@ -180,11 +188,18 @@ public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioD
 		// personalTemp.setDomicilio(null);
 		// personalTemp.setListaTitulos(null);
 		// Buscar en el rol contrario
-		if (personal.getRol().equals(Personal.DIRECTIVO)) {
-			personalTemp.setRol(Personal.DOCENTE);
+		if (personal.getRolDirectivo()) {
+			personalTemp.setRolDocente(true);
+			personalTemp.setRolDirectivo(false);
 		} else {
-			personalTemp.setRol(Personal.DIRECTIVO);
+			personalTemp.setRolDirectivo(true);
+			personalTemp.setRolDocente(false);
 		}
+		/*
+		 * if (personal.getRol().equals(Personal.DIRECTIVO)) {
+		 * personalTemp.setRol(Personal.DOCENTE); } else {
+		 * personalTemp.setRol(Personal.DIRECTIVO); }
+		 */
 		ArrayList<Personal> listaPersonal = this.getByExample(personalTemp);
 		return (listaPersonal.isEmpty() ? false : true);
 		// GestorDirectivo gDir = new GestorDirectivo();
@@ -241,9 +256,12 @@ public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioD
 		Personal personal = (Personal) object;
 		ValidacionException exception = new ValidacionException();
 		SugerenciaPersonalException sugPerException = new SugerenciaPersonalException();
-
-		switch (personal.getRol()) { // getRol()[0]
-		case "DIRECTIVO": // ["DOCENTE","DIRECTIVO"]  ["DIRECTIVO","DOCENTE"] 
+		if (personal.getRolDirectivo() && personal.getRolDocente()) {
+			if (existeDocumento(personal)) {
+				exception.addMensajeError("El número de DNI ya está en uso.");
+				throw exception;
+			}
+		} else {
 			if (existeDniEnPersonal(personal)) {
 				if (!mismoUsuario(personal)) {
 					// Lógica para localizar al docente para devolver
@@ -257,48 +275,46 @@ public class GestorPersonal extends GestorUsuario implements IValidacionUsuarioD
 					sugPerException.setMensaje(
 							"El DNI se encuentra en uso por otro usuario. Se sugiere:  " + personalTemp.toString());
 					throw sugPerException;
-				}
+				} 
 			} else {
 				if (existeDocumento(personal)) { // 07/01/2016
 					exception.addMensajeError("El número de DNI ya está en uso.");
 					throw exception;
 				}
 			}
-			break;
-		case "DOCENTE": // ["","ROL"] ""
-			if (existeDniEnPersonal(personal)) {
-				if (!mismoUsuario(personal)) {
-					// Lógica para localizar al directivo para devolver
-					Personal personalTemp = new Personal();
-					personalTemp.setNroDocumento(personal.getNroDocumento());
-					ArrayList<Personal> listadoPersonal = this.getByExample(personalTemp);
-					for (Personal p : listadoPersonal) {
-						personalTemp = p;
-					}
-					sugPerException.setPersonalSugerido(personalTemp);
-					sugPerException.setMensaje(
-							"El DNI se encuentra en uso por otro usuario. Se sugiere: " + personalTemp.toString());
-					throw sugPerException;
-				}
-			} else {
-				if (existeDocumento(personal)) { // 07/01/2016
-					exception.addMensajeError("El número de DNI ya está en uso.");
-					throw exception;
-				}
-			}
-			break;
-		case "DOCENTE/DIRECTIVO": // ["ROL","ROL"]
-			// personal.setActivo(true);
-			if (existeDocumento(personal)) {
-				// Recomendación del 1-12-2015
-				// Agregar para buscar solo los usuarios activos
-				exception.addMensajeError("El número de DNI ya está en uso.");
-				throw exception;
-			}
-			break;
-		default:
-			break;
 		}
 	}
-
 }
+
+/*
+ * switch (personal.getRol()) { // getRol()[0] case "DIRECTIVO": //
+ * ["DOCENTE","DIRECTIVO"] ["DIRECTIVO","DOCENTE"] if
+ * (existeDniEnPersonal(personal)) { if (!mismoUsuario(personal)) { // Lógica
+ * para localizar al docente para devolver Personal personalTemp = new
+ * Personal(); personalTemp.setNroDocumento(personal.getNroDocumento());
+ * ArrayList<Personal> listadoPersonal = this.getByExample(personalTemp); for
+ * (Personal p : listadoPersonal) { personalTemp = p; }
+ * sugPerException.setPersonalSugerido(personalTemp);
+ * sugPerException.setMensaje(
+ * "El DNI se encuentra en uso por otro usuario. Se sugiere:  " +
+ * personalTemp.toString()); throw sugPerException; } } else { if
+ * (existeDocumento(personal)) { // 07/01/2016 exception.addMensajeError(
+ * "El número de DNI ya está en uso."); throw exception; } } break; case
+ * "DOCENTE": // ["","ROL"] "" if (existeDniEnPersonal(personal)) { if
+ * (!mismoUsuario(personal)) { // Lógica para localizar al directivo para
+ * devolver Personal personalTemp = new Personal();
+ * personalTemp.setNroDocumento(personal.getNroDocumento()); ArrayList<Personal>
+ * listadoPersonal = this.getByExample(personalTemp); for (Personal p :
+ * listadoPersonal) { personalTemp = p; }
+ * sugPerException.setPersonalSugerido(personalTemp);
+ * sugPerException.setMensaje(
+ * "El DNI se encuentra en uso por otro usuario. Se sugiere: " +
+ * personalTemp.toString()); throw sugPerException; } } else { if
+ * (existeDocumento(personal)) { // 07/01/2016 exception.addMensajeError(
+ * "El número de DNI ya está en uso."); throw exception; } } break; case
+ * "DOCENTE/DIRECTIVO": // ["ROL","ROL"] // personal.setActivo(true); if
+ * (existeDocumento(personal)) { // Recomendación del 1-12-2015 // Agregar para
+ * buscar solo los usuarios activos exception.addMensajeError(
+ * "El número de DNI ya está en uso."); throw exception; } break; default:
+ * break; }
+ */
