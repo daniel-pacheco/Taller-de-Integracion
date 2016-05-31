@@ -196,7 +196,7 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 		for (Alumno a: alumnoLista){
 			return a;
 		}
-		throw new Exception ("Ocurrió un error al recuperar los datos del alumno");
+		throw new Exception ("Ocurrió un error al recuperar los datos del alumno por dni");
 	}
 
 }

@@ -59,18 +59,35 @@ public class ServicioAlumnoEndpoint{
 			}
 		}
 	}
-
-	/**
-	 *  
-	 * @param id
-	 *            Identificador del usuario a buscar.
-	 * @return Response ok (Status 200) e instancia de alumno, incluyendo datos de teléfono, 
-	 * mail y domicilio o null si no existe.
-	 */
 	
+	/**
+	 * Devuelve los datos de un alumno específico proporcionando su DNI
+	 * @param dni
+	 * @return 
+	 */
+	@GET
+	@Path("/alu/getByDni/{id:[0-9][0-9]*}")
+	public Response getAlumnoByDni(@PathParam("id") final Long dni){
+		Alumno alumno = new Alumno();
+		try{
+			setInstance();
+			alumno = servicioAlumno.getUsuarioByDni(dni);
+		}catch(Exception ex){
+			return Response.ok(ex).build();
+		}
+		return Response.ok(alumno).build();
+	}
+	
+	
+	/**
+	 * Devuelve los datos personales del Alumno logueado solamente enviando rol y token.
+	 * @param rolIn
+	 * @param token
+	 * @return
+	 */
 	@GET
 	@Path("/DatosPersonales")
-	public Response obtenerDatosPersoales(@HeaderParam("rol") String rolIn, @HeaderParam("auth0") String token){
+	public Response obtenerDatosPersonales(@HeaderParam("rol") String rolIn, @HeaderParam("auth0") String token){
 		String nuevoToken = new String();
 		Long usuarioDni;
 		Alumno alumno = new Alumno();
@@ -106,7 +123,13 @@ public class ServicioAlumnoEndpoint{
 		}
 	}
 	
-	
+	/**
+	 *  
+	 * @param id
+	 *            Identificador del usuario a buscar.
+	 * @return Response ok (Status 200) e instancia de alumno, incluyendo datos de teléfono, 
+	 * mail y domicilio o null si no existe.
+	 */
 	@GET
 	@Path("/alu/{id:[0-9][0-9]*}")
 	public Response getAlumnoById(@PathParam("id") final Long id, @HeaderParam("rol") String rolIn, @HeaderParam("auth0") String token) {
