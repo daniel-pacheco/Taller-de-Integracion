@@ -47,9 +47,9 @@ public class ServicioLogin {
 	 * @param usuarioNuevo DNI nuevo del usuario.
 	 * @throws Exception
 	 */
-	public void actualizarUsuario(Long usuarioViejo, Long usuarioNuevo) throws Exception{
+	public void actualizarUsuario(Long usuarioViejo, Long usuarioNuevo, String rol) throws Exception{
 		try{
-			gLogin.updateUser(usuarioViejo, usuarioNuevo);
+			gLogin.updateUser(usuarioViejo, usuarioNuevo, rol);
 		}catch(Exception ex){
 			throw new Exception("Servicio: No se pudo modificar el usuario en login: " + ex.getMessage());
 		}

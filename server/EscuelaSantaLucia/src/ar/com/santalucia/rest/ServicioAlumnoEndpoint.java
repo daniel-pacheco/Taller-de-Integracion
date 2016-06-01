@@ -21,6 +21,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.apache.catalina.filters.RequestFilter;
 
+import ar.com.santalucia.dominio.modelo.sistema.login.Login;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
@@ -239,11 +240,20 @@ public class ServicioAlumnoEndpoint{
 	 */
 	@PUT
 	@Path("/alu/")
-	public Response update(final Alumno alumno) {
+	public Response update(final Alumno alumno, @HeaderParam("rol") String rolIn, @HeaderParam("auth0") String token) {
+		if(!rolIn.equals(Login.DIRECTIVO)){	//Comprobación de roles
+			return Response.status(Status.FORBIDDEN).build();
+		}
+		String nuevoToken = new String();
 		try {
+			nuevoToken = ServicioLogin.comprobar(token, rolIn);
 			setInstance();
 			servicioAlumno.addUsuario(alumno);
-			return Response.ok(alumno.getIdUsuario()).build();
+			if(nuevoToken==null){
+				return Response.ok(alumno.getIdUsuario()).build();
+			}else{
+				return Response.ok(alumno.getIdUsuario()).header("auth0", nuevoToken).build();
+			}
 		} catch (Exception ex) {
 			// ex.printStackTrace();
 			return Response.ok(ex).build();
