@@ -133,46 +133,46 @@ public class GestorBoletinInasistencias extends Gestor<BoletinInasistencias>
 		}
 	}
 	
-	@Override
-	public Boolean existeConceptoEnFecha(Inasistencia inasistencia) throws Exception {
-		Boolean resultado = false;
-		Inasistencia inasistenciaEjemplo = new Inasistencia();
-		inasistenciaEjemplo.setConcepto(inasistencia.getConcepto());
-		ArrayList<Inasistencia> listaInasistencia;
-		try {
-			listaInasistencia = GInasistencia.getByExample(inasistenciaEjemplo);
-		} catch (Exception ex) {
-			throw ex;
-		}
-		if (!listaInasistencia.isEmpty()) { // si no está vacía
-			resultado = true;
-		}
-		return resultado;
-	}
+//	@Override
+//	public Boolean existeConceptoEnFecha(Inasistencia inasistencia) throws Exception {
+//		Boolean resultado = false;
+//		Inasistencia inasistenciaEjemplo = new Inasistencia();
+//		inasistenciaEjemplo.setConcepto(inasistencia.getConcepto());
+//		ArrayList<Inasistencia> listaInasistencia;
+//		try {
+//			listaInasistencia = GInasistencia.getByExample(inasistenciaEjemplo);
+//		} catch (Exception ex) {
+//			throw ex;
+//		}
+//		if (!listaInasistencia.isEmpty()) { // si no está vacía
+//			resultado = true;
+//		}
+//		return resultado;
+//	}
 
 	@Override
 	public void validar(Object object) throws Exception {
-		BoletinInasistencias boletinInasistencia = (BoletinInasistencias) object;
-		ValidacionException validacionException = new ValidacionException();
-		
-		Set<Inasistencia> listaInasistencias = new HashSet<Inasistencia>();
-		listaInasistencias = boletinInasistencia.getListaInasistencias();
-		int contadorFaltas = 0;
-		if (!listaInasistencias.isEmpty()) {
-			for (Inasistencia i : listaInasistencias) {
-				contadorFaltas = (this.existeConceptoEnFecha(i) ? contadorFaltas + 1 : contadorFaltas + 0);
-			}
-		}
-		
-		validacionException.addMensajeError(contadorFaltas > 0 
-											? "Existe" + (contadorFaltas == 1 ? "" : "n") + " " + contadorFaltas 
-													+ " inasistencia" + (contadorFaltas == 1 ? "" : "s") 
-													+ " con el mismo concepto para la misma fecha." 
-											: null);
-		
-		if (!validacionException.getMensajesError().isEmpty()) {
-			throw validacionException;
-		}
+//		BoletinInasistencias boletinInasistencia = (BoletinInasistencias) object;
+//		ValidacionException validacionException = new ValidacionException();
+//		
+//		Set<Inasistencia> listaInasistencias = new HashSet<Inasistencia>();
+//		listaInasistencias = boletinInasistencia.getListaInasistencias();
+//		int contadorFaltas = 0;
+//		if (!listaInasistencias.isEmpty()) {
+//			for (Inasistencia i : listaInasistencias) {
+//				contadorFaltas = (this.existeConceptoEnFecha(i) ? contadorFaltas + 1 : contadorFaltas + 0);
+//			}
+//		}
+//		
+//		validacionException.addMensajeError(contadorFaltas > 0 
+//											? "Existe" + (contadorFaltas == 1 ? "" : "n") + " " + contadorFaltas 
+//													+ " inasistencia" + (contadorFaltas == 1 ? "" : "s") 
+//													+ " con el mismo concepto para la misma fecha." 
+//											: null);
+//		
+//		if (!validacionException.getMensajesError().isEmpty()) {
+//			throw validacionException;
+//		}
 	}
 
 }

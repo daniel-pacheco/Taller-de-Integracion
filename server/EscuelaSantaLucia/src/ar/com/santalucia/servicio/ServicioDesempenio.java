@@ -15,14 +15,11 @@ import ar.com.santalucia.aplicacion.gestor.desempenio.GestorNota;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorTrimestre;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
 import ar.com.santalucia.dominio.dto.BoletinInasistenciasDTO;
-import ar.com.santalucia.dominio.dto.DetallePreviaDTO;
 import ar.com.santalucia.dominio.dto.GetPlanillaTrimestralDTO;
-import ar.com.santalucia.dominio.dto.InasistenciaDTO;
 import ar.com.santalucia.dominio.dto.ItemPlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.dto.MateriaNotaDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
-import ar.com.santalucia.dominio.modelo.academico.Inscripcion;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinInasistencias;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotas;
@@ -32,7 +29,7 @@ import ar.com.santalucia.dominio.modelo.desempenio.MateriaNotasBoletin;
 import ar.com.santalucia.dominio.modelo.desempenio.Nota;
 import ar.com.santalucia.dominio.modelo.desempenio.Trimestre;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
-import ar.com.santalucia.excepciones.ValidacionException;
+import ar.com.santalucia.excepciones.*;
 
 /**
  * Clase ServicioDesempenio: manejo del boletin de notas del alumno, además maneja el boletín histórico
@@ -401,36 +398,105 @@ public class ServicioDesempenio {
 		return true;
 	}
 	
-	// OJO!!! >> recibir un DTO del boletin en vez de el boletin completo
-	public Boolean procesarBoletinInasistencias(BoletinInasistenciasDTO bolInasistenciasDTO) throws Exception {
-		/*
-		 * Pasos para procesar un boletin de inasistencias:
-		 * 1) Obtener el boletín de inasistencias a partir del DTO (que viene por parámetro) ... OK
-		 * 2) Obtener el alumno propietario en base al nombre y apellido del DTO
-		 * 3) Recorrer las inasistencias
-		 * 	3.1) Si el id != null, obtener la inasistencia persistida
-		 * 	3.2) Asignar la inasistencia obtenida al boletin
-		 * 4) Mandar el boletín al modify del gestor
-		 */
-		
-		// 1)
-		BoletinInasistencias bolInasistencias = new BoletinInasistencias();
-		bolInasistencias = gBoletinInasistencias.getById(bolInasistenciasDTO.getIdBoletinInasistencias());
-		// 2)
-//		Alumno propietario = new Alumno();
-//		propietario.setApellido(bolInasistenciasDTO.getApellido());
-//		propietario.setNombre(bolInasistenciasDTO.getNombre());
-//		ArrayList<Alumno> alumnos = gAlumno.getByExample(propietario);
-//		bolInasistencias.setPropietario(alumnos.get(0));
-		// 3)
-		Set<Inasistencia> listaInasistencia = bolInasistencias.getListaInasistencias();
-		ArrayList<InasistenciaDTO> listaInasistenciasDTO = bolInasistenciasDTO.getListaInasistenciasDTO();
-		for (InasistenciaDTO iDTO : listaInasistenciasDTO) {
+	public BoletinInasistenciasDTO getBoletinInasistenciasDTO(Long idBoletin) throws Exception {
+		try {
+			BoletinInasistenciasDTO boletinDTO = new BoletinInasistenciasDTO();
+			BoletinInasistencias boletin = new BoletinInasistencias();
 			
+			boletin = gBoletinInasistencias.getById(idBoletin);
+			boletinDTO.setIdBoletinInasistencias(idBoletin);
+			boletinDTO.setNombre(boletin.getPropietario().getNombre());
+			boletinDTO.setApellido(boletin.getPropietario().getApellido());
+			boletinDTO.setNroDocumento(boletin.getPropietario().getNroDocumento());
+			//setAnio, ver de donde sacarlo
+			boletinDTO.setCicloLectivo(boletin.getCicloLectivo());
+			//boletinDTO.setListaInasistencias((ArrayList<Inasistencia>)boletin.getListaInasistencias());
+			ArrayList<Inasistencia> listaInasistencias = new ArrayList<Inasistencia>();
+			Set<Inasistencia> listaSet = boletin.getListaInasistencias();
+			for (Inasistencia i : listaSet) {
+				listaInasistencias.add(i);
+			}
+			boletinDTO.setListaInasistencias(listaInasistencias);
+			
+			return boletinDTO;
+		} catch (Exception ex) {
+			throw new Exception("No se pudo recuperar el BOLETIN DE INASISTENCIAS por su id: " + ex.getMessage());
+		}
+	}
+	
+	public Boolean procesarBoletinInasistencias(BoletinInasistenciasDTO bolInasistenciasDTO) throws Exception {		
+		try {
+			/*
+			 * Pasos:
+			 * 1) Obtener el boletin de inasistencias persistido a partir del id del DTO.
+			 * 2) Sacar las listas nueva y persistente.
+			 * 3) Comparar cantidad de inasistencias de las listas nueva y persistente.
+			 * 	3.1) Si en la nueva hay menos inasistencias, crear listas auxiliares para eliminar
+			 * 	las inasistencias que sobran.
+			 * 4) Validar inasistencias (esto es: ver concepto y fecha con respecto a las otras),
+			 * equals() de inasistencia.
+			 * 	4.1) Si se repite alguna inasistencia, devolver excepcion con lo que se repita.
+			 * 	4.2) Si está todo bien, seguir en paso 5).
+			 * 5) Pisar la lista persistente con la nueva.
+			 * 6) Mandar el boletin al modify de su gestor.
+			 */
+			
+			BoletinInasistencias bolInasistencias = gBoletinInasistencias.getById(bolInasistenciasDTO.getIdBoletinInasistencias());
+			// ver si llega ordenada la lista de inasistencias.
+			// inicializar listados
+			ArrayList<Inasistencia> listaNueva = bolInasistenciasDTO.getListaInasistencias();
+			ArrayList<Inasistencia> listaPersis = new ArrayList<Inasistencia>();
+			listaPersis.addAll(bolInasistencias.getListaInasistencias());
+			// elimina inasistencias sobrantes
+			if (listaNueva.size() < listaPersis.size()) {
+				ArrayList<Inasistencia> listaAux1 = listaNueva; // lista basada en la nueva que va a ser modificada
+				ArrayList<Inasistencia> listaAux2 = listaPersis; // lista que va a guardar los elementos que sobran
+				for (Inasistencia ip : listaPersis) {
+					for (Inasistencia in : listaAux1) {
+						if (ip.getIdInasistencia().equals(in.getIdInasistencia())) {
+							listaAux1.remove(in);
+							listaAux1.add(ip);
+						}
+					}
+				}
+				listaAux2.removeAll(listaAux1); 
+				for (Inasistencia i : listaAux2) {
+					gInasistencia.delete(i);
+				}
+			}
+			
+			// validar inasistencias
+			validarListaInasistencias(listaNueva);
+			
+			Set<Inasistencia> setInasistencias = new HashSet<Inasistencia>();
+			setInasistencias.addAll(listaNueva);
+			bolInasistencias.setListaInasistencias(setInasistencias);
+			
+			gBoletinInasistencias.modify(bolInasistencias);
+		} catch (ValidacionException vEx) {
+			throw vEx;
+		} catch (InasistenciaException iEx) {
+			throw iEx;
+		} catch (Exception ex) {
+			throw new Exception("No se pudo procesar el BOLETIN DE INASISTENCIAS: " + ex.getMessage());
 		}
 		
 		return true;
 	}
 	
-
+	private void validarListaInasistencias(ArrayList<Inasistencia> inasistencias) throws InasistenciaException {
+		InasistenciaException iException = new InasistenciaException();
+		
+		for (Inasistencia i : inasistencias) {
+			ArrayList<Inasistencia> listaAux = inasistencias;
+			listaAux.remove(i);
+			for (Inasistencia in : listaAux) {
+				if (in.equals(i)) {
+					iException.addInasistencia(i);
+				}
+			}
+		}
+		
+		throw iException;
+	}
 }
