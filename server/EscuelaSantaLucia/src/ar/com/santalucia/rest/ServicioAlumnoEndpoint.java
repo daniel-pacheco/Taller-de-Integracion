@@ -389,4 +389,14 @@ public class ServicioAlumnoEndpoint{
 		}
 	}
 	
+	@GET
+	@Path("/getByDniMin/{dni:[0-9][0-9]*}")
+	public Response getAlumnoByDniMin(@PathParam("dni") final Long dni){
+		try{
+			setInstance();
+			return Response.ok(servicioAlumno.getAlumnoByDniMin(dni)).build();
+		}catch(Exception ex){
+			return Response.ok(ex).build();
+		}
+	}
 }
