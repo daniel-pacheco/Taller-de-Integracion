@@ -21,7 +21,7 @@
  	});
  })
 
- .controller('AlumnadoCtrl', function ($scope, $q, $http, boletinInasistenciasData, $alert, libCalificacionesdata, plantillaTrimestralData, alumnoService, Upload, $timeout, alumnoData, ModalService, ObjectsFactory) {
+ .controller('AlumnadoCtrl', function ($scope, $q, $http, boletinInasistenciasData, $alert, libCalificacionesdata, plantillaTrimestralData, alumnoService, Upload, $timeout, alumnoData, ModalService, ObjectsFactory, modalService) {
  	$scope.listado = true;
  	$scope.listFilterIsEnabled = false;
 
@@ -106,22 +106,31 @@ $scope.domicilioAvanzado = function() {
 	};
 
 
-	$scope.showModalProfile = function(alumno){
+	$scope.showModalProfile = function(alumnoDni){
 		//consultar al back toda la info del alumno
-		ModalService.showModal({
-			templateUrl: 'scripts/directivo/alumnado/modal/showProfileAlumno.tpl.html',
-			controller: 'showProfileAlumnoModalController',
-			inputs: {
-				title: "Perfil",
-				alumno: alumno
-			}
-		}).then(function(modal) {
-			modal.element.modal();
-			modal.close.then(function(result) {        
-        $scope.editProfile(result); //$scope.algo.nroDocumento = result;
-    });
-		});
+		var alumno = {};
 
+		alumnoService.getByDni(alumnoDni)
+		.then(function(response){
+			alumno = response.data;
+			
+			ModalService.showModal({
+				templateUrl: 'scripts/directivo/alumnado/modal/showProfileAlumno.tpl.html',
+				controller: 'showProfileAlumnoModalController',
+				inputs: {
+					title: "Perfil",
+					alumno: alumno
+				}
+			}).then(function(modal) {
+				modal.element.modal();
+				modal.close.then(function(result) {        
+        			$scope.editProfile(result); //$scope.algo.nroDocumento = result;
+        		});
+			});
+		},
+		function(response){
+			alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
+		});
 	}; 
 
 	$scope.showModalInasistencias = function(alumno){//esta deberia ser una funcion que pida la libreta de inasistencias del alumno que recibe
@@ -206,8 +215,8 @@ $scope.alumnoFilter = function (alumno) {//la clave de este comparador es q tran
 		);
 };
 
-$scope.dropDownOptions = ['2014', '2015', '2016','DNI/MAT'];
-$scope.dropDownValue = '';
+$scope.dropDownSearchOptions = ['Primero', 'Segundo', 'Tercero', 'Cuarto', 'Quinto', 'Sexto'];
+$scope.dropDownSearchValue = '';
 
 $scope.dropDownCursoOptions = ['5 Mat', '4 Mat', '3 Mat', '2 Mat'];
 $scope.dropDownCursoValue = '';
@@ -252,31 +261,53 @@ $scope.seleccionar = function (id){
 $scope.alumnoData = [];
 
 
-$scope.search = function () {
-	if (!$scope.listFilterIsEnabled) {
-		$scope.listFilterIsEnabled = true;
-	};
+$scope.search = function (option, dni) {
+	
+	if (option) {
+		if (option == "DNI/MAT") {
+			if ($scope.searchByDni) {
+				// alert($scope.searchByDni);
+				alumnoService.getByDni($scope.searchByDni)
+				.then(function(response){
+					$scope.alumnoData.length = 0;
+					$scope.alumnoData.push(response.data);
+				},
+				function(response){
+					alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
+				})
+			} 
+		};
 
-	if ($scope.searchByDni) {
-		alert($scope.searchByDni);
-	} else {
-		// this.showData();	$scope.alumnoData
-		alumnoService.getAllMin()
-		.then(function(response){
-			$scope.alumnoData = response.data;
-		},
-		function(response){
-			alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
-		});
+		if (option == "TODOS"){
+			// this.showData();	$scope.alumnoData
+			alumnoService.getAllMin()
+			.then(function(response){
+				$scope.alumnoData = response.data;
+			},
+			function(response){
+				alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
+			});
+		};
+
+		if (option !== "TODOS" && option !== "DNI/MAT") {
+			alert(option);
+		};
+
+		if (!$scope.listFilterIsEnabled) {
+			$scope.listFilterIsEnabled = true;
+		};
 	};
 	
 }
 
 $scope.newAlumno = function (alumno){
+	alumno.nombreUsuario = modalService.makeId(5);
+
 	alumnoService.putNew(alumno)
 	.then(function(response){
+		console.log(response);
 		alert('El alumno se ha dado de alta con éxito. ID n°: ' + response.data);
-		$scope.clearFormAlu();
+		// $scope.clearFormAlu();
 	},
 	function(response){
 		alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);

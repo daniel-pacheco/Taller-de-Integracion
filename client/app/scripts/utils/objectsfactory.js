@@ -16,7 +16,8 @@ angular.module('clientAppApp')
       "domicilio": this.newDomicilio(),
       "sexo": "",
       "nombreUsuario": "",
-      "fechaNacimiento": ""
+      "fechaNacimiento": "",
+      "activo": true
     };
     return alumno;
   };

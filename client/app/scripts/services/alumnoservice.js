@@ -17,11 +17,16 @@ angular.module('clientAppApp')
     console.log('sAlumno route: ' + sAlumno);
 
     var expectParam = 'alu/';
+    var expectDni = 'alu/getByDni/';
     var listAll = 'listAll';
     var listAllMin = 'listAllMin';
 
     this.getById = function (id) {
         return $http.get(server + sAlumno + expectParam + id);
+    }
+
+    this.getByDni = function (dni) {
+        return $http.get(server + sAlumno + expectDni + dni);
     }
 
     this.getAll = function () {
