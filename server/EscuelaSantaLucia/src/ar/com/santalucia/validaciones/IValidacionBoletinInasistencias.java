@@ -12,6 +12,6 @@ public interface IValidacionBoletinInasistencias extends IValidacion {
 	 * 	<b>false</b> si no existe, en este caso se permite el alta. 
 	 * @throws Exception
 	 */
-	Boolean existeConceptoEnFecha(Inasistencia inasistencia) throws Exception;
+	// Boolean existeConceptoEnFecha(Inasistencia inasistencia) throws Exception;
 	
 }

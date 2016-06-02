@@ -12,7 +12,7 @@ public class Login {
 	private Boolean habilitado; // HABILITACION PARA ACCESO AL SISTEMA. NO ES EL MISMO HABILITAR QUE EL DE USUARIO
 	
 	public static final String DOCENTE = "DOCENTE";
-	public static final String DOCENTE_DIRECTIVO = "DOCENTE/DIRECTIVO";
+	//public static final String DOCENTE_DIRECTIVO = "DOCENTE/DIRECTIVO";
 	public static final String DIRECTIVO = "DIRECTIVO";
 	public static final String ALUMNO = "ALUMNO";
 	public static final String ADMINISTRADOR = "ADMINISTRADOR";

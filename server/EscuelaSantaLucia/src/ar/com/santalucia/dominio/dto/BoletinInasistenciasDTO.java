@@ -2,6 +2,8 @@ package ar.com.santalucia.dominio.dto;
 
 import java.util.ArrayList;
 
+import ar.com.santalucia.dominio.modelo.desempenio.Inasistencia;
+
 /**
  * BoletinInasistenciasDTO: contiene información sobre el boletin de
  * inasistencias con información resumida del alumno (nombre, apellido y DNI)
@@ -20,14 +22,14 @@ public class BoletinInasistenciasDTO {
 	private String anio;
 	private String curso;
 	private Integer cicloLectivo;
-	private ArrayList<InasistenciaDTO> listaInasistenciasDTO;
+	private ArrayList<Inasistencia> listaInasistencias;
 
 	public BoletinInasistenciasDTO() {
 		super();
 	}
 
 	public BoletinInasistenciasDTO(String nombre, String apellido, Long nroDocumento, String anio, String curso,
-			Integer cicloLectivo, ArrayList<InasistenciaDTO> listaInasistenciasDTO) {
+			Integer cicloLectivo, ArrayList<Inasistencia> listaInasistencias) {
 		super();
 		this.nombre = nombre;
 		this.apellido = apellido;
@@ -35,7 +37,7 @@ public class BoletinInasistenciasDTO {
 		this.anio = anio;
 		this.curso = curso;
 		this.cicloLectivo = cicloLectivo;
-		this.listaInasistenciasDTO = listaInasistenciasDTO;
+		this.listaInasistencias = listaInasistencias;
 	}
 
 	/**
@@ -131,16 +133,16 @@ public class BoletinInasistenciasDTO {
 	/**
 	 * @return the listaInasistenciasDTO
 	 */
-	public ArrayList<InasistenciaDTO> getListaInasistenciasDTO() {
-		return listaInasistenciasDTO;
+	public ArrayList<Inasistencia> getListaInasistencias() {
+		return listaInasistencias;
 	}
 
 	/**
-	 * @param listaInasistenciasDTO
+	 * @param listaInasistencias
 	 *            the listaInasistenciasDTO to set
 	 */
-	public void setListaInasistenciasDTO(ArrayList<InasistenciaDTO> listaInasistenciasDTO) {
-		this.listaInasistenciasDTO = listaInasistenciasDTO;
+	public void setListaInasistencias(ArrayList<Inasistencia> listaInasistencias) {
+		this.listaInasistencias = listaInasistencias;
 	}
 
 	public Long getIdBoletinInasistencias() {
