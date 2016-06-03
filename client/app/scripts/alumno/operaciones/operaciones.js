@@ -12,42 +12,53 @@ angular.module('clientAppApp')
 	});
 })
 
-.controller('OperacionesCtrl', function ($scope, boletinInasistenciasData, libCalificacionesdata, ModalService) {
+.controller('OperacionesCtrl', function ($scope, boletinInasistenciasData, libCalificacionesdata, ModalService, mesasData) {
+
+//-- Tooltips
+$scope.tooltip = {
+	tooltipRegister : {
+		'title' : 'Inscribirse a la mesa'
+	},
+	tooltipUnregister : {
+		'title' : 'Desincsribirse de esta mesa'
+	}    
+};
 
 //-- filters
-	$scope.titulo = 'Operaciones';
-	$scope.desemp = true;
-	$scope.subtitle = "Desempeño";
-	$scope.boletinInasistencias = boletinInasistenciasData;
-	$scope.libCalificaciones = libCalificacionesdata;
+$scope.titulo = 'Operaciones';
+$scope.desemp = true;
+$scope.subtitle = "Desempeño";
+$scope.boletinInasistencias = boletinInasistenciasData;
+$scope.libCalificaciones = libCalificacionesdata;
 
-	$scope.seleccionar = function (id){
-		switch (id){
-			case 'desemp':
-			$scope.examenes = false;
-			$scope.subtitle = "Desempeño";
-			$scope.certificados = false;
-			$scope.desemp = true;
-			break;
-			case 'examenes':
-			$scope.certificados = false;
-			$scope.subtitle = "Exámenes";
-			$scope.desemp = false;
-			$scope.examenes = true;
-			break;
-			case 'certificados':
-			$scope.examenes = false;
-			$scope.desemp = false;
-			$scope.subtitle = "Certificados";
-			$scope.certificados = true;
-			break;
-		}
+$scope.seleccionar = function (id){
+	switch (id){
+		case 'desemp':
+		$scope.examenes = false;
+		$scope.subtitle = "Desempeño";
+		$scope.certificados = false;
+		$scope.desemp = true;
+		break;
+		case 'examenes':
+		$scope.certificados = false;
+		$scope.subtitle = "Exámenes";
+		$scope.desemp = false;
+		$scope.listaMesas = mesasData;
+		$scope.examenes = true;
+		break;
+		case 'certificados':
+		$scope.examenes = false;
+		$scope.desemp = false;
+		$scope.subtitle = "Certificados";
+		$scope.certificados = true;
+		break;
 	}
+}
 
-	$scope.activeMenuIzqAlu = 1;
-	$scope.setActiveAlu = function(menuItemAlu) {
-		$scope.activeMenuIzqAlu = menuItemAlu;
-	};
+$scope.activeMenuIzqAlu = 1;
+$scope.setActiveAlu = function(menuItemAlu) {
+	$scope.activeMenuIzqAlu = menuItemAlu;
+};
 
 /*collapse*/
 $scope.panels = {};
@@ -59,36 +70,67 @@ $scope.multiplePanels = {
 
 // --Test
 $scope.listaPrevias = [
-	{	"materia": 'Matemática', 
-		"anioCursado": '2008', 
-		"observacion": 'Usted adeuda esta materia'
-	},
-	{	"materia": 'Lengua', 
-		"anioCursado": '2010', 
-		"observacion": 'Usted adeuda esta materia'
-	},
-	{	"materia": 'Plástica', 
-		"anioCursado": '1995', 
-		"observacion": 'Usted adeuda esta materia'
-	},
-	{	"materia": 'Matemática', 
-		"anioCursado": '2009', 
-		"observacion": 'Usted adeuda esta materia'
-	}
+{	"materia": 'Matemática', 
+"anioCursado": '2008', 
+"observacion": 'Usted adeuda esta materia',	
+"ano": 4,
+"division": "U"
+},
+{	"materia": 'Lengua', 
+"anioCursado": '2010', 
+"observacion": 'Usted adeuda esta materia',	
+"ano": 2,
+"division": "U"
+},
+{	"materia": 'Plástica', 
+"anioCursado": '1995', 
+"observacion": 'Usted adeuda esta materia',	
+"ano": 2,
+"division": "U"
+},
+{	"materia": 'Matemática', 
+"anioCursado": '2009', 
+"observacion": 'Usted adeuda esta materia',	
+"ano": 6,
+"division": "U"
+},
+{	"materia": 'Química', 
+"anioCursado": '2009', 
+"observacion": 'Usted adeuda esta materia',	
+"ano": 3,
+"division": "U"
+}
 ];
 //-- Modals
 $scope.confirmModal = function(mesagge, funcion, parametro) { //este confirm recibe una funcion y un parametro para que despues de confirmar se pueda llamar a la funcion que se necesite
-  ModalService.showModal({
-    templateUrl: 'scripts/utils/confirm/modalConfirm.tpl.html',
-    controller: 'modalConfirmController',
-    inputs: {
-      mensaje: mesagge,
-    }
-  }).then(function(modal) {
-    modal.element.modal();
-   modal.close.then(function(result){
-      funcion(parametro);
-    });
-});
+	ModalService.showModal({
+		templateUrl: 'scripts/utils/confirm/modalConfirm.tpl.html',
+		controller: 'modalConfirmController',
+		inputs: {
+			mensaje: mesagge,
+		}
+	}).then(function(modal) {
+		modal.element.modal();
+		modal.close.then(function(result){
+			funcion(parametro);
+		});
+	});
 };
+
+//-- Llamadas a services
+$scope.register = function(mesa) {
+	$scope.confirmModal("¿Desea inscribirse a la mesa de "+mesa.materia.nombre+" de "+mesa.materia.anio+mesa.materia.division+"?",$scope.inscribirse, mesa);
+};
+
+$scope.inscribirse = function (mesa){
+	//inscribir al alumno
+	mesa.inscripto = true;	
+};
+$scope.unregister = function(mesa) {
+	$scope.confirmModal("¿Desea desinscribirse de la mesa de "+mesa.materia+" de "+mesa.materia.anio+mesa.materia.division+"?",$scope.desinscribirse, mesa);
+};
+$scope.desinscribirse = function (mesa){
+		//desinscribir al alumno
+		mesa.inscripto = false;		
+	};
 });

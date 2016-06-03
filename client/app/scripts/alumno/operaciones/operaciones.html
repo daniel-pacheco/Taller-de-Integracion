@@ -138,7 +138,7 @@
 													<tr>
 														<th class="col-md-2">Materia</th>
 														<th class="col-md-2">A&ntilde;o de cursado</th>
-														<th class="col-md-2">Observaciones</th>
+														<th class="col-md-3">Observaciones</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -266,22 +266,70 @@
 										</table>
 									</div>
 								</div>
-							</div>						</div>
+							</div>						
 						</div>
 					</div>
-				</div>			
-			</fieldset>
-		</div>
-		<div ng-show="examenes">
-			<fieldset class="navbar">
-				<h1>{{subtitle}}</h1>
-				<hr>
-			</fieldset>
-		</div>
-		<div ng-show="certificados">
-			<fieldset class="navbar">
-				<h1>{{subtitle}}</h1>
-				<hr>
-			</fieldset>
-		</div>
+				</div>
+			</div>			
+		</fieldset>
 	</div>
+	<div ng-show="examenes">
+		<fieldset class="navbar">
+			<h1>{{subtitle}}<small>: Eleg&iacute; un tipo de operaci&oacute;n</small></h1>
+			<hr>	
+			<div class="col-md-11">	
+			<table class="table table-hover table-striped">
+				<thead>
+					<tr>
+						<th class="col-md-1">Materia</th>
+						<th class="col-md-1">A&ntilde;o</th>
+						<th class="col-md-1">Fecha</th>
+						<th class="col-md-2">Horario</th>
+						<th class="col-md-4">Docentes</th>
+						<th class="col-md-1">Inscripto</th>
+						<th class="col-md-2">Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="mesa in listaMesas | orderBy:'fechaHoraInicio'">
+						<td>
+							{{mesa.materia.nombre}}
+						</td>
+						<td>
+							{{mesa.materia.anio}} {{mesa.materia.division}}
+						</td>
+						<td>
+							{{mesa.fechaHoraInicio | amDateFormat:'DD/MM/YYYY'}}
+						</td>
+						<td>
+							de {{mesa.fechaHoraInicio | amDateFormat:'HH:mm'}} a {{mesa.fechaHoraFin | amDateFormat:'HH:mm'}} 
+						</td>
+						<td>
+							<span ng-repeat="docente in mesa.integrantesTribunal" style="width: 30%">{{docente}}, </span>
+						</td>
+						<td>
+							<span ng-if="mesa.inscripto" data-animation="am-flip-x" class="glyphicon glyphicon-thumbs-up"></span>
+							<span ng-if="!mesa.inscripto" data-animation="am-flip-x" class="glyphicon glyphicon-thumbs-down"></span>
+						</td>
+						<td>
+							<button ng-if="!mesa.inscripto" class="btn btn-success btn-xs" bs-tooltip="tooltip.tooltipRegister" ng-click="register(mesa)">
+								<span>Inscribirse</span>
+							</button>
+							<button ng-if="mesa.inscripto" class="btn btn-danger btn-xs" bs-tooltip="tooltip.tooltipUnregister" ng-click="unregister(mesa)">
+								<span>Desinscribirse</span>
+							</button>
+						</td> 
+					</tr>
+				</tbody>
+
+			</table>
+		</div>
+		</fieldset>
+	</div>
+	<div ng-show="certificados">
+		<fieldset class="navbar">
+			<h1>{{subtitle}}</h1>
+			<hr>
+		</fieldset>
+	</div>
+</div>
