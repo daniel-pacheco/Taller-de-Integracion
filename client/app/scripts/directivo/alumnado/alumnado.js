@@ -25,7 +25,7 @@
  	$scope.listado = true;
  	$scope.listFilterIsEnabled = false;
 
-	$scope.nuevoAlumno = ObjectsFactory.newAlumno();
+ 	$scope.nuevoAlumno = ObjectsFactory.newAlumno();
 
 //tooltips
 $scope.tooltip = {
@@ -176,11 +176,8 @@ $scope.upload = function (dataUrl) {
 
 //filters
 
-$scope.clearFormAlu = function (){
-	$scope.formAlu.$setUntouched();
-	$scope.nuevoAlumno = ObjectsFactory.newAlumno();
-}
 var count = 0;
+
 $scope.seleccionarCheckbox = function(alumno) {//al presionar un td de la lista de alumnos pone checkbox en true y muestra boton colocar inasistencias
 	if (alumno.selected) {
 		count--;
@@ -250,19 +247,56 @@ $scope.seleccionar = function (id){
 	}
 }
 
+//---Llamadas al servicio ALUMNO---
+
+$scope.alumnoData = [];
+
+
 $scope.search = function () {
 	if (!$scope.listFilterIsEnabled) {
 		$scope.listFilterIsEnabled = true;
 	};
 
-	this.showData();
+	if ($scope.searchByDni) {
+		alert($scope.searchByDni);
+	} else {
+		// this.showData();	$scope.alumnoData
+		alumnoService.getAllMin()
+		.then(function(response){
+			$scope.alumnoData = response.data;
+		},
+		function(response){
+			alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
+		});
+	};
+	
 }
+
+$scope.newAlumno = function (alumno){
+	alumnoService.putNew(alumno)
+	.then(function(response){
+		alert('El alumno se ha dado de alta con éxito. ID n°: ' + response.data);
+		$scope.clearFormAlu();
+	},
+	function(response){
+		alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
+	});
+};
+
+$scope.clearFormAlu = function (){
+	$scope.formAlu.$setUntouched();
+	$scope.nuevoAlumno = ObjectsFactory.newAlumno();
+}
+
+//--Form management
 
 $scope.activeMenuIzqAlu = 1;
 $scope.setActiveAlu = function(menuItemAlu) {
 	$scope.activeMenuIzqAlu = menuItemAlu;
 };
 
+
+$scope.searchByDni = undefined;
 
 $scope.alumnoEdit = null;
 $scope.editProfile = function(alumno) {
@@ -275,18 +309,18 @@ $scope.editProfile = function(alumno) {
 		$scope.mostrarListaTelefonos = true;
 	}else{ 
 		$scope.mostrarListaTelefonos = false;
-		}
+	}
 	if ($scope.nuevoAlumno.listaMails.length > 0){//Esto es para listar los telefonos en una lista en el form principal	
 		$scope.mostrarListaMails = true;
 	}else{ 
 		$scope.mostrarListaMails = false;
-		}
+	}
 	$scope.nuevoPerfil = true;
 
 }
 
 
-//---Llamadas al servicio ALUMNO---
+
 var alumnoJson = {  
 	"idUsuario"       : null,
 	"nroDocumento"    : 33333333,
@@ -360,7 +394,6 @@ $scope.multiplePanels = {
   };
 
   $scope.answer = [];
-  $scope.alumnoData = [];
   $scope.showData = function() {
 
   	$scope.alumnoData = alumnoData;
@@ -372,32 +405,32 @@ $scope.multiplePanels = {
 	$scope.answer = response.data;  
 });*/
 
-	$scope.prueba = function (){
+$scope.prueba = function (){
 		console.log($scope.nuevoAlumno);//esto se deberia guardar
 	}
 
 
-$scope.getAlumnoById = function (id) {
-	alumnoService.alumnoGetById(id)
-	.then(function(response){
-		$scope.postAnswer = response.data;	
-	})
-}
+	$scope.getAlumnoById = function (id) {
+		alumnoService.alumnoGetById(id)
+		.then(function(response){
+			$scope.postAnswer = response.data;	
+		})
+	}
 
-$scope.putAlumno = function () {
-	alumnoService.alumnoPut(alumnoJson).then(function(response){
-		$scope.postAnswer = response.data;
-		$scope.getAll();
-	})
-};
+	$scope.putAlumno = function () {
+		alumnoService.alumnoPut(alumnoJson).then(function(response){
+			$scope.postAnswer = response.data;
+			$scope.getAll();
+		})
+	};
 
 
-$scope.deleteAlumno = function (id) {
-	alumnoService.alumnoDel(id).then(function (response) {
-		$scope.postAnswer = response.data;
-		$scope.getAll();
-	})
-};
+	$scope.deleteAlumno = function (id) {
+		alumnoService.alumnoDel(id).then(function (response) {
+			$scope.postAnswer = response.data;
+			$scope.getAll();
+		})
+	};
 
 
 //---utils
@@ -406,11 +439,6 @@ $scope.update = function (variable, value) {
 }
 
 //---Auth Test
-$scope.logout = function() {
-	AuthService.logout();
-	$state.go('login');
-};
-
 $scope.performValidRequest = function() {
 	$http.get('http://localhost:8100/valid').then(
 		function(result) {

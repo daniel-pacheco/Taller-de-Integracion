@@ -15,10 +15,10 @@
   var authToken;
   
   function loadUserCredentials() {
-    var token = window.localStorage.getItem('LOCAL_TOKEN_KEY');
+    var token = window.sessionStorage.getItem('LOCAL_TOKEN_KEY');
     if (token) {
-      var name = window.localStorage.getItem('USER_NAME');
-      var rol = window.localStorage.getItem('USER_ROLE');
+      var name = window.sessionStorage.getItem('USER_NAME');
+      var rol = window.sessionStorage.getItem('USER_ROLE');
       useCredentials(name, token, rol);
     }
   }
@@ -43,7 +43,8 @@
     authToken = token;
     userRole = role; 
     // Set the token as header for your requests!
-    //$http.defaults.headers.common['auth0'] = token;//auth0 le dicen los pibes
+    $http.defaults.headers.common['auth0'] = token;//auth0 le dicen los pibes
+    $http.defaults.headers.common['rol'] = role;
   }
   
   function destroyUserCredentials() {
@@ -52,11 +53,13 @@
     userRole = '';
     isAuthenticated = false;
     $http.defaults.headers.common['auth0'] = undefined;
-    window.localStorage.removeItem('LOCAL_TOKEN_KEY');
+    $http.defaults.headers.common['rol'] = undefined;
+    window.sessionStorage.removeItem('LOCAL_TOKEN_KEY');
+    window.sessionStorage.removeItem('USER_NAME');
+    window.sessionStorage.removeItem('USER_ROLE');
   }
 
   var login = function(name, pw, role) {
-    //return $q(function(resolve, reject) {
       return $http.post(SERVER.address + SERVER.login, [name, pw, role])
       .success(function(data,status,headers,config){
         console.log(headers('auth0'));
@@ -88,7 +91,7 @@
     isAuthorized: isAuthorized,
     isAuthenticated: function() {return isAuthenticated;},
     userName: function() {return window.sessionStorage.getItem('USER_NAME');},
-    userRole: function() {return window.localStorage.getItem('USER_ROLE');},
+    userRole: function() {return window.sessionStorage.getItem('USER_ROLE');},
     authToken: function() {return window.sessionStorage.getItem('LOCAL_TOKEN_KEY');}
   };
 });

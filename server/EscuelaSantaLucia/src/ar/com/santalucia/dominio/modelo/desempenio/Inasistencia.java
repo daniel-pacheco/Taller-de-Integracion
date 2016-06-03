@@ -9,7 +9,7 @@ import java.util.Date;
  *
  */
 
-public class Inasistencia {
+public class Inasistencia implements Comparable<Inasistencia> {
 
 	private Long idInasistencia;
 	private Float cantidad;
@@ -70,4 +70,29 @@ public class Inasistencia {
 		this.concepto = concepto;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		Inasistencia inasistencia = (Inasistencia) obj;
+		return (this.fecha.equals(inasistencia.fecha)) && (this.concepto.equals(inasistencia.concepto));
+	}
+
+	@Override
+	public int compareTo(Inasistencia o) {
+		if (this.fecha.equals(o.fecha)) {
+			return 0;
+		}
+		if (this.fecha.before(o.fecha)) {
+			return -1;
+		}
+		if (this.fecha.after(o.fecha)) {
+			return 1;
+		}
+		return -2;
+	}
+
+	
+	
 }

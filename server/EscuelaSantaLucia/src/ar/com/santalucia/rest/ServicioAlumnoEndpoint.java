@@ -21,6 +21,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.apache.catalina.filters.RequestFilter;
 
+import ar.com.santalucia.dominio.modelo.sistema.login.Login;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
@@ -59,7 +60,70 @@ public class ServicioAlumnoEndpoint{
 			}
 		}
 	}
-
+	
+	/**
+	 * Devuelve los datos de un alumno específico proporcionando su DNI
+	 * @param dni
+	 * @return 
+	 */
+	@GET
+	@Path("/alu/getByDni/{id:[0-9][0-9]*}")
+	public Response getAlumnoByDni(@PathParam("id") final Long dni){
+		Alumno alumno = new Alumno();
+		try{
+			setInstance();
+			alumno = servicioAlumno.getUsuarioByDni(dni);
+		}catch(Exception ex){
+			return Response.ok(ex).build();
+		}
+		return Response.ok(alumno).build();
+	}
+	
+	
+	/**
+	 * Devuelve los datos personales del Alumno logueado solamente enviando rol y token.
+	 * @param rolIn
+	 * @param token
+	 * @return
+	 */
+	@GET
+	@Path("/DatosPersonales")
+	public Response obtenerDatosPersonales(@HeaderParam("rol") String rolIn, @HeaderParam("auth0") String token){
+		String nuevoToken = new String();
+		Long usuarioDni;
+		Alumno alumno = new Alumno();
+		try {
+			//ServicioLogin.comprobar(token, rolIn); //Hace la comprobacion de la credencial
+			nuevoToken = ServicioLogin.comprobar(token, rolIn);
+			setInstance();
+			if(nuevoToken == null){
+				usuarioDni = Long.valueOf(ServicioLogin.obtenerIdentificacionUsuario(rolIn, token));
+				alumno = servicioAlumno.getUsuarioByDni(usuarioDni);
+			}else{
+				usuarioDni = Long.valueOf(ServicioLogin.obtenerIdentificacionUsuario(rolIn, nuevoToken));
+				alumno = servicioAlumno.getUsuarioByDni(usuarioDni);
+			}
+			}catch (LoginError ex){
+				switch (ex.getDetalles()) {
+				case LoginError.ROLERROR: 
+					return Response.status(Status.UNAUTHORIZED).build();
+				case LoginError.FIRMAERROR:
+					return Response.status(Status.FORBIDDEN).build();
+				case LoginError.EXPIRADO:
+					return Response.ok(ex).build();
+				default:
+					break;
+				}
+			} catch (Exception ex) {
+				return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+			}
+		if(nuevoToken == null){
+			return Response.ok(alumno).build();
+		}else{
+			return Response.ok(alumno).header("auth0", nuevoToken).build();
+		}
+	}
+	
 	/**
 	 *  
 	 * @param id
@@ -67,8 +131,6 @@ public class ServicioAlumnoEndpoint{
 	 * @return Response ok (Status 200) e instancia de alumno, incluyendo datos de teléfono, 
 	 * mail y domicilio o null si no existe.
 	 */
-	
-	
 	@GET
 	@Path("/alu/{id:[0-9][0-9]*}")
 	public Response getAlumnoById(@PathParam("id") final Long id, @HeaderParam("rol") String rolIn, @HeaderParam("auth0") String token) {
@@ -178,11 +240,20 @@ public class ServicioAlumnoEndpoint{
 	 */
 	@PUT
 	@Path("/alu/")
-	public Response update(final Alumno alumno) {
+	public Response update(final Alumno alumno, @HeaderParam("rol") String rolIn, @HeaderParam("auth0") String token) {
+		if(!rolIn.equals(Login.DIRECTIVO)){	//Comprobación de roles
+			return Response.status(Status.FORBIDDEN).build();
+		}
+		String nuevoToken = new String();
 		try {
+			nuevoToken = ServicioLogin.comprobar(token, rolIn);
 			setInstance();
 			servicioAlumno.addUsuario(alumno);
-			return Response.ok(alumno.getIdUsuario()).build();
+			if(nuevoToken==null){
+				return Response.ok(alumno.getIdUsuario()).build();
+			}else{
+				return Response.ok(alumno.getIdUsuario()).header("auth0", nuevoToken).build();
+			}
 		} catch (Exception ex) {
 			// ex.printStackTrace();
 			return Response.ok(ex).build();
@@ -318,4 +389,14 @@ public class ServicioAlumnoEndpoint{
 		}
 	}
 	
+	@GET
+	@Path("/getByDniMin/{dni:[0-9][0-9]*}")
+	public Response getAlumnoByDniMin(@PathParam("dni") final Long dni){
+		try{
+			setInstance();
+			return Response.ok(servicioAlumno.getAlumnoByDniMin(dni)).build();
+		}catch(Exception ex){
+			return Response.ok(ex).build();
+		}
+	}
 }

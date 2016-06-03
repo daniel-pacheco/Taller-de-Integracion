@@ -26,8 +26,8 @@ angular.module('clientAppApp')
       "nroDocumento": 0,
       "nombre": "",
       "apellido": "",
-      "curso" : "",
-      "division" : "" 
+      "anio" : "",
+      "curso" : "" 
     };
     return alumno;
   };
@@ -190,7 +190,7 @@ var newMesa = function(){
     var estadisticaAnioCurso = {
       "cicloLectivo": 0,
       "anio": '',
-      "division": 'U',
+      "curso": 'U',
       "cantAlumnos": 0,
       "materias":[],
       "trimestres":[],
@@ -222,7 +222,7 @@ var newMesa = function(){
       "cicloLectivo": 0,
       "nombre": '',
       "anio": '',
-      "division": 'U',
+      "curso": 'U',
       "cantAlumnos": 0,
       "notas": [], //length === cantAlumnos
       "historico": []

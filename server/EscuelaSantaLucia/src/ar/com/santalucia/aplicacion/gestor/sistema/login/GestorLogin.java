@@ -104,11 +104,11 @@ public class GestorLogin extends Gestor<Login> {
 	 * @param usuarioNuevo
 	 * @throws Exception
 	 */
-	public void updateUser(Long usuarioExistente, Long usuarioNuevo) throws Exception{
+	public void updateUser(Long usuarioExistente, Long usuarioNuevo, String rol) throws Exception{
 		try{
 			Login login = new Login();  
 			List<Login> listaLogin = new ArrayList<Login>();
-			listaLogin = this.getByExample(new Login(null, usuarioExistente, null, null, null, null, null));
+			listaLogin = this.getByExample(new Login(null, usuarioExistente, null, null, null, rol, null));
 			for(Login l:listaLogin){
 				login = l;
 			}

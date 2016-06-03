@@ -307,6 +307,29 @@ public class ServicioDesempenioEndpoint {
 		}
 	}
 	
+	@PUT
+	@Path("/boletinInasist")
+	public Response updateBoletinInasistencias(final BoletinInasistencias boletinInasistencias) {
+		try {
+			setInstance();
+			servicioDesempenio.addBoletinInasistencias(boletinInasistencias);
+			return Response.ok(boletinInasistencias.getIdBoletinInasistencias()).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
+	
+	@GET
+	@Path("/boletinInasist/{id:[0-9][0-9]*}")
+	public Response getBoletinInasistenciasDTO(@PathParam("id") Long idBoletin) {
+		try {
+			setInstance();
+			return Response.ok(servicioDesempenio.getBoletinInasistenciasDTO(idBoletin)).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
+	
 	
 	@POST
 	@Path("/inasistencia/procesar")

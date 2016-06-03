@@ -5,11 +5,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import ar.com.santalucia.aplicacion.gestor.sistema.login.GestorLogin;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
 import ar.com.santalucia.dominio.dto.DocenteMateriasDTO;
 import ar.com.santalucia.dominio.dto.MateriaAreaCondDocenteDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
+import ar.com.santalucia.dominio.modelo.sistema.login.Login;
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
@@ -29,6 +31,7 @@ import ar.com.santalucia.excepciones.ValidacionException;
 public class ServicioDocente extends ServicioUsuario<Personal> {
 
 	private GestorPersonal gPersonal;
+	private ServicioLogin sLogin;
 
 	public ServicioDocente() throws Exception {
 		super();
@@ -42,8 +45,7 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 				Personal usuario = new Personal();
 				usuario = (Personal) gPersonal.getById(id);
 				if (usuario != null) {
-					if ((usuario.getRol().equals(Personal.DOCENTE))
-							|| (usuario.getRol().equals(Personal.DOCENTE_DIRECTIVO))) {
+					if (usuario.getRolDocente()) {
 						return usuario;
 					} else {
 						return null;
@@ -67,9 +69,10 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 			// unir ambas listas
 			// devolver esa lista
 			List<Personal> listaDevolver = new ArrayList<Personal>();
-			example.setRol(Personal.DOCENTE);
+			/*example.setRol(Personal.DOCENTE);
 			listaDevolver.addAll(gPersonal.getByExample(example));
-			example.setRol(Personal.DOCENTE_DIRECTIVO);
+			example.setRol(Personal.DOCENTE_DIRECTIVO);*/
+			example.setRolDocente(true);
 			listaDevolver.addAll(gPersonal.getByExample(example));
 			return listaDevolver;
 		} catch (Exception ex) {
@@ -80,10 +83,20 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 	@Override
 	public boolean addUsuario(Personal usuario) throws Exception {
 		try {
+			sLogin = new ServicioLogin();
 			if (usuario.getIdUsuario() == null) {
 				gPersonal.add(usuario);
+				sLogin.addLogin(usuario.getNroDocumento(), Login.DOCENTE);
 			} else {
 				gPersonal.modify(usuario);
+				//Si viene por modify, puede venir con dos roles!
+				//Buscamos la entrada de login con rol Directivo. Si no existe, la creamos.
+				if(usuario.getRolDirectivo()){
+					GestorLogin gLogin = new GestorLogin();
+					if ((gLogin.getByExample(new Login(null,usuario.getNroDocumento(),null,null,null,Personal.DOCENTE,true))).size() == 0){
+						sLogin.addLogin(usuario.getNroDocumento(), Login.DOCENTE);
+					}
+				}
 			}
 			return true;
 		} catch (SugerenciaPersonalException ex) {
@@ -151,8 +164,8 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 	@Override
 	public boolean removeUsuario(Personal usuario) throws Exception {
 		try {
-			if(usuario.getRol().equals(Personal.DOCENTE_DIRECTIVO)){
-				usuario.setRol(Personal.DIRECTIVO);
+			if(usuario.getRolDocente() && usuario.getRolDirectivo()){
+				usuario.setRolDocente(false);
 			}else{
 				usuario.setActivo(false);
 			}
@@ -211,6 +224,12 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 			throw new Exception("Ha ocurrido un error al listar los docentes y materias: " + ex.getMessage());
 		}
 		return listaDocentesMateriasDTO;
+	}
+
+	@Override
+	public Personal getUsuarioByDni(Long dni) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

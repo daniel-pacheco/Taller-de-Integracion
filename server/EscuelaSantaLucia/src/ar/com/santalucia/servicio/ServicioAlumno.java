@@ -85,7 +85,7 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 			} else {
 				Long dniViejo = gAlumno.getById(usuario.getIdUsuario()).getNroDocumento(); 
 				gAlumno.modify(usuario);
-				sLogin.actualizarUsuario(dniViejo, usuario.getNroDocumento());
+				sLogin.actualizarUsuario(dniViejo, usuario.getNroDocumento(), Login.ALUMNO);
 			}
 			return true;
 		} catch (ValidacionException ex) {
@@ -187,6 +187,33 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 			throw new Exception("Ha ocurrido un error al listar los alumos: " + ex.getMessage());
 		}
 		return listaAlumnosDTO;
+	}
+	
+	@Override
+	public Alumno getUsuarioByDni(Long dni) throws Exception {
+		List<Alumno> alumnoLista = new ArrayList<Alumno>();
+		alumnoLista = gAlumno.getByExample(new Alumno(dni,null,null,null,null,null,null,null,null,null,true,null));
+		for (Alumno a: alumnoLista){
+			return a;
+		}
+		throw new Exception ("Ocurrió un error al recuperar los datos del alumno por dni");
+	}
+	
+	/**
+	 * Obtiene un objeto AlumnoDTO con un DNI especificado. Se hace uso de listAlumnosDTO() para obtener los alumnos con curso y año.
+	 * @param dni
+	 * @return
+	 * @throws Exception
+	 */
+	public AlumnoDTO getAlumnoByDniMin(Long dni) throws Exception{
+		AlumnoDTO alumnoDto = new AlumnoDTO();
+		List<AlumnoDTO> listaAlumno = listAlumnosDTO();
+		for(AlumnoDTO a : listaAlumno){
+			if(a.getDniAlumno().equals(dni)){
+				return a;
+			}
+		}
+		return alumnoDto;
 	}
 
 }

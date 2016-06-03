@@ -24,37 +24,47 @@ public class Personal extends Usuario {
 
 	private Set<Titulo> listaTitulos;
 	private Long cuil;
-	private String rol;
+	private Boolean rolDirectivo;
+	private Boolean rolDocente;
 	
 	public static String DOCENTE = "DOCENTE";
 	public static String DIRECTIVO = "DIRECTIVO";
-	public static String DOCENTE_DIRECTIVO = "DOCENTE/DIRECTIVO";
-
+	//public static String DOCENTE_DIRECTIVO = "DOCENTE/DIRECTIVO";
+	
 	public Personal() {
 		super();
 		setListaTitulos(new HashSet<Titulo>());
 	}
 
 	public Personal(Long nroDocumento, String tipoDocumento, String nombre, String apellido,
-			Set<Telefono> listaTelefonos, Set<Mail> listaMails, Domicilio domicilio, char sexo, String nombreUsuario,
+			Set<Telefono> listaTelefonos, Set<Mail> listaMails, Domicilio domicilio, Character sexo, String nombreUsuario,
 			Date fechaNacimiento, Boolean activo, Set<Titulo> listaTitulos, Long cuil, String rol) {
 		super(nroDocumento, tipoDocumento, nombre, apellido, listaTelefonos, listaMails, domicilio, sexo,
 				nombreUsuario, fechaNacimiento, activo);
 		this.setListaTitulos(listaTitulos);
 		this.cuil = cuil;
 	}
+	
+	public Boolean getRolDirectivo() {
+		return rolDirectivo;
+	}
+
+	public void setRolDirectivo(Boolean rolDirectivo) {
+		this.rolDirectivo = rolDirectivo;
+	}
+
+	public Boolean getRolDocente() {
+		return rolDocente;
+	}
+
+	public void setRolDocente(Boolean rolDocente) {
+		this.rolDocente = rolDocente;
+	}
 
 	public Set<Titulo> getListaTitulos() {
 		return listaTitulos;
 	}
 
-	public String getRol() {
-		return rol;
-	}
-
-	public void setRol(String rol) {
-		this.rol = rol;
-	}
 
 	public void setListaTitulos(Set<Titulo> listaTitulos) {
 		this.listaTitulos = listaTitulos;

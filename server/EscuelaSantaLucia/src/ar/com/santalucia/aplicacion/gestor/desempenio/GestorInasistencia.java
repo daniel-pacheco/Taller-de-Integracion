@@ -29,6 +29,7 @@ public class GestorInasistencia extends Gestor<Inasistencia> implements IListabl
 			setSession();
 			setTransaction();
 			inasistenciaDAO.persist(object);
+			//sesionDeHilo.getTransaction().commit();
 		} catch (ValidacionException vEx) {
 			throw vEx;
 		} catch (Exception ex) {

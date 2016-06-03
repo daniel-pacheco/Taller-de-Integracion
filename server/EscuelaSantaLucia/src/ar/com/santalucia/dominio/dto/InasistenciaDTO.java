@@ -12,7 +12,7 @@ import java.util.Date;
  */
 public class InasistenciaDTO {
 
-	private String idInasistencia;
+	private Long idInasistencia;
 	private Float cantidad;
 	private Date fecha;
 	private String concepto;
@@ -23,7 +23,7 @@ public class InasistenciaDTO {
 		super();
 	}
 
-	public InasistenciaDTO(String idInasistencia, Float cantidad, Date fecha, String concepto, Boolean justificada,
+	public InasistenciaDTO(Long idInasistencia, Float cantidad, Date fecha, String concepto, Boolean justificada,
 			Float totalAcum) {
 		super();
 		this.idInasistencia = idInasistencia;
@@ -37,7 +37,7 @@ public class InasistenciaDTO {
 	/**
 	 * @return the idInasistencia
 	 */
-	public String getIdInasistencia() {
+	public Long getIdInasistencia() {
 		return idInasistencia;
 	}
 
@@ -45,7 +45,7 @@ public class InasistenciaDTO {
 	 * @param idInasistencia
 	 *            the idInasistencia to set
 	 */
-	public void setIdInasistencia(String idInasistencia) {
+	public void setIdInasistencia(Long idInasistencia) {
 		this.idInasistencia = idInasistencia;
 	}
 
