@@ -1,10 +1,25 @@
+<div>
+
+<div class="navbar-inverse bs-docs-nav" role="banner">
+<div class="container">
+    <div class="navbar-header">
+      <button class="navbar-toggle" type="button" data-template-url="./scripts/directivo/alumnado/aside/alumnadosidebar.aside.tpl.html" data-animation="am-fade-and-slide-left" data-placement="left" title="Menu" bs-aside="aside">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+</div>
+</div>
+
 <div class="col-md-2 hidden-sm hidden-xs">
 	<div>
 		<!-- ngInclude: 'views/partials/affixed-sidebar.html' -->
 		<div class="bs-sidebar hidden-print affix" role="complementary" data-offset-top="-100" bs-affix style="position: relative; text-align: right;">
 			<ul class="nav bs-sidenav">
 				<li bs-scrollspy data-target="#getting-started">
-					<a href="#getting-started">Men&uacute; Alumnado</a>
+					<a href="">Men&uacute; Alumnado</a>
 				</li>
 				<hr style="margin: 2px 0;">
 				<li ng-class="{active : activeMenuIzqAlu === 1}" data-target="#modals">
@@ -31,25 +46,24 @@
 
 	<div id="listado" ng-show="listado">
 		<fieldset class="">
-			<h1>{{subtitle}}: <small>Seleccione el a&ntilde;o lectivo del que desa listar los alumnos</small></h1>
+			<h1>{{subtitle}}: <small>Seleccione el a&ntilde;o del que desa listar los alumnos</small></h1>
 			<hr>
 
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<label>A&ntilde;o lectivo: </label> 
-					<select class="dropdown-toggle form-control-inline" name="" ng-model="dropDownValue"> <!-- ng-change="update(dropDownValue, option)"> -->
+					<label>A&ntilde;o: </label> 
+					<select class="dropdown-toggle form-control-inline" name="" ng-model="dropDownSearchValue"> <!-- ng-change="update(dropDownValue, option)"> -->
 						<option value="" disabled selected>Seleccione una opci&oacute;n</option>
-						<option value="">Todos</option>
-						<option ng-repeat="option in dropDownOptions" value="{{option}}">{{option}}</option>
+						<option value="DNI/MAT">DNI/MAT</option>
+						<option value="TODOS">Todos</option>
+						<option ng-repeat="option in dropDownSearchOptions" value="{{option}}">{{option}}</option>
 					</select>
-					<input type="text" class="form-control-inline"  ng-model="searchByDni" ng-show="dropDownValue === 'DNI/MAT'" maxlength="8" required pattern="\d{8}">
-					<button class="btn btn-default" ng-click="search()"  title="Buscar alumnos" data-content="Seleccione uno o varios alumnos para colocar multiples inasistencias" data-type="info" data-duration="4" data-container="#alerts-container" bs-alert>Buscar</button>
+					<input type="text" class="form-control-inline"  ng-model="searchByDni" ng-show="dropDownSearchValue === 'DNI/MAT'" maxlength="8" required pattern="\d{8}">
+					<button class="btn btn-default" ng-click="search(dropDownSearchValue, searchByDni)"  title="Buscar alumnos" data-content="Seleccione uno o varios alumnos para colocar multiples inasistencias" data-type="info" data-duration="4" data-container="#alerts-container" bs-alert>Buscar</button>
 					<div id="alerts-container" style="width:60%; float:right;" class="small"></div>
 				</div>
 			</div>
 			
-
-
 			<div id="listFilters" ng-show="listFilterIsEnabled">
 
 				<h2>Filtros de búsqueda</h2>
@@ -58,73 +72,67 @@
 						<label>Nombre: </label> 
 						<input class="form-control-inline" type="text" maxlength="255" pattern="[a-zA-Z 0-9]*" ng-model="filterByName">{{filterByName}} 
 
-						<label>Curso: </label>
-						<select class="dropdown-toggle form-control-inline" name="" ng-model="dropDownCursoValue">
-							<option value="" disabled selected>Seleccione un curso</option>
-							<option ng-repeat="cursoOption in dropDownCursoOptions" value="{{cursoOption}}">{{cursoOption}}</option>
-						</select> 
-
-						<label>División: </label><select
-						class="dropdown-toggle form-control-inline" name="" ng-model="dropDownDivisionValue">
-						<option value="" disabled selected>Seleccione una divisi&oacute;n</option>
-						<option ng-repeat="divisionOption in dropDownDivisionOptions" value="{{divisionOption}}">{{divisionOption}}</option>
+						<label for="anioDropDown" ng-show="dropDownSearchValue == 'TODOS'">A&ntilde;o: </label>
+						<select id="anioDropDown" class="dropdown-toggle form-control-inline" name="" ng-model="dropDownAnioValue" ng-show="dropDownSearchValue == 'TODOS'">
+							<option value="" disabled selected>Seleccione un a&ntilde;o</option>
+							<option ng-repeat="option in dropDownAnioOptions" value="{{option}}">{{option}}</option>
 						</select>
 					</div>
 				</div>
-			<div ng-show="mostrarBtnInasistencias" class="affix" role="complementary" data-offset-top="-60" bs-affix style="position: relative; text-align: center;">
-				<button ng-click="checkAll()"class="btn btn-info">Desmarcar Todos</button>
-				<button class="btn btn-warning">Colocar Inasistencias</button>
-			</div>
-			<div></div>
-			<table class="table table-hover table-striped">
-				<thead>
-					<tr>
-						<th><input type="checkbox"></th>
-						<th>Apellido</th>
-						<th>Nombre</th>
-						<th>DNI</th>
-						<th>A&ntilde;o</th>
-						<th>Curso</th>
-						<th>Acciones</th>						
-					</tr>
-				</thead>
-				<tbody style="overflow-y: scroll;">
-					<tr ng-repeat="alumno in alumnoData " ng-style="alumno.selected && {'background-color': '#ddd'}">
-						<td ng-click="seleccionarCheckbox(alumno)"><input type="checkbox" ng-init="true" ng-model="selectAlumno" ng-checked="alumno.selected"></td>
-						<td ng-click="seleccionarCheckbox(alumno)">{{alumno.apellido}}</td>
-						<td ng-click="seleccionarCheckbox(alumno)">{{alumno.nombre}}</td>
-						<td ng-click="seleccionarCheckbox(alumno)">{{alumno.nroDocumento}}</td>
-						<td ng-click="seleccionarCheckbox(alumno)">{{alumno.anio}}</td>
-						<td ng-click="seleccionarCheckbox(alumno)">{{alumno.curso}}</td>
-						<td>
-							<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipProfile" ng-click="showModalProfile(alumno)" style="width: 22%">
-								<span data-animation="am-flip-x" class="glyphicon glyphicon-user"></span>
-							</button>
-					
-							<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipAttendance" ng-click="showModalInasistencias(alumno)" style="width: 22%">
-								<span class="glyphicon glyphicon-calendar"></span>
-							</button>
-					
-							<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipReportCard" ng-click="showModalLibreta(alumno)" style="width: 22%">
-								<span data-animation="am-flip-x" class="glyphicon glyphicon-list-alt"></span>
-							</button>
-				
-							<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipDelete" ng-click="deleteAlumno(alumno.idUsuario)" style="width: 22%">
-								<span class="glyphicon glyphicon-trash"></span>
-							</button>
-						</td>
+				<div ng-show="mostrarBtnInasistencias" class="affix" role="complementary" data-offset-top="-60" bs-affix style="position: relative; text-align: center;">
+					<button ng-click="checkAll()"class="btn btn-info">Desmarcar Todos</button>
+					<button class="btn btn-warning">Colocar Inasistencias</button>
+				</div>
+				<div></div>
+				<table class="table table-hover table-striped">
+					<thead>
+						<tr>
+							<th><input type="checkbox"></th>
+							<th>Apellido</th>
+							<th>Nombre</th>
+							<th>DNI</th>
+							<th>A&ntilde;o</th>
+							<th>Curso</th>
+							<th>Acciones</th>						
+						</tr>
+					</thead>
+					<tbody style="overflow-y: scroll; overflow-x: scroll">
+						<tr ng-repeat="alumno in alumnoData | filter:alumnoFilter" ng-style="alumno.selected && {'background-color': '#ddd'}">
+							<td ng-click="seleccionarCheckbox(alumno)"><input type="checkbox" ng-init="true" ng-model="selectAlumno" ng-checked="alumno.selected"></td>
+							<td ng-click="seleccionarCheckbox(alumno)">{{alumno.apellido}}</td>
+							<td ng-click="seleccionarCheckbox(alumno)">{{alumno.nombre}}</td>
+							<td ng-click="seleccionarCheckbox(alumno)">{{alumno.nroDocumento}}</td>
+							<td ng-click="seleccionarCheckbox(alumno)">{{alumno.anio}}</td>
+							<td ng-click="seleccionarCheckbox(alumno)">{{alumno.curso}}</td>
+							<td>
+								<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipProfile" ng-click="showModalProfile(alumno.nroDocumento)" style="width: 22%">
+									<span data-animation="am-flip-x" class="glyphicon glyphicon-user"></span>
+								</button>
+
+								<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipAttendance" ng-click="showModalInasistencias(alumno)" style="width: 22%">
+									<span class="glyphicon glyphicon-calendar"></span>
+								</button>
+
+								<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipReportCard" ng-click="showModalLibreta(alumno)" style="width: 22%">
+									<span data-animation="am-flip-x" class="glyphicon glyphicon-list-alt"></span>
+								</button>
+
+								<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipDelete" ng-click="deleteAlumno(alumno.idUsuario)" style="width: 22%">
+									<span class="glyphicon glyphicon-trash"></span>
+								</button>
+							</td>
 						<!-- 
 							<span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%; cursor: pointer" class="glyphicon glyphicon-user" ng-click="showModalProfile(alumno)"></span>
 							<span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAttendance" ng-click="showModalInasistencias(alumno)" style="width:25%; cursor: pointer" class="glyphicon glyphicon-calendar"></span>
 							<span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipReportCard" style="width:25%; cursor: pointer" class="glyphicon glyphicon-list-alt" ng-click="showModalLibreta(alumno)"></span>
 							<span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAcademicPerformance" style="width:25%; cursor: pointer" class="glyphicon glyphicon-trash"></span>
 						</td> 
- -->
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</fieldset>
+					-->
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</fieldset>
 </div>
 
 
@@ -137,7 +145,7 @@
 				<div class="formulario media-body">
 					<!-- <div class="container"> Pachec: probar esto en la resolución grande -->
 					<div class="row">
-						<div class="col-md-6 personal-info">
+						<div class="col-md-6 col-xs-7 personal-info">
 							<div class="alert alert-warning alert-dismissible" role="alert">
 								<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 								<span class="glyphicon glyphicon-asterisk small"></span>Campos obligatorios
@@ -147,7 +155,8 @@
 									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span>  Documento:</label>
 								</div>
 								<div class="col-sm-4">
-									<input type="text" name="nroDocumento" class="form-control validate" ng-model="nuevoAlumno.nroDocumento" placeholder="35123123" maxlength="8" required pattern="\d{8}"/>
+									<input type="text" name="nroDocumento" class="form-control validate" ng-model="nuevoAlumno.nroDocumento" placeholder="35123123" maxlength="8" required pattern="\d{8,8}" ng-change="nuevoAlumno.matricula=nuevoAlumno.nroDocumento"/>
+									<input type="hidden" ng-model="nuevoAlumno.matricula" /> <!-- Bindea matricula a nroDocumento para cargar ambos a la vez -->
 									<div ng-messages="formAlu.nroDocumento.$error" ng-if="formAlu.nroDocumento.$touched && formAlu.nroDocumento.$invalid">
 										<div ng-message="required" class="help-block">Complete este campo</div>
 										<div ng-message="pattern" class="help-block">Formato invalido</div>
@@ -303,7 +312,7 @@
 							</div><!-- /form-group-->
 						</div><!--personal-info-->
 						
-						<div class="col-md-3">
+						<div class="col-md-3 col-xs-8">
 							<div class="form-group">
 								<div class="col-sm-1">
 								</div>
@@ -313,27 +322,27 @@
 									<div ngf-drop ng-model="picFile" ngf-pattern="image/*" class="cropArea"><!--{{picFile}}-->
 										<img-crop image="picFile  | ngfDataUrl"                 
 										result-image="croppedDataUrl" ng-init="croppedDataUrl=''">
-										</img-crop>
-									</div>
+									</img-crop>
 								</div>
+							</div>
 							<!--<div>
 								<img ng-src="{{croppedDataUrl}}">
 							</div>-->
 							<!--<button ng-click="upload(croppedDataUrl)">Submit</button> -->
-								<span class="progress" ng-show="progress >= 0">
-									<div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
-								</span>
-								<span ng-show="result">Carga completa</span>
-								<span class="err" ng-show="errorMsg">{{errorMsg}}</span>
-							</div>
+							<span class="progress" ng-show="progress >= 0">
+								<div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
+							</span>
+							<span ng-show="result">Carga completa</span>
+							<span class="err" ng-show="errorMsg">{{errorMsg}}</span>
 						</div>
+					</div>
 				</div><!--row-->
 			</div><!--formulario media-body-->
 			<div class="form-group">
-				<div class="col-sm-2 col-sm-offset-3">
+				<div class="col-sm-2 col-sm-offset-3 col-xs-3 col-xs-offset-2">
 					<input class="btn btn-danger" type="button" name="" ng-click="clearFormAlu()" value="Limpiar" />
 				</div>
-				<div class="col-sm-1">
+				<div class="col-sm-1 col-xs-3 col-xs-offset-1">
 					<input class="btn btn-primary" ng-click="newAlumno(nuevoAlumno)" type="submit" name="" value="Guardar" ng-disabled="!formAlu.$valid"/>
 				</div>
 			</div>
@@ -430,5 +439,6 @@
 		</div>
 	</fieldset>
 
+</div>
 </div>
 </div>
