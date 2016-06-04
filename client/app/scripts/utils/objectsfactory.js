@@ -130,51 +130,60 @@ angular.module('clientAppApp')
 
 //Necesitamos materia ligth para listar materias
 
-  var newArea = function(){
-    var area = {
-      "idArea": null,
-      "nombre": ''
-    };
-    return area;
+var newArea = function(){
+  var area = {
+    "idArea": null,
+    "nombre": ''
   };
+  return area;
+};
 
-  var newAnio = function(){
-    var anio = {
-      "idAanio": null,
-      "nombre": '',
-      "descripcion": '',
-      "listaCursos": [],
-      "listaMaterias": [],
-      "activo": true
-    };
-    return anio;
+var newAnio = function(){
+  var anio = {
+    "idAanio": null,
+    "nombre": '',
+    "descripcion": '',
+    "listaCursos": [],
+    "listaMaterias": [],
+    "activo": true
   };
+  return anio;
+};
 
-  var newCurso = function(){
-    var curso = {
-      "idCurso": null,
-      "curso": '',
-      "turno": '',
-      "cicloLectivo": 0,
-      "listaAlumnos": []
-    };
-    return curso;
+var newCurso = function(){
+  var curso = {
+    "idCurso": null,
+    "division": '',
+    "turno": '',
+    "cicloLectivo": 0,
+    "listaAlumnos": []
   };
+  return curso;
+};
 
-  var newInasistencia = function(){
-    var inasistencia = {
-      "idInasistencia" : null,
-      "cantidad" : 0.0,
-      "fecha" : "mmm dd, aaaa hh:mm:ss AM/PM",
-      "concepto" : "",
-      "justificada" : true,
-      "totalAcum" : 0.0
-    };
-    return inasistencia;
+var newInasistencia = function(){
+  var inasistencia = {
+    "idInasistencia" : null,
+    "cantidad" : 0.0,
+    "fecha" : "mmm dd, aaaa hh:mm:ss AM/PM",
+    "concepto" : "",
+    "justificada" : true,
+    "totalAcum" : 0.0
   };
+  return inasistencia;
+};
 
-
-  
+var newMesa = function(){
+  var mesa= {
+    "idMesa" : null,
+    "fechaHoraInicio" : "mmm dd, aaaa hh:mm:ss AM/PM",
+    "fechaHoraFin" : "mmm dd, aaaa hh:mm:ss AM/PM",
+    "plazoInscripcion" : 2,
+    "materia" : null,
+    "integrantesTribunal" : []
+  };
+  return mesa;
+};
 
   //-- Estadisticas
 
@@ -246,7 +255,7 @@ angular.module('clientAppApp')
     newAnio: newAnio,
     newCurso: newCurso,
     newInasistencia: newInasistencia,
-    
+    newMesa: newMesa,
 
     //-- Estadisticas
 

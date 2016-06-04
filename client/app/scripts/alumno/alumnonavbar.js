@@ -23,10 +23,13 @@
  .controller('AlumnoNavBarCtrl', function ($scope, MENU_ALUMNO) {
 
  	$scope.menuAlumno = MENU_ALUMNO;
- 	
+
+
  	$scope.setActive = function(menuItem) {
  		$scope.activeMenu = menuItem;
  	};
+
+ 	$scope.setActive($scope.menuAlumno.operaciones);
 
  	$scope.popover = {
  		"title": "Despedirse"   

@@ -226,7 +226,6 @@ $scope.editProfile = function(docente) {
   $scope.seleccionar = function(id){
    $scope.listado = false;
    $scope.nuevoPerfil = false;
-
    switch (id) {
     case 'listado':
     $scope.listado = true;
