@@ -62,6 +62,4 @@ angular.module('clientAppApp')
   },
   
   ]
-}
-)
-
+});

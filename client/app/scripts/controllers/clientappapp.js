@@ -9,7 +9,7 @@
  */
  angular.module('clientAppApp')
 
- .controller('ClientappappCtrl', function ($scope, $state, $popover, loginService, modalService, AUTH_EVENTS, MENU_DIRECTIVO) {
+ .controller('ClientappappCtrl', function ($scope, $state, $popover, loginService, modalService, AUTH_EVENTS) {
   
   $scope.credentials = {};
 

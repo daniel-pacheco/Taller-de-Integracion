@@ -98,7 +98,7 @@ angular.module('clientAppApp')
       "area": [],
       "materia" : []
     };
-    return doncente;
+    return docente;
   };
 
   var newTitulo = function(){
@@ -263,6 +263,6 @@ var newMesa = function(){
     newEstadisticaMateria: newEstadisticaMateria,
     newEstadisticaTrimestre: newEstadisticaTrimestre,
     newEstadisticaPorMateria: newEstadisticaPorMateria,
-    newHistoricoPorMateria, newHistoricoPorMateria
-  }
-})
+    newHistoricoPorMateria: newHistoricoPorMateria
+  };
+});
