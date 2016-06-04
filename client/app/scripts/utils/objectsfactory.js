@@ -152,7 +152,7 @@ var newAnio = function(){
 var newCurso = function(){
   var curso = {
     "idCurso": null,
-    "division": '',
+    "curso": '',
     "turno": '',
     "cicloLectivo": 0,
     "listaAlumnos": []

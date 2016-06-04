@@ -19,7 +19,7 @@
 							<div ng-class="{ 'has-error': formDom.calle.$touched && formDom.calle.$invalid }">
 								<div class="col-sm-3 control-label">
 									<span class="glyphicon glyphicon-asterisk alert-warning small"></span>
-									<label for=""> Calle:</label>
+									<label for=""> Calle nombre:</label>
 								</div>
 								<div class="col-sm-4">
 									<input name="calle" ng-model="domicilioCopia.calle" class="form-control" placeholder="Sarobe" type="text" maxlength="254" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*"/>
@@ -44,30 +44,12 @@
 							</div>
 						</div>
 
-						<div class="form-group"  ng-class="{ 'has-error': formDom.localidad.$touched && formDom.localidad.$invalid }">
-							<div class="col-sm-3 control-label">
-								<label for="">Localidad:</label>
-							</div>
-							<div class="col-sm-5">
-								<input ng-model="domicilioCopia.localidad" name="localidad" class="form-control" placeholder="Parana" type="text" maxlength="254" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*"/>
-							</div>
-						</div>
-
 						<div class="form-group" ng-class="{ 'has-error': formDom.dpto.$touched && formDom.dpto.$invalid }">
 							<div class="col-sm-3 control-label">
-								<label for="">Departamento:</label>
+								<label for="">Dpto:</label>
 							</div>
 							<div class="col-sm-5">
 								<input ng-model="domicilioCopia.dpto" name="dpto" class="form-control" placeholder="Piso" type="text" maxlength="254"/>
-							</div>
-						</div>
-
-						<div class="form-group" ng-class="{ 'has-error': formDom.departamento.$touched && formDom.departamento.$invalid }">
-							<div class="col-sm-3 control-label">
-								<label for="">Departamento:</label>
-							</div>
-							<div class="col-sm-5">
-								<input ng-model="domicilioCopia.departamento" name="departamento"class="form-control" placeholder="Parana" type="text" maxlength="254"  pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*"/>
 							</div>
 						</div>
 
@@ -91,6 +73,25 @@
 								</div>
 							</div>
 						</div>
+
+						<div class="form-group"  ng-class="{ 'has-error': formDom.localidad.$touched && formDom.localidad.$invalid }">
+							<div class="col-sm-3 control-label">
+								<label for="">Localidad:</label>
+							</div>
+							<div class="col-sm-5">
+								<input ng-model="domicilioCopia.localidad" name="localidad" class="form-control" placeholder="Parana" type="text" maxlength="254" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*"/>
+							</div>
+						</div>
+
+						<div class="form-group" ng-class="{ 'has-error': formDom.departamento.$touched && formDom.departamento.$invalid }">
+							<div class="col-sm-3 control-label">
+								<label for="">Departamento:</label>
+							</div>
+							<div class="col-sm-5">
+								<input ng-model="domicilioCopia.departamento" name="departamento"class="form-control" placeholder="Parana" type="text" maxlength="254"  pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*"/>
+							</div>
+						</div>
+
 						<div class="form-group" ng-class="{ 'has-error': formDom.barrio.$touched && formDom.barrio.$invalid }">
 							<div class="col-sm-3 control-label">
 								<label for="">Barrio:</label>
