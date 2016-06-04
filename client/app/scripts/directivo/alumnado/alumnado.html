@@ -1,10 +1,25 @@
+<div>
+
+<div class="navbar-inverse bs-docs-nav" role="banner">
+<div class="container">
+    <div class="navbar-header">
+      <button class="navbar-toggle" type="button" data-template-url="./scripts/directivo/alumnado/aside/alumnadosidebar.aside.tpl.html" data-animation="am-fade-and-slide-left" data-placement="left" title="Menu" bs-aside="aside">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+</div>
+</div>
+
 <div class="col-md-2 hidden-sm hidden-xs">
 	<div>
 		<!-- ngInclude: 'views/partials/affixed-sidebar.html' -->
 		<div class="bs-sidebar hidden-print affix" role="complementary" data-offset-top="-100" bs-affix style="position: relative; text-align: right;">
 			<ul class="nav bs-sidenav">
 				<li bs-scrollspy data-target="#getting-started">
-					<a href="#getting-started">Men&uacute; Alumnado</a>
+					<a href="">Men&uacute; Alumnado</a>
 				</li>
 				<hr style="margin: 2px 0;">
 				<li ng-class="{active : activeMenuIzqAlu === 1}" data-target="#modals">
@@ -81,8 +96,8 @@
 							<th>Acciones</th>						
 						</tr>
 					</thead>
-					<tbody style="overflow-y: scroll;">
-						<tr ng-repeat="alumno in alumnoData " ng-style="alumno.selected && {'background-color': '#ddd'}">
+					<tbody style="overflow-y: scroll; overflow-x: scroll">
+						<tr ng-repeat="alumno in alumnoData | filter:alumnoFilter" ng-style="alumno.selected && {'background-color': '#ddd'}">
 							<td ng-click="seleccionarCheckbox(alumno)"><input type="checkbox" ng-init="true" ng-model="selectAlumno" ng-checked="alumno.selected"></td>
 							<td ng-click="seleccionarCheckbox(alumno)">{{alumno.apellido}}</td>
 							<td ng-click="seleccionarCheckbox(alumno)">{{alumno.nombre}}</td>
@@ -130,7 +145,7 @@
 				<div class="formulario media-body">
 					<!-- <div class="container"> Pachec: probar esto en la resolución grande -->
 					<div class="row">
-						<div class="col-md-6 personal-info">
+						<div class="col-md-6 col-xs-7 personal-info">
 							<div class="alert alert-warning alert-dismissible" role="alert">
 								<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 								<span class="glyphicon glyphicon-asterisk small"></span>Campos obligatorios
@@ -297,7 +312,7 @@
 							</div><!-- /form-group-->
 						</div><!--personal-info-->
 						
-						<div class="col-md-3">
+						<div class="col-md-3 col-xs-8">
 							<div class="form-group">
 								<div class="col-sm-1">
 								</div>
@@ -324,10 +339,10 @@
 				</div><!--row-->
 			</div><!--formulario media-body-->
 			<div class="form-group">
-				<div class="col-sm-2 col-sm-offset-3">
+				<div class="col-sm-2 col-sm-offset-3 col-xs-3 col-xs-offset-2">
 					<input class="btn btn-danger" type="button" name="" ng-click="clearFormAlu()" value="Limpiar" />
 				</div>
-				<div class="col-sm-1">
+				<div class="col-sm-1 col-xs-3 col-xs-offset-1">
 					<input class="btn btn-primary" ng-click="newAlumno(nuevoAlumno)" type="submit" name="" value="Guardar" ng-disabled="!formAlu.$valid"/>
 				</div>
 			</div>
@@ -424,5 +439,6 @@
 		</div>
 	</fieldset>
 
+</div>
 </div>
 </div>

@@ -19,7 +19,8 @@
     "highcharts": "~4.2.4",
     "moment": "~2.10.6",
     "ng-file-upload": "~11.0.2",
-    "ng-img-crop": "ngImgCrop#~0.3.2"
+    "ng-img-crop": "ngImgCrop#~0.3.2",
+    "bootstrap-additions": "^0.3.1"
   },
   "devDependencies": {},
   "appPath": "app",
