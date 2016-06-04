@@ -53,7 +53,7 @@ angular
 */
 });
 
-})
+});
   /*
 .run(function($httpBackend){
   $httpBackend.whenGET('http://localhost:8100/valid')

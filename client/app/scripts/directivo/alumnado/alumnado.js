@@ -272,11 +272,13 @@ $scope.search = function (option, dni) {
 				// alert($scope.searchByDni);
 				alumnoService.getByDniMin($scope.searchByDni)
 				.then(function(response){
+					console.log(response);
 					$scope.alumnoData.length = 0;
 					$scope.alumnoData.push(response.data);
 				},
 				function(response){
-					alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
+					console.log(response);
+					alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText + " - " + response.data.detailMessage);
 				})
 			} 
 		};
