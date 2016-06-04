@@ -267,7 +267,7 @@ $scope.search = function (option, dni) {
 		if (option == "DNI/MAT") {
 			if ($scope.searchByDni) {
 				// alert($scope.searchByDni);
-				alumnoService.getByDni($scope.searchByDni)
+				alumnoService.getByDniMin($scope.searchByDni)
 				.then(function(response){
 					$scope.alumnoData.length = 0;
 					$scope.alumnoData.push(response.data);

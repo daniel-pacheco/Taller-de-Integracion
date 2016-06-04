@@ -12,14 +12,14 @@ angular.module('clientAppApp')
     // AngularJS will instantiate a singleton by calling "new" on this function
 
     var server = SERVER.address;/*'http://localhost:8080/'; 'http://192.168.1.8:8080/';//EscuelaSantaLucia/rest/sAlumno/listAll //http://localhost:8080/EscuelaSantaLucia/rest/sAlumno/listAll'*/
-    console.log('server address: ' + server);
     var sAlumno = SERVER.sAlumno;
-    console.log('sAlumno route: ' + sAlumno);
 
     var expectParam = 'alu/';
     var expectDni = 'alu/getByDni/';
+    var expectDniMin = 'getByDniMin/';
     var listAll = 'listAll';
     var listAllMin = 'listAllMin';
+
 
     this.getById = function (id) {
         return $http.get(server + sAlumno + expectParam + id);
@@ -27,6 +27,10 @@ angular.module('clientAppApp')
 
     this.getByDni = function (dni) {
         return $http.get(server + sAlumno + expectDni + dni);
+    }
+
+    this.getByDniMin = function (dni) {
+        return $http.get(server + sAlumno + expectDniMin + dni);
     }
 
     this.getAll = function () {
