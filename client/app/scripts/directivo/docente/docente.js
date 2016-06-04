@@ -20,7 +20,7 @@
  		}
  	});
  })
- .controller('DocenteCtrl', function ($scope, docenteData, $timeout, ModalService, SERVER, ObjectsFactory, $alert) {
+ .controller('DocenteCtrl', function ($scope, docenteData, $timeout, ModalService, SERVER, ObjectsFactory, $alert, docenteService) {
 
   $scope.tooltip = {
     tooltipProfile : {
@@ -84,7 +84,7 @@ $scope.domicilioAvanzado = function() {
   });
 };
 
-$scope.telefonoAvanzado = function(){//esta deberia ser una funcion que pida la libreta de inasistencias del alumno que recibe
+$scope.telefonoAvanzado = function(){//esta deberia ser una funcion que pida la libreta de inasistencias del docente que recibe
   ModalService.showModal({
     templateUrl: 'scripts/directivo/docente/modal/addphonedetails.tpl.html',
     controller: 'telefonoAvanzadoModalController',
@@ -241,9 +241,9 @@ $scope.editProfile = function(docente) {
 };
 $scope.docenteFilter = function (docente) {//la clave de este comparador es q transofrma todo a string y va comparando las posiciones, no tiene en cuenta los espacios
   return (/*angular.lowercase(docente.materia).indexOf(angular.lowercase($scope.filterByName) || '') !== -1 ||*/
-    angular.lowercase(docente.nombre).indexOf(angular.lowercase($scope.filterByName) || '') !== -1 ||
-    angular.lowercase(docente.apellido).indexOf(angular.lowercase($scope.filterByName) || '') !== -1 ||
-    angular.lowercase(docente.cuil.toString()).indexOf(angular.lowercase($scope.filterByName) || '') !== -1
+    angular.lowercase(docente.apellidoDocente).indexOf(angular.lowercase($scope.filterByName) || '') !== -1 ||
+    angular.lowercase(docente.nombreDocente).indexOf(angular.lowercase($scope.filterByName) || '') !== -1 ||
+    angular.lowercase(docente.dniDocente.toString()).indexOf(angular.lowercase($scope.filterByName) || '') !== -1
     );
 };
 $scope.showData = function() {
@@ -260,4 +260,23 @@ $scope.setActiveDoc = function(menuItemDoc) {
 {name:'Adam', surname:'sami', area:'Artes', cuil:'7777777', materia:'Plastica'},
 {name:'Julie', surname:'rose', area:'Cs. Sociales', cuil:'000000', materia:'peperoni'},
 {name:'Juliette', surname:'romeo', area:'Cs. Exactas', cuil:'929225', materia:'Fisica'}];*/
+
+$scope.multiplePanels = {
+  activePanels: [null]
+};
+
+$scope.docenteData = [];
+
+
+$scope.search = function () {
+  
+      docenteService.getAllMin()
+      .then(function(response){
+        $scope.docenteData = response.data;
+      },
+      function(response){
+        alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
+      });
+    };
+    $scope.search();
 });

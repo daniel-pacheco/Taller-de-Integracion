@@ -94,9 +94,8 @@ angular.module('clientAppApp')
       "nroDocumento" : 0,
       "nombre" : "",
       "apellido" : "",
-      "año" : [],
-      "area": [],
-      "materia" : []
+      "listaAnios" : [],
+      "listaMaterias" : []
     };
     return docente;
   };

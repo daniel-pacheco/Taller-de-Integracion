@@ -11,6 +11,7 @@
  .constant('SERVER', {
  	address: 'http://192.168.1.4:8080/',
  	sAlumno: 'EscuelaSantaLucia/rest/sAlumno/',
+ 	sDocente: 'EscuelaSantaLucia/rest/sDocente/',
  	login: 'EscuelaSantaLucia/rest/sLogin/login'
  })
 
