@@ -7,78 +7,107 @@ import java.util.ArrayList;
  * dicta materias las materias que dicta.
  * 
  * @author Eric
- * @version 1.0
+ * @version 1.1
  *
  */
+
+// Último modificador: Eric Pennachini @ 05/06/2016 13:32
+
 public class DocenteMateriasDTO {
-	private Long dniDocente;
-	private String nombreDocente;
-	private String apellidoDocente;
-	private ArrayList<String> anios;
-	//private ArrayList<String> areas;
-	private ArrayList<MateriaAreaCondDocenteDTO> materias;
+	private Long nroDocumento;
+	private String nombre;
+	private String apellido;
+	private ArrayList<String> listaAnios;
+	// private ArrayList<String> areas;
+	private ArrayList<MateriaAreaCondDocenteDTO> listaMaterias;
 
 	public DocenteMateriasDTO() {
 		super();
 	}
 
-	public DocenteMateriasDTO(Long dniDocente, String nombreDocente, String apellidoDocente, ArrayList<String> anios,
-			/*ArrayList<String> areas,*/ArrayList<MateriaAreaCondDocenteDTO> materias) {
+	public DocenteMateriasDTO(Long nroDocumento, String nombre, String apellido, ArrayList<String> listaAnios,
+			ArrayList<MateriaAreaCondDocenteDTO> listaMaterias) {
 		super();
-		this.dniDocente = dniDocente;
-		this.nombreDocente = nombreDocente;
-		this.apellidoDocente = apellidoDocente;
-		this.anios = anios;
-		//this.areas = areas;
-		this.materias = materias;
+		this.nroDocumento = nroDocumento;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.listaAnios = listaAnios;
+		this.listaMaterias = listaMaterias;
 	}
 
-	public Long getDniDocente() {
-		return dniDocente;
+	/**
+	 * @return the nroDocumento
+	 */
+	public Long getNroDocumento() {
+		return nroDocumento;
 	}
 
-	public void setDniDocente(Long dniDocente) {
-		this.dniDocente = dniDocente;
+	/**
+	 * @param nroDocumento
+	 *            the nroDocumento to set
+	 */
+	public void setNroDocumento(Long nroDocumento) {
+		this.nroDocumento = nroDocumento;
 	}
 
-	public String getNombreDocente() {
-		return nombreDocente;
+	/**
+	 * @return the nombre
+	 */
+	public String getNombre() {
+		return nombre;
 	}
 
-	public void setNombreDocente(String nombreDocente) {
-		this.nombreDocente = nombreDocente;
+	/**
+	 * @param nombre
+	 *            the nombre to set
+	 */
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
-	public String getApellidoDocente() {
-		return apellidoDocente;
+	/**
+	 * @return the apellido
+	 */
+	public String getApellido() {
+		return apellido;
 	}
 
-	public void setApellidoDocente(String apellidoDocente) {
-		this.apellidoDocente = apellidoDocente;
+	/**
+	 * @param apellido
+	 *            the apellido to set
+	 */
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
 	}
 
-	public ArrayList<String> getAnios() {
-		return anios;
+	/**
+	 * @return the listaAnios
+	 */
+	public ArrayList<String> getListaAnios() {
+		return listaAnios;
 	}
 
-	public void setAnios(ArrayList<String> anios) {
-		this.anios = anios;
-	}
-	/*
-	public ArrayList<String> getAreas() {
-		return areas;
-	}
-
-	public void setAreas(ArrayList<String> areas) {
-		this.areas = areas;
-	}
-	*/
-	public ArrayList<MateriaAreaCondDocenteDTO> getMaterias() {
-		return materias;
+	/**
+	 * @param listaAnios
+	 *            the listaAnios to set
+	 */
+	public void setListaAnios(ArrayList<String> listaAnios) {
+		this.listaAnios = listaAnios;
 	}
 
-	public void setMaterias(ArrayList<MateriaAreaCondDocenteDTO> materias) {
-		this.materias = materias;
+	/**
+	 * @return the listaMaterias
+	 */
+	public ArrayList<MateriaAreaCondDocenteDTO> getListaMaterias() {
+		return listaMaterias;
+	}
+
+	/**
+	 * @param listaMaterias
+	 *            the listaMaterias to set
+	 */
+	public void setListaMaterias(ArrayList<MateriaAreaCondDocenteDTO> listaMaterias) {
+		this.listaMaterias = listaMaterias;
 	}
 
 }

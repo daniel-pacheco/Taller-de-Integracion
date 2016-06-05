@@ -200,21 +200,21 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 				listaAnios = servicioAcademico.getAnios(anioEx);
 				for (Anio a: listaAnios) {
 					for (Materia m: a.getListaMaterias()) {
-						ArrayList<String> anios = (docenteDTO.getMaterias() == null) ? new ArrayList<String>() : docenteDTO.getAnios();
+						ArrayList<String> anios = (docenteDTO.getListaMaterias() == null) ? new ArrayList<String>() : docenteDTO.getListaAnios();
 						if (!anios.contains(a.getNombre())) {
 							anios.add(a.getNombre());
 						}
-						docenteDTO.setAnios(anios);
-						ArrayList<MateriaAreaCondDocenteDTO> materias = (docenteDTO.getMaterias() == null) 
+						docenteDTO.setListaAnios(anios);
+						ArrayList<MateriaAreaCondDocenteDTO> materias = (docenteDTO.getListaMaterias() == null) 
 																? new ArrayList<MateriaAreaCondDocenteDTO>() 
-																: docenteDTO.getMaterias();
+																: docenteDTO.getListaMaterias();
 						if ((m.getDocenteTitular() != null) && (m.getDocenteTitular().equals(p))) {
 							materias.add(new MateriaAreaCondDocenteDTO(m.getNombre(), MateriaAreaCondDocenteDTO.TITULAR, m.getArea().getNombre()));
-							docenteDTO.setMaterias(materias);
+							docenteDTO.setListaMaterias(materias);
 						}
 						if ((m.getDocenteSuplente() != null) && (m.getDocenteSuplente().equals(p))) {
 							materias.add(new MateriaAreaCondDocenteDTO(m.getNombre(), MateriaAreaCondDocenteDTO.SUPLENTE, m.getArea().getNombre()));
-							docenteDTO.setMaterias(materias);
+							docenteDTO.setListaMaterias(materias);
 						}
 					}
 				}

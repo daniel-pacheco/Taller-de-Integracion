@@ -21,6 +21,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.apache.catalina.filters.RequestFilter;
 
+import ar.com.santalucia.dominio.dto.AlumnoDTO;
 import ar.com.santalucia.dominio.modelo.sistema.login.Login;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
@@ -394,7 +395,13 @@ public class ServicioAlumnoEndpoint{
 	public Response getAlumnoByDniMin(@PathParam("dni") final Long dni){
 		try{
 			setInstance();
-			return Response.ok(servicioAlumno.getAlumnoByDniMin(dni)).build();
+			AlumnoDTO alumnoDto = servicioAlumno.getAlumnoByDniMin(dni);
+			if(alumnoDto.getDniAlumno()!=null){
+				return Response.ok(alumnoDto).build();
+			}else{
+				Exception mensaje = new Exception("Mensaje de error");
+				return Response.status(Status.INTERNAL_SERVER_ERROR).entity(mensaje/*"No se encuentra alumno con el dni: "+String.valueOf(dni)*/).build();
+			}
 		}catch(Exception ex){
 			return Response.ok(ex).build();
 		}
