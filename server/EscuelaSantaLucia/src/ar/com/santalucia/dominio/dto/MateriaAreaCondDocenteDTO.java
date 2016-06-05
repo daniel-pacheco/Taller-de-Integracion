@@ -9,9 +9,11 @@ package ar.com.santalucia.dominio.dto;
  *
  */
 
+//Último modificador: Eric Pennachini @ 05/06/2016 13:30
+
 public class MateriaAreaCondDocenteDTO {
 
-	private String materia;
+	private String nombre;
 	private String condicion;
 	private String area;
 	
@@ -22,35 +24,55 @@ public class MateriaAreaCondDocenteDTO {
 		super();
 	}
 
-	public MateriaAreaCondDocenteDTO(String materia, String condicion, String area) {
+	public MateriaAreaCondDocenteDTO(String nombre, String condicion, String area) {
 		super();
-		this.materia = materia;
+		this.nombre = nombre;
 		this.condicion = condicion;
 		this.area = area;
 	}
 
-	public String getMateria() {
-		return materia;
+	/**
+	 * @return the nombre
+	 */
+	public String getNombre() {
+		return nombre;
 	}
 
-	public void setMateria(String materia) {
-		this.materia = materia;
+	/**
+	 * @param nombre the nombre to set
+	 */
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
-	public String getArea() {
-		return area;
-	}
-
-	public void setArea(String area) {
-		this.area = area;
-	}
-
+	/**
+	 * @return the condicion
+	 */
 	public String getCondicion() {
 		return condicion;
 	}
 
+	/**
+	 * @param condicion the condicion to set
+	 */
 	public void setCondicion(String condicion) {
 		this.condicion = condicion;
 	}
+
+	/**
+	 * @return the area
+	 */
+	public String getArea() {
+		return area;
+	}
+
+	/**
+	 * @param area the area to set
+	 */
+	public void setArea(String area) {
+		this.area = area;
+	}
+
+	
 
 }
