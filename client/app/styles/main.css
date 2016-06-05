@@ -124,6 +124,10 @@ input, button, select, textarea {
     transition: all 0.25s ease-in-out;
     border-left: 4px solid #404040;
   }
+
+  .modalAvanzado {
+    width: 50%;
+  }
   /* triangulos
 .triangle-bottom {
      width: 0;
