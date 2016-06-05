@@ -242,12 +242,12 @@ public class ServicioAlumnoEndpoint{
 	@PUT
 	@Path("/alu/")
 	public Response update(final Alumno alumno, @HeaderParam("rol") String rolIn, @HeaderParam("auth0") String token) {
-		if(!rolIn.equals(Login.DIRECTIVO)){	//Comprobación de roles
+	/*	if(!rolIn.equals(Login.DIRECTIVO)){	//Comprobación de roles
 			return Response.status(Status.FORBIDDEN).build();
-		}
+		}*/
 		String nuevoToken = new String();
 		try {
-			nuevoToken = ServicioLogin.comprobar(token, rolIn);
+			nuevoToken = null  /*ServicioLogin.comprobar(token, rolIn)*/;
 			setInstance();
 			servicioAlumno.addUsuario(alumno);
 			if(nuevoToken==null){

@@ -25,11 +25,12 @@
  	$scope.menuDirectivo = MENU_DIRECTIVO;
  	
  	$scope.setActive = function(menuItem) {
- 		$scope.activeMenu = menuItem
+ 		$scope.activeMenu = menuItem;
  	};
 
  	$scope.popover = {
  		"title": "Despedirse",   
  	};
 
- })
+ });
+ 

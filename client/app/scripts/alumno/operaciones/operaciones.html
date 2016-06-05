@@ -29,9 +29,10 @@
 			<hr>
 			<div class="panel-group" ng-model="multiplePanels.activePanels" data-allow-multiple="true" role="tablist" aria-multiselectable="true" bs-collapse>
 				<div class="panel panel-default">
-					<div class="panel-heading" style="cursor: pointer" ng-click="" bs-collapse-toggle>
+					<div class="panel-heading" style="cursor: pointer" ng-click="downGlyphiconIna = !downGlyphiconIna" bs-collapse-toggle>
 						<div class="panel-title">
 							Inasistencias
+							<div style="float: right" ng-class="{ 'glyphicon glyphicon-chevron-down': !downGlyphiconIna,'glyphicon glyphicon-chevron-up': downGlyphiconIna }"></div>
 						</div>
 					</div>
 					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
@@ -122,9 +123,10 @@
 					</div>
 				</div>
 				<div class="panel panel-default">
-					<div class="panel-heading" style="cursor: pointer" ng-click="" bs-collapse-toggle>
+					<div class="panel-heading" style="cursor: pointer" ng-click="downGlyphiconPrevias = !downGlyphiconPrevias" bs-collapse-toggle>
 						<div class="panel-title">
 							Materias previas
+							<div style="float: right" ng-class="{ 'glyphicon glyphicon-chevron-down': !downGlyphiconPrevias,'glyphicon glyphicon-chevron-up': downGlyphiconPrevias }"></div>
 						</div>
 					</div>
 					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
@@ -163,9 +165,10 @@
 					</div>
 				</div>
 				<div class="panel panel-default">
-					<div class="panel-heading" style="cursor: pointer" ng-click="" bs-collapse-toggle>
+					<div class="panel-heading" style="cursor: pointer" ng-click="downGlyphiconNotas = !downGlyphiconNotas" bs-collapse-toggle>
 						<div class="panel-title">
 							Notas
+							<div style="float: right" ng-class="{ 'glyphicon glyphicon-chevron-down': !downGlyphiconNotas,'glyphicon glyphicon-chevron-up': downGlyphiconNotas }"></div>
 						</div>
 					</div>
 					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
@@ -278,58 +281,88 @@
 			<h1>{{subtitle}}<small>: Eleg&iacute; un tipo de operaci&oacute;n</small></h1>
 			<hr>	
 			<div class="col-md-11">	
-			<table class="table table-hover table-striped">
-				<thead>
-					<tr>
-						<th class="col-md-1">Materia</th>
-						<th class="col-md-1">A&ntilde;o</th>
-						<th class="col-md-1">Fecha</th>
-						<th class="col-md-2">Horario</th>
-						<th class="col-md-4">Docentes</th>
-						<th class="col-md-1">Inscripto</th>
-						<th class="col-md-2">Acciones</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="mesa in listaMesas | orderBy:'fechaHoraInicio'">
-						<td>
-							{{mesa.materia.nombre}}
-						</td>
-						<td>
-							{{mesa.materia.anio}} {{mesa.materia.division}}
-						</td>
-						<td>
-							{{mesa.fechaHoraInicio | amDateFormat:'DD/MM/YYYY'}}
-						</td>
-						<td>
-							de {{mesa.fechaHoraInicio | amDateFormat:'HH:mm'}} a {{mesa.fechaHoraFin | amDateFormat:'HH:mm'}} 
-						</td>
-						<td>
-							<span ng-repeat="docente in mesa.integrantesTribunal" style="width: 30%">{{docente}}, </span>
-						</td>
-						<td>
-							<span ng-if="mesa.inscripto" data-animation="am-flip-x" class="glyphicon glyphicon-thumbs-up"></span>
-							<span ng-if="!mesa.inscripto" data-animation="am-flip-x" class="glyphicon glyphicon-thumbs-down"></span>
-						</td>
-						<td>
-							<button ng-if="!mesa.inscripto" class="btn btn-success btn-xs" bs-tooltip="tooltip.tooltipRegister" ng-click="register(mesa)">
-								<span>Inscribirse</span>
-							</button>
-							<button ng-if="mesa.inscripto" class="btn btn-danger btn-xs" bs-tooltip="tooltip.tooltipUnregister" ng-click="unregister(mesa)">
-								<span>Desinscribirse</span>
-							</button>
-						</td> 
-					</tr>
-				</tbody>
+				<table class="table table-hover table-striped">
+					<thead>
+						<tr>
+							<th class="col-md-1" data-sortable="true">Materia</th>
+							<th class="col-md-1">A&ntilde;o</th>
+							<th class="col-md-1">Fecha</th>
+							<th class="col-md-2" data-sortable="true">Horario</th>
+							<th class="col-md-4">Docentes</th>
+							<th class="col-md-1">Inscripto</th>
+							<th class="col-md-2">Acciones</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="mesa in listaMesas | orderBy:'fechaHoraInicio'">
+							<td>
+								{{mesa.materia.nombre}}
+							</td>
+							<td>
+								{{mesa.materia.anio}} {{mesa.materia.division}}
+							</td>
+							<td>
+								{{mesa.fechaHoraInicio | amDateFormat:'DD/MM/YYYY'}}
+							</td>
+							<td>
+								de {{mesa.fechaHoraInicio | amDateFormat:'HH:mm'}} a {{mesa.fechaHoraFin | amDateFormat:'HH:mm'}} 
+							</td>
+							<td>
+								<span ng-repeat="docente in mesa.integrantesTribunal" style="width: 30%">{{docente}}, </span>
+							</td>
+							<td>
+								<span ng-if="mesa.inscripto" data-animation="am-flip-x" class="glyphicon glyphicon-thumbs-up"></span>
+								<span ng-if="!mesa.inscripto" data-animation="am-flip-x" class="glyphicon glyphicon-thumbs-down"></span>
+							</td>
+							<td>
+								<button ng-if="!mesa.inscripto" class="btn btn-success btn-xs" bs-tooltip="tooltip.tooltipRegister" ng-click="register(mesa)">
+									<span>Inscribirse</span>
+								</button>
+								<button ng-if="mesa.inscripto" class="btn btn-danger btn-xs" bs-tooltip="tooltip.tooltipUnregister" ng-click="unregister(mesa)">
+									<span>Desinscribirse</span>
+								</button>
+							</td> 
+						</tr>
+					</tbody>
 
-			</table>
-		</div>
+				</table>
+			</div>
 		</fieldset>
 	</div>
 	<div ng-show="certificados">
 		<fieldset class="navbar">
-			<h1>{{subtitle}}</h1>
+			<h1>{{subtitle}}<small>: Eleg&iacute; el certificado que desees solicitar</small></h1>
 			<hr>
+			<div class="container">
+				<div class="col-md-8">	
+					<table class="table table-hover table-striped">
+						<thead>
+							<tr>
+								<th class="col-md-2" data-sortable="true">Certificado</th>
+								<th class="col-md-1">Solicitado</th>
+								<th class="col-md-1">Solicitar</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="certificado in listaCertificados | orderBy:'fechaHoraInicio'">
+								<td>
+									{{certificado.nombre}}
+								</td>
+								<td>
+									<span ng-if="certificado.solicitado" data-animation="am-flip-x" bs-tooltip="tooltip.tooltipCertifSolicitado" class="glyphicon glyphicon-thumbs-up"></span>
+									<span ng-if="!certificado.solicitado" data-animation="am-flip-x" bs-tooltip="tooltip.tooltipCertifNoSolicitado" class="glyphicon glyphicon-thumbs-down"></span>
+								</td>
+								<td>
+									<button class="btn btn-success btn-xs" bs-tooltip="tooltip.tooltipCertif" ng-click="solicitarCert(certificado)" ng-class="{ 'disabled': certificado.solicitado }">
+										<span>Solicitar</span>
+									</button>
+								</td> 
+							</tr>
+						</tbody>
+
+					</table>
+				</div>
+			</div>
 		</fieldset>
 	</div>
 </div>

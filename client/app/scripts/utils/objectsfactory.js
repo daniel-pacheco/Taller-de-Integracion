@@ -94,11 +94,10 @@ angular.module('clientAppApp')
       "nroDocumento" : 0,
       "nombre" : "",
       "apellido" : "",
-      "año" : [],
-      "area": [],
-      "materia" : []
+      "listaAnios" : [],
+      "listaMaterias" : []
     };
-    return doncente;
+    return docente;
   };
 
   var newTitulo = function(){
@@ -153,7 +152,7 @@ var newAnio = function(){
 var newCurso = function(){
   var curso = {
     "idCurso": null,
-    "division": '',
+    "curso": '',
     "turno": '',
     "cicloLectivo": 0,
     "listaAlumnos": []
@@ -263,6 +262,6 @@ var newMesa = function(){
     newEstadisticaMateria: newEstadisticaMateria,
     newEstadisticaTrimestre: newEstadisticaTrimestre,
     newEstadisticaPorMateria: newEstadisticaPorMateria,
-    newHistoricoPorMateria, newHistoricoPorMateria
-  }
-})
+    newHistoricoPorMateria: newHistoricoPorMateria
+  };
+});

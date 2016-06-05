@@ -21,7 +21,16 @@ $scope.tooltip = {
 	},
 	tooltipUnregister : {
 		'title' : 'Desincsribirse de esta mesa'
-	}    
+	},
+	tooltipCertif : {
+		'title' : 'Solicitar certificado'
+	},
+	tooltipCertifSolicitado : {
+		'title' : 'Este certificado ya se encuentra solicitado'
+	},
+	tooltipCertifNoSolicitado : {
+		'title' : 'Todavía no se ha solicitado este certificado'
+	} 
 };
 
 //-- filters
@@ -101,6 +110,21 @@ $scope.listaPrevias = [
 "division": "U"
 }
 ];
+
+$scope.listaCertificados = [
+{
+	"nombre": 'Alumno regular',
+	"solicitado": true
+},
+{
+	"nombre": 'Inscripción al año académico',
+	"solicitado": false
+},
+{
+	"nombre": 'Inscripción a materia previa',
+	"solicitado": false
+}
+];
 //-- Modals
 $scope.confirmModal = function(mesagge, funcion, parametro) { //este confirm recibe una funcion y un parametro para que despues de confirmar se pueda llamar a la funcion que se necesite
 	ModalService.showModal({
@@ -130,7 +154,17 @@ $scope.unregister = function(mesa) {
 	$scope.confirmModal("¿Desea desinscribirse de la mesa de "+mesa.materia+" de "+mesa.materia.anio+mesa.materia.division+"?",$scope.desinscribirse, mesa);
 };
 $scope.desinscribirse = function (mesa){
-		//desinscribir al alumno
-		mesa.inscripto = false;		
-	};
+	//desinscribir al alumno
+	mesa.inscripto = false;		
+};
+
+$scope.solicitarCert = function(certificado)
+{
+	$scope.confirmModal("¿Desea solicitar el certificado de "+certificado.nombre+"?",$scope.requestCertificado, certificado);
+};
+
+$scope.requestCertificado = function(certificado){
+	certificado.solicitado = true;
+};
+
 });
