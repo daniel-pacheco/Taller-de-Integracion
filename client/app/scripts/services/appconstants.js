@@ -46,6 +46,7 @@
  	docente: ['.docente', 'Docente'],
  	anio: ['.anio', 'Año'],
  	desemp: ['.desemp', 'Desempeño'],
+ 	micuenta: ['.micuenta', 'Mi Cuenta'],
  	test: ['.test', 'Test']
  })
  

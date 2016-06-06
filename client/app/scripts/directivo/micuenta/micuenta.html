@@ -179,10 +179,10 @@
 								<span class="glyphicon glyphicon-asterisk small"></span>Campos obligatorios
 							</div>
 							<div class="form-group" ng-class="{ 'has-error': formModifPass.passActual.$touched && formModifPass.passActual.$invalid }">
-								<div class="col-sm-3 control-label">
+								<div class="col-md-3 control-label">
 									<label for="passActual"><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Clave actual:</label>
 								</div>
-								<div class="col-sm-4">
+								<div class="col-md-4">
 									<input id="passActual" name="passActual" type="password" class="form-control" placeholder="Contraseña" maxlength="255" required/>
 									<div ng-messages="formModifPass.passActual.$error" ng-if="formModifPass.passActual.$touched && formModifPass.passActual.$invalid">
 										<div ng-message="passActual" class="help-block">Formato invalido</div>
@@ -192,10 +192,10 @@
 							</div>
 							<!-- /form-group-->
 							<div class="form-group" ng-class="{ 'has-error': formModifPass.passNuevo.$touched && formModifPass.passNuevo.$invalid }">
-								<div class="col-sm-3 control-label">
+								<div class="col-md-3 control-label">
 									<label for="mailNuevo"><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Clave nueva:</label>
 								</div>
-								<div class="col-sm-4">
+								<div class="col-md-4">
 									<input id="passNuevo" name="passNuevo" type="password" class="form-control" placeholder="Contraseña" maxlength="255" ng-model="passwords.passNuevo" required/>
 									<div ng-messages="formModifPass.passNuevo.$error" ng-if="formModifPass.passNuevo.$touched && formModifPass.passNuevo.$invalid">
 										<div ng-message="passNuevo" class="help-block">Formato invalido</div>
@@ -205,10 +205,10 @@
 							</div>
 							<!-- /form-group-->
 							<div class="form-group" ng-class="{ 'has-error': formModifPass.passNuevoConf.$touched && formModifPass.passNuevoConf.$invalid }">
-								<div class="col-sm-3 control-label">
+								<div class="col-md-3 control-label">
 									<label for="mailNuevoConf"><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Confirmar Clave :</label>
 								</div>
-								<div class="col-sm-4">
+								<div class="col-md-4">
 									<input id="passNuevoConf" name="passNuevoConf" type="password" class="form-control" placeholder="Contraseña" maxlength="255" pw-check="passNuevo" ng-model="passwords.passNuevoConf" required/>
 									<div ng-messages="formModifPass.passNuevoConf.$error" ng-if="formModifPass.passNuevoConf.$touched && formModifPass.passNuevoConf.$invalid">
 										<div ng-message="passNuevoConf" class="help-block">Formato invalido</div>
@@ -224,7 +224,7 @@
 								<div class="col-md-1 col-md-offset-3">
 									<input class="btn btn-primary" ng-click="" type="submit" name="" value="Guardar" ng-disabled="!formModifPass.$valid"/>
 								</div>
-							</div>				
+							</div>
 							<!-- /form-group-->
 						</div>
 					</div><!--row-->

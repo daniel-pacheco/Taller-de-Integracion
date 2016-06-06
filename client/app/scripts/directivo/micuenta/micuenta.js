@@ -2,9 +2,9 @@
 angular.module('clientAppApp')
 .config(function($stateProvider) {
 	$stateProvider
-	.state('alumno.micuenta', {
+	.state('directivo.micuenta', {
 		url: '/micuenta',
-		templateUrl: 'scripts/alumno/micuenta/micuenta.html',
+		templateUrl: 'scripts/directivo/micuenta/micuenta.html',
 		controller: 'MiCuentaCtrl',
 		data: {
 			pageTitle: 'Mi Cuenta'
@@ -12,18 +12,18 @@ angular.module('clientAppApp')
 	});
 })
 
-.controller('MiCuentaCtrl', function ($scope, alumnoService) {
+.controller('MiCuentaCtrl', function ($scope) {
 
 	$scope.titulo = 'Mi Cuenta';
 	// $scope.alumno = alumnoData[0];
-	$scope.call = function(){
+	/*$scope.call = function(){
 		alumnoService.alumnoGetById(7).then(function(response){$scope.alumno = response.data});
 		console.log($scope.alumno);
-	};
+	};*/
 
 	$scope.misDatos = true;
-
 	$scope.subtitle = "Mis Datos";
+
 	$scope.seleccionar = function (id){
 		switch (id){
 			case 'misDatos':
@@ -35,7 +35,7 @@ angular.module('clientAppApp')
 			case 'actualizarMisDatos':
 			$scope.misDatos = false;
 			$scope.subtitle = "Actualizar Mis Datos";
-			$scope.nuevoAlumno = null;
+			//$scope.nuevoAlumno = null;
 			$scope.cambiarPass = false;
 			$scope.actualizarMisDatos = true;
 			break;
