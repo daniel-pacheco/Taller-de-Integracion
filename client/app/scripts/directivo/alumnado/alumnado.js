@@ -421,7 +421,7 @@ $scope.panels = {};
 $scope.panels.activePanel = 0;
 
 $scope.multiplePanels = {
-	activePanels: [null]
+	activePanels: []
 };
 
   $scope.asignarPlantillaTrim = function (trim){//esto debería consultar la planilla del trim
