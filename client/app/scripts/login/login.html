@@ -1,12 +1,10 @@
 <div class="container">    
-  <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
+  <div id="loginbox" style="margin-top:100px" class="mainbox col-md-5 col-md-offset-4">                    
     <div class="panel panel-info" style="box-shadow: 10px 10px 5px #888888;">
       <div class="panel-heading">
         <center><div class="panel-title">Iniciar sesión</div></center>
-
-      </div>     
-
-      <div class="panel-body">
+      </div>
+      <div class="panel-body" style="padding-top:30px">
         <form id="loginform" name="loginForm" class="form-horizontal center-block" role="form" novalidate>
           <div class="personal-info">
             <div class="container">
@@ -37,12 +35,12 @@
                     <option value="" disabled selected>Seleccione una opci&oacute;n</option>
                     <option ng-repeat="role in roleOptions" value="{{role}}">{{role}}</option>
                   </select>
-                </div> {{data}}
+                </div>
               </div>
             </div>
 
             <div style="margin-top:10px" class="form-group">
-              <div class="col-sm-12 controls">
+              <div class="controls">
                 <center>
                   <a id="btn-login" href="#" class="btn btn-info" ng-disabled="!loginForm.$valid" ng-click="login(data)">Ingresar</a>
                 </center>
