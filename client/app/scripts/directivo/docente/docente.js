@@ -35,7 +35,7 @@
   };
 
 
-$scope.subtitle = "Nuevo Docente"
+  $scope.subtitle = "Nuevo Docente"
   $scope.dropDownAreas = ['Cs. Sociales', 'Cs. Naturales', 'Cs. Exactas','Artes'];
 
   $scope.nuevoDocente = ObjectsFactory.newDocente();
@@ -49,7 +49,13 @@ $scope.subtitle = "Nuevo Docente"
 
 
 //-- Modal
- $scope.showModalProfile = function(docente) {
+$scope.showModalProfile = function(docenteDni) {
+
+  var docente = {};
+
+  docenteService.getByDni(docenteDni)
+  .then(function(response){
+    docente = response.data;
 
     ModalService.showModal({
       templateUrl: 'scripts/directivo/docente/modal/showProfileDocente.tpl.html',
@@ -64,8 +70,12 @@ $scope.subtitle = "Nuevo Docente"
         $scope.editProfile(result);
       });
     });
+  },
+  function(response){
+    alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
+  });
 
-  }; 
+}; 
 
 $scope.domicilioAvanzado = function() {
   //$scope.nuevoDocente.domicilio = ObjectsFactory.newDomicilio();
@@ -156,10 +166,10 @@ $scope.confirmModal = function(mesagge, funcion, parametro) { //este confirm rec
     }
   }).then(function(modal) {
     modal.element.modal();
-   modal.close.then(function(result){
+    modal.close.then(function(result){
       funcion(parametro);
     });
-});
+  });
 };
 
 //-- fin Modal
@@ -196,7 +206,7 @@ var eliminarDocenteAlert = $alert({
 //-- Fin Alert
 //-- filters
 $scope.saveDocente = function (){
-console.log ($scope.nuevoDocente);
+  console.log ($scope.nuevoDocente);
 };
 
 $scope.editProfile = function(docente) {
@@ -222,19 +232,19 @@ $scope.editProfile = function(docente) {
   }
   $scope.nuevoPerfil = true;
 }
+$scope.listado = true;
+$scope.seleccionar = function(id){
+ $scope.listado = false;
+ $scope.nuevoPerfil = false;
+ switch (id) {
+  case 'listado':
   $scope.listado = true;
-  $scope.seleccionar = function(id){
-   $scope.listado = false;
-   $scope.nuevoPerfil = false;
-   switch (id) {
-    case 'listado':
-    $scope.listado = true;
-    this.showData();
-    $scope.nuevoDocente = null;
-    break;
-    case 'nuevoPerfil':
-    $scope.nuevoPerfil = true;
-    $scope.subtitle = "Nuevo Docente"
+  this.showData();
+  $scope.nuevoDocente = null;
+  break;
+  case 'nuevoPerfil':
+  $scope.nuevoPerfil = true;
+  $scope.subtitle = "Nuevo Docente"
     //$scope.nuevoDocente = ObjectsFactory.newDocente();
     break;
   }
@@ -262,7 +272,7 @@ $scope.setActiveDoc = function(menuItemDoc) {
 {name:'Juliette', surname:'romeo', area:'Cs. Exactas', cuil:'929225', materia:'Fisica'}];*/
 
 $scope.multiplePanels = {
-  activePanels: [null]
+  activePanels: []
 };
 
 $scope.docenteData = [];
@@ -270,13 +280,13 @@ $scope.docenteData = [];
 
 $scope.search = function () {
   
-      docenteService.getAllMin()
-      .then(function(response){
-        $scope.docenteData = response.data;
-      },
-      function(response){
-        alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
-      });
-    };
-    $scope.search();
+  docenteService.getAllMin()
+  .then(function(response){
+    $scope.docenteData = response.data;
+  },
+  function(response){
+    alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
+  });
+};
+$scope.search();
 });

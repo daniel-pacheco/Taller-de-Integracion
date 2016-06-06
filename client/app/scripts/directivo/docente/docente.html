@@ -76,12 +76,12 @@
 				<div class="panel panel-default" ng-repeat="docente in docenteData">
 					<div class="panel-heading" style="cursor: pointer" bs-collapse-toggle>
 						<div class="panel-title">
-							{{docente.apellidoDocente}}, {{docente.nombreDocente}}.  DNI: {{docente.dniDocente}}
+							{{docente.apellido}}, {{docente.nombre}}.  DNI: {{docente.nroDocumento}}
 							<div class="col-md-2 col-sx-2 pull-right">						
-								<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipProfile" ng-click="showModalProfile(docente)" style="width: 40%">
+								<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipProfile" ng-click="showModalProfile(docente.nroDocumento)" style="width: 40%">
 									<span data-animation="am-flip-x" class="glyphicon glyphicon-user"></span>
 								</button>
-								<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipDelete" ng-click="deleteDocente(docente)" style="width: 40%">
+								<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipDelete" ng-click="deleteDocente(docente.nroDocumento)" style="width: 40%">
 									<span class="glyphicon glyphicon-trash"></span>
 								</button>
 							</div>
@@ -99,9 +99,9 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr ng-repeat="materia in docente.materias">
+									<tr ng-repeat="materia in docente.listaMaterias">
 										<td></td>
-										<td>{{materia.materia}}</td>
+										<td>{{materia.nombre}}</td>
 										<td>{{materia.area}}</td>
 										<td>{{materia.condicion}}</td>
 									</tr>
