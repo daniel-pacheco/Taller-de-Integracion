@@ -19,7 +19,7 @@
       }
   });
 })
- .controller('DirectivoTestCtrl', function ($scope, Upload, $timeout) {
+ .controller('DirectivoTestCtrl', function ($scope, Upload, $timeout, ModalService) {
     this.awesomeThings = [
     'HTML5 Boilerplate',
     'AngularJS',
@@ -45,6 +45,20 @@
         });
     }
 
+$scope.requiredPass = function() {
+    ModalService.showModal({
+        templateUrl: 'scripts/utils/requiredPassword/modalRequiredPassword.tpl.html',
+        controller: 'RequiredPasswordModalController',
+        inputs: {
+            title: "Ingrese su contraseña",
+        }
+    }).then(function(modal) {
+        modal.element.modal();
+        modal.close.then(function(result){
+            alert(result);
+        });
+    });
+};
 
 
 $scope.date = new Date();
