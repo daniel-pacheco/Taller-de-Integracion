@@ -142,19 +142,19 @@
 			de alumno y haga clic en guardar cuando finalice</small></h1>
 			<hr>
 			<form class="form-horizontal media" name="formAlu" novalidate>
-				<div class="formulario media-body">
+				<div class="media-body">
 					<!-- <div class="container"> Pachec: probar esto en la resolución grande -->
 					<div class="row">
-						<div class="col-md-6 col-xs-7 personal-info">
+						<div class="col-md-6">
 							<div class="alert alert-warning alert-dismissible" role="alert">
 								<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 								<span class="glyphicon glyphicon-asterisk small"></span>Campos obligatorios
 							</div>
 							<div class="form-group" ng-class="{ 'has-error': formAlu.nroDocumento.$touched && formAlu.nroDocumento.$invalid }">
-								<div class="col-sm-4 control-label">
+								<div class="col-md-4 control-label">
 									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span>  Documento:</label>
 								</div>
-								<div class="col-sm-4">
+								<div class="col-md-4">
 									<input type="text" name="nroDocumento" class="form-control validate" ng-model="nuevoAlumno.nroDocumento" placeholder="35123123" maxlength="8" required pattern="\d{8,8}" ng-change="nuevoAlumno.matricula=nuevoAlumno.nroDocumento"/>
 									<input type="hidden" ng-model="nuevoAlumno.matricula" /> <!-- Bindea matricula a nroDocumento para cargar ambos a la vez -->
 									<div ng-messages="formAlu.nroDocumento.$error" ng-if="formAlu.nroDocumento.$touched && formAlu.nroDocumento.$invalid">
@@ -163,7 +163,7 @@
 									</div>
 								</div>
 								<!-- Valida 8 digitos -->
-								<div class="col-sm-3">
+								<div class="col-md-3">
 									<select class="form-control" ng-model="nuevoAlumno.tipoDocumento" name="TipoDocumento">
 										<option value="" disabled selected>Tipo</option>
 										<option value="DU/DNI">DNI</option>
@@ -175,10 +175,10 @@
 							<!-- /form-group-->
 
 							<div class="form-group" ng-class="{ 'has-error': formAlu.nombre.$touched && formAlu.nombre.$invalid }">
-								<div class="col-sm-4 control-label">
+								<div class="col-md-4 control-label">
 									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Nombre/s:</label>
 								</div>
-								<div class="col-sm-5">
+								<div class="col-md-5">
 									<input name="nombre" class="form-control" ng-model="nuevoAlumno.nombre" placeholder="Nombre" type="text" maxlength="255" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
 									<!-- Valida letras y espacios -->
 									<div ng-messages="formAlu.nombre.$error" ng-if="formAlu.nombre.$touched && formAlu.nombre.$invalid">
@@ -190,10 +190,10 @@
 							</div><!-- /form-group-->
 
 							<div class="form-group" ng-class="{ 'has-error': formAlu.apellido.$touched && formAlu.apellido.$invalid }">
-								<div class="col-sm-4 control-label">
+								<div class="col-md-4 control-label">
 									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Apellido/s:</label>
 								</div>
-								<div class="col-sm-5">
+								<div class="col-md-5">
 									<input name="apellido" class="form-control" ng-model="nuevoAlumno.apellido" placeholder="Apellido" type="text" maxlength="255" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
 									<!-- Valida letras y espacios-->
 									<div ng-messages="formAlu.apellido.$error" ng-if="formAlu.apellido.$touched && formAlu.apellido.$invalid">
@@ -205,10 +205,10 @@
 							<!-- /form-group-->
 
 							<div class="form-group">
-								<div class="col-sm-4 control-label">
+								<div class="col-md-4 control-label">
 									<label for="">Sexo:</label>
 								</div>
-								<div class="col-sm-7">
+								<div class="col-md-7">
 									<input type="radio" name="sexo" ng-model="nuevoAlumno.sexo" id="F" value="f"><label class="text-radio" for="F"><span></span>Femenino </label>
 									<input type="radio" name="sexo" ng-model="nuevoAlumno.sexo" checked id="M" value="m"><label class="text-radio" for="M"><span></span>Masculino </label>
 								</div>
@@ -216,10 +216,10 @@
 							<!-- /form-group-->
 
 							<div class="form-group" ng-class="{ 'has-error': formAlu.domicilio.$touched && formAlu.domicilio.$invalid }">
-								<div class="col-sm-4 control-label">
+								<div class="col-md-4 control-label">
 									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Domicilio:</label>
 								</div>
-								<div class="col-sm-4">
+								<div class="col-md-4">
 									<input name="domicilio" class="form-control" placeholder="Calle" type="text" maxlength="255" ng-model="nuevoAlumno.domicilio.calle" required/> <!-- pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*" -->
 									<!-- Valida letras, numeros y espacios-->
 									<div ng-messages="formAlu.domicilio.$error" ng-if="formAlu.domicilio.$touched && formAlu.domicilio.$invalid">
@@ -227,24 +227,24 @@
 										<div ng-message="required" class="help-block">Complete este campo</div>
 									</div>
 								</div>
-								<div class="col-sm-2">
+								<div class="col-md-2">
 									<input name="numeroDomicilio" class="form-control" placeholder="Número" type="number" maxlength="6" ng-model="nuevoAlumno.domicilio.numero"/> 
 									<div ng-messages="formAlu.numeroDomicilio.$error" ng-if="formAlu.numeroDomicilio.$touched && formAlu.numeroDomicilio.$invalid">
 										<div ng-message="type" class="help-block">Formato invalido</div>
 										<div ng-message="required" class="help-block">Complete este campo</div>
 									</div>
 								</div>
-								<div class="col-sm-1">
+								<div class="col-md-1">
 									<input type="button" class="btn btn-default" value="Avanzado" ng-click="domicilioAvanzado()">
 								</div>
 							</div>
 							<!-- /form-group-->
 
 							<div class="form-group" ng-class="{ 'has-error': formAlu.fechaNacimiento.$touched && formAlu.fechaNacimiento.$invalid }">
-								<div class="col-sm-4 control-label">
+								<div class="col-md-4 control-label">
 									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Fecha de nac.:</label>
 								</div>
-								<div class="col-sm-6">
+								<div class="col-md-6">
 									<input name="fechaNacimiento"class="form-control" ng-model="nuevoAlumno.fechaNacimiento" placeholder="01/01/2000" type="date"
 									step="1" value="01-01-2000" />
 									<div ng-messages="formAlu.fechaNacimiento.$error" ng-if="formAlu.fechaNacimiento.$touched && formAlu.fechaNacimiento.$invalid">
@@ -256,11 +256,11 @@
 							</div>
 
 							<div class="form-group" ng-class="{ 'has-error': formAlu.listaTelefono.$touched && formAlu.listaTelefono.$invalid }">
-								<div class="col-sm-4 control-label">
+								<div class="col-md-4 control-label">
 									<label for="">Teléfono:</label>
 								</div>
 
-								<div class="col-sm-5">
+								<div class="col-md-5">
 									<input name="listaTelefono" class="form-control" ng-model="nuevoAlumno.listaTelefono[0]" placeholder="0343-4353535" type="tel" ng-show="!mostrarListaTelefonos">
 									<select multiple class="form-control" ng-show="mostrarListaTelefonos">
 										<option ng-repeat="telefono in nuevoAlumno.listaTelefonos">{{telefono.caracteristica}}-{{telefono.nroTelefono}} ({{telefono.tipoTelefono}})</option>
@@ -271,17 +271,17 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-sm-1">
+								<div class="col-md-1">
 									<input type="button" class="btn btn-default" value="Avanzado" ng-click="telefonoAvanzado()">
 								</div>
 							</div>
 							<!-- /form-group-->
 
 							<div class="form-group" ng-class="{ 'has-error': formAlu.email.$touched && formAlu.email.$invalid }">
-								<div class="col-sm-4 control-label">
+								<div class="col-md-4 control-label">
 									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Mail:</label>
 								</div>
-								<div class="col-sm-7">
+								<div class="col-md-7">
 									<input name="email" type="email" class="form-control" placeholder="nombre@nombre.com" ng-model="nuevoAlumno.listaMails[0].direccionMail" maxlength="255" ng-show="!mostrarListaMails" required/>
 									<select multiple class="form-control" ng-show="mostrarListaMails">
 										<option ng-repeat="mail in nuevoAlumno.listaMails">{{mail.direccionMail}} ({{mail.tipoMail}})</option>
@@ -291,17 +291,17 @@
 										<div ng-message="required" class="help-block">Complete este campo</div>
 									</div>
 								</div>
-								<div class="col-sm-1">
+								<div class="col-md-1">
 									<input type="button" class="btn btn-default" value="Avanzado" ng-click="mailAvanzado()">
 								</div>
 							</div>
 							<!-- /form-group-->
 
 							<div class="form-group" ng-class="{ 'has-error': formAlu.observacion.$touched && formAlu.observacion.$invalid }">
-								<div class="col-sm-4 control-label">
+								<div class="col-md-4 control-label">
 									<label for="">Observaciones:</label>
 								</div>
-								<div class="col-sm-7">
+								<div class="col-md-7">
 									<textarea name="observacion" class="form-control" rows="4" maxlength="255" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*" ng-model="nuevoAlumno.observaciones"></textarea>
 									<div ng-messages="formAlu.observacion.$error" ng-if="formAlu.observacion.$touched && formAlu.observacion.$invalid">
 										<div ng-message="pattern" class="help-block"> 
@@ -312,11 +312,9 @@
 							</div><!-- /form-group-->
 						</div><!--personal-info-->
 						
-						<div class="col-md-3 col-xs-8">
+						<div class="col-md-3">
 							<div class="form-group">
-								<div class="col-sm-1">
-								</div>
-								<div class="col-sm-2">
+								<div class="col-md-2 col-md-offset-1">
 									<button class="btn btn-default" ngf-select ng-model="picFile" accept="image/*" ngf-max-size="2MB" ngf-min-height="100" style="margin: 5px auto">Seleccione imagen de perfil</button>
 
 									<div ngf-drop ng-model="picFile" ngf-pattern="image/*" class="cropArea"><!--{{picFile}}-->
@@ -339,16 +337,24 @@
 				</div><!--row-->
 			</div><!--formulario media-body-->
 			<div class="form-group">
-				<div class="col-sm-2 col-sm-offset-3 col-xs-3 col-xs-offset-2">
+				<div class="col-md-2 col-md-offset-3">
 					<input class="btn btn-danger" type="button" name="" ng-click="clearFormAlu()" value="Limpiar" />
 				</div>
-				<div class="col-sm-1 col-xs-3 col-xs-offset-1">
+				<div class="col-md-1 col-md-offset-1">
 					<input class="btn btn-primary" ng-click="newAlumno(nuevoAlumno)" type="submit" name="" value="Guardar" ng-disabled="!formAlu.$valid"/>
 				</div>
 			</div>
 		</form>
 	</fieldset>
 </div><!--id="nuevoPerfil" ng-show="nuevoPerfil"-->
+
+
+		<div id="showLoading" ng-show="showLoading">
+			<fieldset>
+		<h1><img src="images/loading.gif"></h1>
+			<hr>
+		</div>
+
 
 <div id="notas" ng-show="notas">
 	<fieldset>
@@ -374,9 +380,7 @@
 				<button class="btn btn-default" ng-click="showAsignarNotas()">Buscar</button>
 			</div>
 		</div>
-		<div ng-show="loading">
-			<loading></loading>
-		</div>
+
 
 		<div id="asignarNotas" ng-show="asignarNotas">
 			<div class="panel-group" ng-model="multiplePanels.activePanels" data-allow-multiple="true" role="tablist" aria-multiselectable="true" bs-collapse>

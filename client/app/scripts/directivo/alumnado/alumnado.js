@@ -306,6 +306,8 @@ $scope.search = function (option, dni) {
 }
 
 $scope.newAlumno = function (alumno){
+	$scope.nuevoPerfil = false;
+	$scope.showLoading = true;
 	alumno.nombreUsuario = modalService.makeId(5);
 
 	alumnoService.putNew(alumno)
@@ -313,10 +315,16 @@ $scope.newAlumno = function (alumno){
 		console.log(response);
 		alert('El alumno se ha dado de alta con éxito. ID n°: ' + response.data);
 		// $scope.clearFormAlu();
+		$scope.showLoading = false;
+		$scope.nuevoPerfil = true;
 	},
 	function(response){
-		alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
+		//alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
+		errorConectToServer.show();//este es el alert
+		$scope.showLoading = false;
+		$scope.nuevoPerfil = true;
 	});
+
 };
 
 $scope.clearFormAlu = function (){
@@ -507,6 +515,18 @@ $scope.friends = [{name:'John', phone:'555-1276'},
 {name:'Adam', phone:'555-5678'},
 {name:'Julie', phone:'555-8765'},
 {name:'Juliette', phone:'555-5678'}];
+
+//-- Alerts
+var errorConectToServer = $alert({
+	title: 'Error:', 
+	placement: 'top',
+	content: 'Se ha producido un error al intentar cotactar al servidor: ', 
+	type: 'danger', 
+	keyboard: true, 
+	show: false,
+	duration: 5,
+	container: 'body'
+});
 
 });
 
