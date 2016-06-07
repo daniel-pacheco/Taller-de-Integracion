@@ -238,7 +238,7 @@
 									</div>
 									<div class="col-sm-5">
 										<input name="cuil" class="form-control" placeholder="11-12332112-1" type="text"
-										maxlength="13" ng-model="nuevoDocente.cuil" required pattern="^[0-9]{2}-[0-9]{8}-[0-9]$">
+										maxlength="13" ng-model="nuevoDocente.cuil" required pattern="^[0-9]{2}[0-9]{8}[0-9]$">
 										<div ng-messages="formDoc.cuil.$error" ng-if="formDoc.cuil.$touched && formDoc.cuil.$invalid">
 											<div ng-message="pattern" class="help-block">Formato invalido</div>
 											<div ng-message="required" class="help-block">Complete este campo</div>
@@ -246,6 +246,15 @@
 									</div>
 								</div>
 								<!-- Valida 8 digitos -->
+								<div class="form-group">
+									<div class="col-sm-4 control-label">
+										<label for="">Rol:</label>
+									</div>
+									<div class="col-sm-7">
+										<input type="checkbox" name="rolDirectivo" ng-model="nuevoDocente.rolDirectivo" id="rolDirectivo" value="DIRECTIVO"><label class="text-checkbox" for="rolDirectivo"><span></span> Directivo </label>
+										<input type="checkbox" name="rolDocente" ng-model="nuevoDocente.rolDocente" checked id="rolDocente" value="DOCENTE"><label class="text-checkbox" for="rolDocente"><span></span> Docente </label>
+									</div>
+								</div>
 
 								<div class="form-group" ng-class="{ 'has-error': formDoc.listaTelefono.$touched && formDoc.listaTelefono.$invalid }">
 									<div class="col-sm-4 control-label">
@@ -347,8 +356,8 @@
 					<div class="col-sm-2 col-sm-offset-3">
 						<input class="btn btn-danger" type="button" name="" ng-click="clearFormDoc()" value="Limpiar" />
 					</div>
-					<div class="col-sm-1">
-						<input class="btn btn-primary" ng-click="upload(croppedDataUrl); saveDocente()" type="submit" name="" value="Guardar" ng-disabled="!formDoc.$valid"/>
+					<div class="col-sm-1"> <!-- meter dentro del ng-click q envia el form upload(croppedDataUrl);  -->
+						<input class="btn btn-primary" ng-click="newDocente(nuevoDocente)" type="submit" name="" value="Guardar" ng-disabled="!formDoc.$valid"/>
 					</div>
 				</div>
 			</form>

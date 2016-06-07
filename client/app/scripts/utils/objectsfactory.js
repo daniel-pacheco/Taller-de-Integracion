@@ -13,7 +13,7 @@ angular.module('clientAppApp')
       "apellido": "",
       "listaTelefonos": [],
       "listaMails": [],
-      "domicilio": this.newDomicilio(),
+      "domicilio": {},
       "sexo": "",
       "nombreUsuario": "",
       "fechaNacimiento": "",
@@ -76,15 +76,16 @@ angular.module('clientAppApp')
       "nombre"        : "",
       "apellido"      : "",
       "cuil"          : 0,
-      "rol"           : "",
+      "rolDirectivo": false,
+      "rolDocente": true,
       "listaTelefonos" :[],
       "listaMails"    :[],
-      "domicilio"     :this.newDomicilio(),
+      "domicilio"     :{},
       "listaTitulos": [],
       "sexo"            : "",
       "nombreUsuario"   : "",
       "fechaNacimiento" : "",
-      "activo"          : false
+      "activo"          : true
     };
     return docente;
   };
