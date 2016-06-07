@@ -20,7 +20,7 @@
  		}
  	});
  })
- .controller('DocenteCtrl', function ($scope, docenteData, $timeout, ModalService, SERVER, ObjectsFactory, $alert, docenteService) {
+ .controller('DocenteCtrl', function ($scope, docenteData, $timeout, ModalService, SERVER, ObjectsFactory, $alert, docenteService, modalService) {
 
   $scope.tooltip = {
     tooltipProfile : {
@@ -205,8 +205,19 @@ var eliminarDocenteAlert = $alert({
 });
 //-- Fin Alert
 //-- filters
-$scope.saveDocente = function (){
-  console.log ($scope.nuevoDocente);
+$scope.newDocente = function (docente){
+  // console.log ($scope.nuevoDocente);
+  docente.nombreUsuario = modalService.makeId(5);
+
+  docenteService.putNew(docente)
+  .then(function(response){
+    console.log(response);
+    alert('El docente se ha dado de alta con éxito. ID n°: ' + response.data);
+    // $scope.clearFormAlu();
+  },
+  function(response){
+    alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
+  });
 };
 
 $scope.editProfile = function(docente) {
@@ -279,7 +290,7 @@ $scope.docenteData = [];
 
 
 $scope.search = function () {
-  
+
   docenteService.getAllMin()
   .then(function(response){
     $scope.docenteData = response.data;
