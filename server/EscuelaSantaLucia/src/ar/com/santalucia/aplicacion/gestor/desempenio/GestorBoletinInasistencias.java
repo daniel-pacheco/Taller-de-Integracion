@@ -57,13 +57,13 @@ public class GestorBoletinInasistencias extends Gestor<BoletinInasistencias>
 
 	@Override
 	public void modify(BoletinInasistencias object) throws Exception {
-		Set<Inasistencia> listaInasistencias = object.getListaInasistencias();
+		//Set<Inasistencia> listaInasistencias = object.getListaInasistencias();
 		try {
 			this.validar(object);
 			setSession();
 			setTransaction();
-			if (listaInasistencias != null) {
-				for (Inasistencia i : listaInasistencias) {
+			if (object.getListaInasistencias() != null) {
+				for (Inasistencia i : object.getListaInasistencias()) {
 					if (i.getIdInasistencia() == null) {
 						GInasistencia.add(i);
 					} else {
