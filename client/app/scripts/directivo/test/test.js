@@ -50,7 +50,7 @@ $scope.requiredPass = function() {
         templateUrl: 'scripts/utils/requiredPassword/modalRequiredPassword.tpl.html',
         controller: 'RequiredPasswordModalController',
         inputs: {
-            title: "Ingrese su contraseña",
+            title: "Confirmar contraseña",
         }
     }).then(function(modal) {
         modal.element.modal();

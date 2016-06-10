@@ -222,7 +222,7 @@
 										<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Fecha de nac.:</label>
 									</div>
 									<div class="col-sm-6">
-										<input name="fechaNacimiento"class="form-control" ng-model="nuevoDocente.fechaNacimiento" placeholder="10/10/1010" type="date"
+										<input name="fechaNacimiento" class="form-control" ng-model="nuevoDocente.fechaNacimiento" placeholder="10/10/1010" type="date"
 										step="1" value="01-01-2000" />
 										<div ng-messages="formDoc.fechaNacimiento.$error" ng-if="formDoc.fechaNacimiento.$touched && formDoc.fechaNacimiento.$invalid">
 											<div ng-message="pattern" class="help-block"> 
@@ -232,14 +232,25 @@
 									</div>
 								</div><!-- /form-group-->
 
-								<div class="form-group" ng-class="{ 'has-error': formDoc.cuil.$touched && formDoc.cuil.$invalid }">
+								<div class="form-group" ng-class="{ 'has-error': formDoc.cuilHead.$touched && formDoc.cuilHead.$invalid || formDoc.cuilTail.$touched && formDoc.cuilTail.$invalid }">
 									<div class="col-sm-4 control-label">
 										<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> CUIT/CUIL:</label>
 									</div>
 									<div class="col-sm-5">
-										<input name="cuil" class="form-control" placeholder="11-12332112-1" type="text"
-										maxlength="13" ng-model="nuevoDocente.cuil" required pattern="^[0-9]{2}[0-9]{8}[0-9]$">
-										<div ng-messages="formDoc.cuil.$error" ng-if="formDoc.cuil.$touched && formDoc.cuil.$invalid">
+										<div class="col-sm-3">
+											<input name="cuilHead" class="form-control" type="text" placeholder="11" ng-model="cuilHead" maxlength="2" required pattern="\d{2,2}">
+										</div>
+										<div class="col-sm-5">
+											<input name="cuil" class="form-control" type="text" ng-model="nuevoDocente.nroDocumento" disabled>
+										</div>
+										<div class="col-sm-3">
+											<input name="cuilTail" class="form-control" type="text" placeholder="1" ng-model="cuilTail" maxlength="1" required pattern="\d{1,1}">
+										</div>										
+										<div ng-messages="formDoc.cuilHead.$error" ng-if="formDoc.cuilHead.$touched && formDoc.cuilHead.$invalid">
+											<div ng-message="pattern" class="help-block">Formato invalido</div>
+											<div ng-message="required" class="help-block">Complete este campo</div>
+										</div>
+										<div ng-messages="formDoc.cuilTail.$error" ng-if="formDoc.cuilTail.$touched && formDoc.cuilTail.$invalid">
 											<div ng-message="pattern" class="help-block">Formato invalido</div>
 											<div ng-message="required" class="help-block">Complete este campo</div>
 										</div>								
@@ -261,7 +272,7 @@
 										<label for="">Teléfono:</label>
 									</div>
 									<div class="col-sm-5">
-										<input name="listaTelefono" class="form-control" ng-model="nuevoDocente.listaTelefonos[0]" placeholder="0343-4353535" type="tel" ng-show="!mostrarListaTelefonos">
+										<input name="listaTelefono" class="form-control" ng-model="nuevoTelefonoSimple.nroTelefono" maxlength="10" placeholder="4353535" type="tel" ng-show="!mostrarListaTelefonos">
 										<select multiple class="form-control" ng-show="mostrarListaTelefonos">
 											<option ng-repeat="telefono in nuevoDocente.listaTelefonos">{{telefono.caracteristica}}-{{telefono.nroTelefono}}({{telefono.tipoTelefono}})</option>
 										</select> 

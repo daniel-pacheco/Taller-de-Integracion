@@ -36,9 +36,9 @@ angular.module('clientAppApp')
   var newTelefono = function(){
     var telefono = {
       "idTelefono": null,
-      "caracteristica": null,
+      "caracteristica": 343,
       "nroTelefono": null,
-      "tipoTelefono": ""
+      "tipoTelefono": "Otro"
     };
     return telefono;
   };
