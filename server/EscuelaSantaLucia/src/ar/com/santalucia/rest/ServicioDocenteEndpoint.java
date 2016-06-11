@@ -277,7 +277,7 @@ public class ServicioDocenteEndpoint {
 	 */
 	@DELETE
 	@Path("/doc/{id:[0-9][0-9]*}")
-	public Response deleteDirectivoById(@PathParam("id") final Long id) {
+	public Response deleteDocenteById(@PathParam("id") final Long id) {
 		Boolean exito = false;
 		try {
 			setInstance();
