@@ -19,6 +19,7 @@ angular.module('clientAppApp')
     var expectDniMin = 'getByDniMin/';
     var listAll = 'listAll';
     var listAllMin = 'listAllMin';
+    var myData = 'DatosPersonales';
 
 
     this.getById = function (id) {
@@ -44,6 +45,10 @@ angular.module('clientAppApp')
 	this.putNew = function(alumno){	  
 	  return $http.put(server + sAlumno + expectParam, alumno);
 	};
+
+    this.getMyData = function () {
+        return $http.get(server + sAlumno + myData);
+    };
 
 	this.alumnoDel = function(alumnoId){	  
 	  return $http.delete(server + postQuery + alumnoId);

@@ -26,6 +26,8 @@
  	$scope.listFilterIsEnabled = false;
 
  	$scope.nuevoAlumno = ObjectsFactory.newAlumno();
+  	$scope.nuevoTelefonoSimple = ObjectsFactory.newTelefono();
+
 
 //tooltips
 $scope.tooltip = {
@@ -309,6 +311,9 @@ $scope.newAlumno = function (alumno){
 	$scope.nuevoPerfil = false;
 	$scope.showLoading = true;
 	alumno.nombreUsuario = modalService.makeId(5);
+	if ($scope.nuevoTelefonoSimple) {
+		alumno.listaTelefonos.push($scope.nuevoTelefonoSimple);
+	};
 
 	alumnoService.putNew(alumno)
 	.then(function(response){
@@ -330,6 +335,7 @@ $scope.newAlumno = function (alumno){
 $scope.clearFormAlu = function (){
 	$scope.formAlu.$setUntouched();
 	$scope.nuevoAlumno = ObjectsFactory.newAlumno();
+	$scope.nuevoTelefonoSimple = ObjectsFactory.newTelefono();
 }
 
 //--Form management

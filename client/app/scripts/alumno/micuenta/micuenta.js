@@ -5,17 +5,33 @@ angular.module('clientAppApp')
 	.state('alumno.micuenta', {
 		url: '/micuenta',
 		templateUrl: 'scripts/alumno/micuenta/micuenta.html',
-		controller: 'MiCuentaCtrl',
+		controller: 'AlumnoMiCuentaCtrl',
 		data: {
 			pageTitle: 'Mi Cuenta'
 		}
 	});
 })
 
-.controller('MiCuentaCtrl', function ($scope, alumnoService) {
-
+.controller('AlumnoMiCuentaCtrl', function ($scope, alumnoService, $state, alumnoData) {
+	
 	$scope.titulo = 'Mi Cuenta';
-	// $scope.alumno = alumnoData[0];
+	$scope.alumno = {};
+	function console() {
+		alert('before init call');
+		console.log('hola mi cuenta');
+	};
+
+	$scope.initCall = function() {
+		alumnoService.getMyData().then(function(response) {
+			// console.log(response);
+			$scope.alumno = response.data;
+		},
+		function(response){
+			alert('Ha ocurrido un error al contactar al servidor ' + response.statusText);
+		});
+	}; 
+	// $scope.initCall();
+
 	$scope.call = function(){
 		alumnoService.alumnoGetById(7).then(function(response){$scope.alumno = response.data});
 		console.log($scope.alumno);

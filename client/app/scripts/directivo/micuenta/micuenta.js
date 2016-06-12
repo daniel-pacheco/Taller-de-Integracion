@@ -5,14 +5,14 @@ angular.module('clientAppApp')
 	.state('directivo.micuenta', {
 		url: '/micuenta',
 		templateUrl: 'scripts/directivo/micuenta/micuenta.html',
-		controller: 'MiCuentaCtrl',
+		controller: 'DirectivoMiCuentaCtrl',
 		data: {
 			pageTitle: 'Mi Cuenta'
 		}
 	});
 })
 
-.controller('MiCuentaCtrl', function ($scope) {
+.controller('DirectivoMiCuentaCtrl', function ($scope) {
 
 	$scope.titulo = 'Mi Cuenta';
 	// $scope.alumno = alumnoData[0];
