@@ -78,7 +78,9 @@ public class ServicioLoginEndpoint {
 		try{
 			//setInstance();
 			nuevoToken = ServicioLogin.comprobar(token, rolIn);
+			//Logger.getLogger(getClass().getName()).log(Level.INFO,"Se requirió validación de credenciales para el usuario: " +ServicioLogin.obtenerIdentificacionUsuario(rolIn, (nuevoToken==null ?token:nuevoToken))+" rol:"+ rolIn); 
 		}catch (LoginError ex){
+			//Logger.getLogger(getClass().getName()).log(Level.WARNING,"Falló la validación de token");
 			switch (ex.getDetalles()) {
 			case LoginError.ROLERROR: 
 				return Response.status(Status.UNAUTHORIZED).build();
@@ -90,7 +92,7 @@ public class ServicioLoginEndpoint {
 				break;
 			}
 		} catch (Exception ex) {
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR).entity("No fue posible validar las credenciales").build();
 		}
 		if(nuevoToken == null){
 			return Response.ok(true).build();

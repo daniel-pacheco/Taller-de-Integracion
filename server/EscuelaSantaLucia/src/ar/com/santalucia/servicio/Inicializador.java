@@ -16,6 +16,6 @@ public class Inicializador {
 	
 	public void inicializarLog() throws Exception, FileNotFoundException, IOException{
 		LogManager.getLogManager().readConfiguration(
-		new FileInputStream("d:/log.properties")); ///EscuelaSantaLucia/Resources/log.properties
+		new FileInputStream("EscuelaSantaLucia//Resources//log.properties")); ///EscuelaSantaLucia/Resources/log.properties
 	}
 }
