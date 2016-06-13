@@ -8,7 +8,6 @@ import java.util.Set;
 import ar.com.santalucia.aplicacion.gestor.sistema.login.GestorLogin;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
 import ar.com.santalucia.dominio.modelo.sistema.login.Login;
-import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
@@ -86,6 +85,9 @@ public class ServicioDirectivo extends ServicioUsuario<Personal> {
 			if (usuario.getIdUsuario() == null) {
 				gPersonal.add(usuario);
 				sLogin.addLogin(usuario.getNroDocumento(), Login.DIRECTIVO);
+				if(usuario.getRolDocente() == true){
+					sLogin.addLogin(usuario.getNroDocumento(), Login.DOCENTE); // Parche por si viene con los dos roles (a modo de prueba)
+				}
 			} else {
 				gPersonal.modify(usuario);
 				if(usuario.getRolDocente()){
@@ -186,7 +188,7 @@ public class ServicioDirectivo extends ServicioUsuario<Personal> {
 	@Override
 	public Personal getUsuarioByDni(Long dni) throws Exception {
 		List<Personal> directivoLista = new ArrayList<Personal>();
-		directivoLista = gPersonal.getByExample(new Personal(dni,null,null,null,null,null,null,null,null,null,true,null,null,"DIRECTIVO"));
+		directivoLista = gPersonal.getByExample(new Personal(dni,null,null,null,null,null,null,null,null,null,true,null,null,true,null)); //Tipo docente anulado para que busque los dos si existiera
 		for (Personal p: directivoLista){
 			return p;
 		}
