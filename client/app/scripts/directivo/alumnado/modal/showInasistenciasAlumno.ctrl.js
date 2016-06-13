@@ -58,6 +58,7 @@ $scope.addInasistencia = function(){
   $scope.nuevaInasistencia = new ObjectsFactory.newInasistencia();
   $scope.form.$setUntouched();
   $scope.nuevaInasistencia.fecha = $scope.date;
+  $scope.calcTotalInasistencias();
 };
 
 $scope.saveEditInasistencia = function(position) {
@@ -65,18 +66,38 @@ $scope.saveEditInasistencia = function(position) {
   $scope.copiaLibInasistencias.listaInasistencias[position].concepto = $scope.copiaInasistencia.concepto;
   $scope.copiaLibInasistencias.listaInasistencias[position].cantidad = $scope.copiaInasistencia.cantidad;
   $scope.copiaLibInasistencias.listaInasistencias[position].justificada = $scope.copiaInasistencia.justificada;
+  $scope.calcTotalInasistencias();
 };
 
 $scope.deleteInasistencia = function(inasistencia) {
   $scope.copiaLibInasistencias.listaInasistencias.splice($scope.copiaLibInasistencias.listaInasistencias.indexOf(inasistencia),1);
+  $scope.calcTotalInasistencias();
 };
 
 $scope.edit = function(inasistencia) {
   $scope.copiaInasistencia = angular.copy (inasistencia);
   $scope.copiaInasistencia.fecha = new Date(inasistencia.fecha);
-}
+  $scope.calcTotalInasistencias();
+};
 
+$scope.totalIn = [];
 
+$scope.calcTotalInasistencias = function(){
+  
+  $scope.totalIn.length = 0;
+
+  $scope.copiaLibInasistencias.listaInasistencias.forEach(function(value, index, array){
+    var rdo = 0;
+
+    if (index > 0) {
+      rdo = $scope.totalIn[index - 1];
+    };
+    
+
+    $scope.totalIn.push(value.cantidad + rdo);
+  });
+};
+$scope.calcTotalInasistencias();
   // Service usage
 
 }]);
