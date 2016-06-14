@@ -36,7 +36,7 @@
 	<!--/ngInclude: 'views/partials/affixed-sidebar.html' -->
 </div>
 
-<div class="col-md-10" 	style="overflow-y: hidden;">
+<div class="col-md-10">
 
 	<div id="listadoAnio" ng-show="listadoAnio">
 		<fieldset>
@@ -108,7 +108,7 @@
 			<hr>
 			<form class="form-horizontal media" name="formAnio">
 				<div class="formulario media-body">
-					<div class="col-md-8 personal-info" style="height:350px;">
+					<div class="col-md-8 personal-info">
 
 						<div class="alert alert-warning alert-dismissible" role="alert">
 							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -123,7 +123,7 @@
 							</div>
 							<div class="col-md-5">
 								<input class="form-control" placeholder="Nombre" name="nombre" type="text"
-								maxlength="25" required pattern="[a-zA-Z 0-9°]*" ng-model="newAnio.nombre">
+								maxlength="25" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9°]*" ng-model="newAnio.nombre">
 							</div>
 							<div ng-messages="formAnio.nombre.$error" ng-if="formAnio.nombre.$touched && formAnio.nombre.$invalid">
 								<div ng-message="pattern" class="help-block">Formato invalido</div>
@@ -138,7 +138,7 @@
 							</div>
 							<div class="col-md-5">
 								<input class="form-control" placeholder="Descripción" name="descripcion" type="text"
-								maxlength="255" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*" ng-model="newAnio.descripcion">
+								maxlength="255" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9°]*" ng-model="newAnio.descripcion">
 							</div>
 							<div ng-messages="formAnio.descripcion.$error" ng-if="formAnio.descripcion.$touched && formAnio.descripcion.$invalid">
 								<div ng-message="pattern" class="help-block">Formato invalido</div>
@@ -151,8 +151,7 @@
 								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Divisi&oacute;n:</label>
 							</div>
 							<div class="col-md-7">
-								<button type="button" bs-affix name="division" class="btn btn-default" ng-model="newAnio.listaCursos" data-html="1" data-multiple="1" data-animation="am-flip-x" bs-options="curso.idCurso as curso.curso+'-'+curso.turno for curso in cursos" bs-select required>
-									Action <span class="caret"></span>
+								<button type="button" name="division" class="btn btn-default" ng-model="newAnio.listaCursos" data-html="1" data-multiple="1" data-animation="am-flip-x" bs-options="curso.idCurso as curso.curso+'-'+curso.turno for curso in cursos" bs-select required>
 								</button>
 								<input class="btn btn-info" style="margin-left: 10px;" type="button" ng-click="addCurso()" value="Administrar"/>
 								<div ng-messages="formAnio.division.$error" ng-if="formAnio.division.$touched && formAnio.division.$invalid">
@@ -163,13 +162,23 @@
 
 						<div class="form-group">
 							<div class="col-md-2 col-md-offset-4">
-								<input class="btn btn-danger" type="button" name="" ng-click="clearFormAnio()" value="Limpiar" />
+								<input class="btn btn-danger" type="button" ng-click="clearFormAnio()" value="Limpiar"/>
 							</div>
 							<div class="col-md-3 col-md-offset-1">
-								<input class="btn btn-primary" type="button" ng-click="saveAnio(division)" value="Guardar" ng-disabled="!formAnio.$valid"/>
+								<input class="btn btn-primary" type="button" ng-click="saveAnio(newAnio)" value="Guardar" ng-disabled="!formAnio.$valid"/>
 							</div>
 						</div>
-
+						</br>
+						</br>
+						</br><!-- Hay que hacer que el multiselect se vea-->
+						</br>
+						</br>
+						</br>
+						</br>
+						</br>
+						</br>
+						</br>
+						</br>
 					</div>
 				</div>
 			</form>

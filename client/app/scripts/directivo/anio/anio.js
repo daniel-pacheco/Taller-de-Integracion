@@ -115,7 +115,8 @@ $scope.addCurso = function() {
 };
 
 //-- Llamadas al service
-$scope.saveAnio = function(curso) {
+$scope.saveAnio = function(anio) {
+  alert(anio.nombre+anio.descripcion+anio.listaCursos);
 };
 
 $scope.editAnio = function(anio){
