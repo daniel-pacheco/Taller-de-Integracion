@@ -4,6 +4,9 @@
 package ar.com.santalucia.rest;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -13,6 +16,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import ar.com.santalucia.dominio.modelo.sistema.configuracion.ParametroConfiguracion;
+import ar.com.santalucia.servicio.Inicializador;
 import ar.com.santalucia.servicio.ServicioConfiguracion;
 
 /**
@@ -83,6 +87,20 @@ public class ServicioConfiguracionEndpoint {
 			return Response.ok(true).build();
 		}catch(Exception ex){
 			return Response.ok(ex).build();
+		}
+	}
+	
+	@GET
+	@Path("/inicializarLog")
+	public Response inicializarLog(){
+		try{
+			setInstance();
+			Inicializador inicia = new Inicializador();
+			inicia.inicializarLog();
+			Logger.getLogger(getClass().getName()).log(Level.INFO,"Se inició el registro de log con éxito"); // Registro de log
+			return Response.ok().build();
+		}catch(Exception ex){
+			return Response.serverError().entity(ex).build();
 		}
 	}
 }

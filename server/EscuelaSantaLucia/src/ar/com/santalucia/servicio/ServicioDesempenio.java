@@ -447,31 +447,18 @@ public class ServicioDesempenio {
 			ArrayList<Inasistencia> listaNueva = bolInasistenciasDTO.getListaInasistencias();
 			ArrayList<Inasistencia> listaPersis = new ArrayList<Inasistencia>();
 			listaPersis.addAll(bolInasistencias.getListaInasistencias());
-			// elimina inasistencias sobrantes
-			if (listaNueva.size() < listaPersis.size()) {
-				ArrayList<Inasistencia> listaAux1 = listaNueva; // lista basada en la nueva que va a ser modificada
-				ArrayList<Inasistencia> listaAux2 = listaPersis; // lista que va a guardar los elementos que sobran
-				for (Inasistencia ip : listaPersis) {
-					for (Inasistencia in : listaAux1) {
-						if (ip.getIdInasistencia().equals(in.getIdInasistencia())) {
-							listaAux1.remove(in);
-							listaAux1.add(ip);
-						}
-					}
-				}
-				listaAux2.removeAll(listaAux1); 
-				for (Inasistencia i : listaAux2) {
-					gInasistencia.delete(i);
-				}
-			}
 			
 			// validar inasistencias
 			validarListaInasistencias(listaNueva);
+			// elimina inasistencias sobrantes
+			eliminarInasistencias(listaNueva, listaPersis);
+			
 			
 			Set<Inasistencia> setInasistencias = new HashSet<Inasistencia>();
 			setInasistencias.addAll(listaNueva);
 			bolInasistencias.setListaInasistencias(setInasistencias);
 			
+			//gBoletinInasistencias.closeSession();
 			gBoletinInasistencias.modify(bolInasistencias);
 		} catch (ValidacionException vEx) {
 			throw vEx;
@@ -483,20 +470,77 @@ public class ServicioDesempenio {
 		
 		return true;
 	}
-	
-	private void validarListaInasistencias(ArrayList<Inasistencia> inasistencias) throws InasistenciaException {
-		InasistenciaException iException = new InasistenciaException();
-		
-		for (Inasistencia i : inasistencias) {
-			ArrayList<Inasistencia> listaAux = inasistencias;
-			listaAux.remove(i);
-			for (Inasistencia in : listaAux) {
-				if (in.equals(i)) {
-					iException.addInasistencia(i);
+
+	/**
+	 * Elimina las inasistencias de la lista nueva, para que no queden inasistencias desvinculadas
+	 * de cualquier boletín.
+	 * @param listaNueva lista nueva que viene del cliente
+	 * @param listaPersis lista que está guardada en el servidor
+	 * @throws Exception
+	 */
+	private void eliminarInasistencias(ArrayList<Inasistencia> listaNueva, ArrayList<Inasistencia> listaPersis)
+			throws Exception {
+		if (listaNueva.size() < listaPersis.size()) {
+			ArrayList<Inasistencia> listaAux1 = new ArrayList<Inasistencia>(listaNueva); // lista basada en la nueva que va a ser modificada
+			ArrayList<Inasistencia> listaAux2 = new ArrayList<Inasistencia>(listaPersis); // lista que va a guardar los elementos que sobran
+			for (Inasistencia ip : listaPersis) {
+				for (Inasistencia in : listaNueva) {
+					if (in.getIdInasistencia() != null) {
+						if (ip.getIdInasistencia().equals(in.getIdInasistencia())) {
+							listaAux1.remove(in);
+							listaAux1.add(ip);
+						} 
+					}
+				}
+			}
+			listaAux2.removeAll(listaAux1); 
+			for (Inasistencia i : listaAux2) {
+				gInasistencia.delete(i);
+			}
+		}
+		if (listaNueva.size() >= listaPersis.size()) {
+			for (Inasistencia i : listaPersis) {
+				boolean contiene = false;
+				for (Inasistencia in : listaNueva) {
+					if (i.getIdInasistencia().equals(in.getIdInasistencia())) {
+						contiene = true;
+						// break;
+					}
+				}
+				if (!contiene) {
+					gInasistencia.delete(i);
 				}
 			}
 		}
+	}
+
+	/**
+	 * Valida las inasistencias. Compara el concepto y la fecha, y si hay inasistencias con el mismo
+	 * concepto para la misma fecha lanza una excepción del tipo <b>InasistenciaException</b>.
+	 * 
+	 * @param inasistencias
+	 * @throws InasistenciaException
+	 */
+	private void validarListaInasistencias(ArrayList<Inasistencia> inasistencias) throws InasistenciaException {
+		InasistenciaException iException = new InasistenciaException();
 		
-		throw iException;
+		ArrayList<Inasistencia> listaAux1 = inasistencias;
+		ArrayList<Inasistencia> listaAux2 = inasistencias;
+		for (Inasistencia i : listaAux1) {
+			//listaAux2.remove(i);
+			for (Inasistencia in : listaAux2) {
+				// hago el equals y comparo el id tmb para controlar que no se compare a si misma
+				if (in.equals(i) && (i.getIdInasistencia() != null)/*&& !(in.getIdInasistencia().equals(i.getIdInasistencia()))*/) {
+					if (!i.getIdInasistencia().equals(in.getIdInasistencia())) {
+						iException.addInasistencia(in);
+					}
+				}
+			}
+			//listaAux2.add(i);
+		}
+		
+		if (!iException.getInasistenciasInvalidas().isEmpty()) {
+			throw iException;
+		}
 	}
 }

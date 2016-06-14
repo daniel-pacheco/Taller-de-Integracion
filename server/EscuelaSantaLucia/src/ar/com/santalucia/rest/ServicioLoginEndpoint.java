@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -13,9 +14,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import ar.com.santalucia.excepciones.LoginError;
-import ar.com.santalucia.servicio.ServicioAlumno;
 import ar.com.santalucia.servicio.ServicioLogin;
 
 @Path("/sLogin")
@@ -53,6 +55,7 @@ public class ServicioLoginEndpoint {
 		try{
 			setInstance();
 			token = servicioLogin.autenticar(Long.valueOf(credenciales[0]),credenciales[1],credenciales[2]);
+			Logger.getLogger(getClass().getName()).log(Level.INFO,"Se requirió autenticación para usuario:" +credenciales[0]+" rol:"+ credenciales[2]); // Registro de log
 			return Response.ok().header("auth0", token).header("Access-Control-Expose-Headers", "auth0").build();
 		}catch (LoginError ex){
 			//return Response.ok(ex).build();
@@ -62,7 +65,41 @@ public class ServicioLoginEndpoint {
 		}
 	}
 	
-	
+	/**
+	 * Este método se puede utilziar para determinar la validez de un token y rol sin ser necesario hacer una petición de obtención o inserción de datos.
+	 * @param rolIn
+	 * @param token
+	 * @return
+	 */
+	@POST
+	@Path("/validar")
+	public Response validar(@HeaderParam("rol") String rolIn, @HeaderParam("auth0") String token){
+		String nuevoToken = null;
+		try{
+			//setInstance();
+			nuevoToken = ServicioLogin.comprobar(token, rolIn);
+			//Logger.getLogger(getClass().getName()).log(Level.INFO,"Se requirió validación de credenciales para el usuario: " +ServicioLogin.obtenerIdentificacionUsuario(rolIn, (nuevoToken==null ?token:nuevoToken))+" rol:"+ rolIn); 
+		}catch (LoginError ex){
+			//Logger.getLogger(getClass().getName()).log(Level.WARNING,"Falló la validación de token");
+			switch (ex.getDetalles()) {
+			case LoginError.ROLERROR: 
+				return Response.status(Status.UNAUTHORIZED).build();
+			case LoginError.FIRMAERROR:
+				return Response.status(Status.FORBIDDEN).build();
+			case LoginError.EXPIRADO:
+				return Response.ok(ex).build();
+			default:
+				break;
+			}
+		} catch (Exception ex) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR).entity("No fue posible validar las credenciales").build();
+		}
+		if(nuevoToken == null){
+			return Response.ok(true).build();
+		}else{
+			return Response.ok(true).header("auth0", nuevoToken).build();
+		}
+	}
 	
 	
 	

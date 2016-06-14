@@ -12,6 +12,11 @@ public class InasistenciaException extends Exception {
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Inasistencia> inasistenciasInvalidas;
 
+	public InasistenciaException() {
+		super();
+		inasistenciasInvalidas = new ArrayList<Inasistencia>();
+	}
+
 	public ArrayList<Inasistencia> getInasistenciasInvalidas() {
 		return inasistenciasInvalidas;
 	}

@@ -242,6 +242,18 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 	
+	
+	@GET
+	@Path("/mat/listAllMin")
+	public Response getMateriasDTO() {
+		try {
+			setInstance();
+			return Response.ok(servicioAcademico.getMateriasDTO()).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
+	
 	/**
 	 * Asigna Docente titular y suplente a una materia determinada. Todos los objetos involucrados deben estar en estado persistente<BR>
 	 * Orden de elementos en JsonPack: <br> [0]id Docente Titular, <br>[1]Id Docente Suplente, <br>[2]Id Materia.
@@ -249,9 +261,7 @@ public class ServicioAcademicoEndpoint {
 	 * @return True si la operación es exitosa.
 	 */
 	@POST
-	//@Path("/mat/asignDoc/{idDt:[0-9][0-9]*}/{idDs:[0-9][0-9]*}/{idM:[0-9][0-9]*}")
 	@Path("/mat/asignDoc")
-	//public Response asignarDocentesAMateria(@PathParam("idDt") final Long idDt, @PathParam("idDs") final Long idDs, @PathParam("idM") final Long idM){
 	public Response asignarDocentesAMateria(JsonPack jsonPack){
 		try{
 			//JsonPack jsonPack=new JsonPack();
@@ -272,6 +282,8 @@ public class ServicioAcademicoEndpoint {
 	 * @param jsonPack
 	 * @return true si la operación es exitosa
 	 */
+	@POST
+	@Path("/mat/desvinDoc")
 	public Response desvincularDocentesDeMateria(JsonPack jsonPack) {
 		try {
 			setInstance();
@@ -342,19 +354,13 @@ public class ServicioAcademicoEndpoint {
 	 * @return True si la operación es exitosa.
 	 */
 	@POST
-	//@Path("/cur/vin/{idC:[0-9][0-9]*}")
-	//@Path("/cur/vin/{idC:[0-9][0-9]*}/{idA:[0-9][0-9]*}")
 	@Path("/cur/vin")
-	//public Response asignarAlumnoACurso(@PathParam("idC") final Long idCurso, @PathParam("idA") final Long idAlumno) {
 	public Response asignarAlumnoACurso(JsonPack jsonPack){
-	//public Response asignarAlumnoACurso(Alumno alumno, @PathParam("idC") final Long idCurso) {
 		try {
 			setInstance();
 			ServicioAlumno servicioAlumno = new ServicioAlumno();
-			//servicioAcademico.asignarAlumnoACurso(servicioAlumno.getUsuario(idAlumno), idCurso);
 			//[0]idAlumno [1]idCurso
 			servicioAcademico.asignarAlumnoACurso(servicioAlumno.getUsuario(jsonPack.getValues().elementAt(0)), jsonPack.getValues().elementAt(1));
-			//servicioAcademico.asignarAlumnoACurso(alumno, idCurso);
 			return Response.ok(true).build();
 		} catch (Exception ex) {
 			// TODO Auto-generated catch block
@@ -369,19 +375,12 @@ public class ServicioAcademicoEndpoint {
 	 * @return True si la operación es exitosa.
 	 */
 	@POST
-	//@Path("/cur/desvin/{idC:[0-9][0-9]*}")
-	//@Path("/cur/desvin/{idC:[0-9][0-9]*}/{idA:[0-9][0-9]*}")
 	@Path("/cur/desvin")
-	//public Response desvincularAlumnoDeCurso(@PathParam("idC") final Long idCurso, @PathParam("idA") final Long idAlumno) {
-	//public Response desvincularAlumnoDeCurso(Alumno alumno, @PathParam("idC") final Long idCurso) {
     public Response desvincularAlumnoDeCurso(JsonPack jsonPack){
 		try {
 			setInstance();
 			ServicioAlumno servicioAlumno = new ServicioAlumno();
-			//servicioAcademico.desvincularAlumnoDeCurso(servicioAlumno.getUsuario(idAlumno), idCurso);
-			//Orden de elementos en JsonPack: <br> [0]id Alumno, <br>[1]Id Curso.
 			servicioAcademico.desvincularAlumnoDeCurso(servicioAlumno.getUsuario(jsonPack.getValues().elementAt(0)), jsonPack.getValues().elementAt(1));
-			//servicioAcademico.desvincularAlumnoDeCurso(alumno, idCurso);
 			return Response.ok(true).build();
 		} catch (Exception ex) {
 			// TODO Auto-generated catch block
@@ -396,17 +395,14 @@ public class ServicioAcademicoEndpoint {
 	 * @return
 	 */
 	@POST
-	//@Path("/mat/vin/{idM:[0-9][0-9]*}/{idA:[0-9][0-9]*}")
 	@Path("/mat/vin")
-	//public Response asignarMateriaAAnio(@PathParam("idM") final Long idMateria, @PathParam("idA") final Long idAnio){
-    public Response asignarMateriaAAnio(JsonPack jsonPack){
+	public Response asignarMateriaAAnio(JsonPack jsonPack){
 		try{
 			setInstance();
 			//[0]idMateria [1]idAnio
 			return Response.ok(servicioAcademico.asignarMateriaAAnio(
 					    	   servicioAcademico.getMateria(jsonPack.getValues().elementAt(0)), 
 					           jsonPack.getValues().elementAt(1))).build();
-			//return Response.ok(servicioAcademico.asignarMateriaAAnio(servicioAcademico.getMateria(idMateria), idAnio)).build();
 		}catch(Exception ex){
 			return Response.ok(ex).build();
 		}
@@ -419,15 +415,15 @@ public class ServicioAcademicoEndpoint {
 	 * @return
 	 */
 	@POST
-	//@Path("/mat/desvin/{idM:[0-9][0-9]*}/{idA:[0-9][0-9]*}")
 	@Path("/mat/desvin")
-	//public Response desvincularMateriaDeAnio(@PathParam("idM") final Long idMateria, @PathParam("idA") final Long idAnio){
     public Response desvincularMateriaDeAnio(JsonPack jsonPack) {
 		try {
 			setInstance();
 			//[0]idMateria [1]idAnio
-			return Response.ok(servicioAcademico.desvincularMateriaDeAnio(servicioAcademico.getMateria(jsonPack.getValues().elementAt(0)), jsonPack.getValues().elementAt(1))).build();
-			//return Response.ok(servicioAcademico.desvincularMateriaDeAnio(servicioAcademico.getMateria(idMateria), idAnio)).build();
+			return Response.ok(servicioAcademico.desvincularMateriaDeAnio(
+								servicioAcademico.getMateria(
+										jsonPack.getValues().elementAt(0)), 
+										jsonPack.getValues().elementAt(1))).build();
 		} catch(Exception ex) {
 			return Response.ok(ex).build();
 		}

@@ -18,6 +18,7 @@ import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
 import ar.com.santalucia.dominio.dto.DetallePreviaDTO;
 import ar.com.santalucia.dominio.dto.MateriaAltaDTO;
+import ar.com.santalucia.dominio.dto.MateriaDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Area;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
@@ -333,6 +334,40 @@ public class ServicioAcademico {
 			throw new Exception("No se pudo obtener la lista de MATERIAS: " + ex.getMessage());
 		}
 	}
+	
+	public ArrayList<MateriaDTO> getMateriasDTO() throws Exception {
+		try {
+			ArrayList<Materia> listaMateriasPersis = new ArrayList<Materia>(gMateria.List());
+			ArrayList<MateriaDTO> listaMateriasDto = new ArrayList<MateriaDTO>();
+			
+			for (Materia mp : listaMateriasPersis) {
+				MateriaDTO materiaDTO = new MateriaDTO();
+				//BEGIN logica para llenar campos
+				materiaDTO.setNombre(mp.getNombre());
+				materiaDTO.setDescripcion(mp.getDescripcion());
+				materiaDTO.setDocenteTitular((mp.getDocenteTitular() != null)
+												? mp.getDocenteTitular().toString()
+												:"");
+				materiaDTO.setDocenteSuplente((mp.getDocenteSuplente() != null)
+												? mp.getDocenteSuplente().toString()
+												:"");
+				materiaDTO.setArea(mp.getArea().getNombre());
+				for (Anio a : this.getAnios(new Anio())) { // recupero la lista completa de años
+					if (a.getListaMaterias().contains(mp)) {
+						materiaDTO.setAnio(a.getNombre());
+					}
+				}
+				//END logica para llenar campos
+				listaMateriasDto.add(materiaDTO);
+			}
+			
+			return listaMateriasDto;
+		} catch (Exception ex) {
+			throw new Exception("No se pudo obtener la lista DTO de MATERIAS: " + ex.getMessage());
+		}
+	}
+	
+	
 	
 	public Boolean asignarDocentesAMateria(Personal docenteTitular, Personal docenteSuplente, Long idMateria) throws Exception { // EN ENDPOINT
 		// TODO

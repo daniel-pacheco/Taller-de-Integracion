@@ -18,7 +18,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
  *
  */
 
-//UltimoModificador: Ariel Ramirez @ 25-11-15 17:18
+//UltimoModificador: Ariel Ramirez @ 12-06-2016 20:34
 
 public class Personal extends Usuario {
 
@@ -38,11 +38,13 @@ public class Personal extends Usuario {
 
 	public Personal(Long nroDocumento, String tipoDocumento, String nombre, String apellido,
 			Set<Telefono> listaTelefonos, Set<Mail> listaMails, Domicilio domicilio, Character sexo, String nombreUsuario,
-			Date fechaNacimiento, Boolean activo, Set<Titulo> listaTitulos, Long cuil, String rol) {
+			Date fechaNacimiento, Boolean activo, Set<Titulo> listaTitulos, Long cuil, Boolean rolDirectivo, Boolean rolDocente) {
 		super(nroDocumento, tipoDocumento, nombre, apellido, listaTelefonos, listaMails, domicilio, sexo,
 				nombreUsuario, fechaNacimiento, activo);
 		this.setListaTitulos(listaTitulos);
 		this.cuil = cuil;
+		this.rolDirectivo = rolDirectivo;
+		this.rolDocente = rolDocente;
 	}
 	
 	public Boolean getRolDirectivo() {

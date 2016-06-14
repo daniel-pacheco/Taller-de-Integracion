@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -19,7 +20,9 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
+import ar.com.santalucia.excepciones.LoginError;
 import ar.com.santalucia.servicio.ServicioDocente;
+import ar.com.santalucia.servicio.ServicioLogin;
 
 /**
  * @author Ariel Ramirez
@@ -27,7 +30,7 @@ import ar.com.santalucia.servicio.ServicioDocente;
  * @version 1.0
  */
 
-// Último modificador: Ariel Ramirez @ 25-11-2015 18:29
+// Último modificador: Ariel Ramirez @ 12-06-2016 20:25
 
 @Path("/sDocente")
 @Produces("application/json")
@@ -79,6 +82,24 @@ public class ServicioDocenteEndpoint {
 			docente = servicioDocente.getUsuario(id);
 		} catch (Exception ex) {
 			// ex.printStackTrace();
+			return Response.ok(ex).build();
+		}
+		return Response.ok(docente).build();
+	}
+	
+	/**
+	 * Devuelve los datos de un directivo específico proporcionando su DNI
+	 * @param dni
+	 * @return 
+	 */
+	@GET
+	@Path("/doc/getByDni/{id:[0-9][0-9]*}")
+	public Response getDocenteByDni(@PathParam("id") final Long dni){
+		Personal docente = new Personal();
+		try{
+			setInstance();
+			docente = servicioDocente.getUsuarioByDni(dni);
+		}catch(Exception ex){
 			return Response.ok(ex).build();
 		}
 		return Response.ok(docente).build();
@@ -277,7 +298,7 @@ public class ServicioDocenteEndpoint {
 	 */
 	@DELETE
 	@Path("/doc/{id:[0-9][0-9]*}")
-	public Response deleteDirectivoById(@PathParam("id") final Long id) {
+	public Response deleteDocenteById(@PathParam("id") final Long id) {
 		Boolean exito = false;
 		try {
 			setInstance();
@@ -286,6 +307,25 @@ public class ServicioDocenteEndpoint {
 		} catch (Exception ex) {
 			// ex.printStackTrace();
 			return Response.ok(ex).build();
+		}
+	}
+	
+	/**
+	 * Elimina un docente de manera lógica proporcionando el DNI
+	 * @param dni
+	 * @return
+	 */
+	@DELETE
+	@Path("/doc/deleteByDni/{dni:[0-9][0-9]*}")
+	public Response deleteDocenteByDni(@PathParam("dni") final Long dni) {
+		Boolean exito = false;
+		try {
+			setInstance();
+			exito = servicioDocente.removeUsuario(servicioDocente.getUsuarioByDni(dni));
+			return Response.ok(exito).build();
+		} catch (Exception ex) {
+			// ex.printStackTrace();
+			return Response.serverError().entity("No se pudo eliminar el docente").build();
 		}
 	}
 
@@ -346,8 +386,6 @@ public class ServicioDocenteEndpoint {
 		}
 	}
 	
-	
-	
 	/*
 	 * Endpoint light
 	 */
@@ -361,4 +399,49 @@ public class ServicioDocenteEndpoint {
 			return Response.ok(ex).build();
 		}
 	}
+	
+	/**
+	 * Devuelve los datos personales del Docente logueado solamente enviando rol y token.
+	 * @param rolIn
+	 * @param token
+	 * @return
+	 */
+	@GET
+	@Path("/DatosPersonales")
+	public Response obtenerDatosPersonales(@HeaderParam("rol") String rolIn, @HeaderParam("auth0") String token){
+		String nuevoToken = new String();
+		Long usuarioDni;
+		Personal docente = new Personal();
+		try {
+			nuevoToken = ServicioLogin.comprobar(token, rolIn);
+			setInstance();
+			if(nuevoToken == null){
+				usuarioDni = Long.valueOf(ServicioLogin.obtenerIdentificacionUsuario(rolIn, token));
+				docente = servicioDocente.getUsuarioByDni(usuarioDni);
+			}else{
+				usuarioDni = Long.valueOf(ServicioLogin.obtenerIdentificacionUsuario(rolIn, nuevoToken));
+				docente = servicioDocente.getUsuarioByDni(usuarioDni);
+			}
+			}catch (LoginError ex){
+				switch (ex.getDetalles()) {
+				case LoginError.ROLERROR: 
+					return Response.status(Status.UNAUTHORIZED).build();
+				case LoginError.FIRMAERROR:
+					return Response.status(Status.FORBIDDEN).build();
+				case LoginError.EXPIRADO:
+					return Response.ok(ex).build();
+				default:
+					break;
+				}
+			} catch (Exception ex) {
+				return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+			}
+		if(nuevoToken == null){
+			return Response.ok(docente).build();
+		}else{
+			return Response.ok(docente).header("auth0", nuevoToken).build();
+		}
+	}
 }
+
+

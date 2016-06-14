@@ -20,7 +20,7 @@
  		}
  	});
  })
- .controller('DocenteCtrl', function ($scope, docenteData, $timeout, ModalService, SERVER, ObjectsFactory, $alert, docenteService, modalService) {
+ .controller('DocenteCtrl', function ($scope, docenteData, $timeout, ModalService, SERVER, ObjectsFactory, $alert, docenteService, alumnoService, modalService) {
 
   $scope.tooltip = {
     tooltipProfile : {
@@ -39,11 +39,16 @@
   $scope.dropDownAreas = ['Cs. Sociales', 'Cs. Naturales', 'Cs. Exactas','Artes'];
 
   $scope.nuevoDocente = ObjectsFactory.newDocente();
+  $scope.nuevoTelefonoSimple = ObjectsFactory.newTelefono();
+  $scope.cuilHead = '';
+  $scope.cuilTail = '';
 
   $scope.clearFormDoc = function(){
     $scope.formDoc.$setUntouched();
     $scope.nuevoDocente = ObjectsFactory.newDocente();
-
+    $scope.nuevoTelefonoSimple = ObjectsFactory.newTelefono();
+    $scope.cuilHead = '';
+    $scope.cuilTail = '';
   }
 
 
@@ -172,6 +177,28 @@ $scope.confirmModal = function(mesagge, funcion, parametro) { //este confirm rec
   });
 };
 
+$scope.requiredPass = function(docente) {
+    ModalService.showModal({
+        templateUrl: 'scripts/utils/requiredPassword/modalRequiredPassword.tpl.html',
+        controller: 'RequiredPasswordModalController',
+        inputs: {
+            title: "Confirmar contraseña",
+        }
+    }).then(function(modal) {
+        modal.element.modal();
+        modal.close.then(function(result){
+            alumnoService.getById(result).then( //llamada a validar el DNI
+              function(response){
+                console.log(response);
+                putNewDocente(docente);
+              }, function(response){
+                alert('error, reqpass');
+                console.log(response);
+              }); 
+        });
+    });
+};
+
 //-- fin Modal
 
 //-- Llamadas al servicio
@@ -205,15 +232,36 @@ var eliminarDocenteAlert = $alert({
 });
 //-- Fin Alert
 //-- filters
-$scope.newDocente = function (docente){
+
+$scope.newDocente = function(docente){
+  if (docente.rolDirectivo) {
+     $scope.requiredPass(docente);//.then(function(response){
+      // if ($scope.requiredPass() === 123) { // llamada a checkear el password
+      //   this.putNewDocente(docente);
+      // } else {
+      //   alert('password incorrecto');
+      // };
+    // });
+  } else {
+    putNewDocente(docente);
+  };
+}
+
+var putNewDocente = function (docente){
   // console.log ($scope.nuevoDocente);
   docente.nombreUsuario = modalService.makeId(5);
+  docente.cuil = $scope.cuilHead + docente.nroDocumento + $scope.cuilTail;
+  if ($scope.nuevoTelefonoSimple.nroTelefono) {
+    docente.listaTelefonos.push($scope.nuevoTelefonoSimple);
+  };
+  console.log(docente.cuil);
+  console.log(docente.listaTelefonos);
 
   docenteService.putNew(docente)
   .then(function(response){
     console.log(response);
     alert('El docente se ha dado de alta con éxito. ID n°: ' + response.data);
-    // $scope.clearFormAlu();
+    $scope.clearFormDoc();
   },
   function(response){
     alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);

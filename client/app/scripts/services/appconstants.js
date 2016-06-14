@@ -9,6 +9,7 @@
  */
  angular.module('clientAppApp')
  .constant('SERVER', {
+ 	// address: 'http://192.168.0.102:8080/',
  	address: 'http://192.168.1.4:8080/',
  	sAlumno: 'EscuelaSantaLucia/rest/sAlumno/',
  	sDocente: 'EscuelaSantaLucia/rest/sDocente/',
@@ -36,7 +37,7 @@
 .constant('LANDING_ROUTES',{ //la dirección relativa entre los estados anidados se separa por .
  	ADMINISTRADOR: 'administrador.principal',
  	DOCENTE: 'docente.principal',
- 	ALUMNO: 'alumno.micuenta',
+ 	ALUMNO: 'alumno.operaciones',
  	DIRECTIVO: 'directivo.alumnado'
  })
 

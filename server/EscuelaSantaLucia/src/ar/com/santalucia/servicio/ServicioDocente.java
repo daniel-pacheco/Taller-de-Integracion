@@ -26,7 +26,7 @@ import ar.com.santalucia.excepciones.ValidacionException;
  * @version 1.0
  */
 
-// Último modificador: Ariel Ramirez @ 25-11-2015 18:18
+// Último modificador: Ariel Ramirez @ 12-06-2016 20:47
 
 public class ServicioDocente extends ServicioUsuario<Personal> {
 
@@ -87,6 +87,9 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 			if (usuario.getIdUsuario() == null) {
 				gPersonal.add(usuario);
 				sLogin.addLogin(usuario.getNroDocumento(), Login.DOCENTE);
+				if(usuario.getRolDirectivo() == true){
+					sLogin.addLogin(usuario.getNroDocumento(), Login.DIRECTIVO); // Parche pr si viene con los dos roles, aunque no seria tan común, como sí lo tiene directivo (a modo de prueba)
+				}
 			} else {
 				gPersonal.modify(usuario);
 				//Si viene por modify, puede venir con dos roles!
@@ -192,6 +195,7 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 		ServicioAcademico servicioAcademico = new ServicioAcademico();
 		try {
 			Personal personal = new Personal();
+			personal.setActivo(true);
 			listaDocentes = gPersonal.getByExample(personal);
 			for (Personal p: listaDocentes) {
 				DocenteMateriasDTO docenteDTO = new DocenteMateriasDTO(p.getNroDocumento(), p.getNombre(), p.getApellido(), null, null);
@@ -228,9 +232,11 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 
 	@Override
 	public Personal getUsuarioByDni(Long dni) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
+		List<Personal> docenteLista = new ArrayList<Personal>();
+		docenteLista = gPersonal.getByExample(new Personal(dni,null,null,null,null,null,null,null,null,null,true,null,null,null,true)); //Tipo directivo anulado para que busque los dos si existiera
+		for (Personal d: docenteLista){
+			return d;
+		}
+		throw new Exception ("Ocurrió un error al recuperar los datos del docente");
+	}	
 }

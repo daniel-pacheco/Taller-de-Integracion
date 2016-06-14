@@ -209,8 +209,8 @@
 									<label for="">Sexo:</label>
 								</div>
 								<div class="col-md-7">
-									<input type="radio" name="sexo" ng-model="nuevoAlumno.sexo" id="F" value="f"><label class="text-radio" for="F"><span></span>Femenino </label>
-									<input type="radio" name="sexo" ng-model="nuevoAlumno.sexo" checked id="M" value="m"><label class="text-radio" for="M"><span></span>Masculino </label>
+									<input type="radio" name="sexo" ng-model="nuevoAlumno.sexo" id="F" value="F"><label class="text-radio" for="F"><span></span>Femenino </label>
+									<input type="radio" name="sexo" ng-model="nuevoAlumno.sexo" checked id="M" value="M"><label class="text-radio" for="M"><span></span>Masculino </label>
 								</div>
 							</div>
 							<!-- /form-group-->
@@ -261,7 +261,7 @@
 								</div>
 
 								<div class="col-md-5">
-									<input name="listaTelefono" class="form-control" ng-model="nuevoAlumno.listaTelefono[0]" placeholder="0343-4353535" type="tel" ng-show="!mostrarListaTelefonos">
+									<input name="listaTelefono" class="form-control" ng-model="nuevoTelefonoSimple.nroTelefono" maxlength="10" placeholder="4353535" type="tel" ng-show="!mostrarListaTelefonos">
 									<select multiple class="form-control" ng-show="mostrarListaTelefonos">
 										<option ng-repeat="telefono in nuevoAlumno.listaTelefonos">{{telefono.caracteristica}}-{{telefono.nroTelefono}} ({{telefono.tipoTelefono}})</option>
 									</select> 
@@ -282,7 +282,7 @@
 									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Mail:</label>
 								</div>
 								<div class="col-md-7">
-									<input name="email" type="email" class="form-control" placeholder="nombre@nombre.com" ng-model="nuevoAlumno.listaMails[0].direccionMail" maxlength="255" ng-show="!mostrarListaMails" required/>
+									<input name="email" type="email" class="form-control" placeholder="nombre@dominio.com" ng-model="nuevoAlumno.listaMails[0].direccionMail" maxlength="255" ng-show="!mostrarListaMails" required/>
 									<select multiple class="form-control" ng-show="mostrarListaMails">
 										<option ng-repeat="mail in nuevoAlumno.listaMails">{{mail.direccionMail}} ({{mail.tipoMail}})</option>
 									</select> 

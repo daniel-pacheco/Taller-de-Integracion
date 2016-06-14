@@ -19,6 +19,7 @@
     var expectDniMin = 'getByDniMin/';
     var listAll = 'listAll';
     var listAllMin = 'listAllMin';
+    var myData = 'DatosPersonales';
 
     this.getById = function (id) {
     	return $http.get(server + sDocente + expectParam + id);
@@ -38,6 +39,10 @@
 
     this.getAllMin = function () {
     	return $http.get(server + sDocente + listAllMin);
+    };
+
+    this.getMyData = function () {
+        return $http.get(server + sAlumno + myData);
     };
 
     this.putNew = function(docente){	  

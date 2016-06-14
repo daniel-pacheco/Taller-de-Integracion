@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -22,17 +23,18 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
-
+import ar.com.santalucia.excepciones.LoginError;
 import ar.com.santalucia.servicio.ServicioDirectivo;
+import ar.com.santalucia.servicio.ServicioLogin;
 
 /**
  * @author Ariel Ramirez
  * 
- * @version 1.0
+ * @version 1.1
  *
  */
 
-// Último modificador: Ariel Ramirez @ 25-11-2015 18:29
+// Último modificador: Ariel Ramirez @ 12-06-2016 20:25
 
 @Path("/sDirectivo")
 @Produces("application/json")
@@ -67,6 +69,25 @@ public class ServicioDirectivoEndpoint {
 		return Response.created(null).build();
 	}
 
+	/**
+	 * Devuelve los datos de un directivo específico proporcionando su DNI
+	 * @param dni
+	 * @return 
+	 */
+	@GET
+	@Path("/dir/getByDni/{id:[0-9][0-9]*}")
+	public Response getDirectivoByDni(@PathParam("id") final Long dni){
+		Personal directivo = new Personal();
+		try{
+			setInstance();
+			directivo = servicioDirectivo.getUsuarioByDni(dni);
+		}catch(Exception ex){
+			return Response.ok(ex).build();
+		}
+		return Response.ok(directivo).build();
+	}
+	
+	
 	/**
 	 * @param id
 	 *            identificador del usuario a buscar.
@@ -291,6 +312,25 @@ public class ServicioDirectivoEndpoint {
 			return Response.ok(ex).build();
 		}
 	}
+	
+	/**
+	 * Elimina un directivo de manera lógica proporcionando el DNI
+	 * @param dni
+	 * @return
+	 */
+	@DELETE
+	@Path("/doc/deleteByDni/{dni:[0-9][0-9]*}")
+	public Response deleteDirectivoByDni(@PathParam("dni") final Long dni) {
+		Boolean exito = false;
+		try {
+			setInstance();
+			exito = servicioDirectivo.removeUsuario(servicioDirectivo.getUsuarioByDni(dni));
+			return Response.ok(exito).build();
+		} catch (Exception ex) {
+			// ex.printStackTrace();
+			return Response.serverError().entity("No se pudo eliminar el directivo").build();
+		}
+	}
 
 	/**
 	 * Utilice este método para eliminar un teléfono existente.
@@ -346,6 +386,49 @@ public class ServicioDirectivoEndpoint {
 		}catch (Exception ex){
 			//e.printStackTrace();
 			return Response.ok(ex).build();
+		}
+	}
+	
+	/**
+	 * Devuelve los datos personales del Directivo logueado solamente enviando rol y token.
+	 * @param rolIn
+	 * @param token
+	 * @return
+	 */
+	@GET
+	@Path("/DatosPersonales")
+	public Response obtenerDatosPersonales(@HeaderParam("rol") String rolIn, @HeaderParam("auth0") String token){
+		String nuevoToken = new String();
+		Long usuarioDni;
+		Personal directivo = new Personal();
+		try {
+			nuevoToken = ServicioLogin.comprobar(token, rolIn);
+			setInstance();
+			if(nuevoToken == null){
+				usuarioDni = Long.valueOf(ServicioLogin.obtenerIdentificacionUsuario(rolIn, token));
+				directivo = servicioDirectivo.getUsuarioByDni(usuarioDni);
+			}else{
+				usuarioDni = Long.valueOf(ServicioLogin.obtenerIdentificacionUsuario(rolIn, nuevoToken));
+				directivo = servicioDirectivo.getUsuarioByDni(usuarioDni);
+			}
+			}catch (LoginError ex){
+				switch (ex.getDetalles()) {
+				case LoginError.ROLERROR: 
+					return Response.status(Status.UNAUTHORIZED).build();
+				case LoginError.FIRMAERROR:
+					return Response.status(Status.FORBIDDEN).build();
+				case LoginError.EXPIRADO:
+					return Response.ok(ex).build();
+				default:
+					break;
+				}
+			} catch (Exception ex) {
+				return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+			}
+		if(nuevoToken == null){
+			return Response.ok(directivo).build();
+		}else{
+			return Response.ok(directivo).header("auth0", nuevoToken).build();
 		}
 	}
 }
