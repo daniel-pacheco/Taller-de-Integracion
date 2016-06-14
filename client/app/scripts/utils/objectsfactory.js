@@ -105,7 +105,7 @@ angular.module('clientAppApp')
     var titulo = {
       "idTitulo" : null,
       "nombreTitulo" : "",
-      "tipo" : "",
+      "tipo" : "", //refactorizar titulo, no concuerda con los campos de la BD
       "anio" : '0'
     };
     return titulo;

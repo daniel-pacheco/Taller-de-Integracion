@@ -20,7 +20,7 @@
  		}
  	});
  })
- .controller('DocenteCtrl', function ($scope, docenteData, $timeout, ModalService, SERVER, ObjectsFactory, $alert, docenteService, alumnoService, modalService) {
+ .controller('DocenteCtrl', function ($scope, docenteData, $timeout, ModalService, SERVER, ObjectsFactory, $alert, docenteService, alumnoService, directivoService, modalService) {
 
   $scope.tooltip = {
     tooltipProfile : {
@@ -45,6 +45,9 @@
 
   $scope.clearFormDoc = function(){
     $scope.formDoc.$setUntouched();
+    $scope.mostrarListaTelefonos = false;
+    $scope.mostrarListaMails = false;
+    $scope.mostrarListaTitulos = false;
     $scope.nuevoDocente = ObjectsFactory.newDocente();
     $scope.nuevoTelefonoSimple = ObjectsFactory.newTelefono();
     $scope.cuilHead = '';
@@ -190,7 +193,7 @@ $scope.requiredPass = function(docente) {
             alumnoService.getById(result).then( //llamada a validar el DNI
               function(response){
                 console.log(response);
-                putNewDocente(docente);
+                putNewDirectivo(docente);
               }, function(response){
                 alert('error, reqpass');
                 console.log(response);
@@ -203,13 +206,21 @@ $scope.requiredPass = function(docente) {
 
 //-- Llamadas al servicio
 $scope.deleteDocente = function (docente) {
-  $scope.confirmModal("¿Desea eliminar al docente"+docente.nombre+" "+docente.apellido+"?", $scope.eliminarDocente, docente);
+  $scope.confirmModal("¿Desea eliminar al docente " + docente.nombre + " " + docente.apellido + "? ", $scope.eliminarDocente, docente.nroDocumento);
   //Hay que actualizar de nuevo la lista de docentes
 };
 //esto tiene que ser una llamada al service que elimine el docente
 $scope.eliminarDocente = function(docente){
-  $scope.docentes.splice($scope.docentes.indexOf(docente),1);
-  $scope.showAlert();
+
+docenteService.delByDni(docente).then(function(response){
+  alert('docente con dni: ' + docente + ' eliminado con exito');
+  console.log(response);
+},function(response){
+  alert('ha ocurrido un error al contactar al servidor: ' + response.statusText);
+});
+
+  // $scope.docentes.splice($scope.docentes.indexOf(docente),1);
+  // $scope.showAlert();
 };
 //-- fin Llamadas al servicio
 
@@ -234,33 +245,41 @@ var eliminarDocenteAlert = $alert({
 //-- filters
 
 $scope.newDocente = function(docente){
+  docente.nombreUsuario = modalService.makeId(5);
+  docente.cuil = $scope.cuilHead + docente.nroDocumento + $scope.cuilTail;
+  if ($scope.nuevoTelefonoSimple.nroTelefono) {
+    docente.listaTelefonos.push($scope.nuevoTelefonoSimple);
+  };
+
+
   if (docente.rolDirectivo) {
-     $scope.requiredPass(docente);//.then(function(response){
-      // if ($scope.requiredPass() === 123) { // llamada a checkear el password
-      //   this.putNewDocente(docente);
-      // } else {
-      //   alert('password incorrecto');
-      // };
-    // });
+     $scope.requiredPass(docente);
   } else {
     putNewDocente(docente);
   };
 }
 
 var putNewDocente = function (docente){
-  // console.log ($scope.nuevoDocente);
-  docente.nombreUsuario = modalService.makeId(5);
-  docente.cuil = $scope.cuilHead + docente.nroDocumento + $scope.cuilTail;
-  if ($scope.nuevoTelefonoSimple.nroTelefono) {
-    docente.listaTelefonos.push($scope.nuevoTelefonoSimple);
-  };
-  console.log(docente.cuil);
-  console.log(docente.listaTelefonos);
+  console.log ('putDocente');
 
   docenteService.putNew(docente)
   .then(function(response){
     console.log(response);
     alert('El docente se ha dado de alta con éxito. ID n°: ' + response.data);
+    $scope.clearFormDoc();
+  },
+  function(response){
+    alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
+  });
+};
+
+var putNewDirectivo = function (directivo){
+  console.log ('putDirectivo');
+
+  directivoService.putNew(directivo)
+  .then(function(response){
+    console.log(response);
+    alert('El directivo se ha dado de alta con éxito. ID n°: ' + response.data);
     $scope.clearFormDoc();
   },
   function(response){
@@ -310,9 +329,9 @@ $scope.seleccionar = function(id){
 };
 $scope.docenteFilter = function (docente) {//la clave de este comparador es q transofrma todo a string y va comparando las posiciones, no tiene en cuenta los espacios
   return (/*angular.lowercase(docente.materia).indexOf(angular.lowercase($scope.filterByName) || '') !== -1 ||*/
-    angular.lowercase(docente.apellidoDocente).indexOf(angular.lowercase($scope.filterByName) || '') !== -1 ||
-    angular.lowercase(docente.nombreDocente).indexOf(angular.lowercase($scope.filterByName) || '') !== -1 ||
-    angular.lowercase(docente.dniDocente.toString()).indexOf(angular.lowercase($scope.filterByName) || '') !== -1
+    angular.lowercase(docente.apellido).indexOf(angular.lowercase($scope.filterByName) || '') !== -1 ||
+    angular.lowercase(docente.nombre).indexOf(angular.lowercase($scope.filterByName) || '') !== -1 ||
+    angular.lowercase(docente.nroDocumento.toString()).indexOf(angular.lowercase($scope.filterByName) || '') !== -1
     );
 };
 $scope.showData = function() {

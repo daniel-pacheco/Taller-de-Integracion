@@ -12,17 +12,24 @@ angular.module('clientAppApp')
 	});
 })
 
-.controller('DirectivoMiCuentaCtrl', function ($scope) {
+.controller('DirectivoMiCuentaCtrl', function ($scope, directivoService) {
 
 	$scope.titulo = 'Mi Cuenta';
-	// $scope.alumno = alumnoData[0];
-	/*$scope.call = function(){
-		alumnoService.alumnoGetById(7).then(function(response){$scope.alumno = response.data});
-		console.log($scope.alumno);
-	};*/
-
 	$scope.misDatos = true;
 	$scope.subtitle = "Mis Datos";
+
+	$scope.directivo = {};
+
+	$scope.initCall = function() {
+		directivoService.getMyData().then(function(response) {
+			console.log(response);
+			$scope.directivo = response.data;
+		},
+		function(response){
+			alert('Ha ocurrido un error al contactar al servidor ' + response.statusText);
+		});
+	};
+	$scope.initCall(); //carga los datos desde la BD
 
 	$scope.seleccionar = function (id){
 		switch (id){

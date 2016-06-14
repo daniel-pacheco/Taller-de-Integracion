@@ -15,22 +15,23 @@
     var sDocente = SERVER.sDocente;
 
     var expectParam = 'doc/';
-    var expectDni = 'doc/getByDni/';
-    var expectDniMin = 'getByDniMin/';
+    var getByDni = 'getByDni/';
+    var getByDniMin = 'getByDniMin/';
     var listAll = 'listAll';
     var listAllMin = 'listAllMin';
     var myData = 'DatosPersonales';
+    var deleteByDni = 'deleteByDni/'
 
     this.getById = function (id) {
     	return $http.get(server + sDocente + expectParam + id);
     };
 
     this.getByDni = function (dni) {
-    	return $http.get(server + sDocente + expectDni + dni);
+    	return $http.get(server + sDocente + expectParam + getByDni + dni);
     };
 
     this.getByDniMin = function (dni) {
-    	return $http.get(server + sDocente + expectDniMin + dni);
+    	return $http.get(server + sDocente + expectParam + getByDniMin + dni);
     };
 
     this.getAll = function () {
@@ -47,6 +48,10 @@
 
     this.putNew = function(docente){	  
     	return $http.put(server + sDocente + expectParam, docente);
+    };
+
+    this.delByDni = function(dni){      
+      return $http.delete(server + sDocente + expectParam + deleteByDni + dni);
     };
 
 });    

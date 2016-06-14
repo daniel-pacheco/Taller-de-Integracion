@@ -334,6 +334,8 @@ $scope.newAlumno = function (alumno){
 
 $scope.clearFormAlu = function (){
 	$scope.formAlu.$setUntouched();
+	$scope.mostrarListaTelefonos = false;
+    $scope.mostrarListaMails = false;
 	$scope.nuevoAlumno = ObjectsFactory.newAlumno();
 	$scope.nuevoTelefonoSimple = ObjectsFactory.newTelefono();
 }

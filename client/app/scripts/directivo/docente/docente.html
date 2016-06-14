@@ -22,7 +22,7 @@
 					</li>
 					<hr style="margin: 2px 0;">
 					<li ng-class="{active : activeMenuIzqDoc === 1}" data-target="#listado">
-						<a href="" ng-click="seleccionar('listado'); setActiveDoc(1)">Listado</a>
+						<a href="" ng-click="seleccionar('listado'); setActiveDoc(1); search()">Listado</a>
 					</li>
 					<li ng-class="{active : activeMenuIzqDoc === 2}" data-target="#nuevoPerfil">
 						<a href="" ng-click="seleccionar('nuevoPerfil'); setActiveDoc(2)">Nuevo Perfil</a>
@@ -73,15 +73,15 @@
 				</tr>
 			</table> -->
 			<div class="panel-group" ng-model="multiplePanels.activePanels" data-allow-multiple="true" role="tablist" aria-multiselectable="true" bs-collapse>
-				<div class="panel panel-default" ng-repeat="docente in docenteData">
+				<div class="panel panel-default" ng-repeat="docente in docenteData | filter:docenteFilter">
 					<div class="panel-heading" style="cursor: pointer" bs-collapse-toggle>
 						<div class="panel-title">
 							{{docente.apellido}}, {{docente.nombre}}.  DNI: {{docente.nroDocumento}}
 							<div class="col-md-2 col-sx-2 pull-right">						
-								<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipProfile" ng-click="showModalProfile(docente.nroDocumento)" style="width: 40%">
+								<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipProfile" ng-click="showModalProfile(docente)" style="width: 40%">
 									<span data-animation="am-flip-x" class="glyphicon glyphicon-user"></span>
 								</button>
-								<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipDelete" ng-click="deleteDocente(docente.nroDocumento)" style="width: 40%">
+								<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipDelete" ng-click="deleteDocente(docente)" style="width: 40%">
 									<span class="glyphicon glyphicon-trash"></span>
 								</button>
 							</div>

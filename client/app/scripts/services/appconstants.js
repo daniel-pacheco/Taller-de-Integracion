@@ -12,8 +12,9 @@
  	// address: 'http://192.168.0.102:8080/',
  	address: 'http://192.168.1.4:8080/',
  	sAlumno: 'EscuelaSantaLucia/rest/sAlumno/',
- 	sDocente: 'EscuelaSantaLucia/rest/sDocente/',
  	sDesempenio: 'EscuelaSantaLucia/rest/sDesempenio/',
+ 	sDirectivo: 'EscuelaSantaLucia/rest/sDirectivo/',
+ 	sDocente: 'EscuelaSantaLucia/rest/sDocente/',
  	login: 'EscuelaSantaLucia/rest/sLogin/login'
  })
 

@@ -33,60 +33,72 @@
 				<form class="form-horizontal" role="form">
 					<div class="form-group">
 						<label class="col-lg-4">DNI: </label>
-						<span class="col-lg-3">{{alumno.nroDocumento}}</span>
+						<span class="col-lg-3">{{directivo.nroDocumento}}</span>
+					</div>
+					<div class="form-group">
+						<label class="col-lg-4">CUIL: </label>
+						<span class="col-lg-3">{{directivo.cuil}}</span>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4">Apellido: </label>
-						<span class="col-lg-3">{{alumno.apellido}}</span>
+						<span class="col-lg-3">{{directivo.apellido}}</span>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4">Nombre: </label>
-						<span type="text" class="col-lg-5">{{alumno.nombre}}</span>
+						<span type="text" class="col-lg-5">{{directivo.nombre}}</span>
+					</div>
+					<div class="form-group">
+						<label class="col-lg-4">Estudios: </label>
+						<span class="col-lg-5">
+							<div ng-repeat="titulo in directivo.listaTitulos">
+								{{titulo.nombreTitulo}} - {{telefono.descripcionTitulo}}
+							</div>
+						</span>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4">Telefonos: </label>
 						<span class="col-lg-5">
-							<div ng-repeat="telefono in alumno.listaTelefonos">
+							<div ng-repeat="telefono in directivo.listaTelefonos">
 								{{telefono.caracteristica}} - {{telefono.nroTelefono}} ({{telefono.tipoTelefono}})
 							</div>
 						</span>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4">Sexo: </label>
-						<span type="text" class="col-lg-5">{{alumno.sexo}}</span>
+						<span type="text" class="col-lg-5">{{directivo.sexo}}</span>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4">Fecha de nacimiento: </label>
-						<span type="text" class="col-lg-5">{{alumno.fechaNacimiento}}</span>
+						<span type="text" class="col-lg-5">{{directivo.fechaNacimiento | amDateFormat:'DD/MM/YYYY'}}</span>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4">Domicilio: </label>
-						<span class="col-lg-5" ng-if="!alumno.detailsDomicilio">{{alumno.domicilio.calle}} {{alumno.domicilio.numero}}
-							<div class="glyphicon glyphicon-option-horizontal" style="vertical-align: bottom; cursor:pointer;" ng-click="alumno.detailsDomicilio=true" bs-tooltip="tooltip.tooltipDetailsDom"></div>
+						<span class="col-lg-5" ng-if="!directivo.detailsDomicilio">{{directivo.domicilio.calle}} {{directivo.domicilio.numero}}
+							<div class="glyphicon glyphicon-option-horizontal" style="vertical-align: bottom; cursor:pointer;" ng-click="directivo.detailsDomicilio=true" bs-tooltip="tooltip.tooltipDetailsDom"></div>
 						</span>
-						<span class="col-lg-8" ng-if="alumno.detailsDomicilio">
-							<label>Calle: </label> <span>{{alumno.domicilio.calle}}</span>
-							<label> N°: </label> <span>{{alumno.domicilio.numero}}</span></br>
-							<label>Piso: </label> <span>{{alumno.domicilio.piso}}</span>
-							<label> Localidad: </label> <span>{{alumno.domicilio.localidad}}</span></br>
-							<label>Departamento: </label> <span>{{alumno.domicilio.dpto}}</span></br>
-							<label>Departamento: </label> <span>{{alumno.domicilio.departamento}}</span></br>
-							<label>Provincia: </label> <span>{{alumno.domicilio.provincia}}</span>
-							<label> CP: </label> <span>{{alumno.domicilio.codigoPostal}}</span></br>
-							<label>Barrio: </label> <span>{{alumno.domicilio.barrio}}</span></br>
+						<span class="col-lg-8" ng-if="directivo.detailsDomicilio">
+							<label>Calle: </label> <span>{{directivo.domicilio.calle}}</span>
+							<label> N°: </label> <span>{{directivo.domicilio.numero}}</span></br>
+							<label>Piso: </label> <span>{{directivo.domicilio.piso}}</span>
+							<label> Localidad: </label> <span>{{directivo.domicilio.localidad}}</span></br>
+							<label>Departamento: </label> <span>{{directivo.domicilio.dpto}}</span></br>
+							<label>Departamento: </label> <span>{{directivo.domicilio.departamento}}</span></br>
+							<label>Provincia: </label> <span>{{directivo.domicilio.provincia}}</span>
+							<label> CP: </label> <span>{{directivo.domicilio.codigoPostal}}</span></br>
+							<label>Barrio: </label> <span>{{directivo.domicilio.barrio}}</span></br>
 						</span>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4">Correo electr&oacute;nico: </label>
 						<span class="col-lg-8">
-							<div ng-repeat="mail in alumno.listaMails">
+							<div ng-repeat="mail in directivo.listaMails">
 								{{mail.direccionMail}} ({{mail.tipoMail}})
 							</div>
 						</span>
-					</div>{{alumno}}
+					</div>
 					<div class="form-group">
 						<div class="col-lg-7">
-							<a type="button" class="btn btn-success btn-block" ng-click="call()" data-dismiss="modal"><span class="glyphicon glyphicon-edit"></span> Editar perfil</a>
+							<a type="button" class="btn btn-success btn-block" ng-click="initCall()" data-dismiss="modal"><span class="glyphicon glyphicon-edit"></span> Mostrar mis datos</a>
 						</div>
 					</div>
 				</form>
@@ -95,7 +107,7 @@
 			<!-- right column -->
 			<div class="col-md-4">
 				<div class="text-center">
-					<img style="float:left" src="//placehold.it/300" class="avatar img-circle" alt="avatar">
+					<img class="pull-left" style="float:left" src="./images/placeholder-user-photo.png" class="avatar img-circle" alt="./images/placeholder-user-photo.png" height="300" width="300"><!-- //placehold.it/300 -->
 				</div>
 			</div>
 		</fieldset>
