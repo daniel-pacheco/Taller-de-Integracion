@@ -320,11 +320,11 @@ public class ServicioDesempenioEndpoint {
 	}
 	
 	@GET
-	@Path("/boletinInasist/{id:[0-9][0-9]*}")
-	public Response getBoletinInasistenciasDTO(@PathParam("id") Long idBoletin) {
+	@Path("/boletinInasist/{dni:[0-9][0-9]*}")
+	public Response getBoletinInasistenciasDTObyDni(@PathParam("dni") Long dniAlumno) {
 		try {
 			setInstance();
-			return Response.ok(servicioDesempenio.getBoletinInasistenciasDTO(idBoletin)).build();
+			return Response.ok(servicioDesempenio.getBoletinInasistenciasDTObyDni(dniAlumno)).build();
 		} catch (Exception ex) {
 			return Response.ok(ex).build();
 		}
