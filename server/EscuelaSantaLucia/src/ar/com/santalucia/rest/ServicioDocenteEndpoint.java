@@ -21,6 +21,8 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
 import ar.com.santalucia.excepciones.LoginError;
+import ar.com.santalucia.excepciones.SugerenciaPersonalException;
+import ar.com.santalucia.excepciones.ValidacionException;
 import ar.com.santalucia.servicio.ServicioDocente;
 import ar.com.santalucia.servicio.ServicioLogin;
 
@@ -30,7 +32,7 @@ import ar.com.santalucia.servicio.ServicioLogin;
  * @version 1.0
  */
 
-// Último modificador: Ariel Ramirez @ 12-06-2016 20:25
+// Último modificador: Ariel Ramirez @ 13-06-2016 20:25
 
 @Path("/sDocente")
 @Produces("application/json")
@@ -80,9 +82,12 @@ public class ServicioDocenteEndpoint {
 		try {
 			setInstance();
 			docente = servicioDocente.getUsuario(id);
+			if (docente.getNroDocumento().equals("")){
+				return Response.serverError().entity(new FrontMessage("No ha sido posible localizar el elemento solicitado.",FrontMessage.INFO)).build();
+			}
 		} catch (Exception ex) {
 			// ex.printStackTrace();
-			return Response.ok(ex).build();
+			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
 		return Response.ok(docente).build();
 	}
@@ -99,8 +104,11 @@ public class ServicioDocenteEndpoint {
 		try{
 			setInstance();
 			docente = servicioDocente.getUsuarioByDni(dni);
+			if(docente.getIdUsuario().equals("")){
+				return Response.serverError().entity(new FrontMessage("No se ha encontrado el Docente",FrontMessage.INFO)).build();
+			}
 		}catch(Exception ex){
-			return Response.ok(ex).build();
+			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
 		return Response.ok(docente).build();
 	}
@@ -186,8 +194,8 @@ public class ServicioDocenteEndpoint {
 			setInstance();
 			docente = servicioDocente.getUsuarios(new Personal());
 		} catch (Exception ex) {
-			if (docente == null) {
-				return Response.status(Status.NOT_FOUND).build();
+			if (docente.size() == 0) {
+				return Response.status(Status.NO_CONTENT).entity(new FrontMessage("No hay elementos que mostrar.",FrontMessage.INFO)).build();
 			}
 		}
 		return Response.ok(docente).build();
@@ -209,9 +217,13 @@ public class ServicioDocenteEndpoint {
 			setInstance();
 			servicioDocente.addUsuario(docente);
 			return Response.ok(docente.getIdUsuario()).build();
-		} catch (Exception ex) {
+		} catch(SugerenciaPersonalException ex){
+			return Response.status(Status.CONFLICT).entity(ex.getPersoanlSugerido()).build();
+		}catch(ValidacionException ex){
+			return Response.status(Status.CONFLICT).entity(ex.getMensajesError()).build();
+		}catch (Exception ex) {
 			// ex.printStackTrace();
-			return Response.ok(ex).build();
+			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
 	}
 
@@ -303,10 +315,14 @@ public class ServicioDocenteEndpoint {
 		try {
 			setInstance();
 			exito = servicioDocente.removeUsuario(servicioDocente.getUsuario(id));
-			return Response.ok(exito).build();
+			if(exito == true){
+				return Response.ok(exito).build();
+			}else{
+				return Response.serverError().entity(new FrontMessage ("No se ha podido eliminar el docente", FrontMessage.INFO)).build();
+			}
 		} catch (Exception ex) {
 			// ex.printStackTrace();
-			return Response.ok(ex).build();
+			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
 	}
 	
@@ -322,10 +338,13 @@ public class ServicioDocenteEndpoint {
 		try {
 			setInstance();
 			exito = servicioDocente.removeUsuario(servicioDocente.getUsuarioByDni(dni));
-			return Response.ok(exito).build();
+			if (exito==true){
+				return Response.ok(exito).build();
+			}
+				return Response.serverError().entity(new FrontMessage("No se pudo eliminar el docente.",FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// ex.printStackTrace();
-			return Response.serverError().entity("No se pudo eliminar el docente").build();
+			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
 	}
 
@@ -396,7 +415,7 @@ public class ServicioDocenteEndpoint {
 			setInstance();
 			return Response.ok(servicioDocente.listDocentesMateriasDTO()).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
 	}
 	
@@ -429,12 +448,12 @@ public class ServicioDocenteEndpoint {
 				case LoginError.FIRMAERROR:
 					return Response.status(Status.FORBIDDEN).build();
 				case LoginError.EXPIRADO:
-					return Response.ok(ex).build();
+					return Response.status(Status.INTERNAL_SERVER_ERROR).entity(new FrontMessage("Sus credenciales han expirado. Vuelva a iniciar sesión.",FrontMessage.INFO)).build(); 
 				default:
 					break;
 				}
 			} catch (Exception ex) {
-				return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+				return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 			}
 		if(nuevoToken == null){
 			return Response.ok(docente).build();
