@@ -242,6 +242,18 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 	
+	
+	@GET
+	@Path("/mat/listAllMin")
+	public Response getMateriasDTO() {
+		try {
+			setInstance();
+			return Response.ok(servicioAcademico.getMateriasDTO()).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
+	
 	/**
 	 * Asigna Docente titular y suplente a una materia determinada. Todos los objetos involucrados deben estar en estado persistente<BR>
 	 * Orden de elementos en JsonPack: <br> [0]id Docente Titular, <br>[1]Id Docente Suplente, <br>[2]Id Materia.

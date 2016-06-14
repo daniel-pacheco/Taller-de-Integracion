@@ -1,145 +1,194 @@
-<div class="col-md-2 hidden-sm hidden-xs">
-	<div>
-		<!-- ngInclude: 'views/partials/affixed-sidebar.html' -->
-		<div class="bs-sidebar hidden-print affix" role="complementary" data-offset-top="-100" bs-affix style="position: relative; text-align: right;">
-			<ul class="nav bs-sidenav">
-				<li bs-scrollspy data-target="#getting-started">
-					<a href="#getting-started">Men&uacute; A&ntilde;o</a>
-				</li>
-				<hr style="margin: 2px 0;">				
-				<li ng-class="{active : activeMenuIzqAnio === 1}" data-target="#nuevoAnio">
-					<a href="" ng-click="seleccionar('nuevoAnio'); setActiveAnio(1)">Nuevo</a>
-				</li>
-
-				<li ng-class="{active : activeMenuIzqAnio === 2}" data-target="#listadoAnio">
-					<a href="" ng-click="seleccionar('listadoAnio'); setActiveAnio(2)">Listado</a>
-				</li>
-				<li ng-class="{active : activeMenuIzqAnio === 3}" data-target="#administrar">
-					<a href="" ng-click="seleccionar('administrarAnio'); setActiveAnio(3)">Administrar</a>
-				</li>
-			</ul>
+<div class="navbar-inverse bs-docs-nav" role="banner">
+	<div class="container">
+		<div class="navbar-header">
+			<button class="navbar-toggle" type="button" data-template-url="./scripts/directivo/anio/aside/aniosidebar.aside.tpl.html" data-animation="am-fade-and-slide-left" data-placement="left" title="Menu" bs-aside="aside">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
 		</div>
-		<!--/ngInclude: 'views/partials/affixed-sidebar.html' -->
 	</div>
 </div>
 
+<div class="col-md-2 hidden-sm hidden-xs">
+	<!-- ngInclude: 'views/partials/affixed-sidebar.html' -->
+	<div class="bs-sidebar hidden-print affix" role="complementary" data-offset-top="-100" bs-affix style="position: relative; text-align: right;">
+		<ul class="nav bs-sidenav">
+			<li bs-scrollspy data-target="#getting-started">
+				<a href="">Men&uacute; A&ntilde;o</a>
+			</li>
+			<hr style="margin: 2px 0;">				
+			<li ng-class="{active : activeMenuIzqAnio === 1}" data-target="#nuevoAnio">
+				<a href="" ng-click="seleccionar('nuevoAnio'); setActiveAnio(1)">Nuevo</a>
+			</li>
+			<li ng-class="{active : activeMenuIzqAnio === 2}" data-target="#listadoAnio">
+				<a href="" ng-click="seleccionar('listadoAnio'); setActiveAnio(2)">Listado</a>
+			</li>
+			<li ng-class="{active : activeMenuIzqAnio === 3}" data-target="#administrar">
+				<a href="" ng-click="seleccionar('administrarAnio'); setActiveAnio(3)">Administrar</a>
+			</li>
+			<li ng-class="{active : activeMenuIzqAnio === 4}" ng-show="showEditAnioMenuIzq" data-target="#editanio">
+				<a href="">Editar A&ntilde;o</a>
+			</li>
+		</ul>
+	</div>
+	<!--/ngInclude: 'views/partials/affixed-sidebar.html' -->
+</div>
+
 <div class="col-md-10">
-	<h1>A&ntilde;o</h1>
-	<hr>
 
-	<div id="listadoAnio" ng-show="listadoAnio" style="margin-left: 0px; margin-right: 20%;">  <!--lista centrada -->
+	<div id="listadoAnio" ng-show="listadoAnio">
 		<fieldset>
-			<legend>Listado</legend>
-			
-			<!--<button ng-click="search()">Buscar</button>-->
-
-			<table class="table table-hover table-striped">
-				<thead>
-					<tr>
-						<th>A&ntilde;o</th>
-						<th>Divisi&oacute;n</th>
-						<th>Turno</th>
-						<th>Cantidad de alumnos</th>
-						<th>Acciones</th>
-					</tr>
-				</thead>
-				<tr ng-repeat="anio in anios">
-					<td>{{anio.anio}}</td>
-					<td>{{anio.division}}</td>
-					<td>{{anio.turno}}</td>
-					<td>{{anio.cantidadDeAlumnos}}</td>
-					<td style="width:10%;"><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipEdit" style="width:50%; cursor: pointer" class="glyphicon glyphicon-edit" ></span></td> 
-					<!--<td>{{alumno.name}}</td>
-					<td>{{alumno.phone}}</td>
-					<td>{{alumno.anio}}</td>
-					<td>{{$index}}</td> -->
-				</tr>
-			</table>
+			<h1>{{subtitle}}<small></small></h1>
+			<hr>
+			<div class="col-md-8">
+				<table class="table table-striped table-condensed">
+					<thead>
+						<tr>
+							<th>&nbsp;</th>
+							<th ng-click="orderAnio('nombre')" role="button">A&ntilde;o 
+								<span class="sortorder" ng-show="predicate === 'nombre'" ng-class="{reverse:reverse}"></span>
+							</th>
+							<!-- <th ng-click="orderAnio('division')" role="button">Divisi&oacute;n 
+								<span class="sortorder" ng-show="predicate === 'division'" ng-class="{reverse:reverse}"></span>
+							</th>
+							<th ng-click="orderAnio('turno')" role="button">Turno 
+								<span class="sortorder" ng-show="predicate === 'turno'" ng-class="{reverse:reverse}"></span>
+							</th>
+							<th ng-click="orderAnio('cantidadDeAlumnos')" role="button">N° de alumnos
+								<span class="sortorder" ng-show="predicate === 'cantidadDeAlumnos'" ng-class="{reverse:reverse}"></span>
+							</th> -->
+							<th>Descripci&oacute;n</th>
+							<th>Acciones</th>
+						</tr>
+					</thead>
+					<tbody>	
+						<tr ng-repeat-start="anio in anios | orderBy:predicate:reverse">
+							<td data-toggle="collapse" data-target="#{{anio.idAnio}}" class="accordion-toggle" ng-click="downGlyphiconIna = !downGlyphiconIna">
+								<span ng-class="{ 'glyphicon glyphicon-chevron-down': !downGlyphiconIna,'glyphicon glyphicon-chevron-up': downGlyphiconIna }"></span>
+							</td>
+							<td data-toggle="collapse" data-target="#{{anio.idAnio}}" class="accordion-toggle" ng-click="downGlyphiconIna = !downGlyphiconIna">{{anio.nombre}}</td>
+							<td data-toggle="collapse" data-target="#{{anio.idAnio}}" class="accordion-toggle" ng-click="downGlyphiconIna = !downGlyphiconIna">{{anio.descripcion}}</td>
+							<td>
+								<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipEdit" ng-click="editAnio(anio)">
+									<span data-animation="am-flip-x" class="glyphicon glyphicon-edit"></span>
+								</button>
+							</td> 
+						</tr>
+						<tr ng-repeat-end="">
+							<td colspan="4" class="hiddenRow">
+								<div class="col-md-7 accordian-body collapse" id="{{anio.idAnio}}"> 
+									<table class="table">
+										<thead>
+											<th>Curso</th>
+											<th>Turno</th>
+											<th>Cantidad de alumnos</th>
+										</thead>
+										<tbody>
+											<tr ng-repeat="division in anio.listaCursos">
+												<td>{{division.curso}}</td>
+												<td>{{division.turno}}</td>
+												<td>{{division.cantAlumnos}}</td>
+											</tr>
+										</tbody>
+									</table>
+								</div> 
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		</fieldset>
 	</div>	
 
 	<div id="nuevoAnio" ng-show="nuevoAnio">
 		<fieldset>
-			<legend>Nuevo Año</legend>
-			<h3 class="small">Complete los datos para dar de alta un 
-				nuevo año y presione guardar al finalizar</h3>
-				<form class="form-horizontal media" style="margin: 0% 10%">
-				<!--<div class="pull-right">
-						<img class="img-rounded" src="images/defaultUser.png" alt="Usuario" width="220px" height="auto"/>
-					<div class="btn btn-primary btn-file" id="boton">Examinar<input type="file"></div>
-				</div>	-->
-
+			<h1>{{subtitle}}<small>: Ingrese los datos para dar de alta un nuevo a&ntilde;o y haga clic en guardar cuando finalice</small></h1>
+			<hr>
+			<form class="form-horizontal media" name="formAnio">
 				<div class="formulario media-body">
+					<div class="col-md-8 personal-info">
 
-					<div class="form-group">
-						<div class="col-sm-2 control-label">
-							<label for="">Nombre:</label>
+						<div class="alert alert-warning alert-dismissible" role="alert">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<span class="glyphicon glyphicon-asterisk small"></span>Campos obligatorios
 						</div>
-						<div class="col-sm-4">
-							<input class="form-control" placeholder="Año" type="text"
-							maxlength="10" required pattern="[a-zA-Z ]*">
-						</div>
-						<!-- Valida 8 digitos -->
-						
-					</div>
-					<!-- /form-group-->
-					<div class="form-group">
-						<div class="col-sm-2 control-label">
-							<label for="">Descripción:</label>
-						</div>
-						<div class="col-sm-4">
-							<input class="form-control" placeholder="" type="text"
-							maxlength="10" required pattern="[a-zA-Z ]*">
-						</div>
-						<!-- Valida 8 digitos -->
-					</div>
-					<!-- /form-group-->
 
-				<div class="row">
-					<div class="col-sm-6">
-						<div class="col-sm-6">
-							<div class="form-group">
-								<label for="selectCurso" >Existentes</label>
-								<select id="selectCurso" size="3" class="form-control">
-									<option> A - Matutino</option>
-									<option> B - Vespertino</option>
-									<option> C - Nocturno</option>
-								</select>
+						<div class="form-group" ng-class="{ 'has-error': formAnio.nombre.$touched && formAnio.nombre.$invalid }">
+							<div class="col-md-4 control-label">
+								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Nombre:</label>
 							</div>
-							<button class="pull-left">Eliminar</button>
-						</div>
-						<div class="col-sm-6">
-							<div class="form-group">
-								<label for="inputCurso">Nombre</label>
-								<input id="inputCurso" type="text" class="form-control">
-								<label for="selectTurno">Turno</label>
-								<select id="selectTurno" class="form-control">
-									<option>Matutino</option>
-									<option>Vespertino</option>
-									<option>Nocturno</option>
-								</select>
+							<div class="col-md-5">
+								<input class="form-control" placeholder="Nombre" name="nombre" type="text"
+								maxlength="25" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9°]*" ng-model="newAnio.nombre">
 							</div>
-							<button class="pull-left">Agregar</button>
-						</div>
-					</div>
-				</div>
+							<div ng-messages="formAnio.nombre.$error" ng-if="formAnio.nombre.$touched && formAnio.nombre.$invalid">
+								<div ng-message="pattern" class="help-block">Formato invalido</div>
+								<div ng-message="required" class="help-block">Complete este campo</div>
+							</div>
+						</div><!-- /form-group-->
 
-				<div class="form-group">
-					<div class="col-sm-3 control-label">
-						<input class="btn btn-primary" type="submit" name=""
-						value="Guardar"/>
+
+						<div class="form-group" ng-class="{ 'has-error': formAnio.descripcion.$touched && formAnio.descripcion.$invalid }">
+							<div class="col-md-4 control-label">
+								<label for="">Descripci&oacute;n:</label>
+							</div>
+							<div class="col-md-5">
+								<input class="form-control" placeholder="Descripción" name="descripcion" type="text"
+								maxlength="255" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9°]*" ng-model="newAnio.descripcion">
+							</div>
+							<div ng-messages="formAnio.descripcion.$error" ng-if="formAnio.descripcion.$touched && formAnio.descripcion.$invalid">
+								<div ng-message="pattern" class="help-block">Formato invalido</div>
+								<div ng-message="required" class="help-block">Complete este campo</div>
+							</div>
+						</div><!-- /form-group-->
+
+						<div class="form-group" ng-class="{ 'has-error': formAnio.division.$touched && formAnio.division.$invalid }">
+							<div class="col-md-4 control-label">
+								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Divisi&oacute;n:</label>
+							</div>
+							<div class="col-md-7">
+								<button type="button" name="division" class="btn btn-default" ng-model="newAnio.listaCursos" data-html="1" data-multiple="1" data-animation="am-flip-x" bs-options="curso.idCurso as curso.curso+'-'+curso.turno for curso in cursos" bs-select required>
+								</button>
+								<input class="btn btn-info" style="margin-left: 10px;" type="button" ng-click="addCurso()" value="Administrar"/>
+								<div ng-messages="formAnio.division.$error" ng-if="formAnio.division.$touched && formAnio.division.$invalid">
+									<div ng-message="required" class="help-block">Seleccione al menos una opci&oacute;n</div>
+								</div>
+							</div>{{newAnio.cursos}}
+						</div><!-- /form-group-->
+
+						<div class="form-group">
+							<div class="col-md-2 col-md-offset-4">
+								<input class="btn btn-danger" type="button" ng-click="clearFormAnio()" value="Limpiar"/>
+							</div>
+							<div class="col-md-3 col-md-offset-1">
+								<input class="btn btn-primary" type="button" ng-click="saveAnio(newAnio)" value="Guardar" ng-disabled="!formAnio.$valid"/>
+							</div>
+						</div>
+						</br>
+						</br>
+						</br><!-- Hay que hacer que el multiselect se vea-->
+						</br>
+						</br>
+						</br>
+						</br>
+						</br>
+						</br>
+						</br>
+						</br>
 					</div>
 				</div>
 			</form>
 		</fieldset>
 	</div>
 
-	<div id="administrarAnio" ng-show="administrarAnio"style="width: 80%; margin: 0% 10%">  <!--lista centrada -->
+	<div id="administrarAnio" ng-show="administrarAnio">  <!--lista centrada -->
 		<fieldset>
-			<legend>Administrar</legend>
-			<h3 class="small">Seleccione el a&ntilde;o y divisi&oacute;n que desee administrar</h3>
-			<!--<button ng-click="search()">Buscar</button>-->
-
+			<h1>{{subtitle}}<small>: Seleccione el a&ntilde;o y divisi&oacute;n que desee administrar</small></h1>
+			<hr>
 			<label for="">A&ntilde;o:</label> 
 			<select
 			class="dropdown-toggle form-control-inline" name="" ng-model="dropDownValue"> <!-- ng-change="update(dropDownValue, option)"> -->

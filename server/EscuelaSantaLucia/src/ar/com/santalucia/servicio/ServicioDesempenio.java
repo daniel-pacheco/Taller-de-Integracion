@@ -447,11 +447,12 @@ public class ServicioDesempenio {
 			ArrayList<Inasistencia> listaNueva = bolInasistenciasDTO.getListaInasistencias();
 			ArrayList<Inasistencia> listaPersis = new ArrayList<Inasistencia>();
 			listaPersis.addAll(bolInasistencias.getListaInasistencias());
-			// elimina inasistencias sobrantes
-			eliminarInasistencias(listaNueva, listaPersis);
 			
 			// validar inasistencias
 			validarListaInasistencias(listaNueva);
+			// elimina inasistencias sobrantes
+			eliminarInasistencias(listaNueva, listaPersis);
+			
 			
 			Set<Inasistencia> setInasistencias = new HashSet<Inasistencia>();
 			setInasistencias.addAll(listaNueva);

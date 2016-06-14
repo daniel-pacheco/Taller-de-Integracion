@@ -195,6 +195,7 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 		ServicioAcademico servicioAcademico = new ServicioAcademico();
 		try {
 			Personal personal = new Personal();
+			personal.setActivo(true);
 			listaDocentes = gPersonal.getByExample(personal);
 			for (Personal p: listaDocentes) {
 				DocenteMateriasDTO docenteDTO = new DocenteMateriasDTO(p.getNroDocumento(), p.getNombre(), p.getApellido(), null, null);

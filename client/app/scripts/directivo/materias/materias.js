@@ -75,9 +75,6 @@ $scope.addArea = function() {
     modal.close.then(function(result){
       $scope.listaAreas = result;
     });
-     /* modal.close.then(function(result) {        
-        console.log('el resultado es: ' + result); //$scope.algo.nroDocumento = result;
-      });*/
 });
 };
 
