@@ -74,8 +74,11 @@ public class ServicioAlumnoEndpoint{
 		try{
 			setInstance();
 			alumno = servicioAlumno.getUsuarioByDni(dni);
+			if(alumno.getIdUsuario().equals("")){
+				return Response.serverError().entity(new FrontMessage("No se ha podido encontrar el alumno",FrontMessage.INFO)).build();
+			}
 		}catch(Exception ex){
-			return Response.ok(ex).build();
+			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
 		return Response.ok(alumno).build();
 	}
@@ -111,12 +114,12 @@ public class ServicioAlumnoEndpoint{
 				case LoginError.FIRMAERROR:
 					return Response.status(Status.FORBIDDEN).build();
 				case LoginError.EXPIRADO:
-					return Response.ok(ex).build();
+					return Response.status(500).entity(new FrontMessage("Sus credenciales han expirado. Vuelva a iniciar sesión.",FrontMessage.INFO)).build(); //440 IIS LoginTimeOut
 				default:
 					break;
 				}
 			} catch (Exception ex) {
-				return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+				return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 			}
 		if(nuevoToken == null){
 			return Response.ok(alumno).build();
@@ -149,12 +152,12 @@ public class ServicioAlumnoEndpoint{
 			case LoginError.FIRMAERROR:
 				return Response.status(Status.FORBIDDEN).build();
 			case LoginError.EXPIRADO:
-				return Response.ok(ex).build();
+				return Response.status(500).entity(new FrontMessage("Sus credenciales han expirado. Vuelva a iniciar sesión.",FrontMessage.INFO)).build(); 
 			default:
 				break;
 			}
 		} catch (Exception ex) {
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
 		if(nuevoToken == null){
 			return Response.ok(alumno).build();
@@ -386,7 +389,7 @@ public class ServicioAlumnoEndpoint{
 			setInstance();
 			return Response.ok(servicioAlumno.listAlumnosDTO()).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
 	}
 	
@@ -399,11 +402,10 @@ public class ServicioAlumnoEndpoint{
 			if(alumnoDto.getDniAlumno()!=null){
 				return Response.ok(alumnoDto).build();
 			}else{
-				Exception mensaje = new Exception("Mensaje de error");
-				return Response.status(Status.INTERNAL_SERVER_ERROR).entity(mensaje/*"No se encuentra alumno con el dni: "+String.valueOf(dni)*/).build();
+				return Response.status(Status.INTERNAL_SERVER_ERROR).entity(new FrontMessage("No se pudo encontrar el Alumno con DNI: "+String.valueOf(dni),FrontMessage.INFO)).build();
 			}
 		}catch(Exception ex){
-			return Response.ok(ex).build();
+			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
 	}
 }

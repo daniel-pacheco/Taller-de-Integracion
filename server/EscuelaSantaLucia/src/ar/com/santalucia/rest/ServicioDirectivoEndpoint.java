@@ -34,7 +34,7 @@ import ar.com.santalucia.servicio.ServicioLogin;
  *
  */
 
-// Último modificador: Ariel Ramirez @ 12-06-2016 20:25
+// Último modificador: Ariel Ramirez @ 13-06-2016 20:25
 
 @Path("/sDirectivo")
 @Produces("application/json")
@@ -81,8 +81,11 @@ public class ServicioDirectivoEndpoint {
 		try{
 			setInstance();
 			directivo = servicioDirectivo.getUsuarioByDni(dni);
+			if(directivo.getNroDocumento().equals("")){
+				return Response.serverError().entity(new FrontMessage("No se ha encontrado el Directivo",FrontMessage.INFO)).build();
+			}
 		}catch(Exception ex){
-			return Response.ok(ex).build();
+			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
 		return Response.ok(directivo).build();
 	}
@@ -102,9 +105,12 @@ public class ServicioDirectivoEndpoint {
 		try {
 			setInstance();
 			personal = servicioDirectivo.getUsuario(id);
+			if(personal.getNroDocumento().equals("")){
+				return Response.serverError().entity(new FrontMessage("No ha sido posible localizar el elemento solicitado.",FrontMessage.INFO)).build();
+			}
 		} catch (Exception ex) {
 			// ex.printStackTrace();
-			return Response.ok(ex).build();
+			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
 		return Response.ok(personal).build();
 	}
@@ -306,6 +312,9 @@ public class ServicioDirectivoEndpoint {
 		try {
 			setInstance();
 			exito = servicioDirectivo.removeUsuario(servicioDirectivo.getUsuario(id));
+			if(exito == true){
+				return Response.serverError().entity(new FrontMessage("No se ha podido eliminar el directivo.",FrontMessage.INFO)).build();
+			}
 			return Response.ok(exito).build();
 		} catch (Exception ex) {
 			// ex.printStackTrace();
@@ -325,10 +334,14 @@ public class ServicioDirectivoEndpoint {
 		try {
 			setInstance();
 			exito = servicioDirectivo.removeUsuario(servicioDirectivo.getUsuarioByDni(dni));
-			return Response.ok(exito).build();
+			if(exito = true){
+				return Response.ok(exito).build();
+			}else{
+				return Response.serverError().entity(new FrontMessage("No se pudo eliminar el directivo.",FrontMessage.INFO)).build();
+			}
 		} catch (Exception ex) {
 			// ex.printStackTrace();
-			return Response.serverError().entity("No se pudo eliminar el directivo").build();
+			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
 	}
 
@@ -418,12 +431,12 @@ public class ServicioDirectivoEndpoint {
 				case LoginError.FIRMAERROR:
 					return Response.status(Status.FORBIDDEN).build();
 				case LoginError.EXPIRADO:
-					return Response.ok(ex).build();
+					return Response.status(Status.INTERNAL_SERVER_ERROR).entity(new FrontMessage("Sus credenciales han expirado. Vuelva a iniciar sesión.",FrontMessage.INFO)).build(); 
 				default:
 					break;
 				}
 			} catch (Exception ex) {
-				return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+				return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 			}
 		if(nuevoToken == null){
 			return Response.ok(directivo).build();
