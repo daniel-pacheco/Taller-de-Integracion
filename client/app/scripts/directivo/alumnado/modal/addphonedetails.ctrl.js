@@ -1,7 +1,7 @@
 angular.module('clientAppApp')
 .controller('telefonoAvanzadoModalController', [
-  '$scope', '$element', 'title', 'listaTelefonos', 'close', 'ObjectsFactory',
-  function($scope, $element, title, listaTelefonos, close, ObjectsFactory) {//acá se inyecta las variables necesarias y luego la función close
+  '$scope', '$element', 'title', 'listaTelefonos', 'close', 'ObjectsFactory', 'CONTACTOS',
+  function($scope, $element, title, listaTelefonos, close, ObjectsFactory, CONTACTOS) {//acá se inyecta las variables necesarias y luego la función close
 
     $scope.copiaListaTelefonos = angular.copy (listaTelefonos);
     $scope.title = title;
@@ -16,6 +16,8 @@ angular.module('clientAppApp')
       'title' : 'Cancelar edición'
     }
   };
+
+  $scope.contactosOptions = CONTACTOS;
 
   $scope.close = function(modif) {
     if (modif)

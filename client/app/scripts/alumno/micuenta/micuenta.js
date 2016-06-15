@@ -16,10 +16,6 @@ angular.module('clientAppApp')
 	
 	$scope.titulo = 'Mi Cuenta';
 	$scope.alumno = {};
-	function console() {
-		alert('before init call');
-		console.log('hola mi cuenta');
-	};
 
 	$scope.initCall = function() {
 		alumnoService.getMyData().then(function(response) {

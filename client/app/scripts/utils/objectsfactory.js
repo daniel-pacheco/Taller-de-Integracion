@@ -47,7 +47,7 @@ angular.module('clientAppApp')
     var mail = {
       "idMail": null,
       "direccionMail": "",
-      "tipoMail": "Personal"
+      "tipoMail": "Otro"
     };
     return mail;
   };
@@ -105,7 +105,7 @@ angular.module('clientAppApp')
     var titulo = {
       "idTitulo" : null,
       "nombreTitulo" : "",
-      "tipo" : "",
+      "tipo" : "", //refactorizar titulo, no concuerda con los campos de la BD
       "anio" : '0'
     };
     return titulo;
@@ -164,10 +164,10 @@ var newCurso = function(){
 var newInasistencia = function(){
   var inasistencia = {
     "idInasistencia" : null,
-    "cantidad" : 0.0,
-    "fecha" : "mmm dd, aaaa hh:mm:ss AM/PM",
+    "cantidad" : null,
+    "fecha" : "",
     "concepto" : "",
-    "justificada" : true,
+    "justificada" : "",
     "totalAcum" : 0.0
   };
   return inasistencia;

@@ -220,6 +220,13 @@ $scope.alumnoFilter = function (alumno) {//la clave de este comparador es q tran
 	};
 };
 
+$scope.clearList = function(){
+	$scope.mostrarBtnInasistencias = false;
+	$scope.listFilterIsEnabled = false;
+	$scope.alumnoData.length = 0;
+	console.log($scope.alumnoData[0]);
+};
+
 $scope.dropDownSearchOptions = ['Primero', 'Segundo', 'Tercero', 'Cuarto', 'Quinto', 'Sexto'];
 $scope.dropDownSearchValue = '';
 
@@ -280,7 +287,7 @@ $scope.search = function (option, dni) {
 				},
 				function(response){
 					console.log(response);
-					alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText + " - " + response.data.detailMessage);
+					alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText + " - " + response.data.mensaje + " " + response.data.severidad);
 				})
 			} 
 		};
@@ -319,7 +326,7 @@ $scope.newAlumno = function (alumno){
 	.then(function(response){
 		console.log(response);
 		alert('El alumno se ha dado de alta con éxito. ID n°: ' + response.data);
-		// $scope.clearFormAlu();
+		$scope.clearFormAlu();
 		$scope.showLoading = false;
 		$scope.nuevoPerfil = true;
 	},
@@ -334,6 +341,8 @@ $scope.newAlumno = function (alumno){
 
 $scope.clearFormAlu = function (){
 	$scope.formAlu.$setUntouched();
+	$scope.mostrarListaTelefonos = false;
+    $scope.mostrarListaMails = false;
 	$scope.nuevoAlumno = ObjectsFactory.newAlumno();
 	$scope.nuevoTelefonoSimple = ObjectsFactory.newTelefono();
 }
