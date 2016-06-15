@@ -72,6 +72,13 @@
  	]
  })
 
+ .constant('CONTACTOS', {
+ 	TELEFONO: ["Celular", "Casa", "Padre", "Madre", "Otro"],
+ 	MAIL: ["Propio", "Padre", "Madre", "Otro"],
+ 	TELEFONOD: ["Celular", "Casa", "Conyuge", "Otro"],
+ 	MAILD: ["Personal", "Conyuge", "Otro"]
+ })
+
  .constant('DESEMP_LIMITES', {
 	ins: [0, 4], //[,)
 	reg: [4, 6], //[,)

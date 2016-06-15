@@ -47,7 +47,7 @@ angular.module('clientAppApp')
     var mail = {
       "idMail": null,
       "direccionMail": "",
-      "tipoMail": "Personal"
+      "tipoMail": "Otro"
     };
     return mail;
   };

@@ -43,11 +43,7 @@
 											<div ng-if="!telefono.show">{{telefono.tipoTelefono}}</div>
 											<div ng-if="telefono.show" ng-class="{ 'has-error': formRow.tipoTelefono.$touched && formRow.tipoTelefono.$invalid }">
 												<select name="tipoTelefono"  class="form-control" ng-model="copiaTelefono.tipoTelefono">
-													<option value="Casa">Casa</option>
-													<option value="Celular">Celular</option>
-													<option value="Padre">Padre</option>
-													<option value="Madre">Madre</option>
-													<option value="Otro">Otro</option>
+													<option ng-repeat="contacto in contactosOptions.TELEFONO" value="contacto">{{contacto}}</option>
 												</select>
 											</div>
 										</td>
@@ -93,11 +89,7 @@
 							<div class="form-group col-md-3" ng-class="{ 'has-error': form.tipoTelefono.$touched && form.tipoTelefono.$invalid }">
 								<select name="tipoTelefono"  class="form-control" ng-model="nuevoTelefono.tipoTelefono" required>
 									<option value="" disabled selected>Tipo</option>
-									<option value="Casa">Casa</option>
-									<option value="Celular">Celular</option>
-									<option value="Padre">Padre</option>
-									<option value="Madre">Madre</option>
-									<option value="Otro">Otro</option>
+									<option ng-repeat="contacto in contactosOptions.TELEFONO" value="contacto">{{contacto}}</option>
 								</select>
 								<div ng-messages="form.tipoTelefono.$error" ng-if="form.tipoTelefono.$touched && form.tipoTelefono.$invalid">
 									<div ng-message="pattern" class="help-block" style="position: fixed;">Formato invalido</div>
