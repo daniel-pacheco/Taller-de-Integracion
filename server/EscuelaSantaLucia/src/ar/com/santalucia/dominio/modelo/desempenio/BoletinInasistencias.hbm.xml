@@ -16,7 +16,7 @@
         <property name="total" type="java.lang.Float">
             <column name="TOTAL" />
         </property>
-        <set name="listaInasistencias" table="INASISTENCIA" inverse="false" lazy="true">
+        <set name="listaInasistencias" table="INASISTENCIA" inverse="false" lazy="false">
             <key>
                 <column name="IDBOLETININASISTENCIAS" />
             </key>

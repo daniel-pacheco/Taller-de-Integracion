@@ -398,27 +398,47 @@ public class ServicioDesempenio {
 		return true;
 	}
 	
-	public BoletinInasistenciasDTO getBoletinInasistenciasDTO(Long idBoletin) throws Exception {
+	public BoletinInasistenciasDTO getBoletinInasistenciasDTObyDni(Long dniAlumno) throws Exception {
 		try {
 			BoletinInasistenciasDTO boletinDTO = new BoletinInasistenciasDTO();
-			BoletinInasistencias boletin = new BoletinInasistencias();
+			BoletinInasistencias boletin = null;
 			
-			boletin = gBoletinInasistencias.getById(idBoletin);
-			boletinDTO.setIdBoletinInasistencias(idBoletin);
-			boletinDTO.setNombre(boletin.getPropietario().getNombre());
-			boletinDTO.setApellido(boletin.getPropietario().getApellido());
-			boletinDTO.setNroDocumento(boletin.getPropietario().getNroDocumento());
-			//setAnio, ver de donde sacarlo
-			boletinDTO.setCicloLectivo(boletin.getCicloLectivo());
-			//boletinDTO.setListaInasistencias((ArrayList<Inasistencia>)boletin.getListaInasistencias());
-			ArrayList<Inasistencia> listaInasistencias = new ArrayList<Inasistencia>();
-			Set<Inasistencia> listaSet = boletin.getListaInasistencias();
-			for (Inasistencia i : listaSet) {
-				listaInasistencias.add(i);
+			//boletin = gBoletinInasistencias.getById(idBoletin);
+			// BEGIN lógica para buscar el boletin por el dni del alumno
+			ArrayList<BoletinInasistencias> listaBoletines = gBoletinInasistencias.getByExample(new BoletinInasistencias());
+			for (BoletinInasistencias b : listaBoletines) {
+				if (b.getPropietario().getNroDocumento().equals(dniAlumno)) {
+					// boletin = b;
+					boletin = new BoletinInasistencias();
+					boletin.setIdBoletinInasistencias(b.getIdBoletinInasistencias());
+					boletin.setPropietario(b.getPropietario());
+					boletin.setCicloLectivo(b.getCicloLectivo());
+					boletin.setActivo(b.getActivo());
+					boletin.setListaInasistencias(b.getListaInasistencias());
+					boletin.setTotal(b.getTotal());
+					break;
+				}
 			}
-			boletinDTO.setListaInasistencias(listaInasistencias);
-			
-			return boletinDTO;
+			if (boletin != null) {
+				// END lógica para buscar el boletin por el dni del alumno
+				boletinDTO.setIdBoletinInasistencias(boletin.getIdBoletinInasistencias());
+				boletinDTO.setNombre(boletin.getPropietario().getNombre());
+				boletinDTO.setApellido(boletin.getPropietario().getApellido());
+				boletinDTO.setNroDocumento(boletin.getPropietario().getNroDocumento());
+				//setAnio, ver de donde sacarlo
+				boletinDTO.setCicloLectivo(boletin.getCicloLectivo());
+				//boletinDTO.setListaInasistencias((ArrayList<Inasistencia>)boletin.getListaInasistencias());
+				ArrayList<Inasistencia> listaInasistencias = new ArrayList<Inasistencia>();
+				Set<Inasistencia> listaSet = boletin.getListaInasistencias();
+				//			for (Inasistencia i : listaSet) {
+				//				listaInasistencias.add(i);
+				//			}
+				listaInasistencias.addAll(listaSet);
+				boletinDTO.setListaInasistencias(listaInasistencias);
+				return boletinDTO;
+			} else {
+				return null;
+			}
 		} catch (Exception ex) {
 			throw new Exception("No se pudo recuperar el BOLETIN DE INASISTENCIAS por su id: " + ex.getMessage());
 		}
