@@ -78,6 +78,20 @@ $scope.addArea = function() {
 });
 };
 
+$scope.showMessage = function(mesagge, title, isGood) { //todo ok recibe true si salio bien o false si salio mal
+  ModalService.showModal({
+    templateUrl: 'scripts/utils/showMessage/modalMessage.tpl.html',
+    controller: 'modalMessageController',
+    inputs: {
+      mensaje: mesagge,
+      title: title,
+      isGood: isGood
+    }
+  }).then(function(modal) {
+    modal.element.modal();
+});
+};
+
 $scope.confirmModal = function(mesagge, funcion, parametro) { //este confirm recibe una funcion y un parametro para que despues de confirmar se pueda llamar a la funcion que se necesite
   ModalService.showModal({
     templateUrl: 'scripts/utils/confirm/modalConfirm.tpl.html',
@@ -102,7 +116,7 @@ $scope.deleteMateria = function (materia) {
 //esto tiene que ser una llamada al service que elimine la materia
 $scope.eliminarMateria = function(materia){
   $scope.listaMaterias.splice($scope.listaMaterias.indexOf(materia),1);
-  $scope.showAlert();
+  $scope.showMessage("todo ok", "Aviso", false);//acaaa
 };
 
 $scope.agregarMateria = function () {
@@ -113,24 +127,7 @@ $scope.agregarMateria = function () {
   $scope.nuevaMateria = new ObjectsFactory.newMateria();
 };
 
-//-- Alert
 
-$scope.showAlert = function() {
-  //la idea seria poder mandarle el mensaje a la variable pero por ahora solo tenemos una variable por alert
-  eliminarMateriaAlert.show();
-};
-
-var eliminarMateriaAlert = $alert({
-  title: 'Mensaje:', 
-  placement: 'top',
-  content: 'Materia eliminada con éxito', 
-  type: 'info', 
-  keyboard: true, 
-  show: false,
-  duration: 3,
-  container: '#alerta'
-});
-//-- Fin Alert
 
 //Test
 $scope.friends = [{nombre:'Educación Fisica', docenteTitular:'María Laura', anioPertenece: '4º', area: 'cs sociales'},
