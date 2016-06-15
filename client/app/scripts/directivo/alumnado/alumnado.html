@@ -23,7 +23,7 @@
 				</li>
 				<hr style="margin: 2px 0;">
 				<li ng-class="{active : activeMenuIzqAlu === 1}" data-target="#modals">
-					<a href="" ng-click="seleccionar('listado'); setActiveAlu(1)">Listado</a>
+					<a href="" ng-click="seleccionar('listado'); setActiveAlu(1); clearList()">Listado</a>
 				</li>
 				<li ng-class="{active : activeMenuIzqAlu === 2}" data-target="#nuevoPerfil">
 					<a href="" ng-click="seleccionar('nuevoPerfil'); setActiveAlu(2)">Nuevo Perfil</a>
@@ -46,7 +46,7 @@
 
 	<div id="listado" ng-show="listado">
 		<fieldset>
-			<h1>{{subtitle}}: <small>Seleccione el a&ntilde;o del que desa listar los alumnos</small></h1>
+			<h1>{{subtitle}}: <small>Seleccione el a&ntilde;o del que desea listar los alumnos</small></h1>
 			<hr>
 
 			<div class="panel panel-default">
@@ -87,7 +87,7 @@
 				<table class="table table-hover table-striped">
 					<thead>
 						<tr>
-							<th><input type="checkbox"></th>
+							<th></th>
 							<th>Apellido</th>
 							<th>Nombre</th>
 							<th>DNI</th>

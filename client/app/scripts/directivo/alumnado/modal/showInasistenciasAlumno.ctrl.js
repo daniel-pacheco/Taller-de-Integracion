@@ -1,8 +1,8 @@
 angular.module('clientAppApp')
 .controller('showInasistenciasModalController', [
-  '$scope', '$element', 'title', 'libInasistencias', 'close', 'ObjectsFactory', 
-  function($scope, $element, title, libInasistencias, close, ObjectsFactory) {//acá se inyecta las variables necesarias y luego la función close
-
+  '$scope', '$element', 'title', 'libInasistencias', 'close', 'ObjectsFactory', 'INASISTENCIAS',
+  function($scope, $element, title, libInasistencias, close, ObjectsFactory, INASISTENCIAS) {//acá se inyecta las variables necesarias y luego la función close
+    
   $scope.title = title;
   $scope.libInasistencias = {}; 
   $scope.nuevaInasistencia = {};
@@ -11,6 +11,9 @@ angular.module('clientAppApp')
     angular.forEach($scope.copiaLibInasistencias.listaInasistencias, function (item) {
       item.fecha = new Date(item.fecha);
   });
+  
+  $scope.inasistenciasOptions = INASISTENCIAS;
+
 
 $scope.close = function(modif) {
     if (modif){
@@ -94,7 +97,7 @@ $scope.calcTotalInasistencias = function(){
     };
     
 
-    $scope.totalIn.push(value.cantidad + rdo);
+    $scope.totalIn.push((parseFloat(value.cantidad) + parseFloat(rdo)).toFixed(2));
   });
 };
 $scope.calcTotalInasistencias();

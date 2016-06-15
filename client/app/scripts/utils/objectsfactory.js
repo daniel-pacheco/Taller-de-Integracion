@@ -164,10 +164,10 @@ var newCurso = function(){
 var newInasistencia = function(){
   var inasistencia = {
     "idInasistencia" : null,
-    "cantidad" : 0.0,
-    "fecha" : "mmm dd, aaaa hh:mm:ss AM/PM",
+    "cantidad" : null,
+    "fecha" : "",
     "concepto" : "",
-    "justificada" : true,
+    "justificada" : "",
     "totalAcum" : 0.0
   };
   return inasistencia;
