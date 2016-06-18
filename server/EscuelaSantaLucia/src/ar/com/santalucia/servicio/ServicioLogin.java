@@ -1,6 +1,7 @@
 package ar.com.santalucia.servicio;
 
 import java.security.SignatureException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,8 +9,15 @@ import ar.com.auth0.jwt.JWTExpiredException;
 import ar.com.auth0.jwt.JWTSigner;
 import ar.com.auth0.jwt.JWTVerifier;
 import ar.com.santalucia.aplicacion.gestor.sistema.login.GestorLogin;
+import ar.com.santalucia.aplicacion.gestor.usuario.GestorUsuario;
 import ar.com.santalucia.dominio.modelo.sistema.login.Login;
+import ar.com.santalucia.dominio.modelo.usuarios.Administrador;
+import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
+import ar.com.santalucia.dominio.modelo.usuarios.Personal;
+import ar.com.santalucia.dominio.modelo.usuarios.Usuario;
+import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.excepciones.LoginError;
+import ar.com.santalucia.mailserver.MailServer;
 
 /**
  * 
@@ -110,13 +118,63 @@ public class ServicioLogin {
 		return false;
 	}
 	
-	public Boolean recuperarClave(Long usuario){
-		/*
-		 * GENERAR UNA CLAVE ALEATORIA
-		 * GUARDAR NUEVA CLAVE Y MANDARLA
-		 * POR MAIL AL USUARIO
-		 * */
-		return false;
+	public Boolean recuperarClave(Long dniUsuario, String rol) throws Exception {
+		try {
+			MailServer mailServer = new MailServer();
+			Boolean resLogin = mailServer.login();
+			
+			// 1) buscar el usuario con el dni
+			// 2) obtener la dir. de email
+			// 3) obtener la entrada de login para recuperar la contraseña actual o generar una nueva
+			// 4) crear correo
+			// 5) enviar correo con contraseña nueva al usuario
+			
+			//Usuario usuario = new Usuario();
+			//usuario.setNroDocumento(dniUsuario);
+			Login loginUsuario = new Login();
+			ArrayList<Login> listaLogin = gLogin.getByExample(new Login(null,dniUsuario,null,null,null,rol,null));
+			loginUsuario = listaLogin.get(0);
+			Usuario usuario;
+			switch (rol) {
+			case Login.ALUMNO:
+				ServicioAlumno sAlumno = new ServicioAlumno();
+				usuario = new Alumno();
+				usuario = sAlumno.getUsuarioByDni(dniUsuario);
+				break;
+			case Login.DOCENTE:
+				ServicioDocente sDocente = new ServicioDocente();
+				usuario = new Personal();
+				usuario = sDocente.getUsuarioByDni(dniUsuario);
+				break;
+			case Login.DIRECTIVO:
+				ServicioDirectivo sDirectivo = new ServicioDirectivo();
+				usuario = new Personal();
+				usuario = sDirectivo.getUsuarioByDni(dniUsuario);
+				break;
+			case Login.ADMINISTRADOR:
+				// ¿?
+				usuario = new Administrador();
+				break;	
+			default:
+				usuario = new Usuario();
+			}
+			
+			String subject = "<<TEST>> Recuperación de contraseña de usuario " + rol;
+			String message = "<<TEST>> \nSentimos que haya olvidado o perdido su contraseña de acceso al sistema. "
+					+ "A continuación adjuntamos la contraseña que usted tiene actualmente para que pueda volver a ingresar: \n\n"
+					+ loginUsuario.getClave() + "\n\n"
+					+ "Si usted no reconoce este email y usted nunca pidió la recuperación de la contraseña, póngase inmediatamente "
+					+ "en contacto con el administrador del sistema. \n\n"
+					+ "Gracias!";
+			
+			for (Mail m : usuario.getListaMails()) {
+				mailServer.sendMessage(m.getDireccionMail(), subject, message);
+			}
+			
+			return true;
+		} catch (Exception e) {
+			throw new Exception("Hubo un error al enviar el email con la contraseña: " + e.getMessage());
+		}
 	}
 	
 	public void enviarMail(String direccion, String clave){
