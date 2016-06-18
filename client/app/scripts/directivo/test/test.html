@@ -3,34 +3,217 @@
 
 <form name="myUploadFileForm">
   <div>Crop Image and Upload</div>
-    <button ngf-select ng-model="picFile" accept="image/*" ngf-max-size="2MB" ngf-min-height="100">
-      Select Picture</button>
-      <div ngf-drop ng-model="picFile" ngf-pattern="image/*"
-      class="cropArea"><!--{{picFile}}-->
-        <img-crop image="picFile  | ngfDataUrl"                 
-        result-image="croppedDataUrl" ng-init="croppedDataUrl=''">
-        </img-crop>
-      </div>
-  <div>
-    <!--<img ng-src="{{croppedDataUrl}}">-->
-  </div>
-  <button ng-click="upload(croppedDataUrl)">Submit</button> 
+  <button ngf-select ng-model="picFile" accept="image/*" ngf-max-size="2MB" ngf-min-height="100">
+    Select Picture</button>
+    <div ngf-drop ng-model="picFile" ngf-pattern="image/*"
+    class="cropArea"><!--{{picFile}}-->
+    <img-crop image="picFile  | ngfDataUrl"                 
+    result-image="croppedDataUrl" ng-init="croppedDataUrl=''">
+  </img-crop>
+</div>
+<div>
+  <!--<img ng-src="{{croppedDataUrl}}">-->
+</div>
 
-  <span class="progress" ng-show="progress >= 0">
-    <div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
-  </span>
-  <span ng-show="result">Upload Successful</span>
-  <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
-  <hr>
-  {{date}}
-  <hr>
-  <span am-time-ago="date"></span>
-  <hr>
-  <span>{{date | amUtc | amDateFormat:'MM.DD.YYYY HH:mm:ss'}}</span>
-  <hr>
-  <span>{{date | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}</span>
-  <hr>
-  <span>{{date | amDateFormat:'YYYY-MM-DD'}}</span>
-  <hr>
-  <span>{{date | amDateFormat:'MM/YYYY/DD'}}</span>
+<button ng-click="upload(croppedDataUrl)">Submit</button>
+<br>
+  <!-- <button ng-click="spinnerService.show('spinner6')" class="btn btn-success btn-sm">Show Spinner 6</button>
+  <button ng-click="spinnerService.hide('spinner6')" class="btn btn-danger btn-sm">Hide Spinner 6</button> -->
+  <button ng-click="openNav()" class="btn btn-success btn-sm">Show Spinner 6</button>
+  <button ng-click="closeNav()" class="btn btn-danger btn-sm">Hide Spinner 6</button>
+  <br>
+
+  <spinner name="spinner6">
+   <div class="overlay" id="myNav">
+     <div class="overlay-content">
+      <!-- pero che q onda esto q no se muestra -->
+      <img src="http://closera.com/skin/frontend/bizarre/skin2_new/images/Loading1.gif">
+    </div>
+  </div>
+</spinner>
+
+<span class="progress" ng-show="progress >= 0">
+  <div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
+</span>
+<span ng-show="result">Upload Successful</span>
+<span class="err" ng-show="errorMsg">{{errorMsg}}</span>
+<hr>
+{{date}}
+<hr>
+<span am-time-ago="date"></span>
+<hr>
+<span>{{date | amUtc | amDateFormat:'MM.DD.YYYY HH:mm:ss'}}</span>
+<hr>
+<span>{{date | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}</span>
+<hr>
+<span>{{date | amDateFormat:'YYYY-MM-DD'}}</span>
+<hr>
+<span>{{date | amDateFormat:'MM/YYYY/DD'}}</span>
 </form>
+
+
+<div class="row">
+  <div class="col-xs-6 col-xs-offset-3">
+    <form ng-show="!loggedIn" class="well">
+      <spinner name="html5spinner" ng-cloak="">
+        <div class="overlay"></div>
+        <div class="spinner">
+            <!-- <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div> -->
+            <div>
+              <div class="ng-include: './views/templates/defaultspinner.html'"></div>
+            </div>
+          </div>
+          <div class="please-wait">Please Wait...</div>
+        </spinner>
+        <div class="form-group">
+          <label for="exampleInputEmail">Email</label>
+          <input id="exampleInputEmail" type="email" placeholder="Please enter your email address." ng-model="email" class="form-control"/>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword">Email</label>
+          <input id="exampleInputPassword" type="password" placeholder="Please enter your password." ng-model="password" class="form-control"/>
+        </div>
+        <button type="submit" ng-click="$event.preventDefault(); login();" class="btn btn-default">Login</button>
+      </form>
+      <div ng-show="loggedIn" ng-cloak="" class="alert alert-success text-center"><span ng-click="loggedIn = false;" class="glyphicon glyphicon-remove pull-right"></span>
+        <h1>Success!</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="ng-include: './views/templates/defaultspinner.html'"></div>
+
+  <!-- <div class='uil-default-css' style='transform:scale(0.6);'>
+  <div style='
+    top:80px;
+    left:93px;
+    width:14px;
+    height:40px;
+    background:#000000;
+    -webkit-transform:rotate(0deg) translate(0,-60px);
+    transform:rotate(0deg) translate(0,-60px);
+    border-radius:10px;
+    position:absolute;'>
+  </div>
+  <div style='
+    top:80px;
+    left:93px;
+    width:14px;
+    height:40px;
+    background:#000000;
+    -webkit-transform:rotate(30deg) translate(0,-60px);
+    transform:rotate(30deg) translate(0,-60px);
+    border-radius:10px;position:absolute;'>
+  </div>
+  <div style='
+    top:80px;
+    left:93px;
+    width:14px;
+    height:40px;
+    background:#000000;
+    -webkit-transform:rotate(60deg) translate(0,-60px);
+    transform:rotate(60deg) translate(0,-60px);
+    border-radius:10px;
+    position:absolute;'>
+  </div>
+  <div style='
+    top:80px;
+    left:93px;
+    width:14px;
+    height:40px;
+    background:#000000;
+    -webkit-transform:rotate(90deg) translate(0,-60px);
+    transform:rotate(90deg) translate(0,-60px);
+    border-radius:10px;
+    position:absolute;'>
+  </div>
+  <div style='
+    top:80px;
+    left:93px;
+    width:14px;
+    height:40px;
+    background:#000000;
+    -webkit-transform:rotate(120deg) translate(0,-60px);
+    transform:rotate(120deg) translate(0,-60px);
+    border-radius:10px;
+    position:absolute;'>
+  </div>
+  <div style='
+    top:80px;
+    left:93px;
+    width:14px;
+    height:40px;
+    background:#000000;
+    -webkit-transform:rotate(150deg) translate(0,-60px);
+    transform:rotate(150deg) translate(0,-60px);
+    border-radius:10px;
+    position:absolute;'>
+  </div>
+  <div style='
+    top:80px;
+    left:93px;
+    width:14px;
+    height:40px;
+    background:#000000;
+    -webkit-transform:rotate(180deg) translate(0,-60px);
+    transform:rotate(180deg) translate(0,-60px);
+    border-radius:10px;
+    position:absolute;'>
+  </div>
+  <div style='
+    top:80px;
+    left:93px;
+    width:14px;
+    height:40px;
+    background:#000000;
+    -webkit-transform:rotate(210deg) translate(0,-60px);
+    transform:rotate(210deg) translate(0,-60px);
+    border-radius:10px;
+    position:absolute;'>
+  </div>
+  <div style='
+    top:80px;
+    left:93px;
+    width:14px;
+    height:40px;
+    background:#000000;
+    -webkit-transform:rotate(240deg) translate(0,-60px);
+    transform:rotate(240deg) translate(0,-60px);
+    border-radius:10px;
+    position:absolute;'>
+  </div>
+  <div style='
+    top:80px;
+    left:93px;
+    width:14px;
+    height:40px;
+    background:#000000;
+    -webkit-transform:rotate(270deg) translate(0,-60px);
+    transform:rotate(270deg) translate(0,-60px);
+    border-radius:10px;
+    position:absolute;'>
+  </div>
+  <div style='
+    top:80px;
+    left:93px;
+    width:14px;height:40px;
+    background:#000000;
+    -webkit-transform:rotate(300deg) translate(0,-60px);
+    transform:rotate(300deg) translate(0,-60px);
+    border-radius:10px;
+    position:absolute;'>
+  </div>
+  <div style='
+    top:80px;
+    left:93px;
+    width:14px;
+    height:40px;
+    background:#000000;
+    -webkit-transform:rotate(330deg) translate(0,-60px);
+    transform:rotate(330deg) translate(0,-60px);
+    border-radius:10px;
+    position:absolute;'>
+  </div>
+</div> -->
+

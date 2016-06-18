@@ -75,7 +75,7 @@ $scope.addArea = function() {
     modal.close.then(function(result){
       $scope.listaAreas = result;
     });
-});
+  });
 };
 
 $scope.showMessage = function(mesagge, title, isGood) { //todo ok recibe true si salio bien o false si salio mal
@@ -89,7 +89,7 @@ $scope.showMessage = function(mesagge, title, isGood) { //todo ok recibe true si
     }
   }).then(function(modal) {
     modal.element.modal();
-});
+  });
 };
 
 $scope.confirmModal = function(mesagge, funcion, parametro) { //este confirm recibe una funcion y un parametro para que despues de confirmar se pueda llamar a la funcion que se necesite
@@ -101,10 +101,10 @@ $scope.confirmModal = function(mesagge, funcion, parametro) { //este confirm rec
     }
   }).then(function(modal) {
     modal.element.modal();
-   modal.close.then(function(result){
+    modal.close.then(function(result){
       funcion(parametro);
     });
-});
+  });
 };
 
 //-- Llamadas al servicio
@@ -116,7 +116,7 @@ $scope.deleteMateria = function (materia) {
 //esto tiene que ser una llamada al service que elimine la materia
 $scope.eliminarMateria = function(materia){
   $scope.listaMaterias.splice($scope.listaMaterias.indexOf(materia),1);
-  $scope.showMessage("todo ok", "Aviso", false);//acaaa
+  $scope.showMessage("todo ok", "Aviso", true);//acaaa
 };
 
 $scope.agregarMateria = function () {

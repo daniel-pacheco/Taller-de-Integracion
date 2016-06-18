@@ -44,6 +44,7 @@ module.exports = function(config) {
       'bower_components/highcharts/modules/drilldown.js',
       'bower_components/ng-file-upload/ng-file-upload.js',
       'bower_components/ng-img-crop/compile/minified/ng-img-crop.js',
+      'bower_components/angular-spinners/dist/angular-spinners.min.js',
       // endbower
       "app/scripts/**/*.js",
       "test/mock/**/*.js",
