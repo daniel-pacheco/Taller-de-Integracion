@@ -136,17 +136,38 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 	@Override
 	public boolean removeUsuario(Alumno usuario) throws Exception {
 		try {
-			gAlumno.delete(usuario);
+			// Obtenemos el dto del alumno, y con ello el anio
+			// Obtenemos la entidad anio con un getbyexample
+			// Recorremos los curso en busca del id de curso (lo hago coincidir con el nombre)
+			// obtenemos el id y llamamo a desvinbcularalumnodecurso
+			ServicioAcademico sAcademico = new ServicioAcademico();
+			Curso curso = new Curso();
+			AlumnoDTO aux = getAlumnoByDniMin(usuario.getNroDocumento());
+			if(!aux.getCurso().equals('0')){
+				Anio anioAux = new Anio(null,aux.getAnio(),null,null,null,true);
+				List<Anio> listAnio = sAcademico.getAnios(anioAux);
+				Set<Curso> listCurso = new HashSet<Curso>();
+				anioAux=listAnio.get(0);
+				listCurso = anioAux.getListaCursos();
+				for (Curso c: listCurso){
+					if (c.getDivision().equals(Character.valueOf(aux.getCurso().charAt(0)))){
+						curso = c;
+						break;
+					}
+				}
+				if (!curso.getDivision().equals(null) ){
+					sAcademico.desvincularAlumnoDeCurso(usuario, curso.getIdCurso());
+				}else{
+					throw new Exception("No se encontró el curso para desvincular al alumno " +usuario.getNroDocumento());
+				}
+			}
+			usuario.setActivo(false);
+			gAlumno.modify(usuario);
 			return true;
 		} catch (Exception ex) {
 			throw ex;
 		}
 	}
-	
-	
-	/*
-	 * 
-	 */
 
 	// No se incluyen los métodos para agregar mail, título o teléfono dado a
 	// que solo es necesario llamar a this.addUsuario(Alumno usuario)

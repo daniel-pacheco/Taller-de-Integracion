@@ -327,6 +327,24 @@ public class ServicioAlumnoEndpoint{
 	 * (! PRECAUCIÓN) Se eliminan todos los datos adicionales asociados (telefono, mail y domicilio) al eliminar el usuario.
 	 */
 	@DELETE
+	@Path("/alu/deleteByDni/{dni:[0-9][0-9]*}")
+	public Response deleteAlumnoByDni(@PathParam("dni") final Long dni){
+		Boolean exito = false;
+		try {
+			setInstance();
+			exito = servicioAlumno.removeUsuario(servicioAlumno.getUsuarioByDni(dni));
+			if(exito == true){
+				return Response.ok(exito).build();
+			}else{
+				return Response.serverError().entity(new FrontMessage ("No se ha podido eliminar el docente", FrontMessage.INFO)).build();
+			}
+		} catch (Exception ex) {
+			// ex.printStackTrace();
+			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
+		}
+	}
+	
+	@DELETE
 	@Path("/alu/{id:[0-9][0-9]*}")
 	public Response deleteAlumnoById(@PathParam("id") final Long id) {
 		Boolean exito = false;
