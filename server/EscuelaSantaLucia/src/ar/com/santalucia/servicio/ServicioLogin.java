@@ -129,8 +129,6 @@ public class ServicioLogin {
 			// 4) crear correo
 			// 5) enviar correo con contraseña nueva al usuario
 			
-			//Usuario usuario = new Usuario();
-			//usuario.setNroDocumento(dniUsuario);
 			Login loginUsuario = new Login();
 			ArrayList<Login> listaLogin = gLogin.getByExample(new Login(null,dniUsuario,null,null,null,rol,null));
 			loginUsuario = listaLogin.get(0);
