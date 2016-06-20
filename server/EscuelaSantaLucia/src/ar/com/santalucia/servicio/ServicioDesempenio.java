@@ -478,7 +478,7 @@ public class ServicioDesempenio {
 			setInasistencias.addAll(listaNueva);
 			bolInasistencias.setListaInasistencias(setInasistencias);
 			
-			//gBoletinInasistencias.closeSession();
+			gBoletinInasistencias.closeSession();
 			gBoletinInasistencias.modify(bolInasistencias);
 		} catch (ValidacionException vEx) {
 			throw vEx;

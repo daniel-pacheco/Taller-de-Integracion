@@ -22,7 +22,8 @@ angular
     'ngFileUpload',
     'ngImgCrop',
     'angularModalService',
-    'angularMoment'
+    'angularMoment',
+    'angularSpinners'
 
   ])
   

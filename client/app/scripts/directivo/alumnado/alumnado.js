@@ -21,12 +21,12 @@
  	});
  })
 
- .controller('AlumnadoCtrl', function ($scope, $q, $http, boletinInasistenciasData, $alert, libCalificacionesdata, plantillaTrimestralData, alumnoService, Upload, $timeout, alumnoData, ModalService, ObjectsFactory, modalService) {
+ .controller('AlumnadoCtrl', function ($scope, $q, $http, boletinInasistenciasData, $alert, libCalificacionesdata, plantillaTrimestralData, alumnoService, Upload, $timeout, alumnoData, ModalService, ObjectsFactory, modalService, spinnerService) {
  	$scope.listado = true;
  	$scope.listFilterIsEnabled = false;
 
  	$scope.nuevoAlumno = ObjectsFactory.newAlumno();
-  	$scope.nuevoTelefonoSimple = ObjectsFactory.newTelefono();
+ 	$scope.nuevoTelefonoSimple = ObjectsFactory.newTelefono();
 
 
 //tooltips
@@ -131,7 +131,7 @@ $scope.domicilioAvanzado = function() {
 			});
 		},
 		function(response){
-			alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
+			showServerError(response);
 		});
 	}; 
 
@@ -165,6 +165,43 @@ $scope.domicilioAvanzado = function() {
 		});
 	};
 
+	$scope.showMessage = function(mesagge, title, isGood) { //todo ok recibe true si salio bien o false si salio mal
+		ModalService.showModal({
+			templateUrl: 'scripts/utils/showMessage/modalMessage.tpl.html',
+			controller: 'modalMessageController',
+			inputs: {
+				mensaje: mesagge,
+				title: title,
+				isGood: isGood
+			}
+		}).then(function(modal) {
+			modal.element.modal();
+		});
+	};
+
+	function showServerError (response){
+		console.log(response);
+		var msg = '';
+
+		if (response.statusText) {
+			msg = response.statusText;
+		};
+		
+		if (response.data) {
+			msg += ' - ' + response.data.mensaje + ' ' + response.data.severidad;
+		};			
+		$scope.showMessage(msg, 'Error al contactar al servidor' , false);
+	};
+
+	function showServerSuccess (message, response){
+		console.log(response);
+		var msg = message;
+		
+		if (response.data) {
+			msg += ' ' + response.data;
+		};			
+		$scope.showMessage(msg, 'Operación exitosa' , true);
+	};
 //File-Select
 
 $scope.upload = function (dataUrl) {
@@ -268,6 +305,30 @@ $scope.seleccionar = function (id){
 	}
 }
 
+function showListFilter(){
+	if (!$scope.listFilterIsEnabled) {
+		$scope.listFilterIsEnabled = true;
+	};
+};
+
+function hideListFilter(){
+	if ($scope.listFilterIsEnabled) {
+		$scope.listFilterIsEnabled = false;
+	};
+};
+
+
+//---spinners
+
+$scope.loginSpinner = function () {
+	spinnerService.show('searchSpinner');
+	$timeout(function () {
+		spinnerService.hide('searchSpinner');
+		$scope.loggedIn = true;
+	}, 12500);
+};
+
+
 //---Llamadas al servicio ALUMNO---
 
 $scope.alumnoData = [];
@@ -278,37 +339,43 @@ $scope.search = function (option, dni) {
 	if (option) {
 		if (option == "DNI/MAT") {
 			if ($scope.searchByDni) {
-				// alert($scope.searchByDni);
+				spinnerService.show('searchSpinner');
 				alumnoService.getByDniMin($scope.searchByDni)
 				.then(function(response){
 					console.log(response);
 					$scope.alumnoData.length = 0;
 					$scope.alumnoData.push(response.data);
+					showListFilter();
 				},
 				function(response){
 					console.log(response);
-					alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText + " - " + response.data.mensaje + " " + response.data.severidad);
+					// alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText + " - " + response.data.mensaje + " " + response.data.severidad);
+					showServerError(response);
+					hideListFilter();					
 				})
+				.finally(spinnerService.hide('searchSpinner'));
 			} 
 		};
 
 		if (option == "TODOS"){
-			// this.showData();	$scope.alumnoData
+			spinnerService.show('searchSpinner');
+			showListFilter();
+			
 			alumnoService.getAllMin()
 			.then(function(response){
 				$scope.alumnoData = response.data;
+				showListFilter();
 			},
 			function(response){
-				alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
-			});
+				// alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
+				showServerError(response);
+				hideListFilter();
+			})
+			.finally(spinnerService.hide('searchSpinner'));
 		};
 
 		if (option !== "TODOS" && option !== "DNI/MAT") {
 			alert(option);
-		};
-
-		if (!$scope.listFilterIsEnabled) {
-			$scope.listFilterIsEnabled = true;
 		};
 	};
 	
@@ -326,6 +393,7 @@ $scope.newAlumno = function (alumno){
 	.then(function(response){
 		console.log(response);
 		alert('El alumno se ha dado de alta con éxito. ID n°: ' + response.data);
+		showServerSuccess('El alumno se ha dado de alta con éxito. ID n°: ', response);
 		$scope.clearFormAlu();
 		$scope.showLoading = false;
 		$scope.nuevoPerfil = true;
@@ -342,7 +410,7 @@ $scope.newAlumno = function (alumno){
 $scope.clearFormAlu = function (){
 	$scope.formAlu.$setUntouched();
 	$scope.mostrarListaTelefonos = false;
-    $scope.mostrarListaMails = false;
+	$scope.mostrarListaMails = false;
 	$scope.nuevoAlumno = ObjectsFactory.newAlumno();
 	$scope.nuevoTelefonoSimple = ObjectsFactory.newTelefono();
 }

@@ -135,5 +135,17 @@ public class ServicioLoginEndpoint {
 		//TODO: process the serviciologin matching by the given id 
 		return Response.noContent().build();
 	}
+	
+	@POST
+	@Path("/recuperarClave/{dni:[0-9][0-9]*}")
+	public Response recuperarContraseña(@PathParam("dni") final Long dniUsuario, @HeaderParam("rol") final String rol) {
+		try {
+			setInstance();
+			return Response.ok(servicioLogin.recuperarClave(dniUsuario, rol)).build();
+		} catch (Exception ex) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Hubo un error al enviar el correo "
+					+ "con la contraseña: " + ex.getMessage()).build();
+		}
+	}
 
 }
