@@ -66,10 +66,10 @@
 					<tbody>	
 						<tr ng-repeat-start="anio in anios | orderBy:predicate:reverse">
 							<td data-toggle="collapse" data-target="#{{anio.idAnio}}" class="accordion-toggle" ng-click="downGlyphiconIna = !downGlyphiconIna">
-								<span ng-class="{ 'glyphicon glyphicon-chevron-down': !downGlyphiconIna,'glyphicon glyphicon-chevron-up': downGlyphiconIna }"></span>
+								<span ng-class="{ 'glyphicon glyphicon-chevron-down': !downGlyphiconIna,'glyphicon glyphicon-chevron-up': downGlyphiconIna }" style="cursor: pointer;"></span>
 							</td>
-							<td data-toggle="collapse" data-target="#{{anio.idAnio}}" class="accordion-toggle" ng-click="downGlyphiconIna = !downGlyphiconIna">{{anio.nombre}}</td>
-							<td data-toggle="collapse" data-target="#{{anio.idAnio}}" class="accordion-toggle" ng-click="downGlyphiconIna = !downGlyphiconIna">{{anio.descripcion}}</td>
+							<td data-toggle="collapse" data-target="#{{anio.idAnio}}" class="accordion-toggle" ng-click="downGlyphiconIna = !downGlyphiconIna" style="cursor: pointer;">{{anio.nombre}}</td>
+							<td data-toggle="collapse" data-target="#{{anio.idAnio}}" class="accordion-toggle" ng-click="downGlyphiconIna = !downGlyphiconIna" style="cursor: pointer;">{{anio.descripcion}}</td>
 							<td>
 								<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipEdit" ng-click="editAnio(anio)">
 									<span data-animation="am-flip-x" class="glyphicon glyphicon-edit"></span>
