@@ -12,6 +12,7 @@
  	// address: 'http://192.168.0.100:8080/',
  	address: 'http://192.168.1.4:8080/',
  	sAlumno: 'EscuelaSantaLucia/rest/sAlumno/',
+ 	sAcademico: 'EscuelaSantaLucia/rest/sAcademico/',
  	sDesempenio: 'EscuelaSantaLucia/rest/sDesempenio/',
  	sDirectivo: 'EscuelaSantaLucia/rest/sDirectivo/',
  	sDocente: 'EscuelaSantaLucia/rest/sDocente/',
@@ -74,8 +75,8 @@
  	CONCEPTO:["Clases", "Ed. Física", "Llegada tarde", "Se retira", "Otro"],
  	VALORES: [0.25, 0.5, 1.0],
  	JUSTIFICADA: [
- 		["Injustificada", "I"],
-	 	["Justificada", "J"]
+ 		["Injustificada", false],
+	 	["Justificada", true]
  	]
  })
 

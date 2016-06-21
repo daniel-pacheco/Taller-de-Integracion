@@ -19,10 +19,10 @@
     }
   });
 })
- .controller('MateriasCtrl', function ($scope, ModalService, areasData, $timeout, $alert, materiasData, ObjectsFactory, docenteData) {
+ .controller('MateriasCtrl', function ($scope, ModalService, areasData, $timeout, $alert, materiasData, ObjectsFactory, docenteData, academicoService) {
   $scope.listado = true;
   $scope.subtitle = "Listado";
-  $scope.listaMaterias = materiasData;
+  // $scope.listaMaterias = materiasData;
 
   $scope.seleccionar = function(id) {
     switch (id){
@@ -127,6 +127,24 @@ $scope.agregarMateria = function () {
   $scope.nuevaMateria = new ObjectsFactory.newMateria();
 };
 
+//-- [Listado] 
+//-- [Listado] variables
+  $scope.listaMaterias = [];
+//-- [Listado] Form Management
+//-- [Listado] filters
+//-- [Listado] modals
+//-- [Listado] spinners
+//-- [Listado] service calls
+  function listAllMaterias() {
+    academicoService.matGetAllMin()
+    .then(function(response){
+      $scope.listaMaterias = response.data;
+    },
+      function(response){
+        console.log(response);
+      });
+  };
+  listAllMaterias(); //cambiar esto cuando se pueda elegir el año
 
 
 //Test
