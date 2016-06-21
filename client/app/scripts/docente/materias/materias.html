@@ -1,1 +1,220 @@
-{{titulo}}
+<div class="col-md-2 hidden-sm hidden-xs">
+	<div>
+		<!-- ngInclude: 'views/partials/affixed-sidebar.html' -->
+		<div class="bs-sidebar hidden-print affix" role="complementary" data-offset-top="-100" bs-affix style="position: relative; text-align: right;">
+			<ul class="nav bs-sidenav">
+				<li bs-scrollspy data-target="#getting-started">
+					<a href="">Men&uacute; Materia</a>
+				</li>
+				<hr style="margin: 2px 0;">
+				<li ng-repeat="materia in listaMaterias"  ng-class="{active : activeMenu === materia}" data-target="#modals">
+					<a href="" ng-click="setActive(materia)">{{materia.nombre}}</a>
+				</li>				
+			</ul>
+		</div>
+		<!--/ngInclude: 'views/partials/affixed-sidebar.html' -->
+
+	</div>
+</div>
+
+<div class="col-md-10">
+	<fieldset>
+		<h1>{{titulo}}
+			<small ng-show="selecMateriaMensaje">En el men&uacute; izquierdo se encuentra el listado de materias que tiene asignadas. Seleccione una para ver las plantillas trimestrales</small>
+			<small ng-show="!selecMateriaMensaje">Despliegue el per&iacute;odo que desee</small>
+		</h1>
+		<hr>
+		<div ng-show="listaPlantillasTrim">
+			<div class="panel-group" ng-model="multiplePanels.activePanels" data-allow-multiple="true" role="tablist" aria-multiselectable="true" bs-collapse>
+				<div class="panel panel-default">
+					<div class="panel-heading" style="cursor: pointer" ng-click="cargarPlanilla(1,activeMenu.id); downGlyphiconPrimerT = !downGlyphiconPrimerT" bs-collapse-toggle>
+						<div class="panel-title">
+							<span ng-class="{ 'glyphicon glyphicon-chevron-down': !downGlyphiconPrimerT,'glyphicon glyphicon-chevron-up': downGlyphiconPrimerT }"></span> Primer Trimestre
+						</div>
+					</div>
+					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
+						<div class="panel-body form-group table-responsive">
+							<div class="alert alert-warning alert-dismissible col-md-7" role="alert">
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								Presione "Editar planilla" para asignar/editar las notas y luego haga click en "Finalizar Edici&oacute;n" para guardar los cambios realizados
+							</div>
+							<table class="table-hover table-striped table-condensed table-bordered col-md-6">
+								<thead>
+									<tr>
+										<th class="col-md-2">
+											<button type="button" ng-show="!colocarNota" class="btn btn-default btn-block btn-md" style="float: top" ng-click="colocarNota=!colocarNota; createCopy(planillaPrimerTrim.listaTrimestre)">Editar Planilla</button>
+											<div ng-show="colocarNota">
+												<button type="button" class="btn btn-danger btn-block btn-md" style="float: top" ng-click="colocarNota=!colocarNota">Cancelar Edici&oacute;n</button>
+												<button type="button" class="btn btn-primary btn-block btn-md" style="float: top" ng-click="colocarNota=!colocarNota; saveEditNota(copiaLista)">Finalizar Edici&oacute;n</button>
+											</div>
+										</th>
+										<th class="col-md-2" style="vertical-align: middle; text-align: center;">Primer trimestre</th>
+										<th class="col-md-2" style="vertical-align: middle; text-align: center;">Calif anual</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="lista in copiaLista" ng-show="colocarNota">
+										<td class="col-md-3">{{$index+1}} - {{lista.alumno}}</td>
+										<td><input ng-model="lista.primerTrim" type="number" class="form-control" style="width: 48px; height: 27px; margin: auto" placeholder="-"></td>
+										<td style="vertical-align: middle; text-align: center;">{{lista.califAnual}}</td>
+									</tr>
+									<tr ng-repeat="lista in planillaPrimerTrim.listaTrimestre"  ng-show="!colocarNota">
+										<td class="col-md-3">{{$index+1}} - {{lista.alumno}}</td>
+										<td style="vertical-align: middle; text-align: center;">{{lista.primerTrim}}</td>
+										<td style="vertical-align: middle; text-align: center;">{{lista.califAnual}}</td>
+									</tr>
+								</tbody>
+							</table>
+							<div ng-show="colocarNota" class="col-md-7 col-md-offset-1" style="margin-top:10px">
+								<button type="button" class="btn btn-danger btn-md" ng-click="colocarNota=!colocarNota">Cancelar Edici&oacute;n</button>
+								<button type="button" class="btn btn-primary btn-md" ng-click="colocarNota=!colocarNota; saveEditNota(copiaLista)">Finalizar Edici&oacute;n</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading" style="cursor: pointer" ng-click="cargarPlanilla(2); downGlyphiconSegundoTri = !downGlyphiconSegundoTri" bs-collapse-toggle>
+						<div class="panel-title">
+							<span ng-class="{ 'glyphicon glyphicon-chevron-down': !downGlyphiconSegundoTri,'glyphicon glyphicon-chevron-up': downGlyphiconSegundoTri }"></span> Segundo Trimestre
+						</div>
+					</div>
+					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
+						<div class="panel-body form-group table-responsive">
+							<table class="table-hover table-striped table-condensed table-bordered">
+								<thead>
+									<tr style="height: 95px; position: relative;" class="affix" data-offset-top="-60">
+										<th class="col-md-3">
+											<button type="button" class="btn btn-success btn-block btn-md" style="float: top">Editar Plantilla</button>
+										</th>
+										<th class="Rotate-90 col-md-1" ng-repeat="mate in planillaSegundoTrim.listaTrimestres[0].notas" style="vertical-align: middle; padding: inherit;">{{mate.materia}}</th>	<!--Esto toma del primer alumno la lista de materias y las muestra en el head-->
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="lista in planillaSegundoTrim.listaTrimestres">
+										<td class="col-md-3">{{$index+1}} - {{lista.alumno}}</td>
+										<!-- <td ng-repeat="nota in lista.notas"><input ng-model="nota.nota" type="text" class="form-control" style="width: 48px; height: 27px; margin: auto"></td> -->
+										<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">{{nota.nota}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading" style="cursor: pointer" ng-click="cargarPlanilla(3); downGlyphiconTercerTri = !downGlyphiconTercerTri" bs-collapse-toggle>
+						<div class="panel-title">
+							<span ng-class="{ 'glyphicon glyphicon-chevron-down': !downGlyphiconTercerTri,'glyphicon glyphicon-chevron-up': downGlyphiconTercerTri }"></span> Tercer Trimestre
+						</div>
+					</div>
+					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
+						<div class="panel-body form-group table-responsive">
+							<table class="table-hover table-striped table-condensed table-bordered">
+								<thead>
+									<tr style="height: 95px; position: relative;" class="affix" data-offset-top="-60">
+										<th class="col-md-3">
+											<button type="button" class="btn btn-success btn-block btn-md" style="float: top">Editar Plantilla</button>
+										</th>
+										<th class="Rotate-90 col-md-1" ng-repeat="mate in planillaTercerTrim.listaTrimestres[0].notas" style="vertical-align: middle; padding: inherit;">{{mate.materia}}</th>	<!--Esto toma del primer alumno la lista de materias y las muestra en el head-->
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="lista in planillaTercerTrim.listaTrimestres">
+										<td class="col-md-3">{{$index+1}} - {{lista.alumno}}</td>
+										<!-- <td ng-repeat="nota in lista.notas"><input ng-model="nota.nota" type="text" class="form-control" style="width: 48px; height: 27px; margin: auto"></td> -->
+										<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">{{nota.nota}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading" style="cursor: pointer" ng-click="cargarPlanilla('diciembre'); downGlyphiconDiciembre = !downGlyphiconDiciembre" bs-collapse-toggle>
+						<div class="panel-title">
+							<span ng-class="{ 'glyphicon glyphicon-chevron-down': !downGlyphiconDiciembre,'glyphicon glyphicon-chevron-up': downGlyphiconDiciembre }"></span> Diciembre
+						</div>
+					</div>
+					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
+						<div class="panel-body form-group table-responsive">
+							<table class="table-hover table-striped table-condensed table-bordered">
+								<thead>
+									<tr style="height: 95px; position: relative;" class="affix" data-offset-top="-60">
+										<th class="col-md-3">
+											<button type="button" class="btn btn-success btn-block btn-md" style="float: top">Editar Plantilla</button>
+										</th>
+										<th class="Rotate-90 col-md-1" ng-repeat="mate in planillaDiciembre.listaTrimestres[0].notas" style="vertical-align: middle; padding: inherit;">{{mate.materia}}</th>	<!--Esto toma del primer alumno la lista de materias y las muestra en el head-->
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="lista in planillaDiciembre.listaTrimestres">
+										<td class="col-md-3">{{$index+1}} - {{lista.alumno}}</td>
+										<!-- <td ng-repeat="nota in lista.notas"><input ng-model="nota.nota" type="text" class="form-control" style="width: 48px; height: 27px; margin: auto"></td> -->
+										<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">{{nota.nota}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading" style="cursor: pointer" ng-click="cargarPlanilla('marzo'); downGlyphiconMarzo = !downGlyphiconMarzo" bs-collapse-toggle>
+						<div class="panel-title">
+							<span ng-class="{ 'glyphicon glyphicon-chevron-down': !downGlyphiconMarzo,'glyphicon glyphicon-chevron-up': downGlyphiconMarzo }"></span> Marzo
+						</div>
+					</div>
+					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
+						<div class="panel-body form-group table-responsive">
+							<table class="table-hover table-striped table-condensed table-bordered">
+								<thead>
+									<tr style="height: 95px; position: relative;" class="affix" data-offset-top="-60">
+										<th class="col-md-3">
+											<button type="button" class="btn btn-success btn-block btn-md" style="float: top">Editar Plantilla</button>
+										</th>
+										<th class="Rotate-90 col-md-1" ng-repeat="mate in planillaMarzo.listaTrimestres[0].notas" style="vertical-align: middle; padding: inherit;">{{mate.materia}}</th>	<!--Esto toma del primer alumno la lista de materias y las muestra en el head-->
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="lista in planillaMarzo.listaTrimestres">
+										<td class="col-md-3">{{$index+1}} - {{lista.alumno}}</td>
+										<!-- <td ng-repeat="nota in lista.notas"><input ng-model="nota.nota" type="text" class="form-control" style="width: 48px; height: 27px; margin: auto"></td> -->
+										<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">{{nota.nota}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading" style="cursor: pointer" ng-click="cargarPlanilla('todos'); downGlyphiconTodos = !downGlyphiconTodos" bs-collapse-toggle>
+						<div class="panel-title">
+							<span ng-class="{ 'glyphicon glyphicon-chevron-down': !downGlyphiconTodos,'glyphicon glyphicon-chevron-up': downGlyphiconTodos }"></span> Todos los conceptos
+						</div>
+					</div>
+					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
+						<div class="panel-body form-group table-responsive">
+							<table class="table-hover table-striped table-condensed table-bordered">
+								<thead>
+									<tr style="height: 95px; position: relative;" class="affix" data-offset-top="-60">
+										<th class="col-md-3">
+											<button type="button" class="btn btn-success btn-block btn-md" style="float: top">Editar Plantilla</button>
+										</th>
+										<th class="Rotate-90 col-md-1" ng-repeat="mate in planillaTodos.listaTrimestres[0].notas" style="vertical-align: middle; padding: inherit;">{{mate.materia}}</th>	<!--Esto toma del primer alumno la lista de materias y las muestra en el head-->
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="lista in planillaTodos.listaTrimestres">
+										<td class="col-md-3">{{$index+1}} - {{lista.alumno}}</td>
+										<!-- <td ng-repeat="nota in lista.notas"><input ng-model="nota.nota" type="text" class="form-control" style="width: 48px; height: 27px; margin: auto"></td> -->
+										<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">{{nota.nota}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+</div>	

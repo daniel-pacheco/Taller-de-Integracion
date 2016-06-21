@@ -21,9 +21,11 @@ public class MailServer {
 
 	public MailServer() {
 		super();
-		this.username = "ericdp_0591@hotmail.com";
-		this.password = "mglatu";
-		this.from = "ericdp_0591@hotmail.com";
+//		this.username = "ericdp_0591@hotmail.com";
+//		this.password = "mglatu";
+		this.username = "escuelasantalucia.info@gmail.com";
+		this.password = "santaluciaescuela2016";
+		this.from = "escuelasantalucia.info@gmail.com";
 		// seteo de propiedades (host, port, ...)
 		this.setProps();
 	}
@@ -33,10 +35,19 @@ public class MailServer {
 	 */
 	public void setProps() {
 		props = new Properties();
-		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.host", "smtp-mail.outlook.com");		
-		props.put("mail.smtp.port", "587"); // o 25
+		// outlook
+//		props.put("mail.smtp.starttls.enable", "true");
+//		props.put("mail.smtp.host", "smtp-mail.outlook.com");		
+//		props.put("mail.smtp.port", "587"); // o 25
+//		props.put("mail.smtp.auth", "true");
+		
+		// gmail
+		props.put("mail.smtp.socketFactory.port", "465");
+		props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+		props.put("mail.smtp.host", "smtp.gmail.com");		
+		props.put("mail.smtp.port", "465");
 		props.put("mail.smtp.auth", "true");
+
 	}
 
 	public Message getMessage() {

@@ -19,7 +19,7 @@
     }
   });
 })
- .controller('MateriasCtrl', function ($scope, ModalService, areasData, $timeout, $alert, materiasData, ObjectsFactory, docenteData, academicoService) {
+ .controller('MateriasCtrl', function ($scope, ModalService, areasData, $timeout, $alert, materiasData, ObjectsFactory, docenteData, academicoService, $modal) {
   $scope.listado = true;
   $scope.subtitle = "Listado";
   // $scope.listaMaterias = materiasData;
@@ -78,7 +78,7 @@ $scope.addArea = function() {
   });
 };
 
-$scope.showMessage = function(mesagge, title, isGood) { //todo ok recibe true si salio bien o false si salio mal
+$scope.showMessage = function(mesagge, title, isGood) { //isGood recibe true si salio bien o false si salio mal
   ModalService.showModal({
     templateUrl: 'scripts/utils/showMessage/modalMessage.tpl.html',
     controller: 'modalMessageController',
@@ -116,7 +116,9 @@ $scope.deleteMateria = function (materia) {
 //esto tiene que ser una llamada al service que elimine la materia
 $scope.eliminarMateria = function(materia){
   $scope.listaMaterias.splice($scope.listaMaterias.indexOf(materia),1);
-  $scope.showMessage("todo ok", "Aviso", true);//acaaa
+  $scope.showMessage("todo ok", "Aviso", false);
+  //$modal({title: 'hola', content: 'Todo bien', show: true});
+  $scope.showMessage("todo ok", "Aviso", true);
 };
 
 $scope.agregarMateria = function () {
