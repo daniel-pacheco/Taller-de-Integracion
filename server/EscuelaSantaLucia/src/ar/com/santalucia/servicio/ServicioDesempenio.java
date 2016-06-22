@@ -473,12 +473,12 @@ public class ServicioDesempenio {
 			// elimina inasistencias sobrantes
 			eliminarInasistencias(listaNueva, listaPersis);
 			
+			gBoletinInasistencias.closeSession();
 			
 			Set<Inasistencia> setInasistencias = new HashSet<Inasistencia>();
 			setInasistencias.addAll(listaNueva);
 			bolInasistencias.setListaInasistencias(setInasistencias);
 			
-			gBoletinInasistencias.closeSession();
 			gBoletinInasistencias.modify(bolInasistencias);
 		} catch (ValidacionException vEx) {
 			throw vEx;

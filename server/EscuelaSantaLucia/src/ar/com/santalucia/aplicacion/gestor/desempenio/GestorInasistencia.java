@@ -29,7 +29,7 @@ public class GestorInasistencia extends Gestor<Inasistencia> implements IListabl
 			setSession();
 			setTransaction();
 			inasistenciaDAO.persist(object);
-			// sesionDeHilo.getTransaction().commit();
+			sesionDeHilo.getTransaction().commit();
 		} catch (ValidacionException vEx) {
 			throw vEx;
 		} catch (Exception ex) {
@@ -46,7 +46,7 @@ public class GestorInasistencia extends Gestor<Inasistencia> implements IListabl
 			setSession();
 			setTransaction();
 			inasistenciaDAO.attachDirty(object);
-			//sesionDeHilo.getTransaction().commit();
+			sesionDeHilo.getTransaction().commit();
 		} catch (ValidacionException vEx) {
 			throw vEx;
 		} catch (Exception ex) {

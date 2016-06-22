@@ -71,6 +71,8 @@ public class GestorBoletinInasistencias extends Gestor<BoletinInasistencias>
 					}
 				}
 			}
+			setSession();
+			setTransaction();
 			boletinInasistenciasDAO.attachDirty(object);
 			sesionDeHilo.getTransaction().commit();
 		} catch (ValidacionException ex) {

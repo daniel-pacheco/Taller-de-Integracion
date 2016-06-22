@@ -16,6 +16,8 @@ import ar.com.santalucia.aplicacion.gestor.academico.GestorMesaExamenHist;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinNotasHist;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
+import ar.com.santalucia.dominio.dto.AnioDTO;
+import ar.com.santalucia.dominio.dto.CursoDTO;
 import ar.com.santalucia.dominio.dto.DetallePreviaDTO;
 import ar.com.santalucia.dominio.dto.MateriaAltaDTO;
 import ar.com.santalucia.dominio.dto.MateriaDTO;
@@ -131,6 +133,35 @@ public class ServicioAcademico {
 			return gAnio.getByExample(example);
 		} catch (Exception ex) {
 			throw new Exception("No se pudo obtener la lista de AÑOS: " + ex.getMessage());
+		}
+	}
+	
+	
+	public ArrayList<AnioDTO> getAniosDTO() throws Exception {
+		try {
+			ArrayList<Anio> listaAniosPersis = gAnio.getByExample(new Anio());
+			ArrayList<AnioDTO> listaAniosDTO = new ArrayList<AnioDTO>();
+			
+			for (Anio a : listaAniosPersis) {
+				AnioDTO aDTO = new AnioDTO();
+				aDTO.setIdAnio(a.getIdAnio());
+				aDTO.setNombre(a.getNombre());
+				aDTO.setDescripcion(a.getDescripcion());
+				Set<Curso> listaCursosAnioPersis = a.getListaCursos();
+				for (Curso c : listaCursosAnioPersis) {
+					CursoDTO cDTO = new CursoDTO();
+					cDTO.setIdCurso(c.getIdCurso());
+					cDTO.setDivision(c.getDivision().toString());
+					cDTO.setTurno(c.getTurno());
+					cDTO.setCantAlu(c.getListaAlumnos().size());
+					aDTO.getListaCursos().add(cDTO);
+				}
+				listaAniosDTO.add(aDTO);
+			}
+			
+			return listaAniosDTO;
+		} catch (Exception ex) {
+			throw new Exception("Ha ocurrido un error al obtener la lista de años resumida: " + ex.getMessage());
 		}
 	}
 	
