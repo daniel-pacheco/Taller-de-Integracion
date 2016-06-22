@@ -97,6 +97,9 @@
 		break;
 	}
 };
+$scope.prueba = function (){
+	alert($scope.filteredAlumnos);
+}
 
 $scope.createCopy = function(lista){
 	$scope.copiaLista = angular.copy(lista);

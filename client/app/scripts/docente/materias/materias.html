@@ -225,7 +225,9 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr class="centerTable" ng-repeat="alumno in planillaTodos.listaTrimestres">
+									<tr><input type="text" ng-model="filtro"><button ng-click="prueba()">Ok</button></tr>
+									<tr>{{filteredAlumnos}}</tr>
+									<tr class="centerTable" ng-repeat="alumno in filteredAlumnos = (planillaTodos.listaTrimestres | filter:filtro)">
 										<td class="col-md-3">{{$index+1}} - {{alumno.alumno}}</td>
 										<!-- <td ng-repeat="nota in lista.notas"><input ng-model="nota.nota" type="text" class="form-control" style="width: 48px; height: 27px; margin: auto"></td> -->
 										<td ng-class="{'desaprobado': alumno.primerTrim < 6}">{{alumno.primerTrim}}</td>
