@@ -196,18 +196,45 @@
 						<div class="panel-body form-group table-responsive">
 							<table class="table-hover table-striped table-condensed table-bordered">
 								<thead>
-									<tr style="height: 95px; position: relative;" class="affix" data-offset-top="-60">
+									<tr class="centerTable">
 										<th class="col-md-3">
-											<button type="button" class="btn btn-success btn-block btn-md" style="float: top">Editar Plantilla</button>
+											<button type="button" class="btn btn-success btn-block btn-md">Editar Plantilla</button>
 										</th>
-										<th class="Rotate-90 col-md-1" ng-repeat="mate in planillaTodos.listaTrimestres[0].notas" style="vertical-align: middle; padding: inherit;">{{mate.materia}}</th>	<!--Esto toma del primer alumno la lista de materias y las muestra en el head-->
+										<th class="col-md-1">
+											1° Trim. 
+										</th>
+										<th class="col-md-1">
+											2° Trim.	
+										</th>
+										<th class="col-md-1">
+											3° Trim.	
+										</th>
+										<th class="col-md-1">
+											Calific. Final	
+										</th>
+										<th class="col-md-1">
+											Eval Dic.	
+										</th>
+										<th class="col-md-1">
+											Eval Feb.	
+										</th>
+										<th class="col-md-1">
+											Calif Definitiva
+										</th>
+										
 									</tr>
 								</thead>
 								<tbody>
-									<tr ng-repeat="lista in planillaTodos.listaTrimestres">
-										<td class="col-md-3">{{$index+1}} - {{lista.alumno}}</td>
+									<tr class="centerTable" ng-repeat="alumno in planillaTodos.listaTrimestres">
+										<td class="col-md-3">{{$index+1}} - {{alumno.alumno}}</td>
 										<!-- <td ng-repeat="nota in lista.notas"><input ng-model="nota.nota" type="text" class="form-control" style="width: 48px; height: 27px; margin: auto"></td> -->
-										<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">{{nota.nota}}</td>
+										<td ng-class="{'desaprobado': alumno.primerTrim < 6}">{{alumno.primerTrim}}</td>
+										<td ng-class="{'desaprobado': alumno.segundoTrim < 6}">{{alumno.segundoTrim}}</td>
+										<td ng-class="{'desaprobado': alumno.tercerTrim < 6}">{{alumno.tercerTrim}}</td>
+										<td ng-class="{'desaprobado': alumno.califAnual < 6}">{{alumno.califAnual}}</td>
+										<td ng-class="{'desaprobado': alumno.primerTrim < 6}">{{alumno.primerTrim}}</td>
+										<td ng-class="{'desaprobado': alumno.califDic < 6}">{{alumno.califDic}}</td>
+										<td ng-class="{'desaprobado': alumno.califMarzo < 6}">{{alumno.califMarzo}}</td>
 									</tr>
 								</tbody>
 							</table>

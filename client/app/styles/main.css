@@ -696,3 +696,8 @@ input::-webkit-inner-spin-button {
   width:200px;
   height:200px;
 }
+
+.centerTable > th, .centerTable > td{
+  vertical-align: middle; 
+  text-align: center;
+}
