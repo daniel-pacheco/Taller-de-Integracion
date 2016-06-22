@@ -141,6 +141,18 @@ public class ServicioAcademicoEndpoint {
 		return Response.ok(anios).build();
 	}
 	
+	@GET
+	@Path("/anio/listAllMin")
+	public Response getAniosDTO() {
+		try {
+			setInstance();
+			return Response.ok(servicioAcademico.getAniosDTO()).build();
+		} catch (Exception ex) {
+			return Response.ok(ex).build();
+		}
+	}
+	
+	
 	/**
 	 * 
 	 * @param curso
