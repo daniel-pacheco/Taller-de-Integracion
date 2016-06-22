@@ -166,11 +166,22 @@ var newInasistencia = function(){
     "idInasistencia" : null,
     "cantidad" : null,
     "fecha" : "",
-    "concepto" : "",
     "justificada" : "",
-    "totalAcum" : 0.0
+    "concepto" : ""
   };
   return inasistencia;
+};
+
+var newBoletinInasistencia = function(){
+  var boletinInasistencia = {
+    "idBoletinInasistencias": null,
+    "nombre": "",
+    "apellido": "",
+    "nroDocumento": 0,
+    "cicloLectivo": null,
+    "listaInasistencias": []
+  };
+  return boletinInasistencia;
 };
 
 var newMesa = function(){
@@ -255,6 +266,7 @@ var newMesa = function(){
     newAnio: newAnio,
     newCurso: newCurso,
     newInasistencia: newInasistencia,
+    newBoletinInasistencia: newBoletinInasistencia,
     newMesa: newMesa,
 
     //-- Estadisticas

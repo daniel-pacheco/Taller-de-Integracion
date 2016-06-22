@@ -21,7 +21,7 @@
  	});
  })
 
- .controller('AlumnadoCtrl', function ($scope, $q, $http, boletinInasistenciasData, $alert, libCalificacionesdata, plantillaTrimestralData, alumnoService, Upload, $timeout, alumnoData, ModalService, ObjectsFactory, modalService, spinnerService) {
+ .controller('AlumnadoCtrl', function ($scope, $q, $http, boletinInasistenciasData, $alert, libCalificacionesdata, plantillaTrimestralData, alumnoService, Upload, $timeout, alumnoData, ModalService, ObjectsFactory, modalService, spinnerService, desempenioService) {
  	$scope.listado = true;
  	$scope.listFilterIsEnabled = false;
 
@@ -136,18 +136,31 @@ $scope.domicilioAvanzado = function() {
 	}; 
 
 	$scope.showModalInasistencias = function(alumno){//esta deberia ser una funcion que pida la libreta de inasistencias del alumno que recibe
-		ModalService.showModal({
-			templateUrl: 'scripts/directivo/alumnado/modal/showInasistenciasAlumno.tpl.html',
-			controller: 'showInasistenciasModalController',
-			inputs: {
-				title: "Boletín de inasistencias",
-				libInasistencias: boletinInasistenciasData,
-			}
-		}).then(function(modal) {
-			modal.element.modal();
-			modal.close.then(function(result){
-				boletinInasistenciasData = result;//llamada al servicio para update en la BD
+		
+		var boletinInasistencias = {};
+
+		desempenioService.getByDni(alumno)
+		.then(function(response){
+			boletinInasistencias = response.data;
+
+			ModalService.showModal({
+				templateUrl: 'scripts/directivo/alumnado/modal/showInasistenciasAlumno.tpl.html',
+				controller: 'showInasistenciasModalController',
+				inputs: {
+					title: "Boletín de inasistencias",
+					libInasistencias: boletinInasistencias,
+				}
+			}).then(function(modal) {
+				modal.element.modal();
+				modal.close.then(function(result){
+					boletinInasistencias = result;//llamada al servicio para update en la BD
+					console.log(boletinInasistencias);
+					updateBoletinInasistencias(boletinInasistencias);
+				});
 			});
+		},
+		function(response){
+			showServerError(response);
 		});
 
 	}; 
@@ -383,7 +396,7 @@ $scope.search = function (option, dni) {
 
 $scope.newAlumno = function (alumno){
 	$scope.nuevoPerfil = false;
-	$scope.showLoading = true;
+	// $scope.showLoading = true;
 	alumno.nombreUsuario = modalService.makeId(5);
 	if ($scope.nuevoTelefonoSimple) {
 		alumno.listaTelefonos.push($scope.nuevoTelefonoSimple);
@@ -395,16 +408,26 @@ $scope.newAlumno = function (alumno){
 		alert('El alumno se ha dado de alta con éxito. ID n°: ' + response.data);
 		showServerSuccess('El alumno se ha dado de alta con éxito. ID n°: ', response);
 		$scope.clearFormAlu();
-		$scope.showLoading = false;
+		// $scope.showLoading = false;
 		$scope.nuevoPerfil = true;
 	},
 	function(response){
 		//alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
 		errorConectToServer.show();//este es el alert
-		$scope.showLoading = false;
+		// $scope.showLoading = false;
 		$scope.nuevoPerfil = true;
 	});
 
+};
+
+function updateBoletinInasistencias (boletin){
+	desempenioService.update(boletin)
+	.then(function(response){
+		showServerSuccess('El las iasistencias se han actualizado éxito.', response);
+	},
+	function(response){
+		showServerError(response);
+	});
 };
 
 $scope.clearFormAlu = function (){
