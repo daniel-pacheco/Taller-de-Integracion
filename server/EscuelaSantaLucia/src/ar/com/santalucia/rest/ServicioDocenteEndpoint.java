@@ -15,6 +15,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+
+import ar.com.santalucia.dominio.dto.DocenteMateriasDTO;
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
@@ -218,7 +220,7 @@ public class ServicioDocenteEndpoint {
 			servicioDocente.addUsuario(docente);
 			return Response.ok(docente.getIdUsuario()).build();
 		} catch(SugerenciaPersonalException ex){
-			return Response.status(Status.CONFLICT).entity(ex.getPersoanlSugerido()).build();
+			return Response.status(Status.CONFLICT).entity(ex.getPersonalSugerido()).build();
 		}catch(ValidacionException ex){
 			return Response.status(Status.CONFLICT).entity(ex.getMensajesError()).build();
 		}catch (Exception ex) {
@@ -411,9 +413,15 @@ public class ServicioDocenteEndpoint {
 	@GET
 	@Path("/listAllMin")
 	public Response listDocentesMateriasDTO() {
+		ArrayList<DocenteMateriasDTO> docentesDTO = new ArrayList<DocenteMateriasDTO>();
 		try {
 			setInstance();
-			return Response.ok(servicioDocente.listDocentesMateriasDTO()).build();
+			docentesDTO = servicioDocente.listDocentesMateriasDTO();
+			if (docentesDTO == null) {
+				return Response.status(Status.NOT_FOUND).build();
+			} else {
+				return Response.ok(docentesDTO).build();
+			}
 		} catch (Exception ex) {
 			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
