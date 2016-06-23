@@ -54,7 +54,13 @@
     $scope.cuilTail = '';
   }
 
-
+//-- Order list
+$scope.predicate = 'nombre';
+$scope.reverse = true;
+$scope.orderDocente = function(predicate) {
+  $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+  $scope.predicate = predicate;
+};
 
 //-- Modal
 $scope.showModalProfile = function(docenteDni) {
@@ -181,15 +187,15 @@ $scope.confirmModal = function(mesagge, funcion, parametro) { //este confirm rec
 };
 
 $scope.requiredPass = function(docente) {
-    ModalService.showModal({
-        templateUrl: 'scripts/utils/requiredPassword/modalRequiredPassword.tpl.html',
-        controller: 'RequiredPasswordModalController',
-        inputs: {
-            title: "Confirmar contraseña",
-        }
-    }).then(function(modal) {
-        modal.element.modal();
-        modal.close.then(function(result){
+  ModalService.showModal({
+    templateUrl: 'scripts/utils/requiredPassword/modalRequiredPassword.tpl.html',
+    controller: 'RequiredPasswordModalController',
+    inputs: {
+      title: "Confirmar contraseña",
+    }
+  }).then(function(modal) {
+    modal.element.modal();
+    modal.close.then(function(result){
             alumnoService.getById(result).then( //llamada a validar el DNI
               function(response){
                 console.log(response);
@@ -198,8 +204,8 @@ $scope.requiredPass = function(docente) {
                 alert('error, reqpass');
                 console.log(response);
               }); 
-        });
-    });
+          });
+  });
 };
 
 //-- fin Modal
@@ -212,12 +218,12 @@ $scope.deleteDocente = function (docente) {
 //esto tiene que ser una llamada al service que elimine el docente
 $scope.eliminarDocente = function(docente){
 
-docenteService.delByDni(docente).then(function(response){
-  alert('docente con dni: ' + docente + ' eliminado con exito');
-  console.log(response);
-},function(response){
-  alert('ha ocurrido un error al contactar al servidor: ' + response.statusText);
-});
+  docenteService.delByDni(docente).then(function(response){
+    alert('docente con dni: ' + docente + ' eliminado con exito');
+    console.log(response);
+  },function(response){
+    alert('ha ocurrido un error al contactar al servidor: ' + response.statusText);
+  });
 
   // $scope.docentes.splice($scope.docentes.indexOf(docente),1);
   // $scope.showAlert();
@@ -253,10 +259,10 @@ $scope.newDocente = function(docente){
 
 
   if (docente.rolDirectivo) {
-     $scope.requiredPass(docente);
-  } else {
-    putNewDocente(docente);
-  };
+   $scope.requiredPass(docente);
+ } else {
+  putNewDocente(docente);
+};
 }
 
 var putNewDocente = function (docente){
@@ -314,6 +320,7 @@ $scope.listado = true;
 $scope.seleccionar = function(id){
  $scope.listado = false;
  $scope.nuevoPerfil = false;
+ $scope.showEditProfileMenuIzq = false;
  switch (id) {
   case 'listado':
   $scope.listado = true;
