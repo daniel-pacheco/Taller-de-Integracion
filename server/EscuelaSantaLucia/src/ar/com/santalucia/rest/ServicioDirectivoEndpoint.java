@@ -24,6 +24,8 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
 import ar.com.santalucia.excepciones.LoginError;
+import ar.com.santalucia.excepciones.SugerenciaPersonalException;
+import ar.com.santalucia.excepciones.ValidacionException;
 import ar.com.santalucia.servicio.ServicioDirectivo;
 import ar.com.santalucia.servicio.ServicioLogin;
 
@@ -219,9 +221,14 @@ public class ServicioDirectivoEndpoint {
 			setInstance();
 			servicioDirectivo.addUsuario(personal);
 			return Response.ok(personal.getIdUsuario()).build();
+		} catch (SugerenciaPersonalException spEx) {
+			return Response.status(Status.CONFLICT).entity(spEx.getPersonalSugerido()).build();
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.CONFLICT).entity(vEx.getMensajesError()).build();
 		} catch (Exception ex) {
-			// ex.printStackTrace();
-			return Response.ok(ex).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un error al procesar el directivo: " + ex.getMessage(), FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 

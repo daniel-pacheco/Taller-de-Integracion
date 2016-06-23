@@ -68,8 +68,8 @@ public class ServicioAlumnoEndpoint{
 	 * @return 
 	 */
 	@GET
-	@Path("/alu/getByDni/{id:[0-9][0-9]*}")
-	public Response getAlumnoByDni(@PathParam("id") final Long dni){
+	@Path("/alu/getByDni/{dni:[0-9][0-9]*}")
+	public Response getAlumnoByDni(@PathParam("dni") final Long dni){
 		Alumno alumno = new Alumno();
 		try{
 			setInstance();

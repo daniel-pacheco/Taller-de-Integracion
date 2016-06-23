@@ -18,6 +18,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import ar.com.santalucia.dominio.dto.AnioDTO;
 import ar.com.santalucia.dominio.dto.MateriaAltaDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Area;
@@ -144,11 +145,20 @@ public class ServicioAcademicoEndpoint {
 	@GET
 	@Path("/anio/listAllMin")
 	public Response getAniosDTO() {
+		ArrayList<AnioDTO> aniosDTO = new ArrayList<AnioDTO>();
 		try {
 			setInstance();
-			return Response.ok(servicioAcademico.getAniosDTO()).build();
+			aniosDTO = servicioAcademico.getAniosDTO();
+			if (aniosDTO == null) {
+				return Response.status(Status.NOT_FOUND).build();
+			} else {
+				return Response.ok(aniosDTO).build();
+			}
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			//return Response.ok(ex).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Hubo un error al obtener el listado resumido de años: " + ex.getMessage(), FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
