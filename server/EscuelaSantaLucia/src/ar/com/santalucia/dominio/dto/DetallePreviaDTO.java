@@ -18,6 +18,8 @@ public class DetallePreviaDTO implements Comparable<DetallePreviaDTO> {
 	private Boolean asistencia;
 	private Date fechaInscripcion; 
 	private Float nota;
+	private String nombreEquivalencia;
+	private String anioEquivalencia;
 	
 	public DetallePreviaDTO() {
 		super();
@@ -100,12 +102,29 @@ public class DetallePreviaDTO implements Comparable<DetallePreviaDTO> {
 		this.nota = nota;
 	}
 
+	public String getNombreEquivalencia() {
+		return nombreEquivalencia;
+	}
+
+	public void setNombreEquivalencia(String nombreEquivalencia) {
+		this.nombreEquivalencia = nombreEquivalencia;
+	}
+
+	public String getAnioEquivalencia() {
+		return anioEquivalencia;
+	}
+
+	public void setAnioEquivalencia(String anioEquivalencia) {
+		this.anioEquivalencia = anioEquivalencia;
+	}
+
 	@Override
 	public boolean equals(Object objeto) {
-		if(objeto instanceof DetallePreviaDTO){
-			if ((this.nombreMateria).equals(((DetallePreviaDTO) objeto).getNombreMateria()) &&
-			(this.anio).equals(((DetallePreviaDTO) objeto).getAnio()) ){
-				return true;     
+		if(objeto instanceof DetallePreviaDTO) {
+			DetallePreviaDTO dpDTO = (DetallePreviaDTO) objeto;
+			if(((this.nombreMateria.equals(dpDTO.getNombreMateria())) && (this.anio.equals(dpDTO.getAnio()))) 
+				|| ((this.nombreMateria.equals(dpDTO.getNombreEquivalencia()))&& (this.anio.equals(dpDTO.getAnioEquivalencia())))) {
+				return true;
 			}
 		}
 		return false;

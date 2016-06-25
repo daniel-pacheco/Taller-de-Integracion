@@ -37,6 +37,8 @@ public class MesaExamenHist {
 	private String apellidoAlumno;
 	private Date fechaHoraInicioMesa;
 	private Date fechaHoraFinMesa;
+	private String nombreEquivalencia;
+	private String anioEquivalencia;
 
 	public MesaExamenHist() {
 		super();
@@ -244,6 +246,22 @@ public class MesaExamenHist {
 
 	public void setFechaHoraFinMesa(Date fechaHoraFinMesa) {
 		this.fechaHoraFinMesa = fechaHoraFinMesa;
+	}
+
+	public String getNombreEquivalencia() {
+		return nombreEquivalencia;
+	}
+
+	public void setNombreEquivalencia(String nombreEquivalencia) {
+		this.nombreEquivalencia = nombreEquivalencia;
+	}
+
+	public String getAnioEquivalencia() {
+		return anioEquivalencia;
+	}
+
+	public void setAnioEquivalencia(String anioEquivalencia) {
+		this.anioEquivalencia = anioEquivalencia;
 	}
 
 }
