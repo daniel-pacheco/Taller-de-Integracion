@@ -182,6 +182,12 @@ public class ServicioAlumnoEndpoint{
 		try {
 			setInstance();
 			telefonos = servicioAlumno.getTelefonos(id);
+			if (telefonos == null) {
+				return Response.status(Status.NOT_FOUND)
+						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
+						.build();
+			}
+			return Response.ok(telefonos).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -189,7 +195,6 @@ public class ServicioAlumnoEndpoint{
 							FrontMessage.CRITICAL))
 					.build();
 		}
-		return Response.ok(telefonos).build();
 	}
 
 	/**
@@ -208,6 +213,12 @@ public class ServicioAlumnoEndpoint{
 		try {
 			setInstance();
 			mails = servicioAlumno.getMails(id);
+			if (mails == null) {
+				return Response.status(Status.NOT_FOUND)
+						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
+						.build();
+			}
+			return Response.ok(mails).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -215,7 +226,6 @@ public class ServicioAlumnoEndpoint{
 							FrontMessage.CRITICAL))
 					.build();
 		}
-		return Response.ok(mails).build();
 	}
 
 	/**
@@ -232,12 +242,17 @@ public class ServicioAlumnoEndpoint{
 		try {
 			setInstance();
 			alumnos = servicioAlumno.getUsuarios(new Alumno());
-		} catch (Exception ex) {
 			if (alumnos == null) {
-				return Response.status(Status.NOT_FOUND).build();
+				return Response.status(Status.NO_CONTENT).build();
 			}
+			return Response.ok(alumnos).build();
+		} catch (Exception ex) {
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
-		return Response.ok(alumnos).build();
 	}
 
 	/**

@@ -1,5 +1,8 @@
 package ar.com.santalucia.rest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -54,41 +57,71 @@ public class ServicioDesempenioEndpoint {
 			servicioDesempenio.addBoletinNotas(boletinNotas);
 			return Response.ok(boletinNotas.getIdBoletinNotas()).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
 	@DELETE
 	@Path("/bol/{id:[0-9][0-9]*}")
 	public Response deleteBoletinNotasById(@PathParam("id") Long idBoletinNotas) {
+		BoletinNotas boletinNotas = new BoletinNotas();
 		try {
 			setInstance();
-			return Response.ok(servicioDesempenio.deleteBoletinNotas(
-								servicioDesempenio.getBoletin(idBoletinNotas))).build();
+			boletinNotas = servicioDesempenio.getBoletin(idBoletinNotas);
+			return Response.ok(servicioDesempenio.deleteBoletinNotas(boletinNotas)).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
 	@GET
 	@Path("/bol/{id:[0-9][0-9]*}")
 	public Response getBoletinNotasById(@PathParam("id") Long idBoletinNotas) {
+		BoletinNotas boletinNotas = new BoletinNotas();
 		try {
 			setInstance();
-			return Response.ok(servicioDesempenio.getBoletin(idBoletinNotas)).build();
+			boletinNotas = servicioDesempenio.getBoletin(idBoletinNotas);
+			if (boletinNotas == null) {
+				return Response.status(Status.NOT_FOUND)
+						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
+						.build();
+			}
+			return Response.ok(boletinNotas).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
 	@GET
 	@Path("/bol/listAll")
 	public Response boletinNotasListAll() {
+		List<BoletinNotas> boletines = new ArrayList<BoletinNotas>();
 		try {
-			BoletinNotas boletin = new BoletinNotas();
-			return Response.ok(servicioDesempenio.getBoletines(boletin)).build();
+			boletines = servicioDesempenio.getBoletines(new BoletinNotas());
+			if (boletines.size() == 0) {
+				return Response.status(Status.NO_CONTENT)
+						.entity(new FrontMessage("Sin resultados", FrontMessage.INFO))
+						.build();
+			}
+			return Response.ok(boletines).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -100,7 +133,11 @@ public class ServicioDesempenioEndpoint {
 			Boolean resultado = servicioDesempenio.pasarAHistorico(boletinNotas);
 			return Response.ok(resultado).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -111,7 +148,11 @@ public class ServicioDesempenioEndpoint {
 			setInstance();
 			return Response.ok(servicioDesempenio.addBoletinHistorico(boletinHistorico)).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -124,39 +165,70 @@ public class ServicioDesempenioEndpoint {
 			servicioDesempenio.addNota(nota);
 			return Response.ok(nota.getIdNota()).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
 	@DELETE
 	@Path("/not/{id:[0-9][0-9]*}")
 	public Response deleteNotaById(@PathParam("id") Long idNota) {
+		Nota nota = new Nota();
 		try {
-			return Response.ok(servicioDesempenio.deleteNota(servicioDesempenio.getNota(idNota))).build();
+			nota = servicioDesempenio.getNota(idNota); 
+			return Response.ok(servicioDesempenio.deleteNota(nota)).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
-			
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 
 	@GET
 	@Path("/not/{id:[0-9][0-9]*}")
 	public Response getNotaById(@PathParam("id") Long idNota) {
+		Nota nota = new Nota();
 		try {
-			return Response.ok(servicioDesempenio.getNota(idNota)).build();
+			nota = servicioDesempenio.getNota(idNota);
+			if (nota == null) {
+				return Response.status(Status.NOT_FOUND)
+						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
+						.build();
+			}
+			return Response.ok(nota).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
 	@GET
 	@Path("/not/listAll")
 	public Response notaListAll() {
+		List<Nota> notas = new ArrayList<Nota>();
 		try {
-			Nota nota = new Nota();
-			return Response.ok(servicioDesempenio.getNotas(nota)).build();
+			notas = servicioDesempenio.getNotas(new Nota());
+			if (notas.size() == 0) {
+				return Response.status(Status.NO_CONTENT)
+						.entity(new FrontMessage("Sin resultados", FrontMessage.INFO))
+						.build();
+			}
+			return Response.ok(notas).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
+
 		}
 	}
 	
@@ -169,7 +241,12 @@ public class ServicioDesempenioEndpoint {
 			servicioDesempenio.addTrimestre(trimestre);
 			return Response.ok(trimestre.getIdTrimestre()).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
+
 		}
 	}
 
@@ -187,23 +264,44 @@ public class ServicioDesempenioEndpoint {
 	@GET
 	@Path("/trim/{id:[0-9][0-9]*}")
 	public Response getTrimestreById(@PathParam("id") Long idTrimestre) {
+		Trimestre trimestre = new Trimestre();
 		try {
 			setInstance();
-			return Response.ok(servicioDesempenio.getTrimestre(idTrimestre)).build();
+			trimestre = servicioDesempenio.getTrimestre(idTrimestre);
+			if (trimestre == null) {
+				return Response.status(Status.NOT_FOUND)
+						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
+						.build();
+			}
+			return Response.ok(trimestre).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 
 	@GET
 	@Path("/trim/listAll")
 	public Response trimestreListAll() {
+		List<Trimestre> trimestres = new ArrayList<Trimestre>();
 		try {
 			setInstance();
-			Trimestre trimestre = new Trimestre();
-			return Response.ok(servicioDesempenio.getTrimestres(trimestre)).build();
+			trimestres = servicioDesempenio.getTrimestres(new Trimestre());
+			if (trimestres.size() == 0) {
+				return Response.status(Status.NO_CONTENT)
+						.entity(new FrontMessage("Sin resultados", FrontMessage.INFO))
+						.build();
+			}
+			return Response.ok().build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -221,7 +319,11 @@ public class ServicioDesempenioEndpoint {
 								servicioDesempenio.getNota(jsonPack.getValues().elementAt(0)), 
 								jsonPack.getValues().elementAt(1))).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -240,7 +342,11 @@ public class ServicioDesempenioEndpoint {
 								servicioAcademico.getMateria(jsonPack.getValues().elementAt(0)), 
 								jsonPack.getValues().elementAt(1))).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -258,7 +364,11 @@ public class ServicioDesempenioEndpoint {
 								servicioDesempenio.getTrimestre(jsonPack.getValues().elementAt(0)), 
 								jsonPack.getValues().elementAt(1))).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -277,7 +387,11 @@ public class ServicioDesempenioEndpoint {
 								servicioAlumno.getUsuario(jsonPack.getValues().elementAt(0)), 
 								jsonPack.getValues().elementAt(1))).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -297,9 +411,10 @@ public class ServicioDesempenioEndpoint {
 				return Response.ok(servicioDesempenio.getPlanillaTrimestral(gptDTO)).build();
 			}
 		} catch (Exception ex) {
-			// return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(new FrontMessage("Hubo un error al obtener la planilla trimestral: " + ex.getMessage(), FrontMessage.CRITICAL))
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
 					.build();
 		}
 	}
@@ -317,7 +432,11 @@ public class ServicioDesempenioEndpoint {
 			servicioDesempenio.addInasistencia(inasistencia);
 			return Response.ok(inasistencia.getIdInasistencia()).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -329,16 +448,27 @@ public class ServicioDesempenioEndpoint {
 			servicioDesempenio.addBoletinInasistencias(boletinInasistencias);
 			return Response.ok(boletinInasistencias.getIdBoletinInasistencias()).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
 	@GET
 	@Path("/boletinInasist/{dni:[0-9][0-9]*}")
 	public Response getBoletinInasistenciasDTObyDni(@PathParam("dni") Long dniAlumno) {
+		BoletinInasistenciasDTO boletinInasistenciasDTO = new BoletinInasistenciasDTO();
 		try {
 			setInstance();
-			return Response.ok(servicioDesempenio.getBoletinInasistenciasDTObyDni(dniAlumno)).build();
+			boletinInasistenciasDTO = servicioDesempenio.getBoletinInasistenciasDTObyDni(dniAlumno);
+			if (boletinInasistenciasDTO == null) {
+				return Response.status(Status.NOT_FOUND)
+						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
+						.build();
+			}
+			return Response.ok().build();
 		} catch (Exception ex) {
 			// return Response.ok(ex).build();
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -356,11 +486,12 @@ public class ServicioDesempenioEndpoint {
 			setInstance();
 			return Response.ok(servicioDesempenio.procesarBoletinInasistencias(boletinInasistenciasDTO)).build();
 		} catch (InasistenciaException iEx) {
-			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(iEx).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(iEx.getInasistenciasInvalidas()).build();
 		} catch (Exception ex) {
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(new FrontMessage("Hubo un error al procesar las inasistencias: " 
-												+ ex.getMessage(), FrontMessage.CRITICAL))
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
 					.build();
 		}
 	}

@@ -155,11 +155,10 @@ public class ServicioDesempenio {
 			
 			boletinHistorico.setListaMateriasNotasBoletin(listaMateriasNotasBoletin);
 			gBoletinHist.add(boletinHistorico);
-			
+			return true;
 		} catch (Exception ex) {
 			throw new Exception ("No se pudo pasar a histórico el BOLETÍN DE NOTAS: " + ex.getMessage());
 		}
-		return true;
 	}
 
 	public Boolean addBoletinHistorico(BoletinNotasHist boletinHistorico) throws Exception {

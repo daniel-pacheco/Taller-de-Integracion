@@ -344,10 +344,10 @@ public class ServicioAcademico {
 	public Boolean deleteMateria(Materia materia) throws Exception { // EN ENDPOINT
 		try {
 			gMateria.delete(materia);
+			return true;
 		} catch (Exception ex) {
 			throw new Exception("No se pudo eliminar la MATERIA: " + ex.getMessage());
 		}
-		return false;
 	}
 
 	public Materia getMateria(Long idMateria) throws Exception{ // EN ENDPOINT
@@ -509,7 +509,7 @@ public class ServicioAcademico {
 		}
 	}
 	
-	public List<Area> getAreas(Area example) throws Exception{ // EN ENDPOINT
+	public ArrayList<Area> getAreas(Area example) throws Exception{ // EN ENDPOINT
 		try{
 			return gArea.getByExample(example);
 		}catch(Exception ex){
@@ -552,7 +552,7 @@ public class ServicioAcademico {
 		}
 	}
 	
-	public List<Llamado> getLlamados(Llamado example) throws Exception{ // EN ENDPOINT
+	public ArrayList<Llamado> getLlamados(Llamado example) throws Exception{ // EN ENDPOINT
 		try {
 			return gLlamado.getByExample(example);
 		} catch (Exception ex) {
