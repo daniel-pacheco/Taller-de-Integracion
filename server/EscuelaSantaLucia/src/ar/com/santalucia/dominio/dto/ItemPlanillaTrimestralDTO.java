@@ -3,10 +3,10 @@ package ar.com.santalucia.dominio.dto;
 import java.util.ArrayList;
 
 /**
- * ItemPlanillaTrimestralDTO: contiene información de la planilla trimestral (grilla de doble entrada)
+ * ItemPlanillaTrimestralDTO: contiene información de las filas de la planilla trimestral
  * 
  * @author Eric
- * @version 1.0
+ * @version 1.1
  *
  */
 public class ItemPlanillaTrimestralDTO {

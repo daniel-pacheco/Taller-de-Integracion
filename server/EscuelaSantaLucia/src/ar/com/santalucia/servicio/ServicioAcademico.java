@@ -1,6 +1,7 @@
 package ar.com.santalucia.servicio;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,7 +14,12 @@ import ar.com.santalucia.aplicacion.gestor.academico.GestorMateria;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMateriaHist;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMesa;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMesaExamenHist;
+import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinInasistencias;
+import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinNotas;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinNotasHist;
+import ar.com.santalucia.aplicacion.gestor.desempenio.GestorInasistencia;
+import ar.com.santalucia.aplicacion.gestor.desempenio.GestorNota;
+import ar.com.santalucia.aplicacion.gestor.desempenio.GestorTrimestre;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
 import ar.com.santalucia.dominio.dto.AnioDTO;
@@ -29,8 +35,12 @@ import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.academico.MateriaHist;
 import ar.com.santalucia.dominio.modelo.academico.Mesa;
 import ar.com.santalucia.dominio.modelo.academico.MesaExamenHist;
+import ar.com.santalucia.dominio.modelo.desempenio.BoletinInasistencias;
+import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotas;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotasHist;
 import ar.com.santalucia.dominio.modelo.desempenio.MateriaNotasBoletin;
+import ar.com.santalucia.dominio.modelo.desempenio.Nota;
+import ar.com.santalucia.dominio.modelo.desempenio.Trimestre;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.excepciones.ValidacionException;
@@ -58,8 +68,13 @@ public class ServicioAcademico {
 	private GestorMateriaHist gMateriaHistorica;
 	private GestorMesaExamenHist gMEHist;
 	private GestorBoletinNotasHist gBoletinHist;
+	private GestorNota gNota;
+	private GestorTrimestre gTrimestre;
+	private GestorBoletinNotas gBoletinNotas;
+	private GestorInasistencia gInasistencia;
+	private GestorBoletinInasistencias gBoletinInasistencias;
 
-	public ServicioAcademico() throws Exception {
+ 	public ServicioAcademico() throws Exception {
 		try {
 			gAnio = new GestorAnio();
 			gCurso = new GestorCurso();
@@ -72,6 +87,11 @@ public class ServicioAcademico {
 			gMateriaHistorica = new GestorMateriaHist();
 			gMEHist = new GestorMesaExamenHist();
 			gBoletinHist = new GestorBoletinNotasHist();
+			gNota = new GestorNota();
+			gTrimestre = new GestorTrimestre();
+			gBoletinNotas = new GestorBoletinNotas();
+			gInasistencia = new GestorInasistencia();
+			gBoletinInasistencias = new GestorBoletinInasistencias();
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un problema al inicializar el servicio de operaciones básicas: "
 					+ ex.getMessage());
@@ -239,18 +259,7 @@ public class ServicioAcademico {
 	}
 	
 	public Boolean asignarAlumnoACurso(Alumno alumno, Long idCurso) throws Exception{ 			//EN ENDPOINT
-		// TODO
-		// 1 - Obtener el curso 
-		// 2 - Rescatar lista de alumnos del curso
-		// 3 - Agregar alumno a la lista rescatada
-		// 4 - Asignar el listado rescatado al curso
-		// 5 - Llamar al modify del gestor de curso y guardarlo
-		// 6 - Obtener el curso generico
-		// 7 - Rescatar lista de alumnos de curso generico
-		// 8 - Remover alumno desde la lista rescatada de curso generico
-		// 9 - Asignar la lista modificada al curso genérico
-		// 10 - Llamar al modify del gestor de curso y guardar el genérico
-		try{
+		try {
 			Curso curso = gCurso.getById(idCurso);
 			Set<Alumno> alumnos = curso.getListaAlumnos();
 			alumnos.add(alumno);
@@ -261,11 +270,46 @@ public class ServicioAcademico {
 			alumnosCursoGenerico.remove(alumno);	 // Puede requerir sobrecarga de de equals()
 			cursoGenerico.setListaAlumnos(alumnosCursoGenerico);
 			gCurso.modify(cursoGenerico);
+			// agregar boletin de notas
+			Anio anio = this.cursoPerteneceAnio(curso);
+			Set<Materia> materias = anio.getListaMaterias();
+			BoletinNotas boletinNotas = new BoletinNotas();
+			boletinNotas.setAnio(anio.getNombre());
+			boletinNotas.setCurso(curso.getDivision().toString());
+			inicializarBoletinNotas(boletinNotas, materias);
+			gBoletinNotas.add(boletinNotas);
+			// agregar boletin de inasistencias
+			BoletinInasistencias boletinInasistencias = new BoletinInasistencias();
+			boletinInasistencias.setPropietario(alumno);
+			boletinInasistencias.setAnio(anio.getNombre());
+			boletinInasistencias.setCurso(curso.getDivision().toString());
+			boletinInasistencias.setActivo(true);
+			gBoletinInasistencias.add(boletinInasistencias);
+			
 			return true;
-		} catch(Exception ex){
+		} catch(Exception ex) {
 			throw new Exception("No se pudo asignar el ALUMNO al CURSO: " + ex.getMessage());
 		}
 	}
+	
+	private void inicializarBoletinNotas(BoletinNotas boletinNotas, Set<Materia> materias) throws Exception {
+		for (int i = 0; i < 3; i++) {
+			for (Materia m : materias) {
+				Nota n = new Nota(null, "", Calendar.getInstance().getTime(), 0F, m, Nota.NOTA_FINAL_TRIMESTRAL);
+				gNota.add(n);
+				Trimestre t = new Trimestre(null, i+1, null, null, n, m);
+				gTrimestre.add(t);
+				boletinNotas.getListaTrimestres().add(t);
+			} 
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
 
 	public Boolean desvincularAlumnoDeCurso(Alumno alumno, Long idCurso) throws Exception{ // EN ENDPOINT
 		// TODO
@@ -912,6 +956,18 @@ public class ServicioAcademico {
 			}
 		}
 		return 0L; // DEVUELVE 0 SI LA MATERIA NO PERTENECE A UN ANIO
+	}
+	
+	private Anio cursoPerteneceAnio(Curso curso) throws Exception {
+		List<Anio> listaAnio = new ArrayList<Anio>();
+		List<Curso> listaCurso = new ArrayList<Curso>(); 
+		listaAnio = gAnio.getByExample(new Anio(null,null,null,null,null,true));
+		for (Anio a: listaAnio) {
+			if(a.getListaCursos().contains(curso)){
+				return a;
+			}
+		}
+		return null;
 	}
 	
 	public void closeSession() throws Exception {

@@ -1,6 +1,7 @@
 package ar.com.santalucia.servicio;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,6 +19,7 @@ import ar.com.santalucia.dominio.dto.BoletinInasistenciasDTO;
 import ar.com.santalucia.dominio.dto.GetPlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.dto.ItemPlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.dto.MateriaNotaDTO;
+import ar.com.santalucia.dominio.dto.PlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
@@ -356,6 +358,53 @@ public class ServicioDesempenio {
 									+ gptDTO.getNroTrimestre() + ": " + ex.getMessage());
 		}
 	}
+	
+	
+	public Boolean procesarPlanillaTrimestral(PlanillaTrimestralDTO planillaTrimestralDTO) throws Exception {
+		try {
+			List<ItemPlanillaTrimestralDTO> itemsPlanilla = planillaTrimestralDTO.getPlanilla();
+			Anio anio = new Anio();
+			Curso curso = new Curso();
+			anio = gAnio.getByExample(new Anio(null, planillaTrimestralDTO.getAnio(), null, null, null, null)).get(0);
+			for (Curso c : anio.getListaCursos()) {
+				if (c.getDivision().equals(planillaTrimestralDTO.getCurso().charAt(0))) {
+					curso = c;
+				}
+			}
+			
+			BoletinNotas boletin = new BoletinNotas();
+			List<Alumno> alumnos = new ArrayList<Alumno>();
+			alumnos.addAll(curso.getListaAlumnos());
+			for (ItemPlanillaTrimestralDTO item : itemsPlanilla) {
+				for (Alumno a : alumnos) {
+					if (a.toString().equals(item.getAlumno())) {
+						boletin = gBoletin.getByExample(new BoletinNotas(null, a, null, null, null, null, null)).get(0);
+					}
+				}
+				
+				for (MateriaNotaDTO m : item.getNotas()) {
+					Trimestre trimestre = new Trimestre();
+					for (Trimestre t : boletin.getListaTrimestres()) {
+						if (t.getMateria().getNombre().equals(m.getMateria())
+								&& t.getOrden().equals(planillaTrimestralDTO.getTrimestre())) {
+							trimestre = t;
+						}
+					}
+					trimestre.getNotaFinal().setCalificacion(m.getNota());
+					trimestre.getNotaFinal().setTipo(Nota.NOTA_FINAL_TRIMESTRAL);
+					trimestre.getNotaFinal().setMateria(trimestre.getMateria());
+					trimestre.getNotaFinal().setFecha(Calendar.getInstance().getTime());
+					gTrimestre.modify(trimestre);
+				}
+			}
+			return true;
+		} catch (Exception ex) {
+			throw new Exception("No se pudo procesar la planilla trimestral: " + ex.getMessage());
+		}
+	}
+	
+	
+	
 
 	/**
 	 * Test method
