@@ -137,7 +137,11 @@ public class ServicioAcademicoEndpoint {
 			}
 			return Response.ok(anio).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -153,8 +157,8 @@ public class ServicioAcademicoEndpoint {
 			setInstance();
 			anios = servicioAcademico.getAnios(new Anio());
 			if (anios.size() == 0) {
-				return Response.status(Status.NOT_FOUND)
-						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
+				return Response.status(Status.NO_CONTENT)
+						.entity(new FrontMessage("Sin resultados", FrontMessage.INFO))
 						.build();
 			}
 			return Response.ok(anios).build();
@@ -175,10 +179,11 @@ public class ServicioAcademicoEndpoint {
 			setInstance();
 			aniosDTO = servicioAcademico.getAniosDTO();
 			if (aniosDTO.size() == 0) {
-				return Response.status(Status.NOT_FOUND).build();
-			} else {
-				return Response.ok(aniosDTO).build();
+				return Response.status(Status.NO_CONTENT)
+						.entity(new FrontMessage("Sin resultados", FrontMessage.INFO))
+						.build();
 			}
+			return Response.ok(aniosDTO).build();
 		} catch (Exception ex) {
 			//return Response.ok(ex).build();
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -268,6 +273,8 @@ public class ServicioAcademicoEndpoint {
 			setInstance();
 			servicioAcademico.addMateria(materiaAltaDTO);
 			return Response.ok(materiaAltaDTO.getIdMateria()).build();
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.CONFLICT).entity(vEx.getMensajesError()).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -332,8 +339,8 @@ public class ServicioAcademicoEndpoint {
 		try {
 			setInstance();
 			if (materiasDTO.size() == 0) {
-				return Response.status(Status.NOT_FOUND)
-						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
+				return Response.status(Status.NO_CONTENT)
+						.entity(new FrontMessage("Sin resultados", FrontMessage.INFO))
 						.build();
 			}
 			return Response.ok(servicioAcademico.getMateriasDTO()).build();
@@ -430,8 +437,8 @@ public class ServicioAcademicoEndpoint {
 			setInstance();
 			areas = servicioAcademico.getAreas(new Area());
 			if (areas.size() == 0) {
-				return Response.status(Status.NOT_FOUND)
-						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
+				return Response.status(Status.NO_CONTENT)
+						.entity(new FrontMessage("Sin resultados", FrontMessage.INFO))
 						.build();
 			}
 			return Response.ok().build();
@@ -452,9 +459,16 @@ public class ServicioAcademicoEndpoint {
 	@DELETE
 	@Path("/area/{id:[0-9][0-9]*}")
 	public Response deleteArea(@PathParam("id") final Long idArea){
+		Area area = new Area();
 		try {
 			setInstance();
-			return Response.ok(servicioAcademico.deleteArea(servicioAcademico.getArea(idArea))).build();
+			area = servicioAcademico.getArea(idArea);
+			if (area == null) {
+				return Response.status(Status.NOT_FOUND)
+						.entity(new FrontMessage("Elemento a eliminar no encontrado", FrontMessage.INFO))
+						.build();
+			}
+			return Response.ok(servicioAcademico.deleteArea(area)).build();
 		} catch(Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -503,8 +517,11 @@ public class ServicioAcademicoEndpoint {
 			boolean resultado = servicioAcademico.desvincularAlumnoDeCurso(servicioAlumno.getUsuario(jsonPack.getValues().elementAt(0)), jsonPack.getValues().elementAt(1));
 			return Response.ok(resultado).build();
 		} catch (Exception ex) {
-			// TODO Auto-generated catch block
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	

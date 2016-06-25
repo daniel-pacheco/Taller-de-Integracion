@@ -178,7 +178,7 @@ public class ServicioAlumnoEndpoint{
 	@Path("/tel/{id:[0-9][0-9]*}") // tel
 	public Response getTelefonos(@PathParam("id") final Long id) {
 		Set<Telefono> telefonos = new HashSet<Telefono>();
-		telefonos = null;
+		//telefonos = null;
 		try {
 			setInstance();
 			telefonos = servicioAlumno.getTelefonos(id);
@@ -209,7 +209,7 @@ public class ServicioAlumnoEndpoint{
 	@Path("/mai/{id:[0-9][0-9]*}")
 	public Response getMails(@PathParam("id") final Long id) {
 		Set<Mail> mails = new HashSet<Mail>();
-		mails = null;
+		//mails = null;
 		try {
 			setInstance();
 			mails = servicioAlumno.getMails(id);
@@ -242,7 +242,7 @@ public class ServicioAlumnoEndpoint{
 		try {
 			setInstance();
 			alumnos = servicioAlumno.getUsuarios(new Alumno());
-			if (alumnos == null) {
+			if (alumnos.size() == 0) {
 				return Response.status(Status.NO_CONTENT).build();
 			}
 			return Response.ok(alumnos).build();
