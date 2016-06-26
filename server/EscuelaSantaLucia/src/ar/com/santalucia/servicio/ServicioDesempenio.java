@@ -378,7 +378,9 @@ public class ServicioDesempenio {
 			for (ItemPlanillaTrimestralDTO item : itemsPlanilla) {
 				for (Alumno a : alumnos) {
 					if (a.toString().equals(item.getAlumno())) {
-						boletin = gBoletin.getByExample(new BoletinNotas(null, a, null, null, null, null, null)).get(0);
+						boletin.setIdBoletinNotas(4L);
+						boletin = gBoletin.getByExample(boletin).get(0);
+						break;
 					}
 				}
 				
@@ -388,13 +390,20 @@ public class ServicioDesempenio {
 						if (t.getMateria().getNombre().equals(m.getMateria())
 								&& t.getOrden().equals(planillaTrimestralDTO.getTrimestre())) {
 							trimestre = t;
+							break;
 						}
 					}
-					trimestre.getNotaFinal().setCalificacion(m.getNota());
+					Nota nota = trimestre.getNotaFinal();
+					nota.setCalificacion(m.getNota());
+					nota.setTipo(Nota.NOTA_FINAL_TRIMESTRAL);
+					nota.setFecha(Calendar.getInstance().getTime());
+					nota.setMateria(trimestre.getMateria());
+					gNota.modify(nota);
+					/*trimestre.getNotaFinal().setCalificacion(m.getNota());
 					trimestre.getNotaFinal().setTipo(Nota.NOTA_FINAL_TRIMESTRAL);
 					trimestre.getNotaFinal().setMateria(trimestre.getMateria());
 					trimestre.getNotaFinal().setFecha(Calendar.getInstance().getTime());
-					gTrimestre.modify(trimestre);
+					gTrimestre.modify(trimestre);*/
 				}
 			}
 			return true;

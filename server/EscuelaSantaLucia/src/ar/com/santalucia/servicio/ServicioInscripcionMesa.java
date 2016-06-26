@@ -98,7 +98,7 @@ public class ServicioInscripcionMesa {
 	public Boolean asignarMesaAInscripcion(Mesa mesa, Long idInscripcion) throws Exception {
 		try {
 			Inscripcion inscripcion = gInscripcion.getById(idInscripcion);
-			inscripcion.setMesa(mesa);
+			//inscripcion.setMesa(mesa);
 			gInscripcion.modify(inscripcion);
 		} catch (Exception ex) {
 			throw new Exception("No se pudo asignar la MESA a la INSCRIPCIÓN: " + ex.getMessage());
@@ -210,27 +210,27 @@ public class ServicioInscripcionMesa {
 		 */
 		try {
 			MesaExamenHist mesaExamen = new MesaExamenHist();
-			mesaExamen.setNota(inscripcion.getNota().getCalificacion()); //asignando la calificación
-			mesaExamen.setAsistencia(inscripcion.getAsistencia());
+			//mesaExamen.setNota(inscripcion.getNota().getCalificacion()); //asignando la calificación
+			//mesaExamen.setAsistencia(inscripcion.getAsistencia());
 			mesaExamen.setFechaInscripcion(inscripcion.getFecha());
-			mesaExamen.setNombreMateria(inscripcion.getMesa().getMateria().getNombre());
-			Personal docente1 = (Personal) inscripcion.getMesa().getIntegrantesTribunal().toArray()[0];
-			Personal docente2 = (Personal) inscripcion.getMesa().getIntegrantesTribunal().toArray()[1];
-			Personal docente3 = (Personal) inscripcion.getMesa().getIntegrantesTribunal().toArray()[2];
-			mesaExamen.setDniDocente1(docente1.getNroDocumento());
-			mesaExamen.setNombreDocente1(docente1.getNombre());
-			mesaExamen.setApellidoDocente1(docente1.getApellido());
-			mesaExamen.setDniDocente2(docente2.getNroDocumento());
-			mesaExamen.setNombreDocente2(docente2.getNombre());
-			mesaExamen.setApellidoDocente2(docente2.getApellido());
-			mesaExamen.setDniDocente3(docente3.getNroDocumento());
-			mesaExamen.setNombreDocente3(docente3.getNombre());
-			mesaExamen.setApellidoDocente3(docente3.getApellido());
+			//mesaExamen.setNombreMateria(inscripcion.getMesa().getMateria().getNombre());
+			//Personal docente1 = (Personal) inscripcion.getMesa().getIntegrantesTribunal().toArray()[0];
+			//Personal docente2 = (Personal) inscripcion.getMesa().getIntegrantesTribunal().toArray()[1];
+			//Personal docente3 = (Personal) inscripcion.getMesa().getIntegrantesTribunal().toArray()[2];
+			//mesaExamen.setDniDocente1(docente1.getNroDocumento());
+			//mesaExamen.setNombreDocente1(docente1.getNombre());
+			//mesaExamen.setApellidoDocente1(docente1.getApellido());
+			//mesaExamen.setDniDocente2(docente2.getNroDocumento());
+			//mesaExamen.setNombreDocente2(docente2.getNombre());
+			//mesaExamen.setApellidoDocente2(docente2.getApellido());
+			//mesaExamen.setDniDocente3(docente3.getNroDocumento());
+			//mesaExamen.setNombreDocente3(docente3.getNombre());
+			//mesaExamen.setApellidoDocente3(docente3.getApellido());
 			mesaExamen.setDniAlumno(inscripcion.getAlumno().getNroDocumento());
 			mesaExamen.setNombreAlumno(inscripcion.getAlumno().getNombre());
 			mesaExamen.setApellidoAlumno(inscripcion.getAlumno().getApellido());
-			mesaExamen.setFechaHoraInicioMesa(inscripcion.getMesa().getFechaHoraInicio());
-			mesaExamen.setFechaHoraFinMesa(inscripcion.getMesa().getFechaHoraFin());
+			//mesaExamen.setFechaHoraInicioMesa(inscripcion.getMesa().getFechaHoraInicio());
+			//mesaExamen.setFechaHoraFinMesa(inscripcion.getMesa().getFechaHoraFin());
 			
 			gMesaExamenHist.add(mesaExamen);
 		} catch (Exception ex) {

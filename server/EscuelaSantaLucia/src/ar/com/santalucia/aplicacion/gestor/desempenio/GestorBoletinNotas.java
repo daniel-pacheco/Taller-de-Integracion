@@ -33,17 +33,18 @@ public class GestorBoletinNotas extends Gestor<BoletinNotas> implements IListabl
 		try {
 			setSession();
 			setTransaction();
-			if (object.getListaTrimestres() != null) {
+			/*if (object.getListaTrimestres() != null) {
 				for (Trimestre t : object.getListaTrimestres()) {
 					GTrimestre.add(t);
 				}
-			}
-			if (object.getListaNotasExamen() != null) {
+			}*/
+			/*if (object.getListaNotasExamen() != null) {
 				for (Nota n : object.getListaNotasExamen()) {
 					GNota.add(n);
 				}
-			}
+			}*/
 			boletinNotasDAO.persist(object);
+			sesionDeHilo.getTransaction().commit();
 		} catch (Exception ex) {
 			setSession();
 			setTransaction();

@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response.Status;
 
 import ar.com.santalucia.dominio.dto.BoletinInasistenciasDTO;
 import ar.com.santalucia.dominio.dto.GetPlanillaTrimestralDTO;
+import ar.com.santalucia.dominio.dto.PlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinInasistencias;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotas;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotasHist;
@@ -496,6 +497,19 @@ public class ServicioDesempenioEndpoint {
 		}
 	}
 	
+	@PUT
+	@Path("/planillaTrimestral")
+	public Response procesarPlanillaTrimestral(PlanillaTrimestralDTO planillaTrimestralDTO){
+		try {
+			setInstance();
+			servicioDesempenio.procesarPlanillaTrimestral(planillaTrimestralDTO);
+			return Response.ok(true).build();
+		} catch (Exception ex) {
+			// TODO Auto-generated catch block
+			return Response.ok(ex).build();
+			
+		}
+	}
 	
 
 }

@@ -276,6 +276,8 @@ public class ServicioAcademico {
 			BoletinNotas boletinNotas = new BoletinNotas();
 			boletinNotas.setAnio(anio.getNombre());
 			boletinNotas.setCurso(curso.getDivision().toString());
+			boletinNotas.setPropietario(alumno);
+			boletinNotas.setCicloLectivo(Integer.valueOf(anio.getCicloLectivo()));
 			inicializarBoletinNotas(boletinNotas, materias);
 			gBoletinNotas.add(boletinNotas);
 			// agregar boletin de inasistencias
@@ -300,6 +302,12 @@ public class ServicioAcademico {
 				Trimestre t = new Trimestre(null, i+1, null, null, n, m);
 				gTrimestre.add(t);
 				boletinNotas.getListaTrimestres().add(t);
+				Nota nfd = new Nota(null,null,Calendar.getInstance().getTime(),0F,m,Nota.DICIEMBRE); 
+				gNota.add(nfd);
+				Nota nfm = new Nota(null,null,Calendar.getInstance().getTime(),0F,m,Nota.MARZO); 
+				gNota.add(nfm);
+				boletinNotas.getListaNotasExamen().add(nfd);
+				boletinNotas.getListaNotasExamen().add(nfm);
 			} 
 		}
 	}

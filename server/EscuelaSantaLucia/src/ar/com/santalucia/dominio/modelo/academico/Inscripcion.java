@@ -1,6 +1,7 @@
 package ar.com.santalucia.dominio.modelo.academico;
 
 import java.util.Date;
+import java.util.Set;
 
 import ar.com.santalucia.dominio.modelo.desempenio.Nota;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
@@ -11,30 +12,27 @@ import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
  * @version 1.2
  */
 
-// Último modificador: Eric Pennachini @ 01-02-16 13:00
+// Último modificador: Ariel Ramirez @ 25-06-2016 20:05
 
 public class Inscripcion {
 	
 	private Long idInscripcion;
-	private Mesa mesa;
+	private Set<Mesa> mesa;
 	private Date fecha;
 	private Alumno alumno;
-	private Boolean asistencia;
-	private Nota nota;
+	private Integer codigo;
 	
 	public Inscripcion() {
 		super();
 	}
 
-	public Inscripcion(Long idInscripcion, Mesa mesa, Date fecha, Alumno alumno, Boolean asistencia, Nota nota,
-			String nroActa) {
+	public Inscripcion(Long idInscripcion, Set<Mesa> mesa, Date fecha, Alumno alumno, Integer codigo) {
 		super();
 		this.idInscripcion = idInscripcion;
 		this.mesa = mesa;
 		this.fecha = fecha;
 		this.alumno = alumno;
-		this.asistencia = asistencia;
-		this.setNota(nota);
+		this.codigo = codigo;
 	}
 
 	public Long getIdInscripcion() {
@@ -45,11 +43,11 @@ public class Inscripcion {
 		this.idInscripcion = idInscripcion;
 	}
 
-	public Mesa getMesa() {
+	public Set<Mesa> getMesa() {
 		return mesa;
 	}
 
-	public void setMesa(Mesa mesa) {
+	public void setMesa(Set<Mesa> mesa) {
 		this.mesa = mesa;
 	}
 
@@ -69,20 +67,12 @@ public class Inscripcion {
 		this.alumno = alumno;
 	}
 
-	public Boolean getAsistencia() {
-		return asistencia;
+	public Integer getCodigo() {
+		return codigo;
 	}
 
-	public void setAsistencia(Boolean asistencia) {
-		this.asistencia = asistencia;
-	}
-
-	public Nota getNota() {
-		return nota;
-	}
-
-	public void setNota(Nota nota) {
-		this.nota = nota;
+	public void setCodigo(Integer codigo) {
+		this.codigo = codigo;
 	}
 	
 }
