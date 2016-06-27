@@ -6,6 +6,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
+
+import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorAnio;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMateria;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinInasistencias;
@@ -31,6 +35,7 @@ import ar.com.santalucia.dominio.modelo.desempenio.MateriaNotasBoletin;
 import ar.com.santalucia.dominio.modelo.desempenio.Nota;
 import ar.com.santalucia.dominio.modelo.desempenio.Trimestre;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
+import ar.com.santalucia.dominio.modelo.usuarios.Usuario;
 import ar.com.santalucia.excepciones.*;
 
 /**
@@ -378,8 +383,19 @@ public class ServicioDesempenio {
 			for (ItemPlanillaTrimestralDTO item : itemsPlanilla) {
 				for (Alumno a : alumnos) {
 					if (a.toString().equals(item.getAlumno())) {
-						boletin.setIdBoletinNotas(4L);
-						boletin = gBoletin.getByExample(boletin).get(0);
+						String sql = "SELECT * FROM BOLETINNOTAS WHERE PROPIETARIO = "+String.valueOf(a.getIdUsuario());
+						Session sessAux = null;
+						if ((sessAux == null) || (!sessAux.isOpen())) {
+							sessAux = HibernateUtil.getSessionFactory().openSession();
+							
+						}
+						if (!sessAux.getTransaction().isActive()) {
+							sessAux.beginTransaction();
+						}
+						SQLQuery consulta = sessAux.createSQLQuery(sql).addEntity(BoletinNotas.class);
+						
+						//boletin = gBoletin.getByExample(boletin).get(0);
+						boletin = (BoletinNotas) consulta.list().get(0);
 						break;
 					}
 				}

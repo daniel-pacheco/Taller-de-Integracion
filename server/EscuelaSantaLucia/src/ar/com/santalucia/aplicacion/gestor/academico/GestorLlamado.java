@@ -195,7 +195,7 @@ public class GestorLlamado extends Gestor<Llamado> implements IListable<Llamado>
 		
 		// - comprobar existencia de mesa en llamado
 		//vExisteMesa = this.existeMesaEnLlamado(llamado);
-		if (llamado.getIdLlamado() != null) {
+		/*if (llamado.getIdLlamado() != null) {
 			for (Mesa m: llamado.getListaMesas()) {
 				exception.addMensajeError(this.existeMesaEnLlamado(llamado) 
 											? "La mesa de " + m.getMateria().getNombre() + " ya existe en el llamado."
@@ -205,7 +205,7 @@ public class GestorLlamado extends Gestor<Llamado> implements IListable<Llamado>
 		
 		if (!exception.getMensajesError().isEmpty()) {
 			throw exception;
-		}
+		}*/
 	}
 
 }
