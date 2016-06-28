@@ -81,9 +81,7 @@ public class ServicioConfiguracionEndpoint {
 	public Response updateAllParametros(final ArrayList<ParametroConfiguracion> parametros){
 		try{
 			setInstance();
-			for(ParametroConfiguracion pc: parametros){
-				servicioConfiguracion.addParametro(pc);
-			}
+			servicioConfiguracion.addParametros(parametros);
 			return Response.ok(true).build();
 		}catch(Exception ex){
 			return Response.ok(ex).build();
