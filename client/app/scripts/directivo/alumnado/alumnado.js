@@ -342,6 +342,21 @@ $scope.loginSpinner = function () {
 };
 
 
+//-- Export Table
+
+$scope.export_action = 'doc'; //se puede hacer que cambie a distintos formatos
+$scope.exportAction = function(){ 
+      switch($scope.export_action){ 
+          // case 'pdf': $scope.$broadcast('export-pdf', {}); 
+          //             break;  // no instalado el plugin
+          case 'excel': $scope.$broadcast('export-excel', {}); 
+                      break; 
+          case 'doc': $scope.$broadcast('export-doc', {});
+                      break; 
+          default: console.log('no event caught'); 
+       }
+}
+
 //---Llamadas al servicio ALUMNO---
 
 $scope.alumnoData = [];

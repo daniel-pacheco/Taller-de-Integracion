@@ -19,33 +19,14 @@
       }
   });
 })
- .controller('DirectivoTestCtrl', function ($scope, Upload, $timeout, ModalService, spinnerService) {
+ .controller('DirectivoTestCtrl', function ($scope, Upload, $timeout, ModalService, spinnerService, alumnoData) {
     this.awesomeThings = [
     'HTML5 Boilerplate',
     'AngularJS',
     'Karma'
     ];
 
-//     $scope.spinnerService = spinnerService;
-
-//     var myEl = angular.element('#myNav');//angular.element( document.querySelector( '#myNav' ) );
-//     console.log(myEl);
-
-//     $scope.openNav = function () {
-//         // $scope.spinnerService.show('spinner6');
-//     var elementbyid = document.getElementById("#myNav");//.style.width = "100%";
-
-//     console.log(elementbyid);
-
-//     myEl.webkitIsFullScreen = true;
-// };
-
-// $scope.closeNav = function () {
-//     // myEl.width = "0%";
-//     $('#myNav').width = "100%";
-//     // document.getElementById("#myNav").style.width = "0%";
-//     // $scope.spinnerService.hide('spinner6');
-// };
+$scope.alumnoData = alumnoData;
 
 $scope.login = function () {
     spinnerService.show('html5spinner');
@@ -91,4 +72,23 @@ $scope.requiredPass = function() {
 
 
 $scope.date = new Date();
+$scope.toggle = true;
+
+
+$scope.export_action = 'doc';
+$scope.exportAction = function(){ 
+      switch($scope.export_action){ 
+          // case 'pdf': $scope.$broadcast('export-pdf', {}); // no instalado el plugin
+          //             break;  
+          case 'excel': $scope.$broadcast('export-excel', {}); 
+                      break; 
+          case 'doc': $scope.$broadcast('export-doc', {});
+                      break; 
+          default: console.log('no event caught'); 
+       }
+}
+
+
+
 });
+
