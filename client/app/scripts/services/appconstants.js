@@ -73,7 +73,7 @@
 
  .constant('INASISTENCIAS',{
  	CONCEPTO:["Clases", "Ed. Física", "Llegada tarde", "Se retira", "Otro"],
- 	VALORES: [0.25, 0.5, 1.0],
+ 	VALORES: [0.25, 0.5, 0.75, 1.0],
  	JUSTIFICADA: [
  		["Injustificada", false],
 	 	["Justificada", true]
