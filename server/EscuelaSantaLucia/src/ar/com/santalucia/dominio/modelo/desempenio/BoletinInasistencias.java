@@ -17,6 +17,8 @@ public class BoletinInasistencias {
 
 	private Long idBoletinInasistencias;
 	private Alumno propietario;
+	private String anio;
+	private String curso;
 	private Float total;
 	private Set<Inasistencia> listaInasistencias;
 	private Integer cicloLectivo;
@@ -27,11 +29,13 @@ public class BoletinInasistencias {
 		listaInasistencias = new HashSet<Inasistencia>();
 	}
 
-	public BoletinInasistencias(Long idBoletinInasistencias, Alumno propietario, Float total,
+	public BoletinInasistencias(Long idBoletinInasistencias, Alumno propietario, String anio, String curso, Float total,
 			Set<Inasistencia> listaInasistencias, Integer cicloLectivo, Boolean activo) {
 		super();
 		this.idBoletinInasistencias = idBoletinInasistencias;
 		this.propietario = propietario;
+		this.anio = anio;
+		this.curso = curso;
 		this.total = total;
 		this.setListaInasistencias(listaInasistencias);
 		this.cicloLectivo = cicloLectivo;
@@ -84,6 +88,22 @@ public class BoletinInasistencias {
 
 	public void setActivo(Boolean activo) {
 		this.activo = activo;
+	}
+
+	public String getAnio() {
+		return anio;
+	}
+
+	public void setAnio(String anio) {
+		this.anio = anio;
+	}
+
+	public String getCurso() {
+		return curso;
+	}
+
+	public void setCurso(String curso) {
+		this.curso = curso;
 	}
 
 }

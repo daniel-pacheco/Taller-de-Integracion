@@ -1,10 +1,15 @@
 package ar.com.santalucia.servicio;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
+
+import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorAnio;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorArea;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorCurso;
@@ -13,12 +18,20 @@ import ar.com.santalucia.aplicacion.gestor.academico.GestorMateria;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMateriaHist;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMesa;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMesaExamenHist;
+import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinInasistencias;
+import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinNotas;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinNotasHist;
+import ar.com.santalucia.aplicacion.gestor.desempenio.GestorInasistencia;
+import ar.com.santalucia.aplicacion.gestor.desempenio.GestorNota;
+import ar.com.santalucia.aplicacion.gestor.desempenio.GestorTrimestre;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
+import ar.com.santalucia.dominio.dto.AnioDTO;
+import ar.com.santalucia.dominio.dto.CursoDTO;
 import ar.com.santalucia.dominio.dto.DetallePreviaDTO;
 import ar.com.santalucia.dominio.dto.MateriaAltaDTO;
 import ar.com.santalucia.dominio.dto.MateriaDTO;
+import ar.com.santalucia.dominio.dto.MesaAltaDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Area;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
@@ -27,8 +40,12 @@ import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.academico.MateriaHist;
 import ar.com.santalucia.dominio.modelo.academico.Mesa;
 import ar.com.santalucia.dominio.modelo.academico.MesaExamenHist;
+import ar.com.santalucia.dominio.modelo.desempenio.BoletinInasistencias;
+import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotas;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotasHist;
 import ar.com.santalucia.dominio.modelo.desempenio.MateriaNotasBoletin;
+import ar.com.santalucia.dominio.modelo.desempenio.Nota;
+import ar.com.santalucia.dominio.modelo.desempenio.Trimestre;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.excepciones.ValidacionException;
@@ -56,8 +73,13 @@ public class ServicioAcademico {
 	private GestorMateriaHist gMateriaHistorica;
 	private GestorMesaExamenHist gMEHist;
 	private GestorBoletinNotasHist gBoletinHist;
+	private GestorNota gNota;
+	private GestorTrimestre gTrimestre;
+	private GestorBoletinNotas gBoletinNotas;
+	private GestorInasistencia gInasistencia;
+	private GestorBoletinInasistencias gBoletinInasistencias;
 
-	public ServicioAcademico() throws Exception {
+ 	public ServicioAcademico() throws Exception {
 		try {
 			gAnio = new GestorAnio();
 			gCurso = new GestorCurso();
@@ -70,6 +92,11 @@ public class ServicioAcademico {
 			gMateriaHistorica = new GestorMateriaHist();
 			gMEHist = new GestorMesaExamenHist();
 			gBoletinHist = new GestorBoletinNotasHist();
+			gNota = new GestorNota();
+			gTrimestre = new GestorTrimestre();
+			gBoletinNotas = new GestorBoletinNotas();
+			gInasistencia = new GestorInasistencia();
+			gBoletinInasistencias = new GestorBoletinInasistencias();
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un problema al inicializar el servicio de operaciones básicas: "
 					+ ex.getMessage());
@@ -131,6 +158,35 @@ public class ServicioAcademico {
 			return gAnio.getByExample(example);
 		} catch (Exception ex) {
 			throw new Exception("No se pudo obtener la lista de AÑOS: " + ex.getMessage());
+		}
+	}
+	
+	
+	public ArrayList<AnioDTO> getAniosDTO() throws Exception {
+		try {
+			ArrayList<Anio> listaAniosPersis = gAnio.getByExample(new Anio());
+			ArrayList<AnioDTO> listaAniosDTO = new ArrayList<AnioDTO>();
+			
+			for (Anio a : listaAniosPersis) {
+				AnioDTO aDTO = new AnioDTO();
+				aDTO.setIdAnio(a.getIdAnio());
+				aDTO.setNombre(a.getNombre());
+				aDTO.setDescripcion(a.getDescripcion());
+				Set<Curso> listaCursosAnioPersis = a.getListaCursos();
+				for (Curso c : listaCursosAnioPersis) {
+					CursoDTO cDTO = new CursoDTO();
+					cDTO.setIdCurso(c.getIdCurso());
+					cDTO.setDivision(c.getDivision().toString());
+					cDTO.setTurno(c.getTurno());
+					cDTO.setCantAlu(c.getListaAlumnos().size());
+					aDTO.getListaCursos().add(cDTO);
+				}
+				listaAniosDTO.add(aDTO);
+			}
+			
+			return listaAniosDTO;
+		} catch (Exception ex) {
+			throw new Exception("Ha ocurrido un error al obtener la lista de años resumida: " + ex.getMessage());
 		}
 	}
 	
@@ -208,18 +264,7 @@ public class ServicioAcademico {
 	}
 	
 	public Boolean asignarAlumnoACurso(Alumno alumno, Long idCurso) throws Exception{ 			//EN ENDPOINT
-		// TODO
-		// 1 - Obtener el curso 
-		// 2 - Rescatar lista de alumnos del curso
-		// 3 - Agregar alumno a la lista rescatada
-		// 4 - Asignar el listado rescatado al curso
-		// 5 - Llamar al modify del gestor de curso y guardarlo
-		// 6 - Obtener el curso generico
-		// 7 - Rescatar lista de alumnos de curso generico
-		// 8 - Remover alumno desde la lista rescatada de curso generico
-		// 9 - Asignar la lista modificada al curso genérico
-		// 10 - Llamar al modify del gestor de curso y guardar el genérico
-		try{
+		try {
 			Curso curso = gCurso.getById(idCurso);
 			Set<Alumno> alumnos = curso.getListaAlumnos();
 			alumnos.add(alumno);
@@ -230,24 +275,65 @@ public class ServicioAcademico {
 			alumnosCursoGenerico.remove(alumno);	 // Puede requerir sobrecarga de de equals()
 			cursoGenerico.setListaAlumnos(alumnosCursoGenerico);
 			gCurso.modify(cursoGenerico);
+			// agregar boletin de notas
+			Anio anio = this.cursoPerteneceAnio(curso);
+			Set<Materia> materias = anio.getListaMaterias();
+			BoletinNotas boletinNotas = (BoletinNotas) ServicioDesempenio
+					.encontrarBoletinDeAlumno(alumno, ServicioDesempenio.BUSCAR_BOLETIN_NOTAS);
+			if (boletinNotas == null) {
+				boletinNotas = new BoletinNotas();
+				boletinNotas.setPropietario(alumno);
+				boletinNotas.setCicloLectivo(Integer.valueOf(anio.getCicloLectivo()));
+				inicializarBoletinNotas(boletinNotas, materias);
+			}
+			boletinNotas.setAnio(anio.getNombre());
+			boletinNotas.setCurso(curso.getDivision().toString());
+			if (boletinNotas.getIdBoletinNotas().equals(null)) {
+				gBoletinNotas.add(boletinNotas);
+			} else {
+				gBoletinNotas.modify(boletinNotas);
+			}
+			// agregar boletin de inasistencias
+			BoletinInasistencias boletinInasistencias = (BoletinInasistencias) ServicioDesempenio
+					.encontrarBoletinDeAlumno(alumno, ServicioDesempenio.BUSCAR_BOLETIN_INASISTENCIAS);
+			if (boletinInasistencias == null) {
+				boletinInasistencias = new BoletinInasistencias();
+				boletinInasistencias.setPropietario(alumno);
+			}
+			boletinInasistencias.setAnio(anio.getNombre());
+			boletinInasistencias.setCurso(curso.getDivision().toString());
+			boletinInasistencias.setActivo(true);
+			if (boletinInasistencias.getIdBoletinInasistencias().equals(null)) {
+				gBoletinInasistencias.add(boletinInasistencias);
+			} else {
+				gBoletinInasistencias.modify(boletinInasistencias);
+			}
 			return true;
-		} catch(Exception ex){
+		} catch(Exception ex) {
 			throw new Exception("No se pudo asignar el ALUMNO al CURSO: " + ex.getMessage());
 		}
 	}
+	
+	private void inicializarBoletinNotas(BoletinNotas boletinNotas, Set<Materia> materias) throws Exception {
+		for (int i = 0; i < 3; i++) {
+			for (Materia m : materias) {
+				Nota n = new Nota(null, "", Calendar.getInstance().getTime(), 0F, m, Nota.NOTA_FINAL_TRIMESTRAL);
+				gNota.add(n);
+				Trimestre t = new Trimestre(null, i+1, null, null, n, m);
+				gTrimestre.add(t);
+				boletinNotas.getListaTrimestres().add(t);
+				Nota nfd = new Nota(null,null,Calendar.getInstance().getTime(),0F,m,Nota.DICIEMBRE); 
+				gNota.add(nfd);
+				Nota nfm = new Nota(null,null,Calendar.getInstance().getTime(),0F,m,Nota.MARZO); 
+				gNota.add(nfm);
+				boletinNotas.getListaNotasExamen().add(nfd);
+				boletinNotas.getListaNotasExamen().add(nfm);
+			} 
+		}
+	}
+	
 
-	public Boolean desvincularAlumnoDeCurso(Alumno alumno, Long idCurso) throws Exception{ // EN ENDPOINT
-		// TODO
-		// 1 - Traer el curso generico
-		// 2 - Rescatar el listado de alumnos del curso generico
-		// 3 - Asignar el alumno al listado de alumnos del curso generico
-		// 4 - Asignar el listado modificado al curso generico
-		// 5 - Llamar al modify del gestor y guardar el curso generico
-		// 6 - Traer el curso
-		// 7 - Rescatar el listado de alumnos del curso
-		// 8 - Remover el alumno del listado
-		// 9 - Asignar el listado modificado al curso
-		// 10 - Llamar al modify del gestor y guardar el curso
+	public Boolean desvincularAlumnoDeCurso(Alumno alumno, Long idCurso) throws Exception { // EN ENDPOINT
 		try{
 			Curso cursoGenerico = gCurso.getByDivision('0');
 			Set<Alumno> alumnosCursoGenerico = cursoGenerico.getListaAlumnos();
@@ -259,12 +345,24 @@ public class ServicioAcademico {
 			alumnos.remove(alumno);
 			curso.setListaAlumnos(alumnos);
 			gCurso.modify(curso);
-		} catch(Exception ex){
+			// modificar boletin de notas
+			BoletinNotas boletinNotas = (BoletinNotas) ServicioDesempenio.encontrarBoletinDeAlumno(alumno, ServicioDesempenio.BUSCAR_BOLETIN_NOTAS);
+			boletinNotas.setAnio(null);
+			boletinNotas.setCurso("0");
+			gBoletinNotas.modify(boletinNotas);
+			// modificar boletin de inasistencias
+			BoletinInasistencias boletinInasistencias = (BoletinInasistencias) ServicioDesempenio.encontrarBoletinDeAlumno(alumno, ServicioDesempenio.BUSCAR_BOLETIN_INASISTENCIAS);
+			boletinInasistencias.setAnio(null);
+			boletinInasistencias.setCurso("0");
+			gBoletinInasistencias.modify(boletinInasistencias);
+		} catch(Exception ex) {
 			throw new Exception("No se pudo desvincular el ALUMNO del CURSO: " + ex.getMessage());
 		}
-		return false;
+		return true;
 	}
 
+	
+	
 	public Boolean addMateria(MateriaAltaDTO materiaAltaDTO) throws Exception {
 		// DECLARO AUXILIARES
 		Area areaAux = new Area();
@@ -300,7 +398,7 @@ public class ServicioAcademico {
 			if(materiaAltaDTO.getIdAnio() != null){					// Y ADEMÁS VIENE CON AÑO
 				desvincularMateriaDeAnio(materiaAux, materiaPerteneceAnio(materiaAux));	// SI EXISTE LA MATERIA, VIENE CON AÑO, ENTONCES DESVINCULO ANTES
 				asignarMateriaAAnio(materiaAux, materiaAltaDTO.getIdAnio());			// VUELVO A VINCULAR AL NUEVO AÑO
-				}
+			}
 			gMateria.modify(materiaAux);
 			return true;
 		}else{														// SI NO EXISTE LA MATERIA CREO Y VINCULO
@@ -313,10 +411,10 @@ public class ServicioAcademico {
 	public Boolean deleteMateria(Materia materia) throws Exception { // EN ENDPOINT
 		try {
 			gMateria.delete(materia);
+			return true;
 		} catch (Exception ex) {
 			throw new Exception("No se pudo eliminar la MATERIA: " + ex.getMessage());
 		}
-		return false;
 	}
 
 	public Materia getMateria(Long idMateria) throws Exception{ // EN ENDPOINT
@@ -478,7 +576,7 @@ public class ServicioAcademico {
 		}
 	}
 	
-	public List<Area> getAreas(Area example) throws Exception{ // EN ENDPOINT
+	public ArrayList<Area> getAreas(Area example) throws Exception{ // EN ENDPOINT
 		try{
 			return gArea.getByExample(example);
 		}catch(Exception ex){
@@ -490,6 +588,7 @@ public class ServicioAcademico {
 	
 	public Boolean addLlamado(Llamado llamado) throws Exception { // EN ENDPOINT
 		try {
+			ServicioConfiguracion.comprendidoEnPeriodo(llamado.getFechaInicio(), llamado.getFechaFin(),null,null,null);
 			if (llamado.getIdLlamado() == null) {
 				gLlamado.add(llamado);
 			}
@@ -521,7 +620,11 @@ public class ServicioAcademico {
 		}
 	}
 	
-	public List<Llamado> getLlamados(Llamado example) throws Exception{ // EN ENDPOINT
+	public Llamado getLlamado(String descLlamado) throws Exception{
+		return getLlamados(new Llamado(null,descLlamado,null,null,null)).get(0);
+	}
+	
+	public ArrayList<Llamado> getLlamados(Llamado example) throws Exception{ // EN ENDPOINT
 		try {
 			return gLlamado.getByExample(example);
 		} catch (Exception ex) {
@@ -542,6 +645,43 @@ public class ServicioAcademico {
 		} catch (Exception ex) {
 			throw new Exception("No se pudo dar de alta la MESA: " + ex.getMessage());
 		}
+		return true;
+	}
+	
+	public Boolean addMesa(MesaAltaDTO mesaAltaDTO) throws Exception{
+		try{
+			Llamado llamado = gLlamado.getById(mesaAltaDTO.getIdLlamado());
+			if(llamado!=null && !(llamado.getIdLlamado() == null)){
+				ServicioConfiguracion.comprendidoEnPeriodo(mesaAltaDTO.getFechaHoraInicio(), mesaAltaDTO.getFechaHoraFin(), null, llamado.getFechaInicio(), llamado.getFechaFin());
+				Personal docente1 = gDocente.getByExample(new Personal(mesaAltaDTO.getTribunalDoc1(),null,null,null,null,null,null,null,null,null,true,null,null,null,null)).get(0);
+				Personal docente2 = gDocente.getByExample(new Personal(mesaAltaDTO.getTribunalDoc2(),null,null,null,null,null,null,null,null,null,true,null,null,null,null)).get(0);
+				Personal docente3 = gDocente.getByExample(new Personal(mesaAltaDTO.getTribunalDoc3(),null,null,null,null,null,null,null,null,null,true,null,null,null,null)).get(0);
+				Materia materia = gMateria.getById(mesaAltaDTO.getIdMateria());
+				Set<Mesa> mesasLlamado = llamado.getListaMesas();
+				for(Mesa m : mesasLlamado){
+					if(m.getMateria().equals(materia)){
+						throw new Exception("Ya existe la mesa en el llamado.");
+					}
+				}
+				Mesa mesa = new Mesa();
+				mesa.setFechaHoraInicio(mesaAltaDTO.getFechaHoraInicio());
+				mesa.setFechaHoraFin(mesaAltaDTO.getFechaHoraFin());
+				Set<Personal> tribunal = new HashSet<Personal>();
+				tribunal.add(docente1);
+				tribunal.add(docente2);
+				tribunal.add(docente3);
+				mesa.setIntegrantesTribunal(tribunal);
+				mesa.setMateria(materia);
+				gMesa.add(mesa);
+				llamado.getListaMesas().add(mesa);
+				gLlamado.modify(llamado);
+			}
+			
+		}catch(Exception ex){
+			throw ex;
+		}
+		
+		
 		return true;
 	}
 	
@@ -883,7 +1023,19 @@ public class ServicioAcademico {
 		return 0L; // DEVUELVE 0 SI LA MATERIA NO PERTENECE A UN ANIO
 	}
 	
-	public void closeSession() throws Exception {
+	private Anio cursoPerteneceAnio(Curso curso) throws Exception {
+		List<Anio> listaAnio = new ArrayList<Anio>();
+		List<Curso> listaCurso = new ArrayList<Curso>(); 
+		listaAnio = gAnio.getByExample(new Anio(null,null,null,null,null,true));
+		for (Anio a: listaAnio) {
+			if(a.getListaCursos().contains(curso)){
+				return a;
+			}
+		}
+		return null;
+	}
+	
+	public void closeSession() throws Exception { 
 		gAnio.closeSession();
 	}
 }

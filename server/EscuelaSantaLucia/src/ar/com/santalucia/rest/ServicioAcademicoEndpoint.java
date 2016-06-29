@@ -18,13 +18,18 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import ar.com.santalucia.dominio.dto.AnioDTO;
+import ar.com.santalucia.dominio.dto.DetallePreviaDTO;
 import ar.com.santalucia.dominio.dto.MateriaAltaDTO;
+import ar.com.santalucia.dominio.dto.MateriaDTO;
+import ar.com.santalucia.dominio.dto.MesaAltaDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Area;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
 import ar.com.santalucia.dominio.modelo.academico.Llamado;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.academico.Mesa;
+import ar.com.santalucia.excepciones.ValidacionException;
 import ar.com.santalucia.servicio.ServicioAcademico;
 import ar.com.santalucia.servicio.ServicioAlumno;
 import ar.com.santalucia.servicio.ServicioDocente;
@@ -83,8 +88,14 @@ public class ServicioAcademicoEndpoint {
 			setInstance();
 			servicioAcademico.addAnio(anio);
 			return Response.ok(anio.getIdAnio()).build();
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.CONFLICT).entity(vEx.getMensajesError()).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -100,7 +111,10 @@ public class ServicioAcademicoEndpoint {
 			setInstance();
 			return Response.ok(servicioAcademico.deleteAnio(servicioAcademico.getAnio(id))).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 
 	}
@@ -113,11 +127,22 @@ public class ServicioAcademicoEndpoint {
 	@GET
 	@Path("/anio/{id:[0-9][0-9]*}")
 	public Response getAnioById(@PathParam("id") final Long id) {
+		Anio anio = new Anio();
 		try {
 			setInstance();
-			return Response.ok(servicioAcademico.getAnio(id)).build();
+			anio = servicioAcademico.getAnio(id);
+			if (anio == null) {
+				return Response.status(Status.NOT_FOUND)
+						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
+						.build();
+			}
+			return Response.ok(anio).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -129,17 +154,45 @@ public class ServicioAcademicoEndpoint {
 	@Path("/anio/listAll")
 	public Response aniolistAll() {
 		List<Anio> anios = new ArrayList<Anio>();
-		//anios = null;
 		try {
 			setInstance();
 			anios = servicioAcademico.getAnios(new Anio());
-		} catch (Exception ex) {
-			if (anios == null) {
-				return Response.status(Status.NOT_FOUND).build();
+			if (anios.size() == 0) {
+				return Response.status(Status.NO_CONTENT)
+						.entity(new FrontMessage("Sin resultados", FrontMessage.INFO))
+						.build();
 			}
+			return Response.ok(anios).build();
+		} catch (Exception ex) {
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
-		return Response.ok(anios).build();
 	}
+	
+	@GET
+	@Path("/anio/listAllMin")
+	public Response getAniosDTO() {
+		ArrayList<AnioDTO> aniosDTO = new ArrayList<AnioDTO>();
+		try {
+			setInstance();
+			aniosDTO = servicioAcademico.getAniosDTO();
+			if (aniosDTO.size() == 0) {
+				return Response.status(Status.NO_CONTENT)
+						.entity(new FrontMessage("Sin resultados", FrontMessage.INFO))
+						.build();
+			}
+			return Response.ok(aniosDTO).build();
+		} catch (Exception ex) {
+			//return Response.ok(ex).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Hubo un error al obtener el listado resumido de años: " + ex.getMessage(), FrontMessage.CRITICAL))
+					.build();
+		}
+	}
+	
 	
 	/**
 	 * 
@@ -154,7 +207,11 @@ public class ServicioAcademicoEndpoint {
 			setInstance();
 			return Response.ok(servicioAcademico.addCurso(curso, idAnio)).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -170,7 +227,11 @@ public class ServicioAcademicoEndpoint {
 			setInstance();
 			return Response.ok(servicioAcademico.deleteCurso(servicioAcademico.getCurso(idC))).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -185,9 +246,19 @@ public class ServicioAcademicoEndpoint {
 		Curso curso = new Curso();
 		try {
 			setInstance();
-			return Response.ok(servicioAcademico.getCurso(id)).build();
+			curso = servicioAcademico.getCurso(id);
+			if (curso == null) {
+				return Response.status(Status.NOT_FOUND)
+						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
+						.build();
+			}
+			return Response.ok(curso).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}		
 	}
 	
@@ -203,8 +274,14 @@ public class ServicioAcademicoEndpoint {
 			setInstance();
 			servicioAcademico.addMateria(materiaAltaDTO);
 			return Response.ok(materiaAltaDTO.getIdMateria()).build();
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.CONFLICT).entity(vEx.getMensajesError()).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -220,7 +297,11 @@ public class ServicioAcademicoEndpoint {
 			setInstance();
 			return Response.ok(servicioAcademico.deleteMateria(servicioAcademico.getMateria(id))).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -236,9 +317,18 @@ public class ServicioAcademicoEndpoint {
 		try {
 			setInstance();
 			materia = servicioAcademico.getMateria(id);
+			if (materia == null) {
+				return Response.status(Status.NOT_FOUND)
+						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
+						.build();
+			}
 			return Response.ok(materia).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -246,11 +336,21 @@ public class ServicioAcademicoEndpoint {
 	@GET
 	@Path("/mat/listAllMin")
 	public Response getMateriasDTO() {
+		ArrayList<MateriaDTO> materiasDTO = new ArrayList<MateriaDTO>();
 		try {
 			setInstance();
+			if (materiasDTO.size() == 0) {
+				return Response.status(Status.NO_CONTENT)
+						.entity(new FrontMessage("Sin resultados", FrontMessage.INFO))
+						.build();
+			}
 			return Response.ok(servicioAcademico.getMateriasDTO()).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -272,7 +372,11 @@ public class ServicioAcademicoEndpoint {
 																		servicioDocente.getUsuario(jsonPack.getValues().elementAt(1)), 
 																		jsonPack.getValues().elementAt(2))).build(); 
 		} catch(Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -292,7 +396,11 @@ public class ServicioAcademicoEndpoint {
 																		servicioDocente.getUsuario(jsonPack.getValues().elementAt(1)), 
 																		jsonPack.getValues().elementAt(2))).build(); 
 		} catch(Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -309,7 +417,11 @@ public class ServicioAcademicoEndpoint {
 			servicioAcademico.addArea(area);
 			return Response.ok(area.getIdArea()).build();
 		}catch(Exception ex){
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 		
 	}
@@ -321,12 +433,22 @@ public class ServicioAcademicoEndpoint {
 	@GET
 	@Path("/area/listAll")
 	public Response areaListAll(){
+		ArrayList<Area> areas = new ArrayList<Area>();
 		try{
 			setInstance();
-			Area area = new Area();
-			return Response.ok(servicioAcademico.getAreas(area)).build();
+			areas = servicioAcademico.getAreas(new Area());
+			if (areas.size() == 0) {
+				return Response.status(Status.NO_CONTENT)
+						.entity(new FrontMessage("Sin resultados", FrontMessage.INFO))
+						.build();
+			}
+			return Response.ok().build();
 		}catch(Exception ex){
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -338,12 +460,22 @@ public class ServicioAcademicoEndpoint {
 	@DELETE
 	@Path("/area/{id:[0-9][0-9]*}")
 	public Response deleteArea(@PathParam("id") final Long idArea){
-		try{
+		Area area = new Area();
+		try {
 			setInstance();
-			servicioAcademico.deleteArea(servicioAcademico.getArea(idArea));
-			return Response.ok(true).build();
+			area = servicioAcademico.getArea(idArea);
+			if (area == null) {
+				return Response.status(Status.NOT_FOUND)
+						.entity(new FrontMessage("Elemento a eliminar no encontrado", FrontMessage.INFO))
+						.build();
+			}
+			return Response.ok(servicioAcademico.deleteArea(area)).build();
 		} catch(Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -360,11 +492,14 @@ public class ServicioAcademicoEndpoint {
 			setInstance();
 			ServicioAlumno servicioAlumno = new ServicioAlumno();
 			//[0]idAlumno [1]idCurso
-			servicioAcademico.asignarAlumnoACurso(servicioAlumno.getUsuario(jsonPack.getValues().elementAt(0)), jsonPack.getValues().elementAt(1));
-			return Response.ok(true).build();
+			boolean resultado = servicioAcademico.asignarAlumnoACurso(servicioAlumno.getUsuario(jsonPack.getValues().elementAt(0)), jsonPack.getValues().elementAt(1));
+			return Response.ok(resultado).build();
 		} catch (Exception ex) {
-			// TODO Auto-generated catch block
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -380,11 +515,14 @@ public class ServicioAcademicoEndpoint {
 		try {
 			setInstance();
 			ServicioAlumno servicioAlumno = new ServicioAlumno();
-			servicioAcademico.desvincularAlumnoDeCurso(servicioAlumno.getUsuario(jsonPack.getValues().elementAt(0)), jsonPack.getValues().elementAt(1));
-			return Response.ok(true).build();
+			boolean resultado = servicioAcademico.desvincularAlumnoDeCurso(servicioAlumno.getUsuario(jsonPack.getValues().elementAt(0)), jsonPack.getValues().elementAt(1));
+			return Response.ok(resultado).build();
 		} catch (Exception ex) {
-			// TODO Auto-generated catch block
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -397,14 +535,18 @@ public class ServicioAcademicoEndpoint {
 	@POST
 	@Path("/mat/vin")
 	public Response asignarMateriaAAnio(JsonPack jsonPack){
-		try{
+		try {
 			setInstance();
 			//[0]idMateria [1]idAnio
 			return Response.ok(servicioAcademico.asignarMateriaAAnio(
 					    	   servicioAcademico.getMateria(jsonPack.getValues().elementAt(0)), 
 					           jsonPack.getValues().elementAt(1))).build();
-		}catch(Exception ex){
-			return Response.ok(ex).build();
+		} catch(Exception ex) {
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -425,7 +567,11 @@ public class ServicioAcademicoEndpoint {
 										jsonPack.getValues().elementAt(0)), 
 										jsonPack.getValues().elementAt(1))).build();
 		} catch(Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 		
 	}
@@ -438,11 +584,22 @@ public class ServicioAcademicoEndpoint {
 	@GET
 	@Path("/area/{id:[0-9][0-9]*}")
 	public Response getAreaById(@PathParam("id") final Long id) {
+		Area area = new Area();
 		try {
 			setInstance();
-			return Response.ok(servicioAcademico.getArea(id)).build();
+			area = servicioAcademico.getArea(id);
+			if (area == null) {
+				return Response.status(Status.NOT_FOUND)
+						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
+						.build();
+			}
+			return Response.ok(area).build();
 		} catch(Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 
@@ -455,7 +612,11 @@ public class ServicioAcademicoEndpoint {
 			servicioAcademico.addLlamado(llamado);
 			return Response.ok(llamado.getIdLlamado()).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -466,54 +627,140 @@ public class ServicioAcademicoEndpoint {
 			setInstance();
 			return Response.ok(servicioAcademico.deleteLlamado(servicioAcademico.getLlamado(idLlamado))).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
+		}
+	}
+	
+	@GET /*Borrar si no se usa, tampoco está probado*/
+	@Path("/llm/getByDesc/{desc:[a-z]*}")
+	public Response getByDescripcion(@PathParam("desc") String descLlamado){
+		Llamado llamado = new Llamado();
+		try {
+			setInstance();
+			llamado = servicioAcademico.getLlamado(descLlamado);
+			if (llamado == null) {
+				return Response.status(Status.NOT_FOUND)
+						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
+						.build();
+			}
+			return Response.ok(llamado).build();
+		} catch (Exception ex) {
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
 	@GET
 	@Path("/llm/{idL:[0-9][0-9]*}")
 	public Response getLlamadoById(@PathParam("idL") Long idL) {
+		Llamado llamado = new Llamado();
 		try {
 			setInstance();
-			return Response.ok(servicioAcademico.getLlamado(idL)).build();
+			llamado = servicioAcademico.getLlamado(idL);
+			if (llamado == null) {
+				return Response.status(Status.NOT_FOUND)
+						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
+						.build();
+			}
+			return Response.ok(llamado).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
 	@GET
 	@Path("/llm/listAll")
 	public Response llamadoListAll() {
+		ArrayList<Llamado> llamados = new ArrayList<Llamado>();
 		try {
 			setInstance();
-			Llamado llamado = new Llamado();
-			return Response.ok(servicioAcademico.getLlamados(llamado)).build();
+			llamados = servicioAcademico.getLlamados(new Llamado());
+			if (llamados.size() == 0) {
+				return Response.status(Status.NOT_FOUND)
+						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
+						.build();
+			}
+			return Response.ok(llamados).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
 	@GET
 	@Path("/previas/{doc:[0-9][0-9]*}")
-	public Response getPrevia(@PathParam("doc") final Long doc){
-		try{
+	public Response getPrevia(@PathParam("doc") final Long doc) {
+		List<DetallePreviaDTO> previas = new ArrayList<DetallePreviaDTO>();
+		try {
 			setInstance();
-			return Response.ok(servicioAcademico.getPreviasDesaprobadas(doc)).build();
-		}catch(Exception ex){
-			return Response.ok(ex).build();
+			previas = servicioAcademico.getPreviasDesaprobadas(doc);
+			if (previas.size() == 0) {
+				return Response.status(Status.NOT_FOUND)
+						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
+						.build();
+			}
+			return Response.ok(previas).build();
+		} catch(Exception ex) {
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
 	@GET
 	@Path("/histPrevias/{doc:[0-9][0-9]*}")
-	public Response getHistorialPrevia(@PathParam("doc") final Long doc){
-		try{
+	public Response getHistorialPrevia(@PathParam("doc") final Long doc) {
+		ArrayList<DetallePreviaDTO> previas = new ArrayList<DetallePreviaDTO>();
+		try {
 			setInstance();
-			return Response.ok(servicioAcademico.getPrevias(doc)).build();
-		}catch(Exception ex){
-			return Response.ok(ex).build();
+			previas = servicioAcademico.getPrevias(doc);
+			if (previas.size() == 0) {
+				return Response.status(Status.NOT_FOUND)
+						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
+						.build();
+			}
+			return Response.ok(previas).build();
+		} catch(Exception ex) {
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
+	
+	@PUT
+	@Path("/mesa/")
+	public Response updateMesa(MesaAltaDTO mesaAltaDTO) {
+		try {
+			setInstance();
+			return Response.ok(servicioAcademico.addMesa(mesaAltaDTO)).build();
+		} catch (Exception ex) {
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
+		}
+	}
+	
+	
 	
 	@PUT
 	@Path("/mes/")
@@ -523,7 +770,11 @@ public class ServicioAcademicoEndpoint {
 			servicioAcademico.addMesa(mesa);
 			return Response.ok(mesa.getIdMesa()).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 
@@ -534,30 +785,55 @@ public class ServicioAcademicoEndpoint {
 			setInstance();
 			return Response.ok(servicioAcademico.deleteMesa(servicioAcademico.getMesa(idMe))).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
 	@GET
 	@Path("/mes/{idMe:[0-9][0-9]*}")
 	public Response getMesaById(@PathParam("idMe") Long idMe) {
+		Mesa mesa = new Mesa();
 		try {
 			setInstance();
-			return Response.ok(servicioAcademico.getMesa(idMe)).build();
+			mesa = servicioAcademico.getMesa(idMe);
+			if (mesa == null) {
+				return Response.status(Status.NOT_FOUND)
+						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
+						.build();
+			}
+			return Response.ok(mesa).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 
 	@GET
 	@Path("/mes/listAll")
 	public Response mesaListAll() {
+		List<Mesa> mesas = new ArrayList<Mesa>();
 		try {
 			setInstance();
-			Mesa mesa = new Mesa();
-			return Response.ok(servicioAcademico.getMesas(mesa)).build();
+			mesas = servicioAcademico.getMesas(new Mesa());
+			if (mesas.size() == 0) {
+				return Response.status(Status.NOT_FOUND)
+						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
+						.build();
+			}
+			return Response.ok(mesas).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 
@@ -570,7 +846,11 @@ public class ServicioAcademicoEndpoint {
 					servicioAcademico.getMesa(jsonPack.getValues().elementAt(0)), 
 					jsonPack.getValues().elementAt(1))).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -583,7 +863,11 @@ public class ServicioAcademicoEndpoint {
 					servicioAcademico.getMesa(jsonPack.getValues().elementAt(0)), 
 					jsonPack.getValues().elementAt(1))).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 
@@ -597,7 +881,11 @@ public class ServicioAcademicoEndpoint {
 					servicioDocente.getUsuario(jsonPack.getValues().elementAt(0)), 
 					jsonPack.getValues().elementAt(1))).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 
@@ -611,7 +899,11 @@ public class ServicioAcademicoEndpoint {
 					servicioDocente.getUsuario(jsonPack.getValues().elementAt(0)), 
 					jsonPack.getValues().elementAt(1))).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -624,7 +916,11 @@ public class ServicioAcademicoEndpoint {
 					servicioAcademico.getMateria(jsonPack.getValues().elementAt(0)), 
 					jsonPack.getValues().elementAt(1))).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -637,7 +933,11 @@ public class ServicioAcademicoEndpoint {
 					servicioAcademico.getMateria(jsonPack.getValues().elementAt(0)), 
 					jsonPack.getValues().elementAt(1))).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	

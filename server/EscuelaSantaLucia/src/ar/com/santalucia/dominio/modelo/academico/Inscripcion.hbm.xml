@@ -1,27 +1,29 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 30/01/2016 12:58:12 by Hibernate Tools 3.5.0.Final -->
+<!-- Generated 25-jun-2016 20:09:20 by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
     <class name="ar.com.santalucia.dominio.modelo.academico.Inscripcion" table="INSCRIPCION">
         <id name="idInscripcion" type="java.lang.Long">
             <column name="IDINSCRIPCION" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
-        <many-to-one name="mesa" class="ar.com.santalucia.dominio.modelo.academico.Mesa" fetch="join">
-            <column name="MESA" />
-        </many-to-one>
+       	<set name="listaMesas" table="INSCRIPCION_MESA" inverse="false" lazy="false" cascade="all">
+            <key>
+                <column name="IDINSCRIPCION" />
+            </key>
+			<many-to-many class="ar.com.santalucia.dominio.modelo.academico.Mesa">
+				<column name="IDMESA" />
+			</many-to-many>
+        </set>
         <property name="fecha" type="java.util.Date">
             <column name="FECHA" />
         </property>
         <many-to-one name="alumno" class="ar.com.santalucia.dominio.modelo.usuarios.Alumno" fetch="join">
             <column name="ALUMNO" />
         </many-to-one>
-        <property name="asistencia" type="java.lang.Boolean">
-            <column name="ASISTENCIA" />
+        <property name="codigo" type="java.lang.Integer">
+            <column name="CODIGO" />
         </property>
-        <many-to-one name="nota" class="ar.com.santalucia.dominio.modelo.desempenio.Nota" fetch="join">
-            <column name="NOTA" />
-        </many-to-one>
     </class>
 </hibernate-mapping>

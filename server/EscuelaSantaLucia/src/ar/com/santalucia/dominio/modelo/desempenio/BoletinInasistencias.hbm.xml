@@ -13,6 +13,12 @@
         <many-to-one name="propietario" class="ar.com.santalucia.dominio.modelo.usuarios.Alumno" fetch="join">
             <column name="PROPIETARIO" />
         </many-to-one>
+        <property name="anio" type="java.lang.String">
+            <column name="ANIO" />
+        </property>
+        <property name="curso" type="java.lang.String">
+            <column name="CURSO" />
+        </property>
         <property name="total" type="java.lang.Float">
             <column name="TOTAL" />
         </property>

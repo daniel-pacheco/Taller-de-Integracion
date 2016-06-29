@@ -3,55 +3,75 @@ package ar.com.santalucia.dominio.dto;
 import java.util.ArrayList;
 
 /**
- * PlanillaTrimestralDTO: contiene informaciÃ³n de la planilla trimestral (grilla de doble entrada)
+ * PlanillaTrimestralDTO: contiene información de la planilla trimestral (grilla
+ * de doble entrada)
  * 
  * @author Eric
- * @version 1.0
+ * @version 1.1
  *
  */
 public class PlanillaTrimestralDTO {
 
-	private String alumno;
-	private ArrayList<MateriaNotaDTO> notas;
+	private Integer trimestre;
+	private String anio;
+	private String curso;
+	private ArrayList<ItemPlanillaTrimestralDTO> planilla;
 
 	public PlanillaTrimestralDTO() {
 		super();
+		this.planilla = new ArrayList<ItemPlanillaTrimestralDTO>();
 	}
 
-	public PlanillaTrimestralDTO(String alumno, ArrayList<MateriaNotaDTO> notas) {
+	public PlanillaTrimestralDTO(Integer trimestre, ArrayList<ItemPlanillaTrimestralDTO> filas) {
 		super();
-		this.alumno = alumno;
-		this.notas = notas;
+		this.trimestre = trimestre;
+		this.planilla = filas;
 	}
 
 	/**
-	 * @return the alumno
+	 * @return the trimestre
 	 */
-	public String getAlumno() {
-		return alumno;
+	public Integer getTrimestre() {
+		return trimestre;
 	}
 
 	/**
-	 * @param alumno
-	 *            the alumno to set
+	 * @param trimestre
+	 *            the trimestre to set
 	 */
-	public void setAlumno(String alumno) {
-		this.alumno = alumno;
+	public void setTrimestre(Integer trimestre) {
+		this.trimestre = trimestre;
 	}
 
 	/**
-	 * @return the notas
+	 * @return the filas
 	 */
-	public ArrayList<MateriaNotaDTO> getNotas() {
-		return notas;
+	public ArrayList<ItemPlanillaTrimestralDTO> getPlanilla() {
+		return planilla;
 	}
 
 	/**
-	 * @param notas
-	 *            the notas to set
+	 * @param filas
+	 *            the filas to set
 	 */
-	public void setNotas(ArrayList<MateriaNotaDTO> notas) {
-		this.notas = notas;
+	public void setPlanilla(ArrayList<ItemPlanillaTrimestralDTO> planilla) {
+		this.planilla = planilla;
+	}
+
+	public String getAnio() {
+		return anio;
+	}
+
+	public void setAnio(String anio) {
+		this.anio = anio;
+	}
+
+	public String getCurso() {
+		return curso;
+	}
+
+	public void setCurso(String curso) {
+		this.curso = curso;
 	}
 
 }

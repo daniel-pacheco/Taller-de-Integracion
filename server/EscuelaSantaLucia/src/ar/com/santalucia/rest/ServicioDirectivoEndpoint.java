@@ -24,6 +24,8 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
 import ar.com.santalucia.excepciones.LoginError;
+import ar.com.santalucia.excepciones.SugerenciaPersonalException;
+import ar.com.santalucia.excepciones.ValidacionException;
 import ar.com.santalucia.servicio.ServicioDirectivo;
 import ar.com.santalucia.servicio.ServicioLogin;
 
@@ -127,15 +129,22 @@ public class ServicioDirectivoEndpoint {
 	@Path("/tel/{id:[0-9][0-9]*}")
 	public Response getTelefonos(@PathParam("id") final Long id) {
 		Set<Telefono> telefonos = new HashSet<Telefono>();
-		telefonos = null;
+		// telefonos = null;
 		try {
 			setInstance();
 			telefonos = servicioDirectivo.getTelefonos(id);
+			if (telefonos.size() == 0) {
+				return Response.status(Status.NO_CONTENT)
+						.entity(new FrontMessage("Sin resultados", FrontMessage.INFO))
+						.build();
+			}
+			return Response.ok(telefonos).build();
 		} catch (Exception ex) {
-			// ex.printStackTrace();
-			return Response.ok(ex).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
-		return Response.ok(telefonos).build();
 	}
 
 	/**
@@ -149,15 +158,22 @@ public class ServicioDirectivoEndpoint {
 	@Path("/mai/{id:[0-9][0-9]*}")
 	public Response getMails(@PathParam("id") final Long id){
 		Set<Mail> mails = new HashSet<Mail>();
-		mails = null;
+		// mails = null;
 		try {
 			setInstance();
 			mails = servicioDirectivo.getMails(id);
+			if (mails.size() == 0) {
+				return Response.status(Status.NO_CONTENT)
+						.entity(new FrontMessage("Sin resultados", FrontMessage.INFO))
+						.build();
+			}
+			return Response.ok(mails).build();
 		} catch (Exception ex) {
-			// TODO Auto-generated catch block
-			return Response.ok(ex).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
-		return Response.ok(mails).build();
 	}
 	
 	/**
@@ -170,14 +186,22 @@ public class ServicioDirectivoEndpoint {
 	@Path("/tit/{id:[0-9][0-9]*}")
 	public Response getTitulos(@PathParam("id") final Long id){
 		Set<Titulo> titulos = new HashSet<Titulo>();
-		titulos = null;
+		// titulos = null;
 		try{
 			setInstance();
 			titulos = servicioDirectivo.getTitulos(id);
+			if (titulos.size() == 0) {
+				return Response.status(Status.NO_CONTENT)
+						.entity(new FrontMessage("Sin resultados", FrontMessage.INFO))
+						.build();
+			}
+			return Response.ok(titulos).build();
 		}catch (Exception ex){
-			return Response.ok(ex).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
-		return Response.ok(titulos).build();
 	}
 	
 	/**
@@ -191,16 +215,22 @@ public class ServicioDirectivoEndpoint {
 	@Path("/listAll")
 	public Response listAll(){
 		List<Personal> personal = new ArrayList<Personal>();
-		personal = null;
+		// personal = null;
 		try {
 			setInstance();
 			personal = servicioDirectivo.getUsuarios(new Personal());
-		} catch (Exception ex) {
-			if (personal == null) {
-				return Response.status(Status.NOT_FOUND).build();
+			if (personal.size() == 0) {
+				return Response.status(Status.NO_CONTENT)
+						.entity(new FrontMessage("Sin resultados", FrontMessage.INFO))
+						.build();
 			}
+			return Response.ok(personal).build();
+		} catch (Exception ex) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
-		return Response.ok(personal).build();
 	}
 	
 	/**
@@ -219,9 +249,16 @@ public class ServicioDirectivoEndpoint {
 			setInstance();
 			servicioDirectivo.addUsuario(personal);
 			return Response.ok(personal.getIdUsuario()).build();
+		} catch (SugerenciaPersonalException spEx) {
+			return Response.status(Status.CONFLICT).entity(spEx.getPersonalSugerido()).build();
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.CONFLICT).entity(vEx.getMensajesError()).build();
 		} catch (Exception ex) {
-			// ex.printStackTrace();
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 
@@ -239,8 +276,11 @@ public class ServicioDirectivoEndpoint {
 			exito = servicioDirectivo.modifyTelefono(telefono);
 			return Response.ok(exito).build();
 		} catch (Exception ex) {
-			// ex.printStackTrace();
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -258,8 +298,11 @@ public class ServicioDirectivoEndpoint {
 			exito = servicioDirectivo.modifyMail(mail);
 			return Response.ok(exito).build();
 		} catch (Exception ex) {
-			// ex.printStackTrace();
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -277,7 +320,11 @@ public class ServicioDirectivoEndpoint {
 			exito = servicioDirectivo.modifyDomicilio(domicilio);
 			return Response.ok(exito).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -295,7 +342,11 @@ public class ServicioDirectivoEndpoint {
 			exito = servicioDirectivo.modifyTitulo(titulo);
 			return Response.ok(exito).build();
 		} catch (Exception ex) {
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -309,16 +360,23 @@ public class ServicioDirectivoEndpoint {
 	@Path("/dir/{id:[0-9][0-9]*}")
 	public Response deleteDirectivoById(@PathParam("id") final Long id) {
 		Boolean exito = false;
+		Personal personal = new Personal();
 		try {
 			setInstance();
+			personal = servicioDirectivo.getUsuario(id);
 			exito = servicioDirectivo.removeUsuario(servicioDirectivo.getUsuario(id));
-			if(exito == true){
-				return Response.serverError().entity(new FrontMessage("No se ha podido eliminar el directivo.",FrontMessage.INFO)).build();
+			if (personal == null) {
+				return Response.status(Status.NOT_FOUND)
+						.entity(new FrontMessage("Elemento a eliminar no encontrado", FrontMessage.INFO))
+						.build();
 			}
 			return Response.ok(exito).build();
 		} catch (Exception ex) {
-			// ex.printStackTrace();
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -359,8 +417,11 @@ public class ServicioDirectivoEndpoint {
 			exito = servicioDirectivo.removeTelefono(id);
 			return Response.ok(exito).build();
 		} catch (Exception ex) {
-			//e.printStackTrace();
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -378,8 +439,11 @@ public class ServicioDirectivoEndpoint {
 			exito = servicioDirectivo.removeDomicilio(id);
 			return Response.ok(exito).build();
 		}catch (Exception ex){
-			//e.printStackTrace();
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	
@@ -397,8 +461,11 @@ public class ServicioDirectivoEndpoint {
 			exito = servicioDirectivo.removeTitulo(id);
 			return Response.ok(exito).build();
 		}catch (Exception ex){
-			//e.printStackTrace();
-			return Response.ok(ex).build();
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
 		}
 	}
 	

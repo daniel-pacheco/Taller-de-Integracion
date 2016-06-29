@@ -13,16 +13,18 @@ public class ParametroConfiguracion {
 	private Long idParametroConfiguracion;
 	private String nombre;
 	private String valor;
+	private String descripcion;
 
 	public ParametroConfiguracion() {
 		super();
 	}
 
-	public ParametroConfiguracion(Long idParametroConfiguracion, String nombre, String valor) {
+	public ParametroConfiguracion(Long idParametroConfiguracion, String nombre, String valor, String descripcion) {
 		super();
 		this.idParametroConfiguracion = idParametroConfiguracion;
 		this.nombre = nombre;
 		this.valor = valor;
+		this.descripcion = descripcion;
 	}
 
 	public Long getIdParametroConfiguracion() {
@@ -47,6 +49,14 @@ public class ParametroConfiguracion {
 
 	public void setValor(String valor) {
 		this.valor = valor;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 }

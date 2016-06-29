@@ -24,7 +24,7 @@
 <!--             <element type="ar.com.santalucia.dominio.modelo.desempenio.Trimestre"> -->
 <!--                 <column name="LISTATRIMESTRES" /> -->
 <!--             </element> -->
-			<one-to-many class="ar.com.santalucia.dominio.modelo.desempenio.Trimestre" />
+            <one-to-many class="ar.com.santalucia.dominio.modelo.desempenio.Trimestre" />
         </set>
         <set name="listaNotasExamen" table="BOLETINNOTAS" inverse="false" lazy="false">
             <key>

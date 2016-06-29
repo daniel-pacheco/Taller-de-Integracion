@@ -71,5 +71,11 @@
         <property name="fechaHoraFinMesa" type="java.util.Date">
             <column name="FECHAHORAFINMESA" />
         </property>
+        <property name="nombreEquivalencia" type="java.lang.String">
+            <column name="NOMBREEQUIVALENCIA" />
+        </property>
+        <property name="anioEquivalencia" type="java.lang.String">
+            <column name="ANIOEQUIVALENCIA" />
+        </property>
     </class>
 </hibernate-mapping>

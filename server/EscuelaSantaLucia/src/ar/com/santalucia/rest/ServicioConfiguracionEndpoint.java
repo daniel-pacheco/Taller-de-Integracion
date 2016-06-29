@@ -81,9 +81,7 @@ public class ServicioConfiguracionEndpoint {
 	public Response updateAllParametros(final ArrayList<ParametroConfiguracion> parametros){
 		try{
 			setInstance();
-			for(ParametroConfiguracion pc: parametros){
-				servicioConfiguracion.addParametro(pc);
-			}
+			servicioConfiguracion.addParametros(parametros);
 			return Response.ok(true).build();
 		}catch(Exception ex){
 			return Response.ok(ex).build();
@@ -97,7 +95,7 @@ public class ServicioConfiguracionEndpoint {
 			setInstance();
 			Inicializador inicia = new Inicializador();
 			inicia.inicializarLog();
-			Logger.getLogger(getClass().getName()).log(Level.INFO,"Se inició el registro de log con éxito"); // Registro de log
+			//Logger.getLogger(getClass().getName()).log(Level.INFO,"Se inició el registro de log con éxito"); // Registro de log
 			return Response.ok().build();
 		}catch(Exception ex){
 			return Response.serverError().entity(ex).build();

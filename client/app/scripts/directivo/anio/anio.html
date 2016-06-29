@@ -36,7 +36,7 @@
 	<!--/ngInclude: 'views/partials/affixed-sidebar.html' -->
 </div>
 
-<div class="col-md-10">
+<div>
 
 	<div id="listadoAnio" ng-show="listadoAnio">
 		<fieldset>
@@ -71,7 +71,7 @@
 							<td data-toggle="collapse" data-target="#{{anio.idAnio}}" class="accordion-toggle" ng-click="downGlyphiconIna = !downGlyphiconIna" style="cursor: pointer;">{{anio.nombre}}</td>
 							<td data-toggle="collapse" data-target="#{{anio.idAnio}}" class="accordion-toggle" ng-click="downGlyphiconIna = !downGlyphiconIna" style="cursor: pointer;">{{anio.descripcion}}</td>
 							<td>
-								<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipEdit" ng-click="editAnio(anio)">
+								<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipEdit" ng-click="editAnio(anio)" style="width: 40%">
 									<span data-animation="am-flip-x" class="glyphicon glyphicon-edit"></span>
 								</button>
 							</td> 

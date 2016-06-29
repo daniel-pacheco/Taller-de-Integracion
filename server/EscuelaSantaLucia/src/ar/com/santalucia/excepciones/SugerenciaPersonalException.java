@@ -16,7 +16,7 @@ public class SugerenciaPersonalException extends Exception {
 		personalSugerido = new Personal();
 	}
 	
-	public Personal getPersoanlSugerido() {
+	public Personal getPersonalSugerido() {
 		return personalSugerido;
 	}
 	

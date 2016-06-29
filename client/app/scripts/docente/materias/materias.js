@@ -19,7 +19,7 @@
  		}
  	});
  })
- .controller('DocenteMateriasCtrl', function ($scope, primerTrimData) {
+ .controller('DocenteMateriasCtrl', function ($scope, primerTrimData, todosLosTrimData) {
 
  	$scope.listaMaterias = [
  	{ 
@@ -90,13 +90,16 @@
 			$scope.planillaMarzo = plantillaTrimestralData;//se debe asignar la plantilla de este trmiestre
 		}
 		break;
-		case 'todos':
+		case "todos":
 		if ($scope.planillaTodos == null){
-			$scope.planillaTodos = plantillaTrimestralData;//se debe asignar la plantilla de este trmiestre
+			$scope.planillaTodos = todosLosTrimData;//se debe asignar la planilla de todos los trim
 		}
 		break;
 	}
 };
+$scope.prueba = function (){
+	alert($scope.filteredAlumnos);
+}
 
 $scope.createCopy = function(lista){
 	$scope.copiaLista = angular.copy(lista);

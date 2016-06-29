@@ -1,10 +1,15 @@
 package ar.com.santalucia.servicio;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
+
+import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorAnio;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMateria;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinInasistencias;
@@ -18,6 +23,7 @@ import ar.com.santalucia.dominio.dto.BoletinInasistenciasDTO;
 import ar.com.santalucia.dominio.dto.GetPlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.dto.ItemPlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.dto.MateriaNotaDTO;
+import ar.com.santalucia.dominio.dto.PlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
@@ -29,6 +35,7 @@ import ar.com.santalucia.dominio.modelo.desempenio.MateriaNotasBoletin;
 import ar.com.santalucia.dominio.modelo.desempenio.Nota;
 import ar.com.santalucia.dominio.modelo.desempenio.Trimestre;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
+import ar.com.santalucia.dominio.modelo.usuarios.Usuario;
 import ar.com.santalucia.excepciones.*;
 
 /**
@@ -51,6 +58,9 @@ public class ServicioDesempenio {
 	private GestorInasistencia gInasistencia;
 	private GestorBoletinInasistencias gBoletinInasistencias;
 	
+	public static String BUSCAR_BOLETIN_NOTAS = "bn";
+	public static String BUSCAR_BOLETIN_INASISTENCIAS = "bi";
+	
 	public ServicioDesempenio() throws Exception {
 		try {
 			gNota = new GestorNota();
@@ -65,6 +75,51 @@ public class ServicioDesempenio {
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un problema al inicializar el servicio de operaciones básicas: "
 					+ ex.getMessage());
+		}
+	}
+	
+	/**
+	 * Devuelve el boletin de notas o de inasistencias. El resultado se debe castear a <i>BoletinNotas</i>
+	 * o <i>BoletinInasistencias</i>, según el caso.
+	 * @param alumno el alumno del cual se desea el boletín
+	 * @param boletinBuscado el boletin que se quiere buscar: 
+	 * 		<b>"bn"</b> para el de notas;
+	 * 		<b>"bi"</b> para el de inasistencias.
+	 * @return el boletin de inasistencias o de notas (como Object)
+	 * @throws Exception
+	 */
+	public static Object encontrarBoletinDeAlumno(Alumno alumno, String boletinBuscado) throws Exception {
+		try {
+			String sql = "";
+			switch (boletinBuscado) {
+			case "bn":
+				sql = "SELECT * FROM BOLETINNOTAS WHERE PROPIETARIO = "+String.valueOf(alumno.getIdUsuario());
+				break;
+			case "bi":
+				sql = "SELECT * FROM BOLETININASISTENCIAS WHERE PROPIETARIO = "+String.valueOf(alumno.getIdUsuario());
+				break;
+			}
+			Session sessAux = null;
+			if ((sessAux == null) || (!sessAux.isOpen())) {
+				sessAux = HibernateUtil.getSessionFactory().openSession();
+				
+			}
+			if (!sessAux.getTransaction().isActive()) {
+				sessAux.beginTransaction();
+			}
+			SQLQuery consulta = sessAux.createSQLQuery(sql).addEntity((boletinBuscado.equals("bn")
+																		? BoletinNotas.class
+																		: BoletinInasistencias.class));
+			
+			List result = consulta.list();
+			sessAux.close();
+			if (result != null) {
+				return result.get(0);
+			} else {
+				return null;
+			}
+		} catch (Exception ex) {
+			throw new Exception("No se pudo obtener el boletin de notas del alumno especificado: " + ex.getMessage());
 		}
 	}
 	
@@ -155,11 +210,10 @@ public class ServicioDesempenio {
 			
 			boletinHistorico.setListaMateriasNotasBoletin(listaMateriasNotasBoletin);
 			gBoletinHist.add(boletinHistorico);
-			
+			return true;
 		} catch (Exception ex) {
 			throw new Exception ("No se pudo pasar a histórico el BOLETÍN DE NOTAS: " + ex.getMessage());
 		}
-		return true;
 	}
 
 	public Boolean addBoletinHistorico(BoletinNotasHist boletinHistorico) throws Exception {
@@ -357,6 +411,73 @@ public class ServicioDesempenio {
 									+ gptDTO.getNroTrimestre() + ": " + ex.getMessage());
 		}
 	}
+	
+	
+	public Boolean procesarPlanillaTrimestral(PlanillaTrimestralDTO planillaTrimestralDTO) throws Exception {
+		try {
+			List<ItemPlanillaTrimestralDTO> itemsPlanilla = planillaTrimestralDTO.getPlanilla();
+			Anio anio = new Anio();
+			Curso curso = new Curso();
+			anio = gAnio.getByExample(new Anio(null, planillaTrimestralDTO.getAnio(), null, null, null, null)).get(0);
+			for (Curso c : anio.getListaCursos()) {
+				if (c.getDivision().equals(planillaTrimestralDTO.getCurso().charAt(0))) {
+					curso = c;
+				}
+			}
+			
+			BoletinNotas boletin = new BoletinNotas();
+			List<Alumno> alumnos = new ArrayList<Alumno>();
+			alumnos.addAll(curso.getListaAlumnos());
+			for (ItemPlanillaTrimestralDTO item : itemsPlanilla) {
+				for (Alumno a : alumnos) {
+					if (a.toString().equals(item.getAlumno())) {
+						String sql = "SELECT * FROM BOLETINNOTAS WHERE PROPIETARIO = "+String.valueOf(a.getIdUsuario());
+						Session sessAux = null;
+						if ((sessAux == null) || (!sessAux.isOpen())) {
+							sessAux = HibernateUtil.getSessionFactory().openSession();
+							
+						}
+						if (!sessAux.getTransaction().isActive()) {
+							sessAux.beginTransaction();
+						}
+						SQLQuery consulta = sessAux.createSQLQuery(sql).addEntity(BoletinNotas.class);
+						
+						//boletin = gBoletin.getByExample(boletin).get(0);
+						boletin = (BoletinNotas) consulta.list().get(0);
+						break;
+					}
+				}
+				
+				for (MateriaNotaDTO m : item.getNotas()) {
+					Trimestre trimestre = new Trimestre();
+					for (Trimestre t : boletin.getListaTrimestres()) {
+						if (t.getMateria().getNombre().equals(m.getMateria())
+								&& t.getOrden().equals(planillaTrimestralDTO.getTrimestre())) {
+							trimestre = t;
+							break;
+						}
+					}
+					Nota nota = trimestre.getNotaFinal();
+					nota.setCalificacion(m.getNota());
+					nota.setTipo(Nota.NOTA_FINAL_TRIMESTRAL);
+					nota.setFecha(Calendar.getInstance().getTime());
+					nota.setMateria(trimestre.getMateria());
+					gNota.modify(nota);
+					/*trimestre.getNotaFinal().setCalificacion(m.getNota());
+					trimestre.getNotaFinal().setTipo(Nota.NOTA_FINAL_TRIMESTRAL);
+					trimestre.getNotaFinal().setMateria(trimestre.getMateria());
+					trimestre.getNotaFinal().setFecha(Calendar.getInstance().getTime());
+					gTrimestre.modify(trimestre);*/
+				}
+			}
+			return true;
+		} catch (Exception ex) {
+			throw new Exception("No se pudo procesar la planilla trimestral: " + ex.getMessage());
+		}
+	}
+	
+	
+	
 
 	/**
 	 * Test method
@@ -473,12 +594,12 @@ public class ServicioDesempenio {
 			// elimina inasistencias sobrantes
 			eliminarInasistencias(listaNueva, listaPersis);
 			
+			gBoletinInasistencias.closeSession();
 			
 			Set<Inasistencia> setInasistencias = new HashSet<Inasistencia>();
 			setInasistencias.addAll(listaNueva);
 			bolInasistencias.setListaInasistencias(setInasistencias);
 			
-			gBoletinInasistencias.closeSession();
 			gBoletinInasistencias.modify(bolInasistencias);
 		} catch (ValidacionException vEx) {
 			throw vEx;
