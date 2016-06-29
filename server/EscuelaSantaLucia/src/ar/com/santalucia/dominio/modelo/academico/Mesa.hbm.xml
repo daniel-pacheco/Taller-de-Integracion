@@ -19,7 +19,7 @@
         <many-to-one name="materia" class="ar.com.santalucia.dominio.modelo.academico.Materia" fetch="join">
             <column name="MATERIA" />
         </many-to-one>
-        <set name="integrantesTribunal" table="DOCENTE_MESA" inverse="false" lazy="true">
+        <set name="integrantesTribunal" table="DOCENTE_MESA" inverse="false" lazy="false">
             <key>
                 <column name="IDMESA" />
             </key>

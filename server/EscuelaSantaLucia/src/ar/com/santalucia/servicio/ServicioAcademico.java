@@ -651,7 +651,7 @@ public class ServicioAcademico {
 	public Boolean addMesa(MesaAltaDTO mesaAltaDTO) throws Exception{
 		try{
 			Llamado llamado = gLlamado.getById(mesaAltaDTO.getIdLlamado());
-			if(llamado!=null && !llamado.getIdLlamado().equals("")){
+			if(llamado!=null && !(llamado.getIdLlamado() == null)){
 				ServicioConfiguracion.comprendidoEnPeriodo(mesaAltaDTO.getFechaHoraInicio(), mesaAltaDTO.getFechaHoraFin(), null, llamado.getFechaInicio(), llamado.getFechaFin());
 				Personal docente1 = gDocente.getByExample(new Personal(mesaAltaDTO.getTribunalDoc1(),null,null,null,null,null,null,null,null,null,true,null,null,null,null)).get(0);
 				Personal docente2 = gDocente.getByExample(new Personal(mesaAltaDTO.getTribunalDoc2(),null,null,null,null,null,null,null,null,null,true,null,null,null,null)).get(0);
@@ -678,7 +678,7 @@ public class ServicioAcademico {
 			}
 			
 		}catch(Exception ex){
-			
+			throw ex;
 		}
 		
 		
@@ -1035,7 +1035,7 @@ public class ServicioAcademico {
 		return null;
 	}
 	
-	public void closeSession() throws Exception {
+	public void closeSession() throws Exception { 
 		gAnio.closeSession();
 	}
 }

@@ -57,11 +57,4 @@
 		<nature>org.jboss.tools.ws.jaxrs.nature</nature>
 		<nature>org.jboss.tools.cdi.core.cdinature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>src/ar/com/santalucia/accesodatos/persistencia/backConfig.cfg.xml</name>
-			<type>1</type>
-			<location>D:/usr/backConfig/hibernate.cfg.xml</location>
-		</link>
-	</linkedResources>
 </projectDescription>

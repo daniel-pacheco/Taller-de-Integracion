@@ -22,6 +22,7 @@ import ar.com.santalucia.dominio.dto.AnioDTO;
 import ar.com.santalucia.dominio.dto.DetallePreviaDTO;
 import ar.com.santalucia.dominio.dto.MateriaAltaDTO;
 import ar.com.santalucia.dominio.dto.MateriaDTO;
+import ar.com.santalucia.dominio.dto.MesaAltaDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Area;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
@@ -743,6 +744,23 @@ public class ServicioAcademicoEndpoint {
 					.build();
 		}
 	}
+	
+	@PUT
+	@Path("/mesa/")
+	public Response updateMesa(MesaAltaDTO mesaAltaDTO) {
+		try {
+			setInstance();
+			return Response.ok(servicioAcademico.addMesa(mesaAltaDTO)).build();
+		} catch (Exception ex) {
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
+		}
+	}
+	
+	
 	
 	@PUT
 	@Path("/mes/")
