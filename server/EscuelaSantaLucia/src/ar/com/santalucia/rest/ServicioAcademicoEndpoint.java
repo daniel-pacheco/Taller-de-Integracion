@@ -634,6 +634,28 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 	
+	@GET /*Borrar si no se usa, tampoco está probado*/
+	@Path("/llm/getByDesc/{desc:[a-z]*}")
+	public Response getByDescripcion(@PathParam("desc") String descLlamado){
+		Llamado llamado = new Llamado();
+		try {
+			setInstance();
+			llamado = servicioAcademico.getLlamado(descLlamado);
+			if (llamado == null) {
+				return Response.status(Status.NOT_FOUND)
+						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
+						.build();
+			}
+			return Response.ok(llamado).build();
+		} catch (Exception ex) {
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
+		}
+	}
+	
 	@GET
 	@Path("/llm/{idL:[0-9][0-9]*}")
 	public Response getLlamadoById(@PathParam("idL") Long idL) {

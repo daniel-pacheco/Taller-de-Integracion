@@ -8,7 +8,7 @@ package ar.com.santalucia.dominio.dto;
  *
  */
 public class MateriaDTO {
-
+	private Long idMateria;
 	private String nombre;
 	private String descripcion;
 	private String docenteTitular;
@@ -20,9 +20,10 @@ public class MateriaDTO {
 		super();
 	}
 
-	public MateriaDTO(String nombre, String descripcion, String docenteTitular, String docenteSuplente, String area,
+	public MateriaDTO(Long idMateria, String nombre, String descripcion, String docenteTitular, String docenteSuplente, String area,
 			String anio) {
 		super();
+		this.idMateria = idMateria;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.docenteTitular = docenteTitular;
@@ -119,6 +120,14 @@ public class MateriaDTO {
 	 */
 	public void setAnio(String anio) {
 		this.anio = anio;
+	}
+
+	public Long getIdMateria() {
+		return idMateria;
+	}
+
+	public void setIdMateria(Long idMateria) {
+		this.idMateria = idMateria;
 	}
 
 }

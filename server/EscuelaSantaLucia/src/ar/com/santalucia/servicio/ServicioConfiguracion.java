@@ -1,13 +1,11 @@
 package ar.com.santalucia.servicio;
 
-import java.text.DateFormat;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import ar.com.santalucia.aplicacion.gestor.sistema.configuracion.GestorParametroConfiguracion;
-import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.sistema.configuracion.ParametroConfiguracion;
 import ar.com.santalucia.excepciones.ValidacionException;
 /**
@@ -17,7 +15,7 @@ import ar.com.santalucia.excepciones.ValidacionException;
  */
 
 public class ServicioConfiguracion {
-	private GestorParametroConfiguracion gConfiguracion;
+	private static GestorParametroConfiguracion gConfiguracion;
 
 	public ServicioConfiguracion(GestorParametroConfiguracion gConfiguracion) {
 		super();
@@ -71,6 +69,17 @@ public class ServicioConfiguracion {
 		try {
 			return gConfiguracion.getById(idParametro);
 		} catch(Exception ex) {
+			throw new Exception("No se pudo obtener el PARÁMETRO: " + ex.getMessage());
+		}
+	}
+	
+	public static ParametroConfiguracion getParametro(String nombreParametro) throws Exception{
+		try {
+			if (gConfiguracion==null){
+				gConfiguracion = new GestorParametroConfiguracion();
+			}
+			return gConfiguracion.getByExample(new ParametroConfiguracion(null,nombreParametro,null,null)).get(0);
+		}catch(Exception ex){
 			throw new Exception("No se pudo obtener el PARÁMETRO: " + ex.getMessage());
 		}
 	}
@@ -161,4 +170,56 @@ public class ServicioConfiguracion {
 			throw new Exception ("La fecha de finalización de ciclo debe ser mayor al inicio");
 		}
 	}
+	
+	/**
+	 * Determina si el periodo calificado como menor está comprendido dentro de los límites del periodo mayor.<br>
+	 * Es posible utilizar un parámetro válido de configuracion como COMIENZO_ACADEMICO.
+	 * @param fecha1 Fecha de inicio del periodo menor.
+	 * @param fecha2 Fecha de fin del periodo menor.
+	 * @param parametro (Opcional) Nombre de parámetro válido para utilizar una periodo de fechas predefinidas de configuración. Establecer null si no se utiliza este parámetro.  
+	 * @param periodo1 (Opcional) Fecha de inicio del periodo mayor. Establecer null si no se utiliza este parámetro. 
+	 * @param periodo2 (Opcional) Fecha de fin del periodo mayor. Establecer null si no se utiliza este parámetro.
+	 * @throws Exception
+	 */
+	public static void comprendidoEnPeriodo(Date fecha1, Date fecha2, String parametro, Date periodo1, Date periodo2) throws Exception{
+		
+		SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+		Calendar comienzoPeriodo = Calendar.getInstance();
+		Calendar finPeriodo = Calendar.getInstance();
+		Calendar fechaInicio = Calendar.getInstance();
+		Calendar fechaFin = Calendar.getInstance();
+		if( parametro!=null || periodo1==null || periodo2==null){
+			parametro = parametro==null?"":parametro; 
+			switch (parametro) {
+			case "COMIENZO_ACADEMICO":
+					comienzoPeriodo.setTime(formatoFecha.parse(getParametro("COMIENZO_ACADEMICO").getValor()));
+					finPeriodo.setTime(formatoFecha.parse(getParametro("FIN_ACADEMICO").getValor()));
+				break;
+			default:
+					comienzoPeriodo.setTime(formatoFecha.parse(getParametro("COMIENZO_ACADEMICO").getValor()));
+					finPeriodo.setTime(formatoFecha.parse(getParametro("FIN_ACADEMICO").getValor()));
+				break;
+			}
+		}else{
+			comienzoPeriodo.setTime(periodo1);
+			finPeriodo.setTime(periodo2);
+		}
+		fechaInicio.setTime(fecha1);
+		fechaFin.setTime(fecha2);
+		
+		if(fechaFin.after(fechaInicio) || fechaFin.equals(fechaInicio)){
+			if (fechaInicio.after(comienzoPeriodo) || fechaInicio.equals(comienzoPeriodo) ){
+				if( fechaFin.before(finPeriodo) || fechaFin.equals(finPeriodo) ){
+					return;
+				}else{
+					throw new Exception("Periodo excede fin del periodo comparado.");
+				}
+			}else{
+				throw new Exception("Periodo se anticipa al comienzo del periodo comparado.");
+			}
+		}else{
+			throw new Exception("Periodo con fecha de fin inferior al periodo comparado.");
+		}
+	}
+	
 }
