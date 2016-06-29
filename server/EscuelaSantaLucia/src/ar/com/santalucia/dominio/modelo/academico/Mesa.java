@@ -19,7 +19,6 @@ public class Mesa {
 	private Long idMesa;
 	private Date fechaHoraInicio;
 	private Date fechaHoraFin;
-	private Long plazoInscripcion;
 	private Materia materia;
 	private Set<Personal> integrantesTribunal;
 
@@ -28,13 +27,12 @@ public class Mesa {
 		integrantesTribunal = new HashSet<Personal>();
 	}
 
-	public Mesa(Long idMesa, Date fechaHoraInicio, Date fechaHoraFin, Long plazoInscripcion, Materia materia, Set<Personal> integrantesTribunal,
+	public Mesa(Long idMesa, Date fechaHoraInicio, Date fechaHoraFin, Materia materia, Set<Personal> integrantesTribunal,
 			Set<Inscripcion> listaInscripciones) {
 		super();
 		this.idMesa = idMesa;
 		this.fechaHoraInicio = fechaHoraInicio;
 		this.fechaHoraFin = fechaHoraFin;
-		this.plazoInscripcion = plazoInscripcion;
 		this.materia = materia;
 		this.setIntegrantesTribunal(integrantesTribunal);
 	}
@@ -54,14 +52,6 @@ public class Mesa {
 
 	public void setFechaHoraInicio(Date fecha) {
 		this.fechaHoraInicio = fecha;
-	}
-
-	public Long getPlazoInscripcion() {
-		return plazoInscripcion;
-	}
-
-	public void setPlazoInscripcion(Long plazoInscripcion) {
-		this.plazoInscripcion = plazoInscripcion;
 	}
 
 	public Materia getMateria() {

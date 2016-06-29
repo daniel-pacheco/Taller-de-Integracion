@@ -17,7 +17,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 public class Inscripcion {
 	
 	private Long idInscripcion;
-	private Set<Mesa> mesa;
+	private Set<Mesa> listaMesas;
 	private Date fecha;
 	private Alumno alumno;
 	private Integer codigo;
@@ -26,10 +26,10 @@ public class Inscripcion {
 		super();
 	}
 
-	public Inscripcion(Long idInscripcion, Set<Mesa> mesa, Date fecha, Alumno alumno, Integer codigo) {
+	public Inscripcion(Long idInscripcion, Set<Mesa> listaMesas, Date fecha, Alumno alumno, Integer codigo) {
 		super();
 		this.idInscripcion = idInscripcion;
-		this.mesa = mesa;
+		this.listaMesas = listaMesas;
 		this.fecha = fecha;
 		this.alumno = alumno;
 		this.codigo = codigo;
@@ -43,12 +43,12 @@ public class Inscripcion {
 		this.idInscripcion = idInscripcion;
 	}
 
-	public Set<Mesa> getMesa() {
-		return mesa;
+	public Set<Mesa> getListaMesas() {
+		return listaMesas;
 	}
 
-	public void setMesa(Set<Mesa> mesa) {
-		this.mesa = mesa;
+	public void setListaMesas(Set<Mesa> listaMesas) {
+		this.listaMesas = listaMesas;
 	}
 
 	public Date getFecha() {
