@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
+
 import ar.com.auth0.jwt.JWTExpiredException;
 import ar.com.auth0.jwt.JWTSigner;
 import ar.com.auth0.jwt.JWTVerifier;
@@ -123,31 +125,29 @@ public class ServicioLogin {
 			MailServer mailServer = new MailServer();
 			Boolean resLogin = mailServer.login();
 			
-			// 1) buscar el usuario con el dni
-			// 2) obtener la dir. de email
-			// 3) obtener la entrada de login para recuperar la contraseña actual o generar una nueva
-			// 4) crear correo
-			// 5) enviar correo con contraseña nueva al usuario
-			
 			Login loginUsuario = new Login();
 			ArrayList<Login> listaLogin = gLogin.getByExample(new Login(null,dniUsuario,null,null,null,rol,null));
 			loginUsuario = listaLogin.get(0);
 			Usuario usuario;
+			String nuevaClave = "";
 			switch (rol) {
 			case Login.ALUMNO:
 				ServicioAlumno sAlumno = new ServicioAlumno();
 				usuario = new Alumno();
 				usuario = sAlumno.getUsuarioByDni(dniUsuario);
+				nuevaClave = generarStringRandom(6);
 				break;
 			case Login.DOCENTE:
 				ServicioDocente sDocente = new ServicioDocente();
 				usuario = new Personal();
 				usuario = sDocente.getUsuarioByDni(dniUsuario);
+				nuevaClave = generarStringRandom(10);
 				break;
 			case Login.DIRECTIVO:
 				ServicioDirectivo sDirectivo = new ServicioDirectivo();
 				usuario = new Personal();
 				usuario = sDirectivo.getUsuarioByDni(dniUsuario);
+				nuevaClave = generarStringRandom(10);
 				break;
 			case Login.ADMINISTRADOR:
 				// ¿?
@@ -157,10 +157,13 @@ public class ServicioLogin {
 				usuario = new Usuario();
 			}
 			
+			loginUsuario.setClave(nuevaClave);
+			gLogin.modify(loginUsuario);
+			
 			String subject = "<<TEST>> Recuperación de contraseña de usuario " + rol;
 			String message = "<<TEST>> \nSentimos que haya olvidado o perdido su contraseña de acceso al sistema. "
 					+ "A continuación adjuntamos la contraseña que usted tiene actualmente para que pueda volver a ingresar: \n\n"
-					+ loginUsuario.getClave() + "\n\n"
+					+ nuevaClave + "\n\n"
 					+ "Si usted no reconoce este email y usted nunca pidió la recuperación de la contraseña, póngase inmediatamente "
 					+ "en contacto con el administrador del sistema. \n\n"
 					+ "Gracias!";
@@ -174,9 +177,15 @@ public class ServicioLogin {
 			throw new Exception("Hubo un error al enviar el email con la contraseña: " + e.getMessage());
 		}
 	}
-	
-	public void enviarMail(String direccion, String clave){
-		// LANZAR EXCEPCION EN CASO DE ERROR
+
+	public static String generarStringRandom(int cantCaract) {
+		String caracteres = "abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ1234567890";
+		Random rnd = new Random();
+		StringBuilder cadenaRandom = new StringBuilder();
+		for (int i = 0; i < cantCaract; i++) {
+			cadenaRandom.append(caracteres.charAt(rnd.nextInt(caracteres.length())));
+		}
+		return cadenaRandom.toString();
 	}
 	
 	private static String generarToken(String usuario, String rol) throws Exception{

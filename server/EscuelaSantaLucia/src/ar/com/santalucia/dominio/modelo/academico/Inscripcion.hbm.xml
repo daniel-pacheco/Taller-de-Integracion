@@ -8,11 +8,13 @@
             <column name="IDINSCRIPCION" />
             <generator class="identity" />
         </id>
-       <set name="mesa" table="MESA" inverse="false" lazy="false" cascade="all">
+       	<set name="listaMesas" table="INSCRIPCION_MESA" inverse="false" lazy="false" cascade="all">
             <key>
                 <column name="IDINSCRIPCION" />
             </key>
-            <one-to-many class="ar.com.santalucia.dominio.modelo.academico.Mesa" />
+			<many-to-many class="ar.com.santalucia.dominio.modelo.academico.Mesa">
+				<column name="IDMESA" />
+			</many-to-many>
         </set>
         <property name="fecha" type="java.util.Date">
             <column name="FECHA" />

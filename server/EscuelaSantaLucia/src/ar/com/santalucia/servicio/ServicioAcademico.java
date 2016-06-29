@@ -6,6 +6,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
+
+import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorAnio;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorArea;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorCurso;
@@ -273,21 +277,36 @@ public class ServicioAcademico {
 			// agregar boletin de notas
 			Anio anio = this.cursoPerteneceAnio(curso);
 			Set<Materia> materias = anio.getListaMaterias();
-			BoletinNotas boletinNotas = new BoletinNotas();
+			BoletinNotas boletinNotas = (BoletinNotas) ServicioDesempenio
+					.encontrarBoletinDeAlumno(alumno, ServicioDesempenio.BUSCAR_BOLETIN_NOTAS);
+			if (boletinNotas == null) {
+				boletinNotas = new BoletinNotas();
+				boletinNotas.setPropietario(alumno);
+				boletinNotas.setCicloLectivo(Integer.valueOf(anio.getCicloLectivo()));
+				inicializarBoletinNotas(boletinNotas, materias);
+			}
 			boletinNotas.setAnio(anio.getNombre());
 			boletinNotas.setCurso(curso.getDivision().toString());
-			boletinNotas.setPropietario(alumno);
-			boletinNotas.setCicloLectivo(Integer.valueOf(anio.getCicloLectivo()));
-			inicializarBoletinNotas(boletinNotas, materias);
-			gBoletinNotas.add(boletinNotas);
+			if (boletinNotas.getIdBoletinNotas().equals(null)) {
+				gBoletinNotas.add(boletinNotas);
+			} else {
+				gBoletinNotas.modify(boletinNotas);
+			}
 			// agregar boletin de inasistencias
-			BoletinInasistencias boletinInasistencias = new BoletinInasistencias();
-			boletinInasistencias.setPropietario(alumno);
+			BoletinInasistencias boletinInasistencias = (BoletinInasistencias) ServicioDesempenio
+					.encontrarBoletinDeAlumno(alumno, ServicioDesempenio.BUSCAR_BOLETIN_INASISTENCIAS);
+			if (boletinInasistencias == null) {
+				boletinInasistencias = new BoletinInasistencias();
+				boletinInasistencias.setPropietario(alumno);
+			}
 			boletinInasistencias.setAnio(anio.getNombre());
 			boletinInasistencias.setCurso(curso.getDivision().toString());
 			boletinInasistencias.setActivo(true);
-			gBoletinInasistencias.add(boletinInasistencias);
-			
+			if (boletinInasistencias.getIdBoletinInasistencias().equals(null)) {
+				gBoletinInasistencias.add(boletinInasistencias);
+			} else {
+				gBoletinInasistencias.modify(boletinInasistencias);
+			}
 			return true;
 		} catch(Exception ex) {
 			throw new Exception("No se pudo asignar el ALUMNO al CURSO: " + ex.getMessage());
@@ -312,25 +331,8 @@ public class ServicioAcademico {
 		}
 	}
 	
-	
-	
-	
-	
-	
-	
 
-	public Boolean desvincularAlumnoDeCurso(Alumno alumno, Long idCurso) throws Exception{ // EN ENDPOINT
-		// TODO
-		// 1 - Traer el curso generico
-		// 2 - Rescatar el listado de alumnos del curso generico
-		// 3 - Asignar el alumno al listado de alumnos del curso generico
-		// 4 - Asignar el listado modificado al curso generico
-		// 5 - Llamar al modify del gestor y guardar el curso generico
-		// 6 - Traer el curso
-		// 7 - Rescatar el listado de alumnos del curso
-		// 8 - Remover el alumno del listado
-		// 9 - Asignar el listado modificado al curso
-		// 10 - Llamar al modify del gestor y guardar el curso
+	public Boolean desvincularAlumnoDeCurso(Alumno alumno, Long idCurso) throws Exception { // EN ENDPOINT
 		try{
 			Curso cursoGenerico = gCurso.getByDivision('0');
 			Set<Alumno> alumnosCursoGenerico = cursoGenerico.getListaAlumnos();
@@ -342,12 +344,24 @@ public class ServicioAcademico {
 			alumnos.remove(alumno);
 			curso.setListaAlumnos(alumnos);
 			gCurso.modify(curso);
-		} catch(Exception ex){
+			// modificar boletin de notas
+			BoletinNotas boletinNotas = (BoletinNotas) ServicioDesempenio.encontrarBoletinDeAlumno(alumno, ServicioDesempenio.BUSCAR_BOLETIN_NOTAS);
+			boletinNotas.setAnio(null);
+			boletinNotas.setCurso("0");
+			gBoletinNotas.modify(boletinNotas);
+			// modificar boletin de inasistencias
+			BoletinInasistencias boletinInasistencias = (BoletinInasistencias) ServicioDesempenio.encontrarBoletinDeAlumno(alumno, ServicioDesempenio.BUSCAR_BOLETIN_INASISTENCIAS);
+			boletinInasistencias.setAnio(null);
+			boletinInasistencias.setCurso("0");
+			gBoletinInasistencias.modify(boletinInasistencias);
+		} catch(Exception ex) {
 			throw new Exception("No se pudo desvincular el ALUMNO del CURSO: " + ex.getMessage());
 		}
-		return false;
+		return true;
 	}
 
+	
+	
 	public Boolean addMateria(MateriaAltaDTO materiaAltaDTO) throws Exception {
 		// DECLARO AUXILIARES
 		Area areaAux = new Area();
@@ -383,7 +397,7 @@ public class ServicioAcademico {
 			if(materiaAltaDTO.getIdAnio() != null){					// Y ADEMÁS VIENE CON AÑO
 				desvincularMateriaDeAnio(materiaAux, materiaPerteneceAnio(materiaAux));	// SI EXISTE LA MATERIA, VIENE CON AÑO, ENTONCES DESVINCULO ANTES
 				asignarMateriaAAnio(materiaAux, materiaAltaDTO.getIdAnio());			// VUELVO A VINCULAR AL NUEVO AÑO
-				}
+			}
 			gMateria.modify(materiaAux);
 			return true;
 		}else{														// SI NO EXISTE LA MATERIA CREO Y VINCULO

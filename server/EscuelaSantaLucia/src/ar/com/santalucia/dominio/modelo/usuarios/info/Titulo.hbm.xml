@@ -17,5 +17,11 @@
         <property name="descripcionTitulo" type="java.lang.String">
             <column name="DESCRIPCIONTITULO" />
         </property>
+        <property name="nroRegistro" type="java.lang.String">
+            <column name="NROREGISTRO" />
+        </property>
+        <property name="autoridadOtorga" type="java.lang.String">
+            <column name="AUTORIDADOTORGA" />
+        </property>
     </class>
 </hibernate-mapping>

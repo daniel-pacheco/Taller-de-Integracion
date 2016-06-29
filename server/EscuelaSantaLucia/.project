@@ -61,7 +61,7 @@
 		<link>
 			<name>src/ar/com/santalucia/accesodatos/persistencia/backConfig.cfg.xml</name>
 			<type>1</type>
-			<location>F:/usr/backConfig/hibernate.cfg.xml</location>
+			<location>D:/usr/backConfig/hibernate.cfg.xml</location>
 		</link>
 	</linkedResources>
 </projectDescription>

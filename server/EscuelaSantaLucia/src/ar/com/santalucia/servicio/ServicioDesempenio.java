@@ -58,6 +58,9 @@ public class ServicioDesempenio {
 	private GestorInasistencia gInasistencia;
 	private GestorBoletinInasistencias gBoletinInasistencias;
 	
+	public static String BUSCAR_BOLETIN_NOTAS = "bn";
+	public static String BUSCAR_BOLETIN_INASISTENCIAS = "bi";
+	
 	public ServicioDesempenio() throws Exception {
 		try {
 			gNota = new GestorNota();
@@ -72,6 +75,51 @@ public class ServicioDesempenio {
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un problema al inicializar el servicio de operaciones básicas: "
 					+ ex.getMessage());
+		}
+	}
+	
+	/**
+	 * Devuelve el boletin de notas o de inasistencias. El resultado se debe castear a <i>BoletinNotas</i>
+	 * o <i>BoletinInasistencias</i>, según el caso.
+	 * @param alumno el alumno del cual se desea el boletín
+	 * @param boletinBuscado el boletin que se quiere buscar: 
+	 * 		<b>"bn"</b> para el de notas;
+	 * 		<b>"bi"</b> para el de inasistencias.
+	 * @return el boletin de inasistencias o de notas (como Object)
+	 * @throws Exception
+	 */
+	public static Object encontrarBoletinDeAlumno(Alumno alumno, String boletinBuscado) throws Exception {
+		try {
+			String sql = "";
+			switch (boletinBuscado) {
+			case "bn":
+				sql = "SELECT * FROM BOLETINNOTAS WHERE PROPIETARIO = "+String.valueOf(alumno.getIdUsuario());
+				break;
+			case "bi":
+				sql = "SELECT * FROM BOLETININASISTENCIAS WHERE PROPIETARIO = "+String.valueOf(alumno.getIdUsuario());
+				break;
+			}
+			Session sessAux = null;
+			if ((sessAux == null) || (!sessAux.isOpen())) {
+				sessAux = HibernateUtil.getSessionFactory().openSession();
+				
+			}
+			if (!sessAux.getTransaction().isActive()) {
+				sessAux.beginTransaction();
+			}
+			SQLQuery consulta = sessAux.createSQLQuery(sql).addEntity((boletinBuscado.equals("bn")
+																		? BoletinNotas.class
+																		: BoletinInasistencias.class));
+			
+			List result = consulta.list();
+			sessAux.close();
+			if (result != null) {
+				return result.get(0);
+			} else {
+				return null;
+			}
+		} catch (Exception ex) {
+			throw new Exception("No se pudo obtener el boletin de notas del alumno especificado: " + ex.getMessage());
 		}
 	}
 	

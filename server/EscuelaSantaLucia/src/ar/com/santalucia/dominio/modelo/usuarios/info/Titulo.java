@@ -15,15 +15,19 @@ public class Titulo {
 	private Long idTitulo;
 	private String nombreTitulo;
 	private String descripcionTitulo;
+	private String nroRegistro;
+	private String autoridadOtorga;
 
 	public Titulo() {
 		super();
 	}
 
-	public Titulo(String nombreTitulo, String descripcionTitulo) {
+	public Titulo(String nombreTitulo, String descripcionTitulo, String nroRegistro, String autoridadOtorga) {
 		super();
 		this.nombreTitulo = nombreTitulo;
 		this.descripcionTitulo = descripcionTitulo;
+		this.nroRegistro = nroRegistro;
+		this.autoridadOtorga = autoridadOtorga;
 	}
 
 	public Long getIdTitulo() {
@@ -55,6 +59,22 @@ public class Titulo {
 		String tituloCompleto = nombreTitulo + ", Descripcion: "
 				+ descripcionTitulo;
 		return tituloCompleto;
+	}
+
+	public String getNroRegistro() {
+		return nroRegistro;
+	}
+
+	public void setNroRegistro(String nroRegistro) {
+		this.nroRegistro = nroRegistro;
+	}
+
+	public String getAutoridadOtorga() {
+		return autoridadOtorga;
+	}
+
+	public void setAutoridadOtorga(String autoridadOtorga) {
+		this.autoridadOtorga = autoridadOtorga;
 	}
 
 }

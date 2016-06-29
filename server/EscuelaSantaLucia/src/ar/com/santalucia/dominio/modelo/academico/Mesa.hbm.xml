@@ -16,9 +16,6 @@
         <property name="fechaHoraFin" type="java.util.Date">
             <column name="FECHAHORAFIN" />
         </property>
-        <property name="plazoInscripcion" type="java.lang.Long">
-            <column name="PLAZOINSCRIPCION" />
-        </property>
         <many-to-one name="materia" class="ar.com.santalucia.dominio.modelo.academico.Materia" fetch="join">
             <column name="MATERIA" />
         </many-to-one>
