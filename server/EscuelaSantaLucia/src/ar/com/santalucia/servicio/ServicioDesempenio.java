@@ -113,7 +113,7 @@ public class ServicioDesempenio {
 			
 			List result = consulta.list();
 			sessAux.close();
-			if (result != null) {
+			if (result.size() != 0) {
 				return result.get(0);
 			} else {
 				return null;
