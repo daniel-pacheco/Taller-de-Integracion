@@ -27,17 +27,21 @@
   });
 })
 
- .controller('AnioCtrl', function ($scope, cursosData, ModalService, ObjectsFactory, aniosData) {
- 	
- 	$scope.tooltip = {
-    tooltipEdit : {
-      'title' : 'Editar'
-    }
-  };
+ .controller('AnioCtrl', function ($scope, cursosData, ModalService, ObjectsFactory, aniosData, academicoService, spinnerService, $timeout) {
 
-  $scope.anios = aniosData;
+//-- [Anio] 
+//-- [Anio] variables
 
-//-- Filters
+$scope.anios = {};//aniosData;
+
+//-- [Anio] Form Management
+
+$scope.tooltip = {
+  tooltipEdit : {
+    'title' : 'Editar'
+  }
+};
+
 $scope.listadoAnio = true;
 $scope.subtitle = "Listado";
 
@@ -63,9 +67,7 @@ $scope.seleccionar = function(id) {//Hacer una funcion que ponga en true el nomb
 }
 };
 
-
-//-- Multiselect
-
+//-- [Anio] filters
 
 //-- Order List
 $scope.predicate = 'anio';
@@ -74,6 +76,78 @@ $scope.orderAnio = function(predicate) {
   $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
   $scope.predicate = predicate;
 };
+
+//-- [Anio] modals
+//-- [Anio] utils
+
+$scope.showMessage = function(mesagge, title, isGood) { //todo ok recibe true si salio bien o false si salio mal
+  ModalService.showModal({
+    templateUrl: 'scripts/utils/showMessage/modalMessage.tpl.html',
+    controller: 'modalMessageController',
+    inputs: {
+      mensaje: mesagge,
+      title: title,
+      isGood: isGood
+    }
+  }).then(function(modal) {
+    modal.element.modal();
+  });
+};
+
+function showServerError (response){
+  console.log(response);
+  var msg = '';
+
+  if (response.statusText) {
+    msg = response.statusText;
+  };
+
+  if (response.data) {
+    msg += ' - ' + response.data.mensaje + ' ' + response.data.severidad;
+  };      
+  $scope.showMessage(msg, 'Error al contactar al servidor' , false);
+};
+
+function showServerSuccess (message, response){
+  console.log(response);
+  var msg = message;
+
+  if (response.data) {
+    msg += ' ' + response.data;
+  };      
+  $scope.showMessage(msg, 'Operación exitosa' , true);
+};
+
+//-- [Anio] service calls
+
+$scope.$on('$viewContentLoaded', function(){
+  getAnios();//Here your view content is fully loaded !!
+});
+
+function getAnios() {
+  spinnerService.show('searchAniosSpinner');
+  academicoService.anioGetAllMin()
+  .then(function(response){
+    $scope.anios = response.data;
+  },
+  function(response){
+    showServerError (response);
+  })
+  .finally(function(){spinnerService.hide('searchAniosSpinner')});
+};
+
+
+
+
+//-------------------------------------------
+
+//-- [Seccion/sub-seccion]
+//-- [Seccion/sub-seccion] variables
+//-- [Seccion/sub-seccion] Form Management
+//-- [Seccion/sub-seccion] filters
+//-- [Seccion/sub-seccion] modals
+//-- [Seccion/sub-seccion] utils
+//-- [Seccion/sub-seccion] service calls
 
 
 $scope.clearFormAnio = function() {
@@ -111,7 +185,7 @@ $scope.addCurso = function() {
     modal.close.then(function(result){
       $scope.cursos = result;
     });
-});
+  });
 };
 
 //-- Llamadas al service
@@ -122,24 +196,18 @@ $scope.saveAnio = function(anio) {
 $scope.editAnio = function(anio){
  $scope.listadoAnio = false;
  $scope.nuevoAnio = true;
-  $scope.setActiveAnio(4);
-  $scope.subtitle = "Editar año";
-  $scope.showEditAnioMenuIzq = true;
-  $scope.newAnio = angular.copy(anio);
+ $scope.setActiveAnio(4);
+ $scope.subtitle = "Editar año";
+ $scope.showEditAnioMenuIzq = true;
+ $scope.newAnio = angular.copy(anio);
 
 
-  angular.forEach($scope.newAnio.listaCursos, function (item, index) {
-      $scope.newAnio.listaCursos[index] = item.idCurso;
-  });
+ angular.forEach($scope.newAnio.listaCursos, function (item, index) {
+  $scope.newAnio.listaCursos[index] = item.idCurso;
+});
 
 };
- 	//Test
- /*	$scope.anios = [{anio:'7º', division:'U', turno: 'Tarde', cantidadDeAlumnos: '21'},
- 	{anio:'1º', division:'U', turno: 'Tarde', cantidadDeAlumnos: '32'},
- 	{anio:'2º', division:'U', turno: 'Tarde', cantidadDeAlumnos: '28'},
- 	{anio:'3º', division:'U', turno: 'Tarde', cantidadDeAlumnos: '22'},
- 	{anio:'4º', division:'U', turno: 'Tarde', cantidadDeAlumnos: '45'},
- 	{anio:'5º', division:'U', turno: 'Tarde', cantidadDeAlumnos: '32'}];*/
+
 
   //---test list alumnos notas
   $scope.test = [{nro:'1', name:'John', surName:'Lennon', DNI:'555555555'},
@@ -152,3 +220,4 @@ $scope.editAnio = function(anio){
   {nro:'7', name:'John', surName:'Lennon', DNI:'555555555'}];
 
 });
+

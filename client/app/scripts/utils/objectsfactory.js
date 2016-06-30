@@ -153,12 +153,32 @@ var newAnio = function(){
 var newCurso = function(){
   var curso = {
     "idCurso": null,
-    "curso": '',
+    "division": '',
     "turno": '',
     "cicloLectivo": 0,
     "listaAlumnos": []
   };
   return curso;
+};
+
+var newAnioMin = function(){
+  var anioMin = {
+    "idAanio": null,
+    "nombre": '',
+    "descripcion": '',
+    "listaCursos": [],
+  };
+  return anioMin;
+};
+
+var newCursoMin = function(){
+  var cursoMin = {
+    "idCurso": null,
+    "division": '',
+    "turno": '',
+    "cantAlu": 0
+  };
+  return cursoMin;
 };
 
 var newInasistencia = function(){
@@ -265,6 +285,8 @@ var newMesa = function(){
     newArea: newArea,
     newAnio: newAnio,
     newCurso: newCurso,
+    newAnioMin: newAnioMin,
+    newCursoMin: newCursoMin,
     newInasistencia: newInasistencia,
     newBoletinInasistencia: newBoletinInasistencia,
     newMesa: newMesa,
