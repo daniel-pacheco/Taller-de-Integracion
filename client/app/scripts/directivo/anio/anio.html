@@ -20,7 +20,7 @@
 			</li>
 			<hr style="margin: 2px 0;">				
 			<li ng-class="{active : activeMenuIzqAnio === 1}" data-target="#nuevoAnio">
-				<a href="" ng-click="seleccionar('nuevoAnio'); setActiveAnio(1)">Nuevo</a>
+				<a href="" ng-click="seleccionar('nuevoAnio'); setActiveAnio(1); clearFormAnio()">Nuevo</a>
 			</li>
 			<li ng-class="{active : activeMenuIzqAnio === 2}" data-target="#listadoAnio">
 				<a href="" ng-click="seleccionar('listadoAnio'); setActiveAnio(2)">Listado</a>
@@ -39,6 +39,15 @@
 <div>
 
 	<div id="listadoAnio" ng-show="listadoAnio">
+		<spinner name="searchAniosSpinner" ng-cloak="">
+			<div class="overlay"></div>
+			<div class="spinner-small">			            
+				<div>
+					<div class="ng-include: './views/templates/defaultspinner.html'"></div>
+				</div>
+			</div>
+			<div class="please-wait-small">Aguarde por favor...</div>
+		</spinner>
 		<fieldset>
 			<h1>{{subtitle}}<small></small></h1>
 			<hr>
@@ -81,15 +90,15 @@
 								<div class="col-md-7 accordian-body collapse" id="{{anio.idAnio}}"> 
 									<table class="table">
 										<thead>
-											<th>Curso</th>
+											<th>Division</th>
 											<th>Turno</th>
 											<th>Cantidad de alumnos</th>
 										</thead>
 										<tbody>
-											<tr ng-repeat="division in anio.listaCursos">
-												<td>{{division.curso}}</td>
-												<td>{{division.turno}}</td>
-												<td>{{division.cantAlumnos}}</td>
+											<tr ng-repeat="curso in anio.listaCursos">
+												<td>{{curso.division}}</td>
+												<td>{{curso.turno}}</td>
+												<td>{{curso.cantAlu}}</td>
 											</tr>
 										</tbody>
 									</table>
@@ -168,56 +177,56 @@
 								<input class="btn btn-primary" type="button" ng-click="saveAnio(newAnio)" value="Guardar" ng-disabled="!formAnio.$valid"/>
 							</div>
 						</div>
-						</br>
-						</br>
-						</br><!-- Hay que hacer que el multiselect se vea-->
-						</br>
-						</br>
-						</br>
-						</br>
-						</br>
-						</br>
-						</br>
-						</br>
-					</div>
-				</div>
-			</form>
-		</fieldset>
-	</div>
+					</br>
+				</br>
+			</br><!-- Hay que hacer que el multiselect se vea-->
+		</br>
+	</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</div>
+</div>
+</form>
+</fieldset>
+</div>
 
-	<div id="administrarAnio" ng-show="administrarAnio">  <!--lista centrada -->
-		<fieldset>
-			<h1>{{subtitle}}<small>: Seleccione el a&ntilde;o y divisi&oacute;n que desee administrar</small></h1>
-			<hr>
-			<label for="">A&ntilde;o:</label> 
-			<select
-			class="dropdown-toggle form-control-inline" name="" ng-model="dropDownValue"> <!-- ng-change="update(dropDownValue, option)"> -->
-			<option ng-repeat="option in dropDownOptions" value="{{dropDownOptions}}">{{option}}</option>
-		</select>
-		<label for="">Divisi&oacute;n:</label> 
+<div id="administrarAnio" ng-show="administrarAnio">  <!--lista centrada -->
+	<fieldset>
+		<h1>{{subtitle}}<small>: Seleccione el a&ntilde;o y divisi&oacute;n que desee administrar</small></h1>
+		<hr>
+		<label for="">A&ntilde;o:</label> 
 		<select
-		class="dropdown-toggle form-control-inline" name="" ng-model="dropDownDivisionValue"> <!-- ng-change="update(dropDownValue, option)"> -->
-		<option ng-repeat="option in dropDownDiviosnOptions" value="{{dropDownDiviosnOptions}}">{{option}}</option>
+		class="dropdown-toggle form-control-inline" name="" ng-model="dropDownValue"> <!-- ng-change="update(dropDownValue, option)"> -->
+		<option ng-repeat="option in dropDownOptions" value="{{dropDownOptions}}">{{option}}</option>
 	</select>
-	<button class="btn btn-info" ng-click="acept()">Aceptar</button>
+	<label for="">Divisi&oacute;n:</label> 
+	<select
+	class="dropdown-toggle form-control-inline" name="" ng-model="dropDownDivisionValue"> <!-- ng-change="update(dropDownValue, option)"> -->
+	<option ng-repeat="option in dropDownDiviosnOptions" value="{{dropDownDiviosnOptions}}">{{option}}</option>
+</select>
+<button class="btn btn-info" ng-click="acept()">Aceptar</button>
 
-	<div id="listFilters" ng-show="listAnioIsEnabled">
-		<table class="table  table-hover table-striped">
-			<thead>
-				<tr>
-					<th>Nro</th>
-					<th>Nombre</th>
-					<th>Apellido</th>
-					<th>DNI</th>
-					<th>Acciones</th>						
-				</tr>
-			</thead>
-			<tr ng-repeat="alumno in test | filter:filterByName">
-				<td>{{alumno.nro}}</td>
-				<td>{{alumno.name}}</td>
-				<td>{{alumno.surName}}</td>
-				<td>{{alumno.DNI}}</td>
-				<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%; cursor: pointer" class="glyphicon glyphicon-user" ></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipDelete" style="width:25%; cursor: pointer" class="glyphicon glyphicon-remove-circle"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipChange" style="width:25%; cursor: pointer" class="glyphicon glyphicon-edit"></span></td> 
+<div id="listFilters" ng-show="listAnioIsEnabled">
+	<table class="table  table-hover table-striped">
+		<thead>
+			<tr>
+				<th>Nro</th>
+				<th>Nombre</th>
+				<th>Apellido</th>
+				<th>DNI</th>
+				<th>Acciones</th>						
+			</tr>
+		</thead>
+		<tr ng-repeat="alumno in test | filter:filterByName">
+			<td>{{alumno.nro}}</td>
+			<td>{{alumno.name}}</td>
+			<td>{{alumno.surName}}</td>
+			<td>{{alumno.DNI}}</td>
+			<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%; cursor: pointer" class="glyphicon glyphicon-user" ></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipDelete" style="width:25%; cursor: pointer" class="glyphicon glyphicon-remove-circle"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipChange" style="width:25%; cursor: pointer" class="glyphicon glyphicon-edit"></span></td> 
 					<!--<td>{{alumno.name}}</td>
 					<td>{{alumno.phone}}</td>
 					<td>{{$index}}</td> -->

@@ -14,11 +14,11 @@ angular.module('clientAppApp')
     var server = SERVER.address;
     var sAcademico = SERVER.sAcademico;
 
-    var anioGetAll = 'anio/listAll';
+    var anioGetAllMin = 'anio/listAllMin';
     var matGetAllMin = 'mat/listAllMin';
 
-    this.anioGetAll = function () {
-        return $http.get(server + sAcademico + anioGetAll);
+    this.anioGetAllMin = function () {
+        return $http.get(server + sAcademico + anioGetAllMin);
     };
 
     this.matGetAllMin = function () {

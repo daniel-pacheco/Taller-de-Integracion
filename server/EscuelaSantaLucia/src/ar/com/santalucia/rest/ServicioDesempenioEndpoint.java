@@ -469,7 +469,7 @@ public class ServicioDesempenioEndpoint {
 						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
 						.build();
 			}
-			return Response.ok().build();
+			return Response.ok(boletinInasistenciasDTO).build();
 		} catch (Exception ex) {
 			// return Response.ok(ex).build();
 			return Response.status(Status.INTERNAL_SERVER_ERROR)

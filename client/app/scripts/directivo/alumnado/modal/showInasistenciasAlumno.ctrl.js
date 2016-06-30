@@ -1,7 +1,7 @@
 angular.module('clientAppApp')
 .controller('showInasistenciasModalController', [
-  '$scope', '$element', 'title', 'libInasistencias', 'close', 'ObjectsFactory', 'INASISTENCIAS',
-  function($scope, $element, title, libInasistencias, close, ObjectsFactory, INASISTENCIAS) {//acá se inyecta las variables necesarias y luego la función close
+  '$scope', '$element', 'title', 'libInasistencias', 'close', 'ObjectsFactory', 'INASISTENCIAS', 'spinnerService',
+  function($scope, $element, title, libInasistencias, close, ObjectsFactory, INASISTENCIAS, spinnerService) {//acá se inyecta las variables necesarias y luego la función close
     
   $scope.title = title;
   $scope.libInasistencias = {}; 
@@ -17,6 +17,7 @@ angular.module('clientAppApp')
 
 $scope.close = function(modif) {
     if (modif){
+      spinnerService.show('searchSpinner');
       close ($scope.copiaLibInasistencias , 500);}
       else{
         close (libInasistencias , 500);}

@@ -344,7 +344,7 @@ $scope.loginSpinner = function () {
 
 //-- Export Table
 
-$scope.export_action = 'doc'; //se puede hacer que cambie a distintos formatos
+$scope.export_action = 'excel'; //se puede hacer que cambie a distintos formatos
 $scope.exportAction = function(){ 
       switch($scope.export_action){ 
           // case 'pdf': $scope.$broadcast('export-pdf', {}); 
@@ -381,7 +381,7 @@ $scope.search = function (option, dni) {
 					showServerError(response);
 					hideListFilter();					
 				})
-				.finally(spinnerService.hide('searchSpinner'));
+				.finally(function(){spinnerService.hide('searchSpinner')});
 			} 
 		};
 
@@ -399,7 +399,7 @@ $scope.search = function (option, dni) {
 				showServerError(response);
 				hideListFilter();
 			})
-			.finally(spinnerService.hide('searchSpinner'));
+			.finally(function(){spinnerService.hide('searchSpinner')});
 		};
 
 		if (option !== "TODOS" && option !== "DNI/MAT") {
@@ -438,11 +438,12 @@ $scope.newAlumno = function (alumno){
 function updateBoletinInasistencias (boletin){
 	desempenioService.update(boletin)
 	.then(function(response){
-		showServerSuccess('El las iasistencias se han actualizado éxito.', response);
+		showServerSuccess('El las inasistencias se han actualizado éxito.', response);
 	},
 	function(response){
 		showServerError(response);
-	});
+	})
+	.finally(function(){spinnerService.hide('searchSpinner');});
 };
 
 $scope.clearFormAlu = function (){
