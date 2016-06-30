@@ -23,8 +23,6 @@ module.exports = function(config) {
     files: [
       // bower:js
       'bower_components/jquery/dist/jquery.js',
-      'bower_components/tableExport.jquery.plugin/jquery.base64.js',
-      'bower_components/tableExport.jquery.plugin/tableExport.js',
       'bower_components/angular/angular.js',
       'bower_components/angular-animate/angular-animate.js',
       'bower_components/angular-cookies/angular-cookies.js',

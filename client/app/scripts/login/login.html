@@ -31,7 +31,7 @@
               <div class="form-group" ng-class="{ 'has-error': loginForm.loginRole.$touched && loginForm.loginRole.$invalid }">
                 <div class="input-group">
                   <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
-                  <select class="dropdown-toggle form-control-inline" name="loginRole" ng-model="data.role" required> <!-- ng-change="update(dropDownValue, option)"> -->
+                  <select class="dropdown-toggle form-control" name="loginRole" ng-model="data.role" required> <!-- ng-change="update(dropDownValue, option)"> -->
                     <option value="" disabled selected>Seleccione una opci&oacute;n</option>
                     <option ng-repeat="role in roleOptions" value="{{role}}">{{role}}</option>
                   </select>
