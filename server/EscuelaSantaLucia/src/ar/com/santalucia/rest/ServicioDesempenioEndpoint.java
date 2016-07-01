@@ -401,10 +401,10 @@ public class ServicioDesempenioEndpoint {
 	public Response getPlanillaTrimestral(GetPlanillaTrimestralDTO gptDTO) {
 		try {
 			setInstance();
-			if ((gptDTO.getNroTrimestre() == 0) 
+			if ((gptDTO.getTrimestre() == 0) 
 					|| (gptDTO.getCicloLectivo() == 0) 
 					|| (gptDTO.getCurso().equals("")) 
-					|| (gptDTO.getNombreAnio().equals(""))) {
+					|| (gptDTO.getAnio().equals(""))) {
 				return Response.status(Status.INTERNAL_SERVER_ERROR)
 						.entity(new FrontMessage("Hubo un error en los parámetros de consulta", FrontMessage.INFO))
 						.build();
