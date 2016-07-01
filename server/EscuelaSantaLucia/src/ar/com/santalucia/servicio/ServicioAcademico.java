@@ -288,7 +288,7 @@ public class ServicioAcademico {
 			}
 			boletinNotas.setAnio(anio.getNombre());
 			boletinNotas.setCurso(curso.getDivision().toString());
-			if (boletinNotas.getIdBoletinNotas().equals(null)) {
+			if (boletinNotas.getIdBoletinNotas() == null) {
 				gBoletinNotas.add(boletinNotas);
 			} else {
 				gBoletinNotas.modify(boletinNotas);
@@ -303,7 +303,7 @@ public class ServicioAcademico {
 			boletinInasistencias.setAnio(anio.getNombre());
 			boletinInasistencias.setCurso(curso.getDivision().toString());
 			boletinInasistencias.setActivo(true);
-			if (boletinInasistencias.getIdBoletinInasistencias().equals(null)) {
+			if (boletinInasistencias.getIdBoletinInasistencias() == null) {
 				gBoletinInasistencias.add(boletinInasistencias);
 			} else {
 				gBoletinInasistencias.modify(boletinInasistencias);
