@@ -22,7 +22,9 @@ import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
 import ar.com.santalucia.dominio.dto.BoletinInasistenciasDTO;
 import ar.com.santalucia.dominio.dto.GetPlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.dto.ItemPlanillaTrimestralDTO;
+import ar.com.santalucia.dominio.dto.ListaPasajeAlumnosDTO;
 import ar.com.santalucia.dominio.dto.MateriaNotaDTO;
+import ar.com.santalucia.dominio.dto.PasajeAlumnosDTO;
 import ar.com.santalucia.dominio.dto.PlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
@@ -524,12 +526,9 @@ public class ServicioDesempenio {
 			BoletinInasistenciasDTO boletinDTO = new BoletinInasistenciasDTO();
 			BoletinInasistencias boletin = null;
 			
-			//boletin = gBoletinInasistencias.getById(idBoletin);
-			// BEGIN lógica para buscar el boletin por el dni del alumno
 			ArrayList<BoletinInasistencias> listaBoletines = gBoletinInasistencias.getByExample(new BoletinInasistencias());
 			for (BoletinInasistencias b : listaBoletines) {
 				if (b.getPropietario().getNroDocumento().equals(dniAlumno)) {
-					// boletin = b;
 					boletin = new BoletinInasistencias();
 					boletin.setIdBoletinInasistencias(b.getIdBoletinInasistencias());
 					boletin.setPropietario(b.getPropietario());
@@ -541,19 +540,15 @@ public class ServicioDesempenio {
 				}
 			}
 			if (boletin != null) {
-				// END lógica para buscar el boletin por el dni del alumno
 				boletinDTO.setIdBoletinInasistencias(boletin.getIdBoletinInasistencias());
 				boletinDTO.setNombre(boletin.getPropietario().getNombre());
 				boletinDTO.setApellido(boletin.getPropietario().getApellido());
 				boletinDTO.setNroDocumento(boletin.getPropietario().getNroDocumento());
-				//setAnio, ver de donde sacarlo
+				boletinDTO.setAnio(boletin.getAnio());
+				boletinDTO.setCurso(boletin.getCurso());
 				boletinDTO.setCicloLectivo(boletin.getCicloLectivo());
-				//boletinDTO.setListaInasistencias((ArrayList<Inasistencia>)boletin.getListaInasistencias());
 				ArrayList<Inasistencia> listaInasistencias = new ArrayList<Inasistencia>();
 				Set<Inasistencia> listaSet = boletin.getListaInasistencias();
-				//			for (Inasistencia i : listaSet) {
-				//				listaInasistencias.add(i);
-				//			}
 				listaInasistencias.addAll(listaSet);
 				boletinDTO.setListaInasistencias(listaInasistencias);
 				return boletinDTO;
@@ -684,4 +679,34 @@ public class ServicioDesempenio {
 			throw iException;
 		}
 	}
+	
+	
+	public ListaPasajeAlumnosDTO listaAlumnosPasajeCurso(String anio, String curso) throws Exception {
+		try {
+			Anio anioBuscar = gAnio.getByExample(new Anio(null, anio, "", null, null, true)).get(0);
+			Curso cursoBuscar = new Curso();
+			for (Curso c : anioBuscar.getListaCursos()) {
+				if (c.getDivision().toString().equals(curso)) {
+					cursoBuscar = c;
+					break;
+				}
+			}
+			Set<Alumno> listaAlumnosCurso = cursoBuscar.getListaAlumnos();
+			ListaPasajeAlumnosDTO listaPasajeAlumnosDTO = new ListaPasajeAlumnosDTO();
+			for (Alumno a : listaAlumnosCurso) {
+				PasajeAlumnosDTO pasajeAlumnoDTO = new PasajeAlumnosDTO();
+				pasajeAlumnoDTO.setIdUsuario(a.getIdUsuario());
+				pasajeAlumnoDTO.setDniAlumno(a.getNroDocumento());
+				pasajeAlumnoDTO.setNombre(a.getNombre());
+				pasajeAlumnoDTO.setApellido(a.getApellido());
+				pasajeAlumnoDTO.setHabilitadoPromocion(false);
+				// obtener boletin del alumno para sacar las notas
+			}
+			
+			return null;
+		} catch (Exception ex) {
+			throw new Exception("Ha ocurrido un error al listar los alumnos para pasar de año: " + ex.getMessage());
+		}
+	}
+	
 }

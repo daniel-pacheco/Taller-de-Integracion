@@ -181,11 +181,11 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 			Alumno alumnoEx = new Alumno(); // alumno nulo de ejemplo
 			listaAlumnos = gAlumno.getByExample(alumnoEx);
 			for (Alumno a : listaAlumnos) {
-				AlumnoDTO aDTO = new AlumnoDTO(a.getNroDocumento(), a.getNombre(), a.getApellido(), "", "");
+				AlumnoDTO aDTO = new AlumnoDTO(a.getIdUsuario(), a.getNroDocumento(), a.getNombre(), a.getApellido(), "", "");
 				Set<Alumno> listaAluCurso = gCurso.getByDivision('0').getListaAlumnos();
 				if (listaAluCurso.contains(a)) {
-					aDTO.setCurso("0 - Genérico");
-					aDTO.setAnio("---");
+					aDTO.setCurso("0");
+					aDTO.setAnio("-");
 				} else {
 					Anio anioEx = new Anio();
 					List<Anio> listaAnios = new ArrayList<Anio>();
@@ -193,7 +193,7 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 					for (Anio anio : listaAnios) {
 						for (Curso c : anio.getListaCursos()) {
 							if (c.getListaAlumnos().contains(a)) {
-								aDTO.setCurso(c.getDivision() + " " + c.getTurno());
+								aDTO.setCurso(c.getDivision().toString()/* + " " + c.getTurno()*/);
 								aDTO.setAnio(anio.getNombre());
 							}
 						}
