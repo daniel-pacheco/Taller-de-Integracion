@@ -12,6 +12,7 @@ package ar.com.santalucia.dominio.dto;
 
 public class AlumnoDTO {
 
+	private Long idUsuario;
 	private Long nroDocumento;
 	private String nombre;
 	private String apellido;
@@ -22,13 +23,22 @@ public class AlumnoDTO {
 		super();
 	}
 
-	public AlumnoDTO(Long nroDocumento, String nombre, String apellido, String anio, String curso) {
+	public AlumnoDTO(Long idUsuario, Long nroDocumento, String nombre, String apellido, String anio, String curso) {
 		super();
+		this.idUsuario = idUsuario;
 		this.nroDocumento = nroDocumento;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.setAnio(anio);
 		this.curso = curso;
+	}
+
+	public Long getIdUsuario() {
+		return idUsuario;
+	}
+
+	public void setIdUsuario(Long idUsuario) {
+		this.idUsuario = idUsuario;
 	}
 
 	public Long getDniAlumno() {
