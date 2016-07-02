@@ -423,8 +423,8 @@ $scope.search = function (option, dni) {
 }
 
 $scope.newAlumno = function (alumno){
-	$scope.nuevoPerfil = false;
-	// $scope.showLoading = true;
+	
+	spinnerService.show('searchSpinner');
 	alumno.nombreUsuario = modalService.makeId(5);
 	if ($scope.nuevoTelefonoSimple) {
 		alumno.listaTelefonos.push($scope.nuevoTelefonoSimple);
@@ -433,18 +433,13 @@ $scope.newAlumno = function (alumno){
 	alumnoService.putNew(alumno)
 	.then(function(response){
 		console.log(response);
-		alert('El alumno se ha dado de alta con éxito. ID n°: ' + response.data);
 		showServerSuccess('El alumno se ha dado de alta con éxito. ID n°: ', response);
 		$scope.clearFormAlu();
-		// $scope.showLoading = false;
-		$scope.nuevoPerfil = true;
 	},
 	function(response){
-		//alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
-		errorConectToServer.show();//este es el alert
-		// $scope.showLoading = false;
-		$scope.nuevoPerfil = true;
-	});
+		showServerError(response);
+	})
+	.finally(function(){spinnerService.hide('searchSpinner');});
 
 };
 
@@ -498,61 +493,6 @@ $scope.editProfile = function(alumno) {
 
 }
 
-
-
-var alumnoJson = {  
-	"idUsuario"       : null,
-	"nroDocumento"    : 33333333,
-	"tipoDocumento"   : "DNI",
-	"nombre"          : "JoSe",
-	"apellido"        : "Angular",
-	"matricula"       : 33333333,
-	"listaTelefonos" :[
-	{
-		"idTelefono"     : null,
-		"caracteristica" : 343,
-		"nroTelefono"    : 4232545,
-		"tipoTelefono"   : "fijo/casa"
-	},
-	{
-		"idTelefono"     : null,
-		"caracteristica" : 343,
-		"nroTelefono"    : 155423111,
-		"tipoTelefono"   : "celular"
-	}
-	],
-	"listaMails"    :[
-	{
-		"idMail       " : null,
-		"direccionMail" : "jmlinares_chiqui@hotmail.com",
-		"tipoMail   " : "Personal"
-	},
-	{
-		"idMail       " : null,
-		"direccionMail" : "janetmlinares@gmail.com",
-		"tipoMail   " : "Académico"
-	}
-	],
-	"domicilio"         :{
-		"idDomicilio" : null,
-		"calle"         : "Narciso Laprida",
-		"numero"        : 1432,
-		"piso"          : 0,
-		"localidad"     : "Paraná",
-		"dpto"          : "-",
-		"departamento"  : "Paraná",
-		"provincia"     : "Entre Ríos",
-		"codigoPostal"   : 3100,
-		"barrio"        : "Centro"
-	},
-	"sexo"            : "F",
-	"nombreUsuario"   : "jose.angular",
-	"fechaNacimiento" : "Dec 21, 1991 12:00:00 AM",
-	"activo"          : true
-};
-
-
-
   $scope.asignarPlantillaTrim = function (trim){//esto debería consultar la planilla del trim
   	$scope.notasTrim = {};
   	$scope.notasTrim = plantillaTrimestralData;
@@ -583,27 +523,27 @@ $scope.prueba = function (){
 	}
 
 
-	$scope.getAlumnoById = function (id) {
-		alumnoService.alumnoGetById(id)
-		.then(function(response){
-			$scope.postAnswer = response.data;	
-		})
-	}
+$scope.getAlumnoById = function (id) {
+	alumnoService.alumnoGetById(id)
+	.then(function(response){
+		$scope.postAnswer = response.data;	
+	})
+}
 
-	$scope.putAlumno = function () {
-		alumnoService.alumnoPut(alumnoJson).then(function(response){
-			$scope.postAnswer = response.data;
-			$scope.getAll();
-		})
-	};
+$scope.putAlumno = function () {
+	alumnoService.alumnoPut(alumnoJson).then(function(response){
+		$scope.postAnswer = response.data;
+		$scope.getAll();
+	})
+};
 
 
-	$scope.deleteAlumno = function (id) {
-		alumnoService.alumnoDel(id).then(function (response) {
-			$scope.postAnswer = response.data;
-			$scope.getAll();
-		})
-	};
+$scope.deleteAlumno = function (id) {
+	alumnoService.alumnoDel(id).then(function (response) {
+		$scope.postAnswer = response.data;
+		$scope.getAll();
+	})
+};
 
 
 //---Auth Test
@@ -679,7 +619,7 @@ $scope.buscarButtonIsDisabled = false;
 // $scope.panels.activePanel = 0;
 
 $scope.toggleBuscarButton = function(param) {
-		$scope.buscarButtonIsDisabled = !param;
+	$scope.buscarButtonIsDisabled = !param;
 };
 
 $scope.multiplePanels = {

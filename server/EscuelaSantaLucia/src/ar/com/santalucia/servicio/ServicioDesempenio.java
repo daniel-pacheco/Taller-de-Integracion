@@ -532,6 +532,8 @@ public class ServicioDesempenio {
 					boletin = new BoletinInasistencias();
 					boletin.setIdBoletinInasistencias(b.getIdBoletinInasistencias());
 					boletin.setPropietario(b.getPropietario());
+					boletin.setCurso(b.getCurso());
+					boletin.setAnio(b.getAnio());
 					boletin.setCicloLectivo(b.getCicloLectivo());
 					boletin.setActivo(b.getActivo());
 					boletin.setListaInasistencias(b.getListaInasistencias());
