@@ -10,16 +10,16 @@ package ar.com.santalucia.dominio.dto;
  */
 public class GetPlanillaTrimestralDTO {
 
-	private int nroTrimestre;
-	private String nombreAnio;
+	private int trimestre;
+	private String anio;
 	private String curso;
 	private int cicloLectivo;
 
-	public GetPlanillaTrimestralDTO(int nroTrimestre, String nombreAnio, String divCurso, int cicloLectivo) {
+	public GetPlanillaTrimestralDTO(int trimestre, String anio, String curso, int cicloLectivo) {
 		super();
-		this.nroTrimestre = nroTrimestre;
-		this.nombreAnio = nombreAnio;
-		this.curso = divCurso;
+		this.trimestre = trimestre;
+		this.anio = anio;
+		this.curso = curso;
 		this.cicloLectivo = cicloLectivo;
 	}
 
@@ -28,33 +28,33 @@ public class GetPlanillaTrimestralDTO {
 	}
 
 	/**
-	 * @return the nroTrimestre
+	 * @return the trimestre
 	 */
-	public int getNroTrimestre() {
-		return nroTrimestre;
+	public int getTrimestre() {
+		return trimestre;
 	}
 
 	/**
-	 * @param nroTrimestre
-	 *            the nroTrimestre to set
+	 * @param trimestre
+	 *            the trimestre to set
 	 */
-	public void setNroTrimestre(int nroTrimestre) {
-		this.nroTrimestre = nroTrimestre;
+	public void setTrimestre(int trimestre) {
+		this.trimestre = trimestre;
 	}
 
 	/**
-	 * @return the nombreAnio
+	 * @return the anio
 	 */
-	public String getNombreAnio() {
-		return nombreAnio;
+	public String getAnio() {
+		return anio;
 	}
 
 	/**
-	 * @param nombreAnio
-	 *            the nombreAnio to set
+	 * @param anio
+	 *            the anio to set
 	 */
-	public void setNombreAnio(String nombreAnio) {
-		this.nombreAnio = nombreAnio;
+	public void setAnio(String anio) {
+		this.anio = anio;
 	}
 
 	/**

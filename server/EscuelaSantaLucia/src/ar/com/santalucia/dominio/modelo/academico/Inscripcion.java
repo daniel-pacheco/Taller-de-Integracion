@@ -21,18 +21,20 @@ public class Inscripcion {
 	private Date fecha;
 	private Alumno alumno;
 	private Integer codigo;
+	private Boolean activo;
 	
 	public Inscripcion() {
 		super();
 	}
 
-	public Inscripcion(Long idInscripcion, Set<Mesa> listaMesas, Date fecha, Alumno alumno, Integer codigo) {
+	public Inscripcion(Long idInscripcion, Set<Mesa> listaMesas, Date fecha, Alumno alumno, Integer codigo, Boolean activo) {
 		super();
 		this.idInscripcion = idInscripcion;
 		this.listaMesas = listaMesas;
 		this.fecha = fecha;
 		this.alumno = alumno;
 		this.codigo = codigo;
+		this.activo = activo;
 	}
 
 	public Long getIdInscripcion() {
@@ -73,6 +75,14 @@ public class Inscripcion {
 
 	public void setCodigo(Integer codigo) {
 		this.codigo = codigo;
+	}
+
+	public Boolean getActivo() {
+		return activo;
+	}
+
+	public void setActivo(Boolean activo) {
+		this.activo = activo;
 	}
 	
 }

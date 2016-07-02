@@ -376,7 +376,7 @@ public class ServicioDesempenio {
 		try {
 			planillaTrimestral = new ArrayList<ItemPlanillaTrimestralDTO>();
 			Anio anio = new Anio();
-			anio.setNombre(gptDTO.getNombreAnio());
+			anio.setNombre(gptDTO.getAnio());
 			ArrayList<Anio> anios = gAnio.getByExample(anio);
 			anio = anios.get(0);
 			Set<Curso> listaCursos = anio.getListaCursos();
@@ -389,7 +389,7 @@ public class ServicioDesempenio {
 			}
 			
 			BoletinNotas boletinNotas = new BoletinNotas();
-			boletinNotas.setAnio(gptDTO.getNombreAnio());
+			boletinNotas.setAnio(gptDTO.getAnio());
 			boletinNotas.setCurso(gptDTO.getCurso());
 			ArrayList<BoletinNotas> listaBoletinNotas = gBoletin.getByExample(boletinNotas);
 			
@@ -398,7 +398,7 @@ public class ServicioDesempenio {
 				itemPlanillaTrimestralDTO.setAlumno(bn.getPropietario().toString());
 				ArrayList<Trimestre> trimestres = new ArrayList<Trimestre>();
 				for (Trimestre t : bn.getListaTrimestres()) {
-					if (t.getOrden() == gptDTO.getNroTrimestre()) {
+					if (t.getOrden() == gptDTO.getTrimestre()) {
 						MateriaNotaDTO mnDTO = new MateriaNotaDTO(t.getMateria().getNombre(),t.getNotaFinal().getCalificacion());
 						itemPlanillaTrimestralDTO.getNotas().add(mnDTO);
 					}
@@ -408,7 +408,7 @@ public class ServicioDesempenio {
 			return planillaTrimestral;
 		} catch (Exception ex) {
 			throw new Exception("No se pudo obtener la PLANILLA TRIMESTRAL del trimestre " 
-									+ gptDTO.getNroTrimestre() + ": " + ex.getMessage());
+									+ gptDTO.getTrimestre() + ": " + ex.getMessage());
 		}
 	}
 	

@@ -25,5 +25,8 @@
         <property name="codigo" type="java.lang.Integer">
             <column name="CODIGO" />
         </property>
+         <property name="activo" type="java.lang.Boolean">
+            <column name="ACTIVO" />
+        </property>
     </class>
 </hibernate-mapping>

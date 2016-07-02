@@ -55,7 +55,7 @@ public class ServicioLoginEndpoint {
 		try{
 			setInstance();
 			token = servicioLogin.autenticar(Long.valueOf(credenciales[0]),credenciales[1],credenciales[2]);
-			Logger.getLogger(getClass().getName()).log(Level.INFO,"Se requirió autenticación para usuario:" +credenciales[0]+" rol:"+ credenciales[2]); // Registro de log
+			//Logger.getLogger(getClass().getName()).log(Level.INFO,"Se requirió autenticación para usuario:" +credenciales[0]+" rol:"+ credenciales[2]); // Registro de log
 			return Response.ok().header("auth0", token).header("Access-Control-Expose-Headers", "auth0").build();
 		}catch (LoginError ex){
 			//return Response.ok(ex).build();
