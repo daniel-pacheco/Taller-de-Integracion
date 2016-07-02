@@ -134,6 +134,8 @@ $scope.domicilioAvanzado = function() {
 		});
 	}; 
 
+	$scope.fromDate = '';
+	$scope.untilDate = '';
 	$scope.showModalInasistencias = function(alumno){//esta deberia ser una funcion que pida la libreta de inasistencias del alumno que recibe
 		
 		var boletinInasistencias = {};
@@ -148,13 +150,19 @@ $scope.domicilioAvanzado = function() {
 				inputs: {
 					title: "Boletín de inasistencias",
 					libInasistencias: boletinInasistencias,
+					fromDate: $scope.fromDate,
+					untilDate: $scope.untilDate,
 				}
 			}).then(function(modal) {
 				modal.element.modal();
 				modal.close.then(function(result){
-					boletinInasistencias = result;//llamada al servicio para update en la BD
-					console.log(boletinInasistencias);
-					updateBoletinInasistencias(boletinInasistencias);
+					boletinInasistencias = result.lib;
+					//console.log(boletinInasistencias);
+					if(result.modif){
+						updateBoletinInasistencias(boletinInasistencias);
+					}
+					$scope.fromDate = result.fromDate;
+					$scope.untilDate = result.untilDate;				
 				});
 			});
 		},
