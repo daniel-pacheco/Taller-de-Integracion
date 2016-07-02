@@ -13,6 +13,7 @@ import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorAnio;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorArea;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorCurso;
+import ar.com.santalucia.aplicacion.gestor.academico.GestorInscripcion;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorLlamado;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMateria;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMateriaHist;
@@ -35,6 +36,7 @@ import ar.com.santalucia.dominio.dto.MesaAltaDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Area;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
+import ar.com.santalucia.dominio.modelo.academico.Inscripcion;
 import ar.com.santalucia.dominio.modelo.academico.Llamado;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.academico.MateriaHist;
@@ -78,6 +80,7 @@ public class ServicioAcademico {
 	private GestorBoletinNotas gBoletinNotas;
 	private GestorInasistencia gInasistencia;
 	private GestorBoletinInasistencias gBoletinInasistencias;
+	private GestorInscripcion gInscripcion;
 
  	public ServicioAcademico() throws Exception {
 		try {
@@ -97,6 +100,7 @@ public class ServicioAcademico {
 			gBoletinNotas = new GestorBoletinNotas();
 			gInasistencia = new GestorInasistencia();
 			gBoletinInasistencias = new GestorBoletinInasistencias();
+			gInscripcion = new GestorInscripcion();
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un problema al inicializar el servicio de operaciones básicas: "
 					+ ex.getMessage());
@@ -711,6 +715,36 @@ public class ServicioAcademico {
 	}
 
 	
+	public Boolean addInscripcion(Long idMesa, Long idAlumno) throws Exception{
+		try {
+			Alumno alumno = (Alumno) gAlumno.getById(idAlumno);
+			Mesa mesa = gMesa.getById(idMesa);
+			Calendar fechaActual = Calendar.getInstance();
+			Calendar fechaMesa = Calendar.getInstance(); 
+			//Llamado = encontrarLlamado();
+			
+			fechaMesa.setTime(mesa.getFechaHoraInicio());
+			if (fechaActual.equals(fechaMesa) || fechaActual.before(fechaMesa) ){ //Para verificar que no esté intentando inscibirse durante la mesa   
+				//inscripcion = buscarInscripcion(idMesa, idAlumno);  // Busco si existe
+				Inscripcion inscripcion = new Inscripcion();
+				inscripcion.setActivo(true);
+				inscripcion.setAlumno(alumno);
+				inscripcion.setFecha(fechaActual.getTime());
+				inscripcion.getListaMesas().add(mesa);
+				gInscripcion.add(inscripcion);
+			}
+			
+			
+		} catch (Exception ex) {
+			throw new Exception("No se pudo agregar la Inscripcion: " + ex.getMessage());
+			//e.printStackTrace();
+		}
+		return true;
+	}
+	
+	
+	
+	
 	public Boolean asignarMesaALlamado(Mesa mesa, Long idLlamado) throws Exception { // EN ENDPOINT
 		//TODO
 		try {
@@ -1034,6 +1068,46 @@ public class ServicioAcademico {
 		}
 		return null;
 	}
+	
+	/**
+	 * Encuentra el llamado vigente a la fecha según la fecha actual del servidor.
+	 * @return
+	 * @throws Exception
+	 */
+	private Llamado encontrarLlamadoVigente() throws Exception{
+		try{
+		
+		Calendar fechaActual = Calendar.getInstance();
+		Calendar periodoInicio = Calendar.getInstance();
+		Calendar periodoFin = Calendar.getInstance();
+		
+		Long diasVigencia = Long.valueOf(ServicioConfiguracion.getParametro("VIS_DIAS_LLAMADO").getValor());
+		
+		ArrayList<Llamado> listaLlamado = gLlamado.List();
+		for(Llamado ll: listaLlamado){
+			periodoInicio.setTime(ll.getFechaInicio());
+			periodoInicio.add(Calendar.DAY_OF_MONTH, - diasVigencia.intValue()); // Comienzo del periodo segun fecha de llamado
+			periodoFin.setTime(ll.getFechaInicio());
+			periodoFin.add(Calendar.DAY_OF_MONTH, -2); // Fin de periodo de inscripcion
+			if( ( fechaActual.equals(periodoInicio) || fechaActual.after(periodoInicio) ) 
+				&& ( fechaActual.equals(periodoFin) || fechaActual.before(periodoFin) ) ){
+				return ll;
+			}
+		}
+		}catch(Exception ex){
+			throw ex;
+		}
+		return null;
+	}
+	
+	private Inscripcion buscarInscripcion(Long idMesa, Long idAlumno) throws Exception{
+		try{
+				
+		}catch (Exception ex){
+			throw ex;
+		}
+		return null;
+	} 
 	
 	public void closeSession() throws Exception { 
 		gAnio.closeSession();
