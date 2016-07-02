@@ -22,7 +22,8 @@
     "ng-file-upload": "~11.0.2",
     "ng-img-crop": "ngImgCrop#~0.3.2",
     "bootstrap-additions": "^0.3.1",
-    "angular-spinners": "^3.1.2"    
+    "angular-spinners": "^3.1.2",
+    "lodash": "^4.13.1"
   },
   "devDependencies": {},
   "appPath": "app",

@@ -21,13 +21,12 @@
  	});
  })
 
- .controller('AlumnadoCtrl', function ($scope, $q, $http, boletinInasistenciasData, $alert, libCalificacionesdata, plantillaTrimestralData, alumnoService, Upload, $timeout, alumnoData, ModalService, ObjectsFactory, modalService, spinnerService, desempenioService) {
+ .controller('AlumnadoCtrl', function ($scope, $q, $http, boletinInasistenciasData, $alert, libCalificacionesdata, plantillaTrimestralData, alumnoService, Upload, $timeout, alumnoData, ModalService, ObjectsFactory, modalService, spinnerService, desempenioService, exportTableService) {
  	$scope.listado = true;
  	$scope.listFilterIsEnabled = false;
 
  	$scope.nuevoAlumno = ObjectsFactory.newAlumno();
  	$scope.nuevoTelefonoSimple = ObjectsFactory.newTelefono();
-
 
 //tooltips
 $scope.tooltip = {
@@ -277,17 +276,13 @@ $scope.clearList = function(){
 	console.log($scope.alumnoData[0]);
 };
 
-$scope.dropDownSearchOptions = ['Primero', 'Segundo', 'Tercero', 'Cuarto', 'Quinto', 'Sexto'];
+$scope.dropDownSearchOptions = ['Primero', 'Segundo', 'Tercero', 'Cuarto', 'Quinto', 'Sexto', '5to año'];
 $scope.dropDownSearchValue = '';
 
 $scope.dropDownCursoOptions = ['5 Mat', '4 Mat', '3 Mat', '2 Mat'];
 $scope.dropDownCursoValue = '';
 
-$scope.dropDownDivisionOptions = ['U', 'A', 'B', 'C'];
-$scope.dropDownDivisionValue = '';
 
-$scope.dropDownAnioOptions = ['Primero', 'Segundo', 'Tercero', 'Cuarto', 'Quinto', 'Sexto'];
-$scope.dropDownAnioValue = '';
 
 $scope.filterByName = '';
 
@@ -343,18 +338,8 @@ $scope.loginSpinner = function () {
 
 
 //-- Export Table
-
-$scope.export_action = 'excel'; //se puede hacer que cambie a distintos formatos
-$scope.exportAction = function(){ 
-      switch($scope.export_action){ 
-          // case 'pdf': $scope.$broadcast('export-pdf', {}); 
-          //             break;  // no instalado el plugin
-          case 'excel': $scope.$broadcast('export-excel', {}); 
-                      break; 
-          case 'doc': $scope.$broadcast('export-doc', {});
-                      break; 
-          default: console.log('no event caught'); 
-       }
+$scope.exportAction = function(id){ 
+	exportTableService.exportAction(id);
 }
 
 //---Llamadas al servicio ALUMNO---
@@ -538,13 +523,7 @@ var alumnoJson = {
 	"activo"          : true
 };
 
-/*collapse*/
-$scope.panels = {};
-$scope.panels.activePanel = 0;
 
-$scope.multiplePanels = {
-	activePanels: []
-};
 
   $scope.asignarPlantillaTrim = function (trim){//esto debería consultar la planilla del trim
   	$scope.notasTrim = {};
@@ -599,11 +578,6 @@ $scope.prueba = function (){
 	};
 
 
-//---utils
-$scope.update = function (variable, value) {
-	variable = value;
-}
-
 //---Auth Test
 $scope.performValidRequest = function() {
 	$http.get('http://localhost:8100/valid').then(
@@ -649,6 +623,89 @@ var errorConectToServer = $alert({
 	duration: 5,
 	container: 'body'
 });
+
+//-- [Alumnado/Notas]
+//-- [Alumnado/Notas] variables
+
+$scope.dropDownCursoOptions = ['U', 'A', 'B', 'C'];
+$scope.dropDownCursoValue = '';
+
+$scope.dropDownAnioOptions = ['Primero', 'Segundo', 'Tercero', 'Cuarto', 'Quinto', 'Sexto', '5to año'];
+$scope.dropDownAnioValue = '';
+
+$scope.planillas = {};
+
+var planillaTrimDTO = {};
+// {
+// 	"nroTrimestre" : null,
+// 	"nombreAnio" : "",
+// 	"curso" : "",
+// 	"cicloLectivo" : 2016
+// }
+
+//-- [Alumnado/Notas] Form Management
+
+/*collapse*/
+// $scope.panels = {};
+// $scope.panels.activePanel = 0;
+
+$scope.multiplePanels = {
+	activePanels: []
+};
+
+//-- [Alumnado/Notas] filters
+//-- [Alumnado/Notas] modals
+//-- [Alumnado/Notas] utils
+
+function initPlanillaTrimDTO(trim) {
+	planillaTrimDTO.nroTrimestre = trim;
+	planillaTrimDTO.nombreAnio = $scope.dropDownAnioValue;
+	planillaTrimDTO.curso = $scope.dropDownCursoValue;
+	planillaTrimDTO.cicloLectivo = 2015;
+
+	return planillaTrimDTO;
+};
+
+function resetPlanillaTrimDTO() {
+	planillaTrimDTO = {};
+};
+
+function updatePlanilla(trim, planilla) {
+	switch (trim){
+		case 1:
+		$scope.planillas.primerTrim = planilla;
+		break;
+		case 2:
+		$scope.planillas.segundoTrim = planilla;
+		break;
+		case 3:
+		$scope.planillas.tercerTrim = planilla;
+		break;
+	}
+};
+
+//-- [Alumnado/Notas] service calls
+
+$scope.getPlanillaTrimestre = function(trim) {
+
+	if (!_.includes($scope.multiplePanels.activePanels, trim)) { //evita que haga el llamado al cerrar la pestaña del trimestre
+		spinnerService.show('searchSpinner');
+		desempenioService.getPlanillaTrimestral(initPlanillaTrimDTO(trim))
+		.then(function(response){
+			updatePlanilla(trim, response.data);
+			console.log($scope.planillas);
+		},
+		function(response){
+			showServerError(response);
+		})
+		.finally(function(){
+			spinnerService.hide('searchSpinner');
+		});
+	};
+};
+
+
+//---------------------------------
 
 });
 

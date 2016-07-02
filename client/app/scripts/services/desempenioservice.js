@@ -17,6 +17,8 @@ angular.module('clientAppApp')
     var boletinInsistencia = 'boletinInasist/';
     var updateBoletinInasistencia = 'inasistencia/procesar';
 
+    var planillaTrimestral = 'planillaTrimestral';
+
     this.getByDni = function (dni) {
         return $http.get(server + sDesempenio + boletinInsistencia + dni);
     };
@@ -28,4 +30,10 @@ angular.module('clientAppApp')
 	this.update = function(boletin){
 		return $http.post(server + sDesempenio + updateBoletinInasistencia, boletin);
 	};
+
+    //-- curso
+
+    this.getPlanillaTrimestral = function (planillaTrimDTO){
+        return $http.post(server + sDesempenio + planillaTrimestral, planillaTrimDTO);
+    };
 });

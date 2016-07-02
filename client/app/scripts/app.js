@@ -8,34 +8,42 @@
  *
  * Main module of the application.
  */
-angular
-  .module('clientAppApp', [
-    'ngAnimate',
-    'ngCookies',
-    'ngMessages',
-    'ngResource',
-    'ui.router',
-    'ngSanitize',
-    'ngTouch',
-    'mgcrea.ngStrap',
-    'ngAnimate',
-    'ngFileUpload',
-    'ngImgCrop',
-    'angularModalService',
-    'angularMoment',
-    'angularSpinners'
+ angular
+ .module('clientAppApp', [
+  'ngAnimate',
+  'ngCookies',
+  'ngMessages',
+  'ngResource',
+  'ui.router',
+  'ngSanitize',
+  'ngTouch',
+  'mgcrea.ngStrap',
+  'ngAnimate',
+  'ngFileUpload',
+  'ngImgCrop',
+  'angularModalService',
+  'angularMoment',
+  'angularSpinners'
 
   ])
-  
-  .config(function($stateProvider, $urlRouterProvider) {
+
+ .config(function($stateProvider, $urlRouterProvider) {
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/login');
 
-})
+  })
 
-.run(function ($rootScope, $state, loginService, AUTH_EVENTS) {
+  // allow DI for use in controllers, unit tests
+  .constant('_', window._)
+  // use in views, ng-repeat="x in _.range(3)"
+
+
+ .run(function ($rootScope, $state, loginService, AUTH_EVENTS) {
+  
+  $rootScope._ = window._;
+
   $rootScope.$on('$stateChangeStart', function (event, next, nextParams, fromState) {
- 
+
  /*   if ('data' in next && 'authorizedRoles' in next.data) {
       var authorizedRoles = next.data.authorizedRoles;
       if (!loginService.isAuthorized(authorizedRoles)) {
@@ -51,8 +59,8 @@ angular
         $state.go('login');
       }
     }
-*/
-});
+    */
+  });
 
 });
   /*
