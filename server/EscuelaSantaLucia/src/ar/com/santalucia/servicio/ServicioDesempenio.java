@@ -524,12 +524,9 @@ public class ServicioDesempenio {
 			BoletinInasistenciasDTO boletinDTO = new BoletinInasistenciasDTO();
 			BoletinInasistencias boletin = null;
 			
-			//boletin = gBoletinInasistencias.getById(idBoletin);
-			// BEGIN lógica para buscar el boletin por el dni del alumno
 			ArrayList<BoletinInasistencias> listaBoletines = gBoletinInasistencias.getByExample(new BoletinInasistencias());
 			for (BoletinInasistencias b : listaBoletines) {
 				if (b.getPropietario().getNroDocumento().equals(dniAlumno)) {
-					// boletin = b;
 					boletin = new BoletinInasistencias();
 					boletin.setIdBoletinInasistencias(b.getIdBoletinInasistencias());
 					boletin.setPropietario(b.getPropietario());
@@ -541,19 +538,15 @@ public class ServicioDesempenio {
 				}
 			}
 			if (boletin != null) {
-				// END lógica para buscar el boletin por el dni del alumno
 				boletinDTO.setIdBoletinInasistencias(boletin.getIdBoletinInasistencias());
 				boletinDTO.setNombre(boletin.getPropietario().getNombre());
 				boletinDTO.setApellido(boletin.getPropietario().getApellido());
 				boletinDTO.setNroDocumento(boletin.getPropietario().getNroDocumento());
-				//setAnio, ver de donde sacarlo
+				boletinDTO.setAnio(boletin.getAnio());
+				boletinDTO.setCurso(boletin.getCurso());
 				boletinDTO.setCicloLectivo(boletin.getCicloLectivo());
-				//boletinDTO.setListaInasistencias((ArrayList<Inasistencia>)boletin.getListaInasistencias());
 				ArrayList<Inasistencia> listaInasistencias = new ArrayList<Inasistencia>();
 				Set<Inasistencia> listaSet = boletin.getListaInasistencias();
-				//			for (Inasistencia i : listaSet) {
-				//				listaInasistencias.add(i);
-				//			}
 				listaInasistencias.addAll(listaSet);
 				boletinDTO.setListaInasistencias(listaInasistencias);
 				return boletinDTO;
