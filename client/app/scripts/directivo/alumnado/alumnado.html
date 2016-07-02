@@ -56,7 +56,6 @@
 			<fieldset>
 				<h1>{{subtitle}}: <small>Seleccione el a&ntilde;o del que desea listar los alumnos</small></h1>
 				<hr>
-
 				<div class="panel panel-default">					
 					<div class="panel-heading">
 						<label>A&ntilde;o: </label> 
@@ -82,7 +81,7 @@
 
 							<label for="anioDropDown" ng-show="dropDownSearchValue == 'TODOS'">A&ntilde;o: </label>
 							<select id="anioDropDown" class="dropdown-toggle form-control-inline" name="" ng-model="dropDownAnioValue" ng-show="dropDownSearchValue == 'TODOS'">
-								<option value="" disabled selected>Seleccione un a&ntilde;o</option>
+								<option value="" selected>Seleccione un a&ntilde;o</option>
 								<option ng-repeat="option in dropDownAnioOptions" value="{{option}}">{{option}}</option>
 							</select>
 							<button class="btn btn-default pull-right" title="Exportar para impresi&oacute;n" ng-click="exportAction('dir-listado-alumnos')">Exportar</button>
@@ -106,7 +105,7 @@
 							</tr>
 						</thead>
 						<tbody style="overflow-y: scroll; overflow-x: scroll">
-							<tr ng-repeat="alumno in alumnoData | filter:alumnoFilter" ng-style="alumno.selected && {'background-color': '#ddd'}">
+							<tr ng-repeat="alumno in alumnoData | filter:alumnoFilter | filter:dropDownAnioValue " ng-style="alumno.selected && {'background-color': '#ddd'}">
 								<td ng-click="seleccionarCheckbox(alumno)"><input type="checkbox" ng-init="true" ng-model="selectAlumno" ng-checked="alumno.selected"></td>
 								<td ng-click="seleccionarCheckbox(alumno)">{{alumno.apellido}}</td>
 								<td ng-click="seleccionarCheckbox(alumno)">{{alumno.nombre}}</td>
@@ -122,7 +121,7 @@
 										<span class="glyphicon glyphicon-calendar"></span>
 									</button>
 
-									<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipReportCard" ng-click="showModalLibreta(alumno)" style="width: 22%">
+									<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipReportCard" ng-click="showModalLibreta(1)" style="width: 22%">
 										<span data-animation="am-flip-x" class="glyphicon glyphicon-list-alt"></span>
 									</button>
 
@@ -348,131 +347,122 @@
 			</div>
 		</form>
 	</fieldset>
-</div><!--id="nuevoPerfil" ng-show="nuevoPerfil"-->
+</div>
 
-
-<div id="showLoading" ng-show="showLoading">
+<div id="notas" ng-show="notas">
 	<fieldset>
-		<h1><img src="images/loading.gif"></h1>
+		<h1>{{subtitle}}: <small>Asigne notas trimestrales o gesti&oacute;n de hist&oacute;ricos</small></h1>
 		<hr>
-	</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<label>Seleccione a&ntilde;o y curso: </label> 
 
+				<select class="dropdown-toggle form-control-inline" name="" ng-model="dropDownAnioValue" ng-change="toggleBuscarButton(true); resetPlanillaTrimDTO()"> 
+					<option value="" disabled selected>Seleccione un a&ntilde;o</option>
 
-	<div id="notas" ng-show="notas">
-		<fieldset>
-			<h1>{{subtitle}}: <small>Asigne notas trimestrales o gesti&oacute;n de hist&oacute;ricos</small></h1>
-			<hr>
+					<option ng-repeat="optionAnio in dropDownAnioOptions" value="{{optionAnio}}">{{optionAnio}}</option>
+				</select>
 
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<label>Seleccione a&ntilde;o y curso: </label> 
+				<select	class="dropdown-toggle form-control-inline" name="" ng-model="dropDownCursoValue" ng-change="toggleBuscarButton(true); resetPlanillaTrimDTO()">{{dropDownCursoValue}}
+					<option value="" disabled selected>Seleccione un curso</option>
 
-					<select class="dropdown-toggle form-control-inline" name="" ng-model="dropDownAnioValue"> 
-						<option value="" disabled selected>Seleccione un a&ntilde;o</option>
-
-						<option ng-repeat="optionAnio in dropDownAnioOptions" value="{{optionAnio}}">{{optionAnio}}</option>
-					</select>
-
-					<select	class="dropdown-toggle form-control-inline" name="" ng-model="dropDownCursoValue"> 
-						<option value="" disabled selected>Seleccione un curso</option>
-
-						<option ng-repeat="optionCurso in dropDownCursoOptions" value="{{optionCurso}}">{{optionCurso}}</option>
-					</select>
-					<button class="btn btn-default" ng-click="showAsignarNotas()">Buscar</button>
-				</div>
+					<option ng-repeat="optionCurso in dropDownCursoOptions" value="{{optionCurso}}">{{optionCurso}}</option>
+				</select>
+				<button class="btn btn-default" ng-click="showAsignarNotas(); toggleBuscarButton(false)" ng-disabled="buscarButtonIsDisabled">Buscar</button>{{buscarButtonIsDisabled}}
 			</div>
+		</div>
 
 
-			<div id="asignarNotas" ng-show="asignarNotas">
-				<div class="panel-group" ng-model="multiplePanels.activePanels" data-allow-multiple="true" role="tablist" aria-multiselectable="true" bs-collapse>
-					<div class="panel panel-default">
-						<div class="panel-heading" style="cursor: pointer" ng-click="asignarPlantillaTrim(1)" bs-collapse-toggle>
-							<div class="panel-title">
-								Primer Trimestre
-							</div>
-						</div>
-						<div class="panel-collapse" role="tabpanel" bs-collapse-target>
-							<div class="panel-body form-group table-responsive">
-								<table class="table-hover table-striped table-condensed table-bordered" export-table="dir-primer-trim">
-									<thead>
-										<tr style="height: 95px; position: relative;" class="affix" data-offset-top="-60">
-											<th class="col-md-3">
-												<button type="button" class="btn btn-default btn-block btn-md" ng-click="exportAction('dir-primer-trim')" style="float: top">Exportar Tabla</button>
-												<button type="button" class="btn btn-success btn-block btn-md" style="float: top">Editar Plantilla</button>
-											</th>
-											<th class="Rotate-90 col-md-1" ng-repeat="mate in notasTrim.listaTrimestres[0].notas" style="vertical-align: middle; padding: inherit;">{{mate.materia}}</th>	<!--Esto toma del primer alumno la lista de materias y las muestra en el head-->
-										</tr>
-									</thead>
-									<tbody>
-										<tr ng-repeat="lista in notasTrim.listaTrimestres">
-											<td class="col-md-3">{{$index+1}} - {{lista.alumno}}</td>
-											<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">{{nota.nota}}</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
+		<div id="asignarNotas" ng-show="asignarNotas">
+			<div class="panel-group" ng-model="multiplePanels.activePanels" data-allow-multiple="true" role="tablist" aria-multiselectable="true" bs-collapse>
+				<div class="panel panel-default">
+					<div class="panel-heading" style="cursor: pointer" ng-click="asignarPlantillaTrim(1)" bs-collapse-toggle>
+						<div class="panel-title">
+							Primer Trimestre
 						</div>
 					</div>
-					<div class="panel panel-default">
-						<div class="panel-heading" style="cursor: pointer" ng-click="asignarPlantillaTrim(2)" bs-collapse-toggle>
-							<div class="panel-title">
-								Segundo Trimestre
-							</div>
-						</div>
-						<div class="panel-collapse" role="tabpanel" bs-collapse-target>
-							<div class="panel-body form-group table-responsive">
-								<table class="table-hover table-striped table-condensed table-bordered" export-table="dir-segundo-trim">
-									<thead>
-										<tr style="height: 95px; position: relative;" class="affix" data-offset-top="-60">
-											<th class="col-md-3">
-												<button type="button" class="btn btn-default btn-block btn-md" ng-click="exportAction('dir-segundo-trim')" style="float: top">Exportar Tabla</button>
-												<button type="button" class="btn btn-success btn-block btn-md" style="float: top">Editar Plantilla</button>
-											</th>
-											<th class="col-md-1" ng-repeat="materia in planillas.primerTrim[0].notas" style="text-align: center;">{{materia.materia}}</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr ng-repeat="lista in planillas.primerTrim">
-											<td class="col-md-3">{{$index+1}} - {{lista.alumno}}</td>
-											<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">{{nota.nota}}</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
+					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
+						<div class="panel-body form-group table-responsive">
+							<table class="table-hover table-striped table-condensed table-bordered" export-table="dir-primer-trim">
+								<thead>
+									<tr style="height: 95px; position: relative;" class="affix" data-offset-top="-60">
+										<th class="col-md-3">
+											<button type="button" class="btn btn-default btn-block btn-md" ng-click="exportAction('dir-primer-trim')" style="float: top">Exportar Tabla</button>
+											<button type="button" class="btn btn-success btn-block btn-md" style="float: top">Editar Plantilla</button>
+										</th>
+										<th class="Rotate-90 col-md-1" ng-repeat="mate in notasTrim.listaTrimestres[0].notas" style="vertical-align: middle; padding: inherit;">{{mate.materia}}</th>	<!--Esto toma del primer alumno la lista de materias y las muestra en el head-->
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="lista in notasTrim.listaTrimestres">
+										<td class="col-md-3">{{$index+1}} - {{lista.alumno}}</td>
+										<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">{{nota.nota}}</td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
 					</div>
-					<div class="panel panel-default">
-						<div class="panel-heading" style="cursor: pointer" ng-click="getPlanillaTrimestre(1)" bs-collapse-toggle>
-							<div class="panel-title">
-								Tercer Trimestre
-							</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading" style="cursor: pointer" ng-click="asignarPlantillaTrim(2)" bs-collapse-toggle>
+						<div class="panel-title">
+							Segundo Trimestre
 						</div>
-						<div class="panel-collapse" role="tabpanel" bs-collapse-target>
-							<div class="panel-body form-group table-responsive">
-								<table class="table-hover table-striped table-condensed table-bordered" export-table="dir-tercer-trim">
-									<thead>
-										<tr style="height: 95px; position: relative;" class="affix" data-offset-top="-60">
-											<th class="col-md-3">
-												<button type="button" class="btn btn-default btn-block btn-md" ng-click="exportAction('dir-tercer-trim')" style="float: top">Exportar Tabla</button>
-												<button type="button" class="btn btn-success btn-block btn-md" style="float: top">Editar Plantilla</button>
-											</th>
-											<th class="col-md-1" ng-repeat="materia in planillas.primerTrim[0].notas" style="text-align: center;">{{materia.materia}}</th>	
-										</tr>
-									</thead>
-									<tbody>
-										<tr ng-repeat="lista in planillas.primerTrim">
-											<td class="col-md-3">{{$index+1}} - {{lista.alumno}}</td>
-											<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">{{nota.nota}}</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
+					</div>
+					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
+						<div class="panel-body form-group table-responsive">
+							<table class="table-hover table-striped table-condensed table-bordered" export-table="dir-segundo-trim">
+								<thead>
+									<tr style="height: 95px; position: relative;" class="affix" data-offset-top="-60">
+										<th class="col-md-3">
+											<button type="button" class="btn btn-default btn-block btn-md" ng-click="exportAction('dir-segundo-trim')" style="float: top">Exportar Tabla</button>
+											<button type="button" class="btn btn-success btn-block btn-md" style="float: top">Editar Plantilla</button>
+										</th>
+										<th class="col-md-1" ng-repeat="materia in planillas.primerTrim[0].notas" style="text-align: center;">{{materia.materia}}</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="lista in planillas.primerTrim">
+										<td class="col-md-3">{{$index+1}} - {{lista.alumno}}</td>
+										<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">{{nota.nota}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading" style="cursor: pointer" ng-click="getPlanillaTrimestre(1)" bs-collapse-toggle>
+						<div class="panel-title">
+							Tercer Trimestre
+						</div>
+					</div>
+					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
+						<div class="panel-body form-group table-responsive">
+							<table class="table-hover table-striped table-condensed table-bordered" export-table="dir-tercer-trim">
+								<thead>
+									<tr style="height: 95px; position: relative;" class="affix" data-offset-top="-60">
+										<th class="col-md-3">
+											<button type="button" class="btn btn-default btn-block btn-md" ng-click="exportAction('dir-tercer-trim')" style="float: top">Exportar Tabla</button>
+											<button type="button" class="btn btn-success btn-block btn-md" style="float: top">Editar Plantilla</button>
+										</th>
+										<th class="col-md-1" ng-repeat="materia in planillas.primerTrim[0].notas" style="text-align: center;">{{materia.materia}}</th>	
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="lista in planillas.primerTrim">
+										<td class="col-md-3">{{$index+1}} - {{lista.alumno}}</td>
+										<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">{{nota.nota}}</td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
 					</div>
 				</div>
 			</div>
-		</fieldset>
+		</div>
+	</fieldset>
 
-	</div>
+</div>
 </div>
 </div>

@@ -14,12 +14,22 @@ angular.module('clientAppApp')
     var server = SERVER.address;
     var sDesempenio = SERVER.sDesempenio;
 
+    var boletinCalif = 'bol/';
+
     var boletinInsistencia = 'boletinInasist/';
     var updateBoletinInasistencia = 'inasistencia/procesar';
 
     var planillaTrimestral = 'planillaTrimestral';
 
-    this.getByDni = function (dni) {
+    //-- calificaciones
+
+    this.getBoletinCalif = function (id) {
+        return $http.get(server + sDesempenio + boletinCalif + id);
+    };
+
+    //-- inasistencias
+
+    this.getBoletinInasistByDni = function (dni) {
         return $http.get(server + sDesempenio + boletinInsistencia + dni);
     };
 
@@ -27,7 +37,7 @@ angular.module('clientAppApp')
 	  return $http.put(server + sDesempenio + boletinInsistencia, boletin);
 	};
 
-	this.update = function(boletin){
+	this.updateBoletinInasist = function(boletin){
 		return $http.post(server + sDesempenio + updateBoletinInasistencia, boletin);
 	};
 

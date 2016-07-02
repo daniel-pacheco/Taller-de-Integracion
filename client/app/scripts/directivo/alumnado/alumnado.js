@@ -21,7 +21,7 @@
  	});
  })
 
- .controller('AlumnadoCtrl', function ($scope, $q, $http, boletinInasistenciasData, $alert, libCalificacionesdata, plantillaTrimestralData, alumnoService, Upload, $timeout, alumnoData, ModalService, ObjectsFactory, modalService, spinnerService, desempenioService, exportTableService) {
+ .controller('AlumnadoCtrl', function ($scope, $q, $http, boletinInasistenciasData, $alert, libCalificacionesdata, plantillaTrimestralData, alumnoService, Upload, $timeout, alumnoData, ModalService, ObjectsFactory, modalService, spinnerService, desempenioService, exportTableService, $interval) {
  	$scope.listado = true;
  	$scope.listFilterIsEnabled = false;
 
@@ -138,7 +138,7 @@ $scope.domicilioAvanzado = function() {
 		
 		var boletinInasistencias = {};
 
-		desempenioService.getByDni(alumno)
+		desempenioService.getBoletinInasistByDni(alumno)
 		.then(function(response){
 			boletinInasistencias = response.data;
 
@@ -165,16 +165,34 @@ $scope.domicilioAvanzado = function() {
 	}; 
 
 	$scope.showModalLibreta = function(alumno){//esta deberia ser una funcion que pida la libreta de calificaciones del alumno que recibe
-		ModalService.showModal({
-			templateUrl: 'scripts/directivo/alumnado/modal/showLibretaAlumno.tpl.html',
-			controller: 'showLibretaAlumnoModalController',
-			inputs: {
-				title: "Libreta de calificaciones",
-				libCalificaciones: libCalificacionesdata,
-			}
-		}).then(function(modal) {
-			modal.element.modal();
-		});
+
+		var boletinCalif = {};
+		var bol = libCalificacionesdata;
+
+		console.log(bol);
+
+		desempenioService.getBoletinCalif(alumno)
+		.then(function(response){
+			boletinCalif = response.data;
+
+			console.log(boletinCalif);
+
+			ModalService.showModal({
+				templateUrl: 'scripts/directivo/alumnado/modal/showLibretaAlumno.tpl.html',
+				controller: 'showLibretaAlumnoModalController',
+				inputs: {
+					title: "Libreta de calificaciones",
+					libCalificaciones: libCalificacionesdata,
+				}
+			}).then(function(modal) {
+				modal.element.modal();
+			});
+		},
+		function(response){
+			showServerError(response);
+		})
+		.finally(function(){});
+		
 	};
 
 	$scope.showMessage = function(mesagge, title, isGood) { //todo ok recibe true si salio bien o false si salio mal
@@ -209,7 +227,7 @@ $scope.domicilioAvanzado = function() {
 		console.log(response);
 		var msg = message;
 		
-		if (response.data) {
+		if ( response && response.data) {
 			msg += ' ' + response.data;
 		};			
 		$scope.showMessage(msg, 'Operación exitosa' , true);
@@ -327,13 +345,15 @@ function hideListFilter(){
 
 
 //---spinners
-
+$scope.progreso = 0;
 $scope.loginSpinner = function () {
 	spinnerService.show('searchSpinner');
+	$interval(function(){ $scope.progreso ++; },100)
 	$timeout(function () {
 		spinnerService.hide('searchSpinner');
 		$scope.loggedIn = true;
-	}, 12500);
+		showServerSuccess('El proceso se ha realizado con éxito.');
+	}, 10000);
 };
 
 
@@ -421,7 +441,7 @@ $scope.newAlumno = function (alumno){
 };
 
 function updateBoletinInasistencias (boletin){
-	desempenioService.update(boletin)
+	desempenioService.updateBoletinInasist(boletin)
 	.then(function(response){
 		showServerSuccess('El las inasistencias se han actualizado éxito.', response);
 	},
@@ -635,7 +655,8 @@ $scope.dropDownAnioValue = '';
 
 $scope.planillas = {};
 
-var planillaTrimDTO = {};
+var planillaTrimDTO = ObjectsFactory.newPlanillaTrimDTO();
+$scope.buscarButtonIsDisabled = false;
 // {
 // 	"nroTrimestre" : null,
 // 	"nombreAnio" : "",
@@ -649,25 +670,45 @@ var planillaTrimDTO = {};
 // $scope.panels = {};
 // $scope.panels.activePanel = 0;
 
+$scope.toggleBuscarButton = function(param) {
+		$scope.buscarButtonIsDisabled = !param;
+};
+
 $scope.multiplePanels = {
 	activePanels: []
 };
+
+function multipanelCollapseAll() {
+	$scope.multiplePanels.activePanels.length = 0; 											//estas lineas
+	$scope.multiplePanels.activePanels = $scope.multiplePanels.activePanels.concat([-1]);	//collapsan los panles
+};
+
+
 
 //-- [Alumnado/Notas] filters
 //-- [Alumnado/Notas] modals
 //-- [Alumnado/Notas] utils
 
 function initPlanillaTrimDTO(trim) {
-	planillaTrimDTO.nroTrimestre = trim;
-	planillaTrimDTO.nombreAnio = $scope.dropDownAnioValue;
+	planillaTrimDTO.trimestre = trim;
+	planillaTrimDTO.anio = $scope.dropDownAnioValue;
 	planillaTrimDTO.curso = $scope.dropDownCursoValue;
 	planillaTrimDTO.cicloLectivo = 2015;
+
+	console.log(planillaTrimDTO);
 
 	return planillaTrimDTO;
 };
 
-function resetPlanillaTrimDTO() {
-	planillaTrimDTO = {};
+$scope.resetPlanillaTrimDTO = function() {
+	
+	multipanelCollapseAll();
+	$scope.asignarNotas = false;
+	$scope.planillas = {};
+	planillaTrimDTO = ObjectsFactory.newPlanillaTrimDTO();
+
+	console.log(planillaTrimDTO);
+
 };
 
 function updatePlanilla(trim, planilla) {

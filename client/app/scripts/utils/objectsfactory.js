@@ -204,6 +204,16 @@ var newBoletinInasistencia = function(){
   return boletinInasistencia;
 };
 
+var newPlanillaTrimDTO = function(){
+  var planillaTrimDTO = {
+    "trimeste": null,
+    "anio": "",
+    "curso": "",
+    "cicloLectivo": 0,
+  };
+  return planillaTrimDTO;
+};
+
 var newMesa = function(){
   var mesa= {
     "idMesa" : null,
@@ -289,6 +299,7 @@ var newMesa = function(){
     newCursoMin: newCursoMin,
     newInasistencia: newInasistencia,
     newBoletinInasistencia: newBoletinInasistencia,
+    newPlanillaTrimDTO: newPlanillaTrimDTO,
     newMesa: newMesa,
 
     //-- Estadisticas
