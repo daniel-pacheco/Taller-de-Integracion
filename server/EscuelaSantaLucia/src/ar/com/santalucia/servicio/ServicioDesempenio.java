@@ -22,7 +22,9 @@ import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
 import ar.com.santalucia.dominio.dto.BoletinInasistenciasDTO;
 import ar.com.santalucia.dominio.dto.GetPlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.dto.ItemPlanillaTrimestralDTO;
+import ar.com.santalucia.dominio.dto.ListaPasajeAlumnosDTO;
 import ar.com.santalucia.dominio.dto.MateriaNotaDTO;
+import ar.com.santalucia.dominio.dto.PasajeAlumnosDTO;
 import ar.com.santalucia.dominio.dto.PlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
@@ -677,4 +679,34 @@ public class ServicioDesempenio {
 			throw iException;
 		}
 	}
+	
+	
+	public ListaPasajeAlumnosDTO listaAlumnosPasajeCurso(String anio, String curso) throws Exception {
+		try {
+			Anio anioBuscar = gAnio.getByExample(new Anio(null, anio, "", null, null, true)).get(0);
+			Curso cursoBuscar = new Curso();
+			for (Curso c : anioBuscar.getListaCursos()) {
+				if (c.getDivision().toString().equals(curso)) {
+					cursoBuscar = c;
+					break;
+				}
+			}
+			Set<Alumno> listaAlumnosCurso = cursoBuscar.getListaAlumnos();
+			ListaPasajeAlumnosDTO listaPasajeAlumnosDTO = new ListaPasajeAlumnosDTO();
+			for (Alumno a : listaAlumnosCurso) {
+				PasajeAlumnosDTO pasajeAlumnoDTO = new PasajeAlumnosDTO();
+				pasajeAlumnoDTO.setIdUsuario(a.getIdUsuario());
+				pasajeAlumnoDTO.setDniAlumno(a.getNroDocumento());
+				pasajeAlumnoDTO.setNombre(a.getNombre());
+				pasajeAlumnoDTO.setApellido(a.getApellido());
+				pasajeAlumnoDTO.setHabilitadoPromocion(false);
+				// obtener boletin del alumno para sacar las notas
+			}
+			
+			return null;
+		} catch (Exception ex) {
+			throw new Exception("Ha ocurrido un error al listar los alumnos para pasar de año: " + ex.getMessage());
+		}
+	}
+	
 }
