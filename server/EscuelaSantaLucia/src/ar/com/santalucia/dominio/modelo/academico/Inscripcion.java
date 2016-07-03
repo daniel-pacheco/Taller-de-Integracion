@@ -12,11 +12,12 @@ import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
  * @version 1.2
  */
 
-// Último modificador: Ariel Ramirez @ 25-06-2016 20:05
+// Último modificador: Ariel Ramirez @ 02-07-2016 22:33
 
 public class Inscripcion {
 	
 	private Long idInscripcion;
+	private Long idLlamado;
 	private Set<Mesa> listaMesas;
 	private Date fecha;
 	private Alumno alumno;
@@ -27,9 +28,10 @@ public class Inscripcion {
 		super();
 	}
 
-	public Inscripcion(Long idInscripcion, Set<Mesa> listaMesas, Date fecha, Alumno alumno, Integer codigo, Boolean activo) {
+	public Inscripcion(Long idInscripcion, Long idLlamado, Set<Mesa> listaMesas, Date fecha, Alumno alumno, Integer codigo, Boolean activo) {
 		super();
 		this.idInscripcion = idInscripcion;
+		this.idLlamado = idLlamado;
 		this.listaMesas = listaMesas;
 		this.fecha = fecha;
 		this.alumno = alumno;
@@ -83,6 +85,14 @@ public class Inscripcion {
 
 	public void setActivo(Boolean activo) {
 		this.activo = activo;
+	}
+
+	public Long getIdLlamado() {
+		return idLlamado;
+	}
+
+	public void setIdLlamado(Long idLlamado) {
+		this.idLlamado = idLlamado;
 	}
 	
 }

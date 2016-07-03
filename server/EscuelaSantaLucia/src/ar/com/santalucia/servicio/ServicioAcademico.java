@@ -60,7 +60,7 @@ import ar.com.santalucia.excepciones.ValidacionException;
  *
  */
 
-// Último modificador: Ariel Ramirez @ 01-05-2016
+// Último modificador: Ariel Ramirez @ 02-07-2016
 
 public class ServicioAcademico {
 
@@ -714,35 +714,88 @@ public class ServicioAcademico {
 		return true;
 	}
 
-	
+	/**
+	 * Agrega una inscripción a mesa (No agrega una entidad inscripción al menos que sea necesario)<br>
+	 * Quita y agrega elementos del listado de Mesa de la entidad Inscripción si este existe.<br>
+	 * No permite operar si no existe periodo de inscripción a Mesa vigente.
+	 * @param idMesa
+	 * @param idAlumno
+	 * @return
+	 * @throws Exception
+	 */
 	public Boolean addInscripcion(Long idMesa, Long idAlumno) throws Exception{
 		try {
 			Alumno alumno = (Alumno) gAlumno.getById(idAlumno);
 			Mesa mesa = gMesa.getById(idMesa);
 			Calendar fechaActual = Calendar.getInstance();
-			Calendar fechaMesa = Calendar.getInstance(); 
-			//Llamado = encontrarLlamado();
+			Calendar fechaLlamadoInicio = Calendar.getInstance(); 
+			Calendar fechaLlamadoFin = Calendar.getInstance();
+			Llamado llamado = encontrarLlamadoVigente();  //Encuentra el llamado solo si está en periodo vigente de inscripcion
 			
-			fechaMesa.setTime(mesa.getFechaHoraInicio());
-			if (fechaActual.equals(fechaMesa) || fechaActual.before(fechaMesa) ){ //Para verificar que no esté intentando inscibirse durante la mesa   
-				//inscripcion = buscarInscripcion(idMesa, idAlumno);  // Busco si existe
-				Inscripcion inscripcion = new Inscripcion();
-				inscripcion.setActivo(true);
-				inscripcion.setAlumno(alumno);
-				inscripcion.setFecha(fechaActual.getTime());
-				inscripcion.getListaMesas().add(mesa);
-				gInscripcion.add(inscripcion);
+			if (llamado != null){
+				Inscripcion inscripcion = buscarInscripcion(idAlumno, llamado.getIdLlamado());
+				if (inscripcion == null){
+					fechaLlamadoInicio.setTime(llamado.getFechaInicio());
+					fechaLlamadoFin.setTime(llamado.getFechaFin());
+					if ( fechaActual.equals(fechaLlamadoInicio) || fechaActual.before(fechaLlamadoInicio) ){ //Para verificar que no esté intentando inscibirse durante la mesa   			
+						inscripcion = new Inscripcion();
+						inscripcion.setIdLlamado(llamado.getIdLlamado());
+						inscripcion.setActivo(true);
+						inscripcion.setAlumno(alumno);
+						inscripcion.setFecha(fechaActual.getTime());
+						inscripcion.getListaMesas().add(mesa);
+						gInscripcion.add(inscripcion);
+					}
+				}else{
+					inscripcion.getListaMesas().add(mesa);
+					gInscripcion.modify(inscripcion);
+				}
+			}else{
+				throw new Exception ("No es posible encontrar un periodo de inscripción a llamado vigente.");
 			}
-			
-			
 		} catch (Exception ex) {
 			throw new Exception("No se pudo agregar la Inscripcion: " + ex.getMessage());
 			//e.printStackTrace();
 		}
 		return true;
 	}
-	
-	
+	/**
+	 * Elimina las inscripciones a mesa de un llamado. Si la lista de mesas inscriptas es cero se elimina la Inscripción.
+	 * @param idMesa
+	 * @param idAlumno
+	 * @return
+	 * @throws Exception
+	 */
+	public Boolean deleteInscripcion(Long idMesa, Long idAlumno) throws Exception{
+		try{
+			Mesa mesa = gMesa.getById(idMesa);
+			Llamado llamado = encontrarLlamadoVigente();  //Encuentra el llamado solo si está en periodo vigente de inscripcion
+			
+			if (llamado != null){
+				Inscripcion inscripcion = buscarInscripcion(idAlumno, llamado.getIdLlamado());
+				if (inscripcion != null){
+					Set<Mesa> listaMesa = inscripcion.getListaMesas();
+					if (listaMesa.contains(mesa)){
+						listaMesa.remove(mesa);
+						if (listaMesa.size() == 0 ){
+							gInscripcion.delete(inscripcion);
+						}else{
+							inscripcion.setListaMesas(listaMesa);
+							gInscripcion.modify(inscripcion);
+						}
+					}
+				}else{
+					throw new Exception ("No existe inscripción.");
+				}
+			}else{
+				throw new Exception ("No es posible encontrar un periodo de inscripción a llamado vigente.");
+			}
+		
+		}catch (Exception ex){
+			
+		}
+		return true;
+	}
 	
 	
 	public Boolean asignarMesaALlamado(Mesa mesa, Long idLlamado) throws Exception { // EN ENDPOINT
@@ -1077,7 +1130,7 @@ public class ServicioAcademico {
 	private Llamado encontrarLlamadoVigente() throws Exception{
 		try{
 		
-		Calendar fechaActual = Calendar.getInstance();
+		Calendar fechaActual = Calendar.getInstance(); //Quemar fecha comprendida en periodo
 		Calendar periodoInicio = Calendar.getInstance();
 		Calendar periodoFin = Calendar.getInstance();
 		
@@ -1100,9 +1153,42 @@ public class ServicioAcademico {
 		return null;
 	}
 	
-	private Inscripcion buscarInscripcion(Long idMesa, Long idAlumno) throws Exception{
+	/**
+	 * Encuentra todas las inscripciones realizada por el alumno.
+	 * @param idAlumno
+	 * @param idLlamado
+	 * @return
+	 * @throws Exception
+	 */
+	private Inscripcion buscarInscripcion(Long idAlumno, Long idLlamado) throws Exception{
 		try{
+			String sql = new String();
+			sql = "select INSCRIPCION.IDINSCRIPCION from INSCRIPCION WHERE ALUMNO = " + idAlumno;
+			
+			Session sessAux = null;
+			if ((sessAux == null) || (!sessAux.isOpen())) {
+				sessAux = HibernateUtil.getSessionFactory().openSession();
 				
+			}
+			if (!sessAux.getTransaction().isActive()) {
+				sessAux.beginTransaction();
+			}
+			SQLQuery consulta = sessAux.createSQLQuery(sql).addEntity(Long.class);
+
+			List result = consulta.list();
+			sessAux.close();
+			if (result.size() != 0) {
+				List<Inscripcion> listaInscripcion = result;
+				for(Inscripcion i : listaInscripcion){
+					if (i.getIdLlamado() == idLlamado){
+						return i;
+					}
+					return null; // Existen inscripciones, pero no para este llamado
+				}
+			} else {
+				return null; // No existen inscripciones para este llamado
+			}
+			
 		}catch (Exception ex){
 			throw ex;
 		}
