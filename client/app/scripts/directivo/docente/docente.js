@@ -35,24 +35,92 @@
   };
 
 
-  $scope.subtitle = "Nuevo Docente"
-  $scope.dropDownAreas = ['Cs. Sociales', 'Cs. Naturales', 'Cs. Exactas','Artes'];
+//-- [docente]
+//-- [docente] variables
+//-- [docente] Form Management
+//-- [docente] filters
+//-- [docente] modals
+//-- [docente] utils
 
+$scope.showMessage = function(mesagge, title, isGood) { //todo ok recibe true si salio bien o false si salio mal
+  ModalService.showModal({
+    templateUrl: 'scripts/utils/showMessage/modalMessage.tpl.html',
+    controller: 'modalMessageController',
+    inputs: {
+      mensaje: mesagge,
+      title: title,
+      isGood: isGood
+    }
+  }).then(function(modal) {
+    modal.element.modal();
+  });
+};
+
+function showServerError (response){
+  console.log(response);
+  var msg = '';
+
+  if (response.statusText) {
+    msg = response.statusText;
+  };
+
+  if (response.data) {
+    msg += ' - ' + response.data.mensaje + ' ' + response.data.severidad;
+  };      
+  $scope.showMessage(msg, 'Error al contactar al servidor' , false);
+};
+
+function showServerSuccess (message, response){
+  console.log(response);
+  var msg = message;
+
+  if ( response && response.data) {
+    msg += ' ' + response.data;
+  };      
+  $scope.showMessage(msg, 'Operación exitosa' , true);
+};
+
+//---spinners
+$scope.progreso = 0;
+$scope.loginSpinner = function () {
+  spinnerService.show('searchDocenteSpinner');
+  $interval(function(){ $scope.progreso ++; },100)
+  $timeout(function () {
+    spinnerService.hide('searchDocenteSpinner');
+    $scope.loggedIn = true;
+    showServerSuccess('El proceso se ha realizado con éxito.');
+  }, 10000);
+};
+
+
+//-- Export Table
+$scope.exportAction = function(id){ 
+  exportTableService.exportAction(id);
+}
+
+//-- [docente] service calls
+
+$scope.subtitle = "Nuevo Docente"
+$scope.dropDownAreas = ['Cs. Sociales', 'Cs. Naturales', 'Cs. Exactas','Artes'];
+
+$scope.nuevoDocente = ObjectsFactory.newDocente();
+$scope.nuevoTelefonoSimple = ObjectsFactory.newTelefono();
+$scope.cuilHead = '';
+$scope.cuilTail = '';
+
+$scope.button = {radio: 'doc'};
+
+
+$scope.clearFormDoc = function(){
+  $scope.formDoc.$setUntouched();
+  $scope.mostrarListaTelefonos = false;
+  $scope.mostrarListaMails = false;
+  $scope.mostrarListaTitulos = false;
   $scope.nuevoDocente = ObjectsFactory.newDocente();
   $scope.nuevoTelefonoSimple = ObjectsFactory.newTelefono();
   $scope.cuilHead = '';
   $scope.cuilTail = '';
-
-  $scope.clearFormDoc = function(){
-    $scope.formDoc.$setUntouched();
-    $scope.mostrarListaTelefonos = false;
-    $scope.mostrarListaMails = false;
-    $scope.mostrarListaTitulos = false;
-    $scope.nuevoDocente = ObjectsFactory.newDocente();
-    $scope.nuevoTelefonoSimple = ObjectsFactory.newTelefono();
-    $scope.cuilHead = '';
-    $scope.cuilTail = '';
-  }
+}
 
 //-- Order list
 $scope.predicate = 'nombre';
@@ -356,22 +424,38 @@ $scope.setActiveDoc = function(menuItemDoc) {
 {name:'Julie', surname:'rose', area:'Cs. Sociales', cuil:'000000', materia:'peperoni'},
 {name:'Juliette', surname:'romeo', area:'Cs. Exactas', cuil:'929225', materia:'Fisica'}];*/
 
-$scope.multiplePanels = {
-  activePanels: []
-};
+// $scope.multiplePanels = {
+//   activePanels: []
+// };
 
-$scope.docenteData = [];
+// $scope.docenteData = [];
 
 
-$scope.search = function () {
+$scope.search = function (param) {
 
-  docenteService.getAllMin()
+
+  if (param == 'doc') {
+    var promise = docenteService.getAllMin();
+  } else {
+    showServerError('no hay endpoint');
+    return;
+  };
+    
+  promise
   .then(function(response){
     $scope.docenteData = response.data;
   },
   function(response){
-    alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
+   showServerError('Se ha producido un error al intentar contactar al servidor: ' + response.statusText);
   });
 };
-$scope.search();
+$scope.search('doc');
+
+//-- [Seccion/sub-seccion]
+//-- [Seccion/sub-seccion] variables
+//-- [Seccion/sub-seccion] Form Management
+//-- [Seccion/sub-seccion] filters
+//-- [Seccion/sub-seccion] modals
+//-- [Seccion/sub-seccion] utils
+//-- [Seccion/sub-seccion] service calls
 });

@@ -46,6 +46,10 @@
 				<div class="panel-heading">
 					<label>Buscar por Nombre, Apellido o DNI: </label>
 					<input class="form-control-inline" type="text" placeholder="Buscar" maxlength="255" required pattern="[a-zA-Z 0-9]*" ng-model="filterByName">
+					<div class="btn-group pull-right" ng-model="button.radio" bs-radio-group>
+			        	<label class="btn btn-default" ng-click="search('doc')"><input type="radio" class="btn btn-default" value="doc"> Docente</label>
+			        	<label class="btn btn-default" ng-click="search('dir')"><input type="radio" class="btn btn-default" value="dir"> Directivo</label>
+		     		</div>
 					<div id="alerta" bs-affix style="position: relative; width: 50%; float: right;"></div>
 				</div>
 			</div>
