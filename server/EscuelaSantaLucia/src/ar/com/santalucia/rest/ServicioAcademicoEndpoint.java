@@ -941,6 +941,25 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 	
+	/**
+	 * Agrega una inscripción a mesa de un alumno.<br>
+	 * @param elementos [idMesa, idAlumno]
+	 * @return
+	 */
+	@POST
+	@Path("/inscripcion")
+	public Response inscribir(final Long[] elementos){
+		try{
+			setInstance();
+			servicioAcademico.addInscripcion(elementos[0],elementos[1]);
+		}catch(Exception ex){
+			return Response.serverError().entity(ex).build();
+		}
+		return Response.ok(true).build();
+	}
+	
+	
+	
 }
 	
 

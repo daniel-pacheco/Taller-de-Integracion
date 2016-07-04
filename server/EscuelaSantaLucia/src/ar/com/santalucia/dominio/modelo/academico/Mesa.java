@@ -77,5 +77,21 @@ public class Mesa {
 	public void setFechaHoraFin(Date fechaHoraFin) {
 		this.fechaHoraFin = fechaHoraFin;
 	}
+
+	@Override
+	public int hashCode() {
+		Long valor = idMesa + Long.valueOf(fechaHoraInicio.getTime()) + Long.valueOf(fechaHoraFin.getTime());
+		return valor.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Mesa){
+			return this.idMesa == ((Mesa)obj).idMesa;
+		}
+		return false;
+	}
+	
+	
 	
 }

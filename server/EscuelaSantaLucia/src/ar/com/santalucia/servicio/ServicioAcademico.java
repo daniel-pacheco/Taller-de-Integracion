@@ -743,8 +743,11 @@ public class ServicioAcademico {
 						inscripcion.setActivo(true);
 						inscripcion.setAlumno(alumno);
 						inscripcion.setFecha(fechaActual.getTime());
-						inscripcion.getListaMesas().add(mesa);
-						gInscripcion.add(inscripcion);
+						gInscripcion.add(inscripcion); //Creo la inscripción sin lista de Mesas
+						Set<Mesa> listaMesa = new HashSet<Mesa>();
+						listaMesa.add(mesa);			
+						inscripcion.setListaMesas(listaMesa);
+						gInscripcion.modify(inscripcion);   //Aca se vincula la inscripcion con la mesa
 					}
 				}else{
 					inscripcion.getListaMesas().add(mesa);
@@ -1163,7 +1166,7 @@ public class ServicioAcademico {
 	private Inscripcion buscarInscripcion(Long idAlumno, Long idLlamado) throws Exception{
 		try{
 			String sql = new String();
-			sql = "select INSCRIPCION.IDINSCRIPCION from INSCRIPCION WHERE ALUMNO = " + idAlumno;
+			sql = "select * from INSCRIPCION WHERE ALUMNO = " + idAlumno;
 			
 			Session sessAux = null;
 			if ((sessAux == null) || (!sessAux.isOpen())) {
@@ -1173,7 +1176,7 @@ public class ServicioAcademico {
 			if (!sessAux.getTransaction().isActive()) {
 				sessAux.beginTransaction();
 			}
-			SQLQuery consulta = sessAux.createSQLQuery(sql).addEntity(Long.class);
+			SQLQuery consulta = sessAux.createSQLQuery(sql).addEntity(Inscripcion.class);
 
 			List result = consulta.list();
 			sessAux.close();
