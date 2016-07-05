@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import ar.com.santalucia.dominio.dto.BoletinInasistenciasDTO;
+import ar.com.santalucia.dominio.dto.BoletinNotasDTO;
 import ar.com.santalucia.dominio.dto.GetPlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.dto.PlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinInasistencias;
@@ -96,6 +97,28 @@ public class ServicioDesempenioEndpoint {
 						.build();
 			}
 			return Response.ok(boletinNotas).build();
+		} catch (Exception ex) {
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
+		}
+	}
+	
+	@GET
+	@Path("/boletin/{id:[0-9][0-9]*}")
+	public Response getBoletinNotasDTObyIdAlumno(@PathParam("id") final Long idAlumno) {
+		BoletinNotasDTO boletinDTO = new BoletinNotasDTO();
+		try {
+			setInstance();
+			boletinDTO = servicioDesempenio.getBoletinNotasDTObyIdAlumno(idAlumno);
+			if (boletinDTO == null) {
+				return Response.status(Status.NOT_FOUND)
+						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
+						.build();
+			}
+			return Response.ok(boletinDTO).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -401,7 +424,8 @@ public class ServicioDesempenioEndpoint {
 	public Response getPlanillaTrimestral(GetPlanillaTrimestralDTO gptDTO) {
 		try {
 			setInstance();
-			if ((gptDTO.getTrimestre() == 0) 
+			if ((gptDTO.getTrimestre() < 1)
+					|| (gptDTO.getTrimestre() > 3)
 					|| (gptDTO.getCicloLectivo() == 0) 
 					|| (gptDTO.getCurso().equals("")) 
 					|| (gptDTO.getAnio().equals(""))) {

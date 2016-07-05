@@ -1,7 +1,10 @@
 package ar.com.santalucia.servicio;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,13 +21,17 @@ import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinNotasHist;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorInasistencia;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorNota;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorTrimestre;
+import ar.com.santalucia.aplicacion.gestor.sistema.configuracion.GestorParametroConfiguracion;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
 import ar.com.santalucia.dominio.dto.BoletinInasistenciasDTO;
+import ar.com.santalucia.dominio.dto.BoletinNotasDTO;
 import ar.com.santalucia.dominio.dto.GetPlanillaTrimestralDTO;
+import ar.com.santalucia.dominio.dto.InasistenciasBoletinDTO;
 import ar.com.santalucia.dominio.dto.ItemPlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.dto.ListaPasajeAlumnosDTO;
 import ar.com.santalucia.dominio.dto.MateriaNotaDTO;
 import ar.com.santalucia.dominio.dto.PasajeAlumnosDTO;
+import ar.com.santalucia.dominio.dto.PlanillaNotasBoletinDTO;
 import ar.com.santalucia.dominio.dto.PlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
@@ -36,6 +43,7 @@ import ar.com.santalucia.dominio.modelo.desempenio.Inasistencia;
 import ar.com.santalucia.dominio.modelo.desempenio.MateriaNotasBoletin;
 import ar.com.santalucia.dominio.modelo.desempenio.Nota;
 import ar.com.santalucia.dominio.modelo.desempenio.Trimestre;
+import ar.com.santalucia.dominio.modelo.sistema.configuracion.ParametroConfiguracion;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.Usuario;
 import ar.com.santalucia.excepciones.*;
@@ -59,6 +67,7 @@ public class ServicioDesempenio {
 	private GestorAnio gAnio;
 	private GestorInasistencia gInasistencia;
 	private GestorBoletinInasistencias gBoletinInasistencias;
+	private GestorParametroConfiguracion gParametroConfiguracion;
 	
 	public static String BUSCAR_BOLETIN_NOTAS = "bn";
 	public static String BUSCAR_BOLETIN_INASISTENCIAS = "bi";
@@ -70,10 +79,11 @@ public class ServicioDesempenio {
 			gTrimestre = new GestorTrimestre();
 			gBoletin = new GestorBoletinNotas();
 			gBoletinHist = new GestorBoletinNotasHist();
-			//gAlumno = new GestorAlumno();
+			gAlumno = new GestorAlumno();
 			gAnio = new GestorAnio();
 			gInasistencia = new GestorInasistencia();
 			gBoletinInasistencias = new GestorBoletinInasistencias();
+			gParametroConfiguracion = new GestorParametroConfiguracion();
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un problema al inicializar el servicio de operaciones básicas: "
 					+ ex.getMessage());
@@ -152,6 +162,117 @@ public class ServicioDesempenio {
 			return gBoletin.getById(idBoletin);
 		} catch (Exception ex) {
 			throw new Exception("No se pudo obtener el BOLETÍN DE NOTAS: " + ex.getMessage());
+		}
+	}
+	
+	public BoletinNotasDTO getBoletinNotasDTObyIdAlumno(Long idAlumno) throws Exception {
+		try {
+			Alumno alumno = (Alumno) gAlumno.getById(idAlumno);
+			BoletinNotas boletinNotas = (BoletinNotas) encontrarBoletinDeAlumno(alumno, BUSCAR_BOLETIN_NOTAS);
+			BoletinInasistencias boletinInasistencias = (BoletinInasistencias) encontrarBoletinDeAlumno(alumno, BUSCAR_BOLETIN_INASISTENCIAS);
+			Anio anio = gAnio.getByExample(new Anio(null, 
+													boletinNotas.getAnio(), 
+													null, null, null, true)).get(0);	
+			ArrayList<Materia> materias = new ArrayList<Materia>();
+			materias.addAll(anio.getListaMaterias());
+			
+			BoletinNotasDTO boletinDTO = new BoletinNotasDTO();
+			boletinDTO.setIdBoletinNotas(boletinNotas.getIdBoletinNotas());
+			boletinDTO.setNroDocumento(alumno.getNroDocumento());
+			boletinDTO.setNombre(alumno.getNombre());
+			boletinDTO.setApellido(alumno.getApellido());
+			boletinDTO.setAnio(boletinNotas.getAnio());
+			boletinDTO.setCurso(boletinNotas.getCurso());
+			boletinDTO.setCicloLectivo(boletinNotas.getCicloLectivo());
+			for (Materia m : materias) {
+				PlanillaNotasBoletinDTO planillaNotas = new PlanillaNotasBoletinDTO();
+				planillaNotas.setMateria(m.getNombre());
+				for (Trimestre t : boletinNotas.getListaTrimestres()) {
+					if (t.getMateria().getNombre().equals(m.getNombre())) {
+						switch (t.getOrden()) {
+						case 1:
+							planillaNotas.setNotaTrim1(t.getNotaFinal().getCalificacion().intValue());
+							break;
+						case 2:
+							planillaNotas.setNotaTrim2(t.getNotaFinal().getCalificacion().intValue());
+							break;
+						case 3:
+							planillaNotas.setNotaTrim3(t.getNotaFinal().getCalificacion().intValue());
+							break;
+						}
+					}
+				}
+				Float promedio = (float) ((planillaNotas.getNotaTrim1() + planillaNotas.getNotaTrim2() + planillaNotas.getNotaTrim3()) / 3);
+				planillaNotas.setNotaFinal(promedio);
+				// ver la posibilidad de llenar la nota definitiva, más la nota de diciembre y marzo
+				boletinDTO.getListaNotas().add(planillaNotas);
+			}
+			
+			// ----- INASISTENCIAS -------
+			ParametroConfiguracion inicioTrimestre1 = gParametroConfiguracion
+					.getByExample(new ParametroConfiguracion(null, "COMIENZO_TRIM_1", null, null)).get(0);
+			ParametroConfiguracion finTrimestre1 = gParametroConfiguracion
+					.getByExample(new ParametroConfiguracion(null, "FIN_TRIM_1", null, null)).get(0);
+			ParametroConfiguracion inicioTrimestre2 = gParametroConfiguracion
+					.getByExample(new ParametroConfiguracion(null, "COMIENZO_TRIM_2", null, null)).get(0);
+			ParametroConfiguracion finTrimestre2 = gParametroConfiguracion
+					.getByExample(new ParametroConfiguracion(null, "FIN_TRIM_2", null, null)).get(0);
+			ParametroConfiguracion inicioTrimestre3 = gParametroConfiguracion
+					.getByExample(new ParametroConfiguracion(null, "COMIENZO_TRIM_3", null, null)).get(0);
+			ParametroConfiguracion finTrimestre3 = gParametroConfiguracion
+					.getByExample(new ParametroConfiguracion(null, "FIN_TRIM_3", null, null)).get(0);
+			SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+			Calendar calendar1 = Calendar.getInstance();
+			Calendar calendar2 = Calendar.getInstance();
+			Calendar calendar3 = Calendar.getInstance();
+			Calendar calendar4 = Calendar.getInstance();
+			Calendar calendar5 = Calendar.getInstance();
+			Calendar calendar6 = Calendar.getInstance();
+			calendar1.setTime(formatoFecha.parse(inicioTrimestre1.getValor()));
+			calendar2.setTime(formatoFecha.parse(finTrimestre1.getValor()));
+			calendar3.setTime(formatoFecha.parse(inicioTrimestre2.getValor()));
+			calendar4.setTime(formatoFecha.parse(finTrimestre2.getValor()));
+			calendar5.setTime(formatoFecha.parse(inicioTrimestre3.getValor()));
+			calendar6.setTime(formatoFecha.parse(finTrimestre3.getValor()));
+			InasistenciasBoletinDTO resumenInasistencias = new InasistenciasBoletinDTO();
+			for (Inasistencia i : boletinInasistencias.getListaInasistencias()) {
+				if (i.getFecha().after(calendar1.getTime()) 
+						|| i.getFecha().before(calendar2.getTime())
+						|| i.getFecha().equals(calendar1.getTime())
+						|| i.getFecha().equals(calendar2.getTime())) { // si fecha está entre el inicio y fin del trimestre 1
+					if (i.getJustificada()) {
+						resumenInasistencias.setJustificadasTrim1(resumenInasistencias.getJustificadasTrim1() + i.getCantidad());
+					} else {
+						resumenInasistencias.setInjustificadasTrim1(resumenInasistencias.getInjustificadasTrim1() + i.getCantidad());
+					}
+				}
+				if (i.getFecha().after(calendar3.getTime()) 
+						|| i.getFecha().before(calendar4.getTime())
+						|| i.getFecha().equals(calendar3.getTime())
+						|| i.getFecha().equals(calendar4.getTime())) { // si fecha está entre el inicio y fin del trimestre 2
+					if (i.getJustificada()) {
+						resumenInasistencias.setJustificadasTrim2(resumenInasistencias.getJustificadasTrim2() + i.getCantidad());
+					} else {
+						resumenInasistencias.setInjustificadasTrim2(resumenInasistencias.getInjustificadasTrim2() + i.getCantidad());
+					}
+				}
+				if (i.getFecha().after(calendar5.getTime()) 
+						|| i.getFecha().before(calendar6.getTime())
+						|| i.getFecha().equals(calendar5.getTime())
+						|| i.getFecha().equals(calendar6.getTime())) { // si fecha está entre el inicio y fin del trimestre 3
+					if (i.getJustificada()) {
+						resumenInasistencias.setJustificadasTrim3(resumenInasistencias.getJustificadasTrim3() + i.getCantidad());
+					} else {
+						resumenInasistencias.setInjustificadasTrim3(resumenInasistencias.getInjustificadasTrim3() + i.getCantidad());
+					}
+				}
+			}
+			
+			boletinDTO.setDetalleInasistencias(resumenInasistencias);
+			
+			return boletinDTO;
+		} catch (Exception ex) {
+			throw new Exception("No se pudo obtener el DTO del boletin del alumno por el ID de alumno: " + ex.getMessage());
 		}
 	}
 	
@@ -367,12 +488,6 @@ public class ServicioDesempenio {
 	 */
 	public ArrayList<ItemPlanillaTrimestralDTO> getPlanillaTrimestral(GetPlanillaTrimestralDTO gptDTO) throws Exception {
 		//TODO: ¿Qué se necesita para obtener la planilla trimestral?
-		/*
-		 * turno del curso // OJO !! en vez de división puse el turno ("Único", "Generico", ...)
-		 * nro de trimestre
-		 * nombre del año
-		 * ciclo lectivo
-		 */
 		
 		ArrayList<ItemPlanillaTrimestralDTO> planillaTrimestral;
 		try {
@@ -479,8 +594,6 @@ public class ServicioDesempenio {
 	}
 	
 	
-	
-
 	/**
 	 * Test method
 	 * @param inasistencia
