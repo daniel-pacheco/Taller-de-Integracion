@@ -979,6 +979,11 @@ public class ServicioAcademicoEndpoint {
 		return Response.ok(true).build();
 	}
 	
+	/**
+	 * Busca el detalle de las mesas a la cual el alumno puede inscribirse.
+	 * @param idAlumno
+	 * @return
+	 */
 	@GET
 	@Path("/inscripcion/{idA:[0-9][0-9]*}")
 	public Response listarInscribibles(@PathParam("idA") final Long idAlumno){
