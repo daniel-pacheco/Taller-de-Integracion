@@ -3,6 +3,7 @@ package ar.com.santalucia.servicio;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -30,6 +31,7 @@ import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
 import ar.com.santalucia.dominio.dto.AnioDTO;
 import ar.com.santalucia.dominio.dto.CursoDTO;
 import ar.com.santalucia.dominio.dto.DetallePreviaDTO;
+import ar.com.santalucia.dominio.dto.InscripcionConsultaDTO;
 import ar.com.santalucia.dominio.dto.MateriaAltaDTO;
 import ar.com.santalucia.dominio.dto.MateriaDTO;
 import ar.com.santalucia.dominio.dto.MesaAltaDTO;
@@ -714,6 +716,7 @@ public class ServicioAcademico {
 		return true;
 	}
 
+	
 	/**
 	 * Agrega una inscripción a mesa (No agrega una entidad inscripción al menos que sea necesario)<br>
 	 * Quita y agrega elementos del listado de Mesa de la entidad Inscripción si este existe.<br>
@@ -727,6 +730,11 @@ public class ServicioAcademico {
 		try {
 			Alumno alumno = (Alumno) gAlumno.getById(idAlumno);
 			Mesa mesa = gMesa.getById(idMesa);
+			if(mesa == null){
+				ValidacionException ex = new ValidacionException();
+				ex.addMensajeError("La mesa solicitada no existe.");
+				throw ex;
+			}
 			Calendar fechaActual = Calendar.getInstance();
 			Calendar fechaLlamadoInicio = Calendar.getInstance(); 
 			Calendar fechaLlamadoFin = Calendar.getInstance();
@@ -754,9 +762,15 @@ public class ServicioAcademico {
 					gInscripcion.modify(inscripcion);
 				}
 			}else{
-				throw new Exception ("No es posible encontrar un periodo de inscripción a llamado vigente.");
+				ValidacionException ex = new ValidacionException();
+				ex.addMensajeError("No existe periodo de inscripción a llamado vigente.");
+				throw ex;
 			}
-		} catch (Exception ex) {
+		} 
+		catch(ValidacionException ex){
+			throw ex;
+		}
+		catch (Exception ex) {
 			throw new Exception("No se pudo agregar la Inscripcion: " + ex.getMessage());
 			//e.printStackTrace();
 		}
@@ -772,6 +786,11 @@ public class ServicioAcademico {
 	public Boolean deleteInscripcion(Long idMesa, Long idAlumno) throws Exception{
 		try{
 			Mesa mesa = gMesa.getById(idMesa);
+			if (mesa == null){
+				ValidacionException ex = new ValidacionException();
+				ex.addMensajeError("La mesa solicitada no existe.");
+				throw ex;
+			}
 			Llamado llamado = encontrarLlamadoVigente();  //Encuentra el llamado solo si está en periodo vigente de inscripcion
 			
 			if (llamado != null){
@@ -788,17 +807,110 @@ public class ServicioAcademico {
 						}
 					}
 				}else{
-					throw new Exception ("No existe inscripción.");
+					ValidacionException ex = new ValidacionException();
+					ex.addMensajeError("La inscripción no existe.");
+					throw ex;
 				}
 			}else{
-				throw new Exception ("No es posible encontrar un periodo de inscripción a llamado vigente.");
+				ValidacionException ex = new ValidacionException();
+				ex.addMensajeError("No existe periodo de inscripción a llamado vigente.");
+				throw ex;
 			}
-		
 		}catch (Exception ex){
-			
+			throw new Exception("No se pudo eliminar la inscripicón a mesa solicitada. " + ex.getMessage());
 		}
 		return true;
 	}
+	
+	/**
+	 * Lista las mesas a la que el alumno puede inscribirse, teniendo en cuenta las amterias previas del mismo.
+	 * @param idAlumno
+	 * @return
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	public List<InscripcionConsultaDTO> listarInscribibles(Long idAlumno) throws ValidacionException, Exception{
+		try{
+			Alumno alumno = (Alumno)gAlumno.getById(idAlumno); // Hubo un problema al obtener el alumno
+			if (alumno == null){
+				ValidacionException ex = new ValidacionException();
+				ex.addMensajeError("No se ha encontrado el alumno.");
+				throw ex;
+			}			
+			Llamado llamadoVigente = encontrarLlamadoVigente(); // No hay llamado vigente a la fecha
+			if(llamadoVigente == null){
+				ValidacionException ex = new ValidacionException();
+				ex.addMensajeError("No existen llamados vigentes.");
+				throw ex;
+			}			
+			List<DetallePreviaDTO> previas = getPreviasDesaprobadas(alumno.getNroDocumento()); // El alumno no tiene previas
+			if(previas.size()==0){
+				ValidacionException ex = new ValidacionException();
+				ex.addMensajeError("No hay materias previas para inscribirse.");
+				throw ex;
+			}
+			Set<Mesa> mesas = llamadoVigente.getListaMesas();           //Mesas del llamado vigente
+			List<InscripcionConsultaDTO> inscribibles = new ArrayList<InscripcionConsultaDTO>();
+			InscripcionConsultaDTO aux = new InscripcionConsultaDTO();
+			for(Mesa m: mesas){											//Por cada mesa, recorro las previas en busca de coincidencia de nombre de materia
+				String tribunal = new String();
+				for(DetallePreviaDTO p: previas){
+					if( (m.getMateria().getNombre()).equals(p.getNombreMateria()) ){ 
+						Calendar calendar = Calendar.getInstance();
+						aux.setAlumno(alumno.toString());
+						aux.setIdMesa(m.getIdMesa());
+						aux.setInscripto(null); // No se si está inscripto todavía, lo dejo en null
+						calendar.setTime(m.getFechaHoraInicio());
+						aux.setFecha( String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) +"/"+
+									String.valueOf(calendar.get(Calendar.MONTH+1)) +"/"+
+									String.valueOf(calendar.get(Calendar.YEAR)) );
+						calendar.setTime(m.getFechaHoraInicio());
+						aux.setHora( String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)) +" : " + 
+									String.valueOf(calendar.get(Calendar.MINUTE)) );
+						aux.setMateria(m.getMateria().getNombre());
+						Iterator<Personal> it = m.getIntegrantesTribunal().iterator();
+						while (it.hasNext()){
+							tribunal = tribunal + " " +it.next().toString();
+						}
+						aux.setTribunal(tribunal);
+						inscribibles.add(aux);
+					}
+				}
+			}
+			
+			if(inscribibles.size() == 0){									// Tiene previas, pero las mesas no están disponibles o la materia no existe más
+				ValidacionException ex = new ValidacionException();
+				String cadenaPrevias = new String();
+				Iterator<DetallePreviaDTO> it = previas.iterator();
+				while (it.hasNext()){
+					cadenaPrevias = cadenaPrevias + " " +it.next().getNombreMateria()+" - ("+it.next().getAnio()+") | ";
+				}
+				ex.addMensajeError("No existen mesas disponibles para las previas encontradas: " + cadenaPrevias);
+				throw ex;
+			}
+			
+			Inscripcion inscripcion = buscarInscripcion(idAlumno, llamadoVigente.getIdLlamado());	// Busco las incripciones para ver el estado
+			Set<Mesa> mesasInscriptas = inscripcion.getListaMesas();
+			
+			if(inscripcion !=null){ // Si existe la inscripción tiene por lo menos una mesa adentro 
+				for(Mesa minsc : mesasInscriptas){
+					for(InscripcionConsultaDTO i : inscribibles){			// Seteo en true las que están inscriptas
+						if(minsc.getIdMesa().equals(i.getIdMesa())){
+							i.setInscripto(true);
+						}
+					}
+				}
+			}
+			
+			return inscribibles;
+			
+		}catch(ValidacionException ex){
+			throw ex;
+		}
+		catch(Exception ex){
+			throw ex;
+		}
+	} 
 	
 	
 	public Boolean asignarMesaALlamado(Mesa mesa, Long idLlamado) throws Exception { // EN ENDPOINT

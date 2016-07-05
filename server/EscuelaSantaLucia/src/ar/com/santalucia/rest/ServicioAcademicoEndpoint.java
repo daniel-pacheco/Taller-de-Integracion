@@ -339,12 +339,13 @@ public class ServicioAcademicoEndpoint {
 		ArrayList<MateriaDTO> materiasDTO = new ArrayList<MateriaDTO>();
 		try {
 			setInstance();
+			materiasDTO = servicioAcademico.getMateriasDTO();
 			if (materiasDTO.size() == 0) {
 				return Response.status(Status.NO_CONTENT)
 						.entity(new FrontMessage("Sin resultados", FrontMessage.INFO))
 						.build();
 			}
-			return Response.ok(servicioAcademico.getMateriasDTO()).build();
+			return Response.ok(materiasDTO).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -952,14 +953,45 @@ public class ServicioAcademicoEndpoint {
 		try{
 			setInstance();
 			servicioAcademico.addInscripcion(elementos[0],elementos[1]);
+		}catch(ValidacionException ex){
+			return Response.status(Status.CONFLICT).entity(new FrontMessage(ex.getMessage(),FrontMessage.INFO)).build();
+		}
+		catch(Exception ex){
+			return Response.serverError().entity(ex).build();
+		}
+		return Response.ok(true).build();
+	}	
+	
+	/**
+	 * Elimina una entrada inscripción a mesa de un alumno.<br>
+	 * @param elementos [idMesa, idAlumno]
+	 * @return
+	 */
+	@POST
+	@Path("/desinscripcion")
+	public Response desinscribir(final Long[] elementos){
+		try{
+			setInstance();
+			servicioAcademico.deleteInscripcion(elementos[0],elementos[1]);
 		}catch(Exception ex){
 			return Response.serverError().entity(ex).build();
 		}
 		return Response.ok(true).build();
 	}
 	
-	
-	
+	@GET
+	@Path("/inscripcion/{idA:[0-9][0-9]*}")
+	public Response listarInscribibles(@PathParam("idA") final Long idAlumno){
+		try{
+			setInstance();
+			return Response.ok(servicioAcademico.listarInscribibles(idAlumno)).build();
+		}catch(ValidacionException ex){
+			return Response.status(Status.CONFLICT).entity(new FrontMessage(ex.getMessage(),FrontMessage.INFO)).build();
+		}catch(Exception ex){
+			return Response.status(Status.INTERNAL_SERVER_ERROR).entity( new FrontMessage("Ocurrió un problema al listar las mesas para inscripción",FrontMessage.CRITICAL)).build();
+		}
+		
+	} 
 }
 	
 
