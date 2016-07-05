@@ -20,7 +20,7 @@
  		}
  	});
  })
- .controller('DocenteCtrl', function ($scope, docenteData, $timeout, ModalService, SERVER, ObjectsFactory, $alert, docenteService, alumnoService, directivoService, modalService) {
+ .controller('DocenteCtrl', function ($scope, docenteData, $timeout, ModalService, SERVER, ObjectsFactory, $alert, docenteService, alumnoService, directivoService, modalService, spinnerService) {
 
   $scope.tooltip = {
     tooltipProfile : {
@@ -264,15 +264,19 @@ $scope.requiredPass = function(docente) {
   }).then(function(modal) {
     modal.element.modal();
     modal.close.then(function(result){
-            alumnoService.getById(result).then( //llamada a validar el DNI
-              function(response){
-                console.log(response);
-                putNewDirectivo(docente);
-              }, function(response){
-                alert('error, reqpass');
-                console.log(response);
-              }); 
-          });
+      alumnoService.getById(result) //llamada a validar el DNI
+      .then(function(response){
+        spinnerService.show('searchDocenteSpinner');
+        console.log(response);
+        putNewDirectivo(docente);
+      }, function(response){
+        alert('error, reqpass');
+        console.log(response);
+      })
+      .finally(function(){
+        spinnerService.hide('searchDocenteSpinner');
+      }); 
+    });
   });
 };
 
@@ -335,7 +339,7 @@ $scope.newDocente = function(docente){
 
 var putNewDocente = function (docente){
   console.log ('putDocente');
-
+  spinnerService.show('searchDocenteSpinner');
   docenteService.putNew(docente)
   .then(function(response){
     console.log(response);
@@ -344,12 +348,15 @@ var putNewDocente = function (docente){
   },
   function(response){
     alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
+  })
+  .finally(function(){
+    spinnerService.hide('searchDocenteSpinner');
   });
 };
 
 var putNewDirectivo = function (directivo){
   console.log ('putDirectivo');
-
+  spinnerService.show('searchDocenteSpinner');
   directivoService.putNew(directivo)
   .then(function(response){
     console.log(response);
@@ -358,6 +365,9 @@ var putNewDirectivo = function (directivo){
   },
   function(response){
     alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
+  })
+  .finally(function(){
+    spinnerService.hide('searchDocenteSpinner');
   });
 };
 
@@ -428,28 +438,41 @@ $scope.setActiveDoc = function(menuItemDoc) {
 //   activePanels: []
 // };
 
-// $scope.docenteData = [];
+$scope.docenteData = {};
 
+$scope.resetList = function(){ // forma berreta de limpiar la lista...
+  var aux = '';
+  $scope.docenteData = aux;
+};
 
 $scope.search = function (param) {
 
-
+  spinnerService.show('searchDocenteSpinner');
   if (param == 'doc') {
     var promise = docenteService.getAllMin();
   } else {
-    showServerError('no hay endpoint');
+    // showServerError('no hay endpoint');
+    $scope.docenteData = docenteData;
+    spinnerService.hide('searchDocenteSpinner');
     return;
   };
-    
-  promise
-  .then(function(response){
-    $scope.docenteData = response.data;
-  },
-  function(response){
-   showServerError('Se ha producido un error al intentar contactar al servidor: ' + response.statusText);
-  });
+
+  if (promise) {
+    promise
+    .then(function(response){
+      $scope.docenteData = response.data;
+    },
+    function(response){
+     showServerError('Se ha producido un error al intentar contactar al servidor: ' + response.statusText);
+   })
+    .finally(function(){
+      spinnerService.hide('searchDocenteSpinner');
+    });
+  };
 };
-$scope.search('doc');
+$scope.$on('$viewContentLoaded', function(){
+  $scope.search('doc');
+});
 
 //-- [Seccion/sub-seccion]
 //-- [Seccion/sub-seccion] variables

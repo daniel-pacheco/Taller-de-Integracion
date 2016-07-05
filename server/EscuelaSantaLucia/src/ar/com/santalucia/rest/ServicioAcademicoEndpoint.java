@@ -339,12 +339,13 @@ public class ServicioAcademicoEndpoint {
 		ArrayList<MateriaDTO> materiasDTO = new ArrayList<MateriaDTO>();
 		try {
 			setInstance();
+			materiasDTO = servicioAcademico.getMateriasDTO();
 			if (materiasDTO.size() == 0) {
 				return Response.status(Status.NO_CONTENT)
 						.entity(new FrontMessage("Sin resultados", FrontMessage.INFO))
 						.build();
 			}
-			return Response.ok(servicioAcademico.getMateriasDTO()).build();
+			return Response.ok(materiasDTO).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)

@@ -42,30 +42,44 @@ $scope.tooltip = {
   }
 };
 
-$scope.listadoAnio = true;
-$scope.subtitle = "Listado";
+var setActiveAnio = function(menuItemAnio) {
+  $scope.activeMenuIzqAnio = menuItemAnio;
+};
 
 $scope.seleccionar = function(id) {//Hacer una funcion que ponga en true el nombre de variable que le llegue y el resto en false (toogle de tres variables)
- $scope.administrarAnio = false;
- $scope.nuevoAnio = false;
- $scope.listadoAnio = false;
- $scope.editanio = false;
- $scope.showEditAnioMenuIzq = false;
+  $scope.listadoAnio = false;
+  $scope.nuevoAnio = false;
+  $scope.nuevoCurso = false;
+  $scope.administrarAnio = false;  
+  $scope.editanio = false;
+  $scope.showEditAnioMenuIzq = false;
 
- switch (id) {
-  case 'listadoAnio':
-  $scope.listadoAnio = true;
-  $scope.subtitle = "Listado";
-  break;
-  case 'nuevoAnio':
-  $scope.nuevoAnio = true;
-  $scope.subtitle = "Nuevo Año";
-  break;
-  case 'administrarAnio':
-  $scope.administrarAnio = true;
-  $scope.subtitle = "Administrar";
-}
+  switch (id) {
+    case 'listadoAnio':
+    $scope.listadoAnio = true;
+    $scope.subtitle = "Listado";
+    setActiveAnio(1);
+    break;
+    case 'nuevoAnio':
+    $scope.nuevoAnio = true;
+    $scope.subtitle = "Nuevo Año";
+    setActiveAnio(2);
+    clearFormAnio();
+    break;
+    case 'nuevoCurso':
+    $scope.nuevoCurso = true;
+    $scope.subtitle = "Nuevo Curso";
+    setActiveAnio(3);
+    clearFormCurso();
+    break;
+    case 'administrarAnio':
+    $scope.administrarAnio = true;
+    $scope.subtitle = "Administrar";
+    setActiveAnio(4);
+    break;
+  }
 };
+$scope.seleccionar('listadoAnio');
 
 //-- [Anio] filters
 
@@ -137,7 +151,14 @@ function getAnios() {
 };
 
 
+// $scope.copyObj = function (obj) {
+//   $scope.nuevoCursoObj2 = _.clone($scope.nuevoCursoObj);
+// }
 
+// // $scope.nuevoCursoObj={};
+// $scope.log = function(){
+//   console.log($scope.nuevoCursoObj);
+// };
 
 //-------------------------------------------
 
@@ -152,8 +173,8 @@ function getAnios() {
 
 $scope.clearFormAnio = function() {
   $scope.formAnio.$setUntouched();
-  $scope.newAnio = ObjectsFactory.newAnio();
-  $scope.newAnio.listaCursos = [];
+  $scope.nuevoAnioObj = ObjectsFactory.newAnio();
+  $scope.nuevoAnio.listaCursos = [];
 };
 
 $scope.cursos = cursosData;
@@ -162,11 +183,6 @@ $scope.acept = function () {
   if (!$scope.listAnioIsEnabled) {
     $scope.listAnioIsEnabled = true;
   };
-};
-
-$scope.activeMenuIzqAnio = 2;
-$scope.setActiveAnio = function(menuItemAnio) {
-  $scope.activeMenuIzqAnio = menuItemAnio;
 };
 
 
@@ -189,21 +205,33 @@ $scope.addCurso = function() {
 };
 
 //-- Llamadas al service
-$scope.saveAnio = function(anio) {
-  alert(anio.nombre+anio.descripcion+anio.listaCursos);
+$scope.newAnio = function(anio) {
+  // alert(anio.nombre+anio.descripcion+anio.listaCursos);
+  spinnerService.show('searchAniosSpinner');
+  academicoService.anioPutNew(anio)
+  .then(
+    function(response){
+      showServerSuccess('El año se ha dado de alta con éxito n° de Id: ', response);
+    },
+    function(response){
+      showServerError(response);
+    })
+  .finally(function(){
+    spinnerService.hide('searchAniosSpinner');
+  });
 };
 
 $scope.editAnio = function(anio){
  $scope.listadoAnio = false;
  $scope.nuevoAnio = true;
- $scope.setActiveAnio(4);
+ $scope.setActiveAnio(5);
  $scope.subtitle = "Editar año";
  $scope.showEditAnioMenuIzq = true;
- $scope.newAnio = angular.copy(anio);
+ $scope.nuevoAnio = angular.copy(anio);
 
 
- angular.forEach($scope.newAnio.listaCursos, function (item, index) {
-  $scope.newAnio.listaCursos[index] = item.idCurso;
+ angular.forEach($scope.nuevoAnio.listaCursos, function (item, index) {
+  $scope.nuevoAnio.listaCursos[index] = item.idCurso;
 });
 
 };
