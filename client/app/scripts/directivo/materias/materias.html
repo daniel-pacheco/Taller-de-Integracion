@@ -1,175 +1,189 @@
-<div class="col-md-2 hidden-sm hidden-xs">
-	<div>
-		<!-- ngInclude: 'views/partials/affixed-sidebar.html' -->
-		<div class="bs-sidebar hidden-print affix" role="complementary" data-offset-top="-100" bs-affix style="position: relative; text-align: right;">
-			<ul class="nav bs-sidenav">
-				<li bs-scrollspy data-target="#getting-started">
-					<a href="#getting-started">Men&uacute; materia</a>
-				</li>
-				<hr style="margin: 2px 0;">
-				<li data-target="#modals" ng-class="{active : activeMenuIzqAlu === 1}">
-					<a href="" ng-click="seleccionar('listado'); setActiveAlu(1)">Listado</a>
-				</li>
-				<li data-target="#showNuevaMateria" ng-class="{active : activeMenuIzqAlu === 2}">
-					<a href="" ng-click="seleccionar('nuevaMateria'); setActiveAlu(2)">Nueva materia</a>
-				</li>
-			</ul>
-		</div>
-		<!--/ngInclude: 'views/partials/affixed-sidebar.html' -->
-	</div>
-</div>
-
 <div>
-	<div id="listado" ng-show="listado">  <!--lista centrada -->
-		<fieldset>
-			<h1>{{subtitle}}: <small>Selecciones un a&ntilde;o para mostrar las materias asociadas</small></h1>
-			<hr>
-			<div class="row">
-				<label for="">A&ntilde;o:</label> 
-				<select class="dropdown-toggle form-control-inline" name="" ng-model="filterByYear.ano"> <!-- ng-change="update(dropDownValue, option)"> -->
-					<option value="" disabled selected>Seleccione una opci&oacute;n</option>
-					<option value="">Todos</option>
-					<option ng-repeat="option in dropDownOptions"  value="{{option}}">{{option}}</option>
-				</select>
-				<div id="alerta" bs-affix style="position: relative; width: 50%; float: right;"></div>
+	<div class="navbar-inverse bs-docs-nav" role="banner">
+		<div class="container">
+			<div class="navbar-header">
+				<button class="navbar-toggle" type="button" data-template-url="./scripts/directivo/materias/aside/materiassidebar.aside.tpl.html" data-animation="am-fade-and-slide-left" data-placement="left" title="Menu" bs-aside="aside">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
 			</div>
-			<!--Alerts no pude hacer andar el data duration-->
-			<table class="table table-hover table-striped">
-				<thead>
-					<tr>
-						<th>Nombre</th>
-						<th>A&ntilde;o</th>
-						<th>&Aacute;rea</th>
-						<th>Docente titular</th>
-						<th>Docente suplente</th>
-						<th>Descripci&oacute;n</th>
-						<th>Acciones</th>
-					</tr>
-				</thead>
-				<tr ng-repeat="materia in listaMaterias | filter:filterByYear">
-					<td>{{materia.nombre}}</td>
-					<td>{{materia.anio}}</td>
-					<td>{{materia.area}}</td>
-					<td>{{materia.docenteTitular}}</td>
-					<td>{{materia.docenteSuplente}}</td>
-					<td>{{materia.descripcion}}</td>
-					<td>
-						<div>
-							<button class="btn btn-default btn-xs" style="width: 45%; float: left"n g-click="" bs-tooltip="tooltip.tooltipEdit">
-								<span data-animation="am-flip-x" class="glyphicon glyphicon-edit"></span>
-							</button>
-						</div>
-						<div>
-							<button class="btn btn-default btn-xs" style="width: 45%; float: right" bs-tooltip="tooltip.tooltipDelete" ng-click="deleteMateria(materia)">
-								<span class="glyphicon glyphicon-trash"></span>
-							</button>
-						</div>
-					</td>
-				</tr>
-			</table>
-		</fieldset>
+		</div>
+	</div>
+	<div class="col-md-2 hidden-sm hidden-xs">
+		<div>
+			<!-- ngInclude: 'views/partials/affixed-sidebar.html' -->
+			<div class="bs-sidebar hidden-print affix" role="complementary" data-offset-top="-100" bs-affix style="position: relative; text-align: right;">
+				<ul class="nav bs-sidenav">
+					<li bs-scrollspy data-target="#getting-started">
+						<a href="#getting-started">Men&uacute; materia</a>
+					</li>
+					<hr style="margin: 2px 0;">
+					<li data-target="#modals" ng-class="{active : activeMenuIzqAlu === 1}">
+						<a href="" ng-click="seleccionar('listado'); setActiveAlu(1)">Listado</a>
+					</li>
+					<li data-target="#showNuevaMateria" ng-class="{active : activeMenuIzqAlu === 2}">
+						<a href="" ng-click="seleccionar('nuevaMateria'); setActiveAlu(2)">Nueva materia</a>
+					</li>
+				</ul>
+			</div>
+			<!--/ngInclude: 'views/partials/affixed-sidebar.html' -->
+		</div>
 	</div>
 
-<div id="showNuevaMateria" ng-show="showNuevaMateria">
-	<fieldset>
-		<h1>{{subtitle}}: <small>Complete los datos para dar de alta una nueva materia y haga clic en guardar cuando finalice</small></h1>
-		<hr>
-		<form class="form-horizontal media" novalidate name="formMat">
-			<div class="formulario media-body">
-				<div class="col-md-8 personal-info">
-					<div class="alert alert-warning alert-dismissible" role="alert">
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-						<span class="glyphicon glyphicon-asterisk small"></span>Campos obligatorios
-					</div>
-					<div class="form-group" ng-class="{ 'has-error': formMat.nombre.$touched && formMat.nombre.$invalid }">
-						<div class="col-sm-4 control-label">
-							<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label for=""> Nombre:</label>
-						</div>
-						<div class="col-sm-5">
-							<input class="form-control" placeholder="Física" name="nombre" type="text"
-							maxlength="85" required pattern="[a-zA-Z 0-9]*" ng-model="nuevaMateria.nombreMateria">
-						</div>
-						<div ng-messages="formMat.nombre.$error" ng-if="formMat.nombre.$touched && formMat.nombre.$invalid">
-							<div ng-message="pattern" class="help-block">Formato invalido</div>
-							<div ng-message="required" class="help-block">Complete este campo</div>
-						</div>
-					</div><!-- /form-group-->
-					<div class="form-group" ng-class="{ 'has-error': formMat.descripcion.$touched && formMat.descripcion.$invalid }">
-						<div class="col-sm-4 control-label">
-							<label for="">Descripción:</label>
-						</div>
-						<div class="col-sm-5">
-							<input class="form-control" placeholder="Esta es una descripción de la materia" name="descripcion" type="text"
-							maxlength="255" pattern="[a-zA-Z 0-9]*" ng-model="nuevaMateria.descripcion">
-						</div>
-						<div ng-messages="formMat.descripcion.$error" ng-if="formMat.descripcion.$touched && formMat.descripcion.$invalid">
-							<div ng-message="pattern" class="help-block">Formato invalido</div>
-						</div>
-					</div><!-- /form-group-->
-					<div class="form-group" ng-class="{ 'has-error': formMat.docenteTitular.$touched && formMat.docenteTitular.$invalid }">
-						<div class="col-sm-4 control-label">
-							<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Docente titular:</label>
-						</div>
-						<div class="col-sm-5">
-							<select class="form-control" name="docenteTitular" ng-model="nuevaMateria.idDocenteTitular" required>
-								<option value="" disabled selected>Seleccione un docente titular</option>
-								<option ng-repeat="docente in listaDocentes" value="{{docente.idUsuario}}">{{docente.nombre}} {{docente.apellido}}</option>
-							</select>
-						</div>
-						<div ng-messages="formMat.docenteTitular.$error" ng-if="formMat.docenteTitular.$touched && formMat.docenteTitular.$invalid">
-							<div ng-message="required" class="help-block">Seleccione una opci&oacute;n</div>
-						</div>
-					</div><!-- /form-group-->
-					<div class="form-group" ng-class="{ 'has-error': formMat.docenteSuplente.$touched && formMat.docenteSuplente.$invalid }">
-						<div class="col-sm-4 control-label">
-							<label for="">Docente suplente:</label>
-						</div>
-						<div class="col-sm-5">
-							<select class="form-control" name="docenteSuplente" ng-model="nuevaMateria.idDocenteSuplente">
-								<option value="" disabled selected>Seleccione un docente suplente</option>
-								<option ng-repeat="docente in listaDocentes" value="{{docente.idUsuario}}">{{docente.nombre}} {{docente.apellido}}</option>
-							</select>
-						</div>
-					</div><!-- /form-group-->
-					<div class="form-group" ng-class="{ 'has-error': formMat.anio.$touched && formMat.anio.$invalid }">
-						<div class="col-sm-4 control-label">
-							<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> A&ntilde;o al que pertenece:</label>
-						</div>
-						<div class="col-sm-3">
-							<select class="form-control" name="anio" ng-model="nuevaMateria.idAnio" required>
-								<option value="null" disabled selected>Seleccione un a&ntilde;o</option>
-								<option ng-repeat="anio in listaAnios" value="{{anio.idAnio}}">{{anio.nombre}}</option>
-							</select>
-						</div>
-						<div ng-messages="formMat.anio.$error" ng-if="formMat.anio.$touched && formMat.anio.$invalid">
-							<div ng-message="required" class="help-block">Seleccione una opci&oacute;n</div>
-						</div>
-					</div><!-- /form-group-->
-					<div class="form-group" ng-class="{ 'has-error': formMat.area.$touched && formMat.area.$invalid }">
-						<div class="col-sm-4 control-label">
-							<label for="">&Aacute;rea:</label>
-						</div>
-						<div class="col-sm-3">
-							<select class="form-control" name="area" ng-model="nuevaMateria.area">
-								<option value="null" disabled selected>Seleccione un &aacute;rea</option>
-								<option ng-repeat="area in listaAreas" value="{{area}}">{{area.nombre}}</option>
-							</select>
-						</div>
-						<div class="col-sm-1">
-							<input class="btn btn-info" type="button" ng-click="addArea()" name=""
-							value="Administrar"/>
-						</div>
-					</div><!-- /form-group-->
-					<div class="form-group">
-						<div class="col-md-6 control-label">
-							<input class="btn btn-primary" type="button"  ng-disabled="!formMat.$valid" ng-click="agregarMateria()" value="Guardar"/>
-						</div>
-					</div>
+	<div>
+		<div id="listado" ng-show="listado">  <!--lista centrada -->
+			<fieldset>
+				<h1>{{subtitle}}: <small>Selecciones un a&ntilde;o para mostrar las materias asociadas</small></h1>
+				<hr>
+				<div class="row">
+					<label for="">A&ntilde;o:</label> 
+					<select class="dropdown-toggle form-control-inline" name="" ng-model="filterByYear.ano"> <!-- ng-change="update(dropDownValue, option)"> -->
+						<option value="" disabled selected>Seleccione una opci&oacute;n</option>
+						<option value="">Todos</option>
+						<option ng-repeat="option in dropDownOptions"  value="{{option}}">{{option}}</option>
+					</select>
+					<div id="alerta" bs-affix style="position: relative; width: 50%; float: right;"></div>
 				</div>
-			</div><!-- /formulario media-body-->
-		</form>
-	</fieldset>
+				<!--Alerts no pude hacer andar el data duration-->
+				<table class="table table-hover table-striped">
+					<thead>
+						<tr>
+							<th>Nombre</th>
+							<th>A&ntilde;o</th>
+							<th>&Aacute;rea</th>
+							<th>Docente titular</th>
+							<th>Docente suplente</th>
+							<th>Descripci&oacute;n</th>
+							<th>Acciones</th>
+						</tr>
+					</thead>
+					<tr ng-repeat="materia in listaMaterias | filter:filterByYear">
+						<td>{{materia.nombre}}</td>
+						<td>{{materia.anio}}</td>
+						<td>{{materia.area}}</td>
+						<td>{{materia.docenteTitular}}</td>
+						<td>{{materia.docenteSuplente}}</td>
+						<td>{{materia.descripcion}}</td>
+						<td>
+							<div>
+								<button class="btn btn-default btn-xs" style="width: 45%; float: left"n g-click="" bs-tooltip="tooltip.tooltipEdit">
+									<span data-animation="am-flip-x" class="glyphicon glyphicon-edit"></span>
+								</button>
+							</div>
+							<div>
+								<button class="btn btn-default btn-xs" style="width: 45%; float: right" bs-tooltip="tooltip.tooltipDelete" ng-click="deleteMateria(materia)">
+									<span class="glyphicon glyphicon-trash"></span>
+								</button>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</fieldset>
+		</div>
+
+		<div id="showNuevaMateria" ng-show="showNuevaMateria">
+			<fieldset>
+				<h1>{{subtitle}}: <small>Complete los datos para dar de alta una nueva materia y haga clic en guardar cuando finalice</small></h1>
+				<hr>
+				<form class="form-horizontal media" novalidate name="formMat">
+					<div class="formulario media-body">
+						<div class="col-md-8 personal-info">
+							<div class="alert alert-warning alert-dismissible" role="alert">
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<span class="glyphicon glyphicon-asterisk small"></span>Campos obligatorios
+							</div>
+							<div class="form-group" ng-class="{ 'has-error': formMat.nombre.$touched && formMat.nombre.$invalid }">
+								<div class="col-sm-4 control-label">
+									<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label for=""> Nombre:</label>
+								</div>
+								<div class="col-sm-5">
+									<input class="form-control" placeholder="Física" name="nombre" type="text"
+									maxlength="85" required pattern="[a-zA-Z 0-9]*" ng-model="nuevaMateria.nombreMateria">
+								</div>
+								<div ng-messages="formMat.nombre.$error" ng-if="formMat.nombre.$touched && formMat.nombre.$invalid">
+									<div ng-message="pattern" class="help-block">Formato invalido</div>
+									<div ng-message="required" class="help-block">Complete este campo</div>
+								</div>
+							</div><!-- /form-group-->
+							<div class="form-group" ng-class="{ 'has-error': formMat.descripcion.$touched && formMat.descripcion.$invalid }">
+								<div class="col-sm-4 control-label">
+									<label for="">Descripción:</label>
+								</div>
+								<div class="col-sm-5">
+									<input class="form-control" placeholder="Esta es una descripción de la materia" name="descripcion" type="text"
+									maxlength="255" pattern="[a-zA-Z 0-9]*" ng-model="nuevaMateria.descripcion">
+								</div>
+								<div ng-messages="formMat.descripcion.$error" ng-if="formMat.descripcion.$touched && formMat.descripcion.$invalid">
+									<div ng-message="pattern" class="help-block">Formato invalido</div>
+								</div>
+							</div><!-- /form-group-->
+							<div class="form-group" ng-class="{ 'has-error': formMat.docenteTitular.$touched && formMat.docenteTitular.$invalid }">
+								<div class="col-sm-4 control-label">
+									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Docente titular:</label>
+								</div>
+								<div class="col-sm-5">
+									<select class="form-control" name="docenteTitular" ng-model="nuevaMateria.idDocenteTitular" required>
+										<option value="" disabled selected>Seleccione un docente titular</option>
+										<option ng-repeat="docente in listaDocentes" value="{{docente.idUsuario}}">{{docente.nombre}} {{docente.apellido}}</option>
+									</select>
+								</div>
+								<div ng-messages="formMat.docenteTitular.$error" ng-if="formMat.docenteTitular.$touched && formMat.docenteTitular.$invalid">
+									<div ng-message="required" class="help-block">Seleccione una opci&oacute;n</div>
+								</div>
+							</div><!-- /form-group-->
+							<div class="form-group" ng-class="{ 'has-error': formMat.docenteSuplente.$touched && formMat.docenteSuplente.$invalid }">
+								<div class="col-sm-4 control-label">
+									<label for="">Docente suplente:</label>
+								</div>
+								<div class="col-sm-5">
+									<select class="form-control" name="docenteSuplente" ng-model="nuevaMateria.idDocenteSuplente">
+										<option value="" disabled selected>Seleccione un docente suplente</option>
+										<option ng-repeat="docente in listaDocentes" value="{{docente.idUsuario}}">{{docente.nombre}} {{docente.apellido}}</option>
+									</select>
+								</div>
+							</div><!-- /form-group-->
+							<div class="form-group" ng-class="{ 'has-error': formMat.anio.$touched && formMat.anio.$invalid }">
+								<div class="col-sm-4 control-label">
+									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> A&ntilde;o al que pertenece:</label>
+								</div>
+								<div class="col-sm-3">
+									<select class="form-control" name="anio" ng-model="nuevaMateria.idAnio" required>
+										<option value="null" disabled selected>Seleccione un a&ntilde;o</option>
+										<option ng-repeat="anio in listaAnios" value="{{anio.idAnio}}">{{anio.nombre}}</option>
+									</select>
+								</div>
+								<div ng-messages="formMat.anio.$error" ng-if="formMat.anio.$touched && formMat.anio.$invalid">
+									<div ng-message="required" class="help-block">Seleccione una opci&oacute;n</div>
+								</div>
+							</div><!-- /form-group-->
+							<div class="form-group" ng-class="{ 'has-error': formMat.area.$touched && formMat.area.$invalid }">
+								<div class="col-sm-4 control-label">
+									<label for="">&Aacute;rea:</label>
+								</div>
+								<div class="col-sm-3">
+									<select class="form-control" name="area" ng-model="nuevaMateria.area">
+										<option value="null" disabled selected>Seleccione un &aacute;rea</option>
+										<option ng-repeat="area in listaAreas" value="{{area}}">{{area.nombre}}</option>
+									</select>
+								</div>
+								<div class="col-sm-1">
+									<input class="btn btn-info" type="button" ng-click="addArea()" name=""
+									value="Administrar"/>
+								</div>
+							</div><!-- /form-group-->
+							<div class="form-group">
+								<div class="col-md-6 control-label">
+									<input class="btn btn-primary" type="button"  ng-disabled="!formMat.$valid" ng-click="agregarMateria()" value="Guardar"/>
+								</div>
+							</div>
+						</div>
+					</div><!-- /formulario media-body-->
+				</form>
+			</fieldset>
+		</div>
+	</div><!-- /col-md-10-->
 </div>
-</div><!-- /col-md-10-->
