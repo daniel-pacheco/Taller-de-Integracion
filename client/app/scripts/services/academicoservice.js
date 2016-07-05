@@ -15,10 +15,15 @@ angular.module('clientAppApp')
     var sAcademico = SERVER.sAcademico;
 
     var anioGetAllMin = 'anio/listAllMin';
+    var putAnio = "anio";
     var matGetAllMin = 'mat/listAllMin';
 
     this.anioGetAllMin = function () {
         return $http.get(server + sAcademico + anioGetAllMin);
+    };
+
+    this.anioPutNew = function (anio) {
+        return $http.put(server + sAcademico + putAnio, anio);
     };
 
     this.matGetAllMin = function () {
