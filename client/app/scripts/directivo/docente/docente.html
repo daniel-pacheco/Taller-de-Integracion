@@ -22,7 +22,7 @@
 					</li>
 					<hr style="margin: 2px 0;">
 					<li ng-class="{active : activeMenuIzqDoc === 1}" data-target="#listado">
-						<a href="" ng-click="seleccionar('listado'); setActiveDoc(1); search()">Listado</a>
+						<a href="" ng-click="seleccionar('listado'); setActiveDoc(1); search(button.radio)">Listado</a>
 					</li>
 					<li ng-class="{active : activeMenuIzqDoc === 2}" data-target="#nuevoPerfil">
 						<a href="" ng-click="seleccionar('nuevoPerfil'); setActiveDoc(2)">Nuevo Perfil</a>
@@ -39,13 +39,26 @@
 	<!-- <h1>Docente</h1>
 	<hr> -->
 	<div id="listado" ng-show="listado">  <!--lista centrada -->
+		<spinner name="searchDocenteSpinner" ng-cloak="">
+			<div class="overlay"></div>
+			<div class="spinner-small">			            
+				<div>
+					<div class="ng-include: './views/templates/defaultspinner.html'"></div>
+				</div>
+			</div>
+			<div class="please-wait-small">Aguarde por favor...</div>
+		</spinner>
 		<fieldset>
 			<h1>Listado: <small>Despliegue el docente que desee para ver las materias a las que se encuentra asignado</small></h1>
-			<hr>		
+			<hr>		<button ng-click="resetList()">reset list</button>
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<label>Buscar por Nombre, Apellido o DNI: </label>
 					<input class="form-control-inline" type="text" placeholder="Buscar" maxlength="255" required pattern="[a-zA-Z 0-9]*" ng-model="filterByName">
+					<div class="btn-group pull-right" ng-model="button.radio" bs-radio-group>
+			        	<label class="btn btn-default" ng-click="search('doc')"><input type="radio" class="btn btn-default" value="doc"> Docente</label>
+			        	<label class="btn btn-default" ng-click="search('dir')"><input type="radio" class="btn btn-default" value="dir"> Directivo</label>
+		     		</div>
 					<div id="alerta" bs-affix style="position: relative; width: 50%; float: right;"></div>
 				</div>
 			</div>
@@ -102,53 +115,13 @@
 						</td>
 					</tr>
 				</tbody>
-
-			</table>
-			<!-- <div class="panel-group" ng-model="multiplePanels.activePanels" data-allow-multiple="true" role="tablist" aria-multiselectable="true" bs-collapse>
-				<div class="panel panel-default" ng-repeat="docente in docenteData | filter:docenteFilter">
-					<div class="panel-heading" style="cursor: pointer" bs-collapse-toggle>
-						<div class="panel-title">
-							{{docente.apellido}}, {{docente.nombre}}.  DNI: {{docente.nroDocumento}}
-							<div class="col-md-2 col-sx-2 pull-right">						
-								<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipProfile" ng-click="showModalProfile(docente)" style="width: 40%">
-									<span data-animation="am-flip-x" class="glyphicon glyphicon-user"></span>
-								</button>
-								<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipDelete" ng-click="deleteDocente(docente)" style="width: 40%">
-									<span class="glyphicon glyphicon-trash"></span>
-								</button>
-							</div>
-						</div>
-					</div>
-					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
-						<div class="panel-body form-group table-responsive">
-							<table class="table table-hover table-striped">
-								<thead>
-									<tr style="position: relative;" class="affix" data-offset-top="-60">
-										<th>Materias</th>
-										<th>Nombre</th>
-										<th>Area</th>
-										<th>Condicion</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr ng-repeat="materia in docente.listaMaterias">
-										<td></td>
-										<td>{{materia.nombre}}</td>
-										<td>{{materia.area}}</td>
-										<td>{{materia.condicion}}</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div> -->
+			</table>			
 		</fieldset>
 		<br>
 
 	</div>
 
-	<div id="nuevoPerfil" ng-show="nuevoPerfil">
+	<div id="nuevoPerfil" ng-show="nuevoPerfil">		
 		<fieldset>
 			<h1>{{subtitle}}: <small>Ingrese los datos para crear un nuevo perfil
 				de docente y haga clic en guardar cuando finalice</small></h1>
@@ -178,7 +151,7 @@
 										</div>
 									</div>
 									<div class="col-sm-3">
-										<select class="form-control" ng-model="nuevoDocente.tipoDocumento" name="TipoDocumento">
+										<select class="form-control" ng-model="nuevoDocente.tipoDocumento" name="TipoDocumento" required>
 											<option value="" disabled selected>Tipo</option>
 											<option value="DNI">DNI</option>
 											<option value="LC">LC</option>

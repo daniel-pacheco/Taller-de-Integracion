@@ -25,6 +25,9 @@
         <property name="codigo" type="java.lang.Integer">
             <column name="CODIGO" />
         </property>
+         <property name="idLlamado" type="java.lang.Long">
+            <column name="IDLLAMADO" />
+        </property>
          <property name="activo" type="java.lang.Boolean">
             <column name="ACTIVO" />
         </property>
