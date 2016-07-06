@@ -17,14 +17,14 @@
 			<div class="bs-sidebar hidden-print affix" role="complementary" data-offset-top="-100" bs-affix style="position: relative; text-align: right;">
 				<ul class="nav bs-sidenav">
 					<li bs-scrollspy data-target="#getting-started">
-						<a href="#getting-started">Men&uacute; materia</a>
+						<a href="">Men&uacute; materia</a>
 					</li>
 					<hr style="margin: 2px 0;">
 					<li data-target="#modals" ng-class="{active : activeMenuIzqAlu === 1}">
-						<a href="" ng-click="seleccionar('listado'); setActiveAlu(1)">Listado</a>
+						<a href="" ng-click="seleccionar('listado')">Listado</a>
 					</li>
 					<li data-target="#showNuevaMateria" ng-class="{active : activeMenuIzqAlu === 2}">
-						<a href="" ng-click="seleccionar('nuevaMateria'); setActiveAlu(2)">Nueva materia</a>
+						<a href="" ng-click="seleccionar('nuevaMateria')">Nueva materia</a>
 					</li>
 				</ul>
 			</div>
@@ -33,21 +33,33 @@
 	</div>
 
 	<div>
+		<spinner name="searchMateriaSpinner" ng-cloak="">
+			<div class="overlay"></div>
+			<div class="spinner-small">			            
+				<div>
+					<div class="ng-include: './views/templates/defaultspinner.html'"></div>
+				</div>
+			</div>
+			<div class="please-wait-small">Aguarde por favor...</div>
+		</spinner>
 		<div id="listado" ng-show="listado">  <!--lista centrada -->
 			<fieldset>
 				<h1>{{subtitle}}: <small>Selecciones un a&ntilde;o para mostrar las materias asociadas</small></h1>
 				<hr>
-				<div class="row">
-					<label for="">A&ntilde;o:</label> 
-					<select class="dropdown-toggle form-control-inline" name="" ng-model="filterByYear.ano"> <!-- ng-change="update(dropDownValue, option)"> -->
-						<option value="" disabled selected>Seleccione una opci&oacute;n</option>
-						<option value="">Todos</option>
-						<option ng-repeat="option in dropDownOptions"  value="{{option}}">{{option}}</option>
-					</select>
-					<div id="alerta" bs-affix style="position: relative; width: 50%; float: right;"></div>
+				<div class="panel panel-default">					
+					<div class="panel-heading">
+						<label for="">A&ntilde;o:</label> 
+						<select class="dropdown-toggle form-control-inline" name="" ng-model="filterByYear"> <!-- ng-change="update(dropDownValue, option)"> -->
+							<option value="" disabled selected>Seleccione una opci&oacute;n</option>
+							<option value="">Todos</option>
+							<option ng-repeat="option in dropDownOptions"  value="{{option}}">{{option}}</option>
+						</select>
+						<div id="alerta" bs-affix style="position: relative; width: 50%; float: right;"></div>
+						<button class="btn btn-default pull-right" ng-click="exportAction('dir-listado-materias')" bs-tooltip="tooltip.tooltipExport">Exportar</button>						
+					</div>
 				</div>
 				<!--Alerts no pude hacer andar el data duration-->
-				<table class="table table-hover table-striped">
+				<table class="table table-hover table-striped" export-table="dir-listado-materias">
 					<thead>
 						<tr>
 							<th>Nombre</th>
