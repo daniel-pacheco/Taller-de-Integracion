@@ -7,6 +7,7 @@ import java.util.Set;
 
 import ar.com.santalucia.aplicacion.gestor.sistema.login.GestorLogin;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
+import ar.com.santalucia.dominio.dto.DirectivoDTO;
 import ar.com.santalucia.dominio.modelo.sistema.login.Login;
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
@@ -185,6 +186,30 @@ public class ServicioDirectivo extends ServicioUsuario<Personal> {
 		gPersonal.closeSession();
 	}
 
+	public ArrayList<DirectivoDTO> listDirectivosDTO() throws Exception {
+		try {
+			Personal directivoEx = new Personal();
+			directivoEx.setRolDirectivo(true);
+			ArrayList<Personal> listaDirectivos = new ArrayList<Personal>();
+			ArrayList<DirectivoDTO> listaDirectivosDTO = new ArrayList<DirectivoDTO>();
+			listaDirectivos.addAll(gPersonal.getByExample(directivoEx));
+			for (Personal d : listaDirectivos) {
+				DirectivoDTO directivoDTO = new DirectivoDTO();
+				directivoDTO.setIdUsuario(d.getIdUsuario());
+				directivoDTO.setNombre(d.getNombre());
+				directivoDTO.setApellido(d.getApellido());
+				directivoDTO.setNroDocumento(d.getNroDocumento());
+				listaDirectivosDTO.add(directivoDTO);
+			}
+			return listaDirectivosDTO;
+		} catch (Exception ex) {
+			throw new Exception("No se pudo listar los directivos: " + ex.getMessage());
+		}
+	}
+	
+	
+	
+	
 	@Override
 	public Personal getUsuarioByDni(Long dni) throws Exception {
 		List<Personal> directivoLista = new ArrayList<Personal>();

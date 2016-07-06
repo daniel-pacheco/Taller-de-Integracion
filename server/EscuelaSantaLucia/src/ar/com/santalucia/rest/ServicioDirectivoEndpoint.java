@@ -18,6 +18,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import ar.com.santalucia.dominio.dto.DirectivoDTO;
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
@@ -511,4 +512,28 @@ public class ServicioDirectivoEndpoint {
 			return Response.ok(directivo).header("auth0", nuevoToken).build();
 		}
 	}
+	
+	
+	@GET
+	@Path("/dir/listAllMin")
+	public Response listDirectivosDTO() {
+		try {
+			setInstance();
+			ArrayList<DirectivoDTO> listaDirectivosDTO = new ArrayList<DirectivoDTO>();
+			listaDirectivosDTO.addAll(servicioDirectivo.listDirectivosDTO());
+			if (listaDirectivosDTO.size() == 0) {
+				return Response.status(Status.NO_CONTENT)
+					.entity(new FrontMessage("Sin resultados", FrontMessage.INFO))
+					.build();
+			}
+			return Response.ok(listaDirectivosDTO).build();
+		} catch (Exception ex) {
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+				.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+						FrontMessage.CRITICAL))
+				.build();
+		}
+	}
+	
 }
