@@ -42,6 +42,9 @@ $scope.tooltip = {
 		'title' : 'Editar'
 	}, tooltipDelete : {
 		'title' : 'Eliminar'
+	},
+	tooltipExport: {
+		'title': 'Exportar para impresión'
 	}
 };
 
@@ -368,7 +371,7 @@ $scope.loginSpinner = function () {
 //-- Export Table
 $scope.exportAction = function(id){ 
 	exportTableService.exportAction(id);
-}
+};
 
 //---Llamadas al servicio ALUMNO---
 
@@ -523,27 +526,27 @@ $scope.prueba = function (){
 	}
 
 
-$scope.getAlumnoById = function (id) {
-	alumnoService.alumnoGetById(id)
-	.then(function(response){
-		$scope.postAnswer = response.data;	
-	})
-}
+	$scope.getAlumnoById = function (id) {
+		alumnoService.alumnoGetById(id)
+		.then(function(response){
+			$scope.postAnswer = response.data;	
+		})
+	}
 
-$scope.putAlumno = function () {
-	alumnoService.alumnoPut(alumnoJson).then(function(response){
-		$scope.postAnswer = response.data;
-		$scope.getAll();
-	})
-};
+	$scope.putAlumno = function () {
+		alumnoService.alumnoPut(alumnoJson).then(function(response){
+			$scope.postAnswer = response.data;
+			$scope.getAll();
+		})
+	};
 
 
-$scope.deleteAlumno = function (id) {
-	alumnoService.alumnoDel(id).then(function (response) {
-		$scope.postAnswer = response.data;
-		$scope.getAll();
-	})
-};
+	$scope.deleteAlumno = function (id) {
+		alumnoService.alumnoDel(id).then(function (response) {
+			$scope.postAnswer = response.data;
+			$scope.getAll();
+		})
+	};
 
 
 //---Auth Test

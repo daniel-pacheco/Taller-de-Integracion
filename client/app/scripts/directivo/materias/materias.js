@@ -19,44 +19,127 @@
     }
   });
 })
- .controller('MateriasCtrl', function ($scope, ModalService, areasData, $timeout, $alert, materiasData, ObjectsFactory, docenteData, academicoService, $modal) {
-  $scope.listado = true;
-  $scope.subtitle = "Listado";
-  // $scope.listaMaterias = materiasData;
+ .controller('MateriasCtrl', function ($scope, ModalService, areasData, $timeout, $alert, materiasData, ObjectsFactory, docenteData, academicoService, $modal, spinnerService, exportTableService) {
 
-  $scope.seleccionar = function(id) {
-    switch (id){
-      case 'listado':
-      $scope.showNuevaMateria = false;
-      $scope.subtitle = "Listado";
-      $scope.listado = true;
-      break;
-      case 'nuevaMateria':
-      $scope.listado = false;
-      $scope.subtitle = "Nueva materia";
-      $scope.showNuevaMateria = true;
-      $scope.nuevaMateria = new ObjectsFactory.newMateria();
-    $scope.listaDocentes = docenteData;//Esta lista de docentes deberia tener solo el docente y el ID
-    break;
-
-  }
-};
+//-- [Materias]
+//-- [Materias] variables
+//-- [Materias] Form Management
 
 $scope.tooltip = {
   tooltipEdit : {
     'title' : 'Editar'
   }, tooltipDelete : {
     'title' : 'Eliminar'
+  },
+  tooltipExport: {
+    'title': 'Exportar para impresión'
   }
 };
 $scope.dropDownOptions = ['1', '2', '3', '4', '5', '6', '7', '8'];
 $scope.dropDownValue = '';
 
+var setActiveAlu = function(menuItemAlu) {
+    $scope.activeMenuIzqAlu = menuItemAlu;
+  };
 
-$scope.activeMenuIzqAlu = 1;
-$scope.setActiveAlu = function(menuItemAlu) {
-  $scope.activeMenuIzqAlu = menuItemAlu;
+$scope.seleccionar = function(id) {
+  switch (id){
+    case 'listado':
+    $scope.showNuevaMateria = false;
+    $scope.subtitle = "Listado";
+    $scope.listado = true;
+    setActiveAlu(1);
+    break;
+    case 'nuevaMateria':
+    $scope.listado = false;
+    $scope.subtitle = "Nueva materia";
+    $scope.showNuevaMateria = true;
+    $scope.nuevaMateria = new ObjectsFactory.newMateria();
+    $scope.listaDocentes = docenteData;//Esta lista de docentes deberia tener solo el docente y el ID
+    setActiveAlu(2);
+    break;
+
+  }
 };
+$scope.seleccionar('listado');
+
+//-- [Materias] filters
+//-- [Materias] modals
+
+$scope.confirmModal = function(mesagge, funcion, parametro) { //este confirm recibe una funcion y un parametro para que despues de confirmar se pueda llamar a la funcion que se necesite
+  ModalService.showModal({
+    templateUrl: 'scripts/utils/confirm/modalConfirm.tpl.html',
+    controller: 'modalConfirmController',
+    inputs: {
+      mensaje: mesagge,
+    }
+  }).then(function(modal) {
+    modal.element.modal();
+    modal.close.then(function(result){
+      funcion(parametro);
+    });
+  });
+};
+
+//-- [Materias] utils (spinners, mensajes impresion etc)
+
+//-- Export Table
+$scope.exportAction = function(id){ 
+  exportTableService.exportAction(id);
+};
+
+$scope.showMessage = function(mesagge, title, isGood) { //isGood recibe true si salio bien o false si salio mal
+  ModalService.showModal({
+    templateUrl: 'scripts/utils/showMessage/modalMessage.tpl.html',
+    controller: 'modalMessageController',
+    inputs: {
+      mensaje: mesagge,
+      title: title,
+      isGood: isGood
+    }
+  }).then(function(modal) {
+    modal.element.modal();
+  });
+};
+
+function showServerError (response){
+    console.log(response);
+    var msg = '';
+
+    if (response.statusText) {
+      msg = response.statusText;
+    };
+    
+    if (response.data) {
+      msg += ' - ' + response.data.mensaje + ' ' + response.data.severidad;
+    };      
+    $scope.showMessage(msg, 'Error al contactar al servidor' , false);
+  };
+
+  function showServerSuccess (message, response){
+    console.log(response);
+    var msg = message;
+    
+    if ( response && response.data) {
+      msg += ' ' + response.data;
+    };      
+    $scope.showMessage(msg, 'Operación exitosa' , true);
+  };
+
+//-- [Materias] service calls
+
+  // $scope.listado = true;
+  // $scope.subtitle = "Listado";
+  // $scope.listaMaterias = materiasData;
+
+
+
+
+
+
+
+  // $scope.activeMenuIzqAlu = 1;
+  
 
 
 //-- Modals
@@ -78,34 +161,9 @@ $scope.addArea = function() {
   });
 };
 
-$scope.showMessage = function(mesagge, title, isGood) { //isGood recibe true si salio bien o false si salio mal
-  ModalService.showModal({
-    templateUrl: 'scripts/utils/showMessage/modalMessage.tpl.html',
-    controller: 'modalMessageController',
-    inputs: {
-      mensaje: mesagge,
-      title: title,
-      isGood: isGood
-    }
-  }).then(function(modal) {
-    modal.element.modal();
-  });
-};
 
-$scope.confirmModal = function(mesagge, funcion, parametro) { //este confirm recibe una funcion y un parametro para que despues de confirmar se pueda llamar a la funcion que se necesite
-  ModalService.showModal({
-    templateUrl: 'scripts/utils/confirm/modalConfirm.tpl.html',
-    controller: 'modalConfirmController',
-    inputs: {
-      mensaje: mesagge,
-    }
-  }).then(function(modal) {
-    modal.element.modal();
-    modal.close.then(function(result){
-      funcion(parametro);
-    });
-  });
-};
+
+
 
 //-- Llamadas al servicio
 $scope.deleteMateria = function (materia) {
@@ -129,25 +187,30 @@ $scope.agregarMateria = function () {
   $scope.nuevaMateria = new ObjectsFactory.newMateria();
 };
 
-//-- [Listado] 
-//-- [Listado] variables
-  $scope.listaMaterias = [];
-//-- [Listado] Form Management
-//-- [Listado] filters
-//-- [Listado] modals
-//-- [Listado] spinners
-//-- [Listado] service calls
-  function listAllMaterias() {
-    academicoService.matGetAllMin()
-    .then(function(response){
-      $scope.listaMaterias = response.data;
-    },
-      function(response){
-        console.log(response);
-      });
-  };
+//-- [Materias/Listado] 
+//-- [Materias/Listado] variables
+$scope.listaMaterias = [];
+//-- [Materias/Listado] Form Management
+//-- [Materias/Listado] filters
+//-- [Materias/Listado] modals
+//-- [Materias/Listado] spinners
+//-- [Materias/Listado] service calls
+function listAllMaterias() {
+  spinnerService.show('searchMateriaSpinner');
+  academicoService.matGetAllMin()
+  .then(function(response){
+    $scope.listaMaterias = response.data;
+  },
+  function(response){
+    console.log(response);
+  })
+  .finally(function(){
+    spinnerService.hide('searchMateriaSpinner');
+  });
+};
+$scope.$on('$viewContentLoaded', function(){
   listAllMaterias(); //cambiar esto cuando se pueda elegir el año
-
+});
 
 //Test
 $scope.friends = [{nombre:'Educación Fisica', docenteTitular:'María Laura', anioPertenece: '4º', area: 'cs sociales'},

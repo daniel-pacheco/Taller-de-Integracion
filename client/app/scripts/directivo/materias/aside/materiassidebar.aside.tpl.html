@@ -9,23 +9,16 @@
         
           <ul class="nav bs-sidenav">
             <li bs-scrollspy data-target="#getting-started">
-              <a href="">Men&uacute; Alumnado</a>
+              <a href="">Men&uacute; MAterias</a>
             </li>
             <hr style="margin: 2px 0;">
             <li ng-class="{active : activeMenuIzqAlu === 1}" data-target="#modals">
               <a href="" ng-click="seleccionar('listado'); setActiveAlu(1); $hide()">Listado</a>
             </li>
-            <li ng-class="{active : activeMenuIzqAlu === 2}" data-target="#nuevoPerfil">
-              <a href="" ng-click="seleccionar('nuevoPerfil'); setActiveAlu(2); $hide()">Nuevo Perfil</a>
-            </li>
-            <li ng-class="{active : activeMenuIzqAlu === 3}" data-target="#notas">
-              <a href="" ng-click="seleccionar('notas'); setActiveAlu(3); $hide()">Notas</a>
-            </li>
-            <li ng-class="{active : activeMenuIzqAlu === 4}" ng-show="showEditProfileMenuIzq " data-target="#editarPerfil">
-              <a href="">Editar Perfil</a>
-            </li>
-          </ul>
-        
+            <li ng-class="{active : activeMenuIzqAlu === 2}" data-target="#showNuevaMateria">
+              <a href="" ng-click="seleccionar('nuevaMateria'); setActiveAlu(2); $hide()">Nuevo Perfil</a>
+            </li>            
+          </ul>        
       </div>
       <div class="aside-footer">
         <button type="button" class="btn btn-default" ng-click="$hide()">Cerrar</button>
