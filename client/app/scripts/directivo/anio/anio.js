@@ -39,6 +39,12 @@ $scope.anios = {};//aniosData;
 $scope.tooltip = {
   tooltipEdit : {
     'title' : 'Editar'
+  }, tooltipDelete : {
+    'title' : 'Eliminar'
+  }, tooltipSaveEdit : {
+    'title' : 'Guardar edición'
+  }, tooltipCancelEdit : {
+    'title' : 'Cancelar edición'
   }
 };
 
@@ -81,6 +87,26 @@ $scope.seleccionar = function(id) {//Hacer una funcion que ponga en true el nomb
 };
 $scope.seleccionar('listadoAnio');
 
+$scope.editCurso = function (curso){
+  $scope.copiaCurso = angular.copy (curso);
+};
+
+$scope.deleteCurso = function (curso) {
+  $scope.nuevoCursoObj.listaCursos.splice($scope.nuevoCursoObj.listaCursos.indexOf(curso),1);
+};
+
+$scope.addCursoObj = ObjectsFactory.newCurso();
+
+$scope.saveEditCurso = function (position, copiaCurso) {
+  $scope.nuevoCursoObj.listaCursos[position].division = copiaCurso.division;
+  $scope.nuevoCursoObj.listaCursos[position].turno = copiaCurso.turno;
+};
+$scope.addCursoObj = '';
+$scope.addCurso = function (addCursoObj){
+  $scope.nuevoCursoObj.listaCursos.push(addCursoObj);
+  $scope.addCursoObj = ObjectsFactory.newCurso();
+  $scope.form.$setUntouched();
+};
 //-- [Anio] filters
 
 //-- Order List
@@ -188,7 +214,7 @@ $scope.acept = function () {
 
 
 //-- Modals 
-$scope.addCurso = function() {
+/*$scope.addCurso = function() {
   ModalService.showModal({
     templateUrl: 'scripts/directivo/anio/modal/addCurso.tpl.html',
     controller: 'addCursoModalController',
@@ -202,7 +228,7 @@ $scope.addCurso = function() {
       $scope.cursos = result;
     });
   });
-};
+};*/
 
 //-- Llamadas al service
 $scope.newAnio = function(anio) {

@@ -85,6 +85,10 @@
 								<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipEdit" ng-click="editAnio(anio)" style="width: 40%">
 									<span data-animation="am-flip-x" class="glyphicon glyphicon-edit"></span>
 								</button>
+
+								<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipDelete" ng-click="" style="width: 40%">
+									<span class="glyphicon glyphicon-trash"></span>
+								</button>
 							</td> 
 						</tr>
 						<tr ng-repeat-end="">
@@ -157,14 +161,14 @@
 							</div>
 						</div><!-- /form-group-->
 
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<div class="col-md-2 col-md-offset-4">
 								<input class="btn btn-danger" type="button" ng-click="clearFormAnio()" value="Limpiar"/>
 							</div>
 							<div class="col-md-3 col-md-offset-1">
 								<input class="btn btn-primary" type="button" ng-click="newAnio(nuevoAnioObj)" value="Guardar" ng-disabled="!formAnio.$valid"/>
 							</div>
-						</div>						
+						</div> -->						
 					</div>
 				</div>
 			</form>
@@ -175,7 +179,7 @@
 		<fieldset>
 			<h1>{{subtitle}}<small>: Ingrese los datos para dar de alta un nuevo curso y haga clic en guardar cuando finalice</small></h1>
 			<hr>
-			<form class="form-horizontal media" name="formCurso">
+			<div class="form-horizontal media">
 				<div class="formulario media-body">
 					<div class="col-md-8 personal-info">
 
@@ -201,24 +205,85 @@
 							</div>
 						</div>
 
-						<div ng-show="nuevoCursoObj" class="row col-md-7 col-md-offset-3" style="padding-bottom: 30px">
-							<div class="box-margin-lib">
-								<table class="table">
-									<thead>
-										<th>Division</th>
-										<th>Turno</th>
-									</thead>
-									<tbody>
-										<tr ng-repeat="cur in nuevoCursoObj.listaCursos">
-											<td>{{cur.division}}</td>
-											<td>{{cur.turno}}</td>
-										</tr>
-									</tbody>
-								</table>
+						<div ng-show="nuevoCursoObj" class="col-md-7 col-md-offset-3" style="padding-bottom: 30px">
+							<div class="container">
+								<div class="row">
+									<div class="box-margin-lib personal-info table-responsive">
+										<table class="table table-hover table-striped table-condensed">
+											<thead>
+												<tr>
+													<th class="col-md-1">Divisi&oacute;n</th>
+													<th class="col-md-1">Turno</th>
+													<th class="col-md-1">Acciones</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="curso in nuevoCursoObj.listaCursos" ng-form="formRow">
+													<td>
+														<div ng-if="!curso.show">{{curso.division}}</div>
+														<div ng-if="curso.show" ng-class="{ 'has-error': formRow.division.$touched && formRow.division.$invalid }">
+															<input class="form-control" name="division" type="text" ng-model="copiaCurso.division" maxlength="185" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*"/>
+														</div>
+													</td>
+													<td>
+														<div ng-if="!curso.show">{{curso.turno}}</div>
+														<div ng-if="curso.show" ng-class="{ 'has-error': formRow.turno.$touched && formRow.turno.$invalid }">
+															<input class="form-control" name="turno" type="text" ng-model="copiaCurso.turno" maxlength="185" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*"/>
+														</div>
+													</td>
+													<td>
+														<!-- Botones de la lista-->
+														<button ng-if="!curso.show" class="btn btn-default btn-xs" ng-click="curso.show=true; editCurso(curso)" bs-tooltip="tooltip.tooltipEdit">
+															<span data-animation="am-flip-x" class="glyphicon glyphicon-edit"></span>
+														</button>
+														<button ng-if="!curso.show" class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipDelete" ng-click="deleteCurso(curso)">
+															<span class="glyphicon glyphicon-trash"></span>
+														</button>
+														<!-- Botones editando curso -->
+														<button ng-if="curso.show" class="btn btn-primary btn-sm" bs-tooltip="tooltip.tooltipSaveEdit" ng-click="curso.show=false;saveEditCurso(nuevoCursoObj.listaCursos.indexOf(curso), copiaCurso);" ng-disabled="formRow.division.$invalid">
+															<span class="glyphicon glyphicon-ok"></span>
+														</button>
+														<button ng-if="curso.show" class="btn btn-default btn-sm" ng-click="curso.show=false" bs-tooltip="tooltip.tooltipCancelEdit">
+															<span class="glyphicon glyphicon-remove"></span>
+														</button>
+													</td> 
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div class="row">
+									<div ng-form="form" novalidate>	
+										<div class="panel-heading">
+											<div class="form-group">
+												<div class="col-md-3" ng-class="{ 'has-error': form.divisionn.$touched && form.divisionn.$invalid }">
+													<input type="text" name="divisionn" class="form-control" ng-model="addCursoObj.division"  placeholder="División" maxlength="185" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*"/>
+													<div ng-messages="form.divisionn.$error" ng-if="form.divisionn.$touched && form.divisionn.$invalid">
+														<div ng-message="pattern" class="help-block" style="position: fixed;">Formato invalido</div>
+														<div ng-message="required" class="help-block" style="position: fixed;">Complete este campo</div>
+
+													</div>
+												</div>
+
+												<div class="col-md-4" ng-class="{ 'has-error': form.turno.$touched && form.turno.$invalid }">
+													<input type="text" name="turno" class="form-control" ng-model="addCursoObj.turno"  placeholder="Turno" maxlength="185" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*"/>
+													<div ng-messages="form.turno.$error" ng-if="form.turno.$touched && form.turno.$invalid">
+														<div ng-message="pattern" class="help-block" style="position: fixed;">Formato invalido</div>
+														<div ng-message="required" class="help-block" style="position: fixed;">Complete este campo</div>
+													</div>
+												</div>
+
+												<div class="col-md-3">
+													<button class="form-control btn btn-primary" type="submit" ng-disabled="!form.$valid" ng-click="addCurso(addCursoObj); reset()">Agregar</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 						<br>
-						<div class="form-group" ng-class="{ 'has-error': formCurso.division.$touched && formCurso.division.$invalid }">
+<!-- 						<div class="form-group" ng-class="{ 'has-error': formCurso.division.$touched && formCurso.division.$invalid }">
 							<div class="col-md-4 control-label">
 								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Divisi&oacute;n:</label>
 							</div>
@@ -237,12 +302,12 @@
 								<input class="btn btn-danger" type="button" ng-click="clearFormCurso()" value="Limpiar"/>
 							</div>
 							<div class="col-md-3 col-md-offset-1">
-								<input class="btn btn-primary" type="button" ng-click="newCurso(nuevoCursoObj)" value="Guardar" ng-disabled="!formCurso.$valid"/>
+								<input class="btn btn-primary" type="button" ng-click="newCurso(nuevoCursoObj)" value="Guardar"/>
 							</div>
 						</div>
 					</div>
 				</div>
-			</form>
+			</div>
 		</fieldset>
 	</div>
 
