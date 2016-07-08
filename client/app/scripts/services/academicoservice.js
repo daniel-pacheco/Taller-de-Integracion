@@ -16,7 +16,11 @@ angular.module('clientAppApp')
 
     var anioGetAllMin = 'anio/listAllMin';
     var putAnio = "anio";
+
+    var areaGetAll = 'area/listAll';
+    
     var matGetAllMin = 'mat/listAllMin';
+    var putMateria = "mat";
 
     this.anioGetAllMin = function () {
         return $http.get(server + sAcademico + anioGetAllMin);
@@ -26,15 +30,15 @@ angular.module('clientAppApp')
         return $http.put(server + sAcademico + putAnio, anio);
     };
 
+    this.areaGetAll = function () {
+        return $http.get(server + sAcademico + areaGetAll);
+    };
+
     this.matGetAllMin = function () {
         return $http.get(server + sAcademico + matGetAllMin);
     };
 
- //    this.putNewBoletinInasist = function(boletin){	  
-	//   return $http.put(server + sDesempenio + boletinInsistencia, boletin);
-	// };
-
-	// this.update = function(boletin){
-	// 	return $http.post(server + sDesempenio + updateBoletinInasistencia, boletin);
-	// };
+    this.materiaPutNew = function (mat) {
+        return $http.put(server + sAcademico + putMateria, mat);
+    };
 });

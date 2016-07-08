@@ -20,7 +20,7 @@
  		}
  	});
  })
- .controller('DocenteCtrl', function ($scope, docenteData, $timeout, ModalService, SERVER, ObjectsFactory, $alert, docenteService, alumnoService, directivoService, modalService, spinnerService) {
+ .controller('DocenteCtrl', function ($scope, docenteData, $timeout, ModalService, SERVER, ObjectsFactory, $alert, docenteService, alumnoService, directivoService, modalService, spinnerService, exportTableService) {
 
   $scope.tooltip = {
     tooltipProfile : {
@@ -31,7 +31,9 @@
     },    
     tooltipEdit : {
       'title' : 'Editar'
-    },
+    },tooltipExport: {
+      'title': 'Exportar para impresión'
+    }
   };
 
 

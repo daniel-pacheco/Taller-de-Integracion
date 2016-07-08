@@ -173,7 +173,9 @@ function getAnios() {
   function(response){
     showServerError (response);
   })
-  .finally(function(){spinnerService.hide('searchAniosSpinner')});
+  .finally(function(){
+    spinnerService.hide('searchAniosSpinner')
+  });
 };
 
 
