@@ -19,7 +19,7 @@
     }
   });
 })
- .controller('MateriasCtrl', function ($scope, ModalService, areasData, $timeout, $alert, materiasData, ObjectsFactory, docenteData, academicoService, $modal, spinnerService, exportTableService) {
+ .controller('MateriasCtrl', function ($scope, ModalService, areasData, $timeout, $alert, materiasData, ObjectsFactory, docenteData, academicoService, docenteService, $modal, spinnerService, exportTableService) {
 
 //-- [Materias]
 //-- [Materias] variables
@@ -39,8 +39,8 @@ $scope.dropDownOptions = ['1', '2', '3', '4', '5', '6', '7', '8'];
 $scope.dropDownValue = '';
 
 var setActiveAlu = function(menuItemAlu) {
-    $scope.activeMenuIzqAlu = menuItemAlu;
-  };
+  $scope.activeMenuIzqAlu = menuItemAlu;
+};
 
 $scope.seleccionar = function(id) {
   switch (id){
@@ -55,7 +55,7 @@ $scope.seleccionar = function(id) {
     $scope.subtitle = "Nueva materia";
     $scope.showNuevaMateria = true;
     $scope.nuevaMateria = new ObjectsFactory.newMateria();
-    $scope.listaDocentes = docenteData;//Esta lista de docentes deberia tener solo el docente y el ID
+    searchDocente();//Esta lista de docentes deberia tener solo el docente y el ID
     setActiveAlu(2);
     break;
 
@@ -103,28 +103,28 @@ $scope.showMessage = function(mesagge, title, isGood) { //isGood recibe true si 
 };
 
 function showServerError (response){
-    console.log(response);
-    var msg = '';
+  console.log(response);
+  var msg = '';
 
-    if (response.statusText) {
-      msg = response.statusText;
-    };
-    
-    if (response.data) {
-      msg += ' - ' + response.data.mensaje + ' ' + response.data.severidad;
-    };      
-    $scope.showMessage(msg, 'Error al contactar al servidor' , false);
+  if (response.statusText) {
+    msg = response.statusText;
   };
 
-  function showServerSuccess (message, response){
-    console.log(response);
-    var msg = message;
-    
-    if ( response && response.data) {
-      msg += ' ' + response.data;
-    };      
-    $scope.showMessage(msg, 'Operación exitosa' , true);
-  };
+  if (response.data) {
+    msg += ' - ' + response.data.mensaje + ' ' + response.data.severidad;
+  };      
+  $scope.showMessage(msg, 'Error al contactar al servidor' , false);
+};
+
+function showServerSuccess (message, response){
+  console.log(response);
+  var msg = message;
+
+  if ( response && response.data) {
+    msg += ' ' + response.data;
+  };      
+  $scope.showMessage(msg, 'Operación exitosa' , true);
+};
 
 //-- [Materias] service calls
 
@@ -143,7 +143,8 @@ function showServerError (response){
 
 
 //-- Modals
-$scope.listaAreas = areasData;
+$scope.listaAreas = [{idArea: 1, nombre: "Sistemas"},
+{idArea: 2, nombre: "Computación"}];//areasData;
 
 $scope.addArea = function() {
   ModalService.showModal({
@@ -179,13 +180,7 @@ $scope.eliminarMateria = function(materia){
   $scope.showMessage("todo ok", "Aviso", true);
 };
 
-$scope.agregarMateria = function () {
-  //agregar el alumno
-  //actualizar la lista
-  $scope.listaMaterias.push ($scope.nuevaMateria);
-  $scope.formMat.$setUntouched();
-  $scope.nuevaMateria = new ObjectsFactory.newMateria();
-};
+
 
 //-- [Materias/Listado] 
 //-- [Materias/Listado] variables
@@ -242,5 +237,57 @@ $scope.listaAnios = [
   "nombre": "3roto"
 },
 ];
+
+
+//-- [Materias/Nueva] 
+//-- [Materias/Nueva] variables
+
+$scope.nuevaMateria = ObjectsFactory.newMateria();
+
+//-- [Materias/Nueva] Form Management
+//-- [Materias/Nueva] filters
+//-- [Materias/Nueva] modals
+//-- [Materias/Nueva] spinners
+//-- [Materias/Nueva] service calls
+
+$scope.agregarMateria = function (mat) {
+  //agregar el alumno
+  //actualizar la lista
+  // $scope.listaMaterias.push ($scope.nuevaMateria);
+  // $scope.formMat.$setUntouched();
+  
+
+  spinnerService.show('searchMateriaSpinner');
+  academicoService.materiaPutNew(mat)
+  .then(
+    function(response){
+      showServerSuccess('La materia se ha dado de alta con éxito', response);
+      $scope.formMat.$setUntouched();
+      $scope.nuevaMateria = ObjectsFactory.newMateria();
+    },
+    function(response){
+      showServerError(response);
+    })
+  .finally(function(){
+    spinnerService.hide('searchMateriaSpinner');
+  });
+};
+
+function searchDocente() {
+
+  spinnerService.show('searchMateriaSpinner');
+  docenteService.getAllMin()  
+  .then(function(response){
+    $scope.listaDocentes = response.data;
+  },
+  function(response){
+   showServerError('Se ha producido un error al intentar contactar al servidor: ' + response.statusText);
+ })
+  .finally(function(){
+    spinnerService.hide('searchMateriaSpinner');
+  });
+  
+};
+
 });
 
