@@ -1,6 +1,6 @@
 <div class="container">    
   <div id="loginbox" style="margin-top:100px" class="mainbox col-md-6 col-md-offset-3">                    
-    <div class="panel panel-info" style="box-shadow: 10px 10px 5px #888888;">
+    <div class="panel panel-info" style="box-shadow: 10px 10px 5px #888888;" ng-show="loginForm">
       <div class="panel-heading">
         <center><div class="panel-title">Iniciar sesión</div></center>
       </div>
@@ -42,7 +42,7 @@
             <div style="margin-top:10px" class="form-group">
               <div class="controls">
                 <center>
-                  <a id="btn-login" href="#" class="btn btn-info" ng-disabled="!loginForm.$valid" ng-click="login(data)">Ingresar</a>
+                  <button id="btn-login" class="btn btn-info" ng-disabled="!loginForm.$valid" ng-click="login(data)">Ingresar</button>
                 </center>
               </div>
             </div>
@@ -51,7 +51,7 @@
             <div class="form-group">
               <div class="col-md-12 control">
                <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
-                <a href="#">Olvidé mi contraseña</a>
+                <a href="#" ng-click="olvideContrasenia=true; loginForm=false">Olvid&eacute; mi contrase&ntilde;a</a>
               </div>
             </div>
           </div>  
@@ -62,5 +62,59 @@
 
     </div>                     
   </div>  
+
+  <div class="panel panel-info" style="box-shadow: 10px 10px 5px #888888;" ng-show="olvideContrasenia">
+      <div class="panel-heading">
+        <center><div class="panel-title">Recuperar contrase&ntilde;a</div></center>
+      </div>
+      <div class="panel-body" style="padding-top:30px">
+        <form id="loginform" name="passwordForm" class="form-horizontal center-block" role="form" novalidate>
+          <div class="personal-info">
+            <div class="container">
+              <div class="form-group" ng-class="{ 'has-error': passwordForm.username.$touched && passwordForm.username.$invalid }">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                  <input id="login-username" type="text" class="form-control" name="username" value="" placeholder="Usuario o Mail" ng-model="data.username" required> 
+                </div>                                       
+                <div ng-messages="passwordForm.username.$error" ng-if="passwordForm.username.$touched && passwordForm.username.$invalid">
+                  <div ng-message="required" class="help-block">Complete este campo</div>
+                </div>
+              </div>
+
+              <div class="form-group" ng-class="{ 'has-error': passwordForm.loginRole.$touched && passwordForm.loginRole.$invalid }">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
+                  <select class="dropdown-toggle form-control" name="loginRole" ng-model="data.role" required> <!-- ng-change="update(dropDownValue, option)"> -->
+                    <option value="" disabled selected>Seleccione una opci&oacute;n</option>
+                    <option ng-repeat="role in roleOptions" value="{{role}}">{{role}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top:10px" class="form-group">
+              <div class="controls">
+                <center>
+                  <button id="btn-login" class="btn btn-info" ng-disabled="!passwordForm.$valid" ng-click="login(data)">Enviar Mail</button>
+                </center>
+              </div>
+            </div>
+
+
+            <div class="form-group">
+              <div class="col-md-12 control">
+               <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
+                Complete el nombre de usuario o Mail, seleccione el rol y presione el bot&oacute;n Enviar Mail
+              </div>
+            </div>
+          </div>  
+        </div>  
+      </form>     
+
+
+
+    </div>                     
+  </div> 
+
 </div>
 </div>
