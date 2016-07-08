@@ -443,7 +443,7 @@ public class ServicioAcademicoEndpoint {
 						.entity(new FrontMessage("Sin resultados", FrontMessage.INFO))
 						.build();
 			}
-			return Response.ok().build();
+			return Response.ok(areas).build();
 		}catch(Exception ex){
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)

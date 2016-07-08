@@ -16,6 +16,8 @@ angular.module('clientAppApp')
 
     var anioGetAllMin = 'anio/listAllMin';
     var putAnio = "anio";
+
+    var areaGetAll = 'area/listAll';
     
     var matGetAllMin = 'mat/listAllMin';
     var putMateria = "mat";
@@ -26,6 +28,10 @@ angular.module('clientAppApp')
 
     this.anioPutNew = function (anio) {
         return $http.put(server + sAcademico + putAnio, anio);
+    };
+
+    this.areaGetAll = function () {
+        return $http.get(server + sAcademico + areaGetAll);
     };
 
     this.matGetAllMin = function () {

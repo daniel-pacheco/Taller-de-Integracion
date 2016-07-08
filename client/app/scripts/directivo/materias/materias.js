@@ -56,6 +56,8 @@ $scope.seleccionar = function(id) {
     $scope.showNuevaMateria = true;
     $scope.nuevaMateria = new ObjectsFactory.newMateria();
     searchDocente();//Esta lista de docentes deberia tener solo el docente y el ID
+    searchArea();
+    searchAnio();
     setActiveAlu(2);
     break;
 
@@ -143,8 +145,8 @@ function showServerSuccess (message, response){
 
 
 //-- Modals
-$scope.listaAreas = [{idArea: 1, nombre: "Sistemas"},
-{idArea: 2, nombre: "Computación"}];//areasData;
+// $scope.listaAreas = [{idArea: 1, nombre: "Sistemas"},
+// {idArea: 2, nombre: "Computación"}];//areasData;
 
 $scope.addArea = function() {
   ModalService.showModal({
@@ -215,28 +217,28 @@ $scope.friends = [{nombre:'Educación Fisica', docenteTitular:'María Laura', an
 {nombre:'Geografía', docenteTitular:'Mariela Rickert', anioPertenece: '5º', area: 'cs naturales'},
 {nombre:'Historia', docenteTitular:'Gloria Herrlein', anioPertenece: '4º', area: 'cs exsactas'}];
 
-$scope.listaAnios = [
-{
-  "idAnio": 0,
-  "nombre": "4to"
-},
-{
-  "idAnio": 1,
-  "nombre": "5to"
-},
-{
-  "idAnio": 2,
-  "nombre": "6to"
-},
-{
-  "idAnio": 3,
-  "nombre": "1ro"
-},
-{
-  "idAnio": 4,
-  "nombre": "3roto"
-},
-];
+// $scope.listaAnios = [
+// {
+//   "idAnio": 0,
+//   "nombre": "4to"
+// },
+// {
+//   "idAnio": 1,
+//   "nombre": "5to"
+// },
+// {
+//   "idAnio": 2,
+//   "nombre": "6to"
+// },
+// {
+//   "idAnio": 3,
+//   "nombre": "1ro"
+// },
+// {
+//   "idAnio": 4,
+//   "nombre": "3roto"
+// },
+// ];
 
 
 //-- [Materias/Nueva] 
@@ -285,8 +287,36 @@ function searchDocente() {
  })
   .finally(function(){
     spinnerService.hide('searchMateriaSpinner');
+  });  
+};
+
+function searchAnio() {
+  spinnerService.show('searchMateriaSpinner');
+  academicoService.anioGetAllMin()
+  .then(function(response){
+    $scope.listaAnios = response.data;
+  },
+  function(response){
+    showServerError (response);
+  })
+  .finally(function(){
+    spinnerService.hide('searchMateriaSpinner')
   });
-  
+};
+
+function searchArea() {
+  spinnerService.show('searchMateriaSpinner');
+  academicoService.areaGetAll()
+  .then(
+    function(response){
+      $scope.listaAreas = response.data;
+    },
+    function(response){
+        showServerError('Se ha producido un error al intentar contactar al servidor: ' + response.statusText);
+    })
+  .finally(function(){
+    spinnerService.hide('searchMateriaSpinner');
+  });
 };
 
 });
