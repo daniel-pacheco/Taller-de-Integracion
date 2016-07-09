@@ -267,7 +267,7 @@ function clearFormCurso(){
 //-- [Anio/NuevoCurso] service calls
 
 $scope.addCurso = function (addCursoObj, idAnio){
-  $scope.selectedAnioObj.listaCursos.push(addCursoObj); //debería pedirse desde el server de nuevo...
+  // $scope.selectedAnioObj.listaCursos.push(addCursoObj); //debería pedirse desde el server de nuevo...
 
   spinnerService.show('searchAniosSpinner');
   academicoService.cursoPutNew(addCursoObj, idAnio)
