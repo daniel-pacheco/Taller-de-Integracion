@@ -86,7 +86,7 @@
 									<span data-animation="am-flip-x" class="glyphicon glyphicon-edit"></span>
 								</button>
 
-								<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipDelete" ng-click="" style="width: 40%">
+								<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipDelete" ng-click="deleteAnio(anio)" style="width: 40%">
 									<span class="glyphicon glyphicon-trash"></span>
 								</button>
 							</td> 
@@ -195,17 +195,17 @@
 								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> A&ntilde;o:</label>
 							</div>
 							<div class="col-md-5">
-								<select class="form-control" ng-model="nuevoCursoObj" ng-options="anio.nombre for anio in anios" name="nombreAnio" required>
+								<select class="form-control" ng-model="selectedAnioObj" ng-options="anio.nombre for anio in anios" name="nombreAnio" required>
 									<option value="" disabled selected>Seleccione un a&ntilde;o</option>
 									<!-- <option ng-repeat="anio in anios" value="anio">{{anio.nombre}}</option>  los anios se cargaron al entrar a la página -->
-								</select>
+								</select> <!-- que en onchange de esto se cargue la id del año a la que quiero cargar el curso -->
 							</div>
 							<div ng-messages="formCurso.nombreAnio.$error" ng-if="formCurso.nombreAnio.$touched && formCurso.nombreAnio.$invalid">
 								<div ng-message="required" class="help-block">Seleccione una opci&oacute;n</div>
 							</div>
 						</div>
 
-						<div ng-show="nuevoCursoObj" class="col-md-7 col-md-offset-3" style="padding-bottom: 30px">
+						<div ng-show="selectedAnioObj" class="col-md-7 col-md-offset-3" style="padding-bottom: 30px">
 							<div class="container">
 								<div class="row">
 									<div class="box-margin-lib personal-info table-responsive">
@@ -218,7 +218,7 @@
 												</tr>
 											</thead>
 											<tbody>
-												<tr ng-repeat="curso in nuevoCursoObj.listaCursos" ng-form="formRow">
+												<tr ng-repeat="curso in selectedAnioObj.listaCursos" ng-form="formRow">
 													<td>
 														<div ng-if="!curso.show">{{curso.division}}</div>
 														<div ng-if="curso.show" ng-class="{ 'has-error': formRow.division.$touched && formRow.division.$invalid }">
@@ -240,7 +240,7 @@
 															<span class="glyphicon glyphicon-trash"></span>
 														</button>
 														<!-- Botones editando curso -->
-														<button ng-if="curso.show" class="btn btn-primary btn-sm" bs-tooltip="tooltip.tooltipSaveEdit" ng-click="curso.show=false;saveEditCurso(nuevoCursoObj.listaCursos.indexOf(curso), copiaCurso);" ng-disabled="formRow.division.$invalid">
+														<button ng-if="curso.show" class="btn btn-primary btn-sm" bs-tooltip="tooltip.tooltipSaveEdit" ng-click="curso.show=false;saveEditCurso(copiaCurso, selectedAnioObj.idAnio);" ng-disabled="formRow.division.$invalid">
 															<span class="glyphicon glyphicon-ok"></span>
 														</button>
 														<button ng-if="curso.show" class="btn btn-default btn-sm" ng-click="curso.show=false" bs-tooltip="tooltip.tooltipCancelEdit">
@@ -274,7 +274,7 @@
 												</div>
 
 												<div class="col-md-3">
-													<button class="form-control btn btn-primary" type="submit" ng-disabled="!form.$valid" ng-click="addCurso(addCursoObj); reset()">Agregar</button>
+													<button class="form-control btn btn-primary" type="submit" ng-disabled="!form.$valid" ng-click="addCurso(addCursoObj, selectedAnioObj.idAnio); reset()">Agregar</button>
 												</div>
 											</div>
 										</div>
@@ -283,28 +283,6 @@
 							</div>
 						</div>
 						<br>
-<!-- 						<div class="form-group" ng-class="{ 'has-error': formCurso.division.$touched && formCurso.division.$invalid }">
-							<div class="col-md-4 control-label">
-								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Divisi&oacute;n:</label>
-							</div>
-							<div class="col-md-7">
-								<button type="button" name="division" class="btn btn-default" ng-model="newAnio.listaCursos" data-html="1" data-multiple="1" data-animation="am-flip-x" bs-options="curso.idCurso as curso.curso+'-'+curso.turno for curso in cursos" bs-select required>
-								</button>
-								<input class="btn btn-info" style="margin-left: 10px;" type="button" ng-click="addCurso()" value="Administrar"/>
-								<div ng-messages="formCurso.division.$error" ng-if="formCurso.division.$touched && formCurso.division.$invalid">
-									<div ng-message="required" class="help-block">Seleccione al menos una opci&oacute;n</div>
-								</div>
-							</div>{{newAnio.cursos}}
-						</div> <!--/form-group-->
-
-						<!-- <div class="form-group">
-							<div class="col-md-2 col-md-offset-4">
-								<input class="btn btn-danger" type="button" ng-click="clearFormCurso()" value="Limpiar"/>
-							</div>
-							<div class="col-md-3 col-md-offset-1">
-								<input class="btn btn-primary" type="button" ng-click="newCurso(nuevoCursoObj)" value="Guardar"/>
-							</div>
-						</div> -->
 					</div>
 				</div>
 			</div>

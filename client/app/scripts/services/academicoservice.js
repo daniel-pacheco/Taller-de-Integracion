@@ -15,12 +15,20 @@ angular.module('clientAppApp')
     var sAcademico = SERVER.sAcademico;
 
     var anioGetAllMin = 'anio/listAllMin';
-    var putAnio = "anio";
+    var deleteAnio = 'anio/';
+    var putAnio = 'anio';
 
     var areaGetAll = 'area/listAll';
+    var putArea = 'area';
+
+    var curso = 'cur/';
     
     var matGetAllMin = 'mat/listAllMin';
     var putMateria = "mat";
+
+    this.anioDelete = function (idAnio) {
+        return $http.delete(server + sAcademico + deleteAnio + idAnio);
+    };
 
     this.anioGetAllMin = function () {
         return $http.get(server + sAcademico + anioGetAllMin);
@@ -32,6 +40,18 @@ angular.module('clientAppApp')
 
     this.areaGetAll = function () {
         return $http.get(server + sAcademico + areaGetAll);
+    };
+
+    this.areaPutNew = function (area) {
+        return $http.put(server + sAcademico + putArea, area);
+    };
+
+    this.cursoDelete = function (idCurso) {
+        return $http.delete(server + sAcademico + curso + idCurso);
+    };
+
+    this.cursoPutNew = function (curso, idAnio) {
+        return $http.put(server + sAcademico + curso + idAnio, curso);
     };
 
     this.matGetAllMin = function () {

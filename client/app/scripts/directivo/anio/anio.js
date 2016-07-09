@@ -65,12 +65,13 @@ $scope.seleccionar = function(id) {//Hacer una funcion que ponga en true el nomb
     $scope.listadoAnio = true;
     $scope.subtitle = "Listado";
     setActiveAnio(1);
+    // getAnios();
     break;
     case 'nuevoAnio':
     $scope.nuevoAnio = true;
     $scope.subtitle = "Nuevo Año";
     setActiveAnio(2);
-    clearFormAnio();
+    $scope.clearFormAnio();
     break;
     case 'nuevoCurso':
     $scope.nuevoCurso = true;
@@ -87,26 +88,6 @@ $scope.seleccionar = function(id) {//Hacer una funcion que ponga en true el nomb
 };
 $scope.seleccionar('listadoAnio');
 
-$scope.editCurso = function (curso){
-  $scope.copiaCurso = angular.copy (curso);
-};
-
-$scope.deleteCurso = function (curso) {
-  $scope.nuevoCursoObj.listaCursos.splice($scope.nuevoCursoObj.listaCursos.indexOf(curso),1);
-};
-
-$scope.addCursoObj = ObjectsFactory.newCurso();
-
-$scope.saveEditCurso = function (position, copiaCurso) {
-  $scope.nuevoCursoObj.listaCursos[position].division = copiaCurso.division;
-  $scope.nuevoCursoObj.listaCursos[position].turno = copiaCurso.turno;
-};
-$scope.addCursoObj = '';
-$scope.addCurso = function (addCursoObj){
-  $scope.nuevoCursoObj.listaCursos.push(addCursoObj);
-  $scope.addCursoObj = ObjectsFactory.newCurso();
-  $scope.form.$setUntouched();
-};
 //-- [Anio] filters
 
 //-- Order List
@@ -167,79 +148,66 @@ $scope.$on('$viewContentLoaded', function(){
 function getAnios() {
   spinnerService.show('searchAniosSpinner');
   academicoService.anioGetAllMin()
-  .then(function(response){
-    $scope.anios = response.data;
-  },
-  function(response){
-    showServerError (response);
-  })
+  .then(
+    function(response){
+      $scope.anios = response.data;
+    },
+    function(response){
+      showServerError (response);
+    })
   .finally(function(){
     spinnerService.hide('searchAniosSpinner')
   });
 };
 
+$scope.deleteAnio = function(anio){
 
-// $scope.copyObj = function (obj) {
-//   $scope.nuevoCursoObj2 = _.clone($scope.nuevoCursoObj);
-// }
-
-// // $scope.nuevoCursoObj={};
-// $scope.log = function(){
-//   console.log($scope.nuevoCursoObj);
-// };
-
-//-------------------------------------------
-
-//-- [Seccion/sub-seccion]
-//-- [Seccion/sub-seccion] variables
-//-- [Seccion/sub-seccion] Form Management
-//-- [Seccion/sub-seccion] filters
-//-- [Seccion/sub-seccion] modals
-//-- [Seccion/sub-seccion] utils
-//-- [Seccion/sub-seccion] service calls
-
-
-$scope.clearFormAnio = function() {
-  $scope.formAnio.$setUntouched();
-  $scope.nuevoAnioObj = ObjectsFactory.newAnio();
-  $scope.nuevoAnio.listaCursos = [];
-};
-
-$scope.cursos = cursosData;
-
-$scope.acept = function () {
-  if (!$scope.listAnioIsEnabled) {
-    $scope.listAnioIsEnabled = true;
+  if (anio.listaCursos.length !== 0) {
+    $scope.showMessage('El año no debe contener cursos para poder ser eliminado.', 'ERROR!', false);
+  } else{
+    spinnerService.show('searchAniosSpinner');
+    academicoService.anioDelete(anio.idAnio)
+    .then(
+      function(response){
+        showServerSuccess('El año ha sido eliminado con éxito', response);
+        $scope.clearFormAnio();
+      },
+      function(response){
+        showServerError(response);
+      })
+    .finally(function(){
+      spinnerService.hide('searchAniosSpinner')
+    });
   };
 };
 
+//-------------------------------------------
 
+//-- [Anio/NuevoAnio]
+//-- [Anio/NuevoAnio] variables
+//-- [Anio/NuevoAnio] Form Management
 
-//-- Modals 
-/*$scope.addCurso = function() {
-  ModalService.showModal({
-    templateUrl: 'scripts/directivo/anio/modal/addCurso.tpl.html',
-    controller: 'addCursoModalController',
-    inputs: {
-      title: "Administrar Divisiones",
-      listaCursos: $scope.cursos,
-    }
-  }).then(function(modal) {
-    modal.element.modal();
-    modal.close.then(function(result){
-      $scope.cursos = result;
-    });
-  });
-};*/
+$scope.clearFormAnio = function() {
+  
+  $scope.formAnio.$setUntouched();
+  $scope.nuevoAnioObj = ObjectsFactory.newAnio();
+  // $scope.nuevoAnio.listaCursos = [];
+  $scope.anios = {};
+  getAnios();
+};
 
-//-- Llamadas al service
+//-- [Anio/NuevoAnio] filters
+//-- [Anio/NuevoAnio] modals
+//-- [Anio/NuevoAnio] utils
+//-- [Anio/NuevoAnio] service calls
+
 $scope.newAnio = function(anio) {
-  // alert(anio.nombre+anio.descripcion+anio.listaCursos);
   spinnerService.show('searchAniosSpinner');
   academicoService.anioPutNew(anio)
   .then(
     function(response){
       showServerSuccess('El año se ha dado de alta con éxito n° de Id: ', response);
+      $scope.clearFormAnio();
     },
     function(response){
       showServerError(response);
@@ -248,6 +216,78 @@ $scope.newAnio = function(anio) {
     spinnerService.hide('searchAniosSpinner');
   });
 };
+
+//-----------------------------------
+
+//-- [Anio/NuevoCurso]
+//-- [Anio/NuevoCurso] variables
+//-- [Anio/NuevoCurso] Form Management
+
+$scope.editCurso = function (curso){
+  $scope.copiaCurso = angular.copy (curso);
+};
+
+$scope.deleteCurso = function (curso) {
+  if (curso.cantAlu !== 0) {
+    $scope.showMessage('El curso no debe contener alumnos para poder ser eliminado.', 'ERROR!', false);
+  } else{
+    spinnerService.show('searchAniosSpinner');
+    academicoService.cursoDelete(curso.idCurso)
+    .then(
+      function(response){
+        showServerSuccess('El curso se ha eliminado con éxito', response);
+        clearFormCurso();
+      },
+      function(reponse){
+        showServerError(response);
+      })
+    .finally(function(){
+      spinnerService.hide('searchAniosSpinner');
+    });
+  };
+};
+
+$scope.addCursoObj = ObjectsFactory.newCurso();
+
+$scope.saveEditCurso = function (copiaCurso, idAnio) {
+  // $scope.selectedAnioObj.listaCursos[position].division = copiaCurso.division;
+  // $scope.selectedAnioObj.listaCursos[position].turno = copiaCurso.turno;
+  $scope.addCurso(copiaCurso, idAnio);
+};
+
+function clearFormCurso(){
+  getAnios();
+  $scope.addCursoObj = ObjectsFactory.newCurso();
+  $scope.form.$setUntouched(); //hay que aclarar que form limpiamos?
+};
+
+//-- [Anio/NuevoCurso] filters
+//-- [Anio/NuevoCurso] modals
+//-- [Anio/NuevoCurso] utils
+//-- [Anio/NuevoCurso] service calls
+
+$scope.addCurso = function (addCursoObj, idAnio){
+  $scope.selectedAnioObj.listaCursos.push(addCursoObj); //debería pedirse desde el server de nuevo...
+
+  spinnerService.show('searchAniosSpinner');
+  academicoService.cursoPutNew(addCursoObj, idAnio)
+  .then(
+    function(response){
+      showServerSuccess('El curso se ha dado de alta con éxito', response.data);
+      clearFormCurso();
+    },
+    function(response){
+      showServerError(response);
+    })
+  .finally(function(){
+    spinnerService.hide('searchAniosSpinner');
+  });
+};
+
+//------------------------------------
+
+//-- Llamadas al service
+
 
 $scope.editAnio = function(anio){
  $scope.listadoAnio = false;
@@ -263,8 +303,6 @@ $scope.editAnio = function(anio){
 });
 
 };
-
-
   //---test list alumnos notas
   $scope.test = [{nro:'1', name:'John', surName:'Lennon', DNI:'555555555'},
   {nro:'1', name:'John', surName:'Lennon', DNI:'555555555'},
