@@ -40,7 +40,7 @@
 	</div>
 
 
-	<div class="col-md-10">
+	<div>
 		<spinner name="searchSpinner" ng-cloak="">
 			<div class="overlay"></div>
 			<div class="spinner-small">			            
@@ -374,9 +374,9 @@
 		<div id="asignarNotas" ng-show="asignarNotas">
 			<div class="panel-group" ng-model="multiplePanels.activePanels" data-allow-multiple="true" role="tablist" aria-multiselectable="true" bs-collapse>
 				<div class="panel panel-default">
-					<div class="panel-heading" style="cursor: pointer" ng-click="asignarPlantillaTrim(1)" bs-collapse-toggle>
+					<div class="panel-heading" style="cursor: pointer" ng-click="asignarPlantillaTrim(1); downGlyphiconPrimerT=!downGlyphiconPrimerT" bs-collapse-toggle>
 						<div class="panel-title">
-							Primer Trimestre
+							<span ng-class="{ 'glyphicon glyphicon-chevron-down': !downGlyphiconPrimerT,'glyphicon glyphicon-chevron-up': downGlyphiconPrimerT }"></span>Primer Trimestre
 						</div>
 					</div>
 					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
@@ -403,9 +403,9 @@
 					</div>
 				</div>
 				<div class="panel panel-default">
-					<div class="panel-heading" style="cursor: pointer" ng-click="asignarPlantillaTrim(2)" bs-collapse-toggle>
+					<div class="panel-heading" style="cursor: pointer" ng-click="asignarPlantillaTrim(2); downGlyphiconSegundoT=!downGlyphiconSegundoT" bs-collapse-toggle>
 						<div class="panel-title">
-							Segundo Trimestre
+							<span ng-class="{ 'glyphicon glyphicon-chevron-down': !downGlyphiconSegundoT,'glyphicon glyphicon-chevron-up': downGlyphiconSegundoT }"></span>Segundo Trimestre
 						</div>
 					</div>
 					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
@@ -431,9 +431,9 @@
 					</div>
 				</div>
 				<div class="panel panel-default">
-					<div class="panel-heading" style="cursor: pointer" ng-click="getPlanillaTrimestre(3)" bs-collapse-toggle>
+					<div class="panel-heading" style="cursor: pointer" ng-click="getPlanillaTrimestre(3); downGlyphiconTercerT=!downGlyphiconTercerT" bs-collapse-toggle>
 						<div class="panel-title">
-							Tercer Trimestre
+							<span ng-class="{ 'glyphicon glyphicon-chevron-down': !downGlyphiconTercerT,'glyphicon glyphicon-chevron-up': downGlyphiconTercerT }"></span>Tercer Trimestre
 						</div>
 					</div>
 					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
