@@ -210,9 +210,20 @@ var newPlanillaTrimDTO = function(){
     "trimeste": null,
     "anio": "",
     "curso": "",
-    "cicloLectivo": 0,
+    "cicloLectivo": 0
   };
   return planillaTrimDTO;
+};
+
+var newPlanillaTrimUpdateDTO = function(){
+  var planillaTrimUpdateDTO = {
+    "trimeste": null,
+    "anio": "",
+    "curso": "",
+    "cicloLectivo": 0,
+    "planilla": []
+  };
+  return planillaTrimUpdateDTO;
 };
 
 var newMesa = function(){
@@ -301,6 +312,7 @@ var newMesa = function(){
     newInasistencia: newInasistencia,
     newBoletinInasistencia: newBoletinInasistencia,
     newPlanillaTrimDTO: newPlanillaTrimDTO,
+    newPlanillaTrimUpdateDTO: newPlanillaTrimUpdateDTO,
     newMesa: newMesa,
 
     //-- Estadisticas

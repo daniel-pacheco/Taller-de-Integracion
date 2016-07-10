@@ -46,4 +46,9 @@ angular.module('clientAppApp')
     this.getPlanillaTrimestral = function (planillaTrimDTO){
         return $http.post(server + sDesempenio + planillaTrimestral, planillaTrimDTO);
     };
+
+    this.updatePlanillaTrimestral = function (planillaTrimDTO){
+        return $http.put(server + sDesempenio + planillaTrimestral, planillaTrimDTO)
+
+    }
 });
