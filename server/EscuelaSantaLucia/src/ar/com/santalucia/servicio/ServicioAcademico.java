@@ -127,6 +127,8 @@ public class ServicioAcademico {
 		} 
 		catch(ValidacionException ex){
 			throw ex;
+		}catch(NullPointerException ex){
+			throw new Exception("No se pudo dar de alta el AÑO");
 		}
 		catch (Exception ex) {
 			throw new Exception("No se pudo dar de alta el AÑO: " + ex.getMessage());
@@ -178,6 +180,8 @@ public class ServicioAcademico {
 				aDTO.setIdAnio(a.getIdAnio());
 				aDTO.setNombre(a.getNombre());
 				aDTO.setDescripcion(a.getDescripcion());
+				aDTO.setCicloLectivo(a.getCicloLectivo());
+				aDTO.setActivo(a.getActivo());
 				Set<Curso> listaCursosAnioPersis = a.getListaCursos();
 				for (Curso c : listaCursosAnioPersis) {
 					CursoDTO cDTO = new CursoDTO();
@@ -873,6 +877,7 @@ public class ServicioAcademico {
 							tribunal = tribunal + " " +it.next().toString();
 						}
 						aux.setTribunal(tribunal);
+						aux.setInscripto(false);
 						inscribibles.add(aux);
 					}
 				}
@@ -881,18 +886,22 @@ public class ServicioAcademico {
 			if(inscribibles.size() == 0){									// Tiene previas, pero las mesas no están disponibles o la materia no existe más
 				ValidacionException ex = new ValidacionException();
 				String cadenaPrevias = new String();
-				Iterator<DetallePreviaDTO> it = previas.iterator();
+				/*Iterator<DetallePreviaDTO> it = previas.iterator();
 				while (it.hasNext()){
 					cadenaPrevias = cadenaPrevias + " " +it.next().getNombreMateria()+" - ("+it.next().getAnio()+") | ";
+				}*/
+				for(DetallePreviaDTO i : previas){
+					cadenaPrevias = cadenaPrevias + i.getNombreMateria()+" - ("+i.getAnio()+") | ";
 				}
 				ex.addMensajeError("No existen mesas disponibles para las previas encontradas: " + cadenaPrevias);
 				throw ex;
 			}
 			
 			Inscripcion inscripcion = buscarInscripcion(idAlumno, llamadoVigente.getIdLlamado());	// Busco las incripciones para ver el estado
-			Set<Mesa> mesasInscriptas = inscripcion.getListaMesas();
+			Set<Mesa> mesasInscriptas = new HashSet<Mesa>();
 			
 			if(inscripcion !=null){ // Si existe la inscripción tiene por lo menos una mesa adentro 
+				mesasInscriptas = inscripcion.getListaMesas();
 				for(Mesa minsc : mesasInscriptas){
 					for(InscripcionConsultaDTO i : inscribibles){			// Seteo en true las que están inscriptas
 						if(minsc.getIdMesa().equals(i.getIdMesa())){

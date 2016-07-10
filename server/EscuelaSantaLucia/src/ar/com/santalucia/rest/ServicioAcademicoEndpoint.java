@@ -991,7 +991,7 @@ public class ServicioAcademicoEndpoint {
 			setInstance();
 			return Response.ok(servicioAcademico.listarInscribibles(idAlumno)).build();
 		}catch(ValidacionException ex){
-			return Response.status(Status.CONFLICT).entity(new FrontMessage(ex.getMessage(),FrontMessage.INFO)).build();
+			return Response.status(Status.CONFLICT).entity(new FrontMessage(ex.getMensajesError().get(0),FrontMessage.INFO)).build();
 		}catch(Exception ex){
 			return Response.status(Status.INTERNAL_SERVER_ERROR).entity( new FrontMessage("Ocurrió un problema al listar las mesas para inscripción",FrontMessage.CRITICAL)).build();
 		}

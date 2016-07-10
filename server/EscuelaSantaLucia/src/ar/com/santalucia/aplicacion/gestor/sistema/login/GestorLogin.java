@@ -53,7 +53,6 @@ public class GestorLogin extends Gestor<Login> {
 		try{
 			setSession();
 			setTransaction();
-			object.setClave(encriptar(object.getClave()));
 			loginDAO.attachDirty(object);
 			sesionDeHilo.getTransaction().commit();
 		}catch(Exception ex){
@@ -129,10 +128,12 @@ public class GestorLogin extends Gestor<Login> {
 		// Comrpobar habilitacion de login, si no está habilitado lanzar excepcion UsuarioNoHabilitado
 		
 		try {
-			login.setClave(encriptar(login.getClave())); 		// ENCRIPTAR LA CLAVE PARA COMPARAR
-			login.setUltimoAcceso(null); 				 		// FIJA EN NULL EL ATRIBUTO ultimoAcceso
-			login.setUltimoEgreso(null);						// FIJA EN NULL EL ATRIBUTO ultimoEgreso
+			String clave = encriptar(login.getClave());			// ENCRIPTAR LA CLAVE PARA COMPARAR
+			login.setClave(clave); 		
+			//login.setUltimoAcceso(null); 				 		// FIJA EN NULL EL ATRIBUTO ultimoAcceso
+			//login.setUltimoEgreso(null);						// FIJA EN NULL EL ATRIBUTO ultimoEgreso
 			login.setHabilitado(null); 							// FIJA EN NULL EL ATRIBUTO habilitado
+			login.setIdLogin(null);
 			List<Login> listLogin = this.getByExample(login); 	// BUSCAR COINCIDENCIA
 			if (listLogin.isEmpty()){							// SI NO SE DEVOLVIERON ELEMENTOS, NO HUBO COINCIDENCIA
 				return false; 
