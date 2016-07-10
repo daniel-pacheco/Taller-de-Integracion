@@ -38,4 +38,19 @@
     spinnerService.hide('loginSpinner');
   };
 
+  $scope.changePassword = function(data) {
+    spinnerService.show('loginSpinner');
+    loginService.changePassword(data.username, data.role)
+    .then(function(response){
+      console.log(response.data);
+    },
+    function(response){
+      console.log(response.data);
+    })
+    .finally(function(){
+      spinnerService.hide('loginSpinner');
+    });
+
+  };
+
 });

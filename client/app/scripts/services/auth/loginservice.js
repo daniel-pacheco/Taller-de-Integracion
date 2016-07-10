@@ -13,6 +13,10 @@
   var userName = '';
   var userRole = '';
   var authToken;
+
+  var server = SERVER.address;
+  var sLogin = SERVER.login;
+  var recoverPassword = 'recuperarClave/';
   
   function loadUserCredentials() {
     var token = window.sessionStorage.getItem('LOCAL_TOKEN_KEY');
@@ -60,32 +64,36 @@
   }
 
   var login = function(name, pw, role) {
-      return $http.post(SERVER.address + SERVER.login, [name, pw, role])
-      .success(function(data,status,headers,config){
-        console.log(headers('auth0'));
-        storeUserCredentials(name, headers('auth0'), role);
-      })
-      .error(function(data, status, headers, config) {
-        storeUserCredentials("", "", "ADMINISTRADOR");
-        alert(status);
-      })
-    };   
-    
-    var logout = function() {
-      destroyUserCredentials();
-    };
-    
-    var isAuthorized = function(authorizedRoles) {
-      if (!angular.isArray(authorizedRoles)) {
-        authorizedRoles = [authorizedRoles];
-      }
+    return $http.post(server + sLogin + 'login', [name, pw, role])
+    .success(function(data,status,headers,config){
+      console.log(headers('auth0'));
+      storeUserCredentials(name, headers('auth0'), role);
+    })
+    .error(function(data, status, headers, config) {
+      storeUserCredentials("", "", "ADMINISTRADOR");
+      alert(status);
+    })
+  };   
+
+  var logout = function() {
+    destroyUserCredentials();
+  };
+
+  var isAuthorized = function(authorizedRoles) {
+    if (!angular.isArray(authorizedRoles)) {
+      authorizedRoles = [authorizedRoles];
+    }
     //return (isAuthenticated && authorizedRoles.indexOf(role) !== -1);
     return (isAuthenticated && authorizedRoles == userRole);
   };
   
   loadUserCredentials();
+    var changePassword = function(dni, role) {
+    return $http.post(server + sLogin + recoverPassword + dni, {headers:{rol: role}});
+  };
   
   return {
+    changePassword: changePassword,
     login: login,
     logout: logout,
     isAuthorized: isAuthorized,
@@ -94,4 +102,5 @@
     userRole: function() {return window.sessionStorage.getItem('USER_ROLE');},
     authToken: function() {return window.sessionStorage.getItem('LOCAL_TOKEN_KEY');}
   };
+
 });
