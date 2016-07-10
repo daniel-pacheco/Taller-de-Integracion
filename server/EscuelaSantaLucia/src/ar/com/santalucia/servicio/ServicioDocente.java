@@ -13,6 +13,7 @@ import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.sistema.login.Login;
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
+import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
@@ -238,5 +239,11 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 			return d;
 		}
 		throw new Exception ("Ocurrió un error al recuperar los datos del docente");
+	}
+
+	@Override
+	public Domicilio getDomicilio(Long idUsuario) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}	
 }
