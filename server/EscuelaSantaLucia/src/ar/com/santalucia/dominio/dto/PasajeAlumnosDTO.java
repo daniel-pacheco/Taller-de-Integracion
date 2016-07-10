@@ -15,8 +15,6 @@ public class PasajeAlumnosDTO {
 	private Long dniAlumno;
 	private String nombre;
 	private String apellido;
-	private Float notaFinal;
-	private Float notaDefinitiva;
 	private Integer cantPrevias;
 	private Boolean habilitadoPromocion;
 
@@ -24,15 +22,13 @@ public class PasajeAlumnosDTO {
 		super();
 	}
 
-	public PasajeAlumnosDTO(Long idUsuario, Long dniAlumno, String nombre, String apellido, Float notaFinal,
-			Float notaDefinitiva, Integer cantPrevias, Boolean habilitadoPromocion) {
+	public PasajeAlumnosDTO(Long idUsuario, Long dniAlumno, String nombre, String apellido, Integer cantPrevias,
+			Boolean habilitadoPromocion) {
 		super();
 		this.idUsuario = idUsuario;
 		this.dniAlumno = dniAlumno;
 		this.nombre = nombre;
 		this.apellido = apellido;
-		this.notaFinal = notaFinal;
-		this.notaDefinitiva = notaDefinitiva;
 		this.cantPrevias = cantPrevias;
 		this.habilitadoPromocion = habilitadoPromocion;
 	}
@@ -67,22 +63,6 @@ public class PasajeAlumnosDTO {
 
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
-	}
-
-	public Float getNotaFinal() {
-		return notaFinal;
-	}
-
-	public void setNotaFinal(Float notaFinal) {
-		this.notaFinal = notaFinal;
-	}
-
-	public Float getNotaDefinitiva() {
-		return notaDefinitiva;
-	}
-
-	public void setNotaDefinitiva(Float notaDefinitiva) {
-		this.notaDefinitiva = notaDefinitiva;
 	}
 
 	public Integer getCantPrevias() {

@@ -798,7 +798,7 @@ public class ServicioDesempenio {
 	
 	public ListaPasajeAlumnosDTO listaAlumnosPasajeCurso(String anio, String curso) throws Exception {
 		try {
-			Anio anioBuscar = gAnio.getByExample(new Anio(null, anio, "", null, null, true)).get(0);
+			Anio anioBuscar = gAnio.getByExample(new Anio(null, anio, null, null, null, true)).get(0);
 			Curso cursoBuscar = new Curso();
 			for (Curso c : anioBuscar.getListaCursos()) {
 				if (c.getDivision().toString().equals(curso)) {
@@ -808,19 +808,35 @@ public class ServicioDesempenio {
 			}
 			Set<Alumno> listaAlumnosCurso = cursoBuscar.getListaAlumnos();
 			ListaPasajeAlumnosDTO listaPasajeAlumnosDTO = new ListaPasajeAlumnosDTO();
+			ServicioAcademico sAcad = new ServicioAcademico();
 			for (Alumno a : listaAlumnosCurso) {
 				PasajeAlumnosDTO pasajeAlumnoDTO = new PasajeAlumnosDTO();
 				pasajeAlumnoDTO.setIdUsuario(a.getIdUsuario());
 				pasajeAlumnoDTO.setDniAlumno(a.getNroDocumento());
 				pasajeAlumnoDTO.setNombre(a.getNombre());
 				pasajeAlumnoDTO.setApellido(a.getApellido());
-				pasajeAlumnoDTO.setHabilitadoPromocion(false);
-				// obtener boletin del alumno para sacar las notas
+				pasajeAlumnoDTO.setCantPrevias(sAcad.getPreviasDesaprobadas(a.getNroDocumento()).size());
+				pasajeAlumnoDTO.setHabilitadoPromocion(pasajeAlumnoDTO.getCantPrevias() < 3 ? true : false);
+				listaPasajeAlumnosDTO.getListaPasajeAlumnosDTO().add(pasajeAlumnoDTO);
 			}
+			listaPasajeAlumnosDTO.setAnio(anioBuscar.getNombre());
+			listaPasajeAlumnosDTO.setCurso(cursoBuscar.getDivision().toString());
 			
-			return null;
+			return listaPasajeAlumnosDTO;
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un error al listar los alumnos para pasar de año: " + ex.getMessage());
+		}
+	}
+	
+	
+	
+	public Boolean promocionarAlumnos(ArrayList<Long> listaIdsAlumnos) throws Exception {
+		try {
+			
+			
+			return true;
+		} catch (Exception ex) {
+			throw ex;
 		}
 	}
 	

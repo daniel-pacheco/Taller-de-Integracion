@@ -47,6 +47,7 @@ $scope.tooltip = {
 		'title': 'Exportar para impresión'
 	}
 };
+$scope.editarNotas=true;
 
 //modals
 $scope.domicilioAvanzado = function() {
@@ -607,6 +608,7 @@ $scope.dropDownAnioValue = '';
 $scope.planillas = {};
 
 var planillaTrimDTO = ObjectsFactory.newPlanillaTrimDTO();
+var planillaTrimUpdateDTO = ObjectsFactory.newPlanillaTrimUpdateDTO();
 $scope.buscarButtonIsDisabled = false;
 // {
 // 	"nroTrimestre" : null,
@@ -637,6 +639,9 @@ function multipanelCollapseAll() {
 
 
 //-- [Alumnado/Notas] filters
+
+   // copiaLibInasistencias.listaInasistencias = _.sortBy(copiaLibInasistencias.listaInasistencias, function(value) {return value.fecha; });
+
 //-- [Alumnado/Notas] modals
 //-- [Alumnado/Notas] utils
 
@@ -649,6 +654,18 @@ function initPlanillaTrimDTO(trim) {
 	console.log(planillaTrimDTO);
 
 	return planillaTrimDTO;
+};
+
+function initPlanillaTrimUpdateDTO(trim) {
+	planillaTrimUpdateDTO.trimestre = trim;
+	planillaTrimUpdateDTO.anio = $scope.dropDownAnioValue;
+	planillaTrimUpdateDTO.curso = $scope.dropDownCursoValue;
+	planillaTrimUpdateDTO.planilla = $scope.planillas.tercerTrim;
+	planillaTrimUpdateDTO.cicloLectivo = 2015;
+
+	console.log(planillaTrimUpdateDTO);
+
+	return planillaTrimUpdateDTO;
 };
 
 $scope.resetPlanillaTrimDTO = function() {
@@ -665,18 +682,42 @@ $scope.resetPlanillaTrimDTO = function() {
 function updatePlanilla(trim, planilla) {
 	switch (trim){
 		case 1:
-		$scope.planillas.primerTrim = planilla;
+		$scope.planillas.primerTrim = orderByMateria(planilla);
 		break;
 		case 2:
-		$scope.planillas.segundoTrim = planilla;
+		$scope.planillas.segundoTrim = orderByMateria(planilla);
 		break;
 		case 3:
-		$scope.planillas.tercerTrim = planilla;
+		$scope.planillas.tercerTrim = orderByMateria(planilla);		
 		break;
 	}
 };
-
+$scope.materiasArrayBool = [];
+function orderByMateria(planilla){
+	angular.forEach(planilla, function (item) {
+		item.notas = _.sortBy(item.notas, function(value){return value.materia;});
+	});
+	angular.forEach(planilla[0].notas, function(item){
+		$scope.materiasArrayBool.push(false);
+	});
+	console.log($scope.materiasArrayBool);
+	return planilla;
+};
 //-- [Alumnado/Notas] service calls
+$scope.updatePlanillaTrimestre = function(trim) {
+	spinnerService.show('searchSpinner');
+	desempenioService.updatePlanillaTrimestral(initPlanillaTrimUpdateDTO(trim))
+	.then(function(response){
+		showServerSuccess('El las notas se han actualizado éxito.', response.data);
+		$scope.getPlanillaTrimestre(trim);
+	},
+	function(response){
+		showServerError(response);
+	})
+	.finally(function(){
+		spinnerService.hide('searchSpinner');
+	});
+};
 
 $scope.getPlanillaTrimestre = function(trim) {
 
@@ -685,7 +726,7 @@ $scope.getPlanillaTrimestre = function(trim) {
 		desempenioService.getPlanillaTrimestral(initPlanillaTrimDTO(trim))
 		.then(function(response){
 			updatePlanilla(trim, response.data);
-			console.log($scope.planillas);
+			//console.log($scope.planillas);
 		},
 		function(response){
 			showServerError(response);
@@ -695,6 +736,8 @@ $scope.getPlanillaTrimestre = function(trim) {
 		});
 	};
 };
+
+
 
 
 //---------------------------------

@@ -10,6 +10,7 @@ import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
 import ar.com.santalucia.dominio.dto.DirectivoDTO;
 import ar.com.santalucia.dominio.modelo.sistema.login.Login;
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
+import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
@@ -218,6 +219,12 @@ public class ServicioDirectivo extends ServicioUsuario<Personal> {
 			return p;
 		}
 		throw new Exception ("Ocurrió un error al recuperar los datos del directivo");
+	}
+
+	@Override
+	public Domicilio getDomicilio(Long idUsuario) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
