@@ -14,25 +14,34 @@ import java.util.ArrayList;
 // Último modificador: Eric Pennachini @ 05/06/2016 13:32
 
 public class DocenteMateriasDTO {
+	private Long idUsuario;
 	private Long nroDocumento;
 	private String nombre;
 	private String apellido;
 	private ArrayList<String> listaAnios;
-	// private ArrayList<String> areas;
 	private ArrayList<MateriaAreaCondDocenteDTO> listaMaterias;
 
 	public DocenteMateriasDTO() {
 		super();
 	}
 
-	public DocenteMateriasDTO(Long nroDocumento, String nombre, String apellido, ArrayList<String> listaAnios,
+	public DocenteMateriasDTO(Long idUsuario, Long nroDocumento, String nombre, String apellido, ArrayList<String> listaAnios,
 			ArrayList<MateriaAreaCondDocenteDTO> listaMaterias) {
 		super();
+		this.idUsuario = idUsuario;
 		this.nroDocumento = nroDocumento;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.listaAnios = listaAnios;
 		this.listaMaterias = listaMaterias;
+	}
+
+	public Long getIdUsuario() {
+		return idUsuario;
+	}
+
+	public void setIdUsuario(Long idUsuario) {
+		this.idUsuario = idUsuario;
 	}
 
 	/**

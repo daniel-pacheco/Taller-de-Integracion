@@ -140,7 +140,7 @@ var newArea = function(){
 
 var newAnio = function(){
   var anio = {
-    "idAanio": null,
+    "idAnio": null,
     "nombre": '',
     "descripcion": '',
     // "listaCursos": [],
@@ -167,6 +167,7 @@ var newAnioMin = function(){
     "idAanio": null,
     "nombre": '',
     "descripcion": '',
+    "cicloLectivo": 0,
     "listaCursos": [],
   };
   return anioMin;

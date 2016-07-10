@@ -178,6 +178,8 @@ public class ServicioAcademico {
 				aDTO.setIdAnio(a.getIdAnio());
 				aDTO.setNombre(a.getNombre());
 				aDTO.setDescripcion(a.getDescripcion());
+				aDTO.setCicloLectivo(a.getCicloLectivo());
+				aDTO.setActivo(a.getActivo());
 				Set<Curso> listaCursosAnioPersis = a.getListaCursos();
 				for (Curso c : listaCursosAnioPersis) {
 					CursoDTO cDTO = new CursoDTO();
