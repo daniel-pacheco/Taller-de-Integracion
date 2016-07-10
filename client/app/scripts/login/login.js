@@ -22,6 +22,9 @@
  .controller('LoginCtrl', function ($scope, $state, $http, loginService, USER_ROLES, LANDING_ROUTES) {
   $scope.roleOptions = USER_ROLES;
   $scope.data = {};
+  $scope.olvideContrasenia = false;
+  $scope.loginForm = true;
+
 
   $scope.login = function(data) {
     loginService.login(data.username, data.password, data.role).then(function(authenticated) {

@@ -20,7 +20,7 @@
 			</li>
 			<hr style="margin: 2px 0;">
 			<li ng-class="{active : activeMenuIzqAnio === 1}" data-target="#listadoAnio">
-				<a href="" ng-click="seleccionar('listadoAnio')">Listado</a>
+				<a href="" ng-click="seleccionar('listadoAnio'); getAnios()">Listado</a>
 			</li>				
 			<li ng-class="{active : activeMenuIzqAnio === 2}" data-target="#nuevoAnio">
 				<a href="" ng-click="seleccionar('nuevoAnio')">Nuevo A&ntilde;o</a>
@@ -40,16 +40,16 @@
 </div>
 
 <div>
-	<div id="listadoAnio" ng-show="listadoAnio">
-		<spinner name="searchAniosSpinner" ng-cloak="">
-			<div class="overlay"></div>
-			<div class="spinner-small">			            
-				<div>
-					<div class="ng-include: './views/templates/defaultspinner.html'"></div>
-				</div>
+	<spinner name="searchAniosSpinner" ng-cloak="">
+		<div class="overlay"></div>
+		<div class="spinner-small">			            
+			<div>
+				<div class="ng-include: './views/templates/defaultspinner.html'"></div>
 			</div>
-			<div class="please-wait-small">Aguarde por favor...</div>
-		</spinner>
+		</div>
+		<div class="please-wait-small">Aguarde por favor...</div>
+	</spinner>
+	<div id="listadoAnio" ng-show="listadoAnio">		
 		<fieldset>
 			<h1>{{subtitle}}<small></small></h1>
 			<hr>
@@ -61,15 +61,6 @@
 							<th ng-click="orderAnio('nombre')" role="button">A&ntilde;o 
 								<span class="sortorder" ng-show="predicate === 'nombre'" ng-class="{reverse:reverse}"></span>
 							</th>
-							<!-- <th ng-click="orderAnio('division')" role="button">Divisi&oacute;n 
-								<span class="sortorder" ng-show="predicate === 'division'" ng-class="{reverse:reverse}"></span>
-							</th>
-							<th ng-click="orderAnio('turno')" role="button">Turno 
-								<span class="sortorder" ng-show="predicate === 'turno'" ng-class="{reverse:reverse}"></span>
-							</th>
-							<th ng-click="orderAnio('cantidadDeAlumnos')" role="button">N° de alumnos
-								<span class="sortorder" ng-show="predicate === 'cantidadDeAlumnos'" ng-class="{reverse:reverse}"></span>
-							</th> -->
 							<th>Descripci&oacute;n</th>
 							<th>Acciones</th>
 						</tr>
@@ -84,6 +75,10 @@
 							<td>
 								<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipEdit" ng-click="editAnio(anio)" style="width: 40%">
 									<span data-animation="am-flip-x" class="glyphicon glyphicon-edit"></span>
+								</button>
+
+								<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipDelete" ng-click="deleteAnio(anio)" style="width: 40%">
+									<span class="glyphicon glyphicon-trash"></span>
 								</button>
 							</td> 
 						</tr>
@@ -173,9 +168,9 @@
 
 	<div id="nuevoCurso" ng-show="nuevoCurso">
 		<fieldset>
-			<h1>{{subtitle}}<small>: Ingrese los datos para dar de alta un nuevo curso y haga clic en guardar cuando finalice</small></h1>
+			<h1>{{subtitle}}<small>: Seleccione un a&ntilde;o y a continuaci&oacute;n agrege los cursos deseados</small></h1>
 			<hr>
-			<form class="form-horizontal media" name="formCurso">
+			<div class="form-horizontal media">
 				<div class="formulario media-body">
 					<div class="col-md-8 personal-info">
 
@@ -191,103 +186,119 @@
 								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> A&ntilde;o:</label>
 							</div>
 							<div class="col-md-5">
-								<select class="form-control" ng-model="nuevoCursoObj" ng-options="anio.nombre for anio in anios" name="nombreAnio" required>
+								<select class="form-control" ng-model="selectedAnioObj" ng-options="anio.nombre for anio in anios" name="nombreAnio" required>
 									<option value="" disabled selected>Seleccione un a&ntilde;o</option>
-									<!-- <option ng-repeat="anio in anios" value="anio">{{anio.nombre}}</option>  los anios se cargaron al entrar a la página -->
-								</select>
+								</select> 
 							</div>
 							<div ng-messages="formCurso.nombreAnio.$error" ng-if="formCurso.nombreAnio.$touched && formCurso.nombreAnio.$invalid">
 								<div ng-message="required" class="help-block">Seleccione una opci&oacute;n</div>
 							</div>
 						</div>
 
-						<div ng-show="nuevoCursoObj" class="row col-md-7 col-md-offset-3" style="padding-bottom: 30px">
-							<div class="box-margin-lib">
-								<table class="table">
-									<thead>
-										<th>Division</th>
-										<th>Turno</th>
-									</thead>
-									<tbody>
-										<tr ng-repeat="cur in nuevoCursoObj.listaCursos">
-											<td>{{cur.division}}</td>
-											<td>{{cur.turno}}</td>
-										</tr>
-									</tbody>
-								</table>
+						<div ng-show="selectedAnioObj" class="col-md-7 col-md-offset-3" style="padding-bottom: 30px">
+							<div class="container">
+								<div class="row">
+									<div class="box-margin-lib personal-info table-responsive">
+										<table class="table table-hover table-striped table-condensed">
+											<thead>
+												<tr>
+													<th class="col-md-1">Divisi&oacute;n</th>
+													<th class="col-md-1">Turno</th>
+													<th class="col-md-1">Acciones</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="curso in selectedAnioObj.listaCursos" ng-form="formRow">
+													<td>
+														<div ng-if="!curso.show">{{curso.division}}</div>
+														<div ng-if="curso.show" ng-class="{ 'has-error': formRow.division.$touched && formRow.division.$invalid }">
+															<input class="form-control" name="division" type="text" ng-model="copiaCurso.division" maxlength="185" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*"/>
+														</div>
+													</td>
+													<td>
+														<div ng-if="!curso.show">{{curso.turno}}</div>
+														<div ng-if="curso.show" ng-class="{ 'has-error': formRow.turno.$touched && formRow.turno.$invalid }">
+															<input class="form-control" name="turno" type="text" ng-model="copiaCurso.turno" maxlength="185" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*"/>
+														</div>
+													</td>
+													<td>
+														<!-- Botones de la lista-->
+														<button ng-if="!curso.show" class="btn btn-default btn-xs" ng-click="curso.show=true; editCurso(curso)" bs-tooltip="tooltip.tooltipEdit">
+															<span data-animation="am-flip-x" class="glyphicon glyphicon-edit"></span>
+														</button>
+														<button ng-if="!curso.show" class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipDelete" ng-click="deleteCurso(curso)">
+															<span class="glyphicon glyphicon-trash"></span>
+														</button>
+														<!-- Botones editando curso -->
+														<button ng-if="curso.show" class="btn btn-primary btn-sm" bs-tooltip="tooltip.tooltipSaveEdit" ng-click="curso.show=false;saveEditCurso(copiaCurso, selectedAnioObj.idAnio);" ng-disabled="formRow.division.$invalid">
+															<span class="glyphicon glyphicon-ok"></span>
+														</button>
+														<button ng-if="curso.show" class="btn btn-default btn-sm" ng-click="curso.show=false" bs-tooltip="tooltip.tooltipCancelEdit">
+															<span class="glyphicon glyphicon-remove"></span>
+														</button>
+													</td> 
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div class="row">
+									<div ng-form="form" novalidate>	
+										<div class="panel-heading">
+											<div class="form-group">
+												<div class="col-md-3" ng-class="{ 'has-error': form.divisionn.$touched && form.divisionn.$invalid }">
+													<input type="text" name="divisionn" class="form-control" ng-model="addCursoObj.division"  placeholder="División" maxlength="185" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*"/>
+													<div ng-messages="form.divisionn.$error" ng-if="form.divisionn.$touched && form.divisionn.$invalid">
+														<div ng-message="pattern" class="help-block" style="position: fixed;">Formato invalido</div>
+														<div ng-message="required" class="help-block" style="position: fixed;">Complete este campo</div>
+
+													</div>
+												</div>
+
+												<div class="col-md-4" ng-class="{ 'has-error': form.turno.$touched && form.turno.$invalid }">
+													<input type="text" name="turno" class="form-control" ng-model="addCursoObj.turno"  placeholder="Turno" maxlength="185" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*"/>
+													<div ng-messages="form.turno.$error" ng-if="form.turno.$touched && form.turno.$invalid">
+														<div ng-message="pattern" class="help-block" style="position: fixed;">Formato invalido</div>
+														<div ng-message="required" class="help-block" style="position: fixed;">Complete este campo</div>
+													</div>
+												</div>
+
+												<div class="col-md-3">
+													<button class="form-control btn btn-primary" type="submit" ng-disabled="!form.$valid" ng-click="addCurso(addCursoObj, selectedAnioObj.idAnio)">Agregar</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 						<br>
-						<div class="form-group" ng-class="{ 'has-error': formCurso.division.$touched && formCurso.division.$invalid }">
-							<div class="col-md-4 control-label">
-								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Divisi&oacute;n:</label>
-							</div>
-							<div class="col-md-7">
-								<button type="button" name="division" class="btn btn-default" ng-model="newAnio.listaCursos" data-html="1" data-multiple="1" data-animation="am-flip-x" bs-options="curso.idCurso as curso.curso+'-'+curso.turno for curso in cursos" bs-select required>
-								</button>
-								<input class="btn btn-info" style="margin-left: 10px;" type="button" ng-click="addCurso()" value="Administrar"/>
-								<div ng-messages="formCurso.division.$error" ng-if="formCurso.division.$touched && formCurso.division.$invalid">
-									<div ng-message="required" class="help-block">Seleccione al menos una opci&oacute;n</div>
-								</div>
-							</div>{{newAnio.cursos}}
-						</div> <!--/form-group-->
-
-						<div class="form-group">
-							<div class="col-md-2 col-md-offset-4">
-								<input class="btn btn-danger" type="button" ng-click="clearFormCurso()" value="Limpiar"/>
-							</div>
-							<div class="col-md-3 col-md-offset-1">
-								<input class="btn btn-primary" type="button" ng-click="newCurso(nuevoCursoObj)" value="Guardar" ng-disabled="!formCurso.$valid"/>
-							</div>
-						</div>
 					</div>
 				</div>
-			</form>
+			</div>
 		</fieldset>
 	</div>
 
 	<div id="administrarAnio" ng-show="administrarAnio">  <!--lista centrada -->
+		<spinner name="administrarAniosSpinner" ng-cloak="">
+			<div class="overlay"></div>
+			<div class="spinner-small">			            
+				<div>
+					<div class="ng-include: './views/templates/defaultspinner.html'"></div>
+				</div>
+			</div>
+			<div class="please-wait-small">Aguarde por favor...</div>
+		</spinner>
 		<fieldset>
 			<h1>{{subtitle}}<small>: Seleccione el a&ntilde;o y divisi&oacute;n que desee administrar</small></h1>
 			<hr>
-			<label for="">A&ntilde;o:</label> 
-			<select
-			class="dropdown-toggle form-control-inline" name="" ng-model="dropDownValue"> <!-- ng-change="update(dropDownValue, option)"> -->
-			<option ng-repeat="option in dropDownOptions" value="{{dropDownOptions}}">{{option}}</option>
-		</select>
-		<label for="">Divisi&oacute;n:</label> 
-		<select
-		class="dropdown-toggle form-control-inline" name="" ng-model="dropDownDivisionValue"> <!-- ng-change="update(dropDownValue, option)"> -->
-		<option ng-repeat="option in dropDownDiviosnOptions" value="{{dropDownDiviosnOptions}}">{{option}}</option>
-	</select>
-	<button class="btn btn-info" ng-click="acept()">Aceptar</button>
+			<label for="dropDownSelectAnio">A&ntilde;o: </label> 
+			<select name="dropDownSelectAnio" ng-change="resetAdministrarTable()" class="form-control-inline" ng-model="dropDownSelectedAnio" ng-options="anio.nombre for anio in anios"></select>
+			<label for="dropDownSelectCurso">Division: </label> 
+			<select name="dropDownSelectCurso" ng-change="resetAdministrarTable()" class="form-control-inline" ng-model="dropDownSelectedCurso" ng-options="'Division: ' + curso.division + ' Turno: ' + curso.turno for curso in dropDownSelectedAnio.listaCursos"></select>
+			<button class="btn btn-info" ng-click="getAlumnos()">Aceptar</button>
 
-	<div id="listFilters" ng-show="listAnioIsEnabled">
-		<table class="table  table-hover table-striped">
-			<thead>
-				<tr>
-					<th>Nro</th>
-					<th>Nombre</th>
-					<th>Apellido</th>
-					<th>DNI</th>
-					<th>Acciones</th>						
-				</tr>
-			</thead>
-			<tr ng-repeat="alumno in test | filter:filterByName">
-				<td>{{alumno.nro}}</td>
-				<td>{{alumno.name}}</td>
-				<td>{{alumno.surName}}</td>
-				<td>{{alumno.DNI}}</td>
-				<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipProfile" style="width:25%; cursor: pointer" class="glyphicon glyphicon-user" ></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipDelete" style="width:25%; cursor: pointer" class="glyphicon glyphicon-remove-circle"></span><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipChange" style="width:25%; cursor: pointer" class="glyphicon glyphicon-edit"></span></td> 
-					<!--<td>{{alumno.name}}</td>
-					<td>{{alumno.phone}}</td>
-					<td>{{$index}}</td> -->
-				</tr>
-			</table>
-			
-			<label>Asignar alumnos que no se encuentran asignados: <input type="checkbox" ng-model="checked" ng-init="checked=false"/></label><br/>
-
-			<div ng-if="checked" class="animate-if">
+			<div id="listFilters" ng-show="listAnioIsEnabled">
 				<table class="table  table-hover table-striped">
 					<thead>
 						<tr>
@@ -297,27 +308,43 @@
 							<th>Acciones</th>						
 						</tr>
 					</thead>
-					<tr ng-repeat="alumno in test | filter:filterByName">
-						<td>{{alumno.name}}</td>
-						<td>{{alumno.firstName}}</td>
-						<td>{{alumno.DNI}}</td>
-						<td><span data-animation="am-flip-x" bs-tooltip="tooltip.tooltipEdit" style="width:25%; cursor: pointer" class="glyphicon glyphicon glyphicon-pushpin" ></span></td> 
-					<!--<td>{{alumno.name}}</td>
-					<td>{{alumno.phone}}</td>
-					<td>{{$index}}</td> -->
-				</tr>
+					<tr ng-repeat="alumno in alumnos | filter:anioCursoFilter">
+						<td>{{alumno.nombre}}</td>
+						<td>{{alumno.apellido}}</td>
+						<td>{{alumno.nroDocumento}}</td>
+						<td>
+							<span ng-click="desvincularAlumno(alumno.idUsuario, dropDownSelectedCurso.idCurso)" data-animation="am-flip-x" bs-tooltip="tooltip.tooltipDesasignar" style="width:25%; cursor: pointer" class="glyphicon glyphicon-remove-circle"></span>
+						</td> 
+					</tr>
+				</table>
 
-			</table>
-			<button class="btn btn-info">Finalizar</button>
+				<label>Visualizar alumnos que no se encuentran asignados: <input type="checkbox" ng-model="checked" ng-init="checked=false"/></label><br/>
 
-		</div>
-		<input class="btn btn-primary" type="submit" name=""
-		value="Guardar" style="margin: 10% 45%"/>
+				<div ng-if="checked" class="animate-if">
+					<table class="table  table-hover table-striped">
+						<thead>
+							<tr>
+								<th>Nombre</th>
+								<th>Apellido</th>
+								<th>DNI</th>
+								<th>Acciones</th>
+								<th>curso</th>					
+							</tr>
+						</thead>
+						<tr ng-repeat="alumno in alumnos | filter:cursoCeroFilter"> <!-- filterby:curso 0 -->
+							<td>{{alumno.nombre}}</td>
+							<td>{{alumno.apellido}}</td>
+							<td>{{alumno.nroDocumento}}</td>
+							<td>{{alumno.curso}}</td>
+							<td>
+								<span ng-click="vincularAlumno(alumno.idUsuario, dropDownSelectedCurso.idCurso)" data-animation="am-flip-x" bs-tooltip="tooltip.tooltipAsignar" style="width:25%; cursor: pointer" class="glyphicon glyphicon glyphicon-pushpin" ></span>
+							</td> 
+						</tr>
+					</table>
+					<!-- <button class="btn btn-info">Finalizar</button> -->
+				</div>
+				<!-- <input class="btn btn-primary" type="submit" name="" value="Guardar" style="margin: 10% 45%"/> -->
+			</div>
+		</fieldset>
 	</div>
-
-
-</fieldset>
-
-</div>
-
 </div>

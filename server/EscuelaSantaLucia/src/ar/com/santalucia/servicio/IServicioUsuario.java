@@ -57,6 +57,15 @@ public interface IServicioUsuario<T> {
 	 * @throws Exception
 	 */
 	Set<Mail> getMails(Long idUsuario) throws Exception;
+	
+	/**
+	 * Devuelve un domicilio de un usuario en particular.
+	 * @param idUsuario Id de Usuario del cuál se desea obtener el domicilio asociado.
+	 * @return Domicilio del usuario
+	 * @throws Exception en caso de un problema
+	 */
+	Domicilio getDomicilio(Long idUsuario) throws Exception;
+	
 	/**
 	 * Devuelve un Set de objetos de tipo Titulo asociado a un Usuario en particular.
 	 * @param idUsuario Id de Usuario del cuál se desea obtener los títulos asociados.

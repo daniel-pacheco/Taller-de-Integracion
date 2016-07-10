@@ -236,30 +236,27 @@ public class ServicioDesempenio {
 			calendar6.setTime(formatoFecha.parse(finTrimestre3.getValor()));
 			InasistenciasBoletinDTO resumenInasistencias = new InasistenciasBoletinDTO();
 			for (Inasistencia i : boletinInasistencias.getListaInasistencias()) {
-				if (i.getFecha().after(calendar1.getTime()) 
-						|| i.getFecha().before(calendar2.getTime())
-						|| i.getFecha().equals(calendar1.getTime())
-						|| i.getFecha().equals(calendar2.getTime())) { // si fecha está entre el inicio y fin del trimestre 1
+				// si fecha está entre el inicio y fin del trimestre 1
+				if ((i.getFecha().after(calendar1.getTime()) && i.getFecha().before(calendar2.getTime()))
+						|| (i.getFecha().equals(calendar1.getTime()) || i.getFecha().equals(calendar2.getTime()))) { 
 					if (i.getJustificada()) {
 						resumenInasistencias.setJustificadasTrim1(resumenInasistencias.getJustificadasTrim1() + i.getCantidad());
 					} else {
 						resumenInasistencias.setInjustificadasTrim1(resumenInasistencias.getInjustificadasTrim1() + i.getCantidad());
 					}
 				}
-				if (i.getFecha().after(calendar3.getTime()) 
-						|| i.getFecha().before(calendar4.getTime())
-						|| i.getFecha().equals(calendar3.getTime())
-						|| i.getFecha().equals(calendar4.getTime())) { // si fecha está entre el inicio y fin del trimestre 2
+				// si fecha está entre el inicio y fin del trimestre 2
+				if ((i.getFecha().after(calendar3.getTime()) && i.getFecha().before(calendar4.getTime()))
+						|| (i.getFecha().equals(calendar3.getTime()) || i.getFecha().equals(calendar4.getTime()))) { 
 					if (i.getJustificada()) {
 						resumenInasistencias.setJustificadasTrim2(resumenInasistencias.getJustificadasTrim2() + i.getCantidad());
 					} else {
 						resumenInasistencias.setInjustificadasTrim2(resumenInasistencias.getInjustificadasTrim2() + i.getCantidad());
 					}
 				}
-				if (i.getFecha().after(calendar5.getTime()) 
-						|| i.getFecha().before(calendar6.getTime())
-						|| i.getFecha().equals(calendar5.getTime())
-						|| i.getFecha().equals(calendar6.getTime())) { // si fecha está entre el inicio y fin del trimestre 3
+				// si fecha está entre el inicio y fin del trimestre 3
+				if ((i.getFecha().after(calendar5.getTime()) && i.getFecha().before(calendar6.getTime()))
+						|| (i.getFecha().equals(calendar5.getTime()) || i.getFecha().equals(calendar6.getTime()))) { 
 					if (i.getJustificada()) {
 						resumenInasistencias.setJustificadasTrim3(resumenInasistencias.getJustificadasTrim3() + i.getCantidad());
 					} else {
@@ -798,7 +795,7 @@ public class ServicioDesempenio {
 	
 	public ListaPasajeAlumnosDTO listaAlumnosPasajeCurso(String anio, String curso) throws Exception {
 		try {
-			Anio anioBuscar = gAnio.getByExample(new Anio(null, anio, "", null, null, true)).get(0);
+			Anio anioBuscar = gAnio.getByExample(new Anio(null, anio, null, null, null, true)).get(0);
 			Curso cursoBuscar = new Curso();
 			for (Curso c : anioBuscar.getListaCursos()) {
 				if (c.getDivision().toString().equals(curso)) {
@@ -808,19 +805,35 @@ public class ServicioDesempenio {
 			}
 			Set<Alumno> listaAlumnosCurso = cursoBuscar.getListaAlumnos();
 			ListaPasajeAlumnosDTO listaPasajeAlumnosDTO = new ListaPasajeAlumnosDTO();
+			ServicioAcademico sAcad = new ServicioAcademico();
 			for (Alumno a : listaAlumnosCurso) {
 				PasajeAlumnosDTO pasajeAlumnoDTO = new PasajeAlumnosDTO();
 				pasajeAlumnoDTO.setIdUsuario(a.getIdUsuario());
 				pasajeAlumnoDTO.setDniAlumno(a.getNroDocumento());
 				pasajeAlumnoDTO.setNombre(a.getNombre());
 				pasajeAlumnoDTO.setApellido(a.getApellido());
-				pasajeAlumnoDTO.setHabilitadoPromocion(false);
-				// obtener boletin del alumno para sacar las notas
+				pasajeAlumnoDTO.setCantPrevias(sAcad.getPreviasDesaprobadas(a.getNroDocumento()).size());
+				pasajeAlumnoDTO.setHabilitadoPromocion(pasajeAlumnoDTO.getCantPrevias() < 3 ? true : false);
+				listaPasajeAlumnosDTO.getListaPasajeAlumnosDTO().add(pasajeAlumnoDTO);
 			}
+			listaPasajeAlumnosDTO.setAnio(anioBuscar.getNombre());
+			listaPasajeAlumnosDTO.setCurso(cursoBuscar.getDivision().toString());
 			
-			return null;
+			return listaPasajeAlumnosDTO;
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un error al listar los alumnos para pasar de año: " + ex.getMessage());
+		}
+	}
+	
+	
+	
+	public Boolean promocionarAlumnos(ArrayList<Long> listaIdsAlumnos) throws Exception {
+		try {
+			
+			
+			return true;
+		} catch (Exception ex) {
+			throw ex;
 		}
 	}
 	

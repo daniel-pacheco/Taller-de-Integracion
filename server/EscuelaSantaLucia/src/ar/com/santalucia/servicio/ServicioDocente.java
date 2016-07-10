@@ -13,6 +13,7 @@ import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.sistema.login.Login;
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
+import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
@@ -198,7 +199,8 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 			personal.setActivo(true);
 			listaDocentes = gPersonal.getByExample(personal);
 			for (Personal p: listaDocentes) {
-				DocenteMateriasDTO docenteDTO = new DocenteMateriasDTO(p.getNroDocumento(), p.getNombre(), p.getApellido(), null, null);
+				DocenteMateriasDTO docenteDTO = new DocenteMateriasDTO(
+						p.getIdUsuario(), p.getNroDocumento(), p.getNombre(), p.getApellido(), null, null);
 				Anio anioEx = new Anio();
 				List<Anio> listaAnios = new ArrayList<Anio>();
 				listaAnios = servicioAcademico.getAnios(anioEx);
@@ -238,5 +240,11 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 			return d;
 		}
 		throw new Exception ("Ocurrió un error al recuperar los datos del docente");
+	}
+
+	@Override
+	public Domicilio getDomicilio(Long idUsuario) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}	
 }

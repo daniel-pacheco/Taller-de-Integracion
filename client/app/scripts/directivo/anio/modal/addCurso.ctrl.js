@@ -30,7 +30,7 @@ angular.module('clientAppApp')
      close (listaCursos , 500);
  };
 
-$scope.edit = function (curso){
+ $scope.edit = function (curso){
   $scope.copiaCurso = angular.copy (curso);
 };
 
@@ -50,5 +50,5 @@ $scope.addCurso = function (){
   $scope.nuevoCurso = ObjectsFactory.newCurso();
   $scope.form.$setUntouched();
 };
-  
+
 }]);
