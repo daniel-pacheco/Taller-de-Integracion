@@ -23,6 +23,8 @@ angular.module('clientAppApp')
 
     var putCurso = 'cur/';
     var curso = 'cur';
+    var cursoVincularAlu = 'cur/vin';
+    var cursoDesvincularAlu = 'cur/desvin';
     
     var matGetAllMin = 'mat/listAllMin';
     var putMateria = "mat";
@@ -48,11 +50,19 @@ angular.module('clientAppApp')
     };
 
     this.cursoDelete = function (idCurso) {
-        return $http.delete(server + sAcademico + curso + idCurso);
+        return $http.delete(server + sAcademico + putCurso + idCurso);
     };
 
     this.cursoPutNew = function (cursoObj, idAnio) {
         return $http.put(server + sAcademico + putCurso + idAnio, cursoObj);
+    };
+
+    this.cursoVin = function (idAlumno, idCurso) {
+        return $http.post(server + sAcademico + cursoVincularAlu, {values:[idAlumno, idCurso]});
+    };
+
+    this.cursoDesvin = function (idAlumno, idCurso) {
+        return $http.post(server + sAcademico + cursoDesvincularAlu, {values:[idAlumno, idCurso]});
     };
 
     this.matGetAllMin = function () {
