@@ -212,6 +212,7 @@ public class ServicioAcademico {
 				anio = gAnio.getById(idAnio);
 				Set<Curso> cursos = anio.getListaCursos();
 				cursos.add(curso);
+				gCurso.add(curso);
 				anio.setListaCursos(cursos);
 				gAnio.modify(anio);
 				return true;

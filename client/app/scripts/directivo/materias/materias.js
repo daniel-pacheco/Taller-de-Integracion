@@ -312,10 +312,24 @@ function searchArea() {
       $scope.listaAreas = response.data;
     },
     function(response){
-        showServerError('Se ha producido un error al intentar contactar al servidor: ' + response.statusText);
+      showServerError('Se ha producido un error al intentar contactar al servidor: ' + response.statusText);
     })
   .finally(function(){
     spinnerService.hide('searchMateriaSpinner');
+  });
+};
+
+function addArea(area) {
+  academicoService.areaPutNew(area)
+  .then(
+    function(response){
+
+    },
+    function(response){
+
+    })
+  .finally(function(){
+
   });
 };
 
