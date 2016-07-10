@@ -17,7 +17,7 @@ public class ListaPasajeAlumnosDTO {
 
 	public ListaPasajeAlumnosDTO() {
 		super();
-		setListaPasajeAlumnosDTO(new ArrayList<PasajeAlumnosDTO>());
+		listaPasajeAlumnosDTO = new ArrayList<PasajeAlumnosDTO>();
 	}
 
 	public ListaPasajeAlumnosDTO(String anio, String curso, ArrayList<PasajeAlumnosDTO> listaPasajeAlumnosDTO) {

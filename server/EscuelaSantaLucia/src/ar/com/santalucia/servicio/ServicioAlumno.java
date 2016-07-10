@@ -12,6 +12,7 @@ import ar.com.santalucia.dominio.modelo.academico.Curso;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotas;
 import ar.com.santalucia.dominio.modelo.sistema.login.Login;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
+import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Titulo;
@@ -73,7 +74,17 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 		try {
 			sLogin = new ServicioLogin();			//Instanciado para usar sólo aquí
 			if (usuario.getIdUsuario() == null) {
+				Set<Telefono> telefonos = usuario.getListaTelefonos();
+				Set<Mail> mails = usuario.getListaMails();
+				Domicilio domicilio = usuario.getDomicilio();
+				usuario.setListaTelefonos(null);
+				usuario.setListaMails(null);
+				usuario.setDomicilio(null);
 				gAlumno.add(usuario);
+				modificarElementosDeListas(usuario, telefonos, mails);
+				super.gDomicilio.add(domicilio);
+				usuario.setDomicilio(domicilio);
+				gAlumno.modify(usuario);
 				sLogin.addLogin(usuario.getNroDocumento(), Login.ALUMNO);
 				Curso cursoGen = new Curso();
 				cursoGen = gCurso.getByDivision('0');
@@ -81,8 +92,49 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 				gCurso.modify(cursoGen);
 			} else {
 				Long dniViejo = gAlumno.getById(usuario.getIdUsuario()).getNroDocumento(); 
-				gAlumno.modify(usuario);
 				sLogin.actualizarUsuario(dniViejo, usuario.getNroDocumento(), Login.ALUMNO);
+				
+				Set<Telefono> listaTelefonosNueva = usuario.getListaTelefonos();
+				if (listaTelefonosNueva.size() > 0) {
+					for (Telefono t : listaTelefonosNueva) {
+						t.setIdTelefono(null);
+					} 
+				}
+				Set<Mail> listaMailsNueva = usuario.getListaMails();
+				if (listaMailsNueva.size() > 0) {
+					for (Mail m : usuario.getListaMails()) {
+						m.setIdMail(null);
+					} 
+				}
+				Domicilio domicilioNuevo = usuario.getDomicilio();
+				domicilioNuevo.setIdDomicilio(null);
+				Set<Telefono> listaTelefonosPersis = new HashSet<Telefono>();
+				Set<Mail> listaMailsPersis = new HashSet<Mail>();
+				Domicilio domicilioPersis = new Domicilio();
+				listaTelefonosPersis = this.getTelefonos(usuario.getIdUsuario());
+				listaMailsPersis = this.getMails(usuario.getIdUsuario());
+				domicilioPersis = this.getDomicilio(usuario.getIdUsuario());
+				usuario.setListaTelefonos(null);
+				usuario.setListaMails(null);
+				usuario.setDomicilio(null);
+				gAlumno.modify(usuario);
+				if (listaTelefonosPersis.size() > 0) {
+					for (Telefono t : listaTelefonosPersis) {
+						super.gTelefono.delete(t);
+					} 
+				}
+				if (listaMailsPersis.size() > 0) {
+					for (Mail m : listaMailsPersis) {
+						super.gMail.delete(m);
+					} 
+				}
+				if (domicilioPersis != null) {
+					super.gDomicilio.delete(domicilioPersis);
+				}
+				modificarElementosDeListas(usuario, listaTelefonosNueva, listaMailsNueva);
+				usuario.setDomicilio(domicilioNuevo);
+				super.gDomicilio.add(usuario.getDomicilio());
+				gAlumno.modify(usuario);
 			}
 			return true;
 		} catch (ValidacionException ex) {
@@ -91,6 +143,31 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 			throw new Exception("Hubo un problema al agregar o modificar el ALUMNO: " + ex.getMessage());
 		}
 	}
+	/**
+	 * 
+	 * @param usuario
+	 * @param telefonos
+	 * @param mails
+	 * @param domicilio
+	 * @throws Exception
+	 */
+	private void modificarElementosDeListas(Alumno usuario, Set<Telefono> telefonos, Set<Mail> mails) throws Exception {
+		if (telefonos.size() > 0) {
+			for (Telefono t : telefonos) {
+				super.gTelefono.add(t);
+			} 
+		}
+		if (mails.size() > 0) {
+			for (Mail m : mails) {
+				super.gMail.add(m);
+			} 
+		}
+		// agrego al alumno las listas de tel., mail y dom. que en teoría ya tienen id los elementos.
+		usuario.setListaTelefonos(telefonos);
+		usuario.setListaMails(mails);
+	}
+	
+	
 
 	@Override
 	public Set<Telefono> getTelefonos(Long idUsuario) throws Exception {
@@ -127,6 +204,21 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 		}
 		return mails;
 	}
+	
+	@Override
+	public Domicilio getDomicilio(Long idUsuario) throws Exception {
+		Domicilio domicilio = new Domicilio();
+		try {
+			Alumno alumno = new Alumno();
+			if ((alumno = getUsuario(idUsuario)) != null) {
+				domicilio = alumno.getDomicilio();
+			}
+			return domicilio;
+		} catch (Exception ex) {
+			throw new Exception("Hubo un problema al obtener el DOMICILIO del ALUMNO: " + ex.getMessage());
+		}
+	}
+	
 
 	@Override
 	public Set<Titulo> getTitulos(Long idUsuario) {
@@ -233,5 +325,7 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 		}
 		return alumnoDto;
 	}
+
+	
 
 }

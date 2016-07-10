@@ -157,7 +157,7 @@ public class ServicioLogin {
 				usuario = new Usuario();
 			}
 			
-			loginUsuario.setClave(nuevaClave);
+			loginUsuario.setClave(gLogin.encriptar(nuevaClave));
 			gLogin.modify(loginUsuario);
 			
 			String subject = "<<TEST>> Recuperación de contraseña de usuario " + rol;
@@ -179,7 +179,7 @@ public class ServicioLogin {
 	}
 
 	public static String generarStringRandom(int cantCaract) {
-		String caracteres = "abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ1234567890";
+		String caracteres = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 		Random rnd = new Random();
 		StringBuilder cadenaRandom = new StringBuilder();
 		for (int i = 0; i < cantCaract; i++) {

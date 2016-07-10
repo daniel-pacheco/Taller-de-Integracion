@@ -16,7 +16,9 @@ import javax.ws.rs.core.Response.Status;
 
 import ar.com.santalucia.dominio.dto.BoletinInasistenciasDTO;
 import ar.com.santalucia.dominio.dto.BoletinNotasDTO;
+import ar.com.santalucia.dominio.dto.GetListaPasajeAlumnosDTO;
 import ar.com.santalucia.dominio.dto.GetPlanillaTrimestralDTO;
+import ar.com.santalucia.dominio.dto.ListaPasajeAlumnosDTO;
 import ar.com.santalucia.dominio.dto.PlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinInasistencias;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotas;
@@ -529,9 +531,34 @@ public class ServicioDesempenioEndpoint {
 			servicioDesempenio.procesarPlanillaTrimestral(planillaTrimestralDTO);
 			return Response.ok(true).build();
 		} catch (Exception ex) {
-			// TODO Auto-generated catch block
-			return Response.ok(ex).build();
-			
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
+		}
+	}
+	
+	
+	
+	@POST
+	@Path("/pasajeAnio/")
+	public Response listaPasajeAlumnosDTO(final GetListaPasajeAlumnosDTO getListaDTO) {
+		try {
+			setInstance();
+			ListaPasajeAlumnosDTO lista = servicioDesempenio.listaAlumnosPasajeCurso(getListaDTO.getAnio(), getListaDTO.getCurso());
+			if (lista.getListaPasajeAlumnosDTO().size() == 0) {
+				return Response.status(Status.NO_CONTENT)
+					.entity(new FrontMessage("Sin resultados", FrontMessage.INFO))
+					.build();
+			}
+			return Response.ok(lista).build();
+		} catch (Exception ex) {
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+				.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+						FrontMessage.CRITICAL))
+				.build();
 		}
 	}
 	
