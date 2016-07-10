@@ -14,6 +14,8 @@ public class AnioDTO {
 	private Long idAnio;
 	private String nombre;
 	private String descripcion;
+	private String cicloLectivo;
+	private Boolean activo;
 	private ArrayList<CursoDTO> listaCursos;
 
 	public AnioDTO() {
@@ -21,11 +23,13 @@ public class AnioDTO {
 		this.listaCursos = new ArrayList<CursoDTO>();
 	}
 
-	public AnioDTO(Long idAnio, String nombre, String descripcion, ArrayList<CursoDTO> listaCursos) {
+	public AnioDTO(Long idAnio, String nombre, String descripcion, ArrayList<CursoDTO> listaCursos, String cicloLectivo, Boolean activo) {
 		super();
 		this.idAnio = idAnio;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
+		this.cicloLectivo = cicloLectivo;
+		this.activo = activo;
 		this.listaCursos = listaCursos;
 	}
 
@@ -87,6 +91,22 @@ public class AnioDTO {
 	 */
 	public void setListaCursos(ArrayList<CursoDTO> listaCursos) {
 		this.listaCursos = listaCursos;
+	}
+
+	public String getCicloLectivo() {
+		return cicloLectivo;
+	}
+
+	public void setCicloLectivo(String cicloLectivo) {
+		this.cicloLectivo = cicloLectivo;
+	}
+
+	public Boolean getActivo() {
+		return activo;
+	}
+
+	public void setActivo(Boolean activo) {
+		this.activo = activo;
 	}
 
 }

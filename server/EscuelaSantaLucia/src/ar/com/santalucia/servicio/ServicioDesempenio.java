@@ -236,30 +236,27 @@ public class ServicioDesempenio {
 			calendar6.setTime(formatoFecha.parse(finTrimestre3.getValor()));
 			InasistenciasBoletinDTO resumenInasistencias = new InasistenciasBoletinDTO();
 			for (Inasistencia i : boletinInasistencias.getListaInasistencias()) {
-				if (i.getFecha().after(calendar1.getTime()) 
-						|| i.getFecha().before(calendar2.getTime())
-						|| i.getFecha().equals(calendar1.getTime())
-						|| i.getFecha().equals(calendar2.getTime())) { // si fecha está entre el inicio y fin del trimestre 1
+				// si fecha está entre el inicio y fin del trimestre 1
+				if ((i.getFecha().after(calendar1.getTime()) && i.getFecha().before(calendar2.getTime()))
+						|| (i.getFecha().equals(calendar1.getTime()) || i.getFecha().equals(calendar2.getTime()))) { 
 					if (i.getJustificada()) {
 						resumenInasistencias.setJustificadasTrim1(resumenInasistencias.getJustificadasTrim1() + i.getCantidad());
 					} else {
 						resumenInasistencias.setInjustificadasTrim1(resumenInasistencias.getInjustificadasTrim1() + i.getCantidad());
 					}
 				}
-				if (i.getFecha().after(calendar3.getTime()) 
-						|| i.getFecha().before(calendar4.getTime())
-						|| i.getFecha().equals(calendar3.getTime())
-						|| i.getFecha().equals(calendar4.getTime())) { // si fecha está entre el inicio y fin del trimestre 2
+				// si fecha está entre el inicio y fin del trimestre 2
+				if ((i.getFecha().after(calendar3.getTime()) && i.getFecha().before(calendar4.getTime()))
+						|| (i.getFecha().equals(calendar3.getTime()) || i.getFecha().equals(calendar4.getTime()))) { 
 					if (i.getJustificada()) {
 						resumenInasistencias.setJustificadasTrim2(resumenInasistencias.getJustificadasTrim2() + i.getCantidad());
 					} else {
 						resumenInasistencias.setInjustificadasTrim2(resumenInasistencias.getInjustificadasTrim2() + i.getCantidad());
 					}
 				}
-				if (i.getFecha().after(calendar5.getTime()) 
-						|| i.getFecha().before(calendar6.getTime())
-						|| i.getFecha().equals(calendar5.getTime())
-						|| i.getFecha().equals(calendar6.getTime())) { // si fecha está entre el inicio y fin del trimestre 3
+				// si fecha está entre el inicio y fin del trimestre 3
+				if ((i.getFecha().after(calendar5.getTime()) && i.getFecha().before(calendar6.getTime()))
+						|| (i.getFecha().equals(calendar5.getTime()) || i.getFecha().equals(calendar6.getTime()))) { 
 					if (i.getJustificada()) {
 						resumenInasistencias.setJustificadasTrim3(resumenInasistencias.getJustificadasTrim3() + i.getCantidad());
 					} else {
