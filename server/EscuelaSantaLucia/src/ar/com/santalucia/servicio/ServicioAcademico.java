@@ -1,5 +1,7 @@
 package ar.com.santalucia.servicio;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
@@ -745,6 +747,7 @@ public class ServicioAcademico {
 			Calendar fechaLlamadoFin = Calendar.getInstance();
 			Llamado llamado = encontrarLlamadoVigente();  //Encuentra el llamado solo si está en periodo vigente de inscripcion
 			
+			
 			if (llamado != null){
 				Inscripcion inscripcion = buscarInscripcion(idAlumno, llamado.getIdLlamado());
 				if (inscripcion == null){
@@ -752,6 +755,7 @@ public class ServicioAcademico {
 					fechaLlamadoFin.setTime(llamado.getFechaFin());
 					if ( fechaActual.equals(fechaLlamadoInicio) || fechaActual.before(fechaLlamadoInicio) ){ //Para verificar que no esté intentando inscibirse durante la mesa   			
 						inscripcion = new Inscripcion();
+						inscripcion.setCodigo(this.codigoSiguienteInscripcion(llamado.getIdLlamado()));
 						inscripcion.setIdLlamado(llamado.getIdLlamado());
 						inscripcion.setActivo(true);
 						inscripcion.setAlumno(alumno);
@@ -864,21 +868,19 @@ public class ServicioAcademico {
 						Calendar calendar = Calendar.getInstance();
 						aux.setAlumno(alumno.toString());
 						aux.setIdMesa(m.getIdMesa());
-						aux.setInscripto(null); // No se si está inscripto todavía, lo dejo en null
+						aux.setInscripto(false); // No se si está inscripto todavía, lo dejo en false
+						DateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
+					    DateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
 						calendar.setTime(m.getFechaHoraInicio());
-						aux.setFecha( String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) +"/"+
-									String.valueOf(calendar.get(Calendar.MONTH+1)) +"/"+
-									String.valueOf(calendar.get(Calendar.YEAR)) );
+						aux.setFecha(formatoFecha.format(calendar.getTime()));
 						calendar.setTime(m.getFechaHoraInicio());
-						aux.setHora( String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)) +" : " + 
-									String.valueOf(calendar.get(Calendar.MINUTE)) );
+						aux.setHora( formatoHora.format(calendar.getTime()) );
 						aux.setMateria(m.getMateria().getNombre());
-						Iterator<Personal> it = m.getIntegrantesTribunal().iterator();
-						while (it.hasNext()){
-							tribunal = tribunal + " " +it.next().toString();
+						Set<Personal> iTribunal = m.getIntegrantesTribunal();
+						for(Personal tri : iTribunal){
+							tribunal = tribunal + tri.getApellido() +", "+tri.getNombre() + "; ";
 						}
 						aux.setTribunal(tribunal);
-						aux.setInscripto(false);
 						inscribibles.add(aux);
 					}
 				}
@@ -1319,8 +1321,40 @@ public class ServicioAcademico {
 		}
 		return null;
 	} 
+	/**
+	 * Devuelve el código de la siguiente inscripcion.
+	 * @param idLlamado
+	 * @return
+	 */
+	private Integer codigoSiguienteInscripcion(Long idLlamado) throws Exception{
+		try {
+			String sql = new String();
+			sql = "SELECT MAX(INSCRIPCION.CODIGO) AS VALOR FROM INSCRIPCION WHERE IDLLAMADO = " + idLlamado;
+			Session sessAux = null;
+			if ((sessAux == null) || (!sessAux.isOpen())) {
+				sessAux = HibernateUtil.getSessionFactory().openSession();
+				
+			}
+			if (!sessAux.getTransaction().isActive()) {
+				sessAux.beginTransaction();
+			}
+			SQLQuery consulta = sessAux.createSQLQuery(sql);
+			Integer result = (Integer) consulta.uniqueResult();
+			
+			if ( result == null ){
+				return 1;
+			}else{
+				return result + 1;
+			}
+		} catch (Exception ex) {
+			// TODO Auto-generated catch block
+			ex.printStackTrace();
+		}
+		return 0;
+	}
 	
 	public void closeSession() throws Exception { 
 		gAnio.closeSession();
 	}
+	
 }
