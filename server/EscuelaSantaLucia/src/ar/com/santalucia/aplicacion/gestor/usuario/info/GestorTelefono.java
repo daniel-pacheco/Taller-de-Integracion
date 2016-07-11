@@ -42,6 +42,7 @@ public class GestorTelefono extends Gestor<Telefono> implements IListable<Telefo
 			setSession();
 			setTransaction();
 			telefonoDAO.persist(object);
+			sesionDeHilo.getTransaction().commit();
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un problema al agregar el TELÉFONO: " + ex.getMessage());
 		}

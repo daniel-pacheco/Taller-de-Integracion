@@ -41,6 +41,7 @@ public class GestorTitulo extends Gestor<Titulo> implements IListable<Titulo>{
 			setSession();
 			setTransaction();
 			tituloDAO.persist(object);
+			sesionDeHilo.getTransaction().commit();
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un problema al agregar el TÍTULO: " + ex.getMessage());
 		}
