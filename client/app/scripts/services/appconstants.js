@@ -16,7 +16,7 @@
  	sDesempenio: 'EscuelaSantaLucia/rest/sDesempenio/',
  	sDirectivo: 'EscuelaSantaLucia/rest/sDirectivo/',
  	sDocente: 'EscuelaSantaLucia/rest/sDocente/',
- 	login: 'EscuelaSantaLucia/rest/sLogin/login'
+ 	login: 'EscuelaSantaLucia/rest/sLogin/',
  })
 
  .constant('AUTH_EVENTS', {

@@ -721,7 +721,7 @@ $scope.updatePlanillaTrimestre = function(trim) {
 
 $scope.getPlanillaTrimestre = function(trim) {
 
-	if (!_.includes($scope.multiplePanels.activePanels, trim)) { //evita que haga el llamado al cerrar la pestaña del trimestre
+	if (!_.includes($scope.multiplePanels.activePanels, (trim-1))) { //evita que haga el llamado al cerrar la pestaña del trimestre
 		spinnerService.show('searchSpinner');
 		desempenioService.getPlanillaTrimestral(initPlanillaTrimDTO(trim))
 		.then(function(response){

@@ -43,7 +43,7 @@ public class GestorDomicilio extends Gestor<Domicilio> implements IListable<Domi
 			setSession();
 			setTransaction();
 			domicilioDAO.persist(object);
-			// sesionDeHilo.getTransaction().commit();
+			sesionDeHilo.getTransaction().commit();
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un problema al agregar el DOMICILIO: " + ex.getMessage());
 		}

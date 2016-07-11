@@ -48,7 +48,7 @@ angular.module('clientAppApp')
     };
 
     this.updatePlanillaTrimestral = function (planillaTrimDTO){
-        return $http.put(server + sDesempenio + planillaTrimestral, planillaTrimDTO)
+        return $http.put(server + sDesempenio + planillaTrimestral, planillaTrimDTO);
 
     }
 });
