@@ -7,7 +7,7 @@ Trabajar offline
 <hibernate-configuration>
  <session-factory>
   <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-<!-- acceso remoto 
+  <!-- acceso remoto 
    <property name="hibernate.connection.password">remoto</property> 
    <property name="hibernate.connection.url">jdbc:mysql://dominiotestariel.ddns.net:3306/escuelabd</property> 
    <property name="hibernate.connection.username">remoto</property> -->
@@ -74,5 +74,7 @@ Trabajar offline
    class="ar.com.santalucia.dominio.modelo.desempenio.MateriaNotasBoletin" resource="ar/com/santalucia/dominio/modelo/desempenio/MateriaNotasBoletin.hbm.xml"/>
   <mapping
    class="ar.com.santalucia.dominio.modelo.sistema.configuracion.ParametroConfiguracion" resource="ar/com/santalucia/dominio/modelo/sistema/configuracion/ParametroConfiguracion.hbm.xml"/>
+  <mapping
+   class="ar.com.santalucia.dominio.modelo.academico.Especialidad" resource="ar/com/santalucia/dominio/modelo/academico/Especialidad.hbm.xml"/>
  </session-factory>
 </hibernate-configuration>

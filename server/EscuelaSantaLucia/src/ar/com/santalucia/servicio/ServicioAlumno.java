@@ -237,7 +237,7 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 			Curso curso = new Curso();
 			AlumnoDTO aux = getAlumnoByDniMin(usuario.getNroDocumento());
 			if(!aux.getCurso().equals('0')){
-				Anio anioAux = new Anio(null,aux.getAnio(),null,null,null,true);
+				Anio anioAux = new Anio(null,aux.getAnio(),null,null,null,null, null, null, true);
 				List<Anio> listAnio = sAcademico.getAnios(anioAux);
 				Set<Curso> listCurso = new HashSet<Curso>();
 				anioAux=listAnio.get(0);

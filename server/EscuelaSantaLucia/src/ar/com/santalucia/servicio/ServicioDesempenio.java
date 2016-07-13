@@ -172,7 +172,7 @@ public class ServicioDesempenio {
 			BoletinInasistencias boletinInasistencias = (BoletinInasistencias) encontrarBoletinDeAlumno(alumno, BUSCAR_BOLETIN_INASISTENCIAS);
 			Anio anio = gAnio.getByExample(new Anio(null, 
 													boletinNotas.getAnio(), 
-													null, null, null, true)).get(0);	
+													null, null, null, null, null, null, true)).get(0);	
 			ArrayList<Materia> materias = new ArrayList<Materia>();
 			materias.addAll(anio.getListaMaterias());
 			
@@ -532,7 +532,7 @@ public class ServicioDesempenio {
 			List<ItemPlanillaTrimestralDTO> itemsPlanilla = planillaTrimestralDTO.getPlanilla();
 			Anio anio = new Anio();
 			Curso curso = new Curso();
-			anio = gAnio.getByExample(new Anio(null, planillaTrimestralDTO.getAnio(), null, null, null, null)).get(0);
+			anio = gAnio.getByExample(new Anio(null, planillaTrimestralDTO.getAnio(), null, null, null, null, null, null, null)).get(0);
 			for (Curso c : anio.getListaCursos()) {
 				if (c.getDivision().equals(planillaTrimestralDTO.getCurso().charAt(0))) {
 					curso = c;
@@ -795,7 +795,7 @@ public class ServicioDesempenio {
 	
 	public ListaPasajeAlumnosDTO listaAlumnosPasajeCurso(String anio, String curso) throws Exception {
 		try {
-			Anio anioBuscar = gAnio.getByExample(new Anio(null, anio, null, null, null, true)).get(0);
+			Anio anioBuscar = gAnio.getByExample(new Anio(null, anio, null, null, null, null, null, null, true)).get(0);
 			Curso cursoBuscar = new Curso();
 			for (Curso c : anioBuscar.getListaCursos()) {
 				if (c.getDivision().toString().equals(curso)) {

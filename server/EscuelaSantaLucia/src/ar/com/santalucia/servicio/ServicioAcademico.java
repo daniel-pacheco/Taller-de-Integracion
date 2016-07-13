@@ -182,6 +182,8 @@ public class ServicioAcademico {
 				aDTO.setIdAnio(a.getIdAnio());
 				aDTO.setNombre(a.getNombre());
 				aDTO.setDescripcion(a.getDescripcion());
+				aDTO.setEspecialidad(a.getEspecialidad().getNombre());
+				aDTO.setOrden(a.getOrden());
 				aDTO.setCicloLectivo(a.getCicloLectivo());
 				aDTO.setActivo(a.getActivo());
 				Set<Curso> listaCursosAnioPersis = a.getListaCursos();
@@ -1228,7 +1230,7 @@ public class ServicioAcademico {
 		// Eecorrer las materias y devolver el id de año (si se encuentra)
 		List<Anio>listaAnio = new ArrayList<Anio>();
 		List<Materia> listaMateria = new ArrayList<Materia>(); 
-		listaAnio = gAnio.getByExample(new Anio(null,null,null,null,null,true));
+		listaAnio = gAnio.getByExample(new Anio(null,null,null,null,null,null, null, null, true));
 		for(Anio a: listaAnio){
 			if(a.getListaMaterias().contains(materia)){
 				return a.getIdAnio();
@@ -1240,7 +1242,7 @@ public class ServicioAcademico {
 	private Anio cursoPerteneceAnio(Curso curso) throws Exception {
 		List<Anio> listaAnio = new ArrayList<Anio>();
 		List<Curso> listaCurso = new ArrayList<Curso>(); 
-		listaAnio = gAnio.getByExample(new Anio(null,null,null,null,null,true));
+		listaAnio = gAnio.getByExample(new Anio(null,null,null,null,null,null, null, null, true));
 		for (Anio a: listaAnio) {
 			if(a.getListaCursos().contains(curso)){
 				return a;

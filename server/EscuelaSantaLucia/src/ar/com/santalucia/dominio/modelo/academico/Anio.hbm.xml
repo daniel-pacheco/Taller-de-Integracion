@@ -16,6 +16,12 @@ Generated 24/09/2015 16:41:55 by Hibernate Tools 3.4.0.CR1 -->
         <property name="descripcion" type="java.lang.String">
             <column name="DESCRIPCION" />
         </property>
+        <many-to-one name="especialidad" class="ar.com.santalucia.dominio.modelo.academico.Especialidad" fetch="select" lazy="false">
+        	<column name="ESPECIALIDAD"></column>
+        </many-to-one>
+        <property name="orden" type="java.lang.Integer">
+            <column name="ORDEN" />
+        </property>
         <set name="listaCursos" table="CURSO" inverse="false" lazy="false">
             <key>
                 <column name="IDANIO" />
