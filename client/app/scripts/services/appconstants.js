@@ -56,6 +56,7 @@
  	materias: ['.materias', 'Materias'],
  	docente: ['.docente', 'Docente'],
  	anio: ['.anio', 'Año'],
+ 	llamados: ['.llamados', 'Llamados'],
  	desemp: ['.desemp', 'Desempeño'],
  	micuenta: ['.micuenta', 'Mi Cuenta'],
  	test: ['.test', 'Test']
