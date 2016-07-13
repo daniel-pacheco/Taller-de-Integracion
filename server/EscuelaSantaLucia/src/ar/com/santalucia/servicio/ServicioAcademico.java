@@ -456,6 +456,7 @@ public class ServicioAcademico {
 			for (Materia mp : listaMateriasPersis) {
 				MateriaDTO materiaDTO = new MateriaDTO();
 				//BEGIN logica para llenar campos
+				materiaDTO.setIdMateria(mp.getIdMateria());
 				materiaDTO.setNombre(mp.getNombre());
 				materiaDTO.setDescripcion(mp.getDescripcion());
 				materiaDTO.setDocenteTitular((mp.getDocenteTitular() != null)
