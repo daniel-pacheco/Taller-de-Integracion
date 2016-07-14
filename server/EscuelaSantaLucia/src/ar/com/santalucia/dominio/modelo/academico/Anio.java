@@ -10,12 +10,14 @@ import java.util.Set;
  *
 */
 
-//Último modificador: Ariel Ramírez @ 30-04-2016 11:05
+//Último modificador: Ariel Ramírez @ 12-07-2016 19:30
 
 public class Anio {
 	private Long idAnio;
 	private String nombre;
 	private String descripcion;
+	private Especialidad especialidad;
+	private Integer orden;
 	private Set<Curso> listaCursos;
 	private Set<Materia> listaMaterias;
 	private String cicloLectivo;
@@ -27,17 +29,20 @@ public class Anio {
 		listaMaterias = new HashSet<Materia>();
 	}
 
-	public Anio(Long idAnio, String nombre, String descripcion, Set<Curso> listaCursos, Set<Materia> listaMaterias,
-			Boolean activo) {
+	public Anio(Long idAnio, String nombre, String descripcion, Especialidad especialidad, Integer orden,
+			Set<Curso> listaCursos, Set<Materia> listaMaterias, String cicloLectivo, Boolean activo) {
 		super();
 		this.idAnio = idAnio;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
+		this.especialidad = especialidad;
+		this.orden = orden;
 		this.setListaCursos(listaCursos);
 		this.setListaMaterias(listaMaterias);
+		this.cicloLectivo = cicloLectivo;
 		this.activo = activo;
 	}
-
+	
 	public Long getIdAnio() {
 		return idAnio;
 	}
@@ -92,6 +97,22 @@ public class Anio {
 
 	public void setCicloLectivo(String cicloLectivo) {
 		this.cicloLectivo = cicloLectivo;
+	}
+
+	public Especialidad getEspecialidad() {
+		return especialidad;
+	}
+
+	public void setEspecialidad(Especialidad especialidad) {
+		this.especialidad = especialidad;
+	}
+
+	public Integer getOrden() {
+		return orden;
+	}
+
+	public void setOrden(Integer orden) {
+		this.orden = orden;
 	}
 
 }

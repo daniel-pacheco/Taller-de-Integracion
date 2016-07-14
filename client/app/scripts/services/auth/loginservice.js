@@ -89,7 +89,7 @@
   
   loadUserCredentials();
     var changePassword = function(dni, role) {
-    return $http.post(server + sLogin + recoverPassword + dni, {headers:{rol: role}});
+    return $http.post(server + sLogin + recoverPassword + dni, {headers:{'rol': role,}});
   };
   
   return {
