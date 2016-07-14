@@ -676,7 +676,9 @@ public class ServicioAcademico {
 				Set<Mesa> mesasLlamado = llamado.getListaMesas();
 				for(Mesa m : mesasLlamado){
 					if(m.getMateria().equals(materia)){
-						throw new Exception("Ya existe la mesa en el llamado.");
+						ValidacionException ex = new ValidacionException();
+						ex.addMensajeError("Ya existe la mesa en el llamado.");
+						throw ex;
 					}
 				}
 				Mesa mesa = new Mesa();
@@ -691,13 +693,17 @@ public class ServicioAcademico {
 				gMesa.add(mesa);
 				llamado.getListaMesas().add(mesa);
 				gLlamado.modify(llamado);
+			}else{
+				ValidacionException ex = new ValidacionException();
+				ex.addMensajeError("No se encontró el llamado.");
+				throw ex;
 			}
-			
+		}catch(ValidacionException ex){
+			ex.addMensajeError("Ocurrió un problema al intentar crear una mesa y asociarla al llamado.");
+			throw ex;
 		}catch(Exception ex){
 			throw ex;
 		}
-		
-		
 		return true;
 	}
 	
