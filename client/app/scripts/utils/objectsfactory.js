@@ -229,12 +229,13 @@ var newPlanillaTrimUpdateDTO = function(){
 
 var newMesa = function(){
   var mesa= {
-    "idMesa" : null,
+    "idLlamado" : null,
     "fechaHoraInicio" : "mmm dd, aaaa hh:mm:ss AM/PM",
     "fechaHoraFin" : "mmm dd, aaaa hh:mm:ss AM/PM",
-    "plazoInscripcion" : 2,
-    "materia" : null,
-    "integrantesTribunal" : []
+    "idMateria" : null,
+    "tribunalDoc1" : "",
+    "tribunalDoc2" : "",
+    "tribunalDoc3" : ""
   };
   return mesa;
 };

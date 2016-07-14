@@ -43,6 +43,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Telefono;
 			setSession();
 			setTransaction();
 			mailDAO.persist(object);
+			sesionDeHilo.getTransaction().commit();
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un problema al agregar el E-MAIL: " + ex.getMessage());
 		}

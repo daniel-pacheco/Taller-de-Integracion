@@ -197,6 +197,7 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 		try {
 			Personal personal = new Personal();
 			personal.setActivo(true);
+			personal.setRolDocente(true);
 			listaDocentes = gPersonal.getByExample(personal);
 			for (Personal p: listaDocentes) {
 				DocenteMateriasDTO docenteDTO = new DocenteMateriasDTO(

@@ -63,22 +63,8 @@ public class GestorAlumno extends GestorUsuario implements IValidacionUsuarioAlu
 			this.validar(alumno);
 			setSession();
 			setTransaction();
-//			if (alumno.getListaTelefonos() != null) {
-//				for (Telefono t : alumno.getListaTelefonos()) {
-//					GTelefono.add(t);
-//				}
-//			}
-//			if (alumno.getListaMails() != null) {
-//				for (Mail m : alumno.getListaMails()) {
-//					GMail.add(m);
-//				}
-//			}
-//			if (alumno.getDomicilio() != null) {
-//				GDomicilio.add(alumno.getDomicilio());
-//			}
 			alumnoDAO.persist(alumno);
 			sesionDeHilo.getTransaction().commit();
-			//gLogin.add(new Login(null, alumno.getNroDocumento(), alumno.getNroDocumento().toString(), null, null, Login.ALUMNO, true)); // CREA UNA ENTRADA PARA LOGIN
 		} catch (ValidacionException ex) {
 			throw ex;
 		} catch (Exception ex) {

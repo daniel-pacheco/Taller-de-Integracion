@@ -191,6 +191,7 @@ public class ServicioDirectivo extends ServicioUsuario<Personal> {
 		try {
 			Personal directivoEx = new Personal();
 			directivoEx.setRolDirectivo(true);
+			directivoEx.setActivo(true);
 			ArrayList<Personal> listaDirectivos = new ArrayList<Personal>();
 			ArrayList<DirectivoDTO> listaDirectivosDTO = new ArrayList<DirectivoDTO>();
 			listaDirectivos.addAll(gPersonal.getByExample(directivoEx));

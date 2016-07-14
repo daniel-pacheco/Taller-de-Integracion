@@ -515,7 +515,7 @@ public class ServicioDirectivoEndpoint {
 	
 	
 	@GET
-	@Path("/dir/listAllMin")
+	@Path("/listAllMin")
 	public Response listDirectivosDTO() {
 		try {
 			setInstance();
