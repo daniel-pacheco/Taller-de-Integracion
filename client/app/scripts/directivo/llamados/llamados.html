@@ -1,0 +1,214 @@
+<div>
+	<div class="navbar-inverse bs-docs-nav" role="banner">
+		<!--<div class="container">
+			<div class="navbar-header">
+				<button class="navbar-toggle" type="button" data-template-url="./scripts/directivo/materias/aside/materiassidebar.aside.tpl.html" data-animation="am-fade-and-slide-left" data-placement="left" title="Menu" bs-aside="aside">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+		</div>-->
+	</div>
+	<div class="col-md-2 hidden-sm hidden-xs">
+		<div>
+			<!-- ngInclude: 'views/partials/affixed-sidebar.html' -->
+			<div class="bs-sidebar hidden-print affix" role="complementary" data-offset-top="-100" bs-affix style="position: relative; text-align: right;">
+				<ul class="nav bs-sidenav">
+					<li bs-scrollspy data-target="#getting-started">
+						<a href="">Men&uacute; llamado</a>
+					</li>
+					<hr style="margin: 2px 0;">
+					<li ng-class="{active : activeMenuIzqLlamado === 1}">
+						<a href="" ng-click="seleccionar('nuevaMesa')">Nueva mesa</a>
+					</li>
+					<li ng-class="{active : activeMenuIzqLlamado === 2}">
+						<a href="" ng-click="seleccionar('listado')">Listado</a>
+					</li>
+					<li ng-class="{active : activeMenuIzqLlamado === 3}">
+						<a href="" ng-click="seleccionar('inscripcion')">Inscripci&oacute;n</a>
+					</li>
+					<li ng-class="{active : activeMenuIzqLlamado === 4}">
+						<a href="" ng-click="seleccionar('gestionarLlamados')">Gestionar llamados</a>
+					</li>
+					<li ng-class="{active : activeMenuIzqLlamado === 5}">
+						<a href="" ng-click="seleccionar('calificar')">Calificar</a>
+					</li>
+				</ul>
+			</div>
+			<!--/ngInclude: 'views/partials/affixed-sidebar.html' -->
+		</div>
+	</div>
+
+	<div>
+		<spinner name="searchMateriaSpinner" ng-cloak="">
+			<div class="overlay"></div>
+			<div class="spinner-small">			            
+				<div>
+					<div class="ng-include: './views/templates/defaultspinner.html'"></div>
+				</div>
+			</div>
+			<div class="please-wait-small">Aguarde por favor...</div>
+		</spinner>
+		<div id="nuevaMesa" ng-show="nuevaMesa">  <!--lista centrada -->
+			<fieldset>
+				<h1>{{subtitle}}: <small>Ingrese los datos para configurar una nueva mesa y haga clic en guardar cuando finalice</small></h1>
+				<hr>
+				<form class="form-horizontal media" name="formLlamado" novalidate>
+					<div class="formulario media-body">
+						<div class="col-md-8 personal-info" style="position: absolute">
+
+							<div class="alert alert-warning alert-dismissible" role="alert">
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<span class="glyphicon glyphicon-asterisk small"></span>Campos obligatorios
+							</div>
+<!-- 
+							<div class="form-group" ng-class="{ 'has-error': formLlamado.periodo.$touched && formLlamado.periodo.$invalid }">
+								<div class="col-md-4 control-label">
+									<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Periodo:</label>
+								</div>
+								<div class="col-md-4">
+									<select class="form-control" ng-model="nuevaMesaObj.periodo" name="periodo" required>
+										<option value="" disabled selected>Seleccione una periodo</option>
+										<option value="1" >Mayo</option>
+										<option value="2" >Diciembre</option>
+										<option value="3" >Otro</option>
+										<option value="4" >...</option>
+									</select> 
+								</div>
+								<div ng-messages="formLlamado.periodo.$error" ng-if="formLlamado.periodo.$touched && formLlamado.periodo.$invalid">
+									<div ng-message="required" class="help-block">Seleccione una opci&oacute;n</div>
+								</div>
+							</div> --><!-- /form-group-->
+
+							<div class="form-group" ng-class="{ 'has-error': formLlamado.nombreAnio.$touched && formLlamado.nombreAnio.$invalid }">
+								<div class="col-md-4 control-label">
+									<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> A&ntilde;o:</label>
+								</div>
+								<div class="col-md-4">
+									<select class="form-control" ng-model="nuevaMesaObj.selectedAnio" ng-options="anio.nombre for anio in anios" name="nombreAnio" required>
+										<option value="" disabled selected>Seleccione un a&ntilde;o</option>
+									</select> 
+								</div>
+								<div ng-messages="formLlamado.nombreAnio.$error" ng-if="formLlamado.nombreAnio.$touched && formLlamado.nombreAnio.$invalid">
+									<div ng-message="required" class="help-block">Seleccione una opci&oacute;n</div>
+								</div>
+							</div><!-- /form-group-->
+
+							<div class="form-group" ng-class="{ 'has-error': formLlamado.materia.$touched && formLlamado.materia.$invalid }">
+								<div class="col-md-4 control-label">
+									<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Materia:</label>
+								</div>
+								<div class="col-md-4">
+									<select class="form-control" ng-model="nuevaMesaObj.selectedMateria" ng-options="materia.idMateria as materia.nombre for materia in materias" name="materia" required>
+										<option value="" disabled selected>Seleccione una materia</option>
+									</select> 
+								</div>
+								<div ng-messages="formLlamado.materia.$error" ng-if="formLlamado.materia.$touched && formLlamado.materia.$invalid">
+									<div ng-message="required" class="help-block">Seleccione una opci&oacute;n</div>
+								</div>{{nuevaMesaObj.selectedMateria}}
+							</div><!-- /form-group-->
+
+							<div class="form-group" ng-class="{ 'has-error': formLlamado.docentesObj.$touched && formLlamado.docentesObj.$invalid }">
+								<div class="col-md-4 control-label">
+									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Docentes:</label>
+								</div>
+								<div class="col-md-4">
+									<button type="button" class="btn btn-default" ng-model="nuevaMesaObj.docentes" data-html="1" data-multiple="1" data-animation="am-flip-x" bs-options="docente.idUsuario as (docente.nombre + ' ' + docente.apellido) for docente in listaDocentes" bs-select required>
+									</button>
+								</div>
+								<div ng-messages="formLlamado.docentesObj.$error" ng-if="formLlamado.docentesObj.$touched && formLlamado.docentesObj.$invalid">
+									<div ng-message="required" class="help-block">Seleccione una opci&oacute;n</div>
+								</div>
+							</div><!-- /form-group-->
+
+							<div class="form-group" ng-class="{ 'has-error': formLlamado.fechaMesa.$touched && formLlamado.fechaMesa.$invalid }">
+								<div class="col-md-4 control-label">
+									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Fecha:</label>
+								</div>
+								<div class="col-md-3">
+									<!-- <input name="fechaMesa"class="form-control" placeholder="01/01/2000" type="date" step="1" value="01-01-2000" /> -->
+									<input type="text" class="form-control" ng-model="nuevaMesaObj.horaInicio" name="fechaMesa" bs-datepicker required>
+								</div>
+								<div ng-messages="formLlamado.fechaMesa.$error" ng-if="formLlamado.fechaMesa.$touched && formLlamado.fechaMesa.$invalid">
+									<div ng-message="pattern" class="help-block">Formato invalido</div>
+									<div ng-message="required" class="help-block">Complete este campo</div>
+								</div>
+							</div><!-- /form-group-->
+
+							<div class="form-group" ng-class="{ 'has-error': formLlamado.horaInicioMesa.$touched && formLlamado.horaInicioMesa.$invalid }">
+								<div class="col-md-4 control-label">
+									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Hora de inicio:</label>
+								</div>
+								<div class="col-md-2">
+									<input type="text" class="form-control" ng-model="nuevaMesaObj.horaInicio" name="horaInicioMesa" data-time-format="h:mm a" bs-timepicker required ng-click="setFechaMesa()">
+								</div>
+								<div ng-messages="formLlamado.horaInicioMesa.$error" ng-if="formLlamado.horaInicioMesa.$touched && formLlamado.horaInicioMesa.$invalid">
+									<div ng-message="pattern" class="help-block">Formato invalido</div>
+									<div ng-message="required" class="help-block">Complete este campo</div>
+								</div>
+							</div><!-- /form-group-->
+
+							<div class="form-group" ng-class="{ 'has-error': formLlamado.horaFinMesa.$touched && formLlamado.horaFinMesa.$invalid }">
+								<div class="col-md-4 control-label">
+									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Hora de fin:</label>
+								</div>
+								<div class="col-md-2">
+									<input type="text" class="form-control" ng-model="nuevaMesaObj.horaFin" name="horaFinMesa" bs-timepicker required ng-click="setFechaMesa()">
+								</div>
+								<div ng-messages="formLlamado.horaFinMesa.$error" ng-if="formLlamado.horaFinMesa.$touched && formLlamado.horaFinMesa.$invalid">
+									<div ng-message="pattern" class="help-block">Formato invalido</div>
+									<div ng-message="required" class="help-block">Complete este campo</div>
+								</div>
+							</div><!-- /form-group-->{{nuevaMesaObj.horaFin}}
+
+							<div class="form-group">
+								<div class="col-md-2 col-md-offset-3">
+									<input class="btn btn-danger" type="button" name="" ng-click="" value="Limpiar" />
+								</div>
+								<div class="col-md-2 col-md-offset-1">
+									<input class="btn btn-primary" type="button" ng-click="newMesa(nuevaMesaObj)" name="" value="Guardar"/> <!--  ng-disabled="!formLlamado.$valid" -->
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</form>
+			</fieldset>
+		</div>
+		<div id="listado" ng-show="listado">  <!--lista centrada -->
+			<fieldset>
+				<h1>{{subtitle}}: <small>Selecciones un a&ntilde;o para mostrar las materias asociadas</small></h1>
+				<hr>
+
+			</fieldset>
+		</div>
+		<div id="inscripcion" ng-show="inscripcion">  <!--lista centrada -->
+			<fieldset>
+				<h1>{{subtitle}}: <small>Selecciones un a&ntilde;o para mostrar las materias asociadas</small></h1>
+				<hr>
+
+			</fieldset>
+		</div>
+		<div id="gestionarLlamados" ng-show="gestionarLlamados">  <!--lista centrada -->
+			<fieldset>
+				<h1>{{subtitle}}: <small>Selecciones un a&ntilde;o para mostrar las materias asociadas</small></h1>
+				<hr>
+
+			</fieldset>
+		</div>
+		<div id="calificar" ng-show="calificar">  <!--lista centrada -->
+			<fieldset>
+				<h1>{{subtitle}}: <small>Selecciones un a&ntilde;o para mostrar las materias asociadas</small></h1>
+				<hr>
+
+			</fieldset>
+		</div>
+
+
+
+	</div><!-- /col-md-10-->
+</div>

@@ -20,11 +20,6 @@
    }
  });
 
-  angular.extend($selectProvider.defaults, {
-    animation: 'am-flip-x',
-    sort: false,
-    placeholder: 'Seleccione divisiones'
-  });
 })
 
  .controller('AnioCtrl', function ($scope, cursosData, ModalService, ObjectsFactory, aniosData, academicoService, spinnerService, alumnoService, $timeout) {
