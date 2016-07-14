@@ -20,7 +20,7 @@
  		}
  	});
  })
- .controller('DocenteCtrl', function ($scope, docenteData, $timeout, ModalService, SERVER, ObjectsFactory, $alert, docenteService, alumnoService, directivoService, modalService, spinnerService, exportTableService) {
+ .controller('DocenteCtrl', function ($scope, docenteData, $timeout, ModalService, SERVER, ObjectsFactory, $alert, docenteService, alumnoService, directivoService, modalService, spinnerService, exportTableService, academicoService) {
 
   $scope.tooltip = {
     tooltipProfile : {
@@ -31,17 +31,123 @@
     },    
     tooltipEdit : {
       'title' : 'Editar'
-    },tooltipExport: {
+    },
+    tooltipExport: {
       'title': 'Exportar para impresión'
+    },
+    tooltipDesasignar: {
+      'title': 'Desasignar docente de materia'
     }
   };
 
 
 //-- [docente]
 //-- [docente] variables
+
+$scope.button = {radio: 'doc'};
+var service = {};
+
 //-- [docente] Form Management
+
+// $scope.activeMenuIzqDoc = 1;
+function setActiveDoc(menuItemDoc) {
+  $scope.activeMenuIzqDoc = menuItemDoc;
+};
+
+// $scope.listado = true;
+$scope.seleccionar = function(id){
+  $scope.listado = false;
+  $scope.nuevoPerfil = false;
+  $scope.showEditProfileMenuIzq = false;
+
+  switch (id) {
+    case 'listado':
+    $scope.listado = true;
+    setActiveDoc(1);
+    // $scope.search($scope.button.radio);
+    break;
+    case 'nuevoPerfil':
+    $scope.nuevoPerfil = true;
+    $scope.subtitle = 'Alta Personal';
+    setActiveDoc(2);
+    $scope.clearFormDoc();
+    break;
+    case 'editDocente':
+    $scope.subtitle = "Editar Personal";
+    $scope.showEditProfileMenuIzq = true;
+    setActiveDoc(3); //muestra en el menu izq editar perfil
+    $scope.nuevoPerfil = true;
+    break;
+  }
+};
+$scope.seleccionar('listado');
+
+$scope.editProfile = function(docente) {  
+  // $scope.nuevoDocente = angular.copy(docente);
+  $scope.nuevoDocente = _.clone(docente);
+  $scope.nuevoDocente.fechaNacimiento = new Date(docente.fechaNacimiento);
+  $scope.seleccionar('editDocente');
+  $scope.mostrarListaMails = $scope.nuevoDocente.listaMails.length > 0? true: false;
+  $scope.mostrarListaTelefonos = $scope.nuevoDocente.listaTelefonos.length > 0? true: false;
+  $scope.mostrarListaTitulos = $scope.nuevoDocente.listaTitulos.length > 0? true: false;
+  
+  //  if ($scope.nuevoDocente.listaMails.length > 0){//Esto es para listar los telefonos en una lista en el form principal 
+  //   $scope.mostrarListaMails = true;
+  // }else{ 
+  //   $scope.mostrarListaMails = false;
+  // }
+  // if ($scope.nuevoDocente.listaTelefonos.length > 0){//Esto es para listar los telefonos en una lista en el form principal 
+  //   $scope.mostrarListaTelefonos = true;
+  // }else{ 
+  //   $scope.mostrarListaTelefonos = false;
+  // }
+  // if ($scope.nuevoDocente.listaTitulos.length > 0){//Esto es para listar los telefonos en una lista en el form principal 
+  //   $scope.mostrarListaTitulos = true;
+  // }else{ 
+  //   $scope.mostrarListaTitulos = false;
+  // }
+  
+};
+
+$scope.clearFormDoc = function(){
+  $scope.formDoc.$setUntouched();
+  $scope.mostrarListaTelefonos = false;
+  $scope.mostrarListaMails = false;
+  $scope.mostrarListaTitulos = false;
+  $scope.nuevoDocente = ObjectsFactory.newDocente();
+  $scope.nuevoTelefonoSimple = ObjectsFactory.newTelefono();
+  $scope.cuilHead = '';
+  $scope.cuilTail = '';
+};
+
+
+
 //-- [docente] filters
+
+$scope.docenteFilter = function (docente) {
+  return(_.includes(_.lowerCase(docente.apellido), _.lowerCase($scope.filterByName) || '') ||
+   _.includes(_.lowerCase(docente.nombre), _.lowerCase($scope.filterByName) || '') ||
+   _.includes(_.lowerCase(docente.nroDocumento), _.lowerCase($scope.filterByName) || '')
+   );
+};
+
 //-- [docente] modals
+
+$scope.confirmModal = function(mesagge, funcion, parametro) { //este confirm recibe una funcion y un parametro para que despues de confirmar se pueda llamar a la funcion que se necesite
+  ModalService.showModal({
+    templateUrl: 'scripts/utils/confirm/modalConfirm.tpl.html',
+    controller: 'modalConfirmController',
+    inputs: {
+      mensaje: mesagge,
+    }
+  }).then(function(modal) {
+    modal.element.modal();
+    modal.close.then(function(result){
+      funcion(parametro);
+    });
+  });
+};
+
 //-- [docente] utils
 
 $scope.showMessage = function(mesagge, title, isGood) { //todo ok recibe true si salio bien o false si salio mal
@@ -82,19 +188,6 @@ function showServerSuccess (message, response){
   $scope.showMessage(msg, 'Operación exitosa' , true);
 };
 
-//---spinners
-$scope.progreso = 0;
-$scope.loginSpinner = function () {
-  spinnerService.show('searchDocenteSpinner');
-  $interval(function(){ $scope.progreso ++; },100)
-  $timeout(function () {
-    spinnerService.hide('searchDocenteSpinner');
-    $scope.loggedIn = true;
-    showServerSuccess('El proceso se ha realizado con éxito.');
-  }, 10000);
-};
-
-
 //-- Export Table
 $scope.exportAction = function(id){ 
   exportTableService.exportAction(id);
@@ -102,27 +195,23 @@ $scope.exportAction = function(id){
 
 //-- [docente] service calls
 
-$scope.subtitle = "Nuevo Docente"
+//-------------------------------
+
+// $scope.subtitle = "Nuevo Docente"
 $scope.dropDownAreas = ['Cs. Sociales', 'Cs. Naturales', 'Cs. Exactas','Artes'];
+
+//-- [docente/listado]
+//-- [docente/listado] variables
+
+$scope.docenteData = [];
 
 $scope.nuevoDocente = ObjectsFactory.newDocente();
 $scope.nuevoTelefonoSimple = ObjectsFactory.newTelefono();
 $scope.cuilHead = '';
 $scope.cuilTail = '';
 
-$scope.button = {radio: 'doc'};
-
-
-$scope.clearFormDoc = function(){
-  $scope.formDoc.$setUntouched();
-  $scope.mostrarListaTelefonos = false;
-  $scope.mostrarListaMails = false;
-  $scope.mostrarListaTitulos = false;
-  $scope.nuevoDocente = ObjectsFactory.newDocente();
-  $scope.nuevoTelefonoSimple = ObjectsFactory.newTelefono();
-  $scope.cuilHead = '';
-  $scope.cuilTail = '';
-}
+//-- [docente/listado] Form Management
+//-- [docente/listado] filters
 
 //-- Order list
 $scope.predicate = 'nombre';
@@ -132,12 +221,13 @@ $scope.orderDocente = function(predicate) {
   $scope.predicate = predicate;
 };
 
-//-- Modal
-$scope.showModalProfile = function(docenteDni) {
+//-- [docente/listado] modals
+
+$scope.showModalProfile = function(personalDni) {
 
   var docente = {};
 
-  docenteService.getByDni(docenteDni)
+  service.getByDni(personalDni)
   .then(function(response){
     docente = response.data;
 
@@ -148,18 +238,80 @@ $scope.showModalProfile = function(docenteDni) {
         title: "Perfil",
         docente: docente
       }
-    }).then(function(modal) {
+    }).then(
+    function(modal) {
       modal.element.modal();
-      modal.close.then(function(result) {        
-        $scope.editProfile(result);
-      });
+      modal.close.then(
+        function(result) {        
+          $scope.editProfile(result);
+        });
     });
   },
   function(response){
-    alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
+    showServerError(response);
   });
+};
 
-}; 
+//-- [docente/listado] utils
+//-- [docente/listado] service calls
+
+
+$scope.selectSource = function(origin){
+  $scope.button.radio = origin;
+  service = origin == 'doc'? docenteService: directivoService;
+  $scope.search();
+};
+$scope.$on('$viewContentLoaded', function(){
+  $scope.selectSource('doc');
+});
+
+$scope.search = function (param) {
+
+  spinnerService.show('searchDocenteSpinner');
+  service.getAllMin()
+  .then(function(response){
+    $scope.docenteData = response.data;
+  },
+  function(response){
+   showServerError(response);
+ })
+  .finally(function(){
+    spinnerService.hide('searchDocenteSpinner');
+  });
+};
+
+$scope.desvincularDocente = function(idDocente, condicion, idMateria){
+  var desvincularParams = [];
+
+  desvincularParams.push( condicion == 'Titular'? idDocente: null );
+  desvincularParams.push( condicion == 'Suplente'? idDocente: null );
+  desvincularParams.push( idMateria );
+
+
+  spinnerService.show('searchDocenteSpinner');
+  academicoService.matDesvin(desvincularParams)
+  .then(
+    function(response){
+
+      showServerSuccess('El docente se ha desvinculado con éxito ', response);
+      $scope.search();
+    },
+    function(response){
+
+      showServerError(response);
+    })
+  .finally(function(){
+    spinnerService.hide('searchDocenteSpinner');
+  });
+};
+
+//-------------------------------------------------------
+
+//-- [docente/nuevo-personal]
+//-- [docente/nuevo-personal] variables
+//-- [docente/nuevo-personal] Form Management
+//-- [docente/nuevo-personal] filters
+//-- [docente/nuevo-personal] modals
 
 $scope.domicilioAvanzado = function() {
   //$scope.nuevoDocente.domicilio = ObjectsFactory.newDomicilio();
@@ -181,7 +333,7 @@ $scope.domicilioAvanzado = function() {
 $scope.telefonoAvanzado = function(){//esta deberia ser una funcion que pida la libreta de inasistencias del docente que recibe
   ModalService.showModal({
     templateUrl: 'scripts/directivo/docente/modal/addphonedetails.tpl.html',
-    controller: 'telefonoAvanzadoModalController',
+    controller: 'telefonoAvanzadoDocenteModalController',
     inputs: {
       title: "Teléfono",
       listaTelefonos: $scope.nuevoDocente.listaTelefonos,
@@ -202,7 +354,7 @@ $scope.telefonoAvanzado = function(){//esta deberia ser una funcion que pida la 
 $scope.mailAvanzado = function(){
   ModalService.showModal({
     templateUrl: 'scripts/directivo/docente/modal/addmaildetails.tpl.html',
-    controller: 'mailAvanzadoModalController',
+    controller: 'mailAvanzadoDocenteModalController',
     inputs: {
       title: "Mails",
       listaMails: $scope.nuevoDocente.listaMails,
@@ -241,22 +393,10 @@ $scope.tituloAvanzado = function(){
   });
 };
 
-$scope.confirmModal = function(mesagge, funcion, parametro) { //este confirm recibe una funcion y un parametro para que despues de confirmar se pueda llamar a la funcion que se necesite
-  ModalService.showModal({
-    templateUrl: 'scripts/utils/confirm/modalConfirm.tpl.html',
-    controller: 'modalConfirmController',
-    inputs: {
-      mensaje: mesagge,
-    }
-  }).then(function(modal) {
-    modal.element.modal();
-    modal.close.then(function(result){
-      funcion(parametro);
-    });
-  });
-};
+//-- [docente/nuevo-personal] utils
+//-- [docente/nuevo-personal] service calls
 
-$scope.requiredPass = function(docente) {
+$scope.requiredPassPutDirectivo = function(docente) {
   ModalService.showModal({
     templateUrl: 'scripts/utils/requiredPassword/modalRequiredPassword.tpl.html',
     controller: 'RequiredPasswordModalController',
@@ -268,15 +408,41 @@ $scope.requiredPass = function(docente) {
     modal.close.then(function(result){
       alumnoService.getById(result) //llamada a validar el DNI
       .then(function(response){
-        spinnerService.show('searchDocenteSpinner');
+        // spinnerService.show('searchDocenteSpinner');
         console.log(response);
         putNewDirectivo(docente);
       }, function(response){
-        alert('error, reqpass');
+        showServerError(response)
         console.log(response);
       })
       .finally(function(){
-        spinnerService.hide('searchDocenteSpinner');
+        // spinnerService.hide('searchDocenteSpinner');
+      }); 
+    });
+  });
+};
+
+$scope.requiredPassDeleteDirectivo = function(docente) {
+  ModalService.showModal({
+    templateUrl: 'scripts/utils/requiredPassword/modalRequiredPassword.tpl.html',
+    controller: 'RequiredPasswordModalController',
+    inputs: {
+      title: "Confirmar contraseña",
+    }
+  }).then(function(modal) {
+    modal.element.modal();
+    modal.close.then(function(result){
+      alumnoService.getById(result) //llamada a validar el DNI
+      .then(function(response){
+        // spinnerService.show('searchDocenteSpinner');
+        console.log(response);
+        eliminarDirectivo(docente);
+      }, function(response){
+        showServerError(response);
+        console.log(response);
+      })
+      .finally(function(){
+        // spinnerService.hide('searchDocenteSpinner');
       }); 
     });
   });
@@ -286,22 +452,98 @@ $scope.requiredPass = function(docente) {
 
 //-- Llamadas al servicio
 $scope.deleteDocente = function (docente) {
-  $scope.confirmModal("¿Desea eliminar al docente " + docente.nombre + " " + docente.apellido + "? ", $scope.eliminarDocente, docente.nroDocumento);
+  $scope.deleteFunction = $scope.button.radio == 'doc'? eliminarDocente: $scope.requiredPassDeleteDirectivo;
+  var tipoPersonal = $scope.button.radio == 'doc'? 'docente': 'directivo';
+  $scope.confirmModal('¿Desea eliminar al ' + tipoPersonal + ' ' + docente.nombre + ' ' + docente.apellido + '? ', $scope.deleteFunction, docente);
+  // $scope.requiredPassDeleteDirectivo();
   //Hay que actualizar de nuevo la lista de docentes
 };
+
 //esto tiene que ser una llamada al service que elimine el docente
-$scope.eliminarDocente = function(docente){
-
-  docenteService.delByDni(docente).then(function(response){
-    alert('docente con dni: ' + docente + ' eliminado con exito');
-    console.log(response);
-  },function(response){
-    alert('ha ocurrido un error al contactar al servidor: ' + response.statusText);
-  });
-
-  // $scope.docentes.splice($scope.docentes.indexOf(docente),1);
-  // $scope.showAlert();
+function eliminarDocente (docente){
+  if (docente.listaMaterias) {
+    $scope.showMessage('El docente no debe materias a cargo para poder ser eliminado.', 'ERROR!', false);
+  } else{
+    spinnerService.show('searchDocenteSpinner');
+    docenteService.delByDni(docente.nroDocumento)
+    .then(function(response){
+      showServerSuccess('docente con dni: ' + docente.nroDocumento + ' eliminado con exito. ', response);
+      $scope.search();
+    },function(response){
+      showServerError(response);
+    })
+    .finally(function(){
+      spinnerService.hide('searchDocenteSpinner');
+    });
+  };
 };
+
+  function eliminarDirectivo (docente){
+
+    spinnerService.show('searchDocenteSpinner');
+    directivoService.delByDni(docente.nroDocumento)
+    .then(function(response){
+      showServerSuccess('directivo con dni: ' + docente.nroDocumento + ' eliminado con exito. ', response);
+      $scope.search();
+    },function(response){
+      showServerError(response);
+    })
+    .finally(function(){
+      spinnerService.hide('searchDocenteSpinner');
+    });
+};
+
+$scope.newDocente = function(personal){
+  personal.nombreUsuario = modalService.makeId(5);
+  personal.cuil = $scope.cuilHead + personal.nroDocumento + $scope.cuilTail;
+  if ($scope.nuevoTelefonoSimple.nroTelefono && !_.includes(personal.listaTelefonos, $scope.nuevoTelefonoSimple)) { //solo hace el pushsi el telefono no se encuentra en la lista
+    personal.listaTelefonos.push($scope.nuevoTelefonoSimple);
+  };
+
+
+  if (personal.rolDirectivo) {
+    $scope.requiredPassPutDirectivo(personal);
+  } else {
+    putNewDocente(personal);
+  };
+};
+
+var putNewDocente = function (docente){
+  spinnerService.show('putPersonalSpinner');
+  docenteService.putNew(docente)
+  .then(function(response){
+    $scope.clearFormDoc();
+    showServerSuccess('El docente se ha dado de alta con éxito. ID n°: ', response);
+  },
+  function(response){
+    showServerError(response);
+  })
+  .finally(function(){
+    spinnerService.hide('putPersonalSpinner');
+  });
+};
+
+var putNewDirectivo = function (directivo){
+  console.log ('putDirectivo');
+  spinnerService.show('searchDocenteSpinner');
+  directivoService.putNew(directivo)
+  .then(function(response){
+    console.log(response);
+    showServerSuccess('El directivo se ha dado de alta con éxito. ID n°: ', response);
+    $scope.clearFormDoc();
+  },
+  function(response){
+    showServerError(response);
+  })
+  .finally(function(){
+    spinnerService.hide('searchDocenteSpinner');
+  });
+};
+
+
+
+//-----------------------------------------
+
 //-- fin Llamadas al servicio
 
 //-- Alert
@@ -324,111 +566,16 @@ var eliminarDocenteAlert = $alert({
 //-- Fin Alert
 //-- filters
 
-$scope.newDocente = function(docente){
-  docente.nombreUsuario = modalService.makeId(5);
-  docente.cuil = $scope.cuilHead + docente.nroDocumento + $scope.cuilTail;
-  if ($scope.nuevoTelefonoSimple.nroTelefono) {
-    docente.listaTelefonos.push($scope.nuevoTelefonoSimple);
-  };
 
 
-  if (docente.rolDirectivo) {
-   $scope.requiredPass(docente);
- } else {
-  putNewDocente(docente);
-};
-}
 
-var putNewDocente = function (docente){
-  console.log ('putDocente');
-  spinnerService.show('searchDocenteSpinner');
-  docenteService.putNew(docente)
-  .then(function(response){
-    console.log(response);
-    alert('El docente se ha dado de alta con éxito. ID n°: ' + response.data);
-    $scope.clearFormDoc();
-  },
-  function(response){
-    alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
-  })
-  .finally(function(){
-    spinnerService.hide('searchDocenteSpinner');
-  });
-};
 
-var putNewDirectivo = function (directivo){
-  console.log ('putDirectivo');
-  spinnerService.show('searchDocenteSpinner');
-  directivoService.putNew(directivo)
-  .then(function(response){
-    console.log(response);
-    alert('El directivo se ha dado de alta con éxito. ID n°: ' + response.data);
-    $scope.clearFormDoc();
-  },
-  function(response){
-    alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
-  })
-  .finally(function(){
-    spinnerService.hide('searchDocenteSpinner');
-  });
-};
 
-$scope.editProfile = function(docente) {
-  $scope.listado = false;
-  $scope.subtitle = "Editar Docente"
-  $scope.nuevoDocente = angular.copy(docente);
-  $scope.showEditProfileMenuIzq = true;
-  $scope.setActiveDoc(3); //muestra en el menu izq editar perfil
-   if ($scope.nuevoDocente.listaMails.length > 0){//Esto es para listar los telefonos en una lista en el form principal 
-    $scope.mostrarListaMails = true;
-  }else{ 
-    $scope.mostrarListaMails = false;
-  }
-  if ($scope.nuevoDocente.listaTelefonos.length > 0){//Esto es para listar los telefonos en una lista en el form principal 
-    $scope.mostrarListaTelefonos = true;
-  }else{ 
-    $scope.mostrarListaTelefonos = false;
-  }
-  if ($scope.nuevoDocente.listaTitulos.length > 0){//Esto es para listar los telefonos en una lista en el form principal 
-    $scope.mostrarListaTitulos = true;
-  }else{ 
-    $scope.mostrarListaTitulos = false;
-  }
-  $scope.nuevoPerfil = true;
-}
-$scope.listado = true;
-$scope.seleccionar = function(id){
- $scope.listado = false;
- $scope.nuevoPerfil = false;
- $scope.showEditProfileMenuIzq = false;
- switch (id) {
-  case 'listado':
-  $scope.listado = true;
-  this.showData();
-  $scope.nuevoDocente = null;
-  break;
-  case 'nuevoPerfil':
-  $scope.nuevoPerfil = true;
-  $scope.subtitle = "Nuevo Docente"
-    //$scope.nuevoDocente = ObjectsFactory.newDocente();
-    break;
-  }
-};
-$scope.docenteFilter = function (docente) {//la clave de este comparador es q transofrma todo a string y va comparando las posiciones, no tiene en cuenta los espacios
-  return (/*angular.lowercase(docente.materia).indexOf(angular.lowercase($scope.filterByName) || '') !== -1 ||*/
-    angular.lowercase(docente.apellido).indexOf(angular.lowercase($scope.filterByName) || '') !== -1 ||
-    angular.lowercase(docente.nombre).indexOf(angular.lowercase($scope.filterByName) || '') !== -1 ||
-    angular.lowercase(docente.nroDocumento.toString()).indexOf(angular.lowercase($scope.filterByName) || '') !== -1
-    );
-};
-$scope.showData = function() {
-  $scope.docentes = docenteData;
-}
-$scope.showData();
-$scope.activeMenuIzqDoc = 1;
-$scope.setActiveDoc = function(menuItemDoc) {
-  $scope.activeMenuIzqDoc = menuItemDoc;
-};
+// $scope.showData = function() {
+//   $scope.docentes = docenteData;
+// }
+// $scope.showData();
+
     /*$scope.docentes = [{name:'John', surname:'lenono', area:'Cs. Sociales', cuil:'252525', materia:'Historia'},
 {name:'Mary', surname:'yein', area:'Cs. Naturales', cuil:'434343', materia:'Biologia' },
 {name:'Mike', surname:'chumajer', area:'Cs. Sociales', cuil:'111111', materia:'Geografia'},
@@ -440,47 +587,13 @@ $scope.setActiveDoc = function(menuItemDoc) {
 //   activePanels: []
 // };
 
-$scope.docenteData = {};
 
-$scope.resetList = function(){ // forma berreta de limpiar la lista...
-  var aux = '';
-  $scope.docenteData = aux;
-};
 
-$scope.search = function (param) {
+// $scope.resetList = function(){ // forma berreta de limpiar la lista...
+//   var aux = '';
+//   $scope.docenteData = aux;
+// };
 
-  spinnerService.show('searchDocenteSpinner');
-  if (param == 'doc') {
-    var promise = docenteService.getAllMin();
-  } else {
-    // showServerError('no hay endpoint');
-    $scope.docenteData = docenteData;
-    spinnerService.hide('searchDocenteSpinner');
-    return;
-  };
 
-  if (promise) {
-    promise
-    .then(function(response){
-      $scope.docenteData = response.data;
-    },
-    function(response){
-     showServerError('Se ha producido un error al intentar contactar al servidor: ' + response.statusText);
-   })
-    .finally(function(){
-      spinnerService.hide('searchDocenteSpinner');
-    });
-  };
-};
-$scope.$on('$viewContentLoaded', function(){
-  $scope.search('doc');
-});
 
-//-- [Seccion/sub-seccion]
-//-- [Seccion/sub-seccion] variables
-//-- [Seccion/sub-seccion] Form Management
-//-- [Seccion/sub-seccion] filters
-//-- [Seccion/sub-seccion] modals
-//-- [Seccion/sub-seccion] utils
-//-- [Seccion/sub-seccion] service calls
 });

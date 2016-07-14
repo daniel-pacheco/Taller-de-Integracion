@@ -27,7 +27,8 @@ angular.module('clientAppApp')
     var cursoDesvincularAlu = 'cur/desvin';
     
     var matGetAllMin = 'mat/listAllMin';
-    var putMateria = "mat";
+    var putMateria = 'mat';
+    var materiaDesvincularDoc = 'mat/desvinDoc';
 
     this.anioDelete = function (idAnio) {
         return $http.delete(server + sAcademico + deleteAnio + idAnio);
@@ -72,4 +73,9 @@ angular.module('clientAppApp')
     this.materiaPutNew = function (matObj) {
         return $http.put(server + sAcademico + putMateria, matObj);
     };
+
+     this.matDesvin = function (params) {
+        return $http.post(server + sAcademico + materiaDesvincularDoc, {values:[params[0], params[1], params[2]]}); //{values:[idTitular, idSuplente, idMaateria}
+    };
+
 });

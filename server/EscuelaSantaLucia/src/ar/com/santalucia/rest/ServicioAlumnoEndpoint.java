@@ -143,7 +143,7 @@ public class ServicioAlumnoEndpoint{
 		String nuevoToken = new String();
 		try {
 			//ServicioLogin.comprobar(token, rolIn); //Hace la comprobacion de la credencial
-			nuevoToken = ServicioLogin.comprobar(token, rolIn);
+			//nuevoToken = ServicioLogin.comprobar(token, rolIn);
 			setInstance();
 			alumno = servicioAlumno.getUsuario(id);
 		}catch (LoginError ex){

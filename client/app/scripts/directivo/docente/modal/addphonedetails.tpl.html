@@ -30,24 +30,20 @@
 										<td>
 											<div ng-if="!telefono.show">{{telefono.caracteristica}}</div>
 											<div ng-if="telefono.show" ng-class="{ 'has-error': formRow.caracteristica.$touched && formRow.caracteristica.$invalid }">
-												<input class="form-control" name="caracteristica" type="number" ng-model="copiaTelefono.caracteristica" maxlength="5" placeholder="343" required pattern="^\d+$"/>
+												<input class="form-control" name="caracteristica" type="number" ng-model="copiaTelefono.caracteristica" maxlength="5" placeholder="Característica" required pattern="^\d+$"/>
 											</div>
 										</td>
 										<td>
 											<div ng-if="!telefono.show">{{telefono.nroTelefono}}</div>
 											<div ng-if="telefono.show" ng-class="{ 'has-error': formRow.nroTelefono.$touched && formRow.nroTelefono.$invalid }">
-												<input class="form-control" name="nroTelefono" type="number" ng-model="copiaTelefono.nroTelefono" required pattern="^\d+$" maxlength="10"/>
+												<input class="form-control" placeholder="Número" name="nroTelefono" type="number" ng-model="copiaTelefono.nroTelefono" required pattern="^\d+$" maxlength="10"/>
 											</div>
 										</td>
 										<td>
 											<div ng-if="!telefono.show">{{telefono.tipoTelefono}}</div>
 											<div ng-if="telefono.show" ng-class="{ 'has-error': formRow.tipoTelefono.$touched && formRow.tipoTelefono.$invalid }">
 												<select name="tipoTelefono"  class="form-control" ng-model="copiaTelefono.tipoTelefono">
-													<option value="Casa">Casa</option>
-													<option value="Celular">Celular</option>
-													<option value="Padre">Padre</option>
-													<option value="Madre">Madre</option>
-													<option value="Otro">Otro</option>
+													<option ng-repeat="tipo in telefonoTipo" value="{{tipo}}">{{tipo}}</option>
 												</select>
 											</div>
 										</td>
@@ -77,14 +73,14 @@
 					<form name="form" novalidate ng-submit="addTelefono()">	
 						<div class="panel-heading">
 							<div class="form-group  col-sm-3 col-md-3 col-xs-3 col-lg-3" ng-class="{ 'has-error': form.caracteristica.$touched && form.caracteristica.$invalid }">
-								<input class="form-control" name="caracteristica" type="number" ng-model="nuevoTelefono.caracteristica" maxlength="5" placeholder="343" value="343" required pattern="^\d+$"/>
+								<input class="form-control" name="caracteristica" type="number" ng-model="nuevoTelefono.caracteristica" maxlength="5" placeholder="Característica" value="343" required pattern="^\d+$"/>
 								<div ng-messages="form.caracteristica.$error" ng-if="form.caracteristica.$touched && form.caracteristica.$invalid">
 									<div ng-message="maxlength" class="help-block" style="position: fixed;">Demasiado largo</div>
 									<div ng-message="required" class="help-block" style="position: fixed;">Complete este campo</div>
 								</div>
 							</div>
 							<div class="form-group  col-sm-3 col-md-3 col-xs-3 col-lg-3" ng-class="{ 'has-error': form.nroTelefono.$touched && form.nroTelefono.$invalid }">
-								<input class="form-control" name="nroTelefono" type="number" ng-model="nuevoTelefono.nroTelefono" required pattern="^\d+$" maxlength="10"/>
+								<input class="form-control" placeholder="Número" name="nroTelefono" type="number" ng-model="nuevoTelefono.nroTelefono" required pattern="^\d+$" maxlength="10"/>
 								<div ng-messages="form.nroTelefono.$error" ng-if="form.nroTelefono.$touched && form.nroTelefono.$invalid">
 									<div ng-message="pattern" class="help-block" style="position: fixed;">Formato invalido</div>
 									<div ng-message="required" class="help-block" style="position: fixed;">Complete este campo</div>
@@ -92,12 +88,7 @@
 							</div>
 							<div class="form-group  col-sm-3 col-md-3 col-xs-3 col-lg-3" ng-class="{ 'has-error': form.tipoTelefono.$touched && form.tipoTelefono.$invalid }">
 								<select name="tipoTelefono"  class="form-control" ng-model="nuevoTelefono.tipoTelefono" required>
-									<option value="" disabled selected>Tipo</option>
-									<option value="Casa">Casa</option>
-									<option value="Celular">Celular</option>
-									<option value="Padre">Padre</option>
-									<option value="Madre">Madre</option>
-									<option value="Otro">Otro</option>
+										<option ng-repeat="tipo in telefonoTipo" value="{{tipo}}">{{tipo}}</option>
 								</select>
 								<div ng-messages="form.tipoTelefono.$error" ng-if="form.tipoTelefono.$touched && form.tipoTelefono.$invalid">
 									<div ng-message="pattern" class="help-block" style="position: fixed;">Formato invalido</div>

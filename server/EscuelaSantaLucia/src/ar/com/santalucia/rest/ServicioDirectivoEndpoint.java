@@ -387,7 +387,7 @@ public class ServicioDirectivoEndpoint {
 	 * @return
 	 */
 	@DELETE
-	@Path("/doc/deleteByDni/{dni:[0-9][0-9]*}")
+	@Path("/dir/deleteByDni/{dni:[0-9][0-9]*}")
 	public Response deleteDirectivoByDni(@PathParam("dni") final Long dni) {
 		Boolean exito = false;
 		try {
