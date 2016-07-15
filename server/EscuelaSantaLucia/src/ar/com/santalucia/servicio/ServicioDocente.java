@@ -216,11 +216,11 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 																? new ArrayList<MateriaAreaCondDocenteDTO>() 
 																: docenteDTO.getListaMaterias();
 						if ((m.getDocenteTitular() != null) && (m.getDocenteTitular().equals(p))) {
-							materias.add(new MateriaAreaCondDocenteDTO(m.getNombre(), MateriaAreaCondDocenteDTO.TITULAR, m.getArea().getNombre()));
+							materias.add(new MateriaAreaCondDocenteDTO(m.getIdMateria(),m.getNombre(), MateriaAreaCondDocenteDTO.TITULAR,m.getArea().getIdArea(), m.getArea().getNombre()));
 							docenteDTO.setListaMaterias(materias);
 						}
 						if ((m.getDocenteSuplente() != null) && (m.getDocenteSuplente().equals(p))) {
-							materias.add(new MateriaAreaCondDocenteDTO(m.getNombre(), MateriaAreaCondDocenteDTO.SUPLENTE, m.getArea().getNombre()));
+							materias.add(new MateriaAreaCondDocenteDTO(m.getIdMateria(), m.getNombre(), MateriaAreaCondDocenteDTO.SUPLENTE,m.getArea().getIdArea(), m.getArea().getNombre()));
 							docenteDTO.setListaMaterias(materias);
 						}
 					}
