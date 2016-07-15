@@ -9,12 +9,14 @@ package ar.com.santalucia.dominio.dto;
  *
  */
 
-//Último modificador: Eric Pennachini @ 05/06/2016 13:30
+//Último modificador: Ariel Ramirez @ 15-07-2016 1:05
 
 public class MateriaAreaCondDocenteDTO {
 
+	private Long idMateria;
 	private String nombre;
 	private String condicion;
+	private Long idArea;
 	private String area;
 	
 	public static String TITULAR = "Titular";
@@ -24,10 +26,12 @@ public class MateriaAreaCondDocenteDTO {
 		super();
 	}
 
-	public MateriaAreaCondDocenteDTO(String nombre, String condicion, String area) {
+	public MateriaAreaCondDocenteDTO(Long idMateria, String nombre, String condicion, Long idArea, String area) {
 		super();
+		this.setIdMateria(idMateria);
 		this.nombre = nombre;
 		this.condicion = condicion;
+		this.setIdArea(idArea);
 		this.area = area;
 	}
 
@@ -71,6 +75,22 @@ public class MateriaAreaCondDocenteDTO {
 	 */
 	public void setArea(String area) {
 		this.area = area;
+	}
+
+	public Long getIdMateria() {
+		return idMateria;
+	}
+
+	public void setIdMateria(Long idMateria) {
+		this.idMateria = idMateria;
+	}
+
+	public Long getIdArea() {
+		return idArea;
+	}
+
+	public void setIdArea(Long idArea) {
+		this.idArea = idArea;
 	}
 
 	
