@@ -85,13 +85,79 @@ public class ServicioDirectivo extends ServicioUsuario<Personal> {
 		try {
 			sLogin = new ServicioLogin();	
 			if (usuario.getIdUsuario() == null) {
+				Set<Telefono> telefonos = usuario.getListaTelefonos();
+				Set<Mail> mails = usuario.getListaMails();
+				Set<Titulo> titulos = usuario.getListaTitulos();
+				Domicilio domicilio = usuario.getDomicilio();
+				usuario.setListaTelefonos(null);
+				usuario.setListaMails(null);
+				usuario.setDomicilio(null);
 				gPersonal.add(usuario);
+				modificarElementosDeListas(usuario, telefonos, mails, titulos);
+				super.gDomicilio.add(domicilio);
+				usuario.setDomicilio(domicilio);
+				gPersonal.modify(usuario);
 				sLogin.addLogin(usuario.getNroDocumento(), Login.DIRECTIVO);
 				if(usuario.getRolDocente() == true){
 					sLogin.addLogin(usuario.getNroDocumento(), Login.DOCENTE); // Parche por si viene con los dos roles (a modo de prueba)
 				}
 			} else {
+				Set<Telefono> listaTelefonosNueva = usuario.getListaTelefonos();
+				if (listaTelefonosNueva.size() > 0) {
+					for (Telefono t : listaTelefonosNueva) {
+						t.setIdTelefono(null);
+					} 
+				}
+				Set<Mail> listaMailsNueva = usuario.getListaMails();
+				if (listaMailsNueva.size() > 0) {
+					for (Mail m : usuario.getListaMails()) {
+						m.setIdMail(null);
+					} 
+				}
+				Set<Titulo> listaTitulosNueva = usuario.getListaTitulos();
+				if (listaTitulosNueva.size() > 0) {
+					for (Titulo t : usuario.getListaTitulos()) {
+						t.setIdTitulo(null);
+					} 
+				}
+				Domicilio domicilioNuevo = usuario.getDomicilio();
+				domicilioNuevo.setIdDomicilio(null);
+				Set<Telefono> listaTelefonosPersis = new HashSet<Telefono>();
+				Set<Mail> listaMailsPersis = new HashSet<Mail>();
+				Set<Titulo> listaTitulosPersis = new HashSet<Titulo>();
+				Domicilio domicilioPersis = new Domicilio();
+				listaTelefonosPersis = this.getTelefonos(usuario.getIdUsuario());
+				listaMailsPersis = this.getMails(usuario.getIdUsuario());
+				listaTitulosPersis = this.getTitulos(usuario.getIdUsuario());
+				domicilioPersis = this.getDomicilio(usuario.getIdUsuario());
+				usuario.setListaTelefonos(null);
+				usuario.setListaMails(null);
+				usuario.setListaTitulos(null);
+				usuario.setDomicilio(null);
 				gPersonal.modify(usuario);
+				if (listaTelefonosPersis.size() > 0) {
+					for (Telefono t : listaTelefonosPersis) {
+						super.gTelefono.delete(t);
+					} 
+				}
+				if (listaMailsPersis.size() > 0) {
+					for (Mail m : listaMailsPersis) {
+						super.gMail.delete(m);
+					} 
+				}
+				if (listaTitulosPersis.size() > 0) {
+					for (Titulo t : listaTitulosPersis) {
+						super.gTitulo.delete(t);
+					} 
+				}
+				if (domicilioPersis != null) {
+					super.gDomicilio.delete(domicilioPersis);
+				}
+				modificarElementosDeListas(usuario, listaTelefonosNueva, listaMailsNueva, listaTitulosNueva);
+				usuario.setDomicilio(domicilioNuevo);
+				super.gDomicilio.add(usuario.getDomicilio());
+				gPersonal.modify(usuario);
+				
 				if(usuario.getRolDocente()){
 					GestorLogin gLogin = new GestorLogin();
 					if ((gLogin.getByExample(new Login(null,usuario.getNroDocumento(),null,null,null,Personal.DIRECTIVO,true))).size() == 0){
@@ -109,6 +175,36 @@ public class ServicioDirectivo extends ServicioUsuario<Personal> {
 		}
 	}
 
+	/**
+	 * 
+	 * @param usuario
+	 * @param telefonos
+	 * @param mails
+	 * @param domicilio
+	 * @throws Exception
+	 */
+	private void modificarElementosDeListas(Personal usuario, Set<Telefono> telefonos, Set<Mail> mails, Set<Titulo> titulos) throws Exception {
+		if (telefonos.size() > 0) {
+			for (Telefono t : telefonos) {
+				super.gTelefono.add(t);
+			} 
+		}
+		if (mails.size() > 0) {
+			for (Mail m : mails) {
+				super.gMail.add(m);
+			} 
+		}
+		if (titulos.size() > 0) {
+			for (Titulo t : titulos) {
+				super.gTitulo.add(t);
+			} 
+		}
+		// agrego al alumno las listas de tel., mail y dom. que en teoría ya tienen id los elementos.
+		usuario.setListaTelefonos(telefonos);
+		usuario.setListaMails(mails);
+		usuario.setListaTitulos(titulos);
+	}
+	
 	@Override
 	public Set<Telefono> getTelefonos(Long idUsuario) throws Exception {
 		Set<Telefono> telefonos = new HashSet<Telefono>();
