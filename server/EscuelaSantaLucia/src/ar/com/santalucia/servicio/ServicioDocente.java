@@ -93,6 +93,7 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 				Domicilio domicilio = usuario.getDomicilio();
 				usuario.setListaTelefonos(null);
 				usuario.setListaMails(null);
+				usuario.setListaTitulos(null);
 				usuario.setDomicilio(null);
 				gPersonal.add(usuario);
 				modificarElementosDeListas(usuario, telefonos, mails, titulos);
@@ -104,6 +105,16 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 					sLogin.addLogin(usuario.getNroDocumento(), Login.DIRECTIVO); // Parche pr si viene con los dos roles, aunque no seria tan común, como sí lo tiene directivo (a modo de prueba)
 				}
 			} else {
+				Long dniViejo = gPersonal.getById(usuario.getIdUsuario()).getNroDocumento();
+				ActualizarLoginDocDir(dniViejo, usuario.getNroDocumento());
+				
+				if(usuario.getRolDirectivo()){ //Actualiza la tabla de login 
+					sLogin.actualizarUsuario(dniViejo, usuario.getNroDocumento(), Login.DIRECTIVO);	
+				}
+				if(usuario.getRolDocente()){ //Actualiza la tabla de login 
+					sLogin.actualizarUsuario(dniViejo, usuario.getNroDocumento(), Login.DOCENTE);
+				}
+				
 				Set<Telefono> listaTelefonosNueva = usuario.getListaTelefonos();
 				if (listaTelefonosNueva.size() > 0) {
 					for (Telefono t : listaTelefonosNueva) {
@@ -161,7 +172,6 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 				gPersonal.modify(usuario);
 				//Si viene por modify, puede venir con dos roles!
 				//Buscamos la entrada de login con rol Directivo. Si no existe, la creamos.
-				// FALTA LA ACTUALIZACIÓN DE TABLA LOGIN CUANDO EL DNI CAMBIA!!!!!
 				if(usuario.getRolDirectivo()){
 					GestorLogin gLogin = new GestorLogin();
 					if ((gLogin.getByExample(new Login(null,usuario.getNroDocumento(),null,null,null,Personal.DOCENTE,true))).size() == 0){
@@ -342,7 +352,39 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 
 	@Override
 	public Domicilio getDomicilio(Long idUsuario) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}	
+		Domicilio domicilio = new Domicilio();
+		try {
+			Personal personal = new Personal();
+			if ((personal = getUsuario(idUsuario)) != null) {
+				domicilio = personal.getDomicilio();
+			}
+			return domicilio;
+		} catch (Exception ex) {
+			throw new Exception("Hubo un problema al obtener el DOMICILIO del Directivo: " + ex.getMessage());
+		}
+	}
+	
+	/**
+	 * Actualiza la tabla de Login para usuarios tipo Personal.
+	 * @param dniViejo
+	 * @param dniNuevo
+	 * @throws Exception
+	 */
+	private void ActualizarLoginDocDir(Long dniViejo, Long dniNuevo) throws Exception{
+		try{
+		GestorLogin gLogin = new GestorLogin();
+		
+		List<Login> auxDir = gLogin.getByExample(new Login(null,dniViejo,null,null,null,Login.DIRECTIVO,null));
+		if(auxDir.size() == 1){
+			sLogin.actualizarUsuario(dniViejo, dniNuevo, Login.DIRECTIVO);	
+		}
+		List<Login> auxDoc = gLogin.getByExample(new Login(null,dniViejo,null,null,null,Login.DOCENTE,null));
+		if(auxDoc.size() == 1){
+			sLogin.actualizarUsuario(dniViejo, dniNuevo, Login.DOCENTE);	
+		}	
+		}catch (Exception ex){
+			throw ex;
+		}
+	}
+
 }
