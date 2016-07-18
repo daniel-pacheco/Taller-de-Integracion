@@ -17,7 +17,9 @@ import javax.ws.rs.core.Response.Status;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import ar.com.santalucia.dominio.dto.RecuperarClaveDTO;
 import ar.com.santalucia.excepciones.LoginError;
+import ar.com.santalucia.excepciones.ValidacionException;
 import ar.com.santalucia.servicio.ServicioLogin;
 
 @Path("/sLogin")
@@ -137,11 +139,13 @@ public class ServicioLoginEndpoint {
 	}
 	
 	@POST
-	@Path("/recuperarClave/{dni:[0-9][0-9]*}")
-	public Response recuperarContraseña(@PathParam("dni") final Long dniUsuario, @HeaderParam("rol") final String rol) {
+	@Path("/recuperarClave/")
+	public Response recuperarContraseña(final RecuperarClaveDTO recuClave) {
 		try {
 			setInstance();
-			return Response.ok(servicioLogin.recuperarClave(dniUsuario, rol)).build();
+			return Response.ok(servicioLogin.recuperarClave(recuClave.getDniUsuario(), recuClave.getRol(), recuClave.getEmail())).build();
+		} catch (ValidacionException ex) {
+			return Response.status(Status.CONFLICT).entity(new FrontMessage(ex.getMensajesError().toString(),FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Hubo un error al enviar el correo "
 					+ "con la contraseña: " + ex.getMessage()).build();

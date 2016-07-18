@@ -9,6 +9,7 @@ import ar.com.santalucia.aplicacion.gestor.sistema.login.GestorLogin;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
 import ar.com.santalucia.dominio.dto.DirectivoDTO;
 import ar.com.santalucia.dominio.modelo.sistema.login.Login;
+import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
@@ -85,16 +86,23 @@ public class ServicioDirectivo extends ServicioUsuario<Personal> {
 		try {
 			sLogin = new ServicioLogin();	
 			if (usuario.getIdUsuario() == null) {
+				// Crear Set para guardar elementos que vienen con usuario
 				Set<Telefono> telefonos = usuario.getListaTelefonos();
 				Set<Mail> mails = usuario.getListaMails();
 				Set<Titulo> titulos = usuario.getListaTitulos();
 				Domicilio domicilio = usuario.getDomicilio();
+				// Anulo los contenidos agregado
 				usuario.setListaTelefonos(null);
 				usuario.setListaMails(null);
+				usuario.setListaTitulos(null);
 				usuario.setDomicilio(null);
+				//Agrego el usuario sin listas. La sesión de hibernarte asigna el id al usuario.
 				gPersonal.add(usuario);
+				// Persiste los elementos de lista haciendo add y los vincula al usuario
 				modificarElementosDeListas(usuario, telefonos, mails, titulos);
+				domicilio.setIdDomicilio(null);
 				super.gDomicilio.add(domicilio);
+				//Se hizo lo mismo con domicilio. Finalmente se hace modify de usuario
 				usuario.setDomicilio(domicilio);
 				gPersonal.modify(usuario);
 				sLogin.addLogin(usuario.getNroDocumento(), Login.DIRECTIVO);
@@ -102,6 +110,9 @@ public class ServicioDirectivo extends ServicioUsuario<Personal> {
 					sLogin.addLogin(usuario.getNroDocumento(), Login.DOCENTE); // Parche por si viene con los dos roles (a modo de prueba)
 				}
 			} else {
+				Long dniViejo = gPersonal.getById(usuario.getIdUsuario()).getNroDocumento();
+				ActualizarLoginDocDir(dniViejo, usuario.getNroDocumento());
+				
 				Set<Telefono> listaTelefonosNueva = usuario.getListaTelefonos();
 				if (listaTelefonosNueva.size() > 0) {
 					for (Telefono t : listaTelefonosNueva) {
@@ -186,16 +197,19 @@ public class ServicioDirectivo extends ServicioUsuario<Personal> {
 	private void modificarElementosDeListas(Personal usuario, Set<Telefono> telefonos, Set<Mail> mails, Set<Titulo> titulos) throws Exception {
 		if (telefonos.size() > 0) {
 			for (Telefono t : telefonos) {
+				//t.setIdTelefono(null);
 				super.gTelefono.add(t);
 			} 
 		}
 		if (mails.size() > 0) {
 			for (Mail m : mails) {
+				//m.setIdMail(null);
 				super.gMail.add(m);
 			} 
 		}
 		if (titulos.size() > 0) {
 			for (Titulo t : titulos) {
+				//t.setIdTitulo(null);
 				super.gTitulo.add(t);
 			} 
 		}
@@ -305,9 +319,6 @@ public class ServicioDirectivo extends ServicioUsuario<Personal> {
 		}
 	}
 	
-	
-	
-	
 	@Override
 	public Personal getUsuarioByDni(Long dni) throws Exception {
 		List<Personal> directivoLista = new ArrayList<Personal>();
@@ -320,8 +331,39 @@ public class ServicioDirectivo extends ServicioUsuario<Personal> {
 
 	@Override
 	public Domicilio getDomicilio(Long idUsuario) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Domicilio domicilio = new Domicilio();
+		try {
+			Personal personal = new Personal();
+			if ((personal = getUsuario(idUsuario)) != null) {
+				domicilio = personal.getDomicilio();
+			}
+			return domicilio;
+		} catch (Exception ex) {
+			throw new Exception("Hubo un problema al obtener el DOMICILIO del Directivo: " + ex.getMessage());
+		}
 	}
-
+	
+	/**
+	 * Actualiza la tabla de Login para usuarios tipo Personal.
+	 * @param dniViejo
+	 * @param dniNuevo
+	 * @throws Exception
+	 */
+	private void ActualizarLoginDocDir(Long dniViejo, Long dniNuevo) throws Exception{
+		try{
+		GestorLogin gLogin = new GestorLogin();
+		
+		List<Login> auxDir = gLogin.getByExample(new Login(null,dniViejo,null,null,null,Login.DIRECTIVO,null));
+		if(auxDir.size() == 1){
+			sLogin.actualizarUsuario(dniViejo, dniNuevo, Login.DIRECTIVO);	
+		}
+		List<Login> auxDoc = gLogin.getByExample(new Login(null,dniViejo,null,null,null,Login.DOCENTE,null));
+		if(auxDoc.size() == 1){
+			sLogin.actualizarUsuario(dniViejo, dniNuevo, Login.DOCENTE);	
+		}	
+		}catch (Exception ex){
+			throw ex;
+		}
+	}
+	
 }
