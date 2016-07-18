@@ -240,6 +240,16 @@ var newMesa = function(){
   return mesa;
 };
 
+var newLlamado = function(){
+  var llamado = {
+    "idLlamado": null,
+    "descripcion": "",
+    "listaMesas": null,
+    "fechaInicio": "mmm dd, aaaa hh:mm:ss AM/PM",
+    "fechaFin": "mmm dd, aaaa hh:mm:ss AM/PM"
+  };
+  return llamado;
+};
   //-- Estadisticas
 
   var newEstadisticaAnioCurso = function(){
@@ -316,6 +326,7 @@ var newMesa = function(){
     newPlanillaTrimDTO: newPlanillaTrimDTO,
     newPlanillaTrimUpdateDTO: newPlanillaTrimUpdateDTO,
     newMesa: newMesa,
+    newLlamado: newLlamado,
 
     //-- Estadisticas
 
