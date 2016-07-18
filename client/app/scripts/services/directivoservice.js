@@ -16,7 +16,7 @@ angular.module('clientAppApp')
 
     var getByDni = 'getByDni/';
     var expectParam = 'dir/';
-    var listAllMin = 'dir/listAllMin';
+    var listAllMin = 'listAllMin';
     var myData = 'DatosPersonales';
     var deleteByDni = 'deleteByDni/';
 

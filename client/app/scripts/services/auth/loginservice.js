@@ -69,6 +69,7 @@
     $http.post(server + sLogin + 'login', [name, pw, role])
     .success(function(data,status,headers,config){
       console.log(headers('auth0'));
+      console.log(status);
       storeUserCredentials(name, headers('auth0'), role);
       deferred.resolve('Success!');
     })

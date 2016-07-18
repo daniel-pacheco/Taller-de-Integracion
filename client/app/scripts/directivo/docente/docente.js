@@ -20,8 +20,8 @@
  		}
  	});
  })
- .controller('DocenteCtrl', function ($scope, docenteData, $timeout, ModalService, SERVER, ObjectsFactory, $alert, docenteService, alumnoService, directivoService, modalService, spinnerService, exportTableService, academicoService) {
-
+ // .controller('DocenteCtrl', function ($scope, docenteData, $timeout, ModalService, SERVER, ObjectsFactory, $alert, docenteService, alumnoService, directivoService, modalService, spinnerService, exportTableService, academicoService) {
+.controller('DocenteCtrl',['$scope', 'academicoService', 'alumnoService', 'directivoService', 'docenteService', 'exportTableService', 'ModalService', 'ObjectsFactory', 'SERVER', 'spinnerService' , function ($scope, academicoService, alumnoService, directivoService, docenteService, exportTableService, ModalService, ObjectsFactory, SERVER, spinnerService) {
   $scope.tooltip = {
     tooltipProfile : {
       'title' : 'Perfil'
@@ -90,22 +90,6 @@ $scope.editProfile = function(docente) {
   $scope.mostrarListaMails = $scope.nuevoDocente.listaMails.length > 0? true: false;
   $scope.mostrarListaTelefonos = $scope.nuevoDocente.listaTelefonos.length > 0? true: false;
   $scope.mostrarListaTitulos = $scope.nuevoDocente.listaTitulos.length > 0? true: false;
-  
-  //  if ($scope.nuevoDocente.listaMails.length > 0){//Esto es para listar los telefonos en una lista en el form principal 
-  //   $scope.mostrarListaMails = true;
-  // }else{ 
-  //   $scope.mostrarListaMails = false;
-  // }
-  // if ($scope.nuevoDocente.listaTelefonos.length > 0){//Esto es para listar los telefonos en una lista en el form principal 
-  //   $scope.mostrarListaTelefonos = true;
-  // }else{ 
-  //   $scope.mostrarListaTelefonos = false;
-  // }
-  // if ($scope.nuevoDocente.listaTitulos.length > 0){//Esto es para listar los telefonos en una lista en el form principal 
-  //   $scope.mostrarListaTitulos = true;
-  // }else{ 
-  //   $scope.mostrarListaTitulos = false;
-  // }
   
 };
 
@@ -548,21 +532,21 @@ var putNewDirectivo = function (directivo){
 
 //-- Alert
 
-$scope.showAlert = function() {
-  //la idea seria poder mandarle el mensaje a la variable pero por ahora solo tenemos una variable por alert
-  eliminarDocenteAlert.show();
-};
+// $scope.showAlert = function() {
+//   //la idea seria poder mandarle el mensaje a la variable pero por ahora solo tenemos una variable por alert
+//   eliminarDocenteAlert.show();
+// };
 
-var eliminarDocenteAlert = $alert({
-  title: 'Mensaje:', 
-  placement: 'top',
-  content: 'Docente eliminado con éxito', 
-  type: 'info', 
-  keyboard: true, 
-  show: false,
-  duration: 3,
-  container: '#alerta'
-});
+// var eliminarDocenteAlert = $alert({
+//   title: 'Mensaje:', 
+//   placement: 'top',
+//   content: 'Docente eliminado con éxito', 
+//   type: 'info', 
+//   keyboard: true, 
+//   show: false,
+//   duration: 3,
+//   container: '#alerta'
+// });
 //-- Fin Alert
 //-- filters
 
@@ -596,4 +580,6 @@ var eliminarDocenteAlert = $alert({
 
 
 
-});
+// });
+
+}]);
