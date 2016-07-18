@@ -4,13 +4,18 @@ import java.security.SignatureException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import ar.com.auth0.jwt.JWTExpiredException;
 import ar.com.auth0.jwt.JWTSigner;
 import ar.com.auth0.jwt.JWTVerifier;
 import ar.com.santalucia.aplicacion.gestor.sistema.login.GestorLogin;
+import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
+import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorUsuario;
 import ar.com.santalucia.dominio.modelo.sistema.login.Login;
 import ar.com.santalucia.dominio.modelo.usuarios.Administrador;
@@ -19,6 +24,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.dominio.modelo.usuarios.Usuario;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.excepciones.LoginError;
+import ar.com.santalucia.excepciones.ValidacionException;
 import ar.com.santalucia.mailserver.MailServer;
 
 /**
@@ -120,8 +126,9 @@ public class ServicioLogin {
 		return false;
 	}
 	
-	public Boolean recuperarClave(Long dniUsuario, String rol) throws Exception {
+	public Boolean recuperarClave(Long dniUsuario, String rol, String mail) throws ValidacionException, Exception {
 		try {
+			verificarMail(dniUsuario, rol, mail);
 			MailServer mailServer = new MailServer();
 			Boolean resLogin = mailServer.login();
 			
@@ -173,8 +180,64 @@ public class ServicioLogin {
 			}
 			
 			return true;
+		} catch (ValidacionException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new Exception("Hubo un error al enviar el email con la contraseña: " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * Comprueba que el usuario que intenta recuperar la calve conozca un mail propio.
+	 * @param dniUsuario
+	 * @param rol
+	 * @param mail
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	private void verificarMail(Long dniUsuario, String rol, String mail) throws ValidacionException, Exception{
+		Boolean comprobacion = false;
+		Set<Mail> mails = new HashSet<Mail>();
+		GestorAlumno gAlumno = new GestorAlumno();
+		GestorPersonal gPersonal = new GestorPersonal();
+		ValidacionException vEx = new ValidacionException();
+		try{
+			switch (rol) {
+			case Login.ALUMNO:
+				
+				List<Alumno> alumnos = gAlumno.getByExample(new Alumno(dniUsuario,null,null,null,null,null,null,null,null,null,true,null));
+				if (alumnos.size() == 1){
+					mails = alumnos.get(0).getListaMails();
+				}
+				break;
+			case Login.DIRECTIVO:
+				List<Personal> directivos = gPersonal.getByExample(new Personal(dniUsuario,null,null,null,null,null,null,null,null,null,true,null,null,true,null));
+				if(directivos.size()==1){
+					mails = directivos.get(0).getListaMails();
+				}
+				break;
+			case Login.DOCENTE:
+				List<Personal> docentes = gPersonal.getByExample(new Personal(dniUsuario,null,null,null,null,null,null,null,null,null,true,null,null,null,true));
+				if(docentes.size()==1){
+					mails = docentes.get(0).getListaMails();
+				}
+				break;
+				}
+		if(mails.size()!=0){
+			for(Mail m : mails){
+				if(m.getDireccionMail().equals(mail)){
+					comprobacion = true;
+				}
+			}
+		}
+		if (comprobacion == false){
+			vEx.addMensajeError("No se pudo verificar su identidad para recuperar la contraseña.");
+			throw vEx;
+		}
+		}catch(ValidacionException ex){
+			throw vEx;
+		}catch (Exception ex){
+			throw ex;
 		}
 	}
 
