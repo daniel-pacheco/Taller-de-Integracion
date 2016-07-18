@@ -10,7 +10,7 @@
     <div class="please-wait-small">Aguarde por favor...</div>
   </spinner> 
   <div id="loginbox" style="margin-top:100px" class="mainbox col-md-6 col-md-offset-3">                    
-    <div class="panel panel-info" style="box-shadow: 10px 10px 5px #888888;" ng-show="loginForm">
+    <div class="panel panel-info" style="box-shadow: 10px 10px 5px #888888;" ng-show="enableLoginForm">
       <div class="panel-heading">
         <center><div class="panel-title">Iniciar sesión</div></center>
       </div>
@@ -61,7 +61,7 @@
             <div class="form-group">
               <div class="col-md-12 control">
                <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
-                <a href="#" ng-click="olvideContrasenia=true; loginForm=false">Olvid&eacute; mi contrase&ntilde;a</a>
+                <a href="#" ng-click="enablePage('recoverPassword')">Olvid&eacute; mi contrase&ntilde;a</a>
               </div>
             </div>
           </div>  
@@ -73,28 +73,38 @@
     </div>                     
   </div>  
 
-  <div class="panel panel-info" style="box-shadow: 10px 10px 5px #888888;" ng-show="olvideContrasenia">
+  <div class="panel panel-info" style="box-shadow: 10px 10px 5px #888888;" ng-show="!enableLoginForm">
     <div class="panel-heading">
       <center><div class="panel-title">Recuperar contrase&ntilde;a</div></center>
     </div>
     <div class="panel-body" style="padding-top:30px">
-      <form id="loginform" name="passwordForm" class="form-horizontal center-block" role="form" novalidate>
+      <form id="loginform" name="recoverForm" class="form-horizontal center-block" role="form" novalidate>
         <div class="personal-info">
           <div class="container">
-            <div class="form-group" ng-class="{ 'has-error': passwordForm.username.$touched && passwordForm.username.$invalid }">
+            <div class="form-group" ng-class="{ 'has-error': recoverForm.recoverUserName.$touched && recoverForm.recoverUserName.$invalid }">
               <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                <input id="login-username" type="text" class="form-control" name="username" value="" placeholder="Usuario o Mail" ng-model="data.username" required> 
+                <input id="login-recoverUserName" type="text" class="form-control" name="recoverUserName" value="" placeholder="Ingrese su usuario" ng-model="recoverData.recoverUserName" required> 
               </div>                                       
-              <div ng-messages="passwordForm.username.$error" ng-if="passwordForm.username.$touched && passwordForm.username.$invalid">
+              <div ng-messages="recoverForm.recoverUserName.$error" ng-if="recoverForm.recoverUserName.$touched && recoverForm.recoverUserName.$invalid">
                 <div ng-message="required" class="help-block">Complete este campo</div>
               </div>
             </div>
 
-            <div class="form-group" ng-class="{ 'has-error': passwordForm.loginRole.$touched && passwordForm.loginRole.$invalid }">
+            <div class="form-group" ng-class="{ 'has-error': recoverForm.recoverMail.$touched && recoverForm.recoverMail.$invalid }">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                <input id="login-recoverMail" type="text" class="form-control" name="recoverMail" value="" placeholder="Ingrese su mail" ng-model="recoverData.recoverMail" required> 
+              </div>                                       
+              <div ng-messages="recoverForm.recoverMail.$error" ng-if="recoverForm.recoverMail.$touched && recoverForm.recoverMail.$invalid">
+                <div ng-message="required" class="help-block">Complete este campo</div>
+              </div>
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error': recoverForm.recoverRole.$touched && recoverForm.recoverRole.$invalid }">
               <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
-                <select class="dropdown-toggle form-control" name="loginRole" ng-model="data.role" required> <!-- ng-change="update(dropDownValue, option)"> -->
+                <select class="dropdown-toggle form-control" name="recoverRole" ng-model="recoverData.recoverRole" required> <!-- ng-change="update(dropDownValue, option)"> -->
                   <option value="" disabled selected>Seleccione una opci&oacute;n</option>
                   <option ng-repeat="role in roleOptions" value="{{role}}">{{role}}</option>
                 </select>
@@ -105,9 +115,9 @@
           <div style="margin-top:10px" class="form-group">
             <div class="controls">
               <center>
-                <button id="btn-login" class="btn btn-danger" ng-disabled="!passwordForm.$valid" ng-click="">Cancelar</button>
+                <button id="btn-login" class="btn btn-danger" ng-click="enablePage('login')">Cancelar</button>
 
-                <button id="btn-login" class="btn btn-info" ng-disabled="!passwordForm.$valid" ng-click="changePassword(data)">Enviar Mail</button>
+                <button id="btn-login" class="btn btn-info" ng-disabled="!recoverForm.$valid" ng-click="changePassword(recoverData)">Enviar Mail</button>
               </center>
             </div>
           </div>

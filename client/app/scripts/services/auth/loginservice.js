@@ -64,15 +64,22 @@
   }
 
   var login = function(name, pw, role) {
-    return $http.post(server + sLogin + 'login', [name, pw, role])
+    var deferred = $q.defer(); // retorna una promesa que se resolvera cuando responda el server
+
+    $http.post(server + sLogin + 'login', [name, pw, role])
     .success(function(data,status,headers,config){
       console.log(headers('auth0'));
       storeUserCredentials(name, headers('auth0'), role);
+      deferred.resolve('Success!');
     })
     .error(function(data, status, headers, config) {
       storeUserCredentials("", "", "ADMINISTRADOR");
-      alert(status);
+      console.log(status);
+      deferred.reject('Error!');
     })
+    .finally(function(){
+    });
+    return deferred.promise;
   };   
 
   var logout = function() {
@@ -88,8 +95,19 @@
   };
   
   loadUserCredentials();
-    var changePassword = function(dni, role) {
-    return $http.post(server + sLogin + recoverPassword + dni, {headers:{'rol': role,}});
+  var changePassword = function(recoverData) {
+
+    var credenciales = {
+      dniUsuario: 0,
+      rol: '',
+      email: ''
+    };
+
+    credenciales.dniUsuario = recoverData.recoverUserName;
+    credenciales.rol = recoverData.recoverRole;
+    credenciales.email = recoverData.recoverMail;
+
+    return $http.post(server + sLogin + recoverPassword, credenciales);
   };
   
   return {
