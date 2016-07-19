@@ -22,7 +22,8 @@
 
 })
 
- .controller('AnioCtrl', function ($scope, cursosData, ModalService, ObjectsFactory, aniosData, academicoService, spinnerService, alumnoService, $timeout) {
+ // .controller('AnioCtrl', function ($scope, cursosData, ModalService, ObjectsFactory, aniosData, academicoService, spinnerService, alumnoService, $timeout) {
+  .controller('AnioCtrl', [ '$scope', 'academicoService', 'alumnoService', 'ModalService', 'ObjectsFactory', 'spinnerService', function ($scope, academicoService, alumnoService, ModalService, ObjectsFactory,  spinnerService) {
 
 //-- [Anio] 
 //-- [Anio] variables
@@ -408,5 +409,5 @@ $scope.desvincularAlumno = function(idAlu, idCur){
 
 
 
-});
+}]);
 

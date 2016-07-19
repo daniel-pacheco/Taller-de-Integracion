@@ -264,24 +264,32 @@ $scope.search = function (param) {
   });
 };
 
-$scope.desvincularDocente = function(idDocente, condicion, idMateria){
+$scope.comfirmDesvincularDocente = function(idDocente, condicion, idMateria){
+  var params = {
+    'idDocente': idDocente,
+    'condicion': condicion,
+    'idMateria': idMateria
+  };
+
+  $scope.confirmModal('¿Desea desvincular al docente ' + condicion + ' de la materia? ', $scope.desvincularDocente, params);
+
+};
+
+$scope.desvincularDocente = function(params){
   var desvincularParams = [];
 
-  desvincularParams.push( condicion == 'Titular'? idDocente: null );
-  desvincularParams.push( condicion == 'Suplente'? idDocente: null );
-  desvincularParams.push( idMateria );
-
+  desvincularParams.push( params.condicion == 'Titular'? params.idDocente: null );
+  desvincularParams.push( params.condicion == 'Suplente'? params.idDocente: null );
+  desvincularParams.push( params.idMateria );
 
   spinnerService.show('searchDocenteSpinner');
   academicoService.matDesvin(desvincularParams)
   .then(
     function(response){
-
       showServerSuccess('El docente se ha desvinculado con éxito ', response);
       $scope.search();
     },
     function(response){
-
       showServerError(response);
     })
   .finally(function(){
