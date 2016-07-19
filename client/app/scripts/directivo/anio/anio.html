@@ -127,11 +127,19 @@
 							<div class="col-md-4 control-label">
 								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Nombre:</label>
 							</div>
-							<div class="col-md-5">
+							<div class="col-md-3">
 								<input class="form-control" placeholder="Nombre" name="nombre" type="text"
 								maxlength="25" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9°]*" ng-model="nuevoAnioObj.nombre">
 							</div>
+							<div class="col-md-2">
+								<input class="form-control" placeholder="N° de orden" name="orden" type="number"
+								maxlength="2" required pattern="[0-9]*" ng-model="nuevoAnioObj.orden">
+							</div>
 							<div ng-messages="formAnio.nombre.$error" ng-if="formAnio.nombre.$touched && formAnio.nombre.$invalid">
+								<div ng-message="pattern" class="help-block">Formato invalido</div>
+								<div ng-message="required" class="help-block">Complete este campo</div>
+							</div>
+							<div ng-messages="formAnio.orden.$error" ng-if="formAnio.orden.$touched && formAnio.orden.$invalid">
 								<div ng-message="pattern" class="help-block">Formato invalido</div>
 								<div ng-message="required" class="help-block">Complete este campo</div>
 							</div>
@@ -151,6 +159,23 @@
 								<div ng-message="required" class="help-block">Complete este campo</div>
 							</div>
 						</div><!-- /form-group-->
+
+						<div class="form-group" ng-class="{ 'has-error': formAnio.especialidad.$touched && formAnio.especialidad.$invalid }">
+							<div class="col-md-4 control-label">
+								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> A&ntilde;o:</label>
+							</div>
+							<div class="col-md-3">
+								<select class="form-control" ng-model="nuevoAnioObj.especialidad" ng-options="especialidad.nombre for especialidad in especialidades" name="especialidad" required>
+									<option value="" disabled selected>Seleccione un a&ntilde;o</option>
+								</select> 
+							</div>
+							<div class="col-md-2">
+								<input class="btn btn-default" type="button" ng-click="administrarEsecialodadModal()" value="Administrar"/>
+							</div>
+							<div ng-messages="formAnio.especialidad.$error" ng-if="formAnio.especialidad.$touched && formAnio.especialidad.$invalid">
+								<div ng-message="required" class="help-block">Seleccione una opci&oacute;n</div>
+							</div>
+						</div>
 
 						<div class="form-group">
 							<div class="col-md-2 col-md-offset-4">
