@@ -172,7 +172,7 @@ public class ServicioDesempenio {
 			BoletinInasistencias boletinInasistencias = (BoletinInasistencias) encontrarBoletinDeAlumno(alumno, BUSCAR_BOLETIN_INASISTENCIAS);
 			Anio anio = gAnio.getByExample(new Anio(null, 
 													boletinNotas.getAnio(), 
-													null, null, null, true)).get(0);	
+													null, null, null, null, null, null, true)).get(0);	
 			ArrayList<Materia> materias = new ArrayList<Materia>();
 			materias.addAll(anio.getListaMaterias());
 			
@@ -532,7 +532,7 @@ public class ServicioDesempenio {
 			List<ItemPlanillaTrimestralDTO> itemsPlanilla = planillaTrimestralDTO.getPlanilla();
 			Anio anio = new Anio();
 			Curso curso = new Curso();
-			anio = gAnio.getByExample(new Anio(null, planillaTrimestralDTO.getAnio(), null, null, null, null)).get(0);
+			anio = gAnio.getByExample(new Anio(null, planillaTrimestralDTO.getAnio(), null, null, null, null, null, null, null)).get(0);
 			for (Curso c : anio.getListaCursos()) {
 				if (c.getDivision().equals(planillaTrimestralDTO.getCurso().charAt(0))) {
 					curso = c;
@@ -792,10 +792,38 @@ public class ServicioDesempenio {
 		}
 	}
 	
-	
-	public ListaPasajeAlumnosDTO listaAlumnosPasajeCurso(String anio, String curso) throws Exception {
+	/**
+	 * Devuelve un listado de DTO para la pantalla del pasaje de alumnos, por anio.
+	 * @param anio
+	 * @param curso
+	 * @return
+	 * @throws Exception
+	 */
+	public ListaPasajeAlumnosDTO listaAlumnosPasajeCurso(String anio, String especialidad, String curso) throws Exception {
 		try {
-			Anio anioBuscar = gAnio.getByExample(new Anio(null, anio, null, null, null, true)).get(0);
+			//Encontrar orden máximo para el año y especialidad
+			Integer maxOrden = 0;
+			Integer ordenSiguiente = 0;
+			Anio anioBuscar = new Anio();
+			Anio anioSiguiente = null;
+			List<Anio>anioBuscarAux = gAnio.List();  //Busco todos los años
+			for(Anio ab : anioBuscarAux){
+				if ( ab.getOrden() > maxOrden  &&  ab.getEspecialidad().getNombre().equals(especialidad) ){ //Busco el máximo orden para la especialidad correspondiente
+					maxOrden = ab.getOrden();		
+				}
+				if (ab.getNombre().equals(anio)){ //Aprovecho la recorrida y capturo el año que me interesa.
+					anioBuscar = ab;
+				}
+			}
+			if ( (anioBuscar.getOrden() + 1) > maxOrden ){		//Si el ordenSiguiente es mayor que el máximo de la especialidad, entonces se deja en cero; sino se incrementa.
+				ordenSiguiente = anioBuscar.getOrden() + 1;
+				Anio anioAux = anioBuscar;
+				anioAux.setOrden(ordenSiguiente);
+				anioSiguiente = gAnio.getByExample(anioAux).get(0); // Capturo el año siguiente de paso.
+			}else{
+				ordenSiguiente = 0; 
+			}
+			//Datos del año con curso alumnos			
 			Curso cursoBuscar = new Curso();
 			for (Curso c : anioBuscar.getListaCursos()) {
 				if (c.getDivision().toString().equals(curso)) {
@@ -812,8 +840,13 @@ public class ServicioDesempenio {
 				pasajeAlumnoDTO.setDniAlumno(a.getNroDocumento());
 				pasajeAlumnoDTO.setNombre(a.getNombre());
 				pasajeAlumnoDTO.setApellido(a.getApellido());
+				pasajeAlumnoDTO.setAnioActual(anioBuscar.getNombre());
+				pasajeAlumnoDTO.setCursoActual(String.valueOf(cursoBuscar.getDivision()));
+				//pasajeAlumnoDTO.setIdAnioSiguiente();
+				
 				pasajeAlumnoDTO.setCantPrevias(sAcad.getPreviasDesaprobadas(a.getNroDocumento()).size());
 				pasajeAlumnoDTO.setHabilitadoPromocion(pasajeAlumnoDTO.getCantPrevias() < 3 ? true : false);
+				
 				listaPasajeAlumnosDTO.getListaPasajeAlumnosDTO().add(pasajeAlumnoDTO);
 			}
 			listaPasajeAlumnosDTO.setAnio(anioBuscar.getNombre());
@@ -825,6 +858,15 @@ public class ServicioDesempenio {
 		}
 	}
 	
+	/**
+	 * Arma el arreglo de DTO de pasaje de alumnos
+	 * @return
+	 * @throws Exception
+	 */
+	public ListaPasajeAlumnosDTO[] listaAlumnoPasajeAnio() throws Exception{
+		
+		return null;
+	}
 	
 	
 	public Boolean promocionarAlumnos(ArrayList<Long> listaIdsAlumnos) throws Exception {
@@ -835,6 +877,13 @@ public class ServicioDesempenio {
 		} catch (Exception ex) {
 			throw ex;
 		}
+	}
+	
+	private Integer maximoOrden(String anio, String especialidad) throws Exception{
+		
+		
+		return null;
+		
 	}
 	
 }

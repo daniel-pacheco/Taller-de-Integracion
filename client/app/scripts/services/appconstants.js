@@ -25,10 +25,10 @@
  })
  
  .constant('USER_ROLES', {
- 	admin: 'ADMINISTRADOR',
- 	docente: 'DOCENTE',
+ 	admin: 'ADMINISTRADOR', 	
  	alumno: 'ALUMNO',
- 	directivo: 'DIRECTIVO'
+ 	directivo: 'DIRECTIVO',
+ 	docente: 'DOCENTE'
  })
 
  .constant('MENU_ALUMNO',{ //la dirección relativa entre los estados anidados se separa por .
@@ -54,7 +54,7 @@
  .constant('MENU_DIRECTIVO',{ //la dirección relativa entre los estados anidados se separa por .
  	alumnado: ['.alumnado', 'Alumnado'],
  	materias: ['.materias', 'Materias'],
- 	docente: ['.docente', 'Docente'],
+ 	docente: ['.docente', 'Personal'],
  	anio: ['.anio', 'Año'],
  	llamados: ['.llamados', 'Llamados'],
  	desemp: ['.desemp', 'Desempeño'],

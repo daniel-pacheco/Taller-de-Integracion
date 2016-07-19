@@ -182,6 +182,8 @@ public class ServicioAcademico {
 				aDTO.setIdAnio(a.getIdAnio());
 				aDTO.setNombre(a.getNombre());
 				aDTO.setDescripcion(a.getDescripcion());
+				aDTO.setEspecialidad(a.getEspecialidad().getNombre());
+				aDTO.setOrden(a.getOrden());
 				aDTO.setCicloLectivo(a.getCicloLectivo());
 				aDTO.setActivo(a.getActivo());
 				Set<Curso> listaCursosAnioPersis = a.getListaCursos();
@@ -674,7 +676,9 @@ public class ServicioAcademico {
 				Set<Mesa> mesasLlamado = llamado.getListaMesas();
 				for(Mesa m : mesasLlamado){
 					if(m.getMateria().equals(materia)){
-						throw new Exception("Ya existe la mesa en el llamado.");
+						ValidacionException ex = new ValidacionException();
+						ex.addMensajeError("Ya existe la mesa en el llamado.");
+						throw ex;
 					}
 				}
 				Mesa mesa = new Mesa();
@@ -689,13 +693,17 @@ public class ServicioAcademico {
 				gMesa.add(mesa);
 				llamado.getListaMesas().add(mesa);
 				gLlamado.modify(llamado);
+			}else{
+				ValidacionException ex = new ValidacionException();
+				ex.addMensajeError("No se encontró el llamado.");
+				throw ex;
 			}
-			
+		}catch(ValidacionException ex){
+			ex.addMensajeError("Ocurrió un problema al intentar crear una mesa y asociarla al llamado.");
+			throw ex;
 		}catch(Exception ex){
 			throw ex;
 		}
-		
-		
 		return true;
 	}
 	
@@ -1229,7 +1237,7 @@ public class ServicioAcademico {
 		// Eecorrer las materias y devolver el id de año (si se encuentra)
 		List<Anio>listaAnio = new ArrayList<Anio>();
 		List<Materia> listaMateria = new ArrayList<Materia>(); 
-		listaAnio = gAnio.getByExample(new Anio(null,null,null,null,null,true));
+		listaAnio = gAnio.getByExample(new Anio(null,null,null,null,null,null, null, null, true));
 		for(Anio a: listaAnio){
 			if(a.getListaMaterias().contains(materia)){
 				return a.getIdAnio();
@@ -1241,7 +1249,7 @@ public class ServicioAcademico {
 	private Anio cursoPerteneceAnio(Curso curso) throws Exception {
 		List<Anio> listaAnio = new ArrayList<Anio>();
 		List<Curso> listaCurso = new ArrayList<Curso>(); 
-		listaAnio = gAnio.getByExample(new Anio(null,null,null,null,null,true));
+		listaAnio = gAnio.getByExample(new Anio(null,null,null,null,null,null, null, null, true));
 		for (Anio a: listaAnio) {
 			if(a.getListaCursos().contains(curso)){
 				return a;

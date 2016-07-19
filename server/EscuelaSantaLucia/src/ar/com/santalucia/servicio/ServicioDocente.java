@@ -12,6 +12,7 @@ import ar.com.santalucia.dominio.dto.MateriaAreaCondDocenteDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.sistema.login.Login;
+import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
@@ -86,12 +87,88 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 		try {
 			sLogin = new ServicioLogin();
 			if (usuario.getIdUsuario() == null) {
+				Set<Telefono> telefonos = usuario.getListaTelefonos();
+				Set<Mail> mails = usuario.getListaMails();
+				Set<Titulo> titulos = usuario.getListaTitulos();
+				Domicilio domicilio = usuario.getDomicilio();
+				usuario.setListaTelefonos(null);
+				usuario.setListaMails(null);
+				usuario.setListaTitulos(null);
+				usuario.setDomicilio(null);
 				gPersonal.add(usuario);
+				modificarElementosDeListas(usuario, telefonos, mails, titulos);
+				super.gDomicilio.add(domicilio);
+				usuario.setDomicilio(domicilio);
+				gPersonal.modify(usuario);
 				sLogin.addLogin(usuario.getNroDocumento(), Login.DOCENTE);
 				if(usuario.getRolDirectivo() == true){
 					sLogin.addLogin(usuario.getNroDocumento(), Login.DIRECTIVO); // Parche pr si viene con los dos roles, aunque no seria tan común, como sí lo tiene directivo (a modo de prueba)
 				}
 			} else {
+				Long dniViejo = gPersonal.getById(usuario.getIdUsuario()).getNroDocumento();
+				ActualizarLoginDocDir(dniViejo, usuario.getNroDocumento());
+				
+				if(usuario.getRolDirectivo()){ //Actualiza la tabla de login 
+					sLogin.actualizarUsuario(dniViejo, usuario.getNroDocumento(), Login.DIRECTIVO);	
+				}
+				if(usuario.getRolDocente()){ //Actualiza la tabla de login 
+					sLogin.actualizarUsuario(dniViejo, usuario.getNroDocumento(), Login.DOCENTE);
+				}
+				
+				Set<Telefono> listaTelefonosNueva = usuario.getListaTelefonos();
+				if (listaTelefonosNueva.size() > 0) {
+					for (Telefono t : listaTelefonosNueva) {
+						t.setIdTelefono(null);
+					} 
+				}
+				Set<Mail> listaMailsNueva = usuario.getListaMails();
+				if (listaMailsNueva.size() > 0) {
+					for (Mail m : usuario.getListaMails()) {
+						m.setIdMail(null);
+					} 
+				}
+				Set<Titulo> listaTitulosNueva = usuario.getListaTitulos();
+				if (listaTitulosNueva.size() > 0) {
+					for (Titulo t : usuario.getListaTitulos()) {
+						t.setIdTitulo(null);
+					} 
+				}
+				Domicilio domicilioNuevo = usuario.getDomicilio();
+				domicilioNuevo.setIdDomicilio(null);
+				Set<Telefono> listaTelefonosPersis = new HashSet<Telefono>();
+				Set<Mail> listaMailsPersis = new HashSet<Mail>();
+				Set<Titulo> listaTitulosPersis = new HashSet<Titulo>();
+				Domicilio domicilioPersis = new Domicilio();
+				listaTelefonosPersis = this.getTelefonos(usuario.getIdUsuario());
+				listaMailsPersis = this.getMails(usuario.getIdUsuario());
+				listaTitulosPersis = this.getTitulos(usuario.getIdUsuario());
+				domicilioPersis = this.getDomicilio(usuario.getIdUsuario());
+				usuario.setListaTelefonos(null);
+				usuario.setListaMails(null);
+				usuario.setListaTitulos(null);
+				usuario.setDomicilio(null);
+				gPersonal.modify(usuario);
+				if (listaTelefonosPersis.size() > 0) {
+					for (Telefono t : listaTelefonosPersis) {
+						super.gTelefono.delete(t);
+					} 
+				}
+				if (listaMailsPersis.size() > 0) {
+					for (Mail m : listaMailsPersis) {
+						super.gMail.delete(m);
+					} 
+				}
+				if (listaTitulosPersis.size() > 0) {
+					for (Titulo t : listaTitulosPersis) {
+						super.gTitulo.delete(t);
+					} 
+				}
+				if (domicilioPersis != null) {
+					super.gDomicilio.delete(domicilioPersis);
+				}
+				modificarElementosDeListas(usuario, listaTelefonosNueva, listaMailsNueva, listaTitulosNueva);
+				usuario.setDomicilio(domicilioNuevo);
+				super.gDomicilio.add(usuario.getDomicilio());
 				gPersonal.modify(usuario);
 				//Si viene por modify, puede venir con dos roles!
 				//Buscamos la entrada de login con rol Directivo. Si no existe, la creamos.
@@ -110,6 +187,36 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 		} catch (Exception ex) {
 			throw new Exception("Hubo un problema al agregar o modificar el DOCENTE: " + ex.getMessage());
 		}
+	}
+	
+	/**
+	 * 
+	 * @param usuario
+	 * @param telefonos
+	 * @param mails
+	 * @param domicilio
+	 * @throws Exception
+	 */
+	private void modificarElementosDeListas(Personal usuario, Set<Telefono> telefonos, Set<Mail> mails, Set<Titulo> titulos) throws Exception {
+		if (telefonos.size() > 0) {
+			for (Telefono t : telefonos) {
+				super.gTelefono.add(t);
+			} 
+		}
+		if (mails.size() > 0) {
+			for (Mail m : mails) {
+				super.gMail.add(m);
+			} 
+		}
+		if (titulos.size() > 0) {
+			for (Titulo t : titulos) {
+				super.gTitulo.add(t);
+			} 
+		}
+		// agrego al alumno las listas de tel., mail y dom. que en teoría ya tienen id los elementos.
+		usuario.setListaTelefonos(telefonos);
+		usuario.setListaMails(mails);
+		usuario.setListaTitulos(titulos);
 	}
 
 	@Override
@@ -216,11 +323,11 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 																? new ArrayList<MateriaAreaCondDocenteDTO>() 
 																: docenteDTO.getListaMaterias();
 						if ((m.getDocenteTitular() != null) && (m.getDocenteTitular().equals(p))) {
-							materias.add(new MateriaAreaCondDocenteDTO(m.getNombre(), MateriaAreaCondDocenteDTO.TITULAR, m.getArea().getNombre()));
+							materias.add(new MateriaAreaCondDocenteDTO(m.getIdMateria(),m.getNombre(), MateriaAreaCondDocenteDTO.TITULAR,m.getArea().getIdArea(), m.getArea().getNombre()));
 							docenteDTO.setListaMaterias(materias);
 						}
 						if ((m.getDocenteSuplente() != null) && (m.getDocenteSuplente().equals(p))) {
-							materias.add(new MateriaAreaCondDocenteDTO(m.getNombre(), MateriaAreaCondDocenteDTO.SUPLENTE, m.getArea().getNombre()));
+							materias.add(new MateriaAreaCondDocenteDTO(m.getIdMateria(), m.getNombre(), MateriaAreaCondDocenteDTO.SUPLENTE,m.getArea().getIdArea(), m.getArea().getNombre()));
 							docenteDTO.setListaMaterias(materias);
 						}
 					}
@@ -245,7 +352,39 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 
 	@Override
 	public Domicilio getDomicilio(Long idUsuario) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}	
+		Domicilio domicilio = new Domicilio();
+		try {
+			Personal personal = new Personal();
+			if ((personal = getUsuario(idUsuario)) != null) {
+				domicilio = personal.getDomicilio();
+			}
+			return domicilio;
+		} catch (Exception ex) {
+			throw new Exception("Hubo un problema al obtener el DOMICILIO del Directivo: " + ex.getMessage());
+		}
+	}
+	
+	/**
+	 * Actualiza la tabla de Login para usuarios tipo Personal.
+	 * @param dniViejo
+	 * @param dniNuevo
+	 * @throws Exception
+	 */
+	private void ActualizarLoginDocDir(Long dniViejo, Long dniNuevo) throws Exception{
+		try{
+		GestorLogin gLogin = new GestorLogin();
+		
+		List<Login> auxDir = gLogin.getByExample(new Login(null,dniViejo,null,null,null,Login.DIRECTIVO,null));
+		if(auxDir.size() == 1){
+			sLogin.actualizarUsuario(dniViejo, dniNuevo, Login.DIRECTIVO);	
+		}
+		List<Login> auxDoc = gLogin.getByExample(new Login(null,dniViejo,null,null,null,Login.DOCENTE,null));
+		if(auxDoc.size() == 1){
+			sLogin.actualizarUsuario(dniViejo, dniNuevo, Login.DOCENTE);	
+		}	
+		}catch (Exception ex){
+			throw ex;
+		}
+	}
+
 }

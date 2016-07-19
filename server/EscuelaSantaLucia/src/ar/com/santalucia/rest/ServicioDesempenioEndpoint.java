@@ -546,7 +546,7 @@ public class ServicioDesempenioEndpoint {
 	public Response listaPasajeAlumnosDTO(final GetListaPasajeAlumnosDTO getListaDTO) {
 		try {
 			setInstance();
-			ListaPasajeAlumnosDTO lista = servicioDesempenio.listaAlumnosPasajeCurso(getListaDTO.getAnio(), getListaDTO.getCurso());
+			ListaPasajeAlumnosDTO lista = servicioDesempenio.listaAlumnosPasajeCurso(getListaDTO.getAnio(),null, getListaDTO.getCurso());
 			if (lista.getListaPasajeAlumnosDTO().size() == 0) {
 				return Response.status(Status.NO_CONTENT)
 					.entity(new FrontMessage("Sin resultados", FrontMessage.INFO))

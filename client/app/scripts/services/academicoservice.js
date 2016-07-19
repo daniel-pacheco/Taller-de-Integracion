@@ -27,7 +27,8 @@
     var cursoDesvincularAlu = 'cur/desvin';
     
     var matGetAllMin = 'mat/listAllMin';
-    var putMateria = "mat";
+    var putMateria = 'mat';
+    var materiaDesvincularDoc = 'mat/desvinDoc';
 
     var putLlamado = "llm/";
     var llamadosGetAll = "listAll"; 
@@ -85,10 +86,13 @@
     this.materiaPutNew = function (matObj) {
         return $http.put(server + sAcademico + putMateria, matObj);
     };
+    
+    this.matDesvin = function (params) {
+        return $http.post(server + sAcademico + materiaDesvincularDoc, {values:[params[0], params[1], params[2]]}); //{values:[idTitular, idSuplente, idMaateria}
+    };
 
     this.mesaPutNew = function (mesaObj){
         return $http.put(server + sAcademico + putMesa, mesaObj);
     };
-
 
 });

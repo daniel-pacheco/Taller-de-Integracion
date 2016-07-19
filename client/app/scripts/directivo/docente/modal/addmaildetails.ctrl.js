@@ -1,7 +1,7 @@
 angular.module('clientAppApp')
-.controller('mailAvanzadoModalController', [
-  '$scope', '$element', 'title', 'listaMails', 'close', 'ObjectsFactory',
-  function($scope, $element, title, listaMails, close, ObjectsFactory) {//acá se inyecta las variables necesarias y luego la función close
+.controller('mailAvanzadoDocenteModalController', [
+  '$scope', '$element', 'title', 'listaMails', 'close', 'ObjectsFactory', 'CONTACTOS',
+  function($scope, $element, title, listaMails, close, ObjectsFactory, CONTACTOS) {//acá se inyecta las variables necesarias y luego la función close
 
     $scope.copiaListaMails = angular.copy (listaMails);
     $scope.title = title;
@@ -16,6 +16,9 @@ angular.module('clientAppApp')
       'title' : 'Cancelar edición'
     }
   };
+
+  $scope.tipoMailD = CONTACTOS.MAILD;
+  console.log($scope.tipoMailD);
 
   $scope.close = function(modif) {
     if (modif)

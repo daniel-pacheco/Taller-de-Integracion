@@ -39,7 +39,7 @@ angular.module('clientAppApp')
   }
 $scope.saveEditTitulo = function (position){
   $scope.copiaListaTitulos[position].nombre = $scope.copiaTitulo.caracteristica;
-  $scope.copiaListaTitulos[position].tipo = $scope.copiaTitulo.tipo;
+  $scope.copiaListaTitulos[position].descripcionTitulo = $scope.copiaTitulo.descripcionTitulo + ' ' + $scope.copiaTitulo.anio;
   $scope.copiaListaTitulos[position].anio = $scope.copiaTitulo.anio;
 
 
