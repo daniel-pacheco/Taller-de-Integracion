@@ -99,7 +99,10 @@ $scope.clearFormDoc = function(){
   $scope.mostrarListaMails = false;
   $scope.mostrarListaTitulos = false;
   $scope.nuevoDocente = ObjectsFactory.newDocente();
+  $scope.nuevoDocente.domicilio = ObjectsFactory.newDomicilio();
   $scope.nuevoTelefonoSimple = ObjectsFactory.newTelefono();
+  $scope.nuevoMailSimple = ObjectsFactory.newMail();
+  $scope.nuevoTituloSimple = ObjectsFactory.newTitulo();
   $scope.cuilHead = '';
   $scope.cuilTail = '';
 };
@@ -492,6 +495,13 @@ $scope.newDocente = function(personal){
     personal.listaTelefonos.push($scope.nuevoTelefonoSimple);
   };
 
+  if ($scope.nuevoMailSimple.direccionMail && !_.includes(personal.listaMails, $scope.nuevoMailSimple)) { //solo hace el pushsi el Mail no se encuentra en la lista
+    personal.listaMails.push($scope.nuevoMailSimple);
+  };
+
+  if ($scope.nuevoTituloSimple.nombreTitulo && !_.includes(personal.listaTitulos, $scope.nuevoTituloSimple)) { //solo hace el pushsi el titulo no se encuentra en la lista
+    personal.listaTitulos.push($scope.nuevoTituloSimple);
+  };
 
   if (personal.rolDirectivo) {
     $scope.requiredPassPutDirectivo(personal);
@@ -532,62 +542,6 @@ var putNewDirectivo = function (directivo){
   });
 };
 
-
-
 //-----------------------------------------
-
-//-- fin Llamadas al servicio
-
-//-- Alert
-
-// $scope.showAlert = function() {
-//   //la idea seria poder mandarle el mensaje a la variable pero por ahora solo tenemos una variable por alert
-//   eliminarDocenteAlert.show();
-// };
-
-// var eliminarDocenteAlert = $alert({
-//   title: 'Mensaje:', 
-//   placement: 'top',
-//   content: 'Docente eliminado con éxito', 
-//   type: 'info', 
-//   keyboard: true, 
-//   show: false,
-//   duration: 3,
-//   container: '#alerta'
-// });
-//-- Fin Alert
-//-- filters
-
-
-
-
-
-
-// $scope.showData = function() {
-//   $scope.docentes = docenteData;
-// }
-// $scope.showData();
-
-    /*$scope.docentes = [{name:'John', surname:'lenono', area:'Cs. Sociales', cuil:'252525', materia:'Historia'},
-{name:'Mary', surname:'yein', area:'Cs. Naturales', cuil:'434343', materia:'Biologia' },
-{name:'Mike', surname:'chumajer', area:'Cs. Sociales', cuil:'111111', materia:'Geografia'},
-{name:'Adam', surname:'sami', area:'Artes', cuil:'7777777', materia:'Plastica'},
-{name:'Julie', surname:'rose', area:'Cs. Sociales', cuil:'000000', materia:'peperoni'},
-{name:'Juliette', surname:'romeo', area:'Cs. Exactas', cuil:'929225', materia:'Fisica'}];*/
-
-// $scope.multiplePanels = {
-//   activePanels: []
-// };
-
-
-
-// $scope.resetList = function(){ // forma berreta de limpiar la lista...
-//   var aux = '';
-//   $scope.docenteData = aux;
-// };
-
-
-
-// });
 
 }]);

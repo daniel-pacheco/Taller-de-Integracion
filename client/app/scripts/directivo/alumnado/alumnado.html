@@ -23,13 +23,13 @@
 					</li>
 					<hr style="margin: 2px 0;">
 					<li ng-class="{active : activeMenuIzqAlu === 1}" data-target="#modals">
-						<a href="" ng-click="seleccionar('listado'); setActiveAlu(1); clearList()">Listado</a>
+						<a href="" ng-click="seleccionar('listado')">Listado</a>
 					</li>
 					<li ng-class="{active : activeMenuIzqAlu === 2}" data-target="#nuevoPerfil">
-						<a href="" ng-click="seleccionar('nuevoPerfil'); setActiveAlu(2)">Nuevo Perfil</a>
+						<a href="" ng-click="seleccionar('nuevoPerfil')">Nuevo Perfil</a>
 					</li>
 					<li ng-class="{active : activeMenuIzqAlu === 3}" data-target="#notas">
-						<a href="" ng-click="seleccionar('notas'); setActiveAlu(3)">Notas</a>
+						<a href="" ng-click="seleccionar('notas')">Notas</a>
 					</li>
 					<li ng-class="{active : activeMenuIzqAlu === 4}" ng-show="showEditProfileMenuIzq " data-target="#editarPerfil">
 						<a href="">Editar Perfil</a>
@@ -62,7 +62,7 @@
 							<option value="" disabled selected>Seleccione una opci&oacute;n</option>
 							<option value="DNI/MAT">DNI/MAT</option>
 							<option value="TODOS">Todos</option>
-							<option ng-repeat="option in dropDownSearchOptions" value="{{option}}">{{option}}</option>
+							<option ng-repeat="option in dropDownSearchOptions" value="{{option.idAnio}}">{{option.nombre}}</option>
 						</select>
 						<input type="text" class="form-control-inline"  ng-model="searchByDni" ng-show="dropDownSearchValue === 'DNI/MAT'" maxlength="8" required pattern="\d{8}">
 						<button class="btn btn-default" ng-click="search(dropDownSearchValue, searchByDni)"  title="Buscar alumnos" data-content="Seleccione uno o varios alumnos para colocar multiples inasistencias" data-type="info" data-duration="4" data-container="#alerts-container" bs-alert>Buscar</button>
@@ -120,11 +120,11 @@
 										<span class="glyphicon glyphicon-calendar"></span>
 									</button>
 
-									<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipReportCard" ng-click="showModalLibreta(1)" style="width: 22%">
+									<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipReportCard" ng-click="showModalLibreta(alumno.idUsuario)" style="width: 22%">
 										<span data-animation="am-flip-x" class="glyphicon glyphicon-list-alt"></span>
 									</button>
 
-									<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipDelete" ng-click="deleteAlumno(alumno.idUsuario)" style="width: 22%">
+									<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipDelete" ng-click="deleteAlumnoComfirm(alumno)" style="width: 22%">
 										<span class="glyphicon glyphicon-trash"></span>
 									</button>
 								</td>
@@ -282,7 +282,7 @@
 											<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Mail:</label>
 										</div>
 										<div class="col-md-7">
-											<input name="email" type="email" class="form-control" placeholder="nombre@dominio.com" ng-model="nuevoAlumno.listaMails[0].direccionMail" maxlength="255" ng-show="!mostrarListaMails" required/>
+											<input name="email" type="email" class="form-control" placeholder="nombre@dominio.com" ng-model="nuevoMAilSimple.direccionMail" maxlength="255" ng-show="!mostrarListaMails" required/>
 											<select multiple class="form-control" ng-show="mostrarListaMails">
 												<option ng-repeat="mail in nuevoAlumno.listaMails">{{mail.direccionMail}} ({{mail.tipoMail}})</option>
 											</select> 
