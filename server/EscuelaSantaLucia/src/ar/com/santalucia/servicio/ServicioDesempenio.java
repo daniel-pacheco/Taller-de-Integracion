@@ -23,14 +23,17 @@ import ar.com.santalucia.aplicacion.gestor.desempenio.GestorNota;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorTrimestre;
 import ar.com.santalucia.aplicacion.gestor.sistema.configuracion.GestorParametroConfiguracion;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
+import ar.com.santalucia.dominio.dto.AnioDTO;
 import ar.com.santalucia.dominio.dto.BoletinInasistenciasDTO;
 import ar.com.santalucia.dominio.dto.BoletinNotasDTO;
+import ar.com.santalucia.dominio.dto.CursoDTO;
 import ar.com.santalucia.dominio.dto.GetPlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.dto.InasistenciasBoletinDTO;
 import ar.com.santalucia.dominio.dto.ItemPlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.dto.ListaPasajeAlumnosDTO;
 import ar.com.santalucia.dominio.dto.MateriaNotaDTO;
 import ar.com.santalucia.dominio.dto.PasajeAlumnosDTO;
+import ar.com.santalucia.dominio.dto.PasajeEntradaDTO;
 import ar.com.santalucia.dominio.dto.PlanillaNotasBoletinDTO;
 import ar.com.santalucia.dominio.dto.PlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
@@ -815,7 +818,7 @@ public class ServicioDesempenio {
 					anioBuscar = ab;
 				}
 			}
-			if ( (anioBuscar.getOrden() + 1) > maxOrden ){		//Si el ordenSiguiente es mayor que el máximo de la especialidad, entonces se deja en cero; sino se incrementa.
+			if ( (anioBuscar.getOrden() + 1) < maxOrden ){		//Si el ordenSiguiente es mayor que el máximo de la especialidad, entonces se deja en cero; sino se incrementa.
 				ordenSiguiente = anioBuscar.getOrden() + 1;
 				Anio anioAux = anioBuscar;
 				anioAux.setOrden(ordenSiguiente);
@@ -842,7 +845,19 @@ public class ServicioDesempenio {
 				pasajeAlumnoDTO.setApellido(a.getApellido());
 				pasajeAlumnoDTO.setAnioActual(anioBuscar.getNombre());
 				pasajeAlumnoDTO.setCursoActual(String.valueOf(cursoBuscar.getDivision()));
-				//pasajeAlumnoDTO.setIdAnioSiguiente();
+				if(anioSiguiente!=null){													// Preguntar si hay año siguiente y sugerirlo
+					pasajeAlumnoDTO.setIdAnioSiguiente(anioSiguiente.getIdAnio());
+				}else{
+					pasajeAlumnoDTO.setIdAnioSiguiente(null);
+				}
+				if(anioSiguiente!=null && anioSiguiente.getListaCursos().size() == 1){ //Si hay anio siguiente y tiene un solo curso, lo sugiero
+					for(Curso c : anioSiguiente.getListaCursos()){
+						pasajeAlumnoDTO.setIdCursoSiguiente(c.getIdCurso());
+					}
+				}else{
+					pasajeAlumnoDTO.setIdCursoSiguiente(null);
+				}
+				
 				
 				pasajeAlumnoDTO.setCantPrevias(sAcad.getPreviasDesaprobadas(a.getNroDocumento()).size());
 				pasajeAlumnoDTO.setHabilitadoPromocion(pasajeAlumnoDTO.getCantPrevias() < 3 ? true : false);
@@ -859,31 +874,75 @@ public class ServicioDesempenio {
 	}
 	
 	/**
-	 * Arma el arreglo de DTO de pasaje de alumnos
+	 * Genera una lista de ListaPasajeAlumnoDTO usando listaAlumnosPasajeCurso(anio,especialidad,curso) <br>
+	 * Obtiene todos los ListaPasajeAlumnoDTO de la totalidad de años existentes.
 	 * @return
-	 * @throws Exception
 	 */
-	public ListaPasajeAlumnosDTO[] listaAlumnoPasajeAnio() throws Exception{
+	public List<ListaPasajeAlumnosDTO> ObtenerArregloPasajeDTO() throws ValidacionException, Exception{
+		try{
+		// Obtener todos los años con especialidad y curso;
+		// Por cada año-especialidad-curso llamar a listaAlumnosPasajeCurso y encadenar los resultados entre todos los años
+			Long contadorEntes = 0L; // Cuenta cada combinación anio-especialidad-curso
+			List<ListaPasajeAlumnosDTO> listaCompleta = new ArrayList<ListaPasajeAlumnosDTO>();
+			ServicioAcademico sAcademico = new ServicioAcademico();
+			List<AnioDTO> aniosDTO = sAcademico.getAniosDTO();
+			for(AnioDTO aDTO: aniosDTO){
+				for(CursoDTO cDTO: aDTO.getListaCursos()){
+					listaCompleta.add(listaAlumnosPasajeCurso(aDTO.getNombre(),aDTO.getEspecialidad(),cDTO.getDivision()));
+					contadorEntes = contadorEntes + cDTO.getCantAlu();
+				}
+			}
+		if(listaCompleta.size() == 0 || listaCompleta.size() != contadorEntes){
+			ValidacionException vEx = new ValidacionException();
+			vEx.addMensajeError("Ocurrió un problema: la lista generada está incompleta.");
+			throw vEx;
+		}
 		
-		return null;
-	}
-	
-	
-	public Boolean promocionarAlumnos(ArrayList<Long> listaIdsAlumnos) throws Exception {
-		try {
-			
-			
-			return true;
-		} catch (Exception ex) {
+		return listaCompleta;
+		
+		}catch(ValidacionException ex){
+			throw ex;
+		}catch(Exception ex){
 			throw ex;
 		}
 	}
 	
-	private Integer maximoOrden(String anio, String especialidad) throws Exception{
+	/**
+	 * Llama a los métodos encargados de generar una promoción, repetincia o graduación según sea el caso del alumno procesado.
+	 * @param listado
+	 * @return
+	 */
+	public Boolean ProcesarPromocion(List<PasajeEntradaDTO> pasajeDTOin) throws Exception{
+		try{
+			ServicioAcademico sAcademico = new ServicioAcademico();
+			List<AnioDTO> todosLosAnios = sAcademico.getAniosDTO();
+		}catch(ValidacionException ex){
+			throw ex;
+		}catch(Exception ex){
+			throw ex;
+		}
 		
 		
-		return null;
 		
+		return true;
 	}
 	
+	private void ValidarCoherencia(List<PasajeEntradaDTO> pasajeDTOin) throws Exception{
+		ServicioAcademico sAcademico = new ServicioAcademico();
+		List<AnioDTO> todosLosAnios = sAcademico.getAniosDTO();
+		Integer ordenActual, ordenSiguiente = 0;
+		try{
+			for(PasajeEntradaDTO p : pasajeDTOin){
+				ordenActual = sAcademico.ObtenerOrdenAnio(p.getIdAnioActual());
+				ordenSiguiente = sAcademico.ObtenerOrdenAnioCurso(p.getIdCursoSiguiente());
+				if(true){
+					
+				}
+			}
+		}catch(ValidacionException ex){
+			throw ex;
+		}catch(Exception ex){
+			throw ex;
+		}
+	}
 }

@@ -25,11 +25,11 @@ import ar.com.santalucia.excepciones.ValidacionException;
  * 
  * @author Ariel Ramirez
  * 
- * @version 1.1
+ * @version 2.0
  *
  */
 
-// Último modificador: Eric Pennachini @ 23-10-2015 18:23
+// Último modificador: Ariel Ramirez @ 20-07-2016 20:01
 
 public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 
@@ -236,7 +236,7 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 			ServicioAcademico sAcademico = new ServicioAcademico();
 			Curso curso = new Curso();
 			AlumnoDTO aux = getAlumnoByDniMin(usuario.getNroDocumento());
-			if(!aux.getCurso().equals('0')){
+			if(!aux.getCurso().equals("0")){
 				Anio anioAux = new Anio(null,aux.getAnio(),null,null,null,null, null, null, true);
 				List<Anio> listAnio = sAcademico.getAnios(anioAux);
 				Set<Curso> listCurso = new HashSet<Curso>();
@@ -299,6 +299,47 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 		return listaAlumnosDTO;
 	}
 	
+	/**
+	 * Devuelve un listado minificado cde alumnos activos y no graduados
+	 * @return
+	 * @throws Exception
+	 */
+	public ArrayList<AlumnoDTO> listAlumnosActivosDTO() throws Exception {
+		ArrayList<AlumnoDTO> listaAlumnosDTO = new ArrayList<AlumnoDTO>();
+		ArrayList<Alumno> listaAlumnos = new ArrayList<Alumno>();
+		ServicioAcademico servicioAcademico = new ServicioAcademico();
+		try {
+			Alumno alumnoEx = new Alumno(); // alumno nulo de ejemplo
+			alumnoEx.setActivo(true);
+			//alumnoEx.setGraduado(false); USO FUTURO. DESCARTA LOS ALUMNOS YA GRADUADOS O FINALIZADO EL CICLO ESCOLAR
+			listaAlumnos = gAlumno.getByExample(alumnoEx);
+			for (Alumno a : listaAlumnos) {
+				AlumnoDTO aDTO = new AlumnoDTO(a.getIdUsuario(), a.getNroDocumento(), a.getNombre(), a.getApellido(), "", "");
+				Set<Alumno> listaAluCurso = gCurso.getByDivision('0').getListaAlumnos();
+				if (listaAluCurso.contains(a)) {
+					aDTO.setCurso("0");
+					aDTO.setAnio("-");
+				} else {
+					Anio anioEx = new Anio();
+					List<Anio> listaAnios = new ArrayList<Anio>();
+					listaAnios = servicioAcademico.getAnios(anioEx);
+					for (Anio anio : listaAnios) {
+						for (Curso c : anio.getListaCursos()) {
+							if (c.getListaAlumnos().contains(a)) {
+								aDTO.setCurso(c.getDivision().toString()/* + " " + c.getTurno()*/);
+								aDTO.setAnio(anio.getNombre());
+							}
+						}
+					}
+				}
+				listaAlumnosDTO.add(aDTO);
+			} 
+		} catch (Exception ex) {
+			throw new Exception("Ha ocurrido un error al listar los alumos: " + ex.getMessage());
+		}
+		return listaAlumnosDTO;
+	}
+	
 	@Override
 	public Alumno getUsuarioByDni(Long dni) throws Exception {
 		List<Alumno> alumnoLista = new ArrayList<Alumno>();
@@ -317,7 +358,7 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 	 */
 	public AlumnoDTO getAlumnoByDniMin(Long dni) throws Exception{
 		AlumnoDTO alumnoDto = new AlumnoDTO();
-		List<AlumnoDTO> listaAlumno = listAlumnosDTO();
+		List<AlumnoDTO> listaAlumno = listAlumnosActivosDTO();
 		for(AlumnoDTO a : listaAlumno){
 			if(a.getDniAlumno().equals(dni)){
 				return a;
