@@ -319,7 +319,7 @@
 											<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Mail:</label>
 										</div>
 										<div class="col-sm-7">
-											<input class="form-control" name="dirMail" type="email" ng-model="nuevoDocente.listaMails[0].direccionMail" required placeholder="numbre@mail.com" ng-show="!mostrarListaMails"/>
+											<input class="form-control" name="dirMail" type="email" ng-model="nuevoMailSimple.direccionMail" required placeholder="nombre@dominio.com" ng-show="!mostrarListaMails"/>
 											<select multiple class="form-control" ng-show="mostrarListaMails">
 												<option ng-repeat="mail in nuevoDocente.listaMails">{{mail.direccionMail}} ({{mail.tipoMail}})</option>
 											</select>
@@ -339,7 +339,7 @@
 											<label for="">T&iacute;tulo/s:</label>
 										</div>
 										<div class="col-sm-7">
-											<input name="titulo" type="titulo" class="form-control" ng-model="nuevoDocente.listaTitulos[0].nombreTitulo" ng-show="!mostrarListaTitulos" placeholder="Nombre del título" maxlength="255"/>
+											<input name="titulo" type="titulo" class="form-control" ng-model="nuevoTituloSimple.nombreTitulo" ng-show="!mostrarListaTitulos" placeholder="Nombre del título" maxlength="255"/>
 											<select multiple class="form-control" ng-show="mostrarListaTitulos">
 												<option ng-repeat="titulo in nuevoDocente.listaTitulos">{{titulo.nombreTitulo}} {{titulo.descripcionTitulo}} ({{titulo.anio}})</option>
 											</select>

@@ -7,6 +7,7 @@ angular.module('clientAppApp')
   $scope.libCalificaciones = {}; 
   //$scope.dni = docente.nroDocumento;
   $scope.libCalificaciones = libCalificaciones;
+  console.log($scope.libCalificaciones);
   
   //  This close function doesn't need to use jQuery or bootstrap, because
   //  the button has the 'data-dismiss' attribute.

@@ -13,7 +13,7 @@
 					<span class="col-lg-4">{{libCalificaciones.nombre}} {{libCalificaciones.apellido}}</span>
 
 					<label class="col-lg-1">DNI: </label>
-					<span class="col-lg-2">{{libCalificaciones.DNIUsuario}}</span>
+					<span class="col-lg-2">{{libCalificaciones.nroDocumento}}</span>
 
 					<div class="row">
 
@@ -22,16 +22,16 @@
 							<div class="form-horizontal margin-lib">
 								<div class="form-group">
 									<label class="col-lg-1">A&ntilde;o: </label>
-									<span class="col-lg-1">{{libCalificaciones.ano}}</span>
+									<span class="col-lg-1">{{libCalificaciones.anio}}</span>
 
 									<label class="col-lg-1">Divisi&oacute;n: </label>
-									<span class="col-lg-1">{{libCalificaciones.division}}</span>
+									<span class="col-lg-1">{{libCalificaciones.curso}}</span>
 
-									<label class="col-lg-1">Turno: </label>
-									<span class="col-lg-2">{{libCalificaciones.turno}}</span>
+									<!-- <label class="col-lg-1">Turno: </label>
+									<span class="col-lg-2">{{libCalificaciones.turno}}</span> -->
 
 									<label class="col-lg-2">A&ntilde;o Escolar: </label>
-									<span class="col-lg-2">{{libCalificaciones.anoEscolar}}</span>
+									<span class="col-lg-2">{{libCalificaciones.cicloLectivo}}</span>
 								</div>
 							</div>
 						</div>
@@ -53,21 +53,21 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr ng-repeat="libreta in libCalificaciones.notas">
-										<td>{{libreta.Materia}}</td>
-										<td class="text-center" ng-class="{ 'desaprobado': {{libreta.NotaPrimT}} < 6 }"><!-- Esto del color lo pueden querer personalizable -->{{libreta.NotaPrimT}}</td>
-										<td class="text-center">{{libreta.NotaSeguT}}</td>
-										<td class="text-center">{{libreta.NotaTercT}}</td>
-										<td class="text-center">{{libreta.NotaFinal}}</td>
-										<td class="text-center">{{libreta.EvalDic}}</td>
-										<td class="text-center">{{libreta.EvalFeb}}</td>
-										<td class="text-center">{{libreta.EvalDef}}</td>
+									<tr ng-repeat="nota in libCalificaciones.listaNotas">
+										<td>{{nota.materia}}</td>
+										<td class="text-center" ng-class="{ 'desaprobado': {{nota.notaTrim1}} < 6 }">{{nota.notaTrim1}}</td>
+										<td class="text-center" ng-class="{ 'desaprobado': {{nota.notaTrim2}} < 6 }">{{nota.notaTrim2}}</td>
+										<td class="text-center" ng-class="{ 'desaprobado': {{nota.notaTrim3}} < 6 }">{{nota.notaTrim3}}</td>
+										<td class="text-center" ng-class="{ 'desaprobado': {{nota.notaFinal}} < 6 }">{{nota.notaFinal}}</td>
+										<td class="text-center">{{nota.EvalDic}} cuando esten disponibles  </td>
+										<td class="text-center">{{nota.EvalFeb}}estos campos hay que agregar</td>
+										<td class="text-center">{{nota.EvalDef}} sus nombres al modal</td>
 									</tr>
 									<tfoot>
 										<tr>
 											<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
 										</tr>
-										<tr>
+									<!--	<tr>
 											<td>Inasistencias {{libCalificaciones.Inasistencias[0].tipo}}</td>
 											<td class="text-center">{{libCalificaciones.Inasistencias[0].PrimerTrim}}</td>
 											<td class="text-center">{{libCalificaciones.Inasistencias[0].SegundoTrim}}</td>
@@ -76,12 +76,12 @@
 											<td class="text-center"></td>
 											<td class="text-center"></td>
 											<td class="text-center"></td>
-										</tr>
+										</tr> -->
 										<tr>
-											<td>Inasistencias {{libCalificaciones.Inasistencias[1].tipo}}</td>
-											<td class="text-center">{{libCalificaciones.Inasistencias[1].PrimerTrim}}</td>
-											<td class="text-center">{{libCalificaciones.Inasistencias[1].SegundoTrim}}</td>
-											<td class="text-center">{{libCalificaciones.Inasistencias[1].TercerTrim}}</td>
+											<td>Inasistencias Justificadas</td>
+											<td class="text-center">{{libCalificaciones.detalleInasistencias.justificadasTrim1}}</td>
+											<td class="text-center">{{libCalificaciones.detalleInasistencias.justificadasTrim2}}</td>
+											<td class="text-center">{{libCalificaciones.detalleInasistencias.justificadasTrim3}}</td>
 											<td class="text-center"></td>
 											<td class="text-center"></td>
 											<td class="text-center"></td>
@@ -89,11 +89,11 @@
 										</tr>
 
 										<tr>
-											<td>{{libCalificaciones.Inasistencias[2].tipo}}</td>
-											<td class="text-center">{{libCalificaciones.Inasistencias[2].AdvertDiscPrimerT}}</td>
-											<td class="text-center">{{libCalificaciones.Inasistencias[2].AdvertDiscSegunT}}</td>
-											<td class="text-center">{{libCalificaciones.Inasistencias[2].AdvertDiscTercerT}}</td>
-											<td class="text-center">{{libCalificaciones.Inasistencias[2].AdvertDiscTotales}}</td>
+											<td>Inasistencias Injustificadas</td>
+											<td class="text-center">{{libCalificaciones.detalleInasistencias.injustificadasTrim1}}</td>
+											<td class="text-center">{{libCalificaciones.detalleInasistencias.injustificadasTrim2}}</td>
+											<td class="text-center">{{libCalificaciones.detalleInasistencias.injustificadasTrim3}}</td>
+											<td class="text-center"></td>
 											<td class="text-center"></td>
 											<td class="text-center"></td>
 											<td class="text-center"></td>

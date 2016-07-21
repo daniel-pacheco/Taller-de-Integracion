@@ -51,7 +51,7 @@ angular.module('clientAppApp')
     };
 
 	this.alumnoDel = function(alumnoId){	  
-	  return $http.delete(server + postQuery + alumnoId);
+	  return $http.delete(server + sAlumno + expectParam + alumnoId);
 	};
 
   });

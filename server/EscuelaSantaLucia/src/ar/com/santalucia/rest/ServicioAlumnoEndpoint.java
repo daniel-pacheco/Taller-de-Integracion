@@ -39,7 +39,7 @@ import ar.com.santalucia.servicio.ServicioLogin;
  * @version 2.0
  */
 
-// Último modificador: Ariel Ramirez @ 15-10-2015 17:44
+// Último modificador: Ariel Ramirez @ 20-07-2016 20:01
 
 @Path("/sAlumno")
 @PermitAll
@@ -455,8 +455,9 @@ public class ServicioAlumnoEndpoint{
 		}
 	}
 	
-	/*
-	 * Endpoint light
+	/**
+	 * Obtiene todos los alumnos en formato DTO (AlumnoDTO)
+	 * @return
 	 */
 	@GET
 	@Path("/listAllMin")
@@ -464,6 +465,21 @@ public class ServicioAlumnoEndpoint{
 		try {
 			setInstance();
 			return Response.ok(servicioAlumno.listAlumnosDTO()).build();
+		} catch (Exception ex) {
+			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
+		}
+	}
+	
+	/**
+	 * Devuelve todos los alumnos activos en formato DTO (AlumnoDTO)
+	 * @return
+	 */
+	@GET
+	@Path("/listAllMinAct")
+	public Response listAlumnosActDTO() {
+		try {
+			setInstance();
+			return Response.ok(servicioAlumno.listAlumnosActivosDTO()).build();
 		} catch (Exception ex) {
 			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}

@@ -67,7 +67,7 @@
 						<form name="form" novalidate ng-submit="addMail()">	
 							<div class="panel-heading">
 								<div class="form-group col-md-5" ng-class="{ 'has-error': form.direccionMail.$touched && form.direccionMail.$invalid }">
-									<input class="form-control" name="direccionMail" type="email" ng-model="nuevoMail.direccionMail" required placeholder="numbre@mail.com"/>
+									<input class="form-control" name="direccionMail" type="email" ng-model="nuevoMail.direccionMail" required placeholder="nombre@dominio.com"/>
 									<div ng-messages="form.direccionMail.$error" ng-if="form.direccionMail.$touched && form.direccionMail.$invalid">
 										<div ng-message="email" class="help-block" style="position: fixed;">Formato invalido</div>
 										<div ng-message="required" class="help-block" style="position: fixed;">Complete este campo</div>
