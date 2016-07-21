@@ -34,6 +34,9 @@
     var llamadosGetAll = "listAll"; 
 
     var putMesa = "mesa/";
+    var getMesas = "inscripcion/";
+    var inscripMesa = "inscripcion";
+    var desinscripMesa = "desinscripcion";
 
     this.anioDelete = function (idAnio) {
         return $http.delete(server + sAcademico + deleteAnio + idAnio);
@@ -93,6 +96,18 @@
 
     this.mesaPutNew = function (mesaObj){
         return $http.put(server + sAcademico + putMesa, mesaObj);
+    };
+
+    this.mesasGet = function (dni){
+        return $http.get(server + sAcademico + getMesas + dni);
+    };
+
+    this.mesasInscribir = function (idMesa, idAlumno){
+        return $http.post(server + sAcademico + inscripMesa, [idMesa, idAlumno]);
+    };
+
+    this.mesasDesinscribir = function (idMesa, idAlumno){
+        return $http.post(server + sAcademico + desinscripMesa, [idMesa, idAlumno]);
     };
 
 });

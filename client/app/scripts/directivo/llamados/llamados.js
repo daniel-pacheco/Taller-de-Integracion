@@ -84,15 +84,38 @@ $scope.seleccionar = function (id) {
 
 $scope.seleccionar("listado");
 
-//-- Order list
-$scope.predicate = 'fechaInicio';
-$scope.reverse = false;
-$scope.orderLlamado = function(predicate) {
-  $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
-  $scope.predicate = predicate;
+
+$scope.tooltip = {
+  tooltipEdit : {
+    'title' : 'Editar'
+  }, tooltipDelete : {
+    'title' : 'Eliminar'
+  }, tooltipSaveEdit : {
+    'title' : 'Guardar edición'
+  }, tooltipInscripto : {
+    'title' : 'Ya se encuentra inscripto'
+  }, tooltipNoInscripto: {
+    'title': 'No se encuentra inscripto'
+  }
 };
+
+
 //-- [Llamado] filters
 //-- [Llamado] modals
+$scope.confirmModal = function(mesagge, funcion, parametro) { //este confirm recibe una funcion y un parametro para que despues de confirmar se pueda llamar a la funcion que se necesite
+  ModalService.showModal({
+    templateUrl: 'scripts/utils/confirm/modalConfirm.tpl.html',
+    controller: 'modalConfirmController',
+    inputs: {
+      mensaje: mesagge,
+    }
+  }).then(function(modal) {
+    modal.element.modal();
+    modal.close.then(function(result){
+      funcion(parametro);
+    });
+  });
+};
 //-- [Llamado] utils
 $scope.showMessage = function(mesagge, title, isGood) { //todo ok recibe true si salio bien o false si salio mal
   ModalService.showModal({
@@ -135,6 +158,14 @@ function showServerSuccess (message, response){
 $scope.$on('$viewContentLoaded', function(){
   getLlamados();//Here your view content is fully loaded !!
 });
+
+//Order list
+$scope.predicate = 'fechaInicio';
+$scope.reverse = false;
+$scope.orderLlamado = function(predicate) {
+  $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+  $scope.predicate = predicate;
+};
 //-- [Llamado] service calls
 
 
@@ -243,6 +274,7 @@ function initLlamado(llamadoMin){
   llamado.descripcion = llamadoMin.descripcion;
   llamado.fechaInicio = llamadoMin.fechaInicioLlamado;
   llamado.fechaFin = llamadoMin.fechaFinLlamado;
+  console.log(llamado);
   return llamado;
 };
 //-- [Llamado/nuevo Llamado] service calls
@@ -252,7 +284,7 @@ $scope.newLlamado = function(llamadoMin) {
   academicoService.llamadoPutNew(llamado)
   .then(
     function(response){
-      showServerSuccess('El llamado se ha dado de alta de alta con éxito. Id:',response.data);
+      showServerSuccess('El llamado se ha dado de alta de alta con éxito ',response.data);
       $scope.clearFormLlamado();
     },
     function(response){
@@ -295,6 +327,81 @@ function getLlamados() {
 
 };
 
+//-- [Llamado/inscripcion]
+//-- [Llamado/inscripcion] variables
+//-- [Llamado/inscripcion] Form Management
+$scope.listMesas = false;
+//-- [Llamado/inscripcion] filters
+//-- [Llamado/inscripcion] modals
+//-- [Llamado/inscripcion] utils
+$scope.confirmInscribir = function(idMesa, idAlumno, dni, alumno, materia, fecha){
+    var params = {
+    'idMesa': idMesa,
+    'idAlumno': idAlumno,
+    'dni': dni
+  };
+
+  $scope.confirmModal("Desea inscribir a "+ alumno + " de la mesa de " + materia + " el día " + fecha, $scope.inscribir, params);
+
+
+};
+
+$scope.confirmDesinscribir = function(idMesa, idAlumno, dni, alumno, materia, fecha){
+    var params = {
+    'idMesa': idMesa,
+    'idAlumno': idAlumno,
+    'dni': dni
+  };
+
+  $scope.confirmModal("Desea desinscribir a "+ alumno + " de la mesa de " + materia + " el día " + fecha, $scope.desinscribir, params);
+};
+//-- [Llamado/inscripcion] service calls
+$scope.getMesas = function(dni){
+  spinnerService.show('searchLlamadoSpinner');
+  academicoService.mesasGet(dni)
+  .then(
+    function(response){
+      $scope.listaMesasDisponibles = response.data;
+      $scope.listMesas = true;
+    },
+    function(response){
+      showServerError(response);
+    })
+  .finally(function(){
+    spinnerService.hide('searchLlamadoSpinner');
+  })
+};
+
+$scope.inscribir = function(params){
+  spinnerService.show('searchLlamadoSpinner');
+  academicoService.mesasInscribir(params['idMesa'], params['idAlumno'])
+  .then(
+    function(response){
+      showServerSuccess('La inscripción finalizó con éxito ',response.data);
+      $scope.getMesas(params['dni']);
+    },
+    function(response){
+      showServerError(response);
+    })
+  .finally(function(){
+    spinnerService.hide('searchLlamadoSpinner');
+  })
+};
+$scope.desinscribir = function(params){
+  spinnerService.show('searchLlamadoSpinner');
+  academicoService.mesasDesinscribir(params['idMesa'], params['idAlumno'])
+  .then(
+    function(response){
+      showServerSuccess('La desinscripción finalizó con éxito ',response.data);
+      $scope.getMesas(params['dni']);
+    },
+    function(response){
+      showServerError(response);
+    })
+  .finally(function(){
+    spinnerService.hide('searchLlamadoSpinner');
+  })
+};
 //-- [Llamado/sub-seccion]
 //-- [Llamado/sub-seccion] variables
 //-- [Llamado/sub-seccion] Form Management

@@ -2,7 +2,7 @@
 	<div class="navbar-inverse bs-docs-nav" role="banner">
 		<!--<div class="container">
 			<div class="navbar-header">
-				<button class="navbar-toggle" type="button" data-template-url="./scripts/directivo/materias/aside/materiassidebar.aside.tpl.html" data-animation="am-fade-and-slide-left" data-placement="left" title="Menu" bs-aside="aside">
+				<button class="navbar-toggle" type="button" data-template-url="./scripts/directivo/llamados/aside/llamadossidebar.aside.tpl.html" data-animation="am-fade-and-slide-left" data-placement="left" title="Menu" bs-aside="aside">
 					<span class="sr-only">Toggle navigation</span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
@@ -325,12 +325,80 @@
 
 		<div id="inscripcion" ng-show="inscripcion">  
 			<fieldset>
-				<h1>{{subtitle}}: <small>Selecciones un a&ntilde;o para mostrar las materias asociadas</small></h1>
+				<h1>{{subtitle}}: <small>Ingrese el DNI deaseado y presione el bot&oacute;n Ver mesas</small></h1>
 				<hr>
-
+				<div class="panel panel-default" style="margin-bottom:0px">
+					<div class="panel-heading">
+						<form name="consultMesas">
+							<label>DNI: </label>
+							<!-- <input class="form-control-inline" name="dni" type="text" placeholder="35123123" required maxlength="8" required pattern="\d{8,8}" ng-model="filterByName">
+							<button class="btn btn-default" ng-click="" title="Ver mesas disponibles" ng-disabled="!consultMesas.$valid">Ver mesas</button> esto es para cuando reciba DNI-->
+							<input class="form-control-inline" name="ID" type="text" placeholder="35123123" required maxlength="8" required ng-model="dni">
+							<button class="btn btn-default" ng-click="getMesas(dni)" title="Ver mesas disponibles">Ver mesas</button>
+						</form>
+					</div>
+				</div>
+				<div ng-show="listMesas">
+					<div class="col-md-11">	
+						<div class="panel-body">
+							<label class="col-md-1">Nombre: </label>
+							<span class="col-md-4">{{listaMesasDisponibles[0].alumno}}</span>
+						</div>
+						<div class="col-md-12 box-margin-lib personal-info table-responsive">
+							<table class="table table-hover table-striped">
+								<thead>
+									<tr>
+										<th class="col-md-1">Materia</th>
+										<th class="col-md-1">A&ntilde;o</th>
+										<th class="col-md-1">Fecha</th>
+										<th class="col-md-2">Horario</th>
+										<th class="col-md-4">Docentes</th>
+										<th class="col-md-1">Inscripto</th>
+										<th class="col-md-2">Acciones</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="mesa in listaMesasDisponibles | orderBy:'fechaHoraInicio'">
+										<td>
+											{{mesa.materia}}
+										</td>
+										<td>
+											Anio y curso
+											<!-- {{mesa.materia.anio}} {{mesa.materia.division}} -->
+										</td>
+										<td>
+											{{mesa.fecha}}
+											<!-- {{mesa.fechaHoraInicio | amDateFormat:'DD/MM/YYYY'}} -->
+										</td>
+										<td>
+											{{mesa.hora}}
+											<!-- de {{mesa.fechaHoraInicio | amDateFormat:'HH:mm'}} a {{mesa.fechaHoraFin | amDateFormat:'HH:mm'}}  -->
+										</td>
+										<td>
+											{{mesa.tribunal}}
+											<!-- <span ng-repeat="docente in mesa.integrantesTribunal" style="width: 30%">{{docente}}, </span> -->
+										</td>
+										<td>
+											<span ng-if="mesa.inscripto" data-animation="am-flip-x" class="glyphicon glyphicon-thumbs-up" bs-tooltip="tooltip.tooltipInscripto"></span>
+											<span ng-if="!mesa.inscripto" data-animation="am-flip-x" class="glyphicon glyphicon-thumbs-down"></span>
+										</td>
+										<td>
+											<button ng-if="!mesa.inscripto" class="btn btn-success btn-xs" bs-tooltip="tooltip.tooltipRegister" ng-click="confirmInscribir(mesa.idMesa, dni, dni, mesa.alumno, mesa.materia, mesa.fecha)" title="Inscribir a esta mesa">
+												<span>Inscribir</span>
+											</button>
+											<button ng-if="mesa.inscripto" class="btn btn-danger btn-xs" bs-tooltip="tooltip.tooltipUnregister" ng-click="confirmDesinscribir(mesa.idMesa, dni, dni, mesa.alumno, mesa.materia, mesa.fecha)" title="Desinscribir de esta mesa">
+												<span>Desinscribir</span>
+											</button>
+										</td> 
+									</tr>
+								</tbody>
+							</div>
+						</table>
+					</div>
+				</div>
 			</fieldset>
 		</div>
-		<div id="gestionarLlamados" ng-show="gestionarLlamados">f
+		<div id="gestionarLlamados" ng-show="gestionarLlamados">
 			<fieldset>
 				<h1>{{subtitle}}: <small>Selecciones un a&ntilde;o para mostrar las materias asociadas</small></h1>
 				<hr>
