@@ -14,7 +14,7 @@ angular.module('clientAppApp')
     var server = SERVER.address;
     var sDesempenio = SERVER.sDesempenio;
 
-    var boletinCalif = 'bol/';
+    var boletinCalif = 'boletin/';
 
     var boletinInsistencia = 'boletinInasist/';
     var updateBoletinInasistencia = 'inasistencia/procesar';
@@ -23,8 +23,8 @@ angular.module('clientAppApp')
 
     //-- calificaciones
 
-    this.getBoletinCalif = function (id) {
-        return $http.get(server + sDesempenio + boletinCalif + id);
+    this.getBoletinCalif = function (idAlumno) {
+        return $http.get(server + sDesempenio + boletinCalif + idAlumno);
     };
 
     //-- inasistencias
