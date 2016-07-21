@@ -208,7 +208,7 @@ var newBoletinInasistencia = function(){
 
 var newPlanillaTrimDTO = function(){
   var planillaTrimDTO = {
-    "trimeste": null,
+    "trimestre": null,
     "anio": "",
     "curso": "",
     "cicloLectivo": 0
@@ -218,7 +218,7 @@ var newPlanillaTrimDTO = function(){
 
 var newPlanillaTrimUpdateDTO = function(){
   var planillaTrimUpdateDTO = {
-    "trimeste": null,
+    "trimestre": null,
     "anio": "",
     "curso": "",
     "cicloLectivo": 0,
