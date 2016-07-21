@@ -711,7 +711,7 @@ public class ServicioAcademicoEndpoint {
 			previas = servicioAcademico.getPreviasDesaprobadas(doc);
 			if (previas.size() == 0) {
 				return Response.status(Status.NOT_FOUND)
-						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
+						.entity(new FrontMessage("No se encontraron previas", FrontMessage.INFO))
 						.build();
 			}
 			return Response.ok(previas).build();

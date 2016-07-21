@@ -1362,6 +1362,55 @@ public class ServicioAcademico {
 		return 0;
 	}
 	
+	/**
+	 * Obtiene el orden de un anio propocionando el id de Anio
+	 * @param idAnio
+	 * @return
+	 * @throws Exception
+	 */
+	public Integer ObtenerOrdenAnio(Long idAnio) throws Exception{
+		try{
+			if(idAnio == 0){
+				return 0;	//Si es id Cero, devuelvo Cero
+			}
+			List<Anio> todosLosAnios = getAnios(new Anio(null,null,null,null,null,null,null,null,null));
+			for(Anio a : todosLosAnios){
+				if(a.getIdAnio().equals(idAnio)){
+					return a.getOrden();
+				}
+			}
+		}catch(Exception ex){
+			throw ex;
+		}
+		return 0; //No se encontró id y se devuelve Cero
+	}
+	
+	/**
+	 * Obtiene el orden del anio proporcionando el id de Curso
+	 * @param idCurso
+	 * @return
+	 * @throws Exception
+	 */
+	public Integer ObtenerOrdenAnioCurso(Long idCurso) throws Exception{
+		try{
+			if(idCurso == 0){
+				return 0;	//Si es id Cero, devuelvo Cero
+			}
+			List<Anio> todosLosAnios = getAnios(new Anio(null,null,null,null,null,null,null,null,null));
+			for(Anio a : todosLosAnios){
+				for(Curso c : a.getListaCursos()){
+					if(c.getIdCurso().equals(idCurso)){
+						return a.getOrden();
+					}
+				}
+			}
+		}catch(Exception ex){
+			throw ex;
+		}
+		return 0;
+	}
+	
+	
 	public void closeSession() throws Exception { 
 		gAnio.closeSession();
 	}

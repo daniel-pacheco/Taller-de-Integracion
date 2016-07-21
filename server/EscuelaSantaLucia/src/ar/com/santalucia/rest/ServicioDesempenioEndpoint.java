@@ -27,6 +27,7 @@ import ar.com.santalucia.dominio.modelo.desempenio.Inasistencia;
 import ar.com.santalucia.dominio.modelo.desempenio.Nota;
 import ar.com.santalucia.dominio.modelo.desempenio.Trimestre;
 import ar.com.santalucia.excepciones.InasistenciaException;
+import ar.com.santalucia.excepciones.ValidacionException;
 import ar.com.santalucia.servicio.ServicioAcademico;
 import ar.com.santalucia.servicio.ServicioAlumno;
 import ar.com.santalucia.servicio.ServicioDesempenio;
@@ -539,14 +540,34 @@ public class ServicioDesempenioEndpoint {
 		}
 	}
 	
+	/**
+	 * Devuelve una lista con todos los alumnos (lista de ListaPasajeAlumnosDTO) preparados para el pasaje de año (promoción, repitencia, graduación)
+	 * @return
+	 */
+	@POST
+	@Path("/pasajeAnioMasivo")
+	public Response listaPasajeAnioMasivo(){
+		try{
+			setInstance();
+			return Response.ok(servicioDesempenio.ObtenerArregloPasajeDTO()).build();
+		}catch(ValidacionException ex){
+			return Response.ok().build();
+		}catch(Exception ex){
+			return Response.ok().build();
+		}
+	}
 	
-	
+	/**
+	 * Devuelve una lista de los alumnos (ListaPasajeAlumnosDTO) de un año para su promoción, repitencia, graduación
+	 * @param getListaDTO
+	 * @return
+	 */
 	@POST
 	@Path("/pasajeAnio/")
 	public Response listaPasajeAlumnosDTO(final GetListaPasajeAlumnosDTO getListaDTO) {
 		try {
 			setInstance();
-			ListaPasajeAlumnosDTO lista = servicioDesempenio.listaAlumnosPasajeCurso(getListaDTO.getAnio(),null, getListaDTO.getCurso());
+			ListaPasajeAlumnosDTO lista = servicioDesempenio.listaAlumnosPasajeCurso(getListaDTO.getAnio(),getListaDTO.getEspecialidad(), getListaDTO.getCurso());
 			if (lista.getListaPasajeAlumnosDTO().size() == 0) {
 				return Response.status(Status.NO_CONTENT)
 					.entity(new FrontMessage("Sin resultados", FrontMessage.INFO))
