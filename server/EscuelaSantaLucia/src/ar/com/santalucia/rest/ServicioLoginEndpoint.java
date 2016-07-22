@@ -63,7 +63,7 @@ public class ServicioLoginEndpoint {
 			//return Response.ok(ex).build();
 			return Response.status(Status.UNAUTHORIZED).build();
 		}catch(Exception ex){
-			return Response.ok(ex).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
 	
@@ -89,7 +89,7 @@ public class ServicioLoginEndpoint {
 			case LoginError.FIRMAERROR:
 				return Response.status(Status.FORBIDDEN).build();
 			case LoginError.EXPIRADO:
-				return Response.ok(ex).build();
+				return Response.status(Status.SEE_OTHER).build();
 			default:
 				break;
 			}
@@ -101,41 +101,6 @@ public class ServicioLoginEndpoint {
 		}else{
 			return Response.ok(true).header("auth0", nuevoToken).build();
 		}
-	}
-	
-	
-	
-	@GET
-	@Path("/{id:[0-9][0-9]*}")
-	public Response findById(@PathParam("id") final Long id) {
-		//TODO: retrieve the serviciologin 
-		ServicioLogin serviciologin = null;
-		if (serviciologin == null) {
-			return Response.status(Status.NOT_FOUND).build();
-		}
-		return Response.ok(serviciologin).build();
-	}
-
-	@GET
-	public List<ServicioLogin> listAll(@QueryParam("start") final Integer startPosition,
-			@QueryParam("max") final Integer maxResult) {
-		//TODO: retrieve the serviciologins 
-		final List<ServicioLogin> serviciologins = null;
-		return serviciologins;
-	}
-
-	@PUT
-	@Path("/{id:[0-9][0-9]*}")
-	public Response update(@PathParam("id") Long id, final ServicioLogin serviciologin) {
-		//TODO: process the given serviciologin 
-		return Response.noContent().build();
-	}
-
-	@DELETE
-	@Path("/{id:[0-9][0-9]*}")
-	public Response deleteById(@PathParam("id") final Long id) {
-		//TODO: process the serviciologin matching by the given id 
-		return Response.noContent().build();
 	}
 	
 	@POST
