@@ -31,7 +31,8 @@
     var materiaDesvincularDoc = 'mat/desvinDoc';
 
     var putLlamado = "llm/";
-    var llamadosGetAll = "listAll"; 
+    var llamadosGetAll = "listAll";
+    var deleteLlamado = "llm/"; 
 
     var putMesa = "mesa/";
     var getMesas = "inscripcion/";
@@ -80,6 +81,10 @@
 
     this.llamadoGetAll = function () {
         return $http.get(server + sAcademico + putLlamado + llamadosGetAll);
+    };
+
+    this.llamadoDelete = function (idLlamado) {
+        return $http.delete(server + sAcademico + deleteLlamado + idLlamado);
     };
 
     this.matGetAllMin = function () {

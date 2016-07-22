@@ -27,7 +27,7 @@
   });
 })
 
- .controller('LlamadosCtrl', function ($scope, ModalService, $timeout, ObjectsFactory, spinnerService, exportTableService, academicoService, docenteService, $select) {
+ .controller('LlamadosCtrl', ['$scope', 'ModalService', 'ObjectsFactory', 'spinnerService', 'exportTableService', 'academicoService', 'docenteService', '$select', function ($scope, ModalService, ObjectsFactory, spinnerService, exportTableService, academicoService, docenteService, $select) {
 
 //-- [Llamado]
 //-- [Llamado] variables
@@ -324,7 +324,26 @@ function getLlamados() {
   .finally(function(){
     spinnerService.hide('searchLlamadoSpinner');
   })
+};
 
+$scope.deleteLlamado = function(llamado) {
+  if (llamado.listaMesas.length !== 0) {
+    $scope.showMessage('El llamado no debe contener mesas para poder ser eliminado.', 'ERROR!', false);
+  } else{
+    spinnerService.show('searchLlamadoSpinner');
+    academicoService.llamadoDelete(llamado.idLlamado)
+    .then(
+      function(response){
+        showServerSuccess('El llamado ha sido eliminado con éxito', response);
+        getLlamados();
+      },
+      function(response){
+        showServerError(response);
+      })
+    .finally(function(){
+      spinnerService.hide('searchLlamadoSpinner')
+    });
+  };
 };
 
 //-- [Llamado/inscripcion]
@@ -335,19 +354,19 @@ $scope.listMesas = false;
 //-- [Llamado/inscripcion] modals
 //-- [Llamado/inscripcion] utils
 $scope.confirmInscribir = function(idMesa, idAlumno, dni, alumno, materia, fecha){
-    var params = {
+  var params = {
     'idMesa': idMesa,
     'idAlumno': idAlumno,
     'dni': dni
   };
 
-  $scope.confirmModal("Desea inscribir a "+ alumno + " de la mesa de " + materia + " el día " + fecha, $scope.inscribir, params);
+  $scope.confirmModal("Desea inscribir a "+ alumno + " a la mesa de " + materia + " el día " + fecha, $scope.inscribir, params);
 
 
 };
 
 $scope.confirmDesinscribir = function(idMesa, idAlumno, dni, alumno, materia, fecha){
-    var params = {
+  var params = {
     'idMesa': idMesa,
     'idAlumno': idAlumno,
     'dni': dni
@@ -409,5 +428,5 @@ $scope.desinscribir = function(params){
 //-- [Llamado/sub-seccion] modals
 //-- [Llamado/sub-seccion] utils
 //-- [Llamado/sub-seccion] service calls
-});
+}]);
 
