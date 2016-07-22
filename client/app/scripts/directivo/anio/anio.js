@@ -212,6 +212,22 @@ $scope.clearFormAnio = function() {
 
 //-- [Anio/NuevoAnio] filters
 //-- [Anio/NuevoAnio] modals
+$scope.especialidades = [];
+$scope.administrarEspecialidadModal = function(){
+  ModalService.showModal({
+    templateUrl: 'scripts/directivo/anio/modal/adminEspecialidad.tpl.html',
+    controller: 'adminEspecialidadModalController',
+    inputs: {
+      title: "Especialidad",
+      listaEspecialidades: $scope.especialidades,
+    }
+  }).then(function(modal) {
+    modal.element.modal();
+    modal.close.then(function(result){
+      $scope.especialidades = result;
+    });
+  });
+};
 //-- [Anio/NuevoAnio] utils
 
 function initAnio(anioMin) {

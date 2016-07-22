@@ -151,6 +151,15 @@ var newAnio = function(){
   return anio;
 };
 
+var newEspecialidad = function(){
+  var especialidad = {
+    "idEspecialidad" : null,
+    "nombre" : '',
+    "nombreCorto" : ''
+  };
+  return especialidad;
+};
+
 var newCurso = function(){
   var curso = {
     "idCurso": null,
@@ -327,6 +336,7 @@ var newLlamado = function(){
     newPlanillaTrimUpdateDTO: newPlanillaTrimUpdateDTO,
     newMesa: newMesa,
     newLlamado: newLlamado,
+    newEspecialidad: newEspecialidad,
 
     //-- Estadisticas
 

@@ -162,15 +162,15 @@
 
 						<div class="form-group" ng-class="{ 'has-error': formAnio.especialidad.$touched && formAnio.especialidad.$invalid }">
 							<div class="col-md-4 control-label">
-								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> A&ntilde;o:</label>
+								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Especialidad:</label>
 							</div>
 							<div class="col-md-3">
 								<select class="form-control" ng-model="nuevoAnioObj.especialidad" ng-options="especialidad.nombre for especialidad in especialidades" name="especialidad" required>
-									<option value="" disabled selected>Seleccione un a&ntilde;o</option>
+									<option value="" disabled selected>Seleccione una especialidad</option>
 								</select> 
 							</div>
 							<div class="col-md-2">
-								<input class="btn btn-default" type="button" ng-click="administrarEsecialodadModal()" value="Administrar"/>
+								<input class="btn btn-default" type="button" ng-click="administrarEspecialidadModal()" value="Administrar"/>
 							</div>
 							<div ng-messages="formAnio.especialidad.$error" ng-if="formAnio.especialidad.$touched && formAnio.especialidad.$invalid">
 								<div ng-message="required" class="help-block">Seleccione una opci&oacute;n</div>
@@ -318,9 +318,13 @@
 			<h1>{{subtitle}}<small>: Seleccione el a&ntilde;o y divisi&oacute;n que desee administrar</small></h1>
 			<hr>
 			<label for="dropDownSelectAnio">A&ntilde;o: </label> 
-			<select name="dropDownSelectAnio" ng-change="resetAdministrarTable()" class="form-control-inline" ng-model="dropDownSelectedAnio" ng-options="anio.nombre for anio in anios"></select>
-			<label for="dropDownSelectCurso">Division: </label> 
-			<select name="dropDownSelectCurso" ng-change="resetAdministrarTable()" class="form-control-inline" ng-model="dropDownSelectedCurso" ng-options="'Division: ' + curso.division + ' Turno: ' + curso.turno for curso in dropDownSelectedAnio.listaCursos"></select>
+			<select name="dropDownSelectAnio" ng-change="resetAdministrarTable()" class="form-control-inline" ng-model="dropDownSelectedAnio" ng-options="anio.nombre for anio in anios">
+				<option value="" disabled selected>Seleccione un a&ntilde;o</option>
+			</select>
+			<label for="dropDownSelectCurso">Divisi&oacute;n: </label> 
+			<select name="dropDownSelectCurso" ng-change="resetAdministrarTable()" class="form-control-inline" ng-model="dropDownSelectedCurso" ng-options="'Division: ' + curso.division + ' Turno: ' + curso.turno for curso in dropDownSelectedAnio.listaCursos">
+				<option value="" disabled selected>Seleccione una divisi&oacute;n</option>
+			</select>
 			<button class="btn btn-info" ng-click="getAlumnos()">Aceptar</button>
 
 			<div id="listFilters" ng-show="listAnioIsEnabled">
