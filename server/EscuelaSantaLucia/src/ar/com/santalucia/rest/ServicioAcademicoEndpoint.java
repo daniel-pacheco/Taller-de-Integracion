@@ -26,6 +26,7 @@ import ar.com.santalucia.dominio.dto.MesaAltaDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Area;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
+import ar.com.santalucia.dominio.modelo.academico.Especialidad;
 import ar.com.santalucia.dominio.modelo.academico.Llamado;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.academico.Mesa;
@@ -997,6 +998,73 @@ public class ServicioAcademicoEndpoint {
 		}
 		
 	} 
+	
+	/**
+	 * Agrega o modifica una especialidad.
+	 * @param especialidad
+	 * @return
+	 */
+	@PUT
+	@Path("/especialidad")
+	public Response addEspecialidad(final Especialidad especialidad){
+		try{
+			setInstance();
+			return Response.ok(servicioAcademico.addEspecialidad(especialidad)).build();
+		}catch(ValidacionException vEx){
+			return Response.status(Status.CONFLICT).entity(new FrontMessage(vEx.getMensajesError().toString(),FrontMessage.INFO)).build();
+		}catch(Exception ex){
+			return Response.serverError().entity(new FrontMessage("Ocurrió un problema al agregar la especialidad.",FrontMessage.CRITICAL)).build();
+		}
+	}
+	
+	/**
+	 * Obtiene una especilidad proporcionando su id
+	 * @param idEspecialidad
+	 * @return
+	 */
+	@GET
+	@Path("/especialidad/{id:[0-9][0-9]*}")
+	public Response getEspecialidad(@PathParam("id") final Long idEspecialidad){
+		try{
+			setInstance();
+			return Response.ok(servicioAcademico.getEspecialidadById(idEspecialidad)).build();
+		}catch(Exception ex){
+			return Response.serverError().entity(new FrontMessage("Ocurrió un problema al intentar obtener la especialidad.",FrontMessage.CRITICAL)).build();
+		}
+	}
+	
+	/**
+	 * Obtiene todas las especilidades existentes
+	 * @return
+	 */
+	@GET
+	@Path("/especialidadListAll")
+	public Response getEspecialidades(){
+		try{
+			setInstance();
+			return Response.ok(servicioAcademico.getEspecialidad(new Especialidad(null,null,null))).build();
+		}catch(Exception ex){
+			return Response.serverError().entity(new FrontMessage("Ocurrió un problema al intentar obtener las especialidades.",FrontMessage.CRITICAL)).build();
+		}
+	}
+	
+	/**
+	 * Elimina una especialidad.
+	 * @param idEspecialidad
+	 * @return
+	 */
+	@DELETE
+	@Path("/especialidad/{id:[0-9][0-9]*}")
+	public Response deleteEspecialidad(@PathParam("id") final Long idEspecialidad){
+		try{
+			setInstance();
+			return Response.ok(servicioAcademico.deleteEspecialidad(servicioAcademico.getEspecialidadById(idEspecialidad))).build();
+		}catch(ValidacionException vEx){
+			return Response.status(Status.CONFLICT).entity(new FrontMessage("Especialidad en uso por: "+vEx.getMensajesError().toString(),FrontMessage.INFO)).build();
+		}catch(Exception ex){
+			return Response.serverError().entity(new FrontMessage("Ocurrió un problema al intentar eliminar la especilidad.",FrontMessage.CRITICAL)).build();
+		}
+	}
 }
 	
 
