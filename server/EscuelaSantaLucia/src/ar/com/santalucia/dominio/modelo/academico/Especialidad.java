@@ -41,4 +41,16 @@ public class Especialidad {
 		this.nombreCorto = nombreCorto;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Especialidad){
+			if (this.getNombre().equals(((Especialidad) obj).getNombre()) || 
+					this.getNombreCorto().equals(((Especialidad) obj).getNombreCorto())){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	
 }

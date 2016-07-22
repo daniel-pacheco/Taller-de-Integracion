@@ -9,6 +9,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
@@ -16,6 +19,7 @@ import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorAnio;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorArea;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorCurso;
+import ar.com.santalucia.aplicacion.gestor.academico.GestorEspecialidad;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorInscripcion;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorLlamado;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMateria;
@@ -40,6 +44,7 @@ import ar.com.santalucia.dominio.dto.MesaAltaDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Area;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
+import ar.com.santalucia.dominio.modelo.academico.Especialidad;
 import ar.com.santalucia.dominio.modelo.academico.Inscripcion;
 import ar.com.santalucia.dominio.modelo.academico.Llamado;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
@@ -55,6 +60,7 @@ import ar.com.santalucia.dominio.modelo.desempenio.Trimestre;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.excepciones.ValidacionException;
+import ar.com.santalucia.rest.FrontMessage;
 
 /**
  * Clase servicio para gestión académica. Engloba Anio, Curso, alumnos y
@@ -85,6 +91,7 @@ public class ServicioAcademico {
 	private GestorInasistencia gInasistencia;
 	private GestorBoletinInasistencias gBoletinInasistencias;
 	private GestorInscripcion gInscripcion;
+	private GestorEspecialidad gEspecialidad;
 
  	public ServicioAcademico() throws Exception {
 		try {
@@ -105,6 +112,7 @@ public class ServicioAcademico {
 			gInasistencia = new GestorInasistencia();
 			gBoletinInasistencias = new GestorBoletinInasistencias();
 			gInscripcion = new GestorInscripcion();
+			gEspecialidad = new GestorEspecialidad();
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un problema al inicializar el servicio de operaciones básicas: "
 					+ ex.getMessage());
@@ -601,6 +609,78 @@ public class ServicioAcademico {
 	}
 	
 	
+	public Boolean addEspecialidad(Especialidad especialidad) throws Exception, ValidacionException{
+		try{
+			if(especialidad.getIdEspecialidad() == null){
+				gEspecialidad.add(especialidad);
+				return true;
+			}else{
+				gEspecialidad.modify(especialidad); 
+				return true;
+			}
+		}catch(ValidacionException vEx){
+			throw vEx;
+		}catch(Exception ex){
+			throw ex;
+		}
+	}
+	
+	
+	public Boolean deleteEspecialidad(Especialidad especialidad) throws Exception, ValidacionException{
+		try{
+			especialidadOcupada(especialidad);
+			gEspecialidad.delete(especialidad);
+			return true;
+		}catch(ValidacionException vEx){
+			throw vEx;
+		}catch(Exception ex){
+			throw new Exception("No se pudo eliminar el ÁREA: " + ex.getMessage());
+		}
+	}
+	
+	public Especialidad getEspecialidadById(Long idEspecialidad) throws Exception{
+		try{
+			return gEspecialidad.getById(idEspecialidad);
+		}catch(Exception ex){
+			throw new Exception("No se pudo obtener la ESPECIALIDAD: " + ex.getMessage());
+		}
+	}
+	
+	public ArrayList<Especialidad> getEspecialidad(Especialidad example) throws Exception{
+		try{
+			return gEspecialidad.getByExample(example);
+		}catch(Exception ex){
+			throw new Exception("No se pudo obtener el listado de ESPECIALIDADES: " + ex.getMessage());
+		}
+	}
+
+	
+	/**
+	 * Verifica si una especialidad está siendo ocupada por algún año.
+	 * @param especialidad
+	 * @throws Exception
+	 * @throws ValidacionException
+	 */
+	private void especialidadOcupada(Especialidad especialidad) throws Exception, ValidacionException{
+		try{
+			ValidacionException vEx = new ValidacionException();
+			List<Anio> listadoAnio = gAnio.getByExample(new Anio(null,null,null,null,null,null,null,null,true));
+			if(listadoAnio!= null && listadoAnio.size() > 0){
+				for (Anio a : listadoAnio){
+					if(a.getEspecialidad().equals(especialidad)){
+						vEx.addMensajeError(a.getNombre());
+					}
+				}
+			}
+			if(vEx.getMensajesError().size() > 0){
+				throw vEx;
+			}
+		}catch(ValidacionException vEx){
+			throw vEx;
+		}catch(Exception ex){
+			throw ex;
+		}
+	}
 	
 	public Boolean addLlamado(Llamado llamado) throws Exception { // EN ENDPOINT
 		try {
