@@ -1065,6 +1065,8 @@ public class ServicioAcademicoEndpoint {
 			return Response.serverError().entity(new FrontMessage("Ocurrió un problema al intentar eliminar la especilidad.",FrontMessage.CRITICAL)).build();
 		}
 	}
+	
+	
 }
 	
 

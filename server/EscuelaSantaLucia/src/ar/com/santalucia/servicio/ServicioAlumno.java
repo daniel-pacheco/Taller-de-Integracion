@@ -367,6 +367,40 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 		return alumnoDto;
 	}
 
-	
+	/**
+	 * Devuelve un listado de AlumnoDTO de un año específico
+	 * @param idAnio
+	 * @return
+	 * @throws Exception
+	 */
+	public List<AlumnoDTO> listAlumnosActivosAnioDTO(Long idAnio) throws ValidacionException, Exception{
+		try{
+			//Instanciamos un servicio para encontrar el nombre del anio
+			//Capturamos el nombre y filtramos lo que devuelve listAlumnosActivosDTO()
+			ValidacionException vEx = new ValidacionException();
+			ServicioAcademico sAcademico = new ServicioAcademico();
+			Anio anioAux = sAcademico.getAnio(idAnio);
+			if(anioAux == null){
+				vEx.addMensajeError("No existe el año solicitado.");
+				throw vEx;
+			}
+			List<AlumnoDTO> todosLosAlumnos = listAlumnosActivosDTO();    // Me traigo los DTO de todos los alumnos
+			List<AlumnoDTO> listadoDevolver = new ArrayList<AlumnoDTO>();
+			for(AlumnoDTO aDTO : todosLosAlumnos){
+				if (aDTO.getAnio().equals(anioAux.getNombre())){
+					listadoDevolver.add(aDTO);
+				}
+			}
+			if(listadoDevolver.size() == 0){
+				vEx.addMensajeError("El año no tiene alumnos");
+				throw vEx;
+			}
+			return listadoDevolver;
+		}catch(ValidacionException vEx){
+			throw vEx;
+		}catch(Exception ex){
+			throw ex;
+		}
+	}
 
 }
