@@ -1,13 +1,13 @@
 angular.module('clientAppApp')
 .controller('addAreaDetailsModalController', [
-  '$scope', '$element', 'title', 'close', 'ObjectsFactory', 'listaAreas',
-  function($scope, $element, title, close, ObjectsFactory, listaAreas) {//acá se inyecta las variables necesarias y luego la función close
+  '$scope', '$element', 'title', 'close', 'ObjectsFactory', 'listaAreas', 'academicoService', 'ModalService',
+  function($scope, $element, title, close, ObjectsFactory, listaAreas, academicoService, ModalService) {//acá se inyecta las variables necesarias y luego la función close
 
     $scope.listaAreas = listaAreas;
     $scope.nuevaArea = '';
     $scope.selectedArea = '';
 
-    $scope.copiaListaAreas = angular.copy (listaAreas);
+    $scope.copiaListaAreas = angular.copy ($scope.listaAreas);
 
     $scope.title = title;
 
@@ -30,7 +30,7 @@ angular.module('clientAppApp')
      close (listaAreas , 500);
  };
 
-$scope.edit = function (area){
+ $scope.edit = function (area){
   $scope.copiaArea = angular.copy (area);
 };
 
@@ -49,5 +49,38 @@ $scope.addArea = function (){
   $scope.nuevaArea = ObjectsFactory.newArea();
   $scope.form.$setUntouched();
 };
-  
+
+function searchArea() {
+  // spinnerService.show('searchMateriaSpinner');
+  academicoService.areaGetAll()
+  .then(
+    function(response){
+      console.log(response.data);
+      $scope.listaAreas = response.data;
+    },
+    function(response){
+      // showServerError('Se ha producido un error al intentar contactar al servidor: ' + response.statusText);
+    })
+  .finally(function(){
+    // spinnerService.hide('searchMateriaSpinner');
+  });
+};
+// $scope.$on('$viewContentLoaded', function(){
+  // searchArea();
+// });
+
+function addArea(area) {
+  academicoService.areaPutNew(area)
+  .then(
+    function(response){
+      console.log(response);
+    },
+    function(response){
+      console.log(response);
+    })
+  .finally(function(){
+
+  });
+};
+
 }]);

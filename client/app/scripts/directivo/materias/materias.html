@@ -26,11 +26,13 @@
 					<li data-target="#showNuevaMateria" ng-class="{active : activeMenuIzqAlu === 2}">
 						<a href="" ng-click="seleccionar('nuevaMateria')">Nueva materia</a>
 					</li>
+					<li>
+						<img class="col-md-10" style="position: relative; margin-top: 100%;" src="./images/logo.jpg">
+					</li>
 				</ul>
 			</div>
 			<!--/ngInclude: 'views/partials/affixed-sidebar.html' -->
 		</div>
-		<img class="col-md-10" style="position: relative; margin-top: 100%;" src="./images/logo.jpg">
 	</div>
 
 	<div>
@@ -53,7 +55,7 @@
 						<select class="dropdown-toggle form-control-inline" name="" ng-model="filterByYear"> <!-- ng-change="update(dropDownValue, option)"> -->
 							<option value="" disabled selected>Seleccione una opci&oacute;n</option>
 							<option value="">Todos</option>
-							<option ng-repeat="option in dropDownOptions"  value="{{option}}">{{option}}</option>
+							<option ng-repeat="option in listaAnios"  value="{{option.nombre}}">{{option.nombre}}</option>
 						</select>
 						<div id="alerta" bs-affix style="position: relative; width: 50%; float: right;"></div>
 						<button class="btn btn-default pull-right" ng-click="exportAction('dir-listado-materias')" bs-tooltip="tooltip.tooltipExport">Exportar</button>						
@@ -81,7 +83,7 @@
 						<td>{{materia.descripcion}}</td>
 						<td>
 							<div>
-								<button class="btn btn-default btn-xs" style="width: 45%; float: left"n g-click="" bs-tooltip="tooltip.tooltipEdit">
+								<button class="btn btn-default btn-xs" style="width: 45%; float: left" ng-click="editMateria(materia)" bs-tooltip="tooltip.tooltipEdit">
 									<span data-animation="am-flip-x" class="glyphicon glyphicon-edit"></span>
 								</button>
 							</div>
@@ -115,7 +117,7 @@
 								</div>
 								<div class="col-sm-5">
 									<input class="form-control" placeholder="Nombre de la materia" name="nombre" type="text"
-									maxlength="85" required pattern="[A-zÀ-ú 0-9]*" ng-model="nuevaMateria.nombreMateria">
+									maxlength="85" required pattern="[A-zÀ-ú,.!°?\-_ 0-9]*" ng-model="nuevaMateria.nombreMateria">
 								</div>
 								<div ng-messages="formMat.nombre.$error" ng-if="formMat.nombre.$touched && formMat.nombre.$invalid">
 									<div ng-message="pattern" class="help-block">Formato invalido</div>
@@ -138,10 +140,9 @@
 								<div class="col-sm-4 control-label">
 									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Docente titular:</label>
 								</div>
-								<div class="col-sm-5">
-									<select class="form-control" name="docenteTitular" ng-model="nuevaMateria.idDocenteTitular" required>
+								<div class="col-sm-5">									
+									<select class="form-control" name="docenteTitular" ng-model="nuevaMateria.idDocenteTitular" ng-options="docente.idUsuario as docente.nombre + ' ' + docente.apellido for docente in listaDocentes" required>
 										<option value="" disabled selected>Seleccione un docente titular</option>
-										<option ng-repeat="docente in listaDocentes" value="{{docente.idUsuario}}">{{idUsuario}}{{docente.nombre}} {{docente.apellido}}</option>
 									</select>
 								</div>
 								<div ng-messages="formMat.docenteTitular.$error" ng-if="formMat.docenteTitular.$touched && formMat.docenteTitular.$invalid">
@@ -153,9 +154,8 @@
 									<label for="">Docente suplente:</label>
 								</div>
 								<div class="col-sm-5">
-									<select class="form-control" name="docenteSuplente" ng-model="nuevaMateria.idDocenteSuplente">
+									<select class="form-control" name="docenteSuplente" ng-model="nuevaMateria.idDocenteSuplente" ng-options="docente.idUsuario as docente.nombre + ' ' + docente.apellido for docente in listaDocentes" required>
 										<option value="" disabled selected>Seleccione un docente suplente</option>
-										<option ng-repeat="docente in listaDocentes" value="{{docente.idUsuario}}">{{docente.nombre}} {{docente.apellido}}</option>
 									</select>
 								</div>
 							</div><!-- /form-group-->
@@ -164,9 +164,8 @@
 									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> A&ntilde;o al que pertenece:</label>
 								</div>
 								<div class="col-sm-3">
-									<select class="form-control" name="anio" ng-model="nuevaMateria.idAnio" required>
-										<option value="null" disabled selected>Seleccione un a&ntilde;o</option>
-										<option ng-repeat="anio in listaAnios" value="{{anio.idAnio}}">{{anio.nombre}}</option>
+									<select class="form-control" name="anio" ng-model="nuevaMateria.idAnio" ng-options="anio.idAnio as anio.nombre for anio in listaAnios" required>
+										<option value="" disabled selected>Seleccione un a&ntilde;o</option>
 									</select>
 								</div>
 								<div ng-messages="formMat.anio.$error" ng-if="formMat.anio.$touched && formMat.anio.$invalid">
@@ -178,19 +177,19 @@
 									<label for="">&Aacute;rea:</label>
 								</div>
 								<div class="col-sm-3">
-									<select class="form-control" name="area" ng-model="nuevaMateria.area">
-										<option value="null" disabled selected>Seleccione un &aacute;rea</option>
-										<option ng-repeat="area in listaAreas" value="{{area}}">{{area.nombre}}</option>
+									<select class="form-control" name="area" ng-model="nuevaMateria.area" ng-options="area.idArea as area.nombre for area in listaAreas" required>
+										<option value="" disabled selected>Seleccione un &aacute;rea</option>
 									</select>
+
 								</div>
 								<div class="col-sm-1">
-									<input class="btn btn-info" type="button" ng-click="addArea()" name=""
+									<input class="btn btn-default" type="button" ng-click="addArea()" name=""
 									value="Administrar"/>
 								</div>
 							</div><!-- /form-group-->
 							<div class="form-group">
 								<div class="col-md-6 control-label">
-									<input class="btn btn-primary" type="button"  ng-disabled="!formMat.$valid" ng-click="agregarMateria()" value="Guardar"/>
+									<input class="btn btn-primary" type="button"  ng-disabled="!formMat.$valid" ng-click="agregarMateria(nuevaMateria)" value="Guardar"/>
 								</div>
 							</div>
 						</div>

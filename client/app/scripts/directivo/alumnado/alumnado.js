@@ -22,7 +22,7 @@
  })
 
  // .controller('AlumnadoCtrl', function ($scope, $q, $http, academicoService, boletinInasistenciasData, $alert, libCalificacionesdata, plantillaTrimestralData, alumnoService, Upload, $timeout, alumnoData, ModalService, ObjectsFactory, modalService, spinnerService, desempenioService, exportTableService, $interval) {
-.controller('AlumnadoCtrl', [ '$scope', '$timeout', 'academicoService', 'alumnoService', 'desempenioService', 'exportTableService', 'modalService', 'ModalService', 'ObjectsFactory', 'spinnerService', 'Upload' ,function ($scope, $timeout, academicoService, alumnoService, desempenioService, exportTableService, modalService, ModalService, ObjectsFactory, spinnerService, Upload) { 	
+ 	.controller('AlumnadoCtrl', [ '$scope', '$timeout', 'academicoService', 'alumnoService', 'desempenioService', 'exportTableService', 'modalService', 'ModalService', 'ObjectsFactory', 'spinnerService', 'Upload' ,function ($scope, $timeout, academicoService, alumnoService, desempenioService, exportTableService, modalService, ModalService, ObjectsFactory, spinnerService, Upload) { 	
 //-- [Alumnado]
 //-- [Alumnado] variables
 
@@ -342,7 +342,7 @@ $scope.seleccionarCheckbox = function(alumno) {//al presionar un td de la lista 
 	} else $scope.mostrarBtnInasistencias = false
 };
 
-$scope.checkAll = function () {
+$scope.unCheckAll = function () {
 	angular.forEach($scope.alumnoData, function (item) {
 		item.selected = false;
 	});
@@ -634,10 +634,10 @@ function multipanelCollapseAll() {
 };
 
 $scope.showAsignarNotas = function () {
-  	if (!$scope.asignarNotas) {
-  		$scope.asignarNotas = true;
-  	};
-  };
+	if (!$scope.asignarNotas) {
+		$scope.asignarNotas = true;
+	};
+};
 
 
 //-- [Alumnado/Notas] filters
@@ -744,6 +744,37 @@ $scope.getPlanillaTrimestre = function(trim) {
 	};
 };
 
+
+$scope.metralleta = function(){
+	var aux = [];
+	for (var i = 0; i < 100; i++) {
+		alumnoService.getAllMin()
+		.then(function(response){
+			console.log('alumno: '+ i + ' ');
+			console.log(response.data);
+			aux.push(response.data);
+		},
+		function(response){
+			// alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
+			console.log('error en el alumno: ' + i);
+		})
+		.finally(function(){});
+
+		academicoService.anioGetAllMin()
+		.then(
+			function(response){
+				console.log('anio: '+ i + ' ');
+				console.log(response.data);
+				aux.push(response.data);
+			},
+			function(response){
+				console.log('error en el anio: ' + i);
+			})
+		.finally(function(){
+		});
+	};
+	console.log(aux);
+};
 //---------------------------------
 
 }]);

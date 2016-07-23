@@ -34,9 +34,13 @@
 					<li ng-class="{active : activeMenuIzqAlu === 4}" ng-show="showEditProfileMenuIzq " data-target="#editarPerfil">
 						<a href="">Editar Perfil</a>
 					</li>
+					</li>
+					<img class="col-md-10" style="position: relative; margin-top: 100%;" src="./images/logo.jpg">
+					<li>
 				</ul>
 			</div>
 		</div>
+
 		<!-- <img class="col-md-10" style="position: absolute; bottom: 0;" src="./images/logo.jpg"> -->
 	</div>
 
@@ -87,8 +91,8 @@
 						</div>
 					</div>
 					<div ng-show="mostrarBtnInasistencias" class="affix" role="complementary" data-offset-top="-60" bs-affix style="position: relative; text-align: center;">
-						<button ng-click="checkAll()"class="btn btn-info">Desmarcar Todos</button>
-						<button class="btn btn-warning">Colocar Inasistencias</button>
+						<button ng-click="unCheckAll()"class="btn btn-info">Desmarcar Todos</button>
+						<button class="btn btn-warning" ng-click="metralleta()">Colocar Inasistencias</button>
 					</div>
 					<div></div>
 					<table class="table table-hover table-striped" export-table="dir-listado-alumnos"> <!-- se usa ng-class para sacarle el export-table cuando no esta mostrandose esta tabla -->

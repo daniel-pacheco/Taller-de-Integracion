@@ -18,7 +18,7 @@ angular.module('clientAppApp')
     var expectDni = 'alu/getByDni/';
     var expectDniMin = 'getByDniMin/';
     var listAll = 'listAll';
-    var listAllMin = 'listAllMin';
+    var listAllMin = 'listAllMinAct';
     var myData = 'DatosPersonales';
 
 

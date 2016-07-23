@@ -59,7 +59,7 @@
  	llamados: ['.llamados', 'Llamados'],
  	desemp: ['.desemp', 'Desempeño'],
  	micuenta: ['.micuenta', 'Mi Cuenta'],
- 	test: ['.test', 'Test']
+ 	test: ['.test', '']
  })
  
  .constant('CURSOS',{

@@ -19,7 +19,7 @@
     }
   });
 })
- .controller('MateriasCtrl', function ($scope, ModalService, areasData, $timeout, $alert, materiasData, ObjectsFactory, docenteData, academicoService, docenteService, $modal, spinnerService, exportTableService) {
+  .controller('MateriasCtrl', ['$scope', 'academicoService', 'docenteService', 'exportTableService', 'ModalService', 'ObjectsFactory', 'spinnerService' ,function ($scope, academicoService, docenteService, exportTableService, ModalService, ObjectsFactory, spinnerService) {
 
 //-- [Materias]
 //-- [Materias] variables
@@ -35,7 +35,7 @@ $scope.tooltip = {
     'title': 'Exportar para impresión'
   }
 };
-$scope.dropDownOptions = ['1', '2', '3', '4', '5', '6', '7', '8'];
+$scope.dropDownOptions = [];// ['1', '2', '3', '4', '5', '6', '7', '8'];
 $scope.dropDownValue = '';
 
 var setActiveAlu = function(menuItemAlu) {
@@ -49,8 +49,12 @@ $scope.seleccionar = function(id) {
     $scope.subtitle = "Listado";
     $scope.listado = true;
     setActiveAlu(1);
+    searchAnio();
+    searchDocente();//Esta lista de docentes deberia tener solo el docente y el ID
+    searchArea();
     break;
     case 'nuevaMateria':
+    $scope.formMat.$setUntouched();
     $scope.listado = false;
     $scope.subtitle = "Nueva materia";
     $scope.showNuevaMateria = true;
@@ -60,10 +64,19 @@ $scope.seleccionar = function(id) {
     searchAnio();
     setActiveAlu(2);
     break;
+    case 'editar':
+    $scope.listado = false;
+    $scope.showNuevaMateria = true;
+    searchArea();
+    searchAnio();
+    setActiveAlu(2);
+    break;
 
   }
 };
-$scope.seleccionar('listado');
+$scope.$on('$viewContentLoaded', function(){
+  $scope.seleccionar('listado');
+});
 
 //-- [Materias] filters
 //-- [Materias] modals
@@ -130,24 +143,6 @@ function showServerSuccess (message, response){
 
 //-- [Materias] service calls
 
-  // $scope.listado = true;
-  // $scope.subtitle = "Listado";
-  // $scope.listaMaterias = materiasData;
-
-
-
-
-
-
-
-  // $scope.activeMenuIzqAlu = 1;
-  
-
-
-//-- Modals
-// $scope.listaAreas = [{idArea: 1, nombre: "Sistemas"},
-// {idArea: 2, nombre: "Computación"}];//areasData;
-
 $scope.addArea = function() {
   ModalService.showModal({
     templateUrl: 'scripts/directivo/materias/modal/addareadetails.tpl.html',
@@ -164,22 +159,32 @@ $scope.addArea = function() {
   });
 };
 
-
-
-
-
 //-- Llamadas al servicio
 $scope.deleteMateria = function (materia) {
-  $scope.confirmModal("¿Desea eliminar "+materia.nombre+" de "+materia.ano+" "+materia.division+"?", $scope.eliminarMateria, materia);
+  $scope.confirmModal("¿Desea eliminar " + materia.nombre + " de " + materia.anio + "?", $scope.eliminarMateria, materia);
   //Hay que actualizar de nuevo la lista de docentes
 };
 
 //esto tiene que ser una llamada al service que elimine la materia
 $scope.eliminarMateria = function(materia){
-  $scope.listaMaterias.splice($scope.listaMaterias.indexOf(materia),1);
-  $scope.showMessage("todo ok", "Aviso", false);
-  //$modal({title: 'hola', content: 'Todo bien', show: true});
-  $scope.showMessage("todo ok", "Aviso", true);
+
+  if (materia.docenteTitular && materia.docenteSuplente) {
+    $scope.showMessage('No es posible eliminar esta materia; tiene docentes asociados. ', 'ERROR', false);
+  } else {
+
+    spinnerService.show('searchMateriaSpinner');
+    academicoService.matDelete(materia.idMateria)
+    .then(function(response){
+      showServerSuccess('La materia ha sido eliminada con éxito ', response);
+      listAllMaterias();
+    },
+    function(response){
+      showServerError(response);
+    })
+    .finally(function(){
+      spinnerService.hide('searchMateriaSpinner');
+    });
+  };
 };
 
 
@@ -188,6 +193,28 @@ $scope.eliminarMateria = function(materia){
 //-- [Materias/Listado] variables
 $scope.listaMaterias = [];
 //-- [Materias/Listado] Form Management
+
+$scope.editMateria = function(materia){
+  getMateriaById(materia);
+};
+
+var editMateria = function(materia, materiaFull) {
+  $scope.seleccionar('editar');
+  // var materiaFull = materia;
+
+  $scope.nuevaMateria.nombreMateria = materiaFull.nombre;
+  $scope.nuevaMateria.descripcion = materiaFull.descripcion;
+  $scope.nuevaMateria.idMateria = materiaFull.idMateria;
+  $scope.nuevaMateria.idAnio = _.find($scope.listaAnios, ['nombre', materia.anio]).idAnio;
+  $scope.nuevaMateria.area = _.find($scope.listaAreas, ['nombre', materia.area]).idArea;
+  $scope.nuevaMateria.idDocenteTitular = materia.docenteTitular? materiaFull.docenteTitular.idUsuario: null;
+  $scope.nuevaMateria.idDocenteSuplente = materia.docenteSuplente? materiaFull.docenteSuplente.idUsuario: null;
+
+  // $scope.nuevaMateria = _.find($scope.listaMaterias, ['idMateria', materia]); //angular.copy(materia);
+  console.log($scope.nuevaMateria);
+  // $scope.seleccionar('nuevaMateria');
+};
+
 //-- [Materias/Listado] filters
 //-- [Materias/Listado] modals
 //-- [Materias/Listado] spinners
@@ -199,7 +226,7 @@ function listAllMaterias() {
     $scope.listaMaterias = response.data;
   },
   function(response){
-    console.log(response);
+    showServerError(response);
   })
   .finally(function(){
     spinnerService.hide('searchMateriaSpinner');
@@ -209,36 +236,20 @@ $scope.$on('$viewContentLoaded', function(){
   listAllMaterias(); //cambiar esto cuando se pueda elegir el año
 });
 
-//Test
-$scope.friends = [{nombre:'Educación Fisica', docenteTitular:'María Laura', anioPertenece: '4º', area: 'cs sociales'},
-{nombre:'Matemática', docenteTitular:'Marta Blanco', anioPertenece: '4', area: 'cs sociales'},
-{nombre:'Lengua', docenteTitular:'Lorena Gomez', anioPertenece: '4', area: 'cs naturales'},
-{nombre:'Fisica', docenteTitular:'Alicia Modenutti', anioPertenece: '5º', area: 'cs sociales'},
-{nombre:'Geografía', docenteTitular:'Mariela Rickert', anioPertenece: '5º', area: 'cs naturales'},
-{nombre:'Historia', docenteTitular:'Gloria Herrlein', anioPertenece: '4º', area: 'cs exsactas'}];
 
-// $scope.listaAnios = [
-// {
-//   "idAnio": 0,
-//   "nombre": "4to"
-// },
-// {
-//   "idAnio": 1,
-//   "nombre": "5to"
-// },
-// {
-//   "idAnio": 2,
-//   "nombre": "6to"
-// },
-// {
-//   "idAnio": 3,
-//   "nombre": "1ro"
-// },
-// {
-//   "idAnio": 4,
-//   "nombre": "3roto"
-// },
-// ];
+function getMateriaById(materia) {
+  spinnerService.show('searchMateriaSpinner');
+  academicoService.matGetById(materia.idMateria)
+  .then(function(response){
+    editMateria(materia, response.data);
+  },
+  function(response){
+    showServerError(response);
+  })
+  .finally(function(){
+    spinnerService.hide('searchMateriaSpinner');
+  });
+};
 
 
 //-- [Materias/Nueva] 
@@ -253,11 +264,7 @@ $scope.nuevaMateria = ObjectsFactory.newMateria();
 //-- [Materias/Nueva] service calls
 
 $scope.agregarMateria = function (mat) {
-  //agregar el alumno
-  //actualizar la lista
-  // $scope.listaMaterias.push ($scope.nuevaMateria);
-  // $scope.formMat.$setUntouched();
-  
+  mat.area = _.find($scope.listaAreas, ['idArea', mat.area]); // workaround para q retorne el objeto area y no un string area
 
   spinnerService.show('searchMateriaSpinner');
   academicoService.materiaPutNew(mat)
@@ -309,6 +316,7 @@ function searchArea() {
   academicoService.areaGetAll()
   .then(
     function(response){
+      console.log(response.data);
       $scope.listaAreas = response.data;
     },
     function(response){
@@ -333,5 +341,5 @@ function addArea(area) {
   });
 };
 
-});
+}]);
 
