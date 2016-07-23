@@ -15,12 +15,17 @@ angular.module('clientAppApp')
     var sAlumno = SERVER.sAlumno;
 
     var expectParam = 'alu/';
+    var getByAnio = 'getByAnio/';
     var expectDni = 'alu/getByDni/';
     var expectDniMin = 'getByDniMin/';
     var listAll = 'listAll';
     var listAllMin = 'listAllMinAct';
     var myData = 'DatosPersonales';
 
+
+    this.getByAnio = function (idAnio) {
+        return $http.get(server + sAlumno + getByAnio + idAnio);
+    };
 
     this.getById = function (id) {
         return $http.get(server + sAlumno + expectParam + id);

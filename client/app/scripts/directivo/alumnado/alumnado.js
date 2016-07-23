@@ -495,7 +495,21 @@ $scope.search = function (option, dni) {
 		};
 
 		if (option !== "TODOS" && option !== "DNI/MAT") {
-			alert(option);
+			// alert(option); // buscar por id anio
+
+			spinnerService.show('searchSpinner');
+			alumnoService.getByAnio(option)
+			.then(function(response){
+				$scope.alumnoData = response.data;
+				showListFilter();
+			},
+			function(response){
+				showServerError(response);
+				hideListFilter();
+			})
+			.finally(function(){
+				spinnerService.hide('searchSpinner');
+			})
 		};
 	};	
 };
