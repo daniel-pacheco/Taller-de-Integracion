@@ -148,7 +148,7 @@
 									<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Descripcion:</label>
 								</div>
 								<div class="col-md-4">
-									<input type="text" class="form-control" ng-model="nuevoLlamadoObj.descripcion" name="descripcion"  placeholder="descripcion" maxlength="255" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9°]*" required>
+									<input type="text" class="form-control" ng-model="nuevoLlamadoObj.descripcion" name="descripcion"  placeholder="descripcion" maxlength="255" pattern="[A-zÀ-ú,.!?°\-_ 0-9]*" required>
 								</div>
 								<div ng-messages="formLlamado.descripcion.$error" ng-if="formLlamado.descripcion.$touched && formLlamado.descripcion.$invalid">
 									<div ng-message="required" class="help-block">Complete este campo</div>

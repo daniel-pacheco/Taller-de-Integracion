@@ -27,7 +27,7 @@
   });
 })
 
- .controller('LlamadosCtrl', ['$scope', 'ModalService', 'ObjectsFactory', 'spinnerService', 'exportTableService', 'academicoService', 'docenteService', '$select', function ($scope, ModalService, ObjectsFactory, spinnerService, exportTableService, academicoService, docenteService, $select) {
+ .controller('LlamadosCtrl', ['$scope', '$select', 'academicoService', 'docenteService', 'exportTableService', 'ModalService', 'ObjectsFactory', 'spinnerService', function ($scope, $select, academicoService, docenteService, exportTableService, ModalService, ObjectsFactory, spinnerService) {
 
 //-- [Llamado]
 //-- [Llamado] variables
@@ -58,7 +58,7 @@ $scope.seleccionar = function (id) {
     $scope.listado = true;
     $scope.subtitle = 'Listado';
     setActiveLlamado(2);  
-    //getLlamados();
+    getLlamados();
     break;
     case 'inscripcion':
     $scope.inscripcion = true;
@@ -82,8 +82,10 @@ $scope.seleccionar = function (id) {
   }
 };
 
-$scope.seleccionar("listado");
-
+$scope.$on('$viewContentLoaded', function(){
+  $scope.seleccionar("listado");
+  //getLlamados();//Here your view content is fully loaded !!
+});
 
 $scope.tooltip = {
   tooltipEdit : {
@@ -155,9 +157,6 @@ function showServerSuccess (message, response){
   $scope.showMessage(msg, 'Operación exitosa' , true);
 };
 
-$scope.$on('$viewContentLoaded', function(){
-  getLlamados();//Here your view content is fully loaded !!
-});
 
 //Order list
 $scope.predicate = 'fechaInicio';
@@ -286,6 +285,7 @@ $scope.newLlamado = function(llamadoMin) {
     function(response){
       showServerSuccess('El llamado se ha dado de alta de alta con éxito ',response.data);
       $scope.clearFormLlamado();
+      getLlamados();
     },
     function(response){
       showServerError(response);
@@ -361,8 +361,6 @@ $scope.confirmInscribir = function(idMesa, idAlumno, dni, alumno, materia, fecha
   };
 
   $scope.confirmModal("Desea inscribir a "+ alumno + " a la mesa de " + materia + " el día " + fecha, $scope.inscribir, params);
-
-
 };
 
 $scope.confirmDesinscribir = function(idMesa, idAlumno, dni, alumno, materia, fecha){

@@ -39,6 +39,9 @@
     var inscripMesa = "inscripcion";
     var desinscripMesa = "desinscripcion";
 
+    var especialidadesGetAll = "especialidadListAll/";
+    var putEspecialidad = "especialidad/";
+
     this.anioDelete = function (idAnio) {
         return $http.delete(server + sAcademico + deleteAnio + idAnio);
     };
@@ -73,6 +76,18 @@
 
     this.cursoDesvin = function (idAlumno, idCurso) {
         return $http.post(server + sAcademico + cursoDesvincularAlu, {values:[idAlumno, idCurso]});
+    };
+
+    this.especialidadGetAll = function () {
+        return $http.get(server + sAcademico + especialidadesGetAll);
+    };
+
+     this.especialidadPutNew = function (especialidadObj) {
+        return $http.put(server + sAcademico + putEspecialidad, especialidadObj);
+    };
+
+    this.especialidadDelete = function (idEspecialidad) {
+        return $http.delete(server + sAcademico + putEspecialidad + idEspecialidad);
     };
 
     this.llamadoPutNew = function (llamadoObj) {

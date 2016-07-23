@@ -143,6 +143,8 @@ var newAnio = function(){
     "idAnio": null,
     "nombre": '',
     "descripcion": '',
+    "especialidad": {},
+    "orden": 0, 
     // "listaCursos": [],
     // "listaMaterias": [],
     "cicloLectivo": 0,
