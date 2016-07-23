@@ -81,21 +81,6 @@ function showServerSuccess (message, response){
   $scope.showMessage(msg, 'Operación exitosa' , true);
 };
 
-$scope.confirmModal = function(mesagge, funcion, parametro) { //este confirm recibe una funcion y un parametro para que despues de confirmar se pueda llamar a la funcion que se necesite
-  ModalService.showModal({
-    templateUrl: 'scripts/utils/confirm/modalConfirm.tpl.html',
-    controller: 'modalConfirmController',
-    inputs: {
-      mensaje: mesagge,
-    }
-  }).then(function(modal) {
-    modal.element.modal();
-    modal.close.then(function(result){
-      funcion(parametro);
-    });
-  });
-};
-
 //-- [Especialidad] utils
 //-- [Especialidad] service calls
 $scope.getEspecialidades = function(){

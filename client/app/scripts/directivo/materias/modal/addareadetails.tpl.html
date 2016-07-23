@@ -8,7 +8,16 @@
 			<div class="modal-body">
 				<div class="container">
 					<div class="row" style="margin-top: 10px;">
-						<div class="col-md-10 box-margin-lib personal-info table-responsive">
+						<div class="box-margin-lib personal-info table-responsive">
+							<spinner name="searchAreasSpinner" ng-cloak="">
+								<div class="overlay"></div>
+								<div class="spinner-small">			            
+									<div>
+										<div class="ng-include: '././views/templates/defaultspinner.html'"></div>
+									</div>
+								</div>
+								<div class="please-wait-small">Aguarde por favor...</div>
+							</spinner>
 							<table class="table table-hover table-striped table-condensed">
 								<thead>
 									<tr>
@@ -41,52 +50,33 @@
 											><span class="glyphicon glyphicon-remove"></span>
 											</button>
 										</td> 
-								</tr>
-							</tbody>
-						</table>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
-				</div>
-				<div class="row">
-					<form name="form" novalidate ng-submit="addArea()">	
-						<div class="panel-heading">
-							<div class="form-group  col-sm-6 col-md-6 col-xs-6 col-lg-6" ng-class="{ 'has-error': form.area.$touched && form.area.$invalid }">
-								<input type="text" name="area" class="form-control" ng-model="nuevaArea.nombre"  placeholder="Nombre área" maxlength="185" required pattern="[a-zA-Z 0-9]*"/>
-								<div ng-messages="form.area.$error" ng-if="form.area.$touched && form.area.$invalid">
-									<!-- <div ng-message="pattern" class="help-block" style="position: fixed;">Formato invalido</div> -->
-									<div ng-message="required" class="help-block" style="position: fixed;">Complete este campo</div>
+					<div class="row">
+						<form name="form" novalidate ng-submit="addArea()">	
+							<div class="panel-heading">
+								<div class="form-group  col-sm-6 col-md-6 col-xs-6 col-lg-6" ng-class="{ 'has-error': form.area.$touched && form.area.$invalid }">
+									<input type="text" name="area" class="form-control" ng-model="nuevaArea.nombre"  placeholder="Nombre área" maxlength="185" required pattern="[a-zA-Z 0-9]*"/>
+									<div ng-messages="form.area.$error" ng-if="form.area.$touched && form.area.$invalid">
+										<!-- <div ng-message="pattern" class="help-block" style="position: fixed;">Formato invalido</div> -->
+										<div ng-message="required" class="help-block" style="position: fixed;">Complete este campo</div>
+									</div>
+								</div>
+								
+								<div class="form-group  col-sm-3 col-md-3 col-xs-3 col-lg-3">
+									<button class="form-control btn btn-primary" type="submit" ng-disabled="!form.$valid" ng-click="reset()">Agregar</button>
 								</div>
 							</div>
-							
-							<div class="form-group  col-sm-3 col-md-3 col-xs-3 col-lg-3">
-								<button class="form-control btn btn-primary" type="submit" ng-disabled="!form.$valid" ng-click="reset()">Agregar</button>
-							</div>
-						</div>
-					</form>
+						</form>
+					</div>
 				</div>
-		</div>
-<!-- 					<fieldset class="form-group" style="margin-bottom:0px">
-						<label for="exampleSelect2">Seleccione un &aacute;rea</label>
-						<select  class="form-control" style="width: 100%" size="6" id="exampleSelect2" ng-model="selectedArea">
-							<option ng-repeat="area in listaAreas">{{area}}</option>
-						</select>
-					</fieldset>
-					<hr>
-					<fieldset class="form-group" style="margin-bottom:0px">
-						<div class="col-sm-4">
-							<input ng-model="nuevaArea" class="form-control" placeholder="Nueva &aacute;rea" type="text" maxlength="25" required pattern="[a-zA-Z]*"/>
-						</div>
-						<div class="col-sm-2 col-md-2 col-xs-2 col-lg-2">
-							<button class="form-control btn btn-primary" type="submit" ng-click="agregarArea(nuevaArea)">Agregar</button>
-						</div>
-						<div class="col-sm-2 col-md-2 col-xs-2 col-lg-2">
-							<button class="form-control btn btn-primary" type="submit" ng-click="eliminarArea(nuevaArea)">Agregar</button>
-						</div>
-					</fieldset>	 -->	
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="close(false)">Cerrar</button>
-				<button type="button" class="btn btn-primary" data-dismiss="modal" autofocus ng-click="close(true)">Guardar</button>{{selectedArea}}
+				<button type="button" class="btn btn-primary" data-dismiss="modal" autofocus ng-click="close(true)">Cerrar</button>
 			</div>
 		</div>
-	</div>
-</div>
+	</div>	
+</div>	

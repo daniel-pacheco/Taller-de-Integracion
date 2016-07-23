@@ -19,7 +19,7 @@
     var putAnio = 'anio';
 
     var areaGetAll = 'area/listAll';
-    var putArea = 'area';
+    var area = 'area/';
 
     var putCurso = 'cur/';
     var curso = 'cur';
@@ -54,12 +54,16 @@
         return $http.put(server + sAcademico + putAnio, anioObj);
     };
 
+    this.areaDelete = function (idArea) {
+        return $http.delete(server + sAcademico + area + idArea);
+    };
+
     this.areaGetAll = function () {
         return $http.get(server + sAcademico + areaGetAll);
     };
 
     this.areaPutNew = function (areaObj) {
-        return $http.put(server + sAcademico + putArea, areaObj);
+        return $http.put(server + sAcademico + area, areaObj);
     };
 
     this.cursoDelete = function (idCurso) {

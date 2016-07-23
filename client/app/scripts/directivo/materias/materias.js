@@ -118,7 +118,7 @@ $scope.showMessage = function(mesagge, title, isGood) { //isGood recibe true si 
 };
 
 function showServerError (response){
-  console.log(response);
+  // console.log(response);
   var msg = '';
 
   if (response.statusText) {
@@ -132,7 +132,7 @@ function showServerError (response){
 };
 
 function showServerSuccess (message, response){
-  console.log(response);
+  // console.log(response);
   var msg = message;
 
   if ( response && response.data) {
@@ -155,13 +155,14 @@ $scope.addArea = function() {
     modal.element.modal();
     modal.close.then(function(result){
       $scope.listaAreas = result;
+      searchArea();
     });
   });
 };
 
 //-- Llamadas al servicio
 $scope.deleteMateria = function (materia) {
-  $scope.confirmModal("¿Desea eliminar " + materia.nombre + " de " + materia.anio + "?", $scope.eliminarMateria, materia);
+  $scope.confirmModal("¿Desea eliminar " + materia.nombre + " de " + materia.anio + "? (Esta operación es irreversible!)", $scope.eliminarMateria, materia);
   //Hay que actualizar de nuevo la lista de docentes
 };
 
@@ -210,9 +211,6 @@ var editMateria = function(materia, materiaFull) {
   $scope.nuevaMateria.idDocenteTitular = materia.docenteTitular? materiaFull.docenteTitular.idUsuario: null;
   $scope.nuevaMateria.idDocenteSuplente = materia.docenteSuplente? materiaFull.docenteSuplente.idUsuario: null;
 
-  // $scope.nuevaMateria = _.find($scope.listaMaterias, ['idMateria', materia]); //angular.copy(materia);
-  console.log($scope.nuevaMateria);
-  // $scope.seleccionar('nuevaMateria');
 };
 
 //-- [Materias/Listado] filters
@@ -316,7 +314,6 @@ function searchArea() {
   academicoService.areaGetAll()
   .then(
     function(response){
-      console.log(response.data);
       $scope.listaAreas = response.data;
     },
     function(response){
