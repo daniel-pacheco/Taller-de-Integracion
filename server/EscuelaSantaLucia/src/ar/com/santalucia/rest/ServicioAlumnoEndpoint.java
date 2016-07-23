@@ -500,4 +500,23 @@ public class ServicioAlumnoEndpoint{
 			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
 	}
+	
+	/**
+	 * Devuelve todos los alumnos activos en formato DTO (AlumnoDTO)
+	 * @return
+	 */
+	@GET
+	@Path("/getByAnio/{idAnio:[0-9][0-9]*}")
+	public Response listAlumnosActAnioDTO(@PathParam("idAnio") final Long idAnio) {
+		try {
+			setInstance();
+			return Response.ok(servicioAlumno.listAlumnosActivosAnioDTO(idAnio)).build();
+		} catch (ValidacionException vEx) {
+			return Response.serverError().entity(new FrontMessage(vEx.getMensajesError().toString(),FrontMessage.INFO)).build();
+		} catch (Exception ex) {
+			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
+		}
+	}
+	
+	
 }

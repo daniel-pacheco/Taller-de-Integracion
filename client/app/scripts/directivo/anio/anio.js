@@ -65,13 +65,14 @@ $scope.seleccionar = function(id) {//Hacer una funcion que ponga en true el nomb
     $scope.listadoAnio = true;
     $scope.subtitle = "Listado";
     setActiveAnio(1);
-    // getAnios();
+    getAnios();
     break;
     case 'nuevoAnio':
     $scope.nuevoAnio = true;
     $scope.subtitle = "Nuevo Año";
     setActiveAnio(2);
     $scope.clearFormAnio();
+    getEspecialidades();
     break;
     case 'nuevoCurso':
     $scope.nuevoCurso = true;
@@ -91,15 +92,14 @@ $scope.seleccionar = function(id) {//Hacer una funcion que ponga en true el nomb
     setActiveAnio(5);    
   }
 };
-$scope.seleccionar('listadoAnio');
+
+$scope.$on('$viewContentLoaded', function(){
+  $scope.seleccionar('listadoAnio');
+});
 
 $scope.editAnio = function(anio){
  $scope.nuevoAnioObj = angular.copy(anio);
  $scope.seleccionar('editAnio');
-};
-
-$scope.getAnios = function(){
-  getAnios();
 };
 
 //-- [Anio] filters
@@ -113,6 +113,20 @@ $scope.orderAnio = function(predicate) {
 };
 
 //-- [Anio] modals
+$scope.confirmModal = function(mesagge, funcion, parametro) { //este confirm recibe una funcion y un parametro para que despues de confirmar se pueda llamar a la funcion que se necesite
+  ModalService.showModal({
+    templateUrl: 'scripts/utils/confirm/modalConfirm.tpl.html',
+    controller: 'modalConfirmController',
+    inputs: {
+      mensaje: mesagge,
+    }
+  }).then(function(modal) {
+    modal.element.modal();
+    modal.close.then(function(result){
+      funcion(parametro);
+    });
+  });
+};
 //-- [Anio] utils
 
 $scope.showMessage = function(mesagge, title, isGood) { //todo ok recibe true si salio bien o false si salio mal
@@ -153,11 +167,13 @@ function showServerSuccess (message, response){
   $scope.showMessage(msg, 'Operación exitosa' , true);
 };
 
+$scope.confirmDeleteAnio = function(anio){
+  $scope.confirmModal("¿Desea eliminar el año "+ anio.nombre + "?", deleteAnio, anio);
+}
+
 //-- [Anio] service calls
 
-$scope.$on('$viewContentLoaded', function(){
-  getAnios();//Here your view content is fully loaded !!
-});
+
 
 function getAnios() {
   spinnerService.show('searchAniosSpinner');
@@ -174,7 +190,7 @@ function getAnios() {
   });
 };
 
-$scope.deleteAnio = function(anio){
+function deleteAnio(anio){
 
   if (anio.listaCursos.length !== 0) {
     $scope.showMessage('El año no debe contener cursos para poder ser eliminado.', 'ERROR!', false);
@@ -212,6 +228,23 @@ $scope.clearFormAnio = function() {
 
 //-- [Anio/NuevoAnio] filters
 //-- [Anio/NuevoAnio] modals
+$scope.administrarEspecialidadModal = function(){
+  ModalService.showModal({
+    templateUrl: 'scripts/directivo/anio/modal/adminEspecialidad.tpl.html',
+    controller: 'adminEspecialidadModalController',
+    inputs: {
+      title: "Especialidad",
+      academicoService: academicoService,
+      spinnerService: spinnerService, 
+      ModalService: ModalService,
+    }
+  }).then(function(modal) {
+    modal.element.modal();
+    modal.close.then(function(result){
+      $scope.especialidades = result;
+    });
+  });
+};
 //-- [Anio/NuevoAnio] utils
 
 function initAnio(anioMin) {
@@ -219,6 +252,8 @@ function initAnio(anioMin) {
   anio.nombre = anioMin.nombre;
   anio.descripcion = anioMin.descripcion;
   anio.idAnio = anioMin.idAnio;
+  anio.especialidad = anioMin.especialidad;
+  anio.orden = anioMin.orden;
   return anio;
 };
 
@@ -244,6 +279,20 @@ $scope.newAnio = function(anioMin) {
   });
 };
 
+function getEspecialidades(){
+  // $scope.alumnos = []; //vacia la lista para que se vuelva a llenar
+  spinnerService.show('searchAniosSpinner');
+  academicoService.especialidadGetAll()
+  .then(function(response){
+    $scope.especialidades = response.data;
+  },
+  function(response){
+    showServerError(response);
+  })
+  .finally(function(){
+    spinnerService.hide('searchAniosSpinner')
+  });
+};
 //-----------------------------------
 
 //-- [Anio/NuevoCurso]
@@ -257,24 +306,8 @@ $scope.editCurso = function (curso){
   $scope.copiaCurso = angular.copy (curso);
 };
 
-$scope.deleteCurso = function (curso) {
-  if (curso.cantAlu !== 0) {
-    $scope.showMessage('El curso no debe contener alumnos para poder ser eliminado.', 'ERROR!', false);
-  } else{
-    spinnerService.show('searchAniosSpinner');
-    academicoService.cursoDelete(curso.idCurso)
-    .then(
-      function(response){
-        showServerSuccess('El curso se ha eliminado con éxito', response);
-        clearFormCurso();
-      },
-      function(reponse){
-        showServerError(response);
-      })
-    .finally(function(){
-      spinnerService.hide('searchAniosSpinner');
-    });
-  };
+$scope.confirmDeleteCurso = function(curso){
+  $scope.confirmModal("¿Desea eliminar el curso "+ curso.division + " - " + curso.turno + "?", deleteCurso, curso);
 };
 
 $scope.saveEditCurso = function (copiaCurso, idAnio) {
@@ -308,6 +341,25 @@ $scope.addCurso = function (addCursoObj, idAnio){
   });
 };
 
+function deleteCurso (curso) {
+  if (curso.cantAlu !== 0) {
+    $scope.showMessage('El curso no debe contener alumnos para poder ser eliminado.', 'ERROR!', false);
+  } else{
+    spinnerService.show('searchAniosSpinner');
+    academicoService.cursoDelete(curso.idCurso)
+    .then(
+      function(response){
+        showServerSuccess('El curso se ha eliminado con éxito', response);
+        clearFormCurso();
+      },
+      function(reponse){
+        showServerError(response);
+      })
+    .finally(function(){
+      spinnerService.hide('searchAniosSpinner');
+    });
+  };
+};
 //------------------------------------
 
 //-- [Anio/Administrar]

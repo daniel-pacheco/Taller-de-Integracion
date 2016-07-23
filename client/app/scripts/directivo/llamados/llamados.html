@@ -91,7 +91,7 @@
 								<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipExport" ng-click="exportAction(docente.nroDocumento)" style="width: 30%">
 									<span class="glyphicon glyphicon-print"></span>
 								</button>
-								<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipDelete" ng-click="deleteDocente(docente)" style="width: 30%">
+								<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipDelete" ng-click="deleteLlamado(llamado)" style="width: 30%">
 									<span class="glyphicon glyphicon-trash"></span>
 								</button>
 							</td>
@@ -148,7 +148,7 @@
 									<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Descripcion:</label>
 								</div>
 								<div class="col-md-4">
-									<input type="text" class="form-control" ng-model="nuevoLlamadoObj.descripcion" name="descripcion"  placeholder="descripcion" maxlength="255" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9°]*" required>
+									<input type="text" class="form-control" ng-model="nuevoLlamadoObj.descripcion" name="descripcion"  placeholder="descripcion" maxlength="255" pattern="[A-zÀ-ú,.!?°\-_ 0-9]*" required>
 								</div>
 								<div ng-messages="formLlamado.descripcion.$error" ng-if="formLlamado.descripcion.$touched && formLlamado.descripcion.$invalid">
 									<div ng-message="required" class="help-block">Complete este campo</div>
@@ -325,16 +325,19 @@
 
 		<div id="inscripcion" ng-show="inscripcion">  
 			<fieldset>
-				<h1>{{subtitle}}: <small>Ingrese el DNI deaseado y presione el bot&oacute;n Ver mesas</small></h1>
+				<h1>{{subtitle}}: <small>Ingrese el DNI deaseado y presione el bot&oacute;n Ver mesas o consulte las inscripciones ingresando el n&uacute;mero</small></h1>
 				<hr>
 				<div class="panel panel-default" style="margin-bottom:0px">
 					<div class="panel-heading">
 						<form name="consultMesas">
 							<label>DNI: </label>
-							<!-- <input class="form-control-inline" name="dni" type="text" placeholder="35123123" required maxlength="8" required pattern="\d{8,8}" ng-model="filterByName">
+							<!-- <input class="form-control-inline" name="dni" type="text" placeholder="35123123" maxlength="8" required pattern="\d{8,8}" ng-model="filterByName">
 							<button class="btn btn-default" ng-click="" title="Ver mesas disponibles" ng-disabled="!consultMesas.$valid">Ver mesas</button> esto es para cuando reciba DNI-->
-							<input class="form-control-inline" name="ID" type="text" placeholder="35123123" required maxlength="8" required ng-model="dni">
+							<input class="form-control-inline" name="ID" type="text" placeholder="35123123" maxlength="8" required ng-model="dni">
 							<button class="btn btn-default" ng-click="getMesas(dni)" title="Ver mesas disponibles">Ver mesas</button>
+							<label>Número de inscripci&oacute;n: </label>
+							<input class="form-control-inline" name="nroInscipcion" type="text" placeholder="123" maxlength="8" required pattern="\d{1,8}" ng-model="nroInscipcion">
+							<button class="btn btn-default" ng-click="" title="Ver comprobante de inscripción" ng-disabled="!consultMesas.nroInscipcion.$valid">Consultar</button>
 						</form>
 					</div>
 				</div>
@@ -380,23 +383,25 @@
 										</td>
 										<td>
 											<span ng-if="mesa.inscripto" data-animation="am-flip-x" class="glyphicon glyphicon-thumbs-up" bs-tooltip="tooltip.tooltipInscripto"></span>
-											<span ng-if="!mesa.inscripto" data-animation="am-flip-x" class="glyphicon glyphicon-thumbs-down"></span>
+											<span ng-if="!mesa.inscripto" data-animation="am-flip-x" class="glyphicon glyphicon-thumbs-down" bs-tooltip="tooltip.tooltipNoInscripto"></span>
 										</td>
 										<td>
-											<button ng-if="!mesa.inscripto" class="btn btn-success btn-xs" bs-tooltip="tooltip.tooltipRegister" ng-click="confirmInscribir(mesa.idMesa, dni, dni, mesa.alumno, mesa.materia, mesa.fecha)" title="Inscribir a esta mesa">
+											<button ng-if="!mesa.inscripto" class="btn btn-success btn-xs" ng-click="confirmInscribir(mesa.idMesa, dni, dni, mesa.alumno, mesa.materia, mesa.fecha)" title="Inscribir a esta mesa">
 												<span>Inscribir</span>
 											</button>
-											<button ng-if="mesa.inscripto" class="btn btn-danger btn-xs" bs-tooltip="tooltip.tooltipUnregister" ng-click="confirmDesinscribir(mesa.idMesa, dni, dni, mesa.alumno, mesa.materia, mesa.fecha)" title="Desinscribir de esta mesa">
+											<button ng-if="mesa.inscripto" class="btn btn-danger btn-xs" ng-click="confirmDesinscribir(mesa.idMesa, dni, dni, mesa.alumno, mesa.materia, mesa.fecha)" title="Desinscribir de esta mesa">
 												<span>Desinscribir</span>
 											</button>
 										</td> 
 									</tr>
 								</tbody>
-							</div>
-						</table>
+							</table>
+						</div>
 					</div>
 				</div>
+
 			</fieldset>
+
 		</div>
 		<div id="gestionarLlamados" ng-show="gestionarLlamados">
 			<fieldset>

@@ -1,0 +1,96 @@
+<div class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" style="width: 45%; margin: inherint inherint">
+		<div class="modal-content container">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">{{title}}</h4><!-- {{modalx.phoneData}} -->
+			</div>
+			<div class="modal-body">
+				<div class="">
+					<div class="row">
+						<div class="box-margin-lib personal-info table-responsive">
+							<spinner name="searchEspecialidadesSpinner" ng-cloak="">
+								<div class="overlay"></div>
+								<div class="spinner-small">			            
+									<div>
+										<div class="ng-include: '././views/templates/defaultspinner.html'"></div>
+									</div>
+								</div>
+								<div class="please-wait-small">Aguarde por favor...</div>
+							</spinner>
+							<table class="table table-hover table-striped table-condensed">
+								<thead>
+									<tr>
+										<th class="col-md-5">Nombre</th>
+										<th class="col-md-4">Abreviaci&oacute;n</th>
+										<th class="col-md-2">Acciones</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="especialidad in especialidades" ng-form="formRow">
+										<td>
+											<div ng-if="!especialidad.show">{{especialidad.nombre}}</div>
+											<div ng-if="especialidad.show" ng-class="{ 'has-error': formRow.nombreEspecialidad.$touched && formRow.nombreEspecialidad.$invalid }">
+												<input class="form-control" name="nombreEspecialidad" type="text" ng-model="copiaEspecialidad.nombre" maxlength="185" required pattern="[A-zÀ-ú,.!?°\-_ 0-9]*"/>
+											</div>
+										</td>
+										<td>
+											<div ng-if="!especialidad.show">{{especialidad.nombreCorto}}</div>
+											<div ng-if="especialidad.show" ng-class="{ 'has-error': formRow.nombreCorto.$touched && formRow.nombreCorto.$invalid }">
+												<input class="form-control" name="nombreCorto" type="text" ng-model="copiaEspecialidad.nombreCorto" maxlength="185" required pattern="[A-zÀ-ú,.!?°\-_ 0-9]*"/>
+											</div>
+										</td>
+										<td>
+											<!-- El editar no edita, crea otro con las ediciones -->
+											<!-- Botones de la lista-->
+											<button ng-if="!especialidad.show" class="btn btn-default btn-xs" ng-click="especialidad.show=true; edit(especialidad)" bs-tooltip="tooltip.tooltipEdit">
+												<span data-animation="am-flip-x" class="glyphicon glyphicon-edit"></span>
+											</button>
+											<button ng-if="!especialidad.show" class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipDelete" ng-click="confirmEliminar(especialidad)">
+												<span class="glyphicon glyphicon-trash"></span>
+											</button>
+											<!-- Botones editando curso -->
+											<button ng-if="especialidad.show" class="btn btn-primary btn-sm" bs-tooltip="tooltip.tooltipSaveEdit" ng-click="especialidad.show=false; newEspecialidad(copiaEspecialidad);" ng-disabled="formRow.curso.$invalid">
+												<span class="glyphicon glyphicon-ok"></span>
+											</button>
+											<button ng-if="especialidad.show" class="btn btn-default btn-sm" ng-click="especialidad.show=false" bs-tooltip="tooltip.tooltipCancelEdit">
+												<span class="glyphicon glyphicon-remove"></span>
+											</button>
+										</td> 
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="row">
+						<form name="form" novalidate>	
+							<div class="panel-heading">
+								<div class="form-group col-md-5" ng-class="{ 'has-error': form.especialidad.$touched && form.especialidad.$invalid }">
+									<input type="text" name="especialidad" class="form-control" ng-model="especialidadObj.nombre" placeholder="Nombre" maxlength="185" required pattern="[A-zÀ-ú,.!?°\-_ 0-9]*"/>
+									<div ng-messages="form.especialidad.$error" ng-if="form.especialidad.$touched && form.especialidad.$invalid">
+										<div ng-message="pattern" class="help-block" style="position: fixed;">Formato invalido</div>
+										<div ng-message="required" class="help-block" style="position: fixed;">Complete este campo</div>
+									</div>
+								</div>
+								<div class="form-group col-md-4" ng-class="{ 'has-error': form.nombreCorto.$touched && form.nombreCorto.$invalid }">
+									<input type="text" name="nombreCorto" class="form-control" ng-model="especialidadObj.nombreCorto" placeholder="NC" maxlength="185" required pattern="[A-zÀ-ú,.!?°\-_ 0-9]*"/>
+									<div ng-messages="form.nombreCorto.$error" ng-if="form.nombreCorto.$touched && form.nombreCorto.$invalid">
+										<div ng-message="pattern" class="help-block" style="position: fixed;">Formato invalido</div>
+										<div ng-message="required" class="help-block" style="position: fixed;">Complete este campo</div>
+									</div>
+								</div>
+
+								<div class="form-group col-md-3">
+									<button class="form-control btn btn-primary" ng-disabled="!form.$valid" ng-click="newEspecialidad(especialidadObj)">Agregar</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>			
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal" autofocus ng-click="close(true)">Guardar</button>
+			</div>
+		</div>
+	</div>
+</div>

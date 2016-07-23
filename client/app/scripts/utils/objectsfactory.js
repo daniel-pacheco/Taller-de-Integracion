@@ -140,12 +140,23 @@ var newAnio = function(){
     "idAnio": null,
     "nombre": '',
     "descripcion": '',
+    "especialidad": {},
+    "orden": 0, 
     // "listaCursos": [],
     // "listaMaterias": [],
     "cicloLectivo": 0,
     "activo": true
   };
   return anio;
+};
+
+var newEspecialidad = function(){
+  var especialidad = {
+    "idEspecialidad" : null,
+    "nombre" : '',
+    "nombreCorto" : ''
+  };
+  return especialidad;
 };
 
 var newCurso = function(){
@@ -324,6 +335,7 @@ var newLlamado = function(){
     newPlanillaTrimUpdateDTO: newPlanillaTrimUpdateDTO,
     newMesa: newMesa,
     newLlamado: newLlamado,
+    newEspecialidad: newEspecialidad,
 
     //-- Estadisticas
 

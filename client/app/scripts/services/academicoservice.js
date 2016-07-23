@@ -31,12 +31,16 @@
     var materiaDesvincularDoc = 'mat/desvinDoc';
 
     var putLlamado = "llm/";
-    var llamadosGetAll = "listAll"; 
+    var llamadosGetAll = "listAll";
+    var deleteLlamado = "llm/"; 
 
     var putMesa = "mesa/";
     var getMesas = "inscripcion/";
     var inscripMesa = "inscripcion";
     var desinscripMesa = "desinscripcion";
+
+    var especialidadesGetAll = "especialidadListAll/";
+    var putEspecialidad = "especialidad/";
 
     this.anioDelete = function (idAnio) {
         return $http.delete(server + sAcademico + deleteAnio + idAnio);
@@ -74,12 +78,28 @@
         return $http.post(server + sAcademico + cursoDesvincularAlu, {values:[idAlumno, idCurso]});
     };
 
+    this.especialidadGetAll = function () {
+        return $http.get(server + sAcademico + especialidadesGetAll);
+    };
+
+     this.especialidadPutNew = function (especialidadObj) {
+        return $http.put(server + sAcademico + putEspecialidad, especialidadObj);
+    };
+
+    this.especialidadDelete = function (idEspecialidad) {
+        return $http.delete(server + sAcademico + putEspecialidad + idEspecialidad);
+    };
+
     this.llamadoPutNew = function (llamadoObj) {
         return $http.put(server + sAcademico + putLlamado, llamadoObj);
     };
 
     this.llamadoGetAll = function () {
         return $http.get(server + sAcademico + putLlamado + llamadosGetAll);
+    };
+
+    this.llamadoDelete = function (idLlamado) {
+        return $http.delete(server + sAcademico + deleteLlamado + idLlamado);
     };
 
     this.matDelete = function (id) {
