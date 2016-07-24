@@ -1,355 +1,351 @@
+<div class="navbar-inverse bs-docs-nav" role="banner">
+	<div class="container">
+		<div class="navbar-header">
+			<button class="navbar-toggle" type="button" data-template-url="./scripts/directivo/alumnado/aside/alumnadosidebar.aside.tpl.html" data-animation="am-fade-and-slide-left" data-placement="left" title="Menu" bs-aside="aside">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+		</div>
+	</div>
+</div>
+
+<div class="col-md-2 hidden-sm hidden-xs">
+	<!-- ngInclude: 'views/partials/affixed-sidebar.html' -->
+	<div class="bs-sidebar hidden-print affix" role="complementary" data-offset-top="-100" bs-affix style="position: relative; text-align: right;">
+		<ul class="nav bs-sidenav">
+			<li bs-scrollspy data-target="#getting-started">
+				<a href="">Men&uacute; Alumnado</a>
+			</li>
+			<hr style="margin: 2px 0;">
+			<li ng-class="{active : activeMenuIzqAlu === 1}" data-target="#modals">
+				<a href="" ng-click="seleccionar('listado')">Listado</a>
+			</li>
+			<li ng-class="{active : activeMenuIzqAlu === 2}" data-target="#nuevoPerfil">
+				<a href="" ng-click="seleccionar('nuevoPerfil')">Nuevo Perfil</a>
+			</li>
+			<li ng-class="{active : activeMenuIzqAlu === 3}" data-target="#notas">
+				<a href="" ng-click="seleccionar('notas')">Notas</a>
+			</li>
+			<li ng-class="{active : activeMenuIzqAlu === 4}" ng-show="showEditProfileMenuIzq " data-target="#editarPerfil">
+				<a href="">Editar Perfil</a>
+			</li>
+			<li>
+				<img class="col-md-10" style="position: relative; margin-top: 100%;" src="./images/logo.jpg">
+			</li>
+		</ul>
+	</div>
+
+	<!-- <img class="col-md-10" style="position: absolute; bottom: 0;" src="./images/logo.jpg"> -->
+</div>
+
+
 <div>
-
-	<div class="navbar-inverse bs-docs-nav" role="banner">
-		<div class="container">
-			<div class="navbar-header">
-				<button class="navbar-toggle" type="button" data-template-url="./scripts/directivo/alumnado/aside/alumnadosidebar.aside.tpl.html" data-animation="am-fade-and-slide-left" data-placement="left" title="Menu" bs-aside="aside">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
+	<spinner name="searchSpinner" ng-cloak="">
+		<div class="overlay"></div>
+		<div class="spinner-small">			            
+			<div>
+				<div class="ng-include: './views/templates/defaultspinner.html'"></div>
 			</div>
 		</div>
-	</div>
-
-	<div class="col-md-2 hidden-sm hidden-xs">
-		<div>
-			<!-- ngInclude: 'views/partials/affixed-sidebar.html' -->
-			<div class="bs-sidebar hidden-print affix" role="complementary" data-offset-top="-100" bs-affix style="position: relative; text-align: right;">
-				<ul class="nav bs-sidenav">
-					<li bs-scrollspy data-target="#getting-started">
-						<a href="">Men&uacute; Alumnado</a>
-					</li>
-					<hr style="margin: 2px 0;">
-					<li ng-class="{active : activeMenuIzqAlu === 1}" data-target="#modals">
-						<a href="" ng-click="seleccionar('listado')">Listado</a>
-					</li>
-					<li ng-class="{active : activeMenuIzqAlu === 2}" data-target="#nuevoPerfil">
-						<a href="" ng-click="seleccionar('nuevoPerfil')">Nuevo Perfil</a>
-					</li>
-					<li ng-class="{active : activeMenuIzqAlu === 3}" data-target="#notas">
-						<a href="" ng-click="seleccionar('notas')">Notas</a>
-					</li>
-					<li ng-class="{active : activeMenuIzqAlu === 4}" ng-show="showEditProfileMenuIzq " data-target="#editarPerfil">
-						<a href="">Editar Perfil</a>
-					</li>
-					</li>
-					<img class="col-md-10" style="position: relative; margin-top: 100%;" src="./images/logo.jpg">
-					<li>
-				</ul>
-			</div>
-		</div>
-
-		<!-- <img class="col-md-10" style="position: absolute; bottom: 0;" src="./images/logo.jpg"> -->
-	</div>
-
-
-	<div>
-		<spinner name="searchSpinner" ng-cloak="">
-			<div class="overlay"></div>
-			<div class="spinner-small">			            
-				<div>
-					<div class="ng-include: './views/templates/defaultspinner.html'"></div>
+		<div class="please-wait-small">Aguarde por favor...</div>
+	</spinner>
+	<div id="listado" ng-show="listado">			
+		<fieldset>
+			<h1>{{subtitle}}: <small>Seleccione el a&ntilde;o del que desea listar los alumnos</small></h1>
+			<hr>
+			<div class="panel panel-default">					
+				<div class="panel-heading">
+					<label>A&ntilde;o: </label> 
+					<select class="dropdown-toggle form-control-inline" name="" ng-model="dropDownSearchValue"> 
+						<option value="" disabled selected>Seleccione una opci&oacute;n</option>
+						<option value="DNI/MAT">DNI/MAT</option>
+						<option value="TODOS">Todos</option>
+						<option ng-repeat="option in dropDownSearchOptions" value="{{option.idAnio}}">{{option.nombre}}</option>
+					</select>
+					<input type="text" class="form-control-inline"  ng-model="searchByDni" ng-show="dropDownSearchValue === 'DNI/MAT'" maxlength="8" required pattern="\d{8}">
+					<button class="btn btn-default" ng-click="search(dropDownSearchValue, searchByDni)"  title="Buscar alumnos" data-content="Seleccione uno o varios alumnos para colocar multiples inasistencias" data-type="info" data-duration="4" data-container="#alerts-container" bs-alert>Buscar</button>
+					<div id="alerts-container" style="width:60%; float:right;" class="small"></div>
 				</div>
 			</div>
-			<div class="please-wait-small">Aguarde por favor...</div>
-		</spinner>
-		<div id="listado" ng-show="listado">			
-			<fieldset>
-				<h1>{{subtitle}}: <small>Seleccione el a&ntilde;o del que desea listar los alumnos</small></h1>
-				<hr>
-				<div class="panel panel-default">					
+
+			<div id="listFilters" ng-show="listFilterIsEnabled">
+
+				<h2>Filtros de búsqueda</h2>
+				<div class="panel panel-default">
 					<div class="panel-heading">
-						<label>A&ntilde;o: </label> 
-						<select class="dropdown-toggle form-control-inline" name="" ng-model="dropDownSearchValue"> 
-							<option value="" disabled selected>Seleccione una opci&oacute;n</option>
-							<option value="DNI/MAT">DNI/MAT</option>
-							<option value="TODOS">Todos</option>
-							<option ng-repeat="option in dropDownSearchOptions" value="{{option.idAnio}}">{{option.nombre}}</option>
+						<label>Nombre: </label> 
+						<input class="form-control-inline" type="text" maxlength="255" pattern="[a-zA-Z 0-9]*" ng-model="filterByName">
+
+						<label for="anioDropDown" ng-show="dropDownSearchValue == 'TODOS'">A&ntilde;o: </label>
+						<select id="anioDropDown" class="dropdown-toggle form-control-inline" name="" ng-model="dropDownAnioValue" ng-show="dropDownSearchValue == 'TODOS'">
+							<option value="" selected>Seleccione un a&ntilde;o</option>
+							<option ng-repeat="option in dropDownSearchOptions" value="{{option.nombre}}">{{option.nombre}}</option>
 						</select>
-						<input type="text" class="form-control-inline"  ng-model="searchByDni" ng-show="dropDownSearchValue === 'DNI/MAT'" maxlength="8" required pattern="\d{8}">
-						<button class="btn btn-default" ng-click="search(dropDownSearchValue, searchByDni)"  title="Buscar alumnos" data-content="Seleccione uno o varios alumnos para colocar multiples inasistencias" data-type="info" data-duration="4" data-container="#alerts-container" bs-alert>Buscar</button>
-						<div id="alerts-container" style="width:60%; float:right;" class="small"></div>
+						<button class="btn btn-default pull-right" ng-click="exportAction('dir-listado-alumnos')" bs-tooltip="tooltip.tooltipExport">Exportar</button>
 					</div>
 				</div>
-
-				<div id="listFilters" ng-show="listFilterIsEnabled">
-
-					<h2>Filtros de búsqueda</h2>
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<label>Nombre: </label> 
-							<input class="form-control-inline" type="text" maxlength="255" pattern="[a-zA-Z 0-9]*" ng-model="filterByName">
-
-							<label for="anioDropDown" ng-show="dropDownSearchValue == 'TODOS'">A&ntilde;o: </label>
-							<select id="anioDropDown" class="dropdown-toggle form-control-inline" name="" ng-model="dropDownAnioValue" ng-show="dropDownSearchValue == 'TODOS'">
-								<option value="" selected>Seleccione un a&ntilde;o</option>
-								<option ng-repeat="option in dropDownSearchOptions" value="{{option.nombre}}">{{option.nombre}}</option>
-							</select>
-							<button class="btn btn-default pull-right" ng-click="exportAction('dir-listado-alumnos')" bs-tooltip="tooltip.tooltipExport">Exportar</button>
-						</div>
-					</div>
-					<div ng-show="mostrarBtnInasistencias" class="affix" role="complementary" data-offset-top="-60" bs-affix style="position: relative; text-align: center;">
-						<button ng-click="unCheckAll()"class="btn btn-info">Desmarcar Todos</button>
-						<button class="btn btn-warning" ng-click="metralleta()">Colocar Inasistencias</button>
-					</div>
-					<div></div>
-					<table class="table table-hover table-striped" export-table="dir-listado-alumnos"> <!-- se usa ng-class para sacarle el export-table cuando no esta mostrandose esta tabla -->
-						<thead>
-							<tr>
-								<th></th>
-								<th>Apellido</th>
-								<th>Nombre</th>
-								<th>DNI</th>
-								<th>A&ntilde;o</th>
-								<th>Curso</th>
-								<th>Acciones</th>						
-							</tr>
-						</thead>
-						<tbody style="overflow-y: scroll; overflow-x: scroll">
-							<tr ng-repeat="alumno in alumnoData | filter:alumnoFilter | filter:dropDownAnioValue " ng-style="alumno.selected && {'background-color': '#ddd'}">
-								<td ng-click="seleccionarCheckbox(alumno)"><input type="checkbox" ng-init="true" ng-model="selectAlumno" ng-checked="alumno.selected"></td>
-								<td ng-click="seleccionarCheckbox(alumno)">{{alumno.apellido}}</td>
-								<td ng-click="seleccionarCheckbox(alumno)">{{alumno.nombre}}</td>
-								<td ng-click="seleccionarCheckbox(alumno)">{{alumno.nroDocumento}}</td>
-								<td ng-click="seleccionarCheckbox(alumno)">{{alumno.anio}}</td>
-								<td ng-click="seleccionarCheckbox(alumno)">{{alumno.curso}}</td>
-								<td>
-									<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipProfile" ng-click="showModalProfile(alumno.nroDocumento)" style="width: 22%">
-										<span data-animation="am-flip-x" class="glyphicon glyphicon-user"></span>
-									</button>
-
-									<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipAttendance" ng-click="showModalInasistencias(alumno.nroDocumento)" style="width: 22%">
-										<span class="glyphicon glyphicon-calendar"></span>
-									</button>
-
-									<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipReportCard" ng-click="showModalLibreta(alumno.idUsuario)" style="width: 22%">
-										<span data-animation="am-flip-x" class="glyphicon glyphicon-list-alt"></span>
-									</button>
-
-									<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipDelete" ng-click="deleteAlumnoComfirm(alumno)" style="width: 22%">
-										<span class="glyphicon glyphicon-trash"></span>
-									</button>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+				<div ng-show="mostrarBtnInasistencias" class="affix" role="complementary" data-offset-top="-60" bs-affix style="position: relative; text-align: center;">
+					<button ng-click="unCheckAll()"class="btn btn-info">Desmarcar Todos</button>
+					<button class="btn btn-warning" ng-click="metralleta()">Colocar Inasistencias</button>
 				</div>
-			</fieldset>
-		</div>
+				<div></div>
+				<table class="table table-hover table-striped" export-table="dir-listado-alumnos"> <!-- se usa ng-class para sacarle el export-table cuando no esta mostrandose esta tabla -->
+					<thead>
+						<tr>
+							<th></th>
+							<th>Apellido</th>
+							<th>Nombre</th>
+							<th>DNI</th>
+							<th>A&ntilde;o</th>
+							<th>Curso</th>
+							<th>Acciones</th>						
+						</tr>
+					</thead>
+					<tbody style="overflow-y: scroll; overflow-x: scroll">
+						<tr ng-repeat="alumno in alumnoData | filter:alumnoFilter | filter:dropDownAnioValue " ng-style="alumno.selected && {'background-color': '#ddd'}">
+							<td ng-click="seleccionarCheckbox(alumno)"><input type="checkbox" ng-init="true" ng-model="selectAlumno" ng-checked="alumno.selected"></td>
+							<td ng-click="seleccionarCheckbox(alumno)">{{alumno.apellido}}</td>
+							<td ng-click="seleccionarCheckbox(alumno)">{{alumno.nombre}}</td>
+							<td ng-click="seleccionarCheckbox(alumno)">{{alumno.nroDocumento}}</td>
+							<td ng-click="seleccionarCheckbox(alumno)">{{alumno.anio}}</td>
+							<td ng-click="seleccionarCheckbox(alumno)">{{alumno.curso}}</td>
+							<td>
+								<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipProfile" ng-click="showModalProfile(alumno.nroDocumento)" style="width: 22%">
+									<span data-animation="am-flip-x" class="glyphicon glyphicon-user"></span>
+								</button>
 
+								<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipAttendance" ng-click="showModalInasistencias(alumno.nroDocumento)" style="width: 22%">
+									<span class="glyphicon glyphicon-calendar"></span>
+								</button>
 
-		<div id="nuevoPerfil" ng-show="nuevoPerfil">
-			<fieldset>
-				<h1>{{subtitle}}: <small>Ingrese los datos para crear un nuevo perfil
-					de alumno y haga clic en guardar cuando finalice</small></h1>
-					<hr>
-					<form class="form-horizontal media" name="formAlu" novalidate>
-						<div class="media-body">
-							<!-- <div class="container"> Pachec: probar esto en la resolución grande -->
-							<div class="row">
-								<div class="col-md-6">
-									<div class="alert alert-warning alert-dismissible" role="alert">
-										<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-										<span class="glyphicon glyphicon-asterisk small"></span>Campos obligatorios
-									</div>
-									<div class="form-group" ng-class="{ 'has-error': formAlu.nroDocumento.$touched && formAlu.nroDocumento.$invalid }">
-										<div class="col-md-4 control-label">
-											<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span>  Documento:</label>
-										</div>
-										<div class="col-md-4">
-											<input type="text" name="nroDocumento" class="form-control validate" ng-model="nuevoAlumno.nroDocumento" placeholder="35123123" maxlength="8" required pattern="\d{8,8}" ng-change="nuevoAlumno.matricula=nuevoAlumno.nroDocumento"/>
-											<input type="hidden" ng-model="nuevoAlumno.matricula" /> <!-- Bindea matricula a nroDocumento para cargar ambos a la vez -->
-											<div ng-messages="formAlu.nroDocumento.$error" ng-if="formAlu.nroDocumento.$touched && formAlu.nroDocumento.$invalid">
-												<div ng-message="required" class="help-block">Complete este campo</div>
-												<div ng-message="pattern" class="help-block">Formato invalido</div>
-											</div>
-										</div>
-										<!-- Valida 8 digitos -->
-										<div class="col-md-3">
-											<select class="form-control" ng-model="nuevoAlumno.tipoDocumento" name="TipoDocumento" required>
-												<option value="" disabled selected>Tipo</option>
-												<option value="DNI">DNI</option>
-												<option value="LC">LC</option>
-												<option value="Otro">Otro</option>
-											</select>
-										</div>
-									</div>
-									<!-- /form-group-->
+								<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipReportCard" ng-click="showModalLibreta(alumno.idUsuario)" style="width: 22%">
+									<span data-animation="am-flip-x" class="glyphicon glyphicon-list-alt"></span>
+								</button>
 
-									<div class="form-group" ng-class="{ 'has-error': formAlu.nombre.$touched && formAlu.nombre.$invalid }">
-										<div class="col-md-4 control-label">
-											<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Nombre/s:</label>
-										</div>
-										<div class="col-md-5">
-											<input name="nombre" class="form-control" ng-model="nuevoAlumno.nombre" placeholder="Nombre" type="text" maxlength="255" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
-											<!-- Valida letras y espacios -->
-											<div ng-messages="formAlu.nombre.$error" ng-if="formAlu.nombre.$touched && formAlu.nombre.$invalid">
-												<div ng-message="pattern" class="help-block">Formato invalido</div>
-												<div ng-message="required" class="help-block">Complete este campo</div>
-											</div>
-										</div>
-
-									</div><!-- /form-group-->
-
-									<div class="form-group" ng-class="{ 'has-error': formAlu.apellido.$touched && formAlu.apellido.$invalid }">
-										<div class="col-md-4 control-label">
-											<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Apellido/s:</label>
-										</div>
-										<div class="col-md-5">
-											<input name="apellido" class="form-control" ng-model="nuevoAlumno.apellido" placeholder="Apellido" type="text" maxlength="255" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
-											<!-- Valida letras y espacios-->
-											<div ng-messages="formAlu.apellido.$error" ng-if="formAlu.apellido.$touched && formAlu.apellido.$invalid">
-												<div ng-message="pattern" class="help-block">Formato invalido</div>
-												<div ng-message="required" class="help-block">Complete este campo</div>
-											</div>
-										</div>
-									</div>
-									<!-- /form-group-->
-
-									<div class="form-group">
-										<div class="col-md-4 control-label">
-											<label for="">Sexo:</label>
-										</div>
-										<div class="col-md-7">
-											<input type="radio" name="sexo" ng-model="nuevoAlumno.sexo" id="F" value="F"><label class="text-radio" for="F"><span></span>Femenino </label>
-											<input type="radio" name="sexo" ng-model="nuevoAlumno.sexo" checked id="M" value="M"><label class="text-radio" for="M"><span></span>Masculino </label>
-										</div>
-									</div>
-									<!-- /form-group-->
-
-									<div class="form-group" ng-class="{ 'has-error': formAlu.domicilio.$touched && formAlu.domicilio.$invalid }">
-										<div class="col-md-4 control-label">
-											<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Domicilio:</label>
-										</div>
-										<div class="col-md-4">
-											<input name="domicilio" class="form-control" placeholder="Calle" type="text" maxlength="255" ng-model="nuevoAlumno.domicilio.calle" required/> <!-- pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*" -->
-											<!-- Valida letras, numeros y espacios-->
-											<div ng-messages="formAlu.domicilio.$error" ng-if="formAlu.domicilio.$touched && formAlu.domicilio.$invalid">
-												<div ng-message="pattern" class="help-block">Formato invalido</div>
-												<div ng-message="required" class="help-block">Complete este campo</div>
-											</div>
-										</div>
-										<div class="col-md-2">
-											<input name="numeroDomicilio" class="form-control" placeholder="Número" type="number" maxlength="6" ng-model="nuevoAlumno.domicilio.numero"/> 
-											<div ng-messages="formAlu.numeroDomicilio.$error" ng-if="formAlu.numeroDomicilio.$touched && formAlu.numeroDomicilio.$invalid">
-												<div ng-message="type" class="help-block">Formato invalido</div>
-												<div ng-message="required" class="help-block">Complete este campo</div>
-											</div>
-										</div>
-										<div class="col-md-1">
-											<input type="button" class="btn btn-default" value="Avanzado" ng-click="domicilioAvanzado()">
-										</div>
-									</div>
-									<!-- /form-group-->
-
-									<div class="form-group" ng-class="{ 'has-error': formAlu.fechaNacimiento.$touched && formAlu.fechaNacimiento.$invalid }">
-										<div class="col-md-4 control-label">
-											<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Fecha de nac.:</label>
-										</div>
-										<div class="col-md-6">
-											<input name="fechaNacimiento"class="form-control" ng-model="nuevoAlumno.fechaNacimiento" placeholder="01/01/2000" type="date"
-											step="1" value="01-01-2000" />
-											<div ng-messages="formAlu.fechaNacimiento.$error" ng-if="formAlu.fechaNacimiento.$touched && formAlu.fechaNacimiento.$invalid">
-												<div ng-message="pattern" class="help-block"> 
-													Formato invalido  
-												</div>
-											</div>
-										</div>
-									</div>
-
-									<div class="form-group" ng-class="{ 'has-error': formAlu.listaTelefono.$touched && formAlu.listaTelefono.$invalid }">
-										<div class="col-md-4 control-label">
-											<label for="">Teléfono:</label>
-										</div>
-
-										<div class="col-md-5">
-											<input name="listaTelefono" class="form-control" ng-model="nuevoTelefonoSimple.nroTelefono" maxlength="10" placeholder="4353535" type="tel" ng-show="!mostrarListaTelefonos">
-											<select multiple class="form-control" ng-show="mostrarListaTelefonos">
-												<option ng-repeat="telefono in nuevoAlumno.listaTelefonos">{{telefono.caracteristica}}-{{telefono.nroTelefono}} ({{telefono.tipoTelefono}})</option>
-											</select> 
-											<div ng-messages="formAlu.listaTelefono.$error" ng-if="formAlu.listaTelefono.$touched && formAlu.listaTelefono.$invalid">
-												<div ng-message="tel" class="help-block"> 
-													Formato invalido  
-												</div>
-											</div>
-										</div>
-										<div class="col-md-1">
-											<input type="button" class="btn btn-default" value="Avanzado" ng-click="telefonoAvanzado()">
-										</div>
-									</div>
-									<!-- /form-group-->
-
-									<div class="form-group" ng-class="{ 'has-error': formAlu.email.$touched && formAlu.email.$invalid }">
-										<div class="col-md-4 control-label">
-											<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Mail:</label>
-										</div>
-										<div class="col-md-7">
-											<input name="email" type="email" class="form-control" placeholder="nombre@dominio.com" ng-model="nuevoMAilSimple.direccionMail" maxlength="255" ng-show="!mostrarListaMails" required/>
-											<select multiple class="form-control" ng-show="mostrarListaMails">
-												<option ng-repeat="mail in nuevoAlumno.listaMails">{{mail.direccionMail}} ({{mail.tipoMail}})</option>
-											</select> 
-											<div ng-messages="formAlu.email.$error" ng-if="formAlu.email.$touched && formAlu.email.$invalid">
-												<div ng-message="email" class="help-block">Formato invalido</div>
-												<div ng-message="required" class="help-block">Complete este campo</div>
-											</div>
-										</div>
-										<div class="col-md-1">
-											<input type="button" class="btn btn-default" value="Avanzado" ng-click="mailAvanzado()">
-										</div>
-									</div>
-									<!-- /form-group-->
-
-									<div class="form-group" ng-class="{ 'has-error': formAlu.observacion.$touched && formAlu.observacion.$invalid }">
-										<div class="col-md-4 control-label">
-											<label for="">Observaciones:</label>
-										</div>
-										<div class="col-md-7">
-											<textarea name="observacion" class="form-control" rows="4" maxlength="255" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*" ng-model="nuevoAlumno.observaciones"></textarea>
-											<div ng-messages="formAlu.observacion.$error" ng-if="formAlu.observacion.$touched && formAlu.observacion.$invalid">
-												<div ng-message="pattern" class="help-block"> 
-													Formato invalido  
-												</div>
-											</div>
-										</div>
-									</div><!-- /form-group-->
-								</div><!--personal-info-->
-
-								<div class="col-md-3">
-									<div class="form-group">
-										<div class="col-md-2 col-md-offset-1">
-											<button class="btn btn-default" ngf-select ng-model="picFile" accept="image/*" ngf-max-size="2MB" ngf-min-height="100" style="margin: 5px auto">Seleccione imagen de perfil</button>
-
-											<div ngf-drop ng-model="picFile" ngf-pattern="image/*" class="cropArea"><!--{{picFile}}-->
-												<img-crop image="picFile  | ngfDataUrl"                 
-												result-image="croppedDataUrl" ng-init="croppedDataUrl=''">
-											</img-crop>
-										</div>
-									</div>
-							<!--<div>
-								<img ng-src="{{croppedDataUrl}}">
-							</div>-->
-							<!--<button ng-click="upload(croppedDataUrl)">Submit</button> -->
-							<span class="progress" ng-show="progress >= 0">
-								<div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
-							</span>
-							<span ng-show="result">Carga completa</span>
-							<span class="err" ng-show="errorMsg">{{errorMsg}}</span>
-						</div>
-					</div>
-				</div><!--row-->
-			</div><!--formulario media-body-->
-			<div class="form-group">
-				<div class="col-md-2 col-md-offset-3">
-					<input class="btn btn-danger" type="button" name="" ng-click="clearFormAlu()" value="Limpiar" />
-				</div>
-				<div class="col-md-1 col-md-offset-1">
-					<input class="btn btn-primary" ng-click="newAlumno(nuevoAlumno)" type="submit" name="" value="Guardar" ng-disabled="!formAlu.$valid"/>
-				</div>
+								<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipDelete" ng-click="deleteAlumnoComfirm(alumno)" style="width: 22%">
+									<span class="glyphicon glyphicon-trash"></span>
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
-		</form>
-	</fieldset>
+		</fieldset>
+	</div>
+
+
+	<div id="nuevoPerfil" ng-show="nuevoPerfil">
+		<fieldset>
+			<h1>{{subtitle}}: <small>Ingrese los datos para crear un nuevo perfil
+				de alumno y haga clic en guardar cuando finalice</small></h1>
+				<hr>
+				<form class="form-horizontal media" name="formAlu" novalidate>
+					<div class="media-body">
+						<!-- <div class="container"> Pachec: probar esto en la resolución grande -->
+						<div class="row">
+							<div class="col-md-6">
+								<div class="alert alert-warning alert-dismissible" role="alert">
+									<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									<span class="glyphicon glyphicon-asterisk small"></span>Campos obligatorios
+								</div>
+								<div class="form-group" ng-class="{ 'has-error': formAlu.nroDocumento.$touched && formAlu.nroDocumento.$invalid }">
+									<div class="col-md-4 control-label">
+										<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span>  Documento:</label>
+									</div>
+									<div class="col-md-4">
+										<input type="text" name="nroDocumento" class="form-control validate" ng-model="nuevoAlumno.nroDocumento" placeholder="35123123" maxlength="8" required pattern="\d{8,8}" ng-change="nuevoAlumno.matricula=nuevoAlumno.nroDocumento"/>
+										<input type="hidden" ng-model="nuevoAlumno.matricula" /> <!-- Bindea matricula a nroDocumento para cargar ambos a la vez -->
+										<div ng-messages="formAlu.nroDocumento.$error" ng-if="formAlu.nroDocumento.$touched && formAlu.nroDocumento.$invalid">
+											<div ng-message="required" class="help-block">Complete este campo</div>
+											<div ng-message="pattern" class="help-block">Formato invalido</div>
+										</div>
+									</div>
+									<!-- Valida 8 digitos -->
+									<div class="col-md-3">
+										<select class="form-control" ng-model="nuevoAlumno.tipoDocumento" name="TipoDocumento" required>
+											<option value="" disabled selected>Tipo</option>
+											<option value="DNI">DNI</option>
+											<option value="LC">LC</option>
+											<option value="Otro">Otro</option>
+										</select>
+									</div>
+								</div>
+								<!-- /form-group-->
+
+								<div class="form-group" ng-class="{ 'has-error': formAlu.nombre.$touched && formAlu.nombre.$invalid }">
+									<div class="col-md-4 control-label">
+										<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Nombre/s:</label>
+									</div>
+									<div class="col-md-5">
+										<input name="nombre" class="form-control" ng-model="nuevoAlumno.nombre" placeholder="Nombre" type="text" maxlength="255" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
+										<!-- Valida letras y espacios -->
+										<div ng-messages="formAlu.nombre.$error" ng-if="formAlu.nombre.$touched && formAlu.nombre.$invalid">
+											<div ng-message="pattern" class="help-block">Formato invalido</div>
+											<div ng-message="required" class="help-block">Complete este campo</div>
+										</div>
+									</div>
+
+								</div><!-- /form-group-->
+
+								<div class="form-group" ng-class="{ 'has-error': formAlu.apellido.$touched && formAlu.apellido.$invalid }">
+									<div class="col-md-4 control-label">
+										<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Apellido/s:</label>
+									</div>
+									<div class="col-md-5">
+										<input name="apellido" class="form-control" ng-model="nuevoAlumno.apellido" placeholder="Apellido" type="text" maxlength="255" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
+										<!-- Valida letras y espacios-->
+										<div ng-messages="formAlu.apellido.$error" ng-if="formAlu.apellido.$touched && formAlu.apellido.$invalid">
+											<div ng-message="pattern" class="help-block">Formato invalido</div>
+											<div ng-message="required" class="help-block">Complete este campo</div>
+										</div>
+									</div>
+								</div>
+								<!-- /form-group-->
+
+								<div class="form-group">
+									<div class="col-md-4 control-label">
+										<label for="">Sexo:</label>
+									</div>
+									<div class="col-md-7">
+										<input type="radio" name="sexo" ng-model="nuevoAlumno.sexo" id="F" value="F"><label class="text-radio" for="F"><span></span>Femenino </label>
+										<input type="radio" name="sexo" ng-model="nuevoAlumno.sexo" checked id="M" value="M"><label class="text-radio" for="M"><span></span>Masculino </label>
+									</div>
+								</div>
+								<!-- /form-group-->
+
+								<div class="form-group" ng-class="{ 'has-error': formAlu.domicilio.$touched && formAlu.domicilio.$invalid }">
+									<div class="col-md-4 control-label">
+										<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Domicilio:</label>
+									</div>
+									<div class="col-md-4">
+										<input name="domicilio" class="form-control" placeholder="Calle" type="text" maxlength="255" ng-model="nuevoAlumno.domicilio.calle" required/> <!-- pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*" -->
+										<!-- Valida letras, numeros y espacios-->
+										<div ng-messages="formAlu.domicilio.$error" ng-if="formAlu.domicilio.$touched && formAlu.domicilio.$invalid">
+											<div ng-message="pattern" class="help-block">Formato invalido</div>
+											<div ng-message="required" class="help-block">Complete este campo</div>
+										</div>
+									</div>
+									<div class="col-md-2">
+										<input name="numeroDomicilio" class="form-control" placeholder="Número" type="number" maxlength="6" ng-model="nuevoAlumno.domicilio.numero"/> 
+										<div ng-messages="formAlu.numeroDomicilio.$error" ng-if="formAlu.numeroDomicilio.$touched && formAlu.numeroDomicilio.$invalid">
+											<div ng-message="type" class="help-block">Formato invalido</div>
+											<div ng-message="required" class="help-block">Complete este campo</div>
+										</div>
+									</div>
+									<div class="col-md-1">
+										<input type="button" class="btn btn-default" value="Avanzado" ng-click="domicilioAvanzado()">
+									</div>
+								</div>
+								<!-- /form-group-->
+
+								<div class="form-group" ng-class="{ 'has-error': formAlu.fechaNacimiento.$touched && formAlu.fechaNacimiento.$invalid }">
+									<div class="col-md-4 control-label">
+										<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Fecha de nac.:</label>
+									</div>
+									<div class="col-md-6">
+										<input name="fechaNacimiento"class="form-control" ng-model="nuevoAlumno.fechaNacimiento" placeholder="01/01/2000" type="date"
+										step="1" value="01-01-2000" />
+										<div ng-messages="formAlu.fechaNacimiento.$error" ng-if="formAlu.fechaNacimiento.$touched && formAlu.fechaNacimiento.$invalid">
+											<div ng-message="pattern" class="help-block"> 
+												Formato invalido  
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="form-group" ng-class="{ 'has-error': formAlu.listaTelefono.$touched && formAlu.listaTelefono.$invalid }">
+									<div class="col-md-4 control-label">
+										<label for="">Teléfono:</label>
+									</div>
+
+									<div class="col-md-5">
+										<input name="listaTelefono" class="form-control" ng-model="nuevoTelefonoSimple.nroTelefono" maxlength="10" placeholder="4353535" type="tel" ng-show="!mostrarListaTelefonos">
+										<select multiple class="form-control" ng-show="mostrarListaTelefonos">
+											<option ng-repeat="telefono in nuevoAlumno.listaTelefonos">{{telefono.caracteristica}}-{{telefono.nroTelefono}} ({{telefono.tipoTelefono}})</option>
+										</select> 
+										<div ng-messages="formAlu.listaTelefono.$error" ng-if="formAlu.listaTelefono.$touched && formAlu.listaTelefono.$invalid">
+											<div ng-message="tel" class="help-block"> 
+												Formato invalido  
+											</div>
+										</div>
+									</div>
+									<div class="col-md-1">
+										<input type="button" class="btn btn-default" value="Avanzado" ng-click="telefonoAvanzado()">
+									</div>
+								</div>
+								<!-- /form-group-->
+
+								<div class="form-group" ng-class="{ 'has-error': formAlu.email.$touched && formAlu.email.$invalid }">
+									<div class="col-md-4 control-label">
+										<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Mail:</label>
+									</div>
+									<div class="col-md-7">
+										<input name="email" type="email" class="form-control" placeholder="nombre@dominio.com" ng-model="nuevoMAilSimple.direccionMail" maxlength="255" ng-show="!mostrarListaMails" required/>
+										<select multiple class="form-control" ng-show="mostrarListaMails">
+											<option ng-repeat="mail in nuevoAlumno.listaMails">{{mail.direccionMail}} ({{mail.tipoMail}})</option>
+										</select> 
+										<div ng-messages="formAlu.email.$error" ng-if="formAlu.email.$touched && formAlu.email.$invalid">
+											<div ng-message="email" class="help-block">Formato invalido</div>
+											<div ng-message="required" class="help-block">Complete este campo</div>
+										</div>
+									</div>
+									<div class="col-md-1">
+										<input type="button" class="btn btn-default" value="Avanzado" ng-click="mailAvanzado()">
+									</div>
+								</div>
+								<!-- /form-group-->
+
+								<div class="form-group" ng-class="{ 'has-error': formAlu.observacion.$touched && formAlu.observacion.$invalid }">
+									<div class="col-md-4 control-label">
+										<label for="">Observaciones:</label>
+									</div>
+									<div class="col-md-7">
+										<textarea name="observacion" class="form-control" rows="4" maxlength="255" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*" ng-model="nuevoAlumno.observaciones"></textarea>
+										<div ng-messages="formAlu.observacion.$error" ng-if="formAlu.observacion.$touched && formAlu.observacion.$invalid">
+											<div ng-message="pattern" class="help-block"> 
+												Formato invalido  
+											</div>
+										</div>
+									</div>
+								</div><!-- /form-group-->
+							</div><!--personal-info-->
+
+							<div class="col-md-3">
+								<div class="form-group">
+									<div class="col-md-2 col-md-offset-1">
+										<button class="btn btn-default" ngf-select ng-model="picFile" accept="image/*" ngf-max-size="2MB" ngf-min-height="100" style="margin: 5px auto">Seleccione imagen de perfil</button>
+
+										<div ngf-drop ng-model="picFile" ngf-pattern="image/*" class="cropArea"><!--{{picFile}}-->
+											<img-crop image="picFile  | ngfDataUrl"                 
+											result-image="croppedDataUrl" ng-init="croppedDataUrl=''">
+										</img-crop>
+									</div>
+								</div>
+						<!--<div>
+							<img ng-src="{{croppedDataUrl}}">
+						</div>-->
+						<!--<button ng-click="upload(croppedDataUrl)">Submit</button> -->
+						<span class="progress" ng-show="progress >= 0">
+							<div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
+						</span>
+						<span ng-show="result">Carga completa</span>
+						<span class="err" ng-show="errorMsg">{{errorMsg}}</span>
+					</div>
+				</div>
+			</div><!--row-->
+		</div><!--formulario media-body-->
+		<div class="form-group">
+			<div class="col-md-2 col-md-offset-3">
+				<input class="btn btn-danger" type="button" name="" ng-click="clearFormAlu()" value="Limpiar" />
+			</div>
+			<div class="col-md-1 col-md-offset-1">
+				<input class="btn btn-primary" ng-click="newAlumno(nuevoAlumno)" type="submit" name="" value="Guardar" ng-disabled="!formAlu.$valid"/>
+			</div>
+		</div>
+	</form>
+</fieldset>
 </div>
 
 <div id="notas" ng-show="notas">
@@ -359,177 +355,180 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<label>Seleccione a&ntilde;o y curso: </label> 
-				<select name="dropDownSelectAnio" ng-change="toggleBuscarButton(true); resetPlanillaTrimDTO()" class="form-control-inline" ng-model="dropDownSelectedAnio" ng-options="anio.nombre for anio in dropDownSearchOptions"></select>
-				<!-- <select class="dropdown-toggle form-control-inline" name="" ng-model="dropDownAnioValue" ng-change="toggleBuscarButton(true); resetPlanillaTrimDTO()"> 
+				<select name="dropDownSelectAnio" ng-change="toggleBuscarButton(true); resetPlanillaTrimDTO()" class="form-control-inline" ng-model="dropDownSelectedAnio" ng-options="anio.nombre for anio in dropDownSearchOptions">
 					<option value="" disabled selected>Seleccione un a&ntilde;o</option>
+				</select>
+			<!-- <select class="dropdown-toggle form-control-inline" name="" ng-model="dropDownAnioValue" ng-change="toggleBuscarButton(true); resetPlanillaTrimDTO()"> 
+				<option value="" disabled selected>Seleccione un a&ntilde;o</option>
 
-					<option ng-repeat="optionAnio.nombre in dropDownSearchOptions" value="{{optionAnio}}">{{optionAnio}}</option>
-				</select> -->
+				<option ng-repeat="optionAnio.nombre in dropDownSearchOptions" value="{{optionAnio}}">{{optionAnio}}</option>
+			</select> -->
 
-				<select name="dropDownSelectCurso" ng-change="toggleBuscarButton(true); resetPlanillaTrimDTO()" class="form-control-inline" ng-model="dropDownSelectedCurso" ng-options="curso.division for curso in dropDownSelectedAnio.listaCursos"></select>
+			<select name="dropDownSelectCurso" ng-change="toggleBuscarButton(true); resetPlanillaTrimDTO()" class="form-control-inline" ng-model="dropDownSelectedCurso" ng-options="curso.division for curso in dropDownSelectedAnio.listaCursos">
+				<option value="" disabled selected>Seleccione un curso</option>
+			</select>
 
-				<!-- <select	class="dropdown-toggle form-control-inline" name="" ng-model="dropDownCursoValue" ng-change="toggleBuscarButton(true); resetPlanillaTrimDTO()">{{dropDownCursoValue}}
-					<option value="" disabled selected>Seleccione un curso</option>
+			<!-- <select	class="dropdown-toggle form-control-inline" name="" ng-model="dropDownCursoValue" ng-change="toggleBuscarButton(true); resetPlanillaTrimDTO()">{{dropDownCursoValue}}
+				<option value="" disabled selected>Seleccione un curso</option>
 
-					<option ng-repeat="optionCurso in dropDownAnioValue" value="{{optionCurso}}">{{optionCurso}}</option>
-				</select> -->
-				<button class="btn btn-default" ng-click="showAsignarNotas(); toggleBuscarButton(false)" ng-disabled="buscarButtonIsDisabled">Buscar</button>
-			</div>
+				<option ng-repeat="optionCurso in dropDownAnioValue" value="{{optionCurso}}">{{optionCurso}}</option>
+			</select> -->
+			<button class="btn btn-default" ng-click="showAsignarNotas(); toggleBuscarButton(false)" ng-disabled="buscarButtonIsDisabled">Buscar</button>
 		</div>
+	</div>
 
 
-		<div id="asignarNotas" ng-show="asignarNotas">
-			<div class="panel-group" ng-model="multiplePanels.activePanels" data-allow-multiple="true" role="tablist" aria-multiselectable="true" bs-collapse>
-				<div class="panel panel-default">
-					<div class="panel-heading" style="cursor: pointer" ng-click="getPlanillaTrimestre(1)" bs-collapse-toggle>
-						<div class="panel-title">
-							<span ng-class="_.includes(multiplePanels.activePanels, 0)? 'glyphicon glyphicon-chevron-up': 'glyphicon glyphicon-chevron-down'"></span>Primer Trimestre
-						</div>
-					</div>
-					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
-						<div class="table-responsive">
-							<table class="table-hover table-striped table-condensed table-bordered" export-table="dir-primer-trim"  ng-form="formColPrimerTrim">
-								<thead>
-									<tr>
-										<th>#</th>
-										<th class="col-md-3">
-											<button type="button" class="btn btn-primary btn-block btn-xs" style="float: top;" ng-click="updatePlanillaTrimestre(1, planillas.primerTrim)" ng-disabled="_.some(materiasArrayBoolPrimerTrim)">Guardar</button>
-											<button type="button" class="btn btn-danger btn-block btn-xs" style="float: top;" ng-click="getPlanillaTrimestre(1)">Cancelar</button>
-										</th>
-										<th class="col-md-1" ng-repeat="materia in planillas.primerTrim[0].notas" style="text-align: center;">
-											{{materia.materia}}
-										</th>	
-									</tr>
-								</thead>
-								<tbody>
-									<tr style="text-align: center;">
-										<td></td>
-										<td>
-											<button type="button" class="btn btn-default btn-block btn-xs" ng-click="exportAction('dir-primer-trim')" style="float: top">Exportar Tabla</button>
-										</td>
-										<td ng-repeat="materia in planillas.primerTrim[0].notas">
-											<button type="button" class="btn btn-default btn-xs" ng-click="materiasArrayBoolPrimerTrim[$index] = !materiasArrayBoolPrimerTrim[$index]" ng-show="!materiasArrayBoolPrimerTrim[$index]">Editar Notas</button>
-											<button type="button" class="btn btn-default btn-xs" ng-click="materiasArrayBoolPrimerTrim[$index] = !materiasArrayBoolPrimerTrim[$index]" ng-show="materiasArrayBoolPrimerTrim[$index]" ng-disabled="!formColPrimerTrim.$valid">Guardar Notas</button>
-										</td>
-									</tr>
-									<tr ng-repeat="lista in planillas.primerTrim">
-										<td>{{$index+1}}</td>
-										<td>{{lista.alumno}}</td>
-										<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">
-											<div ng-if="!materiasArrayBoolPrimerTrim[$index]">
-												{{nota.nota}}
-											</div>
-											<div ng-if="materiasArrayBoolPrimerTrim[$index]" ng-class="{ 'has-error': formColPrimerTrim.notaMat.$touched && formColPrimerTrim.notaMat.$invalid }">
-												<input class="form-control" name="notaMat" type="number" ng-model="nota.nota" required min="0" max="10"/>
-											</div>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
+	<div id="asignarNotas" ng-show="asignarNotas">
+		<div class="panel-group" ng-model="multiplePanels.activePanels" data-allow-multiple="true" role="tablist" aria-multiselectable="true" bs-collapse>
+			<div class="panel panel-default">
+				<div class="panel-heading" style="cursor: pointer" ng-click="getPlanillaTrimestre(1)" bs-collapse-toggle>
+					<div class="panel-title">
+						<span ng-class="_.includes(multiplePanels.activePanels, 0)? 'glyphicon glyphicon-chevron-up': 'glyphicon glyphicon-chevron-down'"></span>Primer Trimestre
 					</div>
 				</div>
-				<div class="panel panel-default">
-					<div class="panel-heading" style="cursor: pointer" ng-click="getPlanillaTrimestre(2); downGlyphiconSegundoT=!downGlyphiconSegundoT" bs-collapse-toggle>
-						<div class="panel-title">
-							<span ng-class="_.includes(multiplePanels.activePanels, 1)? 'glyphicon glyphicon-chevron-up': 'glyphicon glyphicon-chevron-down'"></span>Segundo Trimestre
-						</div>
-					</div>
-					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
-						<div class="table-responsive">
-							<table class="table-hover table-striped table-condensed table-bordered" export-table="dir-segundo-trim"  ng-form="formColSegundoTrim">
-								<thead>
-									<tr>
-										<th>#</th>
-										<th class="col-md-3">
-											<button type="button" class="btn btn-primary btn-block btn-xs" style="float: top;" ng-click="updatePlanillaTrimestre(2, planillas.segundoTrim)" ng-disabled="_.some(materiasArrayBoolSegundoTrim)">Guardar</button>
-											<button type="button" class="btn btn-danger btn-block btn-xs" style="float: top;" ng-click="getPlanillaTrimestre(2)">Cancelar</button>
-										</th>
-										<th class="col-md-1" ng-repeat="materia in planillas.segundoTrim[0].notas" style="text-align: center;">
-											{{materia.materia}}
-										</th>	
-									</tr>
-								</thead>
-								<tbody>
-									<tr style="text-align: center;">
-										<td></td>
-										<td>
-											<button type="button" class="btn btn-default btn-block btn-xs" ng-click="exportAction('dir-segundo-trim')" style="float: top">Exportar Tabla</button>
-										</td>
-										<td ng-repeat="materia in planillas.segundoTrim[0].notas">
-											<button type="button" class="btn btn-default btn-xs" ng-click="materiasArrayBoolSegundoTrim[$index] = !materiasArrayBoolSegundoTrim[$index]" ng-show="!materiasArrayBoolSegundoTrim[$index]">Editar Notas</button>
-											<button type="button" class="btn btn-default btn-xs" ng-click="materiasArrayBoolSegundoTrim[$index] = !materiasArrayBoolSegundoTrim[$index]" ng-show="materiasArrayBoolSegundoTrim[$index]" ng-disabled="!formColSegundoTrim.$valid">Guardar Notas</button>
-										</td>
-									</tr>
-									<tr ng-repeat="lista in planillas.segundoTrim">
-										<td>{{$index+1}}</td>
-										<td>{{lista.alumno}}</td>
-										<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">
-											<div ng-if="!materiasArrayBoolSegundoTrim[$index]">
-												{{nota.nota}}
-											</div>
-											<div ng-if="materiasArrayBoolSegundoTrim[$index]" ng-class="{ 'has-error': formColSegundoTrim.notaMat.$touched && formColSegundoTrim.notaMat.$invalid }">
-												<input class="form-control" name="notaMat" type="number" ng-model="nota.nota" required min="0" max="10"/>
-											</div>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-				<div class="panel panel-default">
-					<div class="panel-heading" style="cursor: pointer" ng-click="getPlanillaTrimestre(3); downGlyphiconTercerT=!downGlyphiconTercerT" bs-collapse-toggle>
-						<div class="panel-title">
-							<span ng-class="_.includes(multiplePanels.activePanels, 2)? 'glyphicon glyphicon-chevron-up': 'glyphicon glyphicon-chevron-down'"></span>Tercer Trimestre
-						</div>
-					</div>
-					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
-						<div class="table-responsive">
-							<table class="table-hover table-striped table-condensed table-bordered" export-table="dir-tercer-trim"  ng-form="formColTercerTrim">
-								<thead>
-									<tr>
-										<th>#</th>
-										<th class="col-md-3">
-											<button type="button" class="btn btn-primary btn-block btn-xs" style="float: top;" ng-click="updatePlanillaTrimestre(3, planillas.tercerTrim)" ng-disabled="_.some(materiasArrayBoolTercerTrim)">Guardar</button>
-											<button type="button" class="btn btn-danger btn-block btn-xs" style="float: top;" ng-click="getPlanillaTrimestre(3)">Cancelar</button>
-										</th>
-										<th class="col-md-1" ng-repeat="materia in planillas.tercerTrim[0].notas" style="text-align: center;">
-											{{materia.materia}}
-										</th>	
-									</tr>
-								</thead>
-								<tbody>
-									<tr style="text-align: center;">
-										<td></td>
-										<td>
-											<button type="button" class="btn btn-default btn-block btn-xs" ng-click="exportAction('dir-tercer-trim')" style="float: top">Exportar Tabla</button>
-										</td>
-										<td ng-repeat="materia in planillas.tercerTrim[0].notas">
-											<button type="button" class="btn btn-default btn-xs" ng-click="materiasArrayBoolTercerTrim[$index] = !materiasArrayBoolTercerTrim[$index]" ng-show="!materiasArrayBoolTercerTrim[$index]">Editar Notas</button>
-											<button type="button" class="btn btn-default btn-xs" ng-click="materiasArrayBoolTercerTrim[$index] = !materiasArrayBoolTercerTrim[$index]" ng-show="materiasArrayBoolTercerTrim[$index]" ng-disabled="!formColTercerTrim.$valid">Guardar Notas</button>
-										</td>
-									</tr>
-									<tr ng-repeat="lista in planillas.tercerTrim">
-										<td>{{$index+1}}</td>
-										<td>{{lista.alumno}}</td>
-										<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">
-											<div ng-if="!materiasArrayBoolTercerTrim[$index]">
-												{{nota.nota}}
-											</div>
-											<div ng-if="materiasArrayBoolTercerTrim[$index]" ng-class="{ 'has-error': formColTercerTrim.notaMat.$touched && formColTercerTrim.notaMat.$invalid }">
-												<input class="form-control" name="notaMat" type="number" ng-model="nota.nota" required min="0" max="10"/>
-											</div>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
+				<div class="panel-collapse" role="tabpanel" bs-collapse-target>
+					<div class="table-responsive">
+						<table class="table-hover table-striped table-condensed table-bordered" export-table="dir-primer-trim"  ng-form="formColPrimerTrim">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th class="col-md-3">
+										<button type="button" class="btn btn-primary btn-block btn-xs" style="float: top;" ng-click="updatePlanillaTrimestre(1, planillas.primerTrim)" ng-disabled="_.some(materiasArrayBoolPrimerTrim)">Guardar</button>
+										<button type="button" class="btn btn-danger btn-block btn-xs" style="float: top;" ng-click="getPlanillaTrimestre(1)">Cancelar</button>
+									</th>
+									<th class="col-md-1" ng-repeat="materia in planillas.primerTrim[0].notas" style="text-align: center;">
+										{{materia.materia}}
+									</th>	
+								</tr>
+							</thead>
+							<tbody>
+								<tr style="text-align: center;">
+									<td></td>
+									<td>
+										<button type="button" class="btn btn-default btn-block btn-xs" ng-click="exportAction('dir-primer-trim')" style="float: top">Exportar Tabla</button>
+									</td>
+									<td ng-repeat="materia in planillas.primerTrim[0].notas">
+										<button type="button" class="btn btn-default btn-xs" ng-click="materiasArrayBoolPrimerTrim[$index] = !materiasArrayBoolPrimerTrim[$index]" ng-show="!materiasArrayBoolPrimerTrim[$index]">Editar Notas</button>
+										<button type="button" class="btn btn-default btn-xs" ng-click="materiasArrayBoolPrimerTrim[$index] = !materiasArrayBoolPrimerTrim[$index]" ng-show="materiasArrayBoolPrimerTrim[$index]" ng-disabled="!formColPrimerTrim.$valid">Guardar Notas</button>
+									</td>
+								</tr>
+								<tr ng-repeat="lista in planillas.primerTrim">
+									<td>{{$index+1}}</td>
+									<td>{{lista.alumno}}</td>
+									<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">
+										<div ng-if="!materiasArrayBoolPrimerTrim[$index]">
+											{{nota.nota}}
+										</div>
+										<div ng-if="materiasArrayBoolPrimerTrim[$index]" ng-class="{ 'has-error': formColPrimerTrim.notaMat.$touched && formColPrimerTrim.notaMat.$invalid }">
+											<input class="form-control" name="notaMat" type="number" ng-model="nota.nota" required min="0" max="10"/>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 				</div>
 			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading" style="cursor: pointer" ng-click="getPlanillaTrimestre(2); downGlyphiconSegundoT=!downGlyphiconSegundoT" bs-collapse-toggle>
+					<div class="panel-title">
+						<span ng-class="_.includes(multiplePanels.activePanels, 1)? 'glyphicon glyphicon-chevron-up': 'glyphicon glyphicon-chevron-down'"></span>Segundo Trimestre
+					</div>
+				</div>
+				<div class="panel-collapse" role="tabpanel" bs-collapse-target>
+					<div class="table-responsive">
+						<table class="table-hover table-striped table-condensed table-bordered" export-table="dir-segundo-trim"  ng-form="formColSegundoTrim">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th class="col-md-3">
+										<button type="button" class="btn btn-primary btn-block btn-xs" style="float: top;" ng-click="updatePlanillaTrimestre(2, planillas.segundoTrim)" ng-disabled="_.some(materiasArrayBoolSegundoTrim)">Guardar</button>
+										<button type="button" class="btn btn-danger btn-block btn-xs" style="float: top;" ng-click="getPlanillaTrimestre(2)">Cancelar</button>
+									</th>
+									<th class="col-md-1" ng-repeat="materia in planillas.segundoTrim[0].notas" style="text-align: center;">
+										{{materia.materia}}
+									</th>	
+								</tr>
+							</thead>
+							<tbody>
+								<tr style="text-align: center;">
+									<td></td>
+									<td>
+										<button type="button" class="btn btn-default btn-block btn-xs" ng-click="exportAction('dir-segundo-trim')" style="float: top">Exportar Tabla</button>
+									</td>
+									<td ng-repeat="materia in planillas.segundoTrim[0].notas">
+										<button type="button" class="btn btn-default btn-xs" ng-click="materiasArrayBoolSegundoTrim[$index] = !materiasArrayBoolSegundoTrim[$index]" ng-show="!materiasArrayBoolSegundoTrim[$index]">Editar Notas</button>
+										<button type="button" class="btn btn-default btn-xs" ng-click="materiasArrayBoolSegundoTrim[$index] = !materiasArrayBoolSegundoTrim[$index]" ng-show="materiasArrayBoolSegundoTrim[$index]" ng-disabled="!formColSegundoTrim.$valid">Guardar Notas</button>
+									</td>
+								</tr>
+								<tr ng-repeat="lista in planillas.segundoTrim">
+									<td>{{$index+1}}</td>
+									<td>{{lista.alumno}}</td>
+									<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">
+										<div ng-if="!materiasArrayBoolSegundoTrim[$index]">
+											{{nota.nota}}
+										</div>
+										<div ng-if="materiasArrayBoolSegundoTrim[$index]" ng-class="{ 'has-error': formColSegundoTrim.notaMat.$touched && formColSegundoTrim.notaMat.$invalid }">
+											<input class="form-control" name="notaMat" type="number" ng-model="nota.nota" required min="0" max="10"/>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading" style="cursor: pointer" ng-click="getPlanillaTrimestre(3); downGlyphiconTercerT=!downGlyphiconTercerT" bs-collapse-toggle>
+					<div class="panel-title">
+						<span ng-class="_.includes(multiplePanels.activePanels, 2)? 'glyphicon glyphicon-chevron-up': 'glyphicon glyphicon-chevron-down'"></span>Tercer Trimestre
+					</div>
+				</div>
+				<div class="panel-collapse" role="tabpanel" bs-collapse-target>
+					<div class="table-responsive">
+						<table class="table-hover table-striped table-condensed table-bordered" export-table="dir-tercer-trim"  ng-form="formColTercerTrim">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th class="col-md-3">
+										<button type="button" class="btn btn-primary btn-block btn-xs" style="float: top;" ng-click="updatePlanillaTrimestre(3, planillas.tercerTrim)" ng-disabled="_.some(materiasArrayBoolTercerTrim)">Guardar</button>
+										<button type="button" class="btn btn-danger btn-block btn-xs" style="float: top;" ng-click="getPlanillaTrimestre(3)">Cancelar</button>
+									</th>
+									<th class="col-md-1" ng-repeat="materia in planillas.tercerTrim[0].notas" style="text-align: center;">
+										{{materia.materia}}
+									</th>	
+								</tr>
+							</thead>
+							<tbody>
+								<tr style="text-align: center;">
+									<td></td>
+									<td>
+										<button type="button" class="btn btn-default btn-block btn-xs" ng-click="exportAction('dir-tercer-trim')" style="float: top">Exportar Tabla</button>
+									</td>
+									<td ng-repeat="materia in planillas.tercerTrim[0].notas">
+										<button type="button" class="btn btn-default btn-xs" ng-click="materiasArrayBoolTercerTrim[$index] = !materiasArrayBoolTercerTrim[$index]" ng-show="!materiasArrayBoolTercerTrim[$index]">Editar Notas</button>
+										<button type="button" class="btn btn-default btn-xs" ng-click="materiasArrayBoolTercerTrim[$index] = !materiasArrayBoolTercerTrim[$index]" ng-show="materiasArrayBoolTercerTrim[$index]" ng-disabled="!formColTercerTrim.$valid">Guardar Notas</button>
+									</td>
+								</tr>
+								<tr ng-repeat="lista in planillas.tercerTrim">
+									<td>{{$index+1}}</td>
+									<td>{{lista.alumno}}</td>
+									<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">
+										<div ng-if="!materiasArrayBoolTercerTrim[$index]">
+											{{nota.nota}}
+										</div>
+										<div ng-if="materiasArrayBoolTercerTrim[$index]" ng-class="{ 'has-error': formColTercerTrim.notaMat.$touched && formColTercerTrim.notaMat.$invalid }">
+											<input class="form-control" name="notaMat" type="number" ng-model="nota.nota" required min="0" max="10"/>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
 		</div>
-	</fieldset>
-</div>
+	</div>
+</fieldset>
 </div>
 </div>

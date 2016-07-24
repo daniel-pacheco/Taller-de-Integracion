@@ -489,7 +489,7 @@ function eliminarDocente (docente){
 };
 
 $scope.newDocente = function(personal){
-  personal.nombreUsuario = modalService.makeId(5);
+  personal.nombreUsuario = ModalService.makeId(5);
   personal.cuil = $scope.cuilHead + personal.nroDocumento + $scope.cuilTail;
   if ($scope.nuevoTelefonoSimple.nroTelefono && !_.includes(personal.listaTelefonos, $scope.nuevoTelefonoSimple)) { //solo hace el pushsi el telefono no se encuentra en la lista
     personal.listaTelefonos.push($scope.nuevoTelefonoSimple);
