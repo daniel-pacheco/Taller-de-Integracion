@@ -1,10 +1,7 @@
 package ar.com.santalucia.dominio.dto;
 
-import java.util.Date;
-
-public class InscripcionConsultaDTO {
+public class InscripcionConsultaV2Detalle {
 	private Long idMesa;
-	private String alumno;
 	private String materia;
 	private String anioMateria;
 	private String descripcionMateria;
@@ -14,15 +11,14 @@ public class InscripcionConsultaDTO {
 	private String tribunal;
 	private Boolean inscripto;
 	
-	public InscripcionConsultaDTO() {
+	public InscripcionConsultaV2Detalle() {
 		super();
 	}
 
-	public InscripcionConsultaDTO(Long idMesa, String alumno, String materia, String anioMateria, String descripcionMateria, String fecha, String horaInicio, String horaFin, String tribunal,
+	public InscripcionConsultaV2Detalle(Long idMesa, String materia, String anioMateria, String descripcionMateria, String fecha, String horaInicio, String horaFin, String tribunal,
 			Boolean inscripto) {
 		super();
 		this.idMesa = idMesa;
-		this.alumno = alumno;
 		this.materia = materia;
 		this.setAnioMateria(anioMateria);
 		this.setDescripcionMateria(descripcionMateria);
@@ -39,14 +35,6 @@ public class InscripcionConsultaDTO {
 
 	public void setIdMesa(Long idMesa) {
 		this.idMesa = idMesa;
-	}
-
-	public String getAlumno() {
-		return alumno;
-	}
-
-	public void setAlumno(String alumno) {
-		this.alumno = alumno;
 	}
 
 	public String getMateria() {
