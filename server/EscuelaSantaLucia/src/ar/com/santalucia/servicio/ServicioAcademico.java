@@ -123,8 +123,20 @@ public class ServicioAcademico {
 	}
 	
 
-	public Boolean addAnio(Anio anio) throws Exception {	// EN ENDPOINT
+	public Boolean addAnio(Anio anio) throws ValidacionException, Exception {	// EN ENDPOINT
 		try {
+			ValidacionException vEx = new ValidacionException();	// Inicio Bloque verificación de especialidad
+			if(anio.getEspecialidad() == null){
+				vEx.addMensajeError("No se puede cargar un año sin especialidad. La especialidad es obligatoria.");
+				throw vEx;
+			}else{
+				Especialidad aux = gEspecialidad.getById(anio.getEspecialidad().getIdEspecialidad()); //
+				if(aux == null){
+					vEx.addMensajeError("La especialidad no existe.");
+					throw vEx;
+				}
+			}														// Fin Bloque verificación de especialidad
+			
 			if (anio.getIdAnio() == null) {
 				gAnio.add(anio);
 			}
@@ -1353,6 +1365,7 @@ public class ServicioAcademico {
 		anioAux.setNombre(anioModif.getNombre());				// Copio los datos de la modificación al persistente copiado
 		anioAux.setDescripcion(anioModif.getDescripcion());
 		anioAux.setCicloLectivo(anioModif.getCicloLectivo());
+		anioAux.setEspecialidad(anioModif.getEspecialidad());
 		anioAux.setActivo(anioModif.getActivo());
 		return anioAux;
 	}
