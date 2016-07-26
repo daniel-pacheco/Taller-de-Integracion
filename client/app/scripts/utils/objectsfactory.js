@@ -314,6 +314,21 @@ var newLlamado = function(){
     return historicoPorMateria;
   };
 
+var newDesempenioAlumno = function(){
+  var desempenioAlumno = {
+    nombre:'',
+    apellido: '',
+    nroDocumento: '',
+    primerTrimDesap: 0,
+    segundoTrimDesap: 0,
+    tercerTrimDesap: 0,
+    totalDesap: 0,
+    totalAp: 0,
+    totalInasist: 0
+  };
+  return desempenioAlumno;
+};
+
   return {
     newAlumno: newAlumno,
     newAlumnoLight: newAlumnoLight,
@@ -343,6 +358,7 @@ var newLlamado = function(){
     newEstadisticaMateria: newEstadisticaMateria,
     newEstadisticaTrimestre: newEstadisticaTrimestre,
     newEstadisticaPorMateria: newEstadisticaPorMateria,
-    newHistoricoPorMateria: newHistoricoPorMateria
+    newHistoricoPorMateria: newHistoricoPorMateria,
+    newDesempenioAlumno: newDesempenioAlumno
   };
 });

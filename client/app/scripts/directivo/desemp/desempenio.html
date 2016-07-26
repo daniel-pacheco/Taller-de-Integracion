@@ -1,0 +1,181 @@
+<div>
+
+	<div class="navbar-inverse bs-docs-nav" role="banner">
+		<div class="container">
+			<div class="navbar-header">
+				<button class="navbar-toggle" type="button" data-template-url="./scripts/directivo/alumnado/aside/alumnadosidebar.aside.tpl.html" data-animation="am-fade-and-slide-left" data-placement="left" title="Menu" bs-aside="aside">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-2 hidden-sm hidden-xs" ng-cloak>
+		<div>
+			<div class="bs-sidebar hidden-print affix" role="complementary" data-offset-top="-100" bs-affix style="position: relative; text-align: right;">
+				<ul class="nav bs-sidenav">
+					<li bs-scrollspy data-target="#getting-started">
+						<a href="">Men&uacute; Alumnado</a>
+					</li>
+					<hr style="margin: 2px 0;">
+					<li ng-class="{active : activeMenuIzq === 'todos'}" data-target="#modals">
+						<a href="" ng-click="seleccionar('todos')">Todos</a>
+					</li>
+					<li ng-repeat="anio in listaAnios" ng-class="{active : activeMenuIzq === anio.nombre}" data-target="#modals">
+						<a href="" ng-click="seleccionar(anio.nombre)">{{anio.nombre}}</a>
+					</li>				
+					<li>
+						<img class="col-md-10" style="position: relative; margin-top: 100%;" src="./images/logo.jpg">
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+
+	<div>
+		<spinner name="searchDesempenioSpinner" ng-cloak="">
+			<div class="overlay"></div>
+			<div class="spinner-small">			            
+				<div>
+					<div class="ng-include: './views/templates/defaultspinner.html'"></div>
+				</div>
+			</div>
+			<div class="please-wait-small">Aguarde por favor...</div>
+		</spinner>
+		<div id="todos" ng-show="todos">
+			<fieldset>
+				<h1>Desempeño anual: <small>Total de alumnos del establecimiento</small></h1>
+				<hr>		<!-- <button ng-click="resetList()">reset list</button> -->
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<label>Filtrar por año: </label>
+						<select name="dropDownSelectAnio" ng-change="drawGraphics('todos')" class="form-control-inline" ng-model="dropDownSelectedAnio" ng-options="anio.idAnio as anio.nombre for anio in listaAnios">
+							<option value="" disabled selected>Seleccione una opci&oacute;n</option>
+						</select>
+						<button class="btn btn-default pull-right" ng-click="exportAction('dir-cuadro-honor')" bs-tooltip="tooltip.tooltipExport">Exportar</button>
+					</div>
+				</div>
+				<div ng-if="dropDownSelectedAnio">
+					<br>
+					<h3>{{title}} {{cuadroHonor.anio}} - {{cuadroHonor.curso}} {{cuadroHonor.cicloLectivo}}</h3>
+					<hr>
+					<table class="table table-hover table-striped" export-table="dir-cuadro-honor">
+						<thead>
+							<tr>
+								<th>Apellido</th>
+								<th>Nombre</th>
+								<th>DNI</th>				
+								<th>Inasistencias</th>
+								<th>Promedio</th>
+							</tr>
+						</thead>
+						<tr ng-repeat="alumno in cuadroHonor.listaAlumnos | orderBy:'-promedio'">
+							<td>{{alumno.nombre}}</td>
+							<td>{{alumno.apellido}}</td>
+							<td>{{alumno.nroDocumento}}</td>					
+							<td>{{alumno.cantInasist}}</td>
+							<td>{{alumno.promedio}}</td>
+						</tr>
+					</table>
+					<br>
+					<hr>
+					<div class="row">
+						<div class="col-md-5 col-md-offset-1">
+							<div id="TodosPieChart"></div>
+						</div>
+						<div class="col-md-5">
+							<div id="TodosColumnChart"></div>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+			<br>
+			<br>
+		</div>
+		<div id="porAnio" ng-show="porAnio">
+			<fieldset>
+				<h1>{{title}} <small>Total de alumnos de XXXXX año</small></h1>
+				<hr>		<!-- <button ng-click="resetList()">reset list</button> -->
+				<div class="panel panel-default">
+					<div class="panel-heading">
+					<!--	<label>Filtrar por materia: </label>
+						<select name="dropDownSelectAnio" ng-change="drawGraphics('porAnio')" class="form-control-inline" ng-model="dropDownSelectedAnio" ng-options="anio.nombre for anio in listaAnios">
+							<option value="" disabled selected>Seleccione una opci&oacute;n</option>
+						</select>
+						<select name="dropDownSelectAnio" ng-change="drawGraphics('porAnio')" class="form-control-inline" ng-model="dropDownSelectedAnio" ng-options="curso.idCurso as curso.division for curso in dropDownSelectedAnio.listaCursos">
+							<option value="" disabled selected>Seleccione una opci&oacute;n</option>
+						</select> -->
+						<label for="dropDownSelectAnio">A&ntilde;o: </label> 
+						<select name="dropDownSelectAnio" ng-change="resetAdministrarTable()" class="form-control-inline" ng-model="dropDownSelectedAnio" ng-options="anio.nombre for anio in listaAnios">
+							<option value="" disabled selected>Seleccione un a&ntilde;o</option>
+						</select>
+						<label for="dropDownSelectCurso">Divisi&oacute;n: </label> 
+						<select name="dropDownSelectCurso" ng-change="resetAdministrarTable()" class="form-control-inline" ng-model="dropDownSelectedCurso" ng-options="'Division: ' + curso.division + ' Turno: ' + curso.turno for curso in dropDownSelectedAnio.listaCursos">
+							<option value="" disabled selected>Seleccione una divisi&oacute;n</option>
+						</select>
+						<button class="btn btn-default" ng-click="drawGraphics('porAnio')">Aceptar</button>
+						<button class="btn btn-default pull-right" ng-click="exportAction('dir-planilla-desempenio')" bs-tooltip="tooltip.tooltipExport">Exportar</button>
+					</div>
+				</div>
+				<br>
+				<div ng-if="dropDownSelectedCurso">
+					<h3>PLanilla de desempeño: {{dropDownSelectedAnio.nombre}} - {{dropDownSelectedCurso.division}} </h3>
+					<hr>				
+					<table class="table table-hover table-striped table-condensed" export-table="dir-planilla-desempenio">
+						<thead>
+							<tr>
+								<th>Nombre</th>
+								<th>Apellido</th>
+								<th>DNI</th>
+								<th>1° Trim. (desap)</th>
+								<th>2° Trim. (desap)</th>
+								<th>3° Trim. (desap)</th>
+								<th>Total Aprobadas</th>
+								<th>Total Desaprobadas</th>
+								<th>Inasistencias</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="desempAlu in listaDesempenioAnioCurso">
+								<td>{{desempAlu.nombre}}</td>
+								<td>{{desempAlu.apellido}}</td>
+								<td>{{desempAlu.nroDocumento}}</td>
+								<td>{{desempAlu.primerTrimDesap}}</td>
+								<td>{{desempAlu.segundoTrimDesap}}</td>
+								<td>{{desempAlu.tercerTrimDesap}}</td>
+								<td>{{desempAlu.totalAp}}</td>
+								<td>{{desempAlu.totalDesap}}</td>
+								<td>{{desempAlu.totalInasist}}</td>
+							</tr>
+							<tfoot>
+								<tr>
+									<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+								</tr>
+							</tfoot>		
+						</tbody>
+					</table>
+					<br>
+					<hr>
+					<div class="row">
+						<hr>
+						<div class="col-md-8 panel col-md-offset-1 panel-default">
+							<div id="DesempStackedBar"></div>
+						</div>  
+						<hr>
+						<div class="col-md-8 panel col-md-offset-1 panel-default">
+							<div id="TrimestresStackedBar"></div>
+						</div>
+						<hr>
+						<div class="col-md-8 panel col-md-offset-1 panel-default">
+							<div id="AnualPieChart"></div>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+	</div>
+</div>

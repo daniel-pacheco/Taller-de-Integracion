@@ -2,9 +2,9 @@
 
 /**
  * @ngdoc function
- * @name clientAppApp.controller:DirectivoCtrl
+ * @name clientAppApp.controller:AlumnadoCtrl
  * @description
- * # DirectivoCtrl
+ * # AlumnadoCtrl
  * Controller of the clientAppApp
  */
 
@@ -20,8 +20,6 @@
  		}
  	});
  })
-
- // .controller('AlumnadoCtrl', function ($scope, $q, $http, academicoService, boletinInasistenciasData, $alert, libCalificacionesdata, plantillaTrimestralData, alumnoService, Upload, $timeout, alumnoData, ModalService, ObjectsFactory, modalService, spinnerService, desempenioService, exportTableService, $interval) {
  	.controller('AlumnadoCtrl', [ '$scope', '$timeout', 'academicoService', 'alumnoService', 'desempenioService', 'exportTableService', 'modalService', 'ModalService', 'ObjectsFactory', 'spinnerService', 'Upload' ,function ($scope, $timeout, academicoService, alumnoService, desempenioService, exportTableService, modalService, ModalService, ObjectsFactory, spinnerService, Upload) { 	
 //-- [Alumnado]
 //-- [Alumnado] variables
