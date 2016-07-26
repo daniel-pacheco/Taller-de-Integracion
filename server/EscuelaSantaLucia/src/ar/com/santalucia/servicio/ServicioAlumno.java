@@ -341,9 +341,14 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 	}
 	
 	@Override
-	public Alumno getUsuarioByDni(Long dni) throws Exception {
+	public Alumno getUsuarioByDni(Long dni) throws ValidacionException, Exception {
 		List<Alumno> alumnoLista = new ArrayList<Alumno>();
 		alumnoLista = gAlumno.getByExample(new Alumno(dni,null,null,null,null,null,null,null,null,null,true,null));
+		if(alumnoLista.size() == 0){
+			ValidacionException vEx = new ValidacionException();
+			vEx.addMensajeError("El alumno con el dni solicitado no existe.");
+			throw vEx;
+		}
 		for (Alumno a: alumnoLista){
 			return a;
 		}

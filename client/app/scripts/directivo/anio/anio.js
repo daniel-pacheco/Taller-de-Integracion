@@ -21,7 +21,7 @@
  });
 
 })
-.controller('AnioCtrl', [ '$scope', 'academicoService', 'alumnoService', 'ModalService', 'ObjectsFactory', 'spinnerService', function ($scope, academicoService, alumnoService, ModalService, ObjectsFactory,  spinnerService) {
+ .controller('AnioCtrl', [ '$scope', 'academicoService', 'alumnoService', 'ModalService', 'ObjectsFactory', 'spinnerService', function ($scope, academicoService, alumnoService, ModalService, ObjectsFactory,  spinnerService) {
 
 //-- [Anio] 
 //-- [Anio] variables
@@ -72,7 +72,7 @@ $scope.seleccionar = function(id) {//Hacer una funcion que ponga en true el nomb
     $scope.subtitle = "Nuevo Año";
     setActiveAnio(2);
     $scope.clearFormAnio();
-    getEspecialidades();
+    getEspecialidades(false);
     break;
     case 'nuevoCurso':
     $scope.nuevoCurso = true;
@@ -99,13 +99,13 @@ $scope.$on('$viewContentLoaded', function(){
 
 $scope.editAnio = function(anio){
  $scope.nuevoAnioObj = angular.copy(anio);
- $scope.seleccionar('editAnio');
+ getEspecialidades(true);
 };
 
 //-- [Anio] filters
 
 //-- Order List
-$scope.predicate = 'anio';
+$scope.predicate = 'nombre';
 $scope.reverse = true;
 $scope.orderAnio = function(predicate) {
   $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
@@ -270,6 +270,8 @@ $scope.newAnio = function(anioMin) {
     function(response){
       showServerSuccess('El año se ha dado de alta con éxito n° de Id: ', response);
       $scope.clearFormAnio();
+      (anioMin.idAnio != null)? $scope.seleccionar('listadoAnio'): false;
+
     },
     function(response){
       showServerError(response);
@@ -279,15 +281,19 @@ $scope.newAnio = function(anioMin) {
   });
 };
 
-function getEspecialidades(){
+function getEspecialidades(isEdit){
   // $scope.alumnos = []; //vacia la lista para que se vuelva a llenar
   spinnerService.show('searchAniosSpinner');
   academicoService.especialidadGetAll()
   .then(function(response){
     $scope.especialidades = response.data;
+    if (isEdit) {
+     $scope.nuevoAnioObj.especialidad =  _.find($scope.especialidades, ['nombre', $scope.nuevoAnioObj.especialidad]);
+     $scope.seleccionar('editAnio');
+    }; 
   },
-  function(response){
-    showServerError(response);
+ function(response){
+  showServerError(response);
   })
   .finally(function(){
     spinnerService.hide('searchAniosSpinner')

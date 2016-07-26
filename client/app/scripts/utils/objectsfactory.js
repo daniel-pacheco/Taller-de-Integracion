@@ -142,8 +142,8 @@ var newAnio = function(){
     "descripcion": '',
     "especialidad": {},
     "orden": 0, 
-    // "listaCursos": [],
-    // "listaMaterias": [],
+    "listaCursos": null,
+    "listaMaterias": null,
     "cicloLectivo": 0,
     "activo": true
   };

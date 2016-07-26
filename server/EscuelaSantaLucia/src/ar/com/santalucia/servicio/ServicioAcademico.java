@@ -34,10 +34,13 @@ import ar.com.santalucia.aplicacion.gestor.desempenio.GestorNota;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorTrimestre;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
+import ar.com.santalucia.dominio.dto.AlumnoDTO;
 import ar.com.santalucia.dominio.dto.AnioDTO;
 import ar.com.santalucia.dominio.dto.CursoDTO;
 import ar.com.santalucia.dominio.dto.DetallePreviaDTO;
 import ar.com.santalucia.dominio.dto.InscripcionConsultaDTO;
+import ar.com.santalucia.dominio.dto.InscripcionConsultaV2DTO;
+import ar.com.santalucia.dominio.dto.InscripcionConsultaV2Detalle;
 import ar.com.santalucia.dominio.dto.MateriaAltaDTO;
 import ar.com.santalucia.dominio.dto.MateriaDTO;
 import ar.com.santalucia.dominio.dto.MesaAltaDTO;
@@ -120,8 +123,20 @@ public class ServicioAcademico {
 	}
 	
 
-	public Boolean addAnio(Anio anio) throws Exception {	// EN ENDPOINT
+	public Boolean addAnio(Anio anio) throws ValidacionException, Exception {	// EN ENDPOINT
 		try {
+			ValidacionException vEx = new ValidacionException();	// Inicio Bloque verificación de especialidad
+			if(anio.getEspecialidad() == null){
+				vEx.addMensajeError("No se puede cargar un año sin especialidad. La especialidad es obligatoria.");
+				throw vEx;
+			}else{
+				Especialidad aux = gEspecialidad.getById(anio.getEspecialidad().getIdEspecialidad()); //
+				if(aux == null){
+					vEx.addMensajeError("La especialidad no existe.");
+					throw vEx;
+				}
+			}														// Fin Bloque verificación de especialidad
+			
 			if (anio.getIdAnio() == null) {
 				gAnio.add(anio);
 			}
@@ -949,10 +964,10 @@ public class ServicioAcademico {
 			}
 			Set<Mesa> mesas = llamadoVigente.getListaMesas();           //Mesas del llamado vigente
 			List<InscripcionConsultaDTO> inscribibles = new ArrayList<InscripcionConsultaDTO>();
-			InscripcionConsultaDTO aux = new InscripcionConsultaDTO();
 			for(Mesa m: mesas){											//Por cada mesa, recorro las previas en busca de coincidencia de nombre de materia
-				String tribunal = new String();
 				for(DetallePreviaDTO p: previas){
+					String tribunal = new String();
+					InscripcionConsultaDTO aux = new InscripcionConsultaDTO();
 					if( (m.getMateria().getNombre()).equals(p.getNombreMateria()) ){ 
 						Calendar calendar = Calendar.getInstance();
 						aux.setAlumno(alumno.toString());
@@ -963,13 +978,25 @@ public class ServicioAcademico {
 						calendar.setTime(m.getFechaHoraInicio());
 						aux.setFecha(formatoFecha.format(calendar.getTime()));
 						calendar.setTime(m.getFechaHoraInicio());
-						aux.setHora( formatoHora.format(calendar.getTime()) );
+						aux.setHoraInicio( formatoHora.format(calendar.getTime()) );
+						calendar.setTime(m.getFechaHoraFin());
+						aux.setHoraFin(formatoHora.format(calendar.getTime()) );
 						aux.setMateria(m.getMateria().getNombre());
+						aux.setDescripcionMateria(m.getMateria().getDescripcion());
 						Set<Personal> iTribunal = m.getIntegrantesTribunal();
 						for(Personal tri : iTribunal){
 							tribunal = tribunal + tri.getApellido() +", "+tri.getNombre() + "; ";
 						}
 						aux.setTribunal(tribunal);
+						
+						List<MateriaDTO> materiasAux = getMateriasDTO();   //Capturo el nombre de la materia
+						for(MateriaDTO mDTO : materiasAux){
+							if(m.getMateria().getNombre().equals(mDTO.getNombre())){
+								aux.setAnioMateria(mDTO.getAnio());
+								break;
+							}
+						}
+						
 						inscribibles.add(aux);
 					}
 				}
@@ -1013,6 +1040,55 @@ public class ServicioAcademico {
 		}
 	} 
 	
+	/**
+	 *  Lista las mesas a la que el alumno puede inscribirse, teniendo en cuenta las amterias previas del mismo, en formato InscripcionConsultaV2DTO.
+	 * @param dniAlumno
+	 * @return
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	public InscripcionConsultaV2DTO listarInscribiblesV2(Long dniAlumno) throws ValidacionException, Exception{
+	try{
+		// Obtener el id del alumno
+		// Obtener lista de inscribibles InscripcionConsultaDTO
+		// formatear con el nuevo dto. Devolver.
+		InscripcionConsultaV2DTO inscribiblesDTO = new InscripcionConsultaV2DTO();
+		List<InscripcionConsultaV2Detalle> detalle = new ArrayList<InscripcionConsultaV2Detalle>();
+	
+		ServicioAlumno sAlumno = new ServicioAlumno();
+		Alumno alumno = new Alumno();
+		alumno = sAlumno.getUsuarioByDni(dniAlumno);
+		if(alumno == null){
+			ValidacionException vEx = new ValidacionException();
+			vEx.addMensajeError("El dni de alumno solicitado no existe.");
+			throw vEx;
+		}
+		List<InscripcionConsultaDTO> listado = new ArrayList<InscripcionConsultaDTO>();
+		listado = listarInscribibles(alumno.getIdUsuario());
+		inscribiblesDTO.setAlumno(alumno.toString());
+		inscribiblesDTO.setIdAlumno(alumno.getIdUsuario());
+		for(InscripcionConsultaDTO insDTO : listado){
+			InscripcionConsultaV2Detalle itemDetalle = new InscripcionConsultaV2Detalle();
+			itemDetalle.setAnioMateria(insDTO.getAnioMateria());
+			itemDetalle.setDescripcionMateria(insDTO.getDescripcionMateria());
+			itemDetalle.setFecha(insDTO.getFecha());
+			itemDetalle.setHoraInicio(insDTO.getHoraInicio());
+			itemDetalle.setHoraFin(insDTO.getHoraFin());
+			itemDetalle.setIdMesa(insDTO.getIdMesa());
+			itemDetalle.setInscripto(insDTO.getInscripto());
+			itemDetalle.setMateria(insDTO.getMateria());
+			itemDetalle.setTribunal(insDTO.getTribunal());
+			detalle.add(itemDetalle);
+		}
+		inscribiblesDTO.setDetalle(detalle);
+		return inscribiblesDTO;
+		}catch(ValidacionException ex){
+			throw ex;
+		}
+		catch(Exception ex){
+			throw ex;
+		}
+	}
 	
 	public Boolean asignarMesaALlamado(Mesa mesa, Long idLlamado) throws Exception { // EN ENDPOINT
 		//TODO
@@ -1289,6 +1365,7 @@ public class ServicioAcademico {
 		anioAux.setNombre(anioModif.getNombre());				// Copio los datos de la modificación al persistente copiado
 		anioAux.setDescripcion(anioModif.getDescripcion());
 		anioAux.setCicloLectivo(anioModif.getCicloLectivo());
+		anioAux.setEspecialidad(anioModif.getEspecialidad());
 		anioAux.setActivo(anioModif.getActivo());
 		return anioAux;
 	}

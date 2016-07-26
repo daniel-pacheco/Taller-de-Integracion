@@ -982,15 +982,15 @@ public class ServicioAcademicoEndpoint {
 	
 	/**
 	 * Busca el detalle de las mesas a la cual el alumno puede inscribirse.
-	 * @param idAlumno
+	 * @param dniAlumno
 	 * @return
 	 */
 	@GET
 	@Path("/inscripcion/{idA:[0-9][0-9]*}")
-	public Response listarInscribibles(@PathParam("idA") final Long idAlumno){
+	public Response listarInscribibles(@PathParam("idA") final Long dniAlumno){
 		try{
 			setInstance();
-			return Response.ok(servicioAcademico.listarInscribibles(idAlumno)).build();
+			return Response.ok(servicioAcademico.listarInscribiblesV2(dniAlumno)).build();
 		}catch(ValidacionException ex){
 			return Response.status(Status.CONFLICT).entity(new FrontMessage(ex.getMensajesError().get(0),FrontMessage.INFO)).build();
 		}catch(Exception ex){
