@@ -6,8 +6,8 @@
 				<h4 class="modal-title">{{title}}</h4><!-- {{modalx.phoneData}} -->
 			</div>
 			<div class="modal-body">
-				<div class="container">
-					<div class="row" style="margin-top: 10px;">
+				<div class="">
+					<div class="row">
 						<div class="box-margin-lib personal-info table-responsive">
 							<spinner name="searchAreasSpinner" ng-cloak="">
 								<div class="overlay"></div>
@@ -30,7 +30,7 @@
 										<td>
 											<div ng-if="!area.show">{{area.nombre}}</div>
 											<div ng-if="area.show" ng-class="{ 'has-error': formRow.area.$touched && formRow.area.$invalid }">
-												<input class="form-control" name="area" type="text" ng-model="copiaArea.nombre" maxlength="185" required pattern="[a-zA-Z 0-9]*"/>
+												<input class="form-control" name="area" type="text" ng-model="copiaArea.nombre" maxlength="185" required pattern="[A-zÀ-ú,.!?°\-_ 0-9]*"/>
 											</div>
 										</td>
 										<td>
@@ -59,7 +59,7 @@
 						<form name="form" novalidate ng-submit="addArea()">	
 							<div class="panel-heading">
 								<div class="form-group  col-sm-6 col-md-6 col-xs-6 col-lg-6" ng-class="{ 'has-error': form.area.$touched && form.area.$invalid }">
-									<input type="text" name="area" class="form-control" ng-model="nuevaArea.nombre"  placeholder="Nombre área" maxlength="185" required pattern="[a-zA-Z 0-9]*"/>
+									<input type="text" name="area" class="form-control" ng-model="nuevaArea.nombre"  placeholder="Nombre área" maxlength="185" required pattern="[A-zÀ-ú,.!?°\-_ 0-9]*"/>
 									<div ng-messages="form.area.$error" ng-if="form.area.$touched && form.area.$invalid">
 										<!-- <div ng-message="pattern" class="help-block" style="position: fixed;">Formato invalido</div> -->
 										<div ng-message="required" class="help-block" style="position: fixed;">Complete este campo</div>

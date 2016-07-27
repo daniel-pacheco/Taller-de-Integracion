@@ -52,7 +52,7 @@
 				<div class="panel panel-default">					
 					<div class="panel-heading">
 						<label for="">A&ntilde;o:</label> 
-						<select class="dropdown-toggle form-control-inline" name="" ng-model="filterByYear"> <!-- ng-change="update(dropDownValue, option)"> -->
+						<select class="dropdown-toggle form-control-inline" name="" ng-model="filterByYear.anio"> <!-- ng-change="update(dropDownValue, option)"> -->
 							<option value="" disabled selected>Seleccione una opci&oacute;n</option>
 							<option value="">Todos</option>
 							<option ng-repeat="option in listaAnios"  value="{{option.nombre}}">{{option.nombre}}</option>
@@ -63,18 +63,28 @@
 				</div>
 				<!--Alerts no pude hacer andar el data duration-->
 				<table class="table table-hover table-striped" export-table="dir-listado-materias">
-					<thead>
+					<thead class="orderHead">
 						<tr>
-							<th>Nombre</th>
-							<th>A&ntilde;o</th>
-							<th>&Aacute;rea</th>
-							<th>Docente titular</th>
-							<th>Docente suplente</th>
+							<th ng-click="orderAnio('nombre')" role="button">Nombre
+								<span class="sortorder" ng-show="predicate === 'nombre'" ng-class="{reverse:reverse}"></span>
+							</th>
+							<th ng-click="orderAnio('anio')" role="button">A&ntilde;o
+								<span class="sortorder" ng-show="predicate === 'anio'" ng-class="{reverse:reverse}"></span>
+							</th>
+							<th ng-click="orderAnio('area')" role="button">&Aacute;rea
+								<span class="sortorder" ng-show="predicate === 'area'" ng-class="{reverse:reverse}"></span>
+							</th>
+							<th ng-click="orderAnio('docenteTitular')" role="button">Docente titular
+								<span class="sortorder" ng-show="predicate === 'docenteTitular'" ng-class="{reverse:reverse}"></span>
+							</th>
+							<th ng-click="orderAnio('docenteSuplente')" role="button">Docente suplente
+								<span class="sortorder" ng-show="predicate === 'docenteSuplente'" ng-class="{reverse:reverse}"></span>
+							</th>
 							<th>Descripci&oacute;n</th>
 							<th>Acciones</th>
 						</tr>
 					</thead>
-					<tr ng-repeat="materia in listaMaterias | filter:filterByYear">
+					<tr ng-repeat="materia in listaMaterias | filter:filterByYear | orderBy:predicate:reverse">
 						<td>{{materia.nombre}}</td>
 						<td>{{materia.anio}}</td>
 						<td>{{materia.area}}</td>
@@ -154,7 +164,7 @@
 									<label for="">Docente suplente:</label>
 								</div>
 								<div class="col-sm-5">
-									<select class="form-control" name="docenteSuplente" ng-model="nuevaMateria.idDocenteSuplente" ng-options="docente.idUsuario as docente.nombre + ' ' + docente.apellido for docente in listaDocentes" required>
+									<select class="form-control" name="docenteSuplente" ng-model="nuevaMateria.idDocenteSuplente" ng-options="docente.idUsuario as docente.nombre + ' ' + docente.apellido for docente in listaDocentes">
 										<option value="" disabled selected>Seleccione un docente suplente</option>
 									</select>
 								</div>
@@ -174,7 +184,7 @@
 							</div><!-- /form-group-->
 							<div class="form-group" ng-class="{ 'has-error': formMat.area.$touched && formMat.area.$invalid }">
 								<div class="col-sm-4 control-label">
-									<label for="">&Aacute;rea:</label>
+									<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> &Aacute;rea:</label>
 								</div>
 								<div class="col-sm-3">
 									<select class="form-control" name="area" ng-model="nuevaMateria.area" ng-options="area.idArea as area.nombre for area in listaAreas" required>

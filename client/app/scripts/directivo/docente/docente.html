@@ -55,7 +55,7 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<label>Buscar por Nombre, Apellido o DNI: </label>
-						<input class="form-control-inline" type="text" placeholder="Buscar" maxlength="255" required pattern="[a-zA-Z 0-9]*" ng-model="filterByName">
+						<input class="form-control-inline" type="text" placeholder="Buscar" maxlength="255" required pattern="[A-zÀ-ú,.!?°\-_ 0-9]*" ng-model="filterByName">
 						<div class="btn-group pull-right" ng-model="button.radio" bs-radio-group>
 							<label class="btn btn-default" ng-click="button.radio = 'doc'; selectSource(button.radio)"><input type="radio" class="btn btn-default" value="doc"> Docente</label>
 							<label class="btn btn-default" ng-click="button.radio = 'dir'; selectSource(button.radio)"><input type="radio" class="btn btn-default" value="dir"> Directivo</label>
@@ -187,7 +187,7 @@
 											<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Nombre/s:</label>
 										</div>
 										<div class="col-md-5">
-											<input name="nombre" class="form-control" ng-model="nuevoDocente.nombre" placeholder="Nombre" type="text" maxlength="255" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
+											<input name="nombre" class="form-control" ng-model="nuevoDocente.nombre" placeholder="Nombre" type="text" maxlength="255" required pattern="[A-zÀ-ú,.!?°\-_ 0-9]*">
 											<!-- Valida letras y espacios -->
 											<div ng-messages="formDoc.nombre.$error" ng-if="formDoc.nombre.$touched && formDoc.nombre.$invalid">
 												<div ng-message="pattern" class="help-block">Formato invalido</div>
@@ -201,7 +201,7 @@
 											<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Apellido/s:</label>
 										</div>
 										<div class="col-md-5">
-											<input name="apellido" class="form-control" ng-model="nuevoDocente.apellido" placeholder="Apellido" type="text" maxlength="255" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
+											<input name="apellido" class="form-control" ng-model="nuevoDocente.apellido" placeholder="Apellido" type="text" maxlength="255" required pattern="[A-zÀ-ú,.!?°\-_ 0-9]*">
 											<!-- Valida letras y espacios-->
 											<div ng-messages="formDoc.apellido.$error" ng-if="formDoc.apellido.$touched && formDoc.apellido.$invalid">
 												<div ng-message="pattern" class="help-block">Formato invalido</div>
@@ -225,7 +225,7 @@
 											<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Domicilio:</label>
 										</div>
 										<div class="col-md-4">
-											<input name="nombreCalle" class="form-control" placeholder="Calle" type="text" maxlength="255" ng-model="nuevoDocente.domicilio.calle" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*"/>
+											<input name="nombreCalle" class="form-control" placeholder="Calle" type="text" maxlength="255" ng-model="nuevoDocente.domicilio.calle" required pattern="[A-zÀ-ú,.!?°\-_ 0-9]*"/>
 											<div ng-messages="formDoc.nombreCalle.$error" ng-if="formDoc.nombreCalle.$touched && formDoc.nombreCalle.$invalid">
 												<div ng-message="pattern" class="help-block">Formato invalido</div>
 												<div ng-message="required" class="help-block">Complete este campo</div>
@@ -252,7 +252,7 @@
 											<input name="fechaNacimiento" class="form-control" ng-model="nuevoDocente.fechaNacimiento" placeholder="10/10/1010" type="date"
 											step="1" value="01-01-2000" />
 											<div ng-messages="formDoc.fechaNacimiento.$error" ng-if="formDoc.fechaNacimiento.$touched && formDoc.fechaNacimiento.$invalid">
-												<div ng-message="pattern" class="help-block"> 
+												<div ng-message="date" class="help-block"> 
 													Formato invalido  
 												</div>
 											</div>
@@ -359,7 +359,7 @@
 											<label for="">Observaciones:</label>
 										</div>
 										<div class="col-md-7">
-											<textarea name="observacion" class="form-control" rows="4" maxlength="255" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*"></textarea>
+											<textarea name="observacion" class="form-control" rows="4" maxlength="255" pattern="[A-zÀ-ú,.!?°\-_ 0-9]*"></textarea>
 											<div ng-messages="formDoc.observacion.$error" ng-if="formDoc.observacion.$touched && formDoc.observacion.$invalid">
 												<div ng-message="pattern" class="help-block"> 
 													Formato invalido  
