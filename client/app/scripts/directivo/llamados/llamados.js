@@ -49,10 +49,7 @@ $scope.seleccionar = function (id) {
     $scope.nuevaMesa = true;
     $scope.subtitle = 'Nueva mesa';
     setActiveLlamado(1);
-    getLlamados();
-    getAnios();
-    getMaterias();
-    getDocentes();
+    $scope.clearFormMesa();
     break;
     case 'listado':
     $scope.listado = true;
@@ -178,8 +175,8 @@ $scope.orderLlamado = function(predicate) {
 function initMesa(mesaMin){
   var mesa = ObjectsFactory.newMesa();
   mesa.idLlamado = mesaMin.periodo.idLlamado;
-  mesa.fechaHoraInicio = setFechaHora(mesaMin.horaInicio);//new Date(mesaMin.horaInicio);
-  mesa.fechaHoraFin = setFechaHora(mesaMin.horaFin);//new Date(mesaMin.horaFin);
+  mesa.fechaHoraInicio = setFechaHora(mesaMin.horaInicio);
+  mesa.fechaHoraFin = setFechaHora(mesaMin.horaFin);
   mesa.idMateria = mesaMin.selectedMateria;
   mesa.tribunalDoc1 = mesaMin.docentes[0];
   mesa.tribunalDoc2 = mesaMin.docentes[1];
@@ -196,7 +193,12 @@ function setFechaHora(hora){
 
 $scope.clearFormMesa = function(){
   $scope.formMesa.$setUntouched();
+  getLlamados();
+  getAnios();
+  getMaterias();
+  getDocentes();
   $scope.nuevaMesaObj = ObjectsFactory.newMesa();
+  $scope.nuevaMesaObj.docentes = [];
 };
 //-- [Llamado/Nueva mesa] service calls
 function getAnios() {
@@ -306,6 +308,18 @@ $scope.clearFormLlamado = function(){
 //-- [Llamado/Listado] filters
 //-- [Llamado/Listado] modals
 //-- [Llamado/Listado] utils
+
+$scope.confirmDeleteLlamado = function(llamado) {
+  var fechaMesa = new Date(llamado.fechaInicio , 'dd/mm/yyyy');
+  $scope.confirmModal("¿Desea eliminar el llamado de " + llamado.descripcion + " del " + llamado.fechaInicio.getDate() + " al " + llamado.fechaFin.getDate() + " del mes " + (llamado.fechaInicio.getMonth()+1) + " del " + llamado.fechaInicio.getFullYear() +"?", deleteLlamado, llamado);
+}
+
+$scope.confirmDeleteMesa = function(mesa) {
+  var fechaMesa = new Date(mesa.fechaHoraInicio)
+  fechaMesa = mesa.anio.getDate() + "/" + (mesa.anio.getMonth()+1) + "/" + mesa.anio.getFullYear();
+  $scope.confirmModal("¿Desea eliminar la mesa de " + mesa.materia.nombre + " de " + mesa.anio + " del día " + fechaMesa + "?", deleteMesa, mesa.idMesa);
+}
+
 //-- [Llamado/Listado] service calls
 function getLlamados() {
   spinnerService.show('searchLlamadoSpinner');
@@ -326,7 +340,7 @@ function getLlamados() {
   })
 };
 
-$scope.deleteLlamado = function(llamado) {
+function deleteLlamado (llamado) {
   if (llamado.listaMesas.length !== 0) {
     $scope.showMessage('El llamado no debe contener mesas para poder ser eliminado.', 'ERROR!', false);
   } else{
@@ -345,6 +359,23 @@ $scope.deleteLlamado = function(llamado) {
     });
   };
 };
+
+function deleteMesa(idMesa) {
+  spinnerService.show('searchLlamadoSpinner');
+  academicoService.mesaDelete(idMesa)
+  .then(
+    function(response){
+      showServerSuccess('La mesa ha sido eliminado con éxito', response);
+      getLlamados();
+    },
+    function(response){
+      showServerError(response);
+    })
+  .finally(function(){
+    spinnerService.hide('searchLlamadoSpinner')
+  });
+};
+
 
 //-- [Llamado/inscripcion]
 //-- [Llamado/inscripcion] variables
