@@ -310,13 +310,13 @@ $scope.clearFormLlamado = function(){
 //-- [Llamado/Listado] utils
 
 $scope.confirmDeleteLlamado = function(llamado) {
-  var fechaMesa = new Date(llamado.fechaInicio , 'dd/mm/yyyy');
-  $scope.confirmModal("¿Desea eliminar el llamado de " + llamado.descripcion + " del " + llamado.fechaInicio.getDate() + " al " + llamado.fechaFin.getDate() + " del mes " + (llamado.fechaInicio.getMonth()+1) + " del " + llamado.fechaInicio.getFullYear() +"?", deleteLlamado, llamado);
+  var fechaLlamado = new Date(llamado.fechaInicio);
+  $scope.confirmModal("¿Desea eliminar el llamado de " + llamado.descripcion + " del " + fechaLlamado.getDate() + " al " + llamado.fechaFin.getDate() + " del mes " + (llamado.fechaInicio.getMonth()+1) + " del " + llamado.fechaInicio.getFullYear() +"?", deleteLlamado, llamado);
 }
 
 $scope.confirmDeleteMesa = function(mesa) {
   var fechaMesa = new Date(mesa.fechaHoraInicio)
-  fechaMesa = mesa.anio.getDate() + "/" + (mesa.anio.getMonth()+1) + "/" + mesa.anio.getFullYear();
+  fechaMesa = fechaMesa.getDate() + "/" + (fechaMesa.getMonth()+1) + "/" + fechaMesa.getFullYear();
   $scope.confirmModal("¿Desea eliminar la mesa de " + mesa.materia.nombre + " de " + mesa.anio + " del día " + fechaMesa + "?", deleteMesa, mesa.idMesa);
 }
 
