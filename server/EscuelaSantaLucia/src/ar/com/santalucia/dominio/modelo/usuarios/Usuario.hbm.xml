@@ -49,6 +49,9 @@
         <property name="fechaNacimiento" type="java.util.Date">
             <column name="FECHANACIMIENTO" />
         </property>
+        <property name="observaciones" type="java.lang.String">
+            <column name="OBSERVACIONES" />
+        </property>
         <property name="activo" type="java.lang.Boolean">
             <column name="ACTIVO" />
         </property>

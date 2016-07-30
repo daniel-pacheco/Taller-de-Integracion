@@ -764,9 +764,9 @@ public class ServicioAcademico {
 			Llamado llamado = gLlamado.getById(mesaAltaDTO.getIdLlamado());
 			if(llamado!=null && !(llamado.getIdLlamado() == null)){
 				ServicioConfiguracion.comprendidoEnPeriodo(mesaAltaDTO.getFechaHoraInicio(), mesaAltaDTO.getFechaHoraFin(), null, llamado.getFechaInicio(), llamado.getFechaFin());
-				Personal docente1 = gDocente.getByExample(new Personal(mesaAltaDTO.getTribunalDoc1(),null,null,null,null,null,null,null,null,null,true,null,null,null,null)).get(0);
-				Personal docente2 = gDocente.getByExample(new Personal(mesaAltaDTO.getTribunalDoc2(),null,null,null,null,null,null,null,null,null,true,null,null,null,null)).get(0);
-				Personal docente3 = gDocente.getByExample(new Personal(mesaAltaDTO.getTribunalDoc3(),null,null,null,null,null,null,null,null,null,true,null,null,null,null)).get(0);
+				Personal docente1 = gDocente.getByExample(new Personal(mesaAltaDTO.getTribunalDoc1(),null,null,null,null,null,null,null,null,null,null,true,null,null,null,null)).get(0);
+				Personal docente2 = gDocente.getByExample(new Personal(mesaAltaDTO.getTribunalDoc2(),null,null,null,null,null,null,null,null,null,null,true,null,null,null,null)).get(0);
+				Personal docente3 = gDocente.getByExample(new Personal(mesaAltaDTO.getTribunalDoc3(),null,null,null,null,null,null,null,null,null,null,true,null,null,null,null)).get(0);
 				Materia materia = gMateria.getById(mesaAltaDTO.getIdMateria());
 				Set<Mesa> mesasLlamado = llamado.getListaMesas();
 				for(Mesa m : mesasLlamado){

@@ -343,7 +343,7 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 	@Override
 	public Personal getUsuarioByDni(Long dni) throws Exception {
 		List<Personal> docenteLista = new ArrayList<Personal>();
-		docenteLista = gPersonal.getByExample(new Personal(dni,null,null,null,null,null,null,null,null,null,true,null,null,null,true)); //Tipo directivo anulado para que busque los dos si existiera
+		docenteLista = gPersonal.getByExample(new Personal(dni,null,null,null,null,null,null,null,null,null,null,true,null,null,null,true)); //Tipo directivo anulado para que busque los dos si existiera
 		for (Personal d: docenteLista){
 			return d;
 		}
