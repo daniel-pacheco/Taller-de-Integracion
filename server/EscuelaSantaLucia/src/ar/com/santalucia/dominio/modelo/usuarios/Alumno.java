@@ -32,9 +32,9 @@ public class Alumno extends Usuario {
 
 	public Alumno(Long nroDocumento, String tipoDocumento, String nombre, String apellido,
 			Set<Telefono> listaTelefonos, Set<Mail> listaMails, Domicilio domicilio, Character sexo, String nombreUsuario,
-			Date fechaNacimiento, Boolean activo, Long matricula) {
+			Date fechaNacimiento, String observaciones, Boolean activo, Long matricula) {
 		super(nroDocumento, tipoDocumento, nombre, apellido, listaTelefonos, listaMails, domicilio, sexo,
-				nombreUsuario, fechaNacimiento, activo);
+				nombreUsuario, fechaNacimiento, observaciones, activo);
 		this.matricula = matricula;
 	}
 

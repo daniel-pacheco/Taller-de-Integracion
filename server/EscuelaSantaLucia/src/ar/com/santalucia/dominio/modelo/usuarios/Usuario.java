@@ -2,7 +2,6 @@ package ar.com.santalucia.dominio.modelo.usuarios;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -34,6 +33,7 @@ public class Usuario {
 	protected Character sexo; //f,m
 	protected String nombreUsuario;
 	protected Date fechaNacimiento;
+	protected String observaciones;
 	protected Boolean activo;
 
 	public Usuario() {
@@ -44,7 +44,7 @@ public class Usuario {
 
 	public Usuario(Long nroDocumento, String tipoDocumento, String nombre, String apellido,
 			Set<Telefono> listaTelefonos, Set<Mail> listaMails, Domicilio domicilio, Character sexo, String nombreUsuario,
-			Date fechaNacimiento, Boolean activo) {
+			Date fechaNacimiento, String observaciones, Boolean activo) {
 		super();
 		this.nroDocumento = nroDocumento;
 		this.tipoDocumento = tipoDocumento;
@@ -56,6 +56,7 @@ public class Usuario {
 		this.sexo = sexo;
 		this.nombreUsuario = nombreUsuario;
 		this.fechaNacimiento = fechaNacimiento;
+		this.observaciones = observaciones;
 		this.activo = activo;
 	}
 
@@ -145,6 +146,14 @@ public class Usuario {
 
 	public void setDomicilio(Domicilio domicilio) {
 		this.domicilio = domicilio;
+	}
+	
+	public String getObservaciones() {
+		return observaciones;
+	}
+
+	public void setObservaciones(String observaciones) {
+		this.observaciones = observaciones;
 	}
 
 	public Boolean getActivo() {

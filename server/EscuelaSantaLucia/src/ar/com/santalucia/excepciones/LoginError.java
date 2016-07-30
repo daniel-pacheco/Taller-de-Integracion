@@ -27,7 +27,6 @@ public class LoginError extends Exception {
 	
 	@Override
 	public String getMessage() {
-		
 		return getDetalles();
 	}
 	
