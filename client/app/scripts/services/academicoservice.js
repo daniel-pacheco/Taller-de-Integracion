@@ -38,6 +38,7 @@
     var getMesas = "inscripcion/";
     var inscripMesa = "inscripcion";
     var desinscripMesa = "desinscripcion";
+    var deleteMesa = "mes/";
 
     var especialidadesGetAll = "especialidadListAll/";
     var putEspecialidad = "especialidad/";
@@ -141,5 +142,9 @@
     this.mesasDesinscribir = function (idMesa, idAlumno){
         return $http.post(server + sAcademico + desinscripMesa, [idMesa, idAlumno]);
     };
+
+    this.mesaDelete = function (idMesa) {
+        return $http.delete(server + sAcademico + deleteMesa + idMesa);
+    }
 
 });

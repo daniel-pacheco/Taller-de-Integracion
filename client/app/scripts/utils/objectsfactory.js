@@ -118,7 +118,7 @@ angular.module('clientAppApp')
       "descripcion": '',
       "idDocenteTitular": null,
       "idDocenteSuplente": null,
-      "area": {},
+      "area": null,
       "activo": true,
       "idAnio": null
     };

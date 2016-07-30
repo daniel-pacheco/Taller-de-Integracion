@@ -52,6 +52,7 @@ $scope.seleccionar = function(id) {
     searchAnio();
     searchDocente();//Esta lista de docentes deberia tener solo el docente y el ID
     searchArea();
+    listAllMaterias();
     break;
     case 'nuevaMateria':
     $scope.formMat.$setUntouched();
@@ -257,6 +258,13 @@ $scope.nuevaMateria = ObjectsFactory.newMateria();
 
 //-- [Materias/Nueva] Form Management
 //-- [Materias/Nueva] filters
+//-- Order List
+$scope.predicate = 'nombre';
+$scope.reverse = true;
+$scope.orderAnio = function(predicate) {
+  $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+  $scope.predicate = predicate;
+};
 //-- [Materias/Nueva] modals
 //-- [Materias/Nueva] spinners
 //-- [Materias/Nueva] service calls
@@ -271,6 +279,7 @@ $scope.agregarMateria = function (mat) {
       showServerSuccess('La materia se ha dado de alta con éxito', response);
       $scope.formMat.$setUntouched();
       $scope.nuevaMateria = ObjectsFactory.newMateria();
+      listAllMaterias();
     },
     function(response){
       showServerError(response);

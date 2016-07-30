@@ -30,19 +30,19 @@
 										<td>
 											<div ng-if="!titulo.show">{{titulo.nombreTitulo}}</div>
 											<div ng-if="titulo.show" ng-class="{ 'has-error': formRow.nombreTitulo.$touched && formRow.nombreTitulo.$invalid }">
-												<input class="form-control" placeholder="Nombre del Título" name="nombreTitulo" type="text" ng-model="copiaTitulo.nombreTitulo" maxlength="255" required pattern="[a-zA-Z 0-9]*"/>
+												<input class="form-control" placeholder="Nombre del Título" name="nombreTitulo" type="text" ng-model="copiaTitulo.nombreTitulo" maxlength="255" required pattern="[A-zÀ-ú,.!?°\-_ 0-9]*"/>
 											</div>
 										</td>
 										<td>
 											<div ng-if="!titulo.show">{{titulo.descripcionTitulo}}</div>
 											<div ng-if="titulo.show" ng-class="{ 'has-error': formRow.descripcionTitulo.$touched && formRow.descripcionTitulo.$invalid }">
-												<input class="form-control" placeholder="Descripción" name="descripcionTitulo" type="text" ng-model="copiaTitulo.descripcionTitulo"  pattern="[a-zA-Z 0-9]*" maxlength="55"/>
+												<input class="form-control" placeholder="Descripción" name="descripcionTitulo" type="text" ng-model="copiaTitulo.descripcionTitulo"  pattern="[A-zÀ-ú,.!?°\-_ 0-9]*" maxlength="55"/>
 											</div>
 										</td>
 										<td>
 											<div ng-if="!titulo.show">{{titulo.anio}}</div>
 											<div ng-if="titulo.show" ng-class="{ 'has-error': formRow.anio.$touched && formRow.anio.$invalid }">
-												<input class="form-control" placeholder="Año" name="anio" type="text" ng-model="copiaTitulo.anio" required maxlength="6"/>
+												<input class="form-control" placeholder="Año" name="anio" type="text" ng-model="copiaTitulo.anio" required maxlength="6" pattern="[A-zÀ-ú,.!?°\-_ 0-9]*"/>
 											</div>
 										</td>
 										<td>
@@ -70,7 +70,7 @@
 					<form name="form" novalidate ng-submit="addTitulo()">	
 						<div class="panel-heading col-md-12">
 							<div class="form-group  col-sm-4 col-md-4 col-xs-4 col-lg-4" ng-class="{ 'has-error': form.nombreTitulo.$touched && form.nombreTitulo.$invalid }">
-								<input class="form-control" name="nombreTitulo" type="text" ng-model="nuevoTitulo.nombreTitulo" maxlength="255" placeholder="Nombre del título" required pattern="[a-zA-Z 0-9]*"/>
+								<input class="form-control" name="nombreTitulo" type="text" ng-model="nuevoTitulo.nombreTitulo" maxlength="255" placeholder="Nombre del título" required pattern="[A-zÀ-ú,.!?°\-_ 0-9]*"/>
 								<div ng-messages="form.nombreTitulo.$error" ng-if="form.nombreTitulo.$touched && form.nombreTitulo.$invalid">
 									<div ng-message="maxlength" class="help-block" style="position: fixed;">Demasiado largo</div>
 									<div ng-message="pattern" class="help-block" style="position: fixed;">Formato invalido</div>
@@ -78,16 +78,17 @@
 								</div>
 							</div>
 							<div class="form-group  col-sm-3 col-md-3 col-xs-3 col-lg-3" ng-class="{ 'has-error': form.descripcionTitulo.$touched && form.descripcionTitulo.$invalid }">
-								<input class="form-control" placeholder="Descripción" name="descripcionTitulo" type="text" ng-model="nuevoTitulo.descripcionTitulo"  pattern="[a-zA-Z 0-9]*" maxlength="55"/>
+								<input class="form-control" placeholder="Descripción" name="descripcionTitulo" type="text" ng-model="nuevoTitulo.descripcionTitulo"  pattern="[A-zÀ-ú,.!?°\-_ 0-9]*" maxlength="55"/>
 								<div ng-messages="form.descripcionTitulo.$error" ng-if="form.descripcionTitulo.$touched && form.descripcionTitulo.$invalid">
 									<div ng-message="maxlength" class="help-block" style="position: fixed;">Demasiado largo</div>
 									<div ng-message="pattern" class="help-block" style="position: fixed;">Formato invalido</div>
 								</div>
 							</div>
 							<div class="form-group  col-sm-2 col-md-2 col-xs-2 col-lg-2" ng-class="{ 'has-error': form.anio.$touched && form.anio.$invalid }">
-								<input class="form-control" placeholder="Año" name="anio" type="text" ng-model="nuevoTitulo.anio" maxlength="5"/>
+								<input class="form-control" placeholder="Año" name="anio" type="text" ng-model="nuevoTitulo.anio" maxlength="5" pattern="[A-zÀ-ú,.!?°\-_ 0-9]*"/>
 								<div ng-messages="form.anio.$error" ng-if="form.anio.$touched && form.anio.$invalid">
-									<div ng-message="type" class="help-block" style="position: fixed;">Formato invalido</div>
+									<div ng-message="maxlength" class="help-block" style="position: fixed;">Demasiado largo</div>
+									<div ng-message="pattern" class="help-block" style="position: fixed;">Formato invalido</div>
 								</div>
 							</div>
 

@@ -150,7 +150,7 @@ function addArea(area) {
   academicoService.areaPutNew(area)
   .then(
     function(response){
-      showServerSuccess('El area ha sido cargada con éxito: ',response);
+      //showServerSuccess('El area ha sido cargada con éxito: ',response);
       searchArea();
       $scope.nuevaArea = ObjectsFactory.newArea();
       $scope.form.$setUntouched();

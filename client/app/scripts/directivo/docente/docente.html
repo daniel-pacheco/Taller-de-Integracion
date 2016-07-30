@@ -55,7 +55,7 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<label>Buscar por Nombre, Apellido o DNI: </label>
-						<input class="form-control-inline" type="text" placeholder="Buscar" maxlength="255" required pattern="[a-zA-Z 0-9]*" ng-model="filterByName">
+						<input class="form-control-inline" type="text" placeholder="Buscar" maxlength="255" required pattern="[A-zÀ-ú,.!?°\-_ 0-9]*" ng-model="filterByName">
 						<div class="btn-group pull-right" ng-model="button.radio" bs-radio-group>
 							<label class="btn btn-default" ng-click="button.radio = 'doc'; selectSource(button.radio)"><input type="radio" class="btn btn-default" value="doc"> Docente</label>
 							<label class="btn btn-default" ng-click="button.radio = 'dir'; selectSource(button.radio)"><input type="radio" class="btn btn-default" value="dir"> Directivo</label>
@@ -160,19 +160,19 @@
 									</div>	
 
 									<div class="form-group" ng-class="{ 'has-error': formDoc.nroDocumento.$touched && formDoc.nroDocumento.$invalid }">
-										<div class="col-sm-4 control-label">
+										<div class="col-md-4 control-label">
 											<label for="">
 												<span class="glyphicon glyphicon-asterisk alert-warning small"></span>Documento:
 											</label>
 										</div>
-										<div class="col-sm-4">
+										<div class="col-md-4">
 											<input type="text" name="nroDocumento" class="form-control validate" ng-model="nuevoDocente.nroDocumento" placeholder="12332112" maxlength="8" required pattern="\d{8}"/>
 											<div ng-messages="formDoc.nroDocumento.$error" ng-if="formDoc.nroDocumento.$touched && formDoc.nroDocumento.$invalid">
 												<div ng-message="required" class="help-block">Complete este campo</div>
 												<div ng-message="pattern" class="help-block">Formato invalido</div>
 											</div>
 										</div>
-										<div class="col-sm-3">
+										<div class="col-md-3">
 											<select class="form-control" ng-model="nuevoDocente.tipoDocumento" name="TipoDocumento" required>
 												<option value="" disabled selected>Tipo</option>
 												<option value="DNI">DNI</option>
@@ -183,11 +183,11 @@
 									</div><!-- /form-group-->
 
 									<div class="form-group" ng-class="{ 'has-error': formDoc.nombre.$touched && formDoc.nombre.$invalid }">
-										<div class="col-sm-4 control-label">
+										<div class="col-md-4 control-label">
 											<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Nombre/s:</label>
 										</div>
-										<div class="col-sm-5">
-											<input name="nombre" class="form-control" ng-model="nuevoDocente.nombre" placeholder="Nombre" type="text" maxlength="255" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
+										<div class="col-md-5">
+											<input name="nombre" class="form-control" ng-model="nuevoDocente.nombre" placeholder="Nombre" type="text" maxlength="255" required pattern="[A-zÀ-ú,.!?°\-_ 0-9]*">
 											<!-- Valida letras y espacios -->
 											<div ng-messages="formDoc.nombre.$error" ng-if="formDoc.nombre.$touched && formDoc.nombre.$invalid">
 												<div ng-message="pattern" class="help-block">Formato invalido</div>
@@ -197,11 +197,11 @@
 									</div><!-- /form-group-->
 
 									<div class="form-group" ng-class="{ 'has-error': formDoc.apellido.$touched && formDoc.apellido.$invalid }">
-										<div class="col-sm-4 control-label">
+										<div class="col-md-4 control-label">
 											<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Apellido/s:</label>
 										</div>
-										<div class="col-sm-5">
-											<input name="apellido" class="form-control" ng-model="nuevoDocente.apellido" placeholder="Apellido" type="text" maxlength="255" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
+										<div class="col-md-5">
+											<input name="apellido" class="form-control" ng-model="nuevoDocente.apellido" placeholder="Apellido" type="text" maxlength="255" required pattern="[A-zÀ-ú,.!?°\-_ 0-9]*">
 											<!-- Valida letras y espacios-->
 											<div ng-messages="formDoc.apellido.$error" ng-if="formDoc.apellido.$touched && formDoc.apellido.$invalid">
 												<div ng-message="pattern" class="help-block">Formato invalido</div>
@@ -211,48 +211,48 @@
 									</div><!-- /form-group-->
 
 									<div class="form-group">
-										<div class="col-sm-4 control-label">
+										<div class="col-md-4 control-label">
 											<label for="">Sexo:</label>
 										</div>
-										<div class="col-sm-7">
+										<div class="col-md-7">
 											<input type="radio" name="sexo" ng-model="nuevoDocente.sexo" id="F" value="F"><label class="text-radio" for="F"><span></span>Femenino </label>
 											<input type="radio" name="sexo" ng-model="nuevoDocente.sexo" checked id="M" value="M"><label class="text-radio" for="M"><span></span>Masculino </label>
 										</div>
 									</div><!-- /form-group-->
 
 									<div class="form-group" ng-class="{ 'has-error': formDoc.nombreCalle.$touched && formDoc.nombreCalle.$invalid }">
-										<div class="col-sm-4 control-label">
+										<div class="col-md-4 control-label">
 											<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Domicilio:</label>
 										</div>
-										<div class="col-sm-4">
-											<input name="nombreCalle" class="form-control" placeholder="Calle" type="text" maxlength="255" ng-model="nuevoDocente.domicilio.calle" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*"/>
+										<div class="col-md-4">
+											<input name="nombreCalle" class="form-control" placeholder="Calle" type="text" maxlength="255" ng-model="nuevoDocente.domicilio.calle" required pattern="[A-zÀ-ú,.!?°\-_ 0-9]*"/>
 											<div ng-messages="formDoc.nombreCalle.$error" ng-if="formDoc.nombreCalle.$touched && formDoc.nombreCalle.$invalid">
 												<div ng-message="pattern" class="help-block">Formato invalido</div>
 												<div ng-message="required" class="help-block">Complete este campo</div>
 											</div>
 										</div>
-										<div class="col-sm-2">
+										<div class="col-md-2">
 											<input name="numeroDomicilio" class="form-control" placeholder="Número" type="number" maxlength="6" ng-model="nuevoDocente.domicilio.numero"/> 
 											<div ng-messages="formDoc.numeroDomicilio.$error" ng-if="formDoc.numeroDomicilio.$touched && formDoc.numeroDomicilio.$invalid">
 												<div ng-message="type" class="help-block">Formato invalido</div>
 												<div ng-message="required" class="help-block">Complete este campo</div>
 											</div>
 										</div>
-										<div class="col-sm-1">
+										<div class="col-md-1">
 											<input type="button" class="btn btn-default" value="Avanzado" ng-click="domicilioAvanzado()">
 										</div>
 									</div>
 									<!-- /form-group-->
 
 									<div class="form-group" ng-class="{ 'has-error': formDoc.fechaNacimiento.$touched && formDoc.fechaNacimiento.$invalid }">
-										<div class="col-sm-4 control-label">
+										<div class="col-md-4 control-label">
 											<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Fecha de nac.:</label>
 										</div>
-										<div class="col-sm-6">
+										<div class="col-md-6">
 											<input name="fechaNacimiento" class="form-control" ng-model="nuevoDocente.fechaNacimiento" placeholder="10/10/1010" type="date"
 											step="1" value="01-01-2000" />
 											<div ng-messages="formDoc.fechaNacimiento.$error" ng-if="formDoc.fechaNacimiento.$touched && formDoc.fechaNacimiento.$invalid">
-												<div ng-message="pattern" class="help-block"> 
+												<div ng-message="date" class="help-block"> 
 													Formato invalido  
 												</div>
 											</div>
@@ -260,17 +260,17 @@
 									</div><!-- /form-group-->
 
 									<div class="form-group" ng-class="{ 'has-error': formDoc.cuilHead.$touched && formDoc.cuilHead.$invalid || formDoc.cuilTail.$touched && formDoc.cuilTail.$invalid }">
-										<div class="col-sm-4 control-label">
+										<div class="col-md-4 control-label">
 											<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> CUIT/CUIL:</label>
 										</div>
-										<div class="col-sm-5">
-											<div class="col-sm-3">
+										<div class="col-md-7">
+											<div class="col-md-3">
 												<input name="cuilHead" class="form-control" type="text" placeholder="11" ng-model="cuilHead" maxlength="2" required pattern="\d{2,2}">
 											</div>
-											<div class="col-sm-5">
+											<div class="col-md-6">
 												<input name="cuil" class="form-control" type="text" ng-model="nuevoDocente.nroDocumento" disabled>
 											</div>
-											<div class="col-sm-3">
+											<div class="col-md-3">
 												<input name="cuilTail" class="form-control" type="text" placeholder="1" ng-model="cuilTail" maxlength="1" required pattern="\d{1,1}">
 											</div>										
 											<div ng-messages="formDoc.cuilHead.$error" ng-if="formDoc.cuilHead.$touched && formDoc.cuilHead.$invalid">
@@ -285,20 +285,20 @@
 									</div>
 									<!-- Valida 8 digitos -->
 									<div class="form-group">
-										<div class="col-sm-4 control-label">
+										<div class="col-md-4 control-label">
 											<label for="">Rol:</label>
 										</div>
-										<div class="col-sm-7">
+										<div class="col-md-7">
 											<input type="checkbox" name="rolDirectivo" ng-model="nuevoDocente.rolDirectivo" id="rolDirectivo" value="DIRECTIVO"><label class="text-checkbox" for="rolDirectivo"><span></span> Directivo </label>
 											<input type="checkbox" name="rolDocente" ng-model="nuevoDocente.rolDocente" checked id="rolDocente" value="DOCENTE"><label class="text-checkbox" for="rolDocente"><span></span> Docente </label>
 										</div>
 									</div>
 
 									<div class="form-group" ng-class="{ 'has-error': formDoc.listaTelefono.$touched && formDoc.listaTelefono.$invalid }">
-										<div class="col-sm-4 control-label">
+										<div class="col-md-4 control-label">
 											<label for="">Teléfono:</label>
 										</div>
-										<div class="col-sm-5">
+										<div class="col-md-5">
 											<input name="listaTelefono" class="form-control" ng-model="nuevoTelefonoSimple.nroTelefono" maxlength="10" placeholder="4353535" type="tel" ng-show="!mostrarListaTelefonos">
 											<select multiple class="form-control" ng-show="mostrarListaTelefonos">
 												<option ng-repeat="telefono in nuevoDocente.listaTelefonos">{{telefono.caracteristica}}-{{telefono.nroTelefono}}({{telefono.tipoTelefono}})</option>
@@ -309,16 +309,16 @@
 												</div>
 											</div>
 										</div>
-										<div class="col-sm-1">
+										<div class="col-md-1">
 											<input type="button" class="btn btn-default" value="Avanzado" ng-click="telefonoAvanzado()">
 										</div>
 									</div>
 
 									<div class="form-group" ng-class="{ 'has-error': formDoc.dirMail.$touched && formDoc.dirMail.$invalid }">
-										<div class="col-sm-4 control-label">
+										<div class="col-md-4 control-label">
 											<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Mail:</label>
 										</div>
-										<div class="col-sm-7">
+										<div class="col-md-7">
 											<input class="form-control" name="dirMail" type="email" ng-model="nuevoMailSimple.direccionMail" required placeholder="nombre@dominio.com" ng-show="!mostrarListaMails"/>
 											<select multiple class="form-control" ng-show="mostrarListaMails">
 												<option ng-repeat="mail in nuevoDocente.listaMails">{{mail.direccionMail}} ({{mail.tipoMail}})</option>
@@ -328,17 +328,17 @@
 												<div ng-message="required" class="help-block">Complete este campo</div>
 											</div>
 										</div>
-										<div class="col-sm-1">
+										<div class="col-md-1">
 											<input type="button" class="btn btn-default" value="Avanzado" ng-click="mailAvanzado()">
 										</div>
 									</div>
 									<!-- /form-group-->
 
 									<div class="form-group">
-										<div class="col-sm-4 control-label">
+										<div class="col-md-4 control-label">
 											<label for="">T&iacute;tulo/s:</label>
 										</div>
-										<div class="col-sm-7">
+										<div class="col-md-7">
 											<input name="titulo" type="titulo" class="form-control" ng-model="nuevoTituloSimple.nombreTitulo" ng-show="!mostrarListaTitulos" placeholder="Nombre del título" maxlength="255"/>
 											<select multiple class="form-control" ng-show="mostrarListaTitulos">
 												<option ng-repeat="titulo in nuevoDocente.listaTitulos">{{titulo.nombreTitulo}} {{titulo.descripcionTitulo}} ({{titulo.anio}})</option>
@@ -348,18 +348,18 @@
 												<div ng-message="required" class="help-block">Complete este campo</div>
 											</div>
 										</div>
-										<div class="col-sm-1">
+										<div class="col-md-1">
 											<input type="button" class="btn btn-default" value="Avanzado" ng-click="tituloAvanzado()">
 										</div>
 									</div>
 									<!-- /form-group-->
 
 									<div class="form-group" ng-class="{ 'has-error': formDoc.observacion.$touched && formDoc.observacion.$invalid }">
-										<div class="col-sm-4 control-label">
+										<div class="col-md-4 control-label">
 											<label for="">Observaciones:</label>
 										</div>
-										<div class="col-sm-7">
-											<textarea name="observacion" class="form-control" rows="4" maxlength="255" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*"></textarea>
+										<div class="col-md-7">
+											<textarea name="observacion" class="form-control" rows="4" maxlength="255" pattern="[A-zÀ-ú,.!?°\-_ 0-9]*"></textarea>
 											<div ng-messages="formDoc.observacion.$error" ng-if="formDoc.observacion.$touched && formDoc.observacion.$invalid">
 												<div ng-message="pattern" class="help-block"> 
 													Formato invalido  
@@ -371,9 +371,9 @@
 
 								<div class="col-md-3">
 									<div class="form-group">
-										<div class="col-sm-1">
+										<div class="col-md-1">
 										</div>
-										<div class="col-sm-2">
+										<div class="col-md-2">
 											<button class="btn btn-default" ngf-select ng-model="picFile" accept="image/*" ngf-max-size="2MB" ngf-min-height="100" style="margin: 5px auto">Seleccione imagen de perfil</button>
 											<div ngf-drop ng-model="picFile" ngf-pattern="image/*" class="cropArea"><!--{{picFile}}-->
 												<img-crop image="picFile  | ngfDataUrl"                 
@@ -391,10 +391,10 @@
 						</div><!--row-->
 					</div><!--formulario media-body-->
 					<div class="form-group">
-						<div class="col-sm-2 col-sm-offset-3">
+						<div class="col-md-2 col-md-offset-3">
 							<input class="btn btn-danger" type="button" name="" ng-click="clearFormDoc()" value="Limpiar" />
 						</div>
-						<div class="col-sm-1"> <!-- meter dentro del ng-click q envia el form upload(croppedDataUrl);  -->
+						<div class="col-md-1"> <!-- meter dentro del ng-click q envia el form upload(croppedDataUrl);  -->
 							<input class="btn btn-primary" ng-click="newDocente(nuevoDocente)" type="submit" name="" value="Guardar" ng-disabled="!formDoc.$valid"/>
 						</div>
 					</div>

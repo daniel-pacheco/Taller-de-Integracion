@@ -22,7 +22,7 @@
 									<label for=""> Calle:</label>
 								</div>
 								<div class="col-sm-4">
-									<input name="calle" ng-model="domicilioCopia.calle" class="form-control" placeholder="Calle" type="text" maxlength="254" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*"/>
+									<input name="calle" ng-model="domicilioCopia.calle" class="form-control" placeholder="Calle" type="text" maxlength="254" required pattern="[A-zÀ-ú,.!?°\-_ 0-9]*"/>
 								</div>
 							</div>
 							<div ng-class="{ 'has-error': formDom.numero.$touched && formDom.numero.$invalid }">
@@ -58,7 +58,7 @@
 								<label for="">Localidad:</label>
 							</div>
 							<div class="col-sm-5">
-								<input ng-model="domicilioCopia.localidad" name="localidad" class="form-control" placeholder="Nombre" type="text" maxlength="254" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*"/>
+								<input ng-model="domicilioCopia.localidad" name="localidad" class="form-control" placeholder="Nombre" type="text" maxlength="254" pattern="[A-zÀ-ú,.!?°\-_ 0-9]*"/>
 							</div>
 						</div>						
 
@@ -67,7 +67,7 @@
 								<label for="">Departamento:</label>
 							</div>
 							<div class="col-sm-5">
-								<input ng-model="domicilioCopia.departamento" name="departamento"class="form-control" placeholder="Nombre" type="text" maxlength="254"  pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*"/>
+								<input ng-model="domicilioCopia.departamento" name="departamento"class="form-control" placeholder="Nombre" type="text" maxlength="254"  pattern="[A-zÀ-ú,.!?°\-_ 0-9]*"/>
 							</div>
 						</div>
 
@@ -78,7 +78,7 @@
 									<label for=""> Provincia:</label>
 								</div>
 								<div class="col-sm-4">
-									<input ng-model="domicilioCopia.provincia" name="provincia" class="form-control" placeholder="Nombre" type="text" maxlength="254" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*"/>
+									<input ng-model="domicilioCopia.provincia" name="provincia" class="form-control" placeholder="Nombre" type="text" maxlength="254" required pattern="[A-zÀ-ú,.!?°\-_ 0-9]*"/>
 								</div>
 							</div>
 							<div ng-class="{ 'has-error': formDom.codigoPostal.$touched && formDom.codigoPostal.$invalid }">
@@ -96,7 +96,7 @@
 								<label for="">Barrio:</label>
 							</div>
 							<div class="col-sm-5">
-								<input ng-model="domicilioCopia.barrio" name="barrio" class="form-control" placeholder="Nombre" type="text" maxlength="254" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]*"/>
+								<input ng-model="domicilioCopia.barrio" name="barrio" class="form-control" placeholder="Nombre" type="text" maxlength="254" pattern="[A-zÀ-ú,.!?°\-_ 0-9]*"/>
 							</div>
 						</div>
 					</div>
