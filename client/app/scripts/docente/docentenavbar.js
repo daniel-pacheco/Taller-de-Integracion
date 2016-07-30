@@ -9,14 +9,18 @@
  */
 
  angular.module('clientAppApp')
- .config(function($stateProvider) {
+ .config(function($stateProvider, USER_ROLES) {
  	$stateProvider
  	.state('docente', {
+ 		abstract: true,
  		url: '/docente',
  		templateUrl: 'scripts/docente/docentenavbar.html',
  		controller: 'DocenteNavBarCtrl',
  		data: {
- 			pageTitle: 'Docente'
+ 			pageTitle: 'Docente',
+ 			authorizedRoles: [
+ 			USER_ROLES.admin,
+ 			USER_ROLES.docente]
  		}
  	});
  })

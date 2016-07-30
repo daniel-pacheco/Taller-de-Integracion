@@ -91,7 +91,7 @@
       }, function(response) {
       // alert('Login failed! Please check your credentials!');
       $scope.showMessage('El proceso de login ha fallado. ', 'ERROR', false);
-        $state.go(LANDING_ROUTES[data.role], {}, {reload: true});//esto es para que redirija igual, se tiene q sacar cuando la auth esté activa
+        // $state.go(LANDING_ROUTES[data.role], {}, {reload: true});//esto es para que redirija igual, se tiene q sacar cuando la auth esté activa
       })
     .finally(function(){
       spinnerService.hide('loginSpinner');

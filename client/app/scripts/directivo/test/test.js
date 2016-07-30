@@ -19,7 +19,7 @@
       }
   });
 })
- .controller('DirectivoTestCtrl', function ($scope, Upload, $timeout, ModalService, spinnerService, alumnoData) {
+ .controller('DirectivoTestCtrl', ['$scope', '$timeout', 'alumnoData', 'loginService', 'ModalService', 'spinnerService', 'Upload', function ($scope, $timeout, alumnoData, loginService, ModalService, spinnerService, Upload) {
     this.awesomeThings = [
     'HTML5 Boilerplate',
     'AngularJS',
@@ -88,7 +88,13 @@ $scope.exportAction = function(){
        }
 }
 
+$scope.validCredentials = false;
+
+$scope.validar = function() {
+  $scope.validCredentials = loginService.validateCredentials();
+
+};
 
 
-});
+}]);
 

@@ -29,48 +29,66 @@
 
  .config(function($stateProvider, $urlRouterProvider) {
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/login');
+    // $urlRouterProvider.otherwise('/login');
+    
+    // $urlRouterProvider.otherwise(function () {
+    //   loginService.logout();
+    //   $state.go('login');
+    // });
 
-  })
+ $urlRouterProvider.otherwise(function ($injector, $location, $state) {
+
+    event.preventDefault();
+    $injector.invoke(function($rootScope, AUTH_EVENTS, $state) {
+      $state.go($state.current, {}, {reload: true});
+      $rootScope.$broadcast(AUTH_EVENTS.notFound);
+    });   
+  });
+})
 
   // allow DI for use in controllers, unit tests
   .constant('_', window._)
   // use in views, ng-repeat="x in _.range(3)"
 
 
- .run(function ($rootScope, $state, loginService, AUTH_EVENTS) {
-  
-  $rootScope._ = window._;
+  .run(function ($rootScope, $state, loginService, AUTH_EVENTS) {
 
-  $rootScope.$on('$stateChangeStart', function (event, next, nextParams, fromState) {
+    $rootScope._ = window._;
 
- /*   if ('data' in next && 'authorizedRoles' in next.data) {
-      var authorizedRoles = next.data.authorizedRoles;
-      if (!loginService.isAuthorized(authorizedRoles)) {
-        event.preventDefault();
-        $state.go($state.current, {}, {reload: true});
-        $rootScope.$broadcast(AUTH_EVENTS.notAuthorized);
-      }
-    }
- 
-    if (!loginService.isAuthenticated()) {
-      if (next.name !== 'login') {
-        event.preventDefault();
-        $state.go('login');
-      }
-    }
-    */
+    $rootScope.$on('$stateChangeStart', function (event, next, nextParams, fromState) {
+
+      // if (loginService.isAuthenticated()) {
+      //   if (next.name !== 'login') {
+      //     event.preventDefault();
+      //     $state.go('login');
+      //     $rootScope.$broadcast(AUTH_EVENTS.notAthenticated);
+      //   };
+      // };
+
+      if ('data' in next && 'authorizedRoles' in next.data) { // agregar call q le pegue al back
+        var authorizedRoles = next.data.authorizedRoles;
+        if (!loginService.isAuthorized(authorizedRoles)) {
+          event.preventDefault();
+          $state.go($state.current, {}, {reload: true});
+          $rootScope.$broadcast(AUTH_EVENTS.notAuthorized);
+        };
+      };
+
+      if (!loginService.isAuthenticated()) {
+        if (next.name !== 'login') {
+          event.preventDefault();
+          $state.go('login');
+          $rootScope.$broadcast(AUTH_EVENTS.notAthenticated);
+        };
+      };
+
+      
+
+    });
+
+    // $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+    //                 //pegarle al servid
+    //               });
+
   });
-
-});
-  /*
-.run(function($httpBackend){
-  $httpBackend.whenGET('http://localhost:8100/valid')
-        .respond({message: 'This is my valid response!'});
-  $httpBackend.whenGET('http://localhost:8100/notauthenticated')
-        .respond(401, {message: "Not Authenticated"});
-  $httpBackend.whenGET('http://localhost:8100/notauthorized')
-        .respond(403, {message: "Not Authorized"});
- 
-  $httpBackend.whenGET(/views\/\w+.*//*).passThrough();
- })*/
+  

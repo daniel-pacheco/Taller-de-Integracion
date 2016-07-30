@@ -9,14 +9,18 @@
  */
 
  angular.module('clientAppApp')
- .config(function($stateProvider) {
+ .config(function($stateProvider, USER_ROLES) {
  	$stateProvider
  	.state('directivo', {
+ 		abstract: true,
  		url: '/directivo',
  		templateUrl: 'scripts/directivo/directivonavbar.html',
  		controller: 'DirectivoNavBarCtrl',
  		data: {
- 			pageTitle: 'Directivo'
+ 			pageTitle: 'Directivo',
+ 			authorizedRoles: [
+ 			USER_ROLES.admin,
+ 			USER_ROLES.directivo]
  		}
  	});
  })

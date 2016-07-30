@@ -8,14 +8,17 @@
  * Controller of the clientAppApp
  */
  angular.module('clientAppApp')
- .config(function($stateProvider) {
+ .config(function($stateProvider, USER_ROLES) {
  	$stateProvider
  	.state('docente.materias', {
  		url: '/materias',
  		templateUrl: 'scripts/docente/materias/materias.html',
  		controller: 'DocenteMateriasCtrl',
  		data: {
- 			pageTitle: 'Materias'
+ 			pageTitle: 'Materias',
+ 			authorizedRoles: [
+ 			USER_ROLES.admin,
+ 			USER_ROLES.docente]
  		}
  	});
  })
