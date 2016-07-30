@@ -632,10 +632,6 @@ $scope.buscarButtonIsDisabled = false;
 
 //-- [Alumnado/Notas] Form Management
 
-$scope.toggleBuscarButton = function(param) {
-	$scope.buscarButtonIsDisabled = !param;
-};
-
 $scope.multiplePanels = {
 	activePanels: []
 };
@@ -650,8 +646,6 @@ $scope.showAsignarNotas = function () {
 		$scope.asignarNotas = true;
 	};
 };
-
-
 //-- [Alumnado/Notas] filters
 
    // copiaLibInasistencias.listaInasistencias = _.sortBy(copiaLibInasistencias.listaInasistencias, function(value) {return value.fecha; });

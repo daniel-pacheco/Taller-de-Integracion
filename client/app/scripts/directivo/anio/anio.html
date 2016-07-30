@@ -319,16 +319,17 @@
 		<fieldset>
 			<h1>{{subtitle}}<small>: Seleccione el a&ntilde;o y divisi&oacute;n que desee administrar</small></h1>
 			<hr>
-			<label for="dropDownSelectAnio">A&ntilde;o: </label> 
-			<select name="dropDownSelectAnio" ng-change="resetAdministrarTable()" class="form-control-inline" ng-model="dropDownSelectedAnio" ng-options="anio.nombre for anio in anios">
-				<option value="" disabled selected>Seleccione un a&ntilde;o</option>
-			</select>
-			<label for="dropDownSelectCurso">Divisi&oacute;n: </label> 
-			<select name="dropDownSelectCurso" ng-change="resetAdministrarTable()" class="form-control-inline" ng-model="dropDownSelectedCurso" ng-options="'Division: ' + curso.division + ' Turno: ' + curso.turno for curso in dropDownSelectedAnio.listaCursos">
-				<option value="" disabled selected>Seleccione una divisi&oacute;n</option>
-			</select>
-			<button class="btn btn-info" ng-click="getAlumnos()">Aceptar</button>
-
+			<form name="formSelectAnioCurso">
+				<label for="dropDownSelectAnio">A&ntilde;o: </label> 
+				<select name="dropDownSelectAnio" ng-change="resetAdministrarTable()" class="form-control-inline" ng-model="dropDownSelectedAnio" ng-options="anio.nombre for anio in anios" required>
+					<option value="" disabled selected>Seleccione un a&ntilde;o</option>
+				</select>
+				<label for="dropDownSelectCurso">Divisi&oacute;n: </label> 
+				<select name="dropDownSelectCurso" ng-change="resetAdministrarTable()" class="form-control-inline" ng-model="dropDownSelectedCurso" ng-options="'Division: ' + curso.division + ' Turno: ' + curso.turno for curso in dropDownSelectedAnio.listaCursos" required>
+					<option value="" disabled selected>Seleccione una divisi&oacute;n</option>
+				</select>
+				<button class="btn btn-default" ng-click="getAlumnos()" ng-disabled="!formSelectAnioCurso.$valid">Aceptar</button>
+			</form>
 			<div id="listFilters" ng-show="listAnioIsEnabled">
 				<table class="table  table-hover table-striped">
 					<thead>

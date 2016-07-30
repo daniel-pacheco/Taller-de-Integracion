@@ -21,7 +21,7 @@
  	});
  })
  // .controller('DocenteCtrl', function ($scope, docenteData, $timeout, ModalService, SERVER, ObjectsFactory, $alert, docenteService, alumnoService, directivoService, modalService, spinnerService, exportTableService, academicoService) {
-.controller('DocenteCtrl',['$scope', 'academicoService', 'alumnoService', 'directivoService', 'docenteService', 'exportTableService', 'ModalService', 'ObjectsFactory', 'SERVER', 'spinnerService' , function ($scope, academicoService, alumnoService, directivoService, docenteService, exportTableService, ModalService, ObjectsFactory, SERVER, spinnerService) {
+.controller('DocenteCtrl',['$scope', 'academicoService', 'alumnoService', 'directivoService', 'docenteService', 'exportTableService', 'ModalService', 'modalService', 'ObjectsFactory', 'SERVER', 'spinnerService' , function ($scope, academicoService, alumnoService, directivoService, docenteService, exportTableService, ModalService, modalService, ObjectsFactory, SERVER, spinnerService) {
   $scope.tooltip = {
     tooltipProfile : {
       'title' : 'Perfil'
@@ -489,7 +489,7 @@ function eliminarDocente (docente){
 };
 
 $scope.newDocente = function(personal){
-  personal.nombreUsuario = ModalService.makeId(5);
+  personal.nombreUsuario = modalService.makeId(5);
   personal.cuil = $scope.cuilHead + personal.nroDocumento + $scope.cuilTail;
   if ($scope.nuevoTelefonoSimple.nroTelefono && !_.includes(personal.listaTelefonos, $scope.nuevoTelefonoSimple)) { //solo hace el pushsi el telefono no se encuentra en la lista
     personal.listaTelefonos.push($scope.nuevoTelefonoSimple);

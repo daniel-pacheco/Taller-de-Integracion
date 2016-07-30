@@ -290,11 +290,11 @@ function getEspecialidades(isEdit){
     if (isEdit) {
      $scope.nuevoAnioObj.especialidad =  _.find($scope.especialidades, ['nombre', $scope.nuevoAnioObj.especialidad]);
      $scope.seleccionar('editAnio');
-    }; 
-  },
+   }; 
+ },
  function(response){
   showServerError(response);
-  })
+})
   .finally(function(){
     spinnerService.hide('searchAniosSpinner')
   });

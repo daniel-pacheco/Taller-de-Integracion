@@ -7,8 +7,8 @@
 					<a href="">Men&uacute; Materia</a>
 				</li>
 				<hr style="margin: 2px 0;">
-				<li ng-repeat="materia in listaMaterias"  ng-class="{active : activeMenu === materia}" data-target="#modals">
-					<a href="" ng-click="setActive(materia)">{{materia.nombre}}</a>
+				<li ng-repeat="materia in listaMaterias"  ng-class="{active : activeMenu === materia.idMateria}" data-target="#modals">
+					<a href="" ng-click="setActive(materia)">{{materia.nombre}} - {{materia.anio}}</a>
 				</li>				
 			</ul>
 		</div>
@@ -18,18 +18,39 @@
 </div>
 
 <div class="col-md-10">
+	<spinner name="searchMatDocenteSpinner" ng-cloak="">
+		<div class="overlay"></div>
+		<div class="spinner-small">			            
+			<div>
+				<div class="ng-include: './views/templates/defaultspinner.html'"></div>
+			</div>
+		</div>
+		<div class="please-wait-small">Aguarde por favor...</div>
+	</spinner>
 	<fieldset>
-		<h1>{{titulo}}
+		<h1>{{titulo}}: 
 			<small ng-show="selecMateriaMensaje">En el men&uacute; izquierdo se encuentra el listado de materias que tiene asignadas. Seleccione una para ver las plantillas trimestrales</small>
 			<small ng-show="!selecMateriaMensaje">Despliegue el per&iacute;odo que desee</small>
 		</h1>
 		<hr>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<form name="formSelectCurso">
+					<label for="dropDownSelectCurso">Divisi&oacute;n: </label> 
+					<select name="dropDownSelectCurso" ng-change="resetAdministrarTable(); toggleListaPlantillasTrim(false)" class="form-control-inline" ng-model="dropDownSelectedCurso" ng-options="'Division: ' + curso.division + ' Turno: ' + curso.turno for curso in dropDownSelectedAnio.listaCursos" required>
+						<option value="" disabled selected>Seleccione una divisi&oacute;n</option>
+					</select>
+					<button class="btn btn-default" ng-click="toggleListaPlantillasTrim(true)" bs-tooltip="tooltip.tooltipExport" ng-disabled="!formSelectCurso.$valid">Buscar</button>
+				</form>
+			</div>
+		</div>
+		<hr>
 		<div ng-show="listaPlantillasTrim">
 			<div class="panel-group" ng-model="multiplePanels.activePanels" data-allow-multiple="true" role="tablist" aria-multiselectable="true" bs-collapse>
 				<div class="panel panel-default">
-					<div class="panel-heading" style="cursor: pointer" ng-click="cargarPlanilla(1,activeMenu.id); downGlyphiconPrimerT = !downGlyphiconPrimerT" bs-collapse-toggle>
+					<div class="panel-heading" style="cursor: pointer" ng-click="getPlanillas(1)" bs-collapse-toggle>
 						<div class="panel-title">
-							<span ng-class="{ 'glyphicon glyphicon-chevron-down': !downGlyphiconPrimerT,'glyphicon glyphicon-chevron-up': downGlyphiconPrimerT }"></span> Primer Trimestre
+							<span ng-class="_.includes(multiplePanels.activePanels, 0)? 'glyphicon glyphicon-chevron-up': 'glyphicon glyphicon-chevron-down'"></span> Primer Trimestre					
 						</div>
 					</div>
 					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
@@ -40,11 +61,19 @@
 								</button>
 								Presione "Editar planilla" para asignar/editar las notas y luego haga click en "Finalizar Edici&oacute;n" para guardar los cambios realizados
 							</div>
-							<table class="table-hover table-striped table-condensed table-bordered col-md-6">
+							<table class="table-hover table-striped table-condensed table-bordered col-md-6" export-table="doc-primer-trim">
 								<thead>
 									<tr>
+										<tr style="visibility: hidden">
+											<th>{{selectedMAteria.nombre}}</th>
+											<th>{{selectedMAteria.anio}}</th>
+											<th>{{dropDownSelectedCurso.division}}</th>
+										</tr>
 										<th class="col-md-2">
-											<button type="button" ng-show="!colocarNota" class="btn btn-default btn-block btn-md" style="float: top" ng-click="colocarNota=!colocarNota; createCopy(planillaPrimerTrim.listaTrimestre)">Editar Planilla</button>
+											<div ng-show="!colocarNota">
+												<button type="button" class="btn btn-default btn-block btn-xs" style="float: top" ng-click="colocarNota=!colocarNota; createCopy(planillaPrimerTrim.listaTrimestre)">Editar Planilla</button>
+												<button type="button" class="btn btn-default btn-block btn-xs" ng-click="exportAction('doc-primer-trim')" style="float: top">Exportar Tabla</button>
+											</div>
 											<div ng-show="colocarNota">
 												<button type="button" class="btn btn-danger btn-block btn-md" style="float: top" ng-click="colocarNota=!colocarNota">Cancelar Edici&oacute;n</button>
 												<button type="button" class="btn btn-primary btn-block btn-md" style="float: top" ng-click="colocarNota=!colocarNota; saveEditNota(copiaLista)">Finalizar Edici&oacute;n</button>
@@ -77,7 +106,7 @@
 				<div class="panel panel-default">
 					<div class="panel-heading" style="cursor: pointer" ng-click="cargarPlanilla(2); downGlyphiconSegundoTri = !downGlyphiconSegundoTri" bs-collapse-toggle>
 						<div class="panel-title">
-							<span ng-class="{ 'glyphicon glyphicon-chevron-down': !downGlyphiconSegundoTri,'glyphicon glyphicon-chevron-up': downGlyphiconSegundoTri }"></span> Segundo Trimestre
+							<span ng-class="_.includes(multiplePanels.activePanels, 1)? 'glyphicon glyphicon-chevron-up': 'glyphicon glyphicon-chevron-down'"></span> Segundo Trimestre
 						</div>
 					</div>
 					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
@@ -105,7 +134,7 @@
 				<div class="panel panel-default">
 					<div class="panel-heading" style="cursor: pointer" ng-click="cargarPlanilla(3); downGlyphiconTercerTri = !downGlyphiconTercerTri" bs-collapse-toggle>
 						<div class="panel-title">
-							<span ng-class="{ 'glyphicon glyphicon-chevron-down': !downGlyphiconTercerTri,'glyphicon glyphicon-chevron-up': downGlyphiconTercerTri }"></span> Tercer Trimestre
+							<span ng-class="_.includes(multiplePanels.activePanels, 2)? 'glyphicon glyphicon-chevron-up': 'glyphicon glyphicon-chevron-down'"></span> Tercer Trimestre
 						</div>
 					</div>
 					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
@@ -133,7 +162,7 @@
 				<div class="panel panel-default">
 					<div class="panel-heading" style="cursor: pointer" ng-click="cargarPlanilla('diciembre'); downGlyphiconDiciembre = !downGlyphiconDiciembre" bs-collapse-toggle>
 						<div class="panel-title">
-							<span ng-class="{ 'glyphicon glyphicon-chevron-down': !downGlyphiconDiciembre,'glyphicon glyphicon-chevron-up': downGlyphiconDiciembre }"></span> Diciembre
+							<span ng-class="_.includes(multiplePanels.activePanels, 3)? 'glyphicon glyphicon-chevron-up': 'glyphicon glyphicon-chevron-down'"></span> Diciembre
 						</div>
 					</div>
 					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
@@ -161,7 +190,7 @@
 				<div class="panel panel-default">
 					<div class="panel-heading" style="cursor: pointer" ng-click="cargarPlanilla('marzo'); downGlyphiconMarzo = !downGlyphiconMarzo" bs-collapse-toggle>
 						<div class="panel-title">
-							<span ng-class="{ 'glyphicon glyphicon-chevron-down': !downGlyphiconMarzo,'glyphicon glyphicon-chevron-up': downGlyphiconMarzo }"></span> Marzo
+							<span ng-class="_.includes(multiplePanels.activePanels, 4)? 'glyphicon glyphicon-chevron-up': 'glyphicon glyphicon-chevron-down'"></span> Marzo
 						</div>
 					</div>
 					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
@@ -189,7 +218,7 @@
 				<div class="panel panel-default">
 					<div class="panel-heading" style="cursor: pointer" ng-click="cargarPlanilla('todos'); downGlyphiconTodos = !downGlyphiconTodos" bs-collapse-toggle>
 						<div class="panel-title">
-							<span ng-class="{ 'glyphicon glyphicon-chevron-down': !downGlyphiconTodos,'glyphicon glyphicon-chevron-up': downGlyphiconTodos }"></span> Todos los conceptos
+							<span ng-class="_.includes(multiplePanels.activePanels, 5)? 'glyphicon glyphicon-chevron-up': 'glyphicon glyphicon-chevron-down'"></span> Todos los conceptos
 						</div>
 					</div>
 					<div class="panel-collapse" role="tabpanel" bs-collapse-target>

@@ -43,7 +43,7 @@
     };
 
     this.getMyData = function () {
-        return $http.get(server + sAlumno + myData);
+        return $http.get(server + sDocente + myData);
     };
 
     this.putNew = function(docente){	  

@@ -349,183 +349,173 @@
 	<fieldset>
 		<h1>{{subtitle}}: <small>Asigne notas trimestrales o gesti&oacute;n de hist&oacute;ricos</small></h1>
 		<hr>
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<label>Seleccione a&ntilde;o y curso: </label> 
-				<select name="dropDownSelectAnio" ng-change="toggleBuscarButton(true); resetPlanillaTrimDTO()" class="form-control-inline" ng-model="dropDownSelectedAnio" ng-options="anio.nombre for anio in dropDownSearchOptions">
-					<option value="" disabled selected>Seleccione un a&ntilde;o</option>
-				</select>
-			<!-- <select class="dropdown-toggle form-control-inline" name="" ng-model="dropDownAnioValue" ng-change="toggleBuscarButton(true); resetPlanillaTrimDTO()"> 
-				<option value="" disabled selected>Seleccione un a&ntilde;o</option>
-
-				<option ng-repeat="optionAnio.nombre in dropDownSearchOptions" value="{{optionAnio}}">{{optionAnio}}</option>
-			</select> -->
-
-			<select name="dropDownSelectCurso" ng-change="toggleBuscarButton(true); resetPlanillaTrimDTO()" class="form-control-inline" ng-model="dropDownSelectedCurso" ng-options="curso.division for curso in dropDownSelectedAnio.listaCursos">
-				<option value="" disabled selected>Seleccione un curso</option>
-			</select>
-
-			<!-- <select	class="dropdown-toggle form-control-inline" name="" ng-model="dropDownCursoValue" ng-change="toggleBuscarButton(true); resetPlanillaTrimDTO()">{{dropDownCursoValue}}
-				<option value="" disabled selected>Seleccione un curso</option>
-
-				<option ng-repeat="optionCurso in dropDownAnioValue" value="{{optionCurso}}">{{optionCurso}}</option>
-			</select> -->
-			<button class="btn btn-default" ng-click="showAsignarNotas(); toggleBuscarButton(false)" ng-disabled="buscarButtonIsDisabled">Buscar</button>
+		<form name="formSelectAnioCurso">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<label>Seleccione a&ntilde;o y curso: </label> 
+					<select name="dropDownSelectAnio" ng-change="toggleBuscarButton(true); resetPlanillaTrimDTO()" class="form-control-inline" ng-model="dropDownSelectedAnio" ng-options="anio.nombre for anio in dropDownSearchOptions" required>
+						<option value="" disabled selected>Seleccione un a&ntilde;o</option>
+					</select>
+					<select name="dropDownSelectCurso" ng-change="toggleBuscarButton(true); resetPlanillaTrimDTO()" class="form-control-inline" ng-model="dropDownSelectedCurso" ng-options="curso.division for curso in dropDownSelectedAnio.listaCursos" required>
+						<option value="" disabled selected>Seleccione un curso</option>
+					</select>
+					<button class="btn btn-default" ng-click="showAsignarNotas(); toggleBuscarButton(false)" ng-disabled="!formSelectAnioCurso.$valid">Buscar</button>
+				</form>
+			</div>
 		</div>
-	</div>
 
 
-	<div id="asignarNotas" ng-show="asignarNotas">
-		<div class="panel-group" ng-model="multiplePanels.activePanels" data-allow-multiple="true" role="tablist" aria-multiselectable="true" bs-collapse>
-			<div class="panel panel-default">
-				<div class="panel-heading" style="cursor: pointer" ng-click="getPlanillaTrimestre(1)" bs-collapse-toggle>
-					<div class="panel-title">
-						<span ng-class="_.includes(multiplePanels.activePanels, 0)? 'glyphicon glyphicon-chevron-up': 'glyphicon glyphicon-chevron-down'"></span>Primer Trimestre
+		<div id="asignarNotas" ng-show="asignarNotas">
+			<div class="panel-group" ng-model="multiplePanels.activePanels" data-allow-multiple="true" role="tablist" aria-multiselectable="true" bs-collapse>
+				<div class="panel panel-default">
+					<div class="panel-heading" style="cursor: pointer" ng-click="getPlanillaTrimestre(1)" bs-collapse-toggle>
+						<div class="panel-title">
+							<span ng-class="_.includes(multiplePanels.activePanels, 0)? 'glyphicon glyphicon-chevron-up': 'glyphicon glyphicon-chevron-down'"></span>Primer Trimestre
+						</div>
+					</div>
+					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
+						<div class="table-responsive">
+							<table class="table-hover table-striped table-condensed table-bordered" export-table="dir-primer-trim"  ng-form="formColPrimerTrim">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th class="col-md-3">
+											<button type="button" class="btn btn-primary btn-block btn-xs" style="float: top;" ng-click="updatePlanillaTrimestre(1, planillas.primerTrim)" ng-disabled="_.some(materiasArrayBoolPrimerTrim)">Guardar</button>
+											<button type="button" class="btn btn-danger btn-block btn-xs" style="float: top;" ng-click="getPlanillaTrimestre(1)">Cancelar</button>
+										</th>
+										<th class="col-md-1" ng-repeat="materia in planillas.primerTrim[0].notas" style="text-align: center;">
+											{{materia.materia}}
+										</th>	
+									</tr>
+								</thead>
+								<tbody>
+									<tr style="text-align: center;">
+										<td></td>
+										<td>
+											<button type="button" class="btn btn-default btn-block btn-xs" ng-click="exportAction('dir-primer-trim')" style="float: top">Exportar Tabla</button>
+										</td>
+										<td ng-repeat="materia in planillas.primerTrim[0].notas">
+											<button type="button" class="btn btn-default btn-xs" ng-click="materiasArrayBoolPrimerTrim[$index] = !materiasArrayBoolPrimerTrim[$index]" ng-show="!materiasArrayBoolPrimerTrim[$index]">Editar Notas</button>
+											<button type="button" class="btn btn-default btn-xs" ng-click="materiasArrayBoolPrimerTrim[$index] = !materiasArrayBoolPrimerTrim[$index]" ng-show="materiasArrayBoolPrimerTrim[$index]" ng-disabled="!formColPrimerTrim.$valid">Guardar Notas</button>
+										</td>
+									</tr>
+									<tr ng-repeat="lista in planillas.primerTrim">
+										<td>{{$index+1}}</td>
+										<td>{{lista.alumno}}</td>
+										<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">
+											<div ng-if="!materiasArrayBoolPrimerTrim[$index]">
+												{{nota.nota}}
+											</div>
+											<div ng-if="materiasArrayBoolPrimerTrim[$index]" ng-class="{ 'has-error': formColPrimerTrim.notaMat.$touched && formColPrimerTrim.notaMat.$invalid }">
+												<input class="form-control" name="notaMat" type="number" ng-model="nota.nota" required min="0" max="10"/>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
-				<div class="panel-collapse" role="tabpanel" bs-collapse-target>
-					<div class="table-responsive">
-						<table class="table-hover table-striped table-condensed table-bordered" export-table="dir-primer-trim"  ng-form="formColPrimerTrim">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th class="col-md-3">
-										<button type="button" class="btn btn-primary btn-block btn-xs" style="float: top;" ng-click="updatePlanillaTrimestre(1, planillas.primerTrim)" ng-disabled="_.some(materiasArrayBoolPrimerTrim)">Guardar</button>
-										<button type="button" class="btn btn-danger btn-block btn-xs" style="float: top;" ng-click="getPlanillaTrimestre(1)">Cancelar</button>
-									</th>
-									<th class="col-md-1" ng-repeat="materia in planillas.primerTrim[0].notas" style="text-align: center;">
-										{{materia.materia}}
-									</th>	
-								</tr>
-							</thead>
-							<tbody>
-								<tr style="text-align: center;">
-									<td></td>
-									<td>
-										<button type="button" class="btn btn-default btn-block btn-xs" ng-click="exportAction('dir-primer-trim')" style="float: top">Exportar Tabla</button>
-									</td>
-									<td ng-repeat="materia in planillas.primerTrim[0].notas">
-										<button type="button" class="btn btn-default btn-xs" ng-click="materiasArrayBoolPrimerTrim[$index] = !materiasArrayBoolPrimerTrim[$index]" ng-show="!materiasArrayBoolPrimerTrim[$index]">Editar Notas</button>
-										<button type="button" class="btn btn-default btn-xs" ng-click="materiasArrayBoolPrimerTrim[$index] = !materiasArrayBoolPrimerTrim[$index]" ng-show="materiasArrayBoolPrimerTrim[$index]" ng-disabled="!formColPrimerTrim.$valid">Guardar Notas</button>
-									</td>
-								</tr>
-								<tr ng-repeat="lista in planillas.primerTrim">
-									<td>{{$index+1}}</td>
-									<td>{{lista.alumno}}</td>
-									<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">
-										<div ng-if="!materiasArrayBoolPrimerTrim[$index]">
-											{{nota.nota}}
-										</div>
-										<div ng-if="materiasArrayBoolPrimerTrim[$index]" ng-class="{ 'has-error': formColPrimerTrim.notaMat.$touched && formColPrimerTrim.notaMat.$invalid }">
-											<input class="form-control" name="notaMat" type="number" ng-model="nota.nota" required min="0" max="10"/>
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+				<div class="panel panel-default">
+					<div class="panel-heading" style="cursor: pointer" ng-click="getPlanillaTrimestre(2); downGlyphiconSegundoT=!downGlyphiconSegundoT" bs-collapse-toggle>
+						<div class="panel-title">
+							<span ng-class="_.includes(multiplePanels.activePanels, 1)? 'glyphicon glyphicon-chevron-up': 'glyphicon glyphicon-chevron-down'"></span>Segundo Trimestre
+						</div>
+					</div>
+					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
+						<div class="table-responsive">
+							<table class="table-hover table-striped table-condensed table-bordered" export-table="dir-segundo-trim"  ng-form="formColSegundoTrim">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th class="col-md-3">
+											<button type="button" class="btn btn-primary btn-block btn-xs" style="float: top;" ng-click="updatePlanillaTrimestre(2, planillas.segundoTrim)" ng-disabled="_.some(materiasArrayBoolSegundoTrim)">Guardar</button>
+											<button type="button" class="btn btn-danger btn-block btn-xs" style="float: top;" ng-click="getPlanillaTrimestre(2)">Cancelar</button>
+										</th>
+										<th class="col-md-1" ng-repeat="materia in planillas.segundoTrim[0].notas" style="text-align: center;">
+											{{materia.materia}}
+										</th>	
+									</tr>
+								</thead>
+								<tbody>
+									<tr style="text-align: center;">
+										<td></td>
+										<td>
+											<button type="button" class="btn btn-default btn-block btn-xs" ng-click="exportAction('dir-segundo-trim')" style="float: top">Exportar Tabla</button>
+										</td>
+										<td ng-repeat="materia in planillas.segundoTrim[0].notas">
+											<button type="button" class="btn btn-default btn-xs" ng-click="materiasArrayBoolSegundoTrim[$index] = !materiasArrayBoolSegundoTrim[$index]" ng-show="!materiasArrayBoolSegundoTrim[$index]">Editar Notas</button>
+											<button type="button" class="btn btn-default btn-xs" ng-click="materiasArrayBoolSegundoTrim[$index] = !materiasArrayBoolSegundoTrim[$index]" ng-show="materiasArrayBoolSegundoTrim[$index]" ng-disabled="!formColSegundoTrim.$valid">Guardar Notas</button>
+										</td>
+									</tr>
+									<tr ng-repeat="lista in planillas.segundoTrim">
+										<td>{{$index+1}}</td>
+										<td>{{lista.alumno}}</td>
+										<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">
+											<div ng-if="!materiasArrayBoolSegundoTrim[$index]">
+												{{nota.nota}}
+											</div>
+											<div ng-if="materiasArrayBoolSegundoTrim[$index]" ng-class="{ 'has-error': formColSegundoTrim.notaMat.$touched && formColSegundoTrim.notaMat.$invalid }">
+												<input class="form-control" name="notaMat" type="number" ng-model="nota.nota" required min="0" max="10"/>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="panel panel-default">
-				<div class="panel-heading" style="cursor: pointer" ng-click="getPlanillaTrimestre(2); downGlyphiconSegundoT=!downGlyphiconSegundoT" bs-collapse-toggle>
-					<div class="panel-title">
-						<span ng-class="_.includes(multiplePanels.activePanels, 1)? 'glyphicon glyphicon-chevron-up': 'glyphicon glyphicon-chevron-down'"></span>Segundo Trimestre
+				<div class="panel panel-default">
+					<div class="panel-heading" style="cursor: pointer" ng-click="getPlanillaTrimestre(3)" bs-collapse-toggle>
+						<div class="panel-title">
+							<span ng-class="_.includes(multiplePanels.activePanels, 2)? 'glyphicon glyphicon-chevron-up': 'glyphicon glyphicon-chevron-down'"></span>Tercer Trimestre
+						</div>
 					</div>
-				</div>
-				<div class="panel-collapse" role="tabpanel" bs-collapse-target>
-					<div class="table-responsive">
-						<table class="table-hover table-striped table-condensed table-bordered" export-table="dir-segundo-trim"  ng-form="formColSegundoTrim">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th class="col-md-3">
-										<button type="button" class="btn btn-primary btn-block btn-xs" style="float: top;" ng-click="updatePlanillaTrimestre(2, planillas.segundoTrim)" ng-disabled="_.some(materiasArrayBoolSegundoTrim)">Guardar</button>
-										<button type="button" class="btn btn-danger btn-block btn-xs" style="float: top;" ng-click="getPlanillaTrimestre(2)">Cancelar</button>
-									</th>
-									<th class="col-md-1" ng-repeat="materia in planillas.segundoTrim[0].notas" style="text-align: center;">
-										{{materia.materia}}
-									</th>	
-								</tr>
-							</thead>
-							<tbody>
-								<tr style="text-align: center;">
-									<td></td>
-									<td>
-										<button type="button" class="btn btn-default btn-block btn-xs" ng-click="exportAction('dir-segundo-trim')" style="float: top">Exportar Tabla</button>
-									</td>
-									<td ng-repeat="materia in planillas.segundoTrim[0].notas">
-										<button type="button" class="btn btn-default btn-xs" ng-click="materiasArrayBoolSegundoTrim[$index] = !materiasArrayBoolSegundoTrim[$index]" ng-show="!materiasArrayBoolSegundoTrim[$index]">Editar Notas</button>
-										<button type="button" class="btn btn-default btn-xs" ng-click="materiasArrayBoolSegundoTrim[$index] = !materiasArrayBoolSegundoTrim[$index]" ng-show="materiasArrayBoolSegundoTrim[$index]" ng-disabled="!formColSegundoTrim.$valid">Guardar Notas</button>
-									</td>
-								</tr>
-								<tr ng-repeat="lista in planillas.segundoTrim">
-									<td>{{$index+1}}</td>
-									<td>{{lista.alumno}}</td>
-									<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">
-										<div ng-if="!materiasArrayBoolSegundoTrim[$index]">
-											{{nota.nota}}
-										</div>
-										<div ng-if="materiasArrayBoolSegundoTrim[$index]" ng-class="{ 'has-error': formColSegundoTrim.notaMat.$touched && formColSegundoTrim.notaMat.$invalid }">
-											<input class="form-control" name="notaMat" type="number" ng-model="nota.nota" required min="0" max="10"/>
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-			<div class="panel panel-default">
-				<div class="panel-heading" style="cursor: pointer" ng-click="getPlanillaTrimestre(3); downGlyphiconTercerT=!downGlyphiconTercerT" bs-collapse-toggle>
-					<div class="panel-title">
-						<span ng-class="_.includes(multiplePanels.activePanels, 2)? 'glyphicon glyphicon-chevron-up': 'glyphicon glyphicon-chevron-down'"></span>Tercer Trimestre
-					</div>
-				</div>
-				<div class="panel-collapse" role="tabpanel" bs-collapse-target>
-					<div class="table-responsive">
-						<table class="table-hover table-striped table-condensed table-bordered" export-table="dir-tercer-trim"  ng-form="formColTercerTrim">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th class="col-md-3">
-										<button type="button" class="btn btn-primary btn-block btn-xs" style="float: top;" ng-click="updatePlanillaTrimestre(3, planillas.tercerTrim)" ng-disabled="_.some(materiasArrayBoolTercerTrim)">Guardar</button>
-										<button type="button" class="btn btn-danger btn-block btn-xs" style="float: top;" ng-click="getPlanillaTrimestre(3)">Cancelar</button>
-									</th>
-									<th class="col-md-1" ng-repeat="materia in planillas.tercerTrim[0].notas" style="text-align: center;">
-										{{materia.materia}}
-									</th>	
-								</tr>
-							</thead>
-							<tbody>
-								<tr style="text-align: center;">
-									<td></td>
-									<td>
-										<button type="button" class="btn btn-default btn-block btn-xs" ng-click="exportAction('dir-tercer-trim')" style="float: top">Exportar Tabla</button>
-									</td>
-									<td ng-repeat="materia in planillas.tercerTrim[0].notas">
-										<button type="button" class="btn btn-default btn-xs" ng-click="materiasArrayBoolTercerTrim[$index] = !materiasArrayBoolTercerTrim[$index]" ng-show="!materiasArrayBoolTercerTrim[$index]">Editar Notas</button>
-										<button type="button" class="btn btn-default btn-xs" ng-click="materiasArrayBoolTercerTrim[$index] = !materiasArrayBoolTercerTrim[$index]" ng-show="materiasArrayBoolTercerTrim[$index]" ng-disabled="!formColTercerTrim.$valid">Guardar Notas</button>
-									</td>
-								</tr>
-								<tr ng-repeat="lista in planillas.tercerTrim">
-									<td>{{$index+1}}</td>
-									<td>{{lista.alumno}}</td>
-									<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">
-										<div ng-if="!materiasArrayBoolTercerTrim[$index]">
-											{{nota.nota}}
-										</div>
-										<div ng-if="materiasArrayBoolTercerTrim[$index]" ng-class="{ 'has-error': formColTercerTrim.notaMat.$touched && formColTercerTrim.notaMat.$invalid }">
-											<input class="form-control" name="notaMat" type="number" ng-model="nota.nota" required min="0" max="10"/>
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
+						<div class="table-responsive">
+							<table class="table-hover table-striped table-condensed table-bordered" export-table="dir-tercer-trim"  ng-form="formColTercerTrim">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th class="col-md-3">
+											<button type="button" class="btn btn-primary btn-block btn-xs" style="float: top;" ng-click="updatePlanillaTrimestre(3, planillas.tercerTrim)" ng-disabled="_.some(materiasArrayBoolTercerTrim)">Guardar</button>
+											<button type="button" class="btn btn-danger btn-block btn-xs" style="float: top;" ng-click="getPlanillaTrimestre(3)">Cancelar</button>
+										</th>
+										<th class="col-md-1" ng-repeat="materia in planillas.tercerTrim[0].notas" style="text-align: center;">
+											{{materia.materia}}
+										</th>	
+									</tr>
+								</thead>
+								<tbody>
+									<tr style="text-align: center;">
+										<td></td>
+										<td>
+											<button type="button" class="btn btn-default btn-block btn-xs" ng-click="exportAction('dir-tercer-trim')" style="float: top">Exportar Tabla</button>
+										</td>
+										<td ng-repeat="materia in planillas.tercerTrim[0].notas">
+											<button type="button" class="btn btn-default btn-xs" ng-click="materiasArrayBoolTercerTrim[$index] = !materiasArrayBoolTercerTrim[$index]" ng-show="!materiasArrayBoolTercerTrim[$index]">Editar Notas</button>
+											<button type="button" class="btn btn-default btn-xs" ng-click="materiasArrayBoolTercerTrim[$index] = !materiasArrayBoolTercerTrim[$index]" ng-show="materiasArrayBoolTercerTrim[$index]" ng-disabled="!formColTercerTrim.$valid">Guardar Notas</button>
+										</td>
+									</tr>
+									<tr ng-repeat="lista in planillas.tercerTrim">
+										<td>{{$index+1}}</td>
+										<td>{{lista.alumno}}</td>
+										<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">
+											<div ng-if="!materiasArrayBoolTercerTrim[$index]">
+												{{nota.nota}}
+											</div>
+											<div ng-if="materiasArrayBoolTercerTrim[$index]" ng-class="{ 'has-error': formColTercerTrim.notaMat.$touched && formColTercerTrim.notaMat.$invalid }">
+												<input class="form-control" name="notaMat" type="number" ng-model="nota.nota" required min="0" max="10"/>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</fieldset>
+	</fieldset>
 </div>
 </div>
