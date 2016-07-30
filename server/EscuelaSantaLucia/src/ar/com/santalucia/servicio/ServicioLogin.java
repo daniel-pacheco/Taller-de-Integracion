@@ -26,6 +26,7 @@ import ar.com.santalucia.dominio.modelo.usuarios.info.Mail;
 import ar.com.santalucia.excepciones.LoginError;
 import ar.com.santalucia.excepciones.ValidacionException;
 import ar.com.santalucia.mailserver.MailServer;
+import ar.com.santalucia.rest.FrontMessage;
 
 /**
  * 
@@ -86,6 +87,28 @@ public class ServicioLogin {
 			return token;
 		}else{
 			throw new LoginError(LoginError.LOGINERROR);
+		}
+	}
+	
+	public static String comprobarCredenciales(String rol, String token) throws ValidacionException, Exception {
+		try {
+			return ServicioLogin.comprobar(token, rol);
+		} catch (LoginError lEx) {
+			ValidacionException vEx = new ValidacionException();
+			switch (lEx.getDetalles()) {
+			case LoginError.ROLERROR:
+				vEx.addMensajeError("Acceso no autorizado");
+				break;
+			case LoginError.FIRMAERROR:
+				vEx.addMensajeError("Acceso prohibido");
+				break;
+			case LoginError.EXPIRADO:
+				vEx.addMensajeError("Sesión expirada");
+				break; 
+			default:
+				break;
+			}
+			throw vEx;
 		}
 	}
 	
@@ -205,19 +228,19 @@ public class ServicioLogin {
 			switch (rol) {
 			case Login.ALUMNO:
 				
-				List<Alumno> alumnos = gAlumno.getByExample(new Alumno(dniUsuario,null,null,null,null,null,null,null,null,null,true,null));
+				List<Alumno> alumnos = gAlumno.getByExample(new Alumno(dniUsuario,null,null,null,null,null,null,null,null,null,null,true,null));
 				if (alumnos.size() == 1){
 					mails = alumnos.get(0).getListaMails();
 				}
 				break;
 			case Login.DIRECTIVO:
-				List<Personal> directivos = gPersonal.getByExample(new Personal(dniUsuario,null,null,null,null,null,null,null,null,null,true,null,null,true,null));
+				List<Personal> directivos = gPersonal.getByExample(new Personal(dniUsuario,null,null,null,null,null,null,null,null,null,null,true,null,null,true,null));
 				if(directivos.size()==1){
 					mails = directivos.get(0).getListaMails();
 				}
 				break;
 			case Login.DOCENTE:
-				List<Personal> docentes = gPersonal.getByExample(new Personal(dniUsuario,null,null,null,null,null,null,null,null,null,true,null,null,null,true));
+				List<Personal> docentes = gPersonal.getByExample(new Personal(dniUsuario,null,null,null,null,null,null,null,null,null,null,true,null,null,null,true));
 				if(docentes.size()==1){
 					mails = docentes.get(0).getListaMails();
 				}

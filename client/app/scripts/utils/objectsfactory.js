@@ -208,7 +208,7 @@ var newBoletinInasistencia = function(){
     "nombre": "",
     "apellido": "",
     "nroDocumento": 0,
-    "cicloLectivo": null,
+    "cicloLectivo": 0,
     "listaInasistencias": []
   };
   return boletinInasistencia;

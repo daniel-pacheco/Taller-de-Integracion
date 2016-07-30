@@ -1,13 +1,16 @@
 
 angular.module('clientAppApp')
-.config(function($stateProvider) {
+.config(function($stateProvider, USER_ROLES) {
 	$stateProvider
 	.state('alumno.micuenta', {
 		url: '/micuenta',
 		templateUrl: 'scripts/alumno/micuenta/micuenta.html',
 		controller: 'AlumnoMiCuentaCtrl',
 		data: {
-			pageTitle: 'Mi Cuenta'
+			pageTitle: 'Mi Cuenta',
+			authorizedRoles: [
+ 			USER_ROLES.admin,
+ 			USER_ROLES.alumno]
 		}
 	});
 })

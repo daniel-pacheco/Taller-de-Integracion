@@ -1,5 +1,6 @@
 package ar.com.santalucia.rest;
 
+import java.security.SignatureException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -63,29 +64,75 @@ public class ServicioAlumnoEndpoint{
 		}
 	}
 	
+//	private String comprobarCredenciales(String rol, String token) throws ValidacionException, Exception {
+//		try {
+//			return ServicioLogin.comprobar(token, rol);
+//		} catch (LoginError lEx) {
+//			ValidacionException vEx = new ValidacionException();
+//			switch (lEx.getDetalles()) {
+//			case LoginError.ROLERROR: 
+//				vEx.addMensajeError("Acceso no autorizado");
+//				break;
+//			case LoginError.FIRMAERROR:
+//				vEx.addMensajeError("Acceso prohibido");
+//				break;
+//			case LoginError.EXPIRADO:
+//				vEx.addMensajeError("Sesión expirada");
+//				break; 
+//			default:
+//				break;
+//			}
+//			throw vEx;
+//		}
+//	}
+	
 	/**
+	 * Rol de acceso: DIRECTIVO - DOCENTE
 	 * Devuelve los datos de un alumno específico proporcionando su DNI
 	 * @param dni
 	 * @return 
 	 */
 	@GET
 	@Path("/alu/getByDni/{dni:[0-9][0-9]*}")
-	public Response getAlumnoByDni(@PathParam("dni") final Long dni){
+	public Response getAlumnoByDni(@PathParam("dni") final Long dni,
+			@HeaderParam("rol") final String rolIn, 
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.DOCENTE)) {
+			return Response.status(Status.UNAUTHORIZED).build();
+		}
+		String nuevoToken = new String();
 		Alumno alumno = new Alumno();
-		try{
+		try {
 			setInstance();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			alumno = servicioAlumno.getUsuarioByDni(dni);
 			if(alumno.getIdUsuario().equals("")){
 				return Response.serverError().entity(new FrontMessage("No se ha podido encontrar el alumno",FrontMessage.INFO)).build();
 			}
-		}catch(Exception ex){
+			//} catch (LoginError ex){
+//			switch (ex.getDetalles()) {
+//			case LoginError.ROLERROR: 
+//				return Response.status(Status.UNAUTHORIZED).build();
+//			case LoginError.FIRMAERROR:
+//				return Response.status(Status.FORBIDDEN).build();
+//			case LoginError.EXPIRADO:
+//				return Response.status(500).entity(new FrontMessage("Sus credenciales han expirado. Vuelva a iniciar sesión.",FrontMessage.INFO)).build(); //440 IIS LoginTimeOut
+//			default:
+//				break;
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+		} catch(Exception ex) {
 			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
-		return Response.ok(alumno).build();
+		if (nuevoToken == null) {
+			return Response.ok(alumno).build();
+		} else {
+			return Response.ok(alumno).header("auth0", nuevoToken).build();
+		}
 	}
 	
-	
 	/**
+	 * Rol de acceso: ALUMNO
 	 * Devuelve los datos personales del Alumno logueado solamente enviando rol y token.
 	 * @param rolIn
 	 * @param token
@@ -94,6 +141,9 @@ public class ServicioAlumnoEndpoint{
 	@GET
 	@Path("/DatosPersonales")
 	public Response obtenerDatosPersonales(@HeaderParam("rol") String rolIn, @HeaderParam("auth0") String token){
+		if (!rolIn.equals(Login.ALUMNO)) {
+			return Response.status(Status.FORBIDDEN).build();
+		}
 		String nuevoToken = new String();
 		Long usuarioDni;
 		Alumno alumno = new Alumno();
@@ -130,56 +180,71 @@ public class ServicioAlumnoEndpoint{
 	}
 	
 	/**
-	 *  
+	 * Rol de acceso: DIRECTIVO - DOCENTE
 	 * @param id
-	 *            Identificador del usuario a buscar.
-	 * @return Response ok (Status 200) e instancia de alumno, incluyendo datos de teléfono, 
-	 * mail y domicilio o null si no existe.
+	 * @param rolIn
+	 * @param token
+	 * @return
 	 */
 	@GET
 	@Path("/alu/{id:[0-9][0-9]*}")
-	public Response getAlumnoById(@PathParam("id") final Long id, @HeaderParam("rol") String rolIn, @HeaderParam("auth0") String token) {
+	public Response getAlumnoById(@PathParam("id") final Long id, 
+			@HeaderParam("rol") String rolIn, 
+			@HeaderParam("auth0") String token) {
+		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.DOCENTE)) {
+			return Response.status(Status.FORBIDDEN).build();
+		}
 		Alumno alumno = new Alumno();
 		String nuevoToken = new String();
 		try {
 			//ServicioLogin.comprobar(token, rolIn); //Hace la comprobacion de la credencial
 			//nuevoToken = ServicioLogin.comprobar(token, rolIn);
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			setInstance();
 			alumno = servicioAlumno.getUsuario(id);
-		}catch (LoginError ex){
-			switch (ex.getDetalles()) {
-			case LoginError.ROLERROR: 
-				return Response.status(Status.UNAUTHORIZED).build();
-			case LoginError.FIRMAERROR:
-				return Response.status(Status.FORBIDDEN).build();
-			case LoginError.EXPIRADO:
-				return Response.status(500).entity(new FrontMessage("Sus credenciales han expirado. Vuelva a iniciar sesión.",FrontMessage.INFO)).build(); 
-			default:
-				break;
-			}
+//		} catch (LoginError ex) {
+//			switch (ex.getDetalles()) {
+//			case LoginError.ROLERROR: 
+//				return Response.status(Status.UNAUTHORIZED).build();
+//			case LoginError.FIRMAERROR:
+//				return Response.status(Status.FORBIDDEN).build();
+//			case LoginError.EXPIRADO:
+//				return Response.status(500).entity(new FrontMessage("Sus credenciales han expirado. Vuelva a iniciar sesión.",FrontMessage.INFO)).build(); 
+//			default:
+//				break;
+//			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
-		if(nuevoToken == null){
+		if (nuevoToken == null) {
 			return Response.ok(alumno).build();
-		}else{
+		} else {
 			return Response.ok(alumno).header("auth0", nuevoToken).build();
 		}
 	}
 
 	/**
+	 * Rol de acceso: DIRECTIVO
 	 * @param id
-	 *            Identificador del usuario del cuál se desea recuperar los
-	 *            teléfonos.
-	 * @return Response ok (Status 200) y Set de teléfonos o 
-	 *  null si no existe el alumno o no hay nada.
+	 * @param rolIn
+	 * @param token
+	 * @return
 	 */
 	@GET
 	@Path("/tel/{id:[0-9][0-9]*}") // tel
-	public Response getTelefonos(@PathParam("id") final Long id) {
+	public Response getTelefonos(@PathParam("id") final Long id, 
+			@HeaderParam("rol") final String rolIn, 
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO)) {
+			return Response.status(Status.FORBIDDEN).build();
+		}
 		Set<Telefono> telefonos = new HashSet<Telefono>();
-		//telefonos = null;
+		String nuevoToken = new String();
 		try {
+			//nuevoToken = ServicioLogin.comprobar(token, rolIn);
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			setInstance();
 			telefonos = servicioAlumno.getTelefonos(id);
 			if (telefonos == null) {
@@ -187,7 +252,18 @@ public class ServicioAlumnoEndpoint{
 						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
 						.build();
 			}
-			return Response.ok(telefonos).build();
+//		} catch (LoginError ex){
+//			switch (ex.getDetalles()) {
+//			case LoginError.ROLERROR: 
+//				return Response.status(Status.UNAUTHORIZED).build();
+//			case LoginError.FIRMAERROR:
+//				return Response.status(Status.FORBIDDEN).build();
+//			case LoginError.EXPIRADO:
+//				return Response.status(500).entity(new FrontMessage("Sus credenciales han expirado. Vuelva a iniciar sesión.",FrontMessage.INFO)).build(); //440 IIS LoginTimeOut
+//			default:
+//				break;
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -195,30 +271,52 @@ public class ServicioAlumnoEndpoint{
 							FrontMessage.CRITICAL))
 					.build();
 		}
+		if (nuevoToken == null) {
+			return Response.ok(telefonos).build();
+		} else {
+			return Response.ok(telefonos).header("auth0", nuevoToken).build();
+		}
 	}
-
+	
 	/**
-	 * 
+	 * Rol de acceso: DIRECTIVO
 	 * @param id
-	 *            Identificador del usuario del cuál se desea recuperar los
-	 *            mails.
-	 * @return Response ok (Status 200) y Set de mails
-	 *  o null si no existe el alumno o no hay nada.
+	 * @param rolIn
+	 * @param token
+	 * @return
 	 */
 	@GET
 	@Path("/mai/{id:[0-9][0-9]*}")
-	public Response getMails(@PathParam("id") final Long id) {
+	public Response getMails(@PathParam("id") final Long id, 
+			@HeaderParam("rol") final String rolIn, 
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO)) {
+			return Response.status(Status.FORBIDDEN).build();
+		}
 		Set<Mail> mails = new HashSet<Mail>();
+		String nuevoToken = new String();
 		//mails = null;
 		try {
 			setInstance();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			mails = servicioAlumno.getMails(id);
 			if (mails == null) {
 				return Response.status(Status.NOT_FOUND)
 						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
 						.build();
 			}
-			return Response.ok(mails).build();
+//			} catch (LoginError ex){
+//			switch (ex.getDetalles()) {
+//			case LoginError.ROLERROR: 
+//				return Response.status(Status.UNAUTHORIZED).build();
+//			case LoginError.FIRMAERROR:
+//				return Response.status(Status.FORBIDDEN).build();
+//			case LoginError.EXPIRADO:
+//				return Response.status(500).entity(new FrontMessage("Sus credenciales han expirado. Vuelva a iniciar sesión.",FrontMessage.INFO)).build(); //440 IIS LoginTimeOut
+//			default:
+//				break;
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -226,9 +324,15 @@ public class ServicioAlumnoEndpoint{
 							FrontMessage.CRITICAL))
 					.build();
 		}
+		if (nuevoToken == null) {
+			return Response.ok(mails).build();
+		} else {
+			return Response.ok(mails).header("auth0", nuevoToken).build();
+		}
 	}
 
 	/**
+	 * Rol de acceso: DIRECTIVO
 	 * Utilice este método para el listado de alumnos completo.
 	 * @return Response ok (Status 200) y listado de alumnos o 
 	 *  null si no hay nada. <br>
@@ -236,16 +340,32 @@ public class ServicioAlumnoEndpoint{
 	 */
 	@GET
 	@Path("/listAll")
-	public Response listAll() {
+	public Response listAll(@HeaderParam("rol") final String rolIn, @HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO)) {
+			return Response.status(Status.FORBIDDEN).build();
+		}
 		List<Alumno> alumnos = new ArrayList<Alumno>();
+		String nuevoToken = new String();
 		alumnos = null;
 		try {
 			setInstance();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			alumnos = servicioAlumno.getUsuarios(new Alumno());
 			if (alumnos.size() == 0) {
 				return Response.status(Status.NO_CONTENT).build();
 			}
-			return Response.ok(alumnos).build();
+		//} catch (LoginError ex){
+		//switch (ex.getDetalles()) {
+		//	case LoginError.ROLERROR: 
+		//				return Response.status(Status.UNAUTHORIZED).build();
+		//			case LoginError.FIRMAERROR:
+		//				return Response.status(Status.FORBIDDEN).build();
+		//			case LoginError.EXPIRADO:
+		//				return Response.status(500).entity(new FrontMessage("Sus credenciales han expirado. Vuelva a iniciar sesión.",FrontMessage.INFO)).build(); //440 IIS LoginTimeOut
+		//			default:
+		//				break;
+		} catch (ValidacionException vEx) {
+				return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -253,9 +373,15 @@ public class ServicioAlumnoEndpoint{
 							FrontMessage.CRITICAL))
 					.build();
 		}
+		if (nuevoToken == null) {
+			return Response.ok(alumnos).build();
+		} else {
+			return Response.ok(alumnos).header("auth0", nuevoToken).build();
+		}
 	}
 
 	/**
+	 * Rol de acceso: DIRECTIVO
 	 * Utilice este método para:<br>
 	 * 1) Agregar un nuevo alumno con o sin datos adicionales (teléfono, mail y domicilio) de una sola vez. <br>
 	 * 2) Actualizar datos de alumno que no sean adicionales (teléfono, mail y domicilio).<br>
@@ -267,20 +393,19 @@ public class ServicioAlumnoEndpoint{
 	@PUT
 	@Path("/alu/")
 	public Response update(final Alumno alumno, @HeaderParam("rol") String rolIn, @HeaderParam("auth0") String token) {
-	/*	if(!rolIn.equals(Login.DIRECTIVO)){	//Comprobación de roles
+		if (!rolIn.equals(Login.DIRECTIVO)) {
 			return Response.status(Status.FORBIDDEN).build();
-		}*/
+		}
 		String nuevoToken = new String();
 		try {
 			// nuevoToken = ServicioLogin.comprobar(token, rolIn);
-			nuevoToken = null;
+			try {
+				nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
+			} catch (ValidacionException vEx) {
+				return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			}
 			setInstance();
 			servicioAlumno.addUsuario(alumno);
-			if(nuevoToken==null){
-				return Response.ok(alumno.getIdUsuario()).build();
-			} else {
-				return Response.ok(alumno.getIdUsuario()).header("auth0", nuevoToken).build();
-			}
 		} catch (ValidacionException ex) {
 			return Response.status(Status.CONFLICT).entity(ex.getMensajesError()).build();
 		} catch (Exception ex) {
@@ -290,9 +415,15 @@ public class ServicioAlumnoEndpoint{
 							FrontMessage.CRITICAL))
 					.build();
 		}
+		if (nuevoToken==null) {
+			return Response.ok(alumno.getIdUsuario()).build();
+		} else {
+			return Response.ok(alumno.getIdUsuario()).header("auth0", nuevoToken).build();
+		}
 	}
 
 	/**
+	 * Rol de acceso: DIRECTIVO
 	 * Utilice este método para actualizar los datos de un teléfono existente.
 	 * @param telefono incluyendo su id
 	 * @return Response ok (Status 200) con true si el resultado es exitoso o la excepción generada.
@@ -314,6 +445,7 @@ public class ServicioAlumnoEndpoint{
 	}
 
 	/**
+	 * Rol de acceso: DIRECTIVO
 	 * Utilice este método para actualizar los datos de un mail existente.
 	 * @param mail Response ok (Status 200) con true si el resultado es exitoso o la excepción generada.
 	 * @return
@@ -335,6 +467,7 @@ public class ServicioAlumnoEndpoint{
 	}
 	
 	/**
+	 * Rol de acceso: DIRECTIVO
 	 * Utilice este método para actualizar los datos de un domicilio existente.
 	 * @param domicilio
 	 * @return Response ok (Status 200) con true si el resultado es exitoso o la excepción generada.
@@ -356,6 +489,7 @@ public class ServicioAlumnoEndpoint{
 	}
 
 	/**
+	 * Rol de acceso: DIRECTIVO
 	 * Utilice este método para eliminar un alumno. Además de eliminar el alumno, también se eliminan los datos adicionales (teléfono, mail y domicilio).
 	 * @param id
 	 * @return Response ok (Status 200) con true si el resultado es exitoso o la excepción generada.<br>
@@ -363,35 +497,67 @@ public class ServicioAlumnoEndpoint{
 	 */
 	@DELETE
 	@Path("/alu/deleteByDni/{dni:[0-9][0-9]*}")
-	public Response deleteAlumnoByDni(@PathParam("dni") final Long dni){
+	public Response deleteAlumnoByDni(@PathParam("dni") final Long dni,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO)) {
+			return Response.status(Status.FORBIDDEN).build();
+		}
 		Boolean exito = false;
+		String nuevoToken = new String();
 		try {
 			setInstance();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			exito = servicioAlumno.removeUsuario(servicioAlumno.getUsuarioByDni(dni));
-			if(exito == true){
-				return Response.ok(exito).build();
-			}else{
-				return Response.serverError().entity(new FrontMessage ("No se ha podido eliminar el docente", FrontMessage.INFO)).build();
+			if (exito == true) {
+				if (nuevoToken == null) {
+					return Response.ok(exito).build();
+				} else {
+					return Response.ok(exito).header("auth0", nuevoToken).build();
+				}
+			} else {
+				return Response.serverError()
+						.entity(new FrontMessage ("No se ha podido eliminar el docente", FrontMessage.INFO))
+						.build();
 			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
 	}
 	
+	/**
+	 * Rol de acceso: DIRECTIVO
+	 * @param id
+	 * @param rolIn
+	 * @param token
+	 * @return
+	 */
 	@DELETE
 	@Path("/alu/{id:[0-9][0-9]*}")
-	public Response deleteAlumnoById(@PathParam("id") final Long id) {
+	public Response deleteAlumnoById(@PathParam("id") final Long id,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
 		Boolean exito = false;
+		String nuevoToken = new String();
 		try {
 			setInstance();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			exito = servicioAlumno.removeUsuario(servicioAlumno.getUsuario(id));
 			if (exito == true) {
-				return Response.ok(exito).build();
+				if (nuevoToken == null) {
+					return Response.ok(exito).build();
+				} else {
+					return Response.ok(exito).header("auth0", nuevoToken).build();
+				}
 			} else {
 				return Response.status(Status.INTERNAL_SERVER_ERROR)
 						.entity(new FrontMessage("No se pudo eliminar el alumno", FrontMessage.INFO))
 						.build();
 			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -402,19 +568,28 @@ public class ServicioAlumnoEndpoint{
 	}
 	
 	/**
+	 * Rol de acceso: DIRECTIVO
 	 * Utilice este método para eliminar un teléfono existente.
 	 * @param id
 	 * @return Response ok (Status 200) con true si el resultado es exitoso o la excepción generada.
 	 */
 	@DELETE
 	@Path("/tel/{id:[0-9][0-9]*}")
-	public Response deleteTelefonoById(@PathParam("id") final Long id){
+	public Response deleteTelefonoById(@PathParam("id") final Long id,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token){
 		Boolean exito = false;
+		String nuevoToken = new String();
 		try {
 			setInstance();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			exito = servicioAlumno.removeTelefono(id);
 			if (exito == true) {
-				return Response.ok(exito).build();
+				if (nuevoToken == null) {
+					return Response.ok(exito).build();
+				} else {
+					return Response.ok(exito).header("auth0", token).build();
+				}
 			} else {
 				return Response.status(Status.INTERNAL_SERVER_ERROR)
 						.entity(new FrontMessage("No se pudo eliminar el teléfono", FrontMessage.INFO))
@@ -429,19 +604,30 @@ public class ServicioAlumnoEndpoint{
 	}
 	
 	/**
+	 * Rol de acceso: DIRECTIVO
 	 * Utilice este método para eliminar un domicilio existente.
 	 * @param id
+	 * @param rolIn 
+	 * @param token 
 	 * @return Response ok (Status 200) con true si el resultado es exitoso o la excepción generada.
 	 */
 	@DELETE
 	@Path("/dom/{id:[0-9][0-9]*}")
-	public Response deleteDomicilioById(@PathParam("id") final Long id){
+	public Response deleteDomicilioById(@PathParam("id") final Long id, 
+			@HeaderParam("rol") final String rolIn, 
+			@HeaderParam("auth0") final String token) {
 		Boolean exito = false;
-		try{
+		String nuevoToken = new String();
+		try {
 			setInstance();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			exito = servicioAlumno.removeDomicilio(id);
 			if (exito == true) {
-				return Response.ok(exito).build();
+				if (nuevoToken == null) {
+					return Response.ok(exito).build();
+				} else {
+					return Response.ok(exito).header("auth0", nuevoToken).build();
+				}
 			} else {
 				return Response.status(Status.INTERNAL_SERVER_ERROR)
 						.entity(new FrontMessage("No se pudo eliminar el domicilio", FrontMessage.INFO))
@@ -456,21 +642,34 @@ public class ServicioAlumnoEndpoint{
 	}
 	
 	/**
+	 * Rol de acceso: DIRECTIVO
 	 * Obtiene todos los alumnos en formato DTO (AlumnoDTO)
 	 * @return
 	 */
 	@GET
 	@Path("/listAllMin")
-	public Response listAlumnosDTO() {
+	public Response listAlumnosDTO(@HeaderParam("rol") final String rolIn, @HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO)) {
+			return Response.status(Status.FORBIDDEN).build();
+		}
+		String nuevoToken = new String();
 		try {
 			setInstance();
-			return Response.ok(servicioAlumno.listAlumnosDTO()).build();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
+			if (nuevoToken == null) {
+				return Response.ok(servicioAlumno.listAlumnosDTO()).build();
+			} else {
+				return Response.ok(servicioAlumno.listAlumnosDTO()).header("auth0", nuevoToken).build();
+			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
 	}
 	
 	/**
+	 * Rol de acceso: DIRECTIVO
 	 * Devuelve todos los alumnos activos en formato DTO (AlumnoDTO)
 	 * @return
 	 */
@@ -485,32 +684,65 @@ public class ServicioAlumnoEndpoint{
 		}
 	}
 	
+	/**
+	 * Rol de acceso: DIRECTIVO - DOCENTE
+	 * @param dni
+	 * @param rolIn
+	 * @param token
+	 * @return
+	 */
 	@GET
 	@Path("/getByDniMin/{dni:[0-9][0-9]*}")
-	public Response getAlumnoByDniMin(@PathParam("dni") final Long dni){
-		try{
+	public Response getAlumnoByDniMin(@PathParam("dni") final Long dni,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.DOCENTE)) {
+			return Response.status(Status.FORBIDDEN).build();
+		}
+		String nuevoToken = new String();
+		try {
 			setInstance();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			AlumnoDTO alumnoDto = servicioAlumno.getAlumnoByDniMin(dni);
-			if(alumnoDto.getDniAlumno()!=null){
-				return Response.ok(alumnoDto).build();
-			}else{
-				return Response.status(Status.INTERNAL_SERVER_ERROR).entity(new FrontMessage("No se pudo encontrar el Alumno con DNI: "+String.valueOf(dni),FrontMessage.INFO)).build();
+			if (alumnoDto.getDniAlumno()!=null) {
+				if (nuevoToken == null) {
+					return Response.ok(alumnoDto).build();
+				} else {
+					return Response.ok(alumnoDto).header("auth0", nuevoToken).build();
+				}
+			} else {
+				return Response.status(Status.INTERNAL_SERVER_ERROR)
+						.entity(new FrontMessage("No se pudo encontrar el Alumno con DNI: " + String.valueOf(dni), FrontMessage.INFO))
+						.build();
 			}
-		}catch(Exception ex){
+		} catch(Exception ex) {
 			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
 	}
 	
 	/**
+	 * Rol de acceso: DIRECTIVO
 	 * Devuelve todos los alumnos activos en formato DTO (AlumnoDTO)
 	 * @return
 	 */
 	@GET
 	@Path("/getByAnio/{idAnio:[0-9][0-9]*}")
-	public Response listAlumnosActAnioDTO(@PathParam("idAnio") final Long idAnio) {
+	public Response listAlumnosActAnioDTO(@PathParam("idAnio") final Long idAnio,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		String nuevoToken = new String();
 		try {
 			setInstance();
-			return Response.ok(servicioAlumno.listAlumnosActivosAnioDTO(idAnio)).build();
+			try {
+				nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
+			} catch (ValidacionException vEx) {
+				return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			}
+			if (nuevoToken == null) {
+				return Response.ok(servicioAlumno.listAlumnosActivosAnioDTO(idAnio)).build();
+			} else {
+				return Response.ok(servicioAlumno.listAlumnosActivosAnioDTO(idAnio)).header("auth0", nuevoToken).build();
+			}
 		} catch (ValidacionException vEx) {
 			return Response.serverError().entity(new FrontMessage(vEx.getMensajesError().toString(),FrontMessage.INFO)).build();
 		} catch (Exception ex) {

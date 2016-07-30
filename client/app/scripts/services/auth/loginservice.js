@@ -8,7 +8,7 @@
  * Service in the clientAppApp.
  */
  angular.module('clientAppApp')
- .service('loginService', function ($q, $http, USER_ROLES, SERVER) {
+ .service('loginService', ['$q', '$http', 'USER_ROLES', 'SERVER', function ($q, $http, USER_ROLES, SERVER) {
   var isAuthenticated = false;
   var userName = '';
   var userRole = '';
@@ -17,6 +17,7 @@
   var server = SERVER.address;
   var sLogin = SERVER.login;
   var recoverPassword = 'recuperarClave/';
+  var validateCred = 'validar/';
   
   function loadUserCredentials() {
     var token = window.sessionStorage.getItem('LOCAL_TOKEN_KEY');
@@ -24,8 +25,9 @@
       var name = window.sessionStorage.getItem('USER_NAME');
       var rol = window.sessionStorage.getItem('USER_ROLE');
       useCredentials(name, token, rol);
-    }
-  }
+    };
+  };
+  loadUserCredentials(); // caga las credenciales al reload browser
   
   function storeUserCredentials(name, token, role) {
     window.sessionStorage.setItem('USER_NAME', name);
@@ -39,7 +41,7 @@
       );
 
     useCredentials(name, token, role);
-  }
+  };
   
   function useCredentials(name, token, role) {
     userName = name;
@@ -67,7 +69,7 @@
     var deferred = $q.defer(); // retorna una promesa que se resolvera cuando responda el server
 
     $http.post(server + sLogin + 'login', [name, pw, role])
-    .success(function(data,status,headers,config){
+    .success(function(data, status, headers, config){
       console.log(headers('auth0'));
       console.log(status);
       storeUserCredentials(name, headers('auth0'), role);
@@ -92,10 +94,28 @@
       authorizedRoles = [authorizedRoles];
     }
     //return (isAuthenticated && authorizedRoles.indexOf(role) !== -1);
-    return (isAuthenticated && authorizedRoles == userRole);
+    return (getIsAutenticated() && _.includes(authorizedRoles, getUserRole()));
   };
+
+  var validateCredentials = function() {
+    var credentialsAreValid = false;
+
+    $http.post(server + sLogin + validateCred)
+    .success(function(data, status, headers, config){
+      credentialsAreValid = true;
+      if (getAuthToken() !== headers('auth0')) {
+        storeUserCredentials(getUserName(), headers('auth0'), getUserRole());
+      };
+    })
+    .error(function(data, status, headers, config){
+      credentialsAreValid = false;
+    })
+    .finally(function(){
+      return credentialsAreValid;
+    });
+
+  };  
   
-  loadUserCredentials();
   var changePassword = function(recoverData) {
 
     var credenciales = {
@@ -110,16 +130,33 @@
 
     return $http.post(server + sLogin + recoverPassword, credenciales);
   };
+
+function getUserName() {
+  return window.sessionStorage.getItem('USER_NAME');
+};
+
+function getUserRole() {
+  return window.sessionStorage.getItem('USER_ROLE');
+};
   
+function getAuthToken() {
+  return window.sessionStorage.getItem('LOCAL_TOKEN_KEY');
+};
+
+function getIsAutenticated() {
+  return isAuthenticated;
+};
+
   return {
     changePassword: changePassword,
     login: login,
     logout: logout,
     isAuthorized: isAuthorized,
-    isAuthenticated: function() {return isAuthenticated;},
-    userName: function() {return window.sessionStorage.getItem('USER_NAME');},
-    userRole: function() {return window.sessionStorage.getItem('USER_ROLE');},
-    authToken: function() {return window.sessionStorage.getItem('LOCAL_TOKEN_KEY');}
+    isAuthenticated: getIsAutenticated,
+    userName: getUserName,
+    userRole: getUserRole,
+    authToken: getAuthToken,
+    validateCredentials: validateCredentials
   };
 
-});
+}]);

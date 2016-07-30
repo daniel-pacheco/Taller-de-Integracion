@@ -16,7 +16,9 @@
     controller: 'AnioCtrl',
     data: {
      pageTitle: 'Anio',
-     authorizedRoles: [USER_ROLES.admin]           
+     authorizedRoles: [
+      USER_ROLES.admin,
+      USER_ROLES.directivo]           
    }
  });
 

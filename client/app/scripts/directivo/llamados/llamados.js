@@ -9,14 +9,17 @@
  */
  
  angular.module('clientAppApp')
- .config(function($stateProvider, $selectProvider) {
+ .config(function($stateProvider, USER_ROLES, $selectProvider) {
   $stateProvider
   .state('directivo.llamados', {
     url: '/llamados',
     templateUrl: 'scripts/directivo/llamados/llamados.html',
     controller: 'LlamadosCtrl',
     data: {
-      pageTitle: 'Materias'
+      pageTitle: 'Materias',
+      authorizedRoles: [
+      USER_ROLES.admin,
+      USER_ROLES.directivo]
     }
   });
 

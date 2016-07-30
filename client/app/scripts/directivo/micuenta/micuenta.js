@@ -8,14 +8,16 @@
  * Controller of the clientAppApp
  */
  angular.module('clientAppApp')
- .config(function($stateProvider) {
+
+ .config(function($stateProvider, USER_ROLES) {
  	$stateProvider
  	.state('directivo.micuenta', {
  		url: '/micuenta',
  		templateUrl: 'scripts/directivo/micuenta/micuenta.html',
  		controller: 'DirectivoMiCuentaCtrl',
  		data: {
- 			pageTitle: 'Mi Cuenta'
+ 			pageTitle: 'Mi Cuenta',
+ 			authorizedRoles: [USER_ROLES.directivo]
  		}
  	});
  })
@@ -36,24 +38,29 @@ $scope.seleccionar = function (id){
 		case 'misDatos':
 		$scope.subtitle = "Mis datos";
 		$scope.misDatos = true;
+		setActiveAlu(1);
 		break;
 		case 'actualizarMisDatos':
 		$scope.subtitle = "Actualizar mis datos";
 		$scope.actualizarMisDatos = true;
+		setActiveAlu(2);
 		break;
 		case 'cambiarPass':
 		$scope.subtitle = "Cambiar clave";
 		$scope.cambiarPass = true;
+		setActiveAlu(3);
 		break;
 	}
 }
 
-$scope.seleccionar('misDatos');
+$scope.$on('$viewContentLoaded', function(){
+$scope.seleccionar("misDatos");
+});
 
-$scope.activeMenuIzqAlu = 1;
-$scope.setActiveAlu = function(menuItemAlu) {
+function setActiveAlu (menuItemAlu) {
 	$scope.activeMenuIzqAlu = menuItemAlu;
 };
+
 //-- [Mi cuenta] filters
 //-- [Mi cuenta] modals
 	$scope.showMessage = function(mesagge, title, isGood) { //todo ok recibe true si salio bien o false si salio mal

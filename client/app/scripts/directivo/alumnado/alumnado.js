@@ -9,18 +9,21 @@
  */
 
  angular.module('clientAppApp')
- .config(function($stateProvider) {
+ .config(function($stateProvider, USER_ROLES) {
  	$stateProvider
  	.state('directivo.alumnado', {
  		url: '/alumnado',
  		templateUrl: 'scripts/directivo/alumnado/alumnado.html',
  		controller: 'AlumnadoCtrl',
  		data: {
- 			pageTitle: 'Alumnado'
+ 			pageTitle: 'Alumnado',
+ 			authorizedRoles: [
+ 			USER_ROLES.admin,
+ 			USER_ROLES.directivo]
  		}
  	});
  })
- 	.controller('AlumnadoCtrl', [ '$scope', '$timeout', 'academicoService', 'alumnoService', 'desempenioService', 'exportTableService', 'modalService', 'ModalService', 'ObjectsFactory', 'spinnerService', 'Upload' ,function ($scope, $timeout, academicoService, alumnoService, desempenioService, exportTableService, modalService, ModalService, ObjectsFactory, spinnerService, Upload) { 	
+ .controller('AlumnadoCtrl', [ '$scope', '$timeout', 'academicoService', 'alumnoService', 'desempenioService', 'exportTableService', 'modalService', 'ModalService', 'ObjectsFactory', 'spinnerService', 'Upload' ,function ($scope, $timeout, academicoService, alumnoService, desempenioService, exportTableService, modalService, ModalService, ObjectsFactory, spinnerService, Upload) { 	
 //-- [Alumnado]
 //-- [Alumnado] variables
 

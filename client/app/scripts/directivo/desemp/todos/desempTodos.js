@@ -1,12 +1,13 @@
 angular.module('clientAppApp')
- .config(function($stateProvider) {
+ .config(function($stateProvider, USER_ROLES) {
  	$stateProvider
  	.state('directivo.desemp.todos', {
  		url: '/todos',
  		templateUrl: 'scripts/directivo/desemp/todos/desempTodos.html',
  		controller: 'DesempTodosCtrl',
  		data: {
- 			pageTitle: 'Todos'
+ 			pageTitle: 'Todos',
+            authorizedRoles:[USER_ROLES.docente]
  		}
  	});
  })

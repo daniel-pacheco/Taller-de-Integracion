@@ -8,14 +8,17 @@
  * Controller of the clientAppApp
  */
  angular.module('clientAppApp')
- .config(function($stateProvider) {
+ .config(function($stateProvider, USER_ROLES) {
  	$stateProvider
  	.state('directivo.desemp', {
  		url: '/desemp',
  		templateUrl: 'scripts/directivo/desemp/desempnavbar.html',
  		controller: 'DesempCtrl',
  		data: {
- 			pageTitle: 'Desempeño'
+ 			pageTitle: 'Desempeño',
+      authorizedRoles: [
+      USER_ROLES.admin,
+      USER_ROLES.docente]
  		}
  	});
  })

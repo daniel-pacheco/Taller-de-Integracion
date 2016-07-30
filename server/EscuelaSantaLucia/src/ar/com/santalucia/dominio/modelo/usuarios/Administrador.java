@@ -28,9 +28,9 @@ public class Administrador extends Usuario {
 
 	public Administrador(Long nroDocumento, String tipoDocumento, String nombre, String apellido,
 			Set<Telefono> listaTelefonos, Set<Mail> listaMails, Domicilio domicilio, char sexo, String nombreUsuario,
-			Date fechaNacimiento, Boolean activo, String descripcion) {
+			Date fechaNacimiento, String observaciones, Boolean activo, String descripcion) {
 		super(nroDocumento, tipoDocumento, nombre, apellido, listaTelefonos, listaMails, domicilio, sexo,
-				nombreUsuario, fechaNacimiento, activo);
+				nombreUsuario, fechaNacimiento, observaciones, activo);
 		this.descripcion = descripcion;
 	}
 
