@@ -556,7 +556,7 @@ $scope.newAlumno = function (alumno){
 		alumno.listaTelefonos.push($scope.nuevoTelefonoSimple);
 	};
 
-	if ($scope.nuevoMailSimple.direccionMail && !_.includes(alumno.listaMails, $scope.nuevoMailSimple)) { //solo hace el pushsi el Mail no se encuentra en la lista
+	if ($scope.nuevoMailSimple.direccionMail && !_.includes(alumno.listaMails, $scope.nuevoMailSimple)) { //solo hace el push si el Mail no se encuentra en la lista
 		alumno.listaMails.push($scope.nuevoMailSimple);
 	};
 	
@@ -657,7 +657,7 @@ function initPlanillaTrimDTO(trim) { // para get
 	planillaTrimDTO.trimestre = trim;
 	planillaTrimDTO.anio = $scope.dropDownSelectedAnio.nombre;
 	planillaTrimDTO.curso = $scope.dropDownSelectedCurso.division;
-	planillaTrimDTO.cicloLectivo = 2015;
+	planillaTrimDTO.cicloLectivo = 2016;
 
 	console.log(planillaTrimDTO);
 

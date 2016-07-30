@@ -8,13 +8,13 @@
 				</li>
 				<hr style="margin: 2px 0;">
 				<li ng-class="{active : activeMenuIzqAlu === 1}" data-target="#desemp">
-					<a href="" ng-click="seleccionar('desemp'); setActiveAlu(1)">Desempe&ntilde;o</a>
+					<a href="" ng-click="seleccionar('desemp')">Desempe&ntilde;o</a>
 				</li>
 				<li ng-class="{active : activeMenuIzqAlu === 2}" data-target="#examenes">
-					<a href="" ng-click="seleccionar('examenes'); setActiveAlu(2)">Ex&aacute;menes</a>
+					<a href="" ng-click="seleccionar('examenes')">Ex&aacute;menes</a>
 				</li>
 				<li ng-class="{active : activeMenuIzqAlu === 3}" data-target="#certificados">
-					<a href="" ng-click="seleccionar('certificados'); setActiveAlu(3)">Certificados</a>
+					<a href="" ng-click="seleccionar('certificados')">Certificados</a>
 				</li>				
 			</ul>
 		</div>
@@ -22,17 +22,25 @@
 	</div>
 </div>
 
-<div class="col-md-10">
+<div>
+	<spinner name="searchOperacionesSpinner" ng-cloak="">
+		<div class="overlay"></div>
+		<div class="spinner-small">			            
+			<div>
+				<div class="ng-include: './views/templates/defaultspinner.html'"></div>
+			</div>
+		</div>
+		<div class="please-wait-small">Aguarde por favor...</div>
+	</spinner>
 	<div ng-show="desemp">
 		<fieldset>
 			<h1>{{subtitle}}<small>: Los datos corresponden al a&ntilde;o calendario vigente</small></h1>
 			<hr>
 			<div class="panel-group" ng-model="multiplePanels.activePanels" data-allow-multiple="true" role="tablist" aria-multiselectable="true" bs-collapse>
 				<div class="panel panel-default">
-					<div class="panel-heading" style="cursor: pointer" ng-click="downGlyphiconIna = !downGlyphiconIna" bs-collapse-toggle>
+					<div class="panel-heading" style="cursor: pointer" ng-click="getPlanillaInasistencias()" bs-collapse-toggle>
 						<div class="panel-title">
-							Inasistencias
-							<div style="float: right" ng-class="{ 'glyphicon glyphicon-chevron-down': !downGlyphiconIna,'glyphicon glyphicon-chevron-up': downGlyphiconIna }"></div>
+							<span ng-class="_.includes(multiplePanels.activePanels, 0)? 'glyphicon glyphicon-chevron-up': 'glyphicon glyphicon-chevron-down'"></span>Inasistencias
 						</div>
 					</div>
 					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
@@ -90,7 +98,7 @@
 															<div>{{inasistencia.justificada}}</div>
 														</td>
 														<td>
-															<div>{{inasistencia.totalAcum}}</div>
+															<div>{{totalIn[$index]}}</div>
 														</td>
 													</tr>
 												</tbody>
@@ -104,15 +112,15 @@
 											<div class="form-horizontal margin-lib">
 												<div class="form-group">
 													<label class="col-md-4">Total Justificadas: </label>
-													<span class="col-md-8">total</span>
+													<span class="col-md-8">{{totalInJ[totalInJ.length-1]}}</span>
 												</div>
 												<div class="form-group">
 													<label class="col-md-4">Total Injustificadas: </label>
-													<span class="col-md-5">total</span>
+													<span class="col-md-5">{{totalInI[totalInI.length-1]}}</span>
 												</div>
 												<div class="form-group">
-													<label class="col-md-4">Restantes: </label>
-													<span class="col-md-5">rest</span>
+													<label class="col-md-4">Total: </label>
+													<span class="col-md-5">{{totalIn[totalIn.length-1]}}</span>
 												</div>
 											</div>
 										</div>

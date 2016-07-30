@@ -7,57 +7,53 @@
  * # DirectivoMiCuentaCtrl
  * Controller of the clientAppApp
  */
-angular.module('clientAppApp')
-.config(function($stateProvider) {
-	$stateProvider
-	.state('directivo.micuenta', {
-		url: '/micuenta',
-		templateUrl: 'scripts/directivo/micuenta/micuenta.html',
-		controller: 'DirectivoMiCuentaCtrl',
-		data: {
-			pageTitle: 'Mi Cuenta'
-		}
-	});
-})
+ angular.module('clientAppApp')
+ .config(function($stateProvider) {
+ 	$stateProvider
+ 	.state('directivo.micuenta', {
+ 		url: '/micuenta',
+ 		templateUrl: 'scripts/directivo/micuenta/micuenta.html',
+ 		controller: 'DirectivoMiCuentaCtrl',
+ 		data: {
+ 			pageTitle: 'Mi Cuenta'
+ 		}
+ 	});
+ })
 
-.controller('DirectivoMiCuentaCtrl', ['$scope', 'directivoService', 'ModalService', function ($scope, directivoService, ModalService) {
+ .controller('DirectivoMiCuentaCtrl', ['$scope', 'directivoService', 'ModalService', function ($scope, directivoService, ModalService) {
 
 //-- [Mi cuenta]
 //-- [Mi cuenta] variables
-	$scope.titulo = 'Mi Cuenta';
-	$scope.misDatos = true;
-	$scope.subtitle = "Mis Datos";
-
-	$scope.directivo = {};
+$scope.titulo = 'Mi Cuenta';
+$scope.directivo = {};
 //-- [Mi cuenta] Form Management
-	$scope.seleccionar = function (id){
-		switch (id){
-			case 'misDatos':
-			$scope.actualizarMisDatos = false;
-			$scope.subtitle = "Mis datos";
-			$scope.cambiarPass = false;
-			$scope.misDatos = true;
-			break;
-			case 'actualizarMisDatos':
-			$scope.misDatos = false;
-			$scope.subtitle = "Actualizar mis datos";
-			//$scope.nuevoAlumno = null;
-			$scope.cambiarPass = false;
-			$scope.actualizarMisDatos = true;
-			break;
-			case 'cambiarPass':
-			$scope.misDatos = false;
-			$scope.actualizarMisDatos = false;
-			$scope.subtitle = "Cambiar clave";
-			$scope.cambiarPass = true;
-			break;
-		}
-	}
+$scope.seleccionar = function (id){
+	$scope.actualizarMisDatos = false;
+	$scope.cambiarPass = false;
+	$scope.misDatos = false;
 
-		$scope.activeMenuIzqAlu = 1;
-	$scope.setActiveAlu = function(menuItemAlu) {
-		$scope.activeMenuIzqAlu = menuItemAlu;
-	};
+	switch (id){
+		case 'misDatos':
+		$scope.subtitle = "Mis datos";
+		$scope.misDatos = true;
+		break;
+		case 'actualizarMisDatos':
+		$scope.subtitle = "Actualizar mis datos";
+		$scope.actualizarMisDatos = true;
+		break;
+		case 'cambiarPass':
+		$scope.subtitle = "Cambiar clave";
+		$scope.cambiarPass = true;
+		break;
+	}
+}
+
+$scope.seleccionar('misDatos');
+
+$scope.activeMenuIzqAlu = 1;
+$scope.setActiveAlu = function(menuItemAlu) {
+	$scope.activeMenuIzqAlu = menuItemAlu;
+};
 //-- [Mi cuenta] filters
 //-- [Mi cuenta] modals
 	$scope.showMessage = function(mesagge, title, isGood) { //todo ok recibe true si salio bien o false si salio mal
@@ -107,15 +103,15 @@ angular.module('clientAppApp')
 //-- [Mi cuenta/Mis datos] modals
 //-- [Mi cuenta/Mis datos] utils
 //-- [Mi cuenta/Mis datos] service calls
-	$scope.initCall = function() {
-		directivoService.getMyData().then(function(response) {
-			console.log(response);
-			$scope.directivo = response.data;
-		},
-		function(response){
-			showServerError('Ha ocurrido un error al contactar al servidor ' + response.statusText);
-		});
-	};
+$scope.initCall = function() {
+	directivoService.getMyData().then(function(response) {
+		console.log(response);
+		$scope.directivo = response.data;
+	},
+	function(response){
+		showServerError('Ha ocurrido un error al contactar al servidor ' + response.statusText);
+	});
+};
 	$scope.initCall(); //carga los datos desde la BD
 
 //-- [Mi cuenta/sub-seccion]
