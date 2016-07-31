@@ -9,6 +9,7 @@ import ar.com.santalucia.aplicacion.gestor.sistema.login.GestorLogin;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
 import ar.com.santalucia.dominio.dto.DocenteMateriasDTO;
 import ar.com.santalucia.dominio.dto.MateriaAreaCondDocenteDTO;
+import ar.com.santalucia.dominio.dto.MateriaDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.sistema.login.Login;
@@ -387,4 +388,23 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 		}
 	}
 
+	public List<MateriaDTO> ObtenerMateriasDictadas(Long idPersonal) throws Exception{
+		// Solicitar el listado completo de DTO de materias
+		// Buscar el personal para comparar los string
+		// poner las coincidencias en un set y luego devolver una lista
+		try{
+			ServicioAcademico sAcademico = new ServicioAcademico();
+			
+			List<DocenteMateriasDTO> listadoCompleto = listDocentesMateriasDTO();
+			List<MateriaDTO> listadoDevolver = new ArrayList<MateriaDTO>();
+			for(DocenteMateriasDTO dmDTO : listadoCompleto){
+				
+			}
+		}catch(Exception ex){
+			
+		}
+		
+		
+		return null;
+	}
 }

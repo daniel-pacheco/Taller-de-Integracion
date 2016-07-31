@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -26,11 +27,13 @@ import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotasHist;
 import ar.com.santalucia.dominio.modelo.desempenio.Inasistencia;
 import ar.com.santalucia.dominio.modelo.desempenio.Nota;
 import ar.com.santalucia.dominio.modelo.desempenio.Trimestre;
+import ar.com.santalucia.dominio.modelo.sistema.login.Login;
 import ar.com.santalucia.excepciones.InasistenciaException;
 import ar.com.santalucia.excepciones.ValidacionException;
 import ar.com.santalucia.servicio.ServicioAcademico;
 import ar.com.santalucia.servicio.ServicioAlumno;
 import ar.com.santalucia.servicio.ServicioDesempenio;
+import ar.com.santalucia.servicio.ServicioLogin;
 
 @Path("/sDesempenio")
 @Produces({ "application/xml", "application/json" })
@@ -54,13 +57,33 @@ public class ServicioDesempenioEndpoint {
 	}
 
 	
+	/**
+	 * Rol de acceso: DIRECTIVO
+	 * @param boletinNotas
+	 * @param rolIn
+	 * @param token
+	 * @return
+	 */
 	@PUT
 	@Path("/bol/")
-	public Response updateBoletinNotas(BoletinNotas boletinNotas) {
+	public Response updateBoletinNotas(BoletinNotas boletinNotas,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
+		String nuevoToken = new String();
 		try {
 			setInstance();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			servicioDesempenio.addBoletinNotas(boletinNotas);
-			return Response.ok(boletinNotas.getIdBoletinNotas()).build();
+			if (nuevoToken == null) {
+				return Response.ok(boletinNotas.getIdBoletinNotas()).build();
+			} else {
+				return Response.ok(boletinNotas.getIdBoletinNotas()).header("auth0", nuevoToken).build();
+			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -69,15 +92,35 @@ public class ServicioDesempenioEndpoint {
 					.build();
 		}
 	}
-	
+
+	/**
+	 * Rol de acceso: DIRECTIVO - ADMINISTRADOR
+	 * @param idBoletinNotas
+	 * @param rolIn
+	 * @param token
+	 * @return
+	 */
 	@DELETE
 	@Path("/bol/{id:[0-9][0-9]*}")
-	public Response deleteBoletinNotasById(@PathParam("id") Long idBoletinNotas) {
+	public Response deleteBoletinNotasById(@PathParam("id") Long idBoletinNotas,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.ADMINISTRADOR)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
 		BoletinNotas boletinNotas = new BoletinNotas();
+		String nuevoToken = new String();
 		try {
 			setInstance();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			boletinNotas = servicioDesempenio.getBoletin(idBoletinNotas);
-			return Response.ok(servicioDesempenio.deleteBoletinNotas(boletinNotas)).build();
+			if (nuevoToken == null) {
+				return Response.ok(servicioDesempenio.deleteBoletinNotas(boletinNotas)).build();
+			} else {
+				return Response.ok(servicioDesempenio.deleteBoletinNotas(boletinNotas)).header("auth0", nuevoToken).build();
+			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -87,19 +130,39 @@ public class ServicioDesempenioEndpoint {
 		}
 	}
 	
+	/**
+	 * Rol de acceso: DIRECTIVO - ALUMNO
+	 * @param idBoletinNotas
+	 * @param rolIn
+	 * @param token
+	 * @return
+	 */
 	@GET
 	@Path("/bol/{id:[0-9][0-9]*}")
-	public Response getBoletinNotasById(@PathParam("id") Long idBoletinNotas) {
+	public Response getBoletinNotasById(@PathParam("id") Long idBoletinNotas,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.ALUMNO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
 		BoletinNotas boletinNotas = new BoletinNotas();
+		String nuevoToken = new String();
 		try {
 			setInstance();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			boletinNotas = servicioDesempenio.getBoletin(idBoletinNotas);
 			if (boletinNotas == null) {
 				return Response.status(Status.NOT_FOUND)
 						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
 						.build();
 			}
-			return Response.ok(boletinNotas).build();
+			if (nuevoToken == null) {
+				return Response.ok(boletinNotas).build();
+			} else {
+				return Response.ok(boletinNotas).header("auth0", nuevoToken).build();
+			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -109,19 +172,39 @@ public class ServicioDesempenioEndpoint {
 		}
 	}
 	
+	/**
+	 * Rol de acceso: DIRECTIVO - ALUMNO
+	 * @param idAlumno
+	 * @param rolIn
+	 * @param token
+	 * @return
+	 */
 	@GET
 	@Path("/boletin/{id:[0-9][0-9]*}")
-	public Response getBoletinNotasDTObyIdAlumno(@PathParam("id") final Long idAlumno) {
+	public Response getBoletinNotasDTObyIdAlumno(@PathParam("id") final Long idAlumno,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.ALUMNO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
 		BoletinNotasDTO boletinDTO = new BoletinNotasDTO();
+		String nuevoToken = new String();
 		try {
 			setInstance();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			boletinDTO = servicioDesempenio.getBoletinNotasDTObyIdAlumno(idAlumno);
 			if (boletinDTO == null) {
 				return Response.status(Status.NOT_FOUND)
 						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
 						.build();
 			}
-			return Response.ok(boletinDTO).build();
+			if (nuevoToken == null) {
+				return Response.ok(boletinDTO).build();
+			} else {
+				return Response.ok(boletinDTO).header("auth0", nuevoToken).build();
+			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -152,13 +235,33 @@ public class ServicioDesempenioEndpoint {
 		}
 	}
 	
+	/**
+	 * Rol de acceso: DIRECTIVO
+	 * @param boletinNotas
+	 * @param rolIn
+	 * @param token
+	 * @return
+	 */
 	@POST
 	@Path("/bol/toHist/")
-	public Response pasarAHistorico(BoletinNotas boletinNotas) {
+	public Response pasarAHistorico(BoletinNotas boletinNotas,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
+		String nuevoToken = new String();
 		try {
 			setInstance();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			Boolean resultado = servicioDesempenio.pasarAHistorico(boletinNotas);
-			return Response.ok(resultado).build();
+			if (nuevoToken == null) {
+				return Response.ok(resultado).build();
+			} else {
+				return Response.ok(resultado).header("auth0", nuevoToken).build();
+			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -168,12 +271,32 @@ public class ServicioDesempenioEndpoint {
 		}
 	}
 	
+	/**
+	 * Rol de acceso: DIRECTIVO
+	 * @param boletinHistorico
+	 * @param rolIn
+	 * @param token
+	 * @return
+	 */
 	@PUT
 	@Path("/bol/addHist")
-	public Response addBoletinHistorico(BoletinNotasHist boletinHistorico) {
+	public Response addBoletinHistorico(BoletinNotasHist boletinHistorico,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
+		String nuevoToken = new String();
 		try {
 			setInstance();
-			return Response.ok(servicioDesempenio.addBoletinHistorico(boletinHistorico)).build();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
+			if (nuevoToken == null) {
+				return Response.ok(servicioDesempenio.addBoletinHistorico(boletinHistorico)).build();
+			} else {
+				return Response.ok(servicioDesempenio.addBoletinHistorico(boletinHistorico)).header("auth0", nuevoToken).build();
+			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -422,11 +545,29 @@ public class ServicioDesempenioEndpoint {
 		}
 	}
 	
+	
+	
+	
+	
+	/**
+	 * Rol de acceso: DIRECTIVO - DOCENTE
+	 * @param gptDTO
+	 * @param rolIn
+	 * @param token
+	 * @return
+	 */
 	@POST
 	@Path("/planillaTrimestral")
-	public Response getPlanillaTrimestral(GetPlanillaTrimestralDTO gptDTO) {
+	public Response getPlanillaTrimestral(GetPlanillaTrimestralDTO gptDTO,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.DOCENTE)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
+		String nuevoToken = new String();
 		try {
 			setInstance();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			if ((gptDTO.getTrimestre() < 1)
 					|| (gptDTO.getTrimestre() > 3)
 					|| (gptDTO.getCicloLectivo() == 0) 
@@ -436,8 +577,14 @@ public class ServicioDesempenioEndpoint {
 						.entity(new FrontMessage("Hubo un error en los parámetros de consulta", FrontMessage.INFO))
 						.build();
 			} else {
-				return Response.ok(servicioDesempenio.getPlanillaTrimestral(gptDTO)).build();
+				if (nuevoToken == null) {
+					return Response.ok(servicioDesempenio.getPlanillaTrimestral(gptDTO)).build();
+				} else {
+					return Response.ok(servicioDesempenio.getPlanillaTrimestral(gptDTO)).header("auth0", nuevoToken).build();
+				}
 			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -447,11 +594,7 @@ public class ServicioDesempenioEndpoint {
 		}
 	}
 	
-	/**
-	 * Test method
-	 * @param inasistencia
-	 * @return
-	 */
+
 	@PUT
 	@Path("/inasistencia/")
 	public Response updateInasistencia(final Inasistencia inasistencia) { // test
@@ -484,19 +627,39 @@ public class ServicioDesempenioEndpoint {
 		}
 	}
 	
+	/**
+	 * Rol de acceso: DIRECTIVO
+	 * @param dniAlumno
+	 * @param rolIn
+	 * @param token
+	 * @return
+	 */
 	@GET
 	@Path("/boletinInasist/{dni:[0-9][0-9]*}")
-	public Response getBoletinInasistenciasDTObyDni(@PathParam("dni") Long dniAlumno) {
+	public Response getBoletinInasistenciasDTObyDni(@PathParam("dni") Long dniAlumno,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
 		BoletinInasistenciasDTO boletinInasistenciasDTO = new BoletinInasistenciasDTO();
+		String nuevoToken = new String();
 		try {
 			setInstance();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			boletinInasistenciasDTO = servicioDesempenio.getBoletinInasistenciasDTObyDni(dniAlumno);
 			if (boletinInasistenciasDTO == null) {
 				return Response.status(Status.NOT_FOUND)
 						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
 						.build();
 			}
-			return Response.ok(boletinInasistenciasDTO).build();
+			if (nuevoToken == null) {
+				return Response.ok(boletinInasistenciasDTO).build();
+			} else {
+				return Response.ok(boletinInasistenciasDTO).header("auth0", nuevoToken).build();
+			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// return Response.ok(ex).build();
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -506,13 +669,34 @@ public class ServicioDesempenioEndpoint {
 		}
 	}
 	
-	
+	/**
+	 * Rol de acceso: DIRECTIVO
+	 * @param boletinInasistenciasDTO
+	 * @param rolIn
+	 * @param token
+	 * @return
+	 */
 	@POST
 	@Path("/inasistencia/procesar")
-	public Response procesarBoletinInasistencias(BoletinInasistenciasDTO boletinInasistenciasDTO) throws Exception {
+	public Response procesarBoletinInasistencias(BoletinInasistenciasDTO boletinInasistenciasDTO,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
+		String nuevoToken = new String();
 		try {
 			setInstance();
-			return Response.ok(servicioDesempenio.procesarBoletinInasistencias(boletinInasistenciasDTO)).build();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
+			if (nuevoToken == null) {
+				return Response.ok(servicioDesempenio.procesarBoletinInasistencias(boletinInasistenciasDTO))
+						.build();
+			} else {
+				return Response.ok(servicioDesempenio.procesarBoletinInasistencias(boletinInasistenciasDTO))
+						.header("auth0", nuevoToken).build();
+			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (InasistenciaException iEx) {
 			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(iEx.getInasistenciasInvalidas()).build();
 		} catch (Exception ex) {
@@ -540,40 +724,64 @@ public class ServicioDesempenioEndpoint {
 		}
 	}
 	
+	
 	/**
+	 * Rol de acceso: DIRECTIVO
 	 * Devuelve una lista con todos los alumnos (lista de ListaPasajeAlumnosDTO) preparados para el pasaje de año (promoción, repitencia, graduación)
 	 * @return
 	 */
 	@POST
 	@Path("/pasajeAnioMasivo")
-	public Response listaPasajeAnioMasivo(){
-		try{
+	public Response listaPasajeAnioMasivo(@HeaderParam("rol") final String rolIn, @HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
+		String nuevoToken = new String();
+		try {
 			setInstance();
-			return Response.ok(servicioDesempenio.ObtenerArregloPasajeDTO()).build();
-		}catch(ValidacionException ex){
+			try {
+				nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
+			} catch (ValidacionException vEx) {
+				return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			}
+			if (nuevoToken == null) {
+				return Response.ok(servicioDesempenio.ObtenerArregloPasajeDTO()).build();
+			} else {
+				return Response.ok(servicioDesempenio.ObtenerArregloPasajeDTO()).header("auth0", nuevoToken).build();
+			}
+		} catch(ValidacionException ex) {
 			return Response.ok().build();
-		}catch(Exception ex){
+		} catch(Exception ex) {
 			return Response.ok().build();
 		}
 	}
 	
 	/**
+	 * Rol de acceso: DIRECTIVO
 	 * Devuelve una lista de los alumnos (ListaPasajeAlumnosDTO) de un año para su promoción, repitencia, graduación
 	 * @param getListaDTO
 	 * @return
 	 */
 	@POST
 	@Path("/pasajeAnio/")
-	public Response listaPasajeAlumnosDTO(final GetListaPasajeAlumnosDTO getListaDTO) {
+	public Response listaPasajeAlumnosDTO(final GetListaPasajeAlumnosDTO getListaDTO,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		String nuevoToken = new String();
 		try {
 			setInstance();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			ListaPasajeAlumnosDTO lista = servicioDesempenio.listaAlumnosPasajeCurso(getListaDTO.getAnio(),getListaDTO.getEspecialidad(), getListaDTO.getCurso());
 			if (lista.getListaPasajeAlumnosDTO().size() == 0) {
 				return Response.status(Status.NO_CONTENT)
 					.entity(new FrontMessage("Sin resultados", FrontMessage.INFO))
 					.build();
 			}
-			return Response.ok(lista).build();
+			if (nuevoToken == null) {
+				return Response.ok(lista).build();
+			} else {
+				return Response.ok(lista).header("auth0", nuevoToken).build();
+			}
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)

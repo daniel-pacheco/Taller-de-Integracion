@@ -852,9 +852,17 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 	
+	/**
+	 * Rol de acceso: DIRECTIVO
+	 * @param idLlamado
+	 * @return
+	 */
 	@DELETE
 	@Path("/llm/{idL:[0-9][0-9]*}")
-	public Response deleteLlamadoById(@PathParam("idL") Long idLlamado) {
+	public Response deleteLlamadoById(@PathParam("idL") Long idLlamado,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		
 		try {
 			setInstance();
 			return Response.ok(servicioAcademico.deleteLlamado(servicioAcademico.getLlamado(idLlamado))).build();
@@ -933,19 +941,37 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 	
+	/**
+	 * Rol de acceso: DIRECTIVO - ALUMNO
+	 * @param doc
+	 * @return
+	 */
 	@GET
 	@Path("/previas/{doc:[0-9][0-9]*}")
-	public Response getPrevia(@PathParam("doc") final Long doc) {
+	public Response getPrevia(@PathParam("doc") final Long doc,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.ALUMNO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
 		List<DetallePreviaDTO> previas = new ArrayList<DetallePreviaDTO>();
+		String nuevoToken = new String();
 		try {
 			setInstance();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			previas = servicioAcademico.getPreviasDesaprobadas(doc);
 			if (previas.size() == 0) {
 				return Response.status(Status.NOT_FOUND)
 						.entity(new FrontMessage("No se encontraron previas", FrontMessage.INFO))
 						.build();
 			}
-			return Response.ok(previas).build();
+			if (nuevoToken == null) {
+				return Response.ok(previas).build();
+			} else {
+				return Response.ok(previas).header("auth0", nuevoToken).build();
+			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch(Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -955,19 +981,37 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 	
+	/**
+	 * Rol de acceso: DIRECTIVO
+	 * @param doc
+	 * @return
+	 */
 	@GET
 	@Path("/histPrevias/{doc:[0-9][0-9]*}")
-	public Response getHistorialPrevia(@PathParam("doc") final Long doc) {
+	public Response getHistorialPrevia(@PathParam("doc") final Long doc,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
 		ArrayList<DetallePreviaDTO> previas = new ArrayList<DetallePreviaDTO>();
+		String nuevoToken = new String();
 		try {
 			setInstance();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			previas = servicioAcademico.getPrevias(doc);
 			if (previas.size() == 0) {
 				return Response.status(Status.NOT_FOUND)
 						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
 						.build();
 			}
-			return Response.ok(previas).build();
+			if (nuevoToken == null) {
+				return Response.ok(previas).build();
+			} else {
+				return Response.ok(previas).header("auth0", nuevoToken).build();
+			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch(Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -976,13 +1020,31 @@ public class ServicioAcademicoEndpoint {
 					.build();
 		}
 	}
-	
+
+	/**
+	 * Rol de acceso: DIRECTIVO
+	 * @param mesaAltaDTO
+	 * @return
+	 */
 	@PUT
 	@Path("/mesa/")
-	public Response updateMesa(MesaAltaDTO mesaAltaDTO) {
+	public Response updateMesa(MesaAltaDTO mesaAltaDTO,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
+		String nuevoToken = new String();
 		try {
 			setInstance();
-			return Response.ok(servicioAcademico.addMesa(mesaAltaDTO)).build();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
+			if (nuevoToken == null) {
+				return Response.ok(servicioAcademico.addMesa(mesaAltaDTO)).build();
+			} else {
+				return Response.ok(servicioAcademico.addMesa(mesaAltaDTO)).header("auth0", nuevoToken).build();
+			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -992,15 +1054,31 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 	
-	
-	
+	/**
+	 * Rol de acceso: DIRECTIVO
+	 * @param mesa
+	 * @return
+	 */
 	@PUT
 	@Path("/mes/")
-	public Response updateMesa(Mesa mesa) {
+	public Response updateMesa(Mesa mesa,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
+		String nuevoToken = new String();
 		try {
 			setInstance();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			servicioAcademico.addMesa(mesa);
-			return Response.ok(mesa.getIdMesa()).build();
+			if (nuevoToken == null) {
+				return Response.ok(mesa.getIdMesa()).build();
+			} else {
+				return Response.ok(mesa.getIdMesa()).header("auth0", nuevoToken).build();
+			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -1010,12 +1088,34 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 
+	/**
+	 * Rol de acceso: DIRECTIVO
+	 * @param idMe
+	 * @param rolIn
+	 * @param token
+	 * @return
+	 */
 	@DELETE
 	@Path("/mes/{idMe:[0-9][0-9]*}")
-	public Response deleteMesaById(@PathParam("idMe") Long idMe) {
+	public Response deleteMesaById(@PathParam("idMe") Long idMe,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
+		String nuevoToken = new String();
+		Boolean exito = false;
 		try {
 			setInstance();
-			return Response.ok(servicioAcademico.deleteMesa(servicioAcademico.getMesa(idMe))).build();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
+			exito = servicioAcademico.deleteMesa(servicioAcademico.getMesa(idMe));
+			if (nuevoToken == null) {
+				return Response.ok(exito).build();
+			} else {
+				return Response.ok(exito).header("auth0", nuevoToken).build();
+			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -1024,20 +1124,40 @@ public class ServicioAcademicoEndpoint {
 					.build();
 		}
 	}
-	
+
+	/**
+	 * Rol de acceso: DIRECTIVO - ALUMNO
+	 * @param idMe
+	 * @param rolIn
+	 * @param token
+	 * @return
+	 */
 	@GET
 	@Path("/mes/{idMe:[0-9][0-9]*}")
-	public Response getMesaById(@PathParam("idMe") Long idMe) {
+	public Response getMesaById(@PathParam("idMe") Long idMe,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.ALUMNO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
 		Mesa mesa = new Mesa();
+		String nuevoToken = new String();
 		try {
 			setInstance();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			mesa = servicioAcademico.getMesa(idMe);
 			if (mesa == null) {
 				return Response.status(Status.NOT_FOUND)
 						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
 						.build();
 			}
-			return Response.ok(mesa).build();
+			if (nuevoToken == null) {
+				return Response.ok(mesa).build();
+			} else {
+				return Response.ok(mesa).header("auth0", nuevoToken).build();
+			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -1047,19 +1167,36 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 
+	/**
+	 * Rol de acceso: DIRECTIVO 
+	 * @param rolIn
+	 * @param token
+	 * @return
+	 */
 	@GET
 	@Path("/mes/listAll")
-	public Response mesaListAll() {
+	public Response mesaListAll(@HeaderParam("rol") final String rolIn, @HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
 		List<Mesa> mesas = new ArrayList<Mesa>();
+		String nuevoToken = new String();
 		try {
 			setInstance();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			mesas = servicioAcademico.getMesas(new Mesa());
 			if (mesas.size() == 0) {
 				return Response.status(Status.NOT_FOUND)
 						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
 						.build();
 			}
-			return Response.ok(mesas).build();
+			if (nuevoToken == null) {
+				return Response.ok(mesas).build();
+			} else {
+				return Response.ok(mesas).header("auth0", nuevoToken).build();
+			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -1174,124 +1311,226 @@ public class ServicioAcademicoEndpoint {
 	}
 	
 	/**
+	 * Rol de acceso: DIRECTIVO - ALUMNO
 	 * Agrega una inscripción a mesa de un alumno.<br>
 	 * @param elementos [idMesa, idAlumno]
 	 * @return
 	 */
 	@POST
 	@Path("/inscripcion")
-	public Response inscribir(final Long[] elementos){
-		try{
-			setInstance();
-			servicioAcademico.addInscripcion(elementos[0],elementos[1]);
-		}catch(ValidacionException ex){
-			return Response.status(Status.CONFLICT).entity(new FrontMessage(ex.getMessage(),FrontMessage.INFO)).build();
+	public Response inscribir(final Long[] elementos,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.ALUMNO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
 		}
-		catch(Exception ex){
+		String nuevoToken = new String();
+		Boolean exito = false;
+		try {
+			setInstance();
+			try {
+				nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
+			} catch (ValidacionException vEx) {
+				return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			}
+			exito = servicioAcademico.addInscripcion(elementos[0],elementos[1]);
+			if (nuevoToken == null) {
+				return Response.ok(exito).build();
+			} else {
+				return Response.ok(exito).header("auth0", nuevoToken).build();
+			}
+		} catch(ValidacionException ex) {
+			return Response.status(Status.CONFLICT).entity(new FrontMessage(ex.getMessage(),FrontMessage.INFO)).build();
+		} catch(Exception ex) {
 			return Response.serverError().entity(ex).build();
 		}
-		return Response.ok(true).build();
 	}	
 	
 	/**
+	 * Rol de acceso: DIRECTIVO - ALUMNO
 	 * Elimina una entrada inscripción a mesa de un alumno.<br>
 	 * @param elementos [idMesa, idAlumno]
 	 * @return
 	 */
 	@POST
 	@Path("/desinscripcion")
-	public Response desinscribir(final Long[] elementos){
-		try{
+	public Response desinscribir(final Long[] elementos,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.ALUMNO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
+		String nuevoToken = new String();
+		Boolean exito = false;
+		try {
 			setInstance();
-			servicioAcademico.deleteInscripcion(elementos[0],elementos[1]);
-		}catch(Exception ex){
+			try {
+				nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
+			} catch (ValidacionException vEx) {
+				return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			}
+			exito = servicioAcademico.deleteInscripcion(elementos[0],elementos[1]);
+			if (nuevoToken == null) {
+				return Response.ok(exito).build();
+			} else {
+				return Response.ok(exito).header("auth0", nuevoToken).build();
+			}
+		} catch(ValidacionException ex) {
+			return Response.status(Status.CONFLICT).entity(new FrontMessage(ex.getMessage(),FrontMessage.INFO)).build();
+		} catch(Exception ex) {
 			return Response.serverError().entity(ex).build();
 		}
-		return Response.ok(true).build();
 	}
 	
 	/**
+	 * Rol de acceso: DIRECTIVO - ALUMNO
 	 * Busca el detalle de las mesas a la cual el alumno puede inscribirse.
 	 * @param dniAlumno
 	 * @return
 	 */
 	@GET
 	@Path("/inscripcion/{idA:[0-9][0-9]*}")
-	public Response listarInscribibles(@PathParam("idA") final Long dniAlumno){
-		try{
+	public Response listarInscribibles(@PathParam("idA") final Long dniAlumno,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.ALUMNO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
+		String nuevoToken = new String();
+		try {
 			setInstance();
-			return Response.ok(servicioAcademico.listarInscribiblesV2(dniAlumno)).build();
-		}catch(ValidacionException ex){
+			try {
+				nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
+			} catch (ValidacionException vEx) {
+				return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			}
+			if (nuevoToken == null) {
+				return Response.ok(servicioAcademico.listarInscribiblesV2(dniAlumno)).build();
+			} else {
+				return Response.ok(servicioAcademico.listarInscribiblesV2(dniAlumno)).header("auth0", nuevoToken).build();
+			}
+		} catch(ValidacionException ex) {
 			return Response.status(Status.CONFLICT).entity(new FrontMessage(ex.getMensajesError().get(0),FrontMessage.INFO)).build();
-		}catch(Exception ex){
+		} catch(Exception ex) {
 			return Response.status(Status.INTERNAL_SERVER_ERROR).entity( new FrontMessage("Ocurrió un problema al listar las mesas para inscripción",FrontMessage.CRITICAL)).build();
 		}
-		
 	} 
 	
 	/**
+	 * Rol de acceso: DIRECTIVO
 	 * Agrega o modifica una especialidad.
 	 * @param especialidad
 	 * @return
 	 */
 	@PUT
 	@Path("/especialidad")
-	public Response addEspecialidad(final Especialidad especialidad){
-		try{
+	public Response addEspecialidad(final Especialidad especialidad,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
+		String nuevoToken = new String();
+		try {
 			setInstance();
-			return Response.ok(servicioAcademico.addEspecialidad(especialidad)).build();
-		}catch(ValidacionException vEx){
+			try {
+				nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
+			} catch (ValidacionException vEx) {
+				return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			}
+			if (nuevoToken == null) {
+				return Response.ok(servicioAcademico.addEspecialidad(especialidad)).build();
+			} else {
+				return Response.ok(servicioAcademico.addEspecialidad(especialidad)).header("auth0", nuevoToken).build();
+			}
+		} catch(ValidacionException vEx) {
 			return Response.status(Status.CONFLICT).entity(new FrontMessage(vEx.getMensajesError().toString(),FrontMessage.INFO)).build();
-		}catch(Exception ex){
+		} catch(Exception ex) {
 			return Response.serverError().entity(new FrontMessage("Ocurrió un problema al agregar la especialidad.",FrontMessage.CRITICAL)).build();
 		}
 	}
 	
 	/**
+	 * Rol de acceso: DIRECTIVO
 	 * Obtiene una especilidad proporcionando su id
 	 * @param idEspecialidad
 	 * @return
 	 */
 	@GET
 	@Path("/especialidad/{id:[0-9][0-9]*}")
-	public Response getEspecialidad(@PathParam("id") final Long idEspecialidad){
-		try{
+	public Response getEspecialidad(@PathParam("id") final Long idEspecialidad,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
+		String nuevoToken = new String();
+		try {
 			setInstance();
-			return Response.ok(servicioAcademico.getEspecialidadById(idEspecialidad)).build();
-		}catch(Exception ex){
-			return Response.serverError().entity(new FrontMessage("Ocurrió un problema al intentar obtener la especialidad.",FrontMessage.CRITICAL)).build();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
+			if (nuevoToken == null) {
+				return Response.ok(servicioAcademico.getEspecialidadById(idEspecialidad)).build();
+			} else {
+				return Response.ok(servicioAcademico.getEspecialidadById(idEspecialidad)).header("auth0", nuevoToken).build();
+			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+		} catch(Exception ex) {
+			return Response.serverError().entity(new FrontMessage("Ocurrió un problema al intentar obtener la especialidad.", FrontMessage.CRITICAL)).build();
 		}
 	}
 	
 	/**
+	 * Rol de acceso: DIRECTIVO
 	 * Obtiene todas las especilidades existentes
 	 * @return
 	 */
 	@GET
 	@Path("/especialidadListAll")
-	public Response getEspecialidades(){
-		try{
+	public Response getEspecialidades(@HeaderParam("rol") final String rolIn, @HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
+		try {
 			setInstance();
 			return Response.ok(servicioAcademico.getEspecialidad(new Especialidad(null,null,null))).build();
-		}catch(Exception ex){
+		} catch(Exception ex) {
 			return Response.serverError().entity(new FrontMessage("Ocurrió un problema al intentar obtener las especialidades.",FrontMessage.CRITICAL)).build();
 		}
 	}
 	
 	/**
+	 * Rol de acceso: DIRECTIVO
 	 * Elimina una especialidad.
 	 * @param idEspecialidad
 	 * @return
 	 */
 	@DELETE
 	@Path("/especialidad/{id:[0-9][0-9]*}")
-	public Response deleteEspecialidad(@PathParam("id") final Long idEspecialidad){
-		try{
+	public Response deleteEspecialidad(@PathParam("id") final Long idEspecialidad,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
+		String nuevoToken = new String();
+		Boolean exito = false;
+		try {
 			setInstance();
-			return Response.ok(servicioAcademico.deleteEspecialidad(servicioAcademico.getEspecialidadById(idEspecialidad))).build();
-		}catch(ValidacionException vEx){
+			try {
+				nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
+			} catch (ValidacionException vEx) {
+				return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			}
+			exito = servicioAcademico.deleteEspecialidad(servicioAcademico.getEspecialidadById(idEspecialidad));
+			if (nuevoToken == null) {
+				return Response.ok(exito).build();
+			} else {
+				return Response.ok(exito).header("auth0", nuevoToken).build();
+			}
+		} catch(ValidacionException vEx) {
 			return Response.status(Status.CONFLICT).entity(new FrontMessage("Especialidad en uso por: "+vEx.getMensajesError().toString(),FrontMessage.INFO)).build();
-		}catch(Exception ex){
+		} catch(Exception ex) {
 			return Response.serverError().entity(new FrontMessage("Ocurrió un problema al intentar eliminar la especilidad.",FrontMessage.CRITICAL)).build();
 		}
 	}
