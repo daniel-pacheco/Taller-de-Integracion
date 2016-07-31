@@ -24,7 +24,7 @@
  		}
  	});
  })
- .controller('AlumnoNavBarCtrl', function ($scope, MENU_ALUMNO) {
+ .controller('AlumnoNavBarCtrl', ['$scope', 'MENU_ALUMNO', function ($scope, MENU_ALUMNO) {
 
  	$scope.menuAlumno = MENU_ALUMNO;
 
@@ -39,4 +39,4 @@
  		"title": "Despedirse"   
  	};
 
- });
+ }]);
