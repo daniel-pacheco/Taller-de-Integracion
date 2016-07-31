@@ -1,11 +1,20 @@
+'use strict';
 
-angular.module('clientAppApp')
+/**
+ * @ngdoc function
+ * @name clientAppApp.controller:AlumnoOperacionesCtrl
+ * @description
+ * # AlumnoOperacionesCtrl
+ * Controller of the clientAppApp
+ */
+
+ angular.module('clientAppApp')
 .config(function($stateProvider, USER_ROLES) {
 	$stateProvider
 	.state('alumno.operaciones', {
 		url: '/operaciones',
 		templateUrl: 'scripts/alumno/operaciones/operaciones.html',
-		controller: 'OperacionesCtrl',
+		controller: 'AlumnoOperacionesCtrl',
 		data: {
 			pageTitle: 'Operaciones',
 			authorizedRoles: [
@@ -15,8 +24,8 @@ angular.module('clientAppApp')
 	});
 })
 
-.controller('OperacionesCtrl', ['$scope', 'alumnoService', 'desempenioService', 'ModalService', 'spinnerService', function ($scope, alumnoService, desempenioService, ModalService, spinnerService) {
-
+.controller('AlumnoOperacionesCtrl', ['$state', '$scope', 'alumnoService', 'desempenioService', 'ModalService', 'spinnerService', function ($state, $scope, alumnoService, desempenioService, ModalService, spinnerService) {
+ 
 //-- [operaciones]
 //-- [operaciones] variables
 $scope.titulo = 'Operaciones';
@@ -160,8 +169,7 @@ $scope.confirmDesinscribirse = function(mesa) {
 	$scope.confirmModal("¿Desea desinscribirse de la mesa de "+mesa.materia+" de "+mesa.materia.anio+mesa.materia.division+"?",$scope.desinscribirse, mesa);
 };
 
-$scope.confirmSolicitarCert = function(certificado)
-{
+$scope.confirmSolicitarCert = function(certificado){
 	$scope.confirmModal("¿Desea solicitar el certificado de "+certificado.nombre+"?",$scope.requestCertificado, certificado);
 };
 
@@ -219,7 +227,7 @@ $scope.getPlanillaInasistencias = function () {
 			spinnerService.hide('searchOperacionesSpinner');
 		})
 	}
-}
+};
 
 function initCall () {
 	spinnerService.show('searchOperacionesSpinner');
@@ -245,69 +253,4 @@ function initCall () {
 //-- [operaciones/sub-seccion] modals
 //-- [operaciones/sub-seccion] utils
 //-- [operaciones/sub-seccion] service calls
-
-
-
-
-//-- filters
-
-
-
-
-
-
-// --Test
-$scope.listaPrevias = [
-{	"materia": 'Matemática', 
-"anioCursado": '2008', 
-"observacion": 'Usted adeuda esta materia',	
-"ano": 4,
-"division": "U"
-},
-{	"materia": 'Lengua', 
-"anioCursado": '2010', 
-"observacion": 'Usted adeuda esta materia',	
-"ano": 2,
-"division": "U"
-},
-{	"materia": 'Plástica', 
-"anioCursado": '1995', 
-"observacion": 'Usted adeuda esta materia',	
-"ano": 2,
-"division": "U"
-},
-{	"materia": 'Matemática', 
-"anioCursado": '2009', 
-"observacion": 'Usted adeuda esta materia',	
-"ano": 6,
-"division": "U"
-},
-{	"materia": 'Química', 
-"anioCursado": '2009', 
-"observacion": 'Usted adeuda esta materia',	
-"ano": 3,
-"division": "U"
-}
-];
-
-$scope.listaCertificados = [
-{
-	"nombre": 'Alumno regular',
-	"solicitado": true
-},
-{
-	"nombre": 'Inscripción al año académico',
-	"solicitado": false
-},
-{
-	"nombre": 'Inscripción a materia previa',
-	"solicitado": false
-}
-];
-//-- Modals
-
-
-//-- Llamadas a services
-
-
 }]);

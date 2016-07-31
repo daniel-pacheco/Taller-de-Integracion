@@ -1,5 +1,14 @@
+'use strict';
 
-angular.module('clientAppApp')
+/**
+ * @ngdoc function
+ * @name clientAppApp.controller:AlumnoMiCuentaCtrl
+ * @description
+ * # AlumnoMiCuentaCtrl
+ * Controller of the clientAppApp
+ */
+
+ angular.module('clientAppApp')
 .config(function($stateProvider, USER_ROLES) {
 	$stateProvider
 	.state('alumno.micuenta', {

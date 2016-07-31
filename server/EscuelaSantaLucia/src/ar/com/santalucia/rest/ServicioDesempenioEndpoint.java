@@ -639,7 +639,7 @@ public class ServicioDesempenioEndpoint {
 	public Response getBoletinInasistenciasDTObyDni(@PathParam("dni") Long dniAlumno,
 			@HeaderParam("rol") final String rolIn,
 			@HeaderParam("auth0") final String token) {
-		if (!rolIn.equals(Login.DIRECTIVO)) {
+		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.ALUMNO)) {
 			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
 		}
 		BoletinInasistenciasDTO boletinInasistenciasDTO = new BoletinInasistenciasDTO();
