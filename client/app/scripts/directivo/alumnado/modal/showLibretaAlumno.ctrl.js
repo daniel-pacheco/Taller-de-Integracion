@@ -1,7 +1,7 @@
 angular.module('clientAppApp')
 .controller('showLibretaAlumnoModalController', [
-  '$scope', '$element', 'title', 'libCalificaciones','close',
-  function($scope, $element, title, libCalificaciones, close) {//acá se inyecta las variables necesarias y luego la función close
+  '$element', '$scope', 'close', 'libCalificaciones','title',
+  function($element, $scope, close, libCalificaciones, title) {//acá se inyecta las variables necesarias y luego la función close
 
   $scope.title = title;
   $scope.libCalificaciones = {}; 

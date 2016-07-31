@@ -22,7 +22,7 @@
  		}
  	});
  })
- .controller('DesempCtrl', function ($scope, $rootScope, modalService, CURSOS) {
+ .controller('DesempCtrl', ['$scope', '$rootScope', 'modalService', 'CURSOS', function ($scope, $rootScope, modalService, CURSOS) {
   this.awesomeThings = [
   'HTML5 Boilerplate',
   'AngularJS',
@@ -103,4 +103,4 @@ $scope.alumnos = [{nro:'1', name:'John', surName:'Lennon', DNI:'464564666654',},
           {nro:'6', name:'Catalina', surName:'Lennon', DNI:'555555555'},
           {nro:'7', name:'John', surName:'Lennon', DNI:'555555555'}];
 
-});
+}]);

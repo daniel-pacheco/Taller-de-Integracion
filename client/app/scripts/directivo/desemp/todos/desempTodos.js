@@ -11,7 +11,7 @@ angular.module('clientAppApp')
  		}
  	});
  })
- .controller('DesempTodosCtrl', function ($scope, CURSOS) {
+ .controller('DesempTodosCtrl', ['$scope', 'CURSOS', function ($scope, CURSOS) {
   
   $scope.titulo = "Todos Controler";
 
@@ -128,4 +128,4 @@ $(function () {
         }]
     });
 });
-  })
+  }]);

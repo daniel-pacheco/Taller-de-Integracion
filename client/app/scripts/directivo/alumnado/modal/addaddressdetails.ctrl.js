@@ -1,7 +1,7 @@
 angular.module('clientAppApp')
 .controller('addAddressDetailsModalController', [
-  '$scope', '$element', 'title', 'close', 'domicilioAvanzado',
-  function($scope, $element, title, close, domicilioAvanzado) {//acá se inyecta las variables necesarias y luego la función close
+  '$scope', '$element', 'close', 'domicilioAvanzado', 'title',
+  function($scope, $element, close, domicilioAvanzado, title) {//acá se inyecta las variables necesarias y luego la función close
 
     $scope.title = title;
     $scope.alumno = {}; 

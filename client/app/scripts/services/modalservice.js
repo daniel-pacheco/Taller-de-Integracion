@@ -8,7 +8,7 @@
  * Service in the clientAppApp.
  */
  angular.module('clientAppApp')
- .service('modalService', function ($modal) {
+ .service('modalService', ['$modal', function ($modal) {
 
   var myModal = {};
   var myVar = {};
@@ -78,4 +78,4 @@ this.hideModal = function() {
   myModal.$promise.then(myModal.hide);
 };
 
-});
+}]);

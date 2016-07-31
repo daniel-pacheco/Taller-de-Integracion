@@ -8,7 +8,7 @@
  * Service in the clientAppApp.
  */
 angular.module('clientAppApp')
-  .service('exportTableService', function ($rootScope) {
+  .service('exportTableService', ['$rootScope', function ($rootScope) {
     // AngularJS will instantiate a singleton by calling "new" on this function
 
     var fileType = 'excel';
@@ -28,4 +28,4 @@ angular.module('clientAppApp')
     this.setFileType = function (type) {
         fileType = type
     };
-});
+}]);

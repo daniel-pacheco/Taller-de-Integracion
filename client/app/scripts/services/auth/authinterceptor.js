@@ -8,7 +8,7 @@
  * Factory in the clientAppApp.
  */
 angular.module('clientAppApp')
-  .factory('AuthInterceptor', function ($rootScope, $q, AUTH_EVENTS) {
+  .factory('AuthInterceptor', ['$q', '$rootScope', 'AUTH_EVENTS', function ($q, $rootScope, AUTH_EVENTS) {
   return {
     responseError: function (response) {
       $rootScope.$broadcast({
@@ -22,4 +22,4 @@ angular.module('clientAppApp')
  
 .config(function ($httpProvider) {
   $httpProvider.interceptors.push('AuthInterceptor');
-});
+}]);

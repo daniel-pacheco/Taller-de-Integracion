@@ -24,7 +24,7 @@
  		}
  	});
  })
- .controller('DirectivoNavBarCtrl', function ($scope, MENU_DIRECTIVO) {
+ .controller('DirectivoNavBarCtrl', ['$scope', 'MENU_DIRECTIVO', function ($scope, MENU_DIRECTIVO) {
 
  	$scope.menuDirectivo = MENU_DIRECTIVO;
  	
@@ -36,5 +36,5 @@
  		"title": "Despedirse",   
  	};
 
- });
+ }]);
  

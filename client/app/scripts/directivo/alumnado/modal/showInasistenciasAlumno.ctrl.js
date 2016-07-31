@@ -6,8 +6,8 @@ angular.module('clientAppApp')
   });
 })
 .controller('showInasistenciasModalController', [
-  '$scope', '$element', 'title', 'libInasistencias', 'close', 'ObjectsFactory', 'INASISTENCIAS', 'spinnerService', 'untilDate', 'fromDate',
-  function($scope, $element, title, libInasistencias, close, ObjectsFactory, INASISTENCIAS, spinnerService, untilDate, fromDate) {//acá se inyecta las variables necesarias y luego la función close
+  '$element', '$scope', 'close', 'libInasistencias', 'ObjectsFactory', 'spinnerService', 'title', 'untilDate', 'fromDate', 'INASISTENCIAS',
+  function($element, $scope, close, libInasistencias, ObjectsFactory, spinnerService, title, untilDate, fromDate, INASISTENCIAS) {//acá se inyecta las variables necesarias y luego la función close
 
     $scope.title = title;
     $scope.libInasistencias = {}; 
