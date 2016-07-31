@@ -7,6 +7,8 @@ angular.module('clientAppApp')
   $scope.docente = {}; 
   //$scope.dni = docente.nroDocumento;
   $scope.docente = docente;
+  $scope.docente.sexo = ($scope.docente.sexo === 'M') ? 'Masculino' : 'Femenino';
+
   
   //  This close function doesn't need to use jQuery or bootstrap, because
   //  the button has the 'data-dismiss' attribute.

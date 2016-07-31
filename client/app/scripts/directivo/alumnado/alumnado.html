@@ -279,8 +279,8 @@
 										<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Mail:</label>
 									</div>
 									<div class="col-md-7">
-										<input name="email" type="email" class="form-control" placeholder="nombre@dominio.com" ng-model="nuevoMAilSimple.direccionMail" maxlength="255" ng-show="!mostrarListaMails" required/>
-										<select multiple class="form-control" ng-show="mostrarListaMails">
+										<input name="email" type="email" class="form-control" placeholder="nombre@dominio.com" ng-model="nuevoMailSimple.direccionMail" maxlength="255" ng-if="!mostrarListaMails" required/>
+										<select multiple class="form-control" ng-if="mostrarListaMails">
 											<option ng-repeat="mail in nuevoAlumno.listaMails">{{mail.direccionMail}} ({{mail.tipoMail}})</option>
 										</select> 
 										<div ng-messages="formAlu.email.$error" ng-if="formAlu.email.$touched && formAlu.email.$invalid">

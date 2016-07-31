@@ -8,6 +8,7 @@
  * Controller of the clientAppApp
  */
  angular.module('clientAppApp')
+
  .config(function($stateProvider, USER_ROLES) {
  	$stateProvider
  	.state('directivo.micuenta', {
@@ -26,39 +27,40 @@
 //-- [Mi cuenta]
 //-- [Mi cuenta] variables
 $scope.titulo = 'Mi Cuenta';
-$scope.misDatos = true;
-$scope.subtitle = "Mis Datos";
-
 $scope.directivo = {};
 //-- [Mi cuenta] Form Management
 $scope.seleccionar = function (id){
+	$scope.actualizarMisDatos = false;
+	$scope.cambiarPass = false;
+	$scope.misDatos = false;
+
 	switch (id){
 		case 'misDatos':
-		$scope.actualizarMisDatos = false;
 		$scope.subtitle = "Mis datos";
-		$scope.cambiarPass = false;
 		$scope.misDatos = true;
+		setActiveAlu(1);
 		break;
 		case 'actualizarMisDatos':
-		$scope.misDatos = false;
 		$scope.subtitle = "Actualizar mis datos";
-			//$scope.nuevoAlumno = null;
-			$scope.cambiarPass = false;
-			$scope.actualizarMisDatos = true;
-			break;
-			case 'cambiarPass':
-			$scope.misDatos = false;
-			$scope.actualizarMisDatos = false;
-			$scope.subtitle = "Cambiar clave";
-			$scope.cambiarPass = true;
-			break;
-		}
+		$scope.actualizarMisDatos = true;
+		setActiveAlu(2);
+		break;
+		case 'cambiarPass':
+		$scope.subtitle = "Cambiar clave";
+		$scope.cambiarPass = true;
+		setActiveAlu(3);
+		break;
 	}
+}
 
-	$scope.activeMenuIzqAlu = 1;
-	$scope.setActiveAlu = function(menuItemAlu) {
-		$scope.activeMenuIzqAlu = menuItemAlu;
-	};
+$scope.$on('$viewContentLoaded', function(){
+$scope.seleccionar("misDatos");
+});
+
+function setActiveAlu (menuItemAlu) {
+	$scope.activeMenuIzqAlu = menuItemAlu;
+};
+
 //-- [Mi cuenta] filters
 //-- [Mi cuenta] modals
 	$scope.showMessage = function(mesagge, title, isGood) { //todo ok recibe true si salio bien o false si salio mal
