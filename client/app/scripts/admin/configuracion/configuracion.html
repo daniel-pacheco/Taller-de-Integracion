@@ -1,0 +1,45 @@
+<!-- <div class="navbar-inverse bs-docs-nav" role="banner">
+	<div class="container">
+		<div class="navbar-header">
+			<button class="navbar-toggle" type="button" data-template-url="./scripts/directivo/alumnado/aside/alumnadosidebar.aside.tpl.html" data-animation="am-fade-and-slide-left" data-placement="left" title="Menu" bs-aside="aside">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+		</div>
+	</div>
+</div> -->
+<div class="col-md-2 hidden-sm hidden-xs">
+	<!-- ngInclude: 'views/partials/affixed-sidebar.html' -->
+	<div class="bs-sidebar hidden-print affix" role="complementary" data-offset-top="-100" bs-affix style="position: relative; text-align: right;">
+		<ul class="nav bs-sidenav">
+			<li bs-scrollspy data-target="#getting-started">
+				<a href="">Men&uacute; Configuraci&oacute;n</a>
+			</li>
+			<hr style="margin: 2px 0;">
+			<li ng-class="{active : activeMenuIzqAlu === 1}" data-target="#modals">
+				<a href="" ng-click="seleccionar('item1')">Item 1</a>
+			</li>
+			<li>
+				<img class="col-md-10" style="position: relative; margin-top: 100%;" src="./images/logo.jpg">
+			</li>
+		</ul>
+	</div>
+
+	<!-- <img class="col-md-10" style="position: absolute; bottom: 0;" src="./images/logo.jpg"> -->
+</div>
+<div>
+	<spinner name="configSpinner" ng-cloak="">
+		<div class="overlay"></div>
+		<div class="spinner-small">			            
+			<div>
+				<div class="ng-include: './views/templates/defaultspinner.html'"></div>
+			</div>
+		</div>
+		<div class="please-wait-small">Aguarde por favor...</div>
+	</spinner>
+	<div>
+		{{configTitle}}
+	</div>
+</div>

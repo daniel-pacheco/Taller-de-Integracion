@@ -18,8 +18,8 @@ angular.module('clientAppApp')
       return $q.reject(response);
     }
   };
-})
+}])
  
 .config(function ($httpProvider) {
   $httpProvider.interceptors.push('AuthInterceptor');
-}]);
+});
