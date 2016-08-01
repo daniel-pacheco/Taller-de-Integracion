@@ -19,8 +19,10 @@ import ar.com.santalucia.dominio.dto.BoletinInasistenciasDTO;
 import ar.com.santalucia.dominio.dto.BoletinNotasDTO;
 import ar.com.santalucia.dominio.dto.GetListaPasajeAlumnosDTO;
 import ar.com.santalucia.dominio.dto.GetPlanillaTrimestralDTO;
+import ar.com.santalucia.dominio.dto.GetPlanillaTrimestralDocDTO;
 import ar.com.santalucia.dominio.dto.ListaPasajeAlumnosDTO;
 import ar.com.santalucia.dominio.dto.PlanillaTrimestralDTO;
+import ar.com.santalucia.dominio.dto.PlanillaTrimestralDocenteDTO;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinInasistencias;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotas;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotasHist;
@@ -791,5 +793,62 @@ public class ServicioDesempenioEndpoint {
 		}
 	}
 	
+	/**
+	 * Devuelve una planilla trimestral para docente
+	 * @param gptDTO
+	 * @param rolIn
+	 * @param token
+	 * @return
+	 */
+	@POST
+	@Path("/planillaTrimestralDoc")
+	public Response getPlanillaTrimestralDocente(GetPlanillaTrimestralDocDTO gptDTO,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DOCENTE)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
+		String nuevoToken = new String();
+		try {
+			setInstance();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
+			PlanillaTrimestralDocenteDTO planilla = new PlanillaTrimestralDocenteDTO();
+			planilla = servicioDesempenio.getPlanillaTrimestralDocente(gptDTO);
+			if (nuevoToken == null) {
+				return Response.ok(planilla).build();
+			} else {
+				return Response.ok(planilla).header("auth0", nuevoToken).build();
+			}
+		}catch (ValidacionException vEx) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+		} catch (Exception ex) {
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
+		}
+	}
+	
+	/**
+	 * Procesa una planilla trimestral de Docente
+	 * @param planillaTrimestralDTO
+	 * @return
+	 */
+	@PUT
+	@Path("/planillaTrimestralDoc")
+	public Response procesarPlanillaTrimestral(PlanillaTrimestralDocenteDTO planillaTrimestralDTO){
+		try {
+			setInstance();
+			servicioDesempenio.procesarPlanillaTrimestralDocente(planillaTrimestralDTO);
+			return Response.ok(true).build();
+		} catch (Exception ex) {
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
+		}
+	}
 
 }
