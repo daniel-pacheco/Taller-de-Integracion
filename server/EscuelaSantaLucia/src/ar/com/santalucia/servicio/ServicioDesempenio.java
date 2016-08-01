@@ -27,15 +27,19 @@ import ar.com.santalucia.dominio.dto.AnioDTO;
 import ar.com.santalucia.dominio.dto.BoletinInasistenciasDTO;
 import ar.com.santalucia.dominio.dto.BoletinNotasDTO;
 import ar.com.santalucia.dominio.dto.CursoDTO;
+import ar.com.santalucia.dominio.dto.DetallePlanillaTrimestralDocenteDTO;
 import ar.com.santalucia.dominio.dto.GetPlanillaTrimestralDTO;
+import ar.com.santalucia.dominio.dto.GetPlanillaTrimestralDocDTO;
 import ar.com.santalucia.dominio.dto.InasistenciasBoletinDTO;
 import ar.com.santalucia.dominio.dto.ItemPlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.dto.ListaPasajeAlumnosDTO;
+import ar.com.santalucia.dominio.dto.MateriaDTO;
 import ar.com.santalucia.dominio.dto.MateriaNotaDTO;
 import ar.com.santalucia.dominio.dto.PasajeAlumnosDTO;
 import ar.com.santalucia.dominio.dto.PasajeEntradaDTO;
 import ar.com.santalucia.dominio.dto.PlanillaNotasBoletinDTO;
 import ar.com.santalucia.dominio.dto.PlanillaTrimestralDTO;
+import ar.com.santalucia.dominio.dto.PlanillaTrimestralDocenteDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
@@ -943,6 +947,60 @@ public class ServicioDesempenio {
 			throw ex;
 		}catch(Exception ex){
 			throw ex;
+		}
+	}
+	
+	/**
+	 * Devuelve una planilla trimestral para uso del docente.
+	 * @param getPlanilla
+	 * @return
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	public PlanillaTrimestralDocenteDTO getPlanillaTrimestralDocente(GetPlanillaTrimestralDocDTO getPlanilla) throws ValidacionException, Exception{
+		try{
+			//Recupero la planilla Trimestral como si fuera un directivo, para eso armo una solicitud al método getPlanillaTrimestral
+			ValidacionException vEx = new ValidacionException();
+			GetPlanillaTrimestralDTO gPlan = new GetPlanillaTrimestralDTO();
+			gPlan.setAnio(getPlanilla.getAnio());
+			gPlan.setCicloLectivo(getPlanilla.getCicloLectivo());
+			gPlan.setCurso(getPlanilla.getCurso());
+			gPlan.setTrimestre(getPlanilla.getTrimestre());
+			List<ItemPlanillaTrimestralDTO> itemPlanilla = getPlanillaTrimestral(gPlan); 	//Tengo todas las materia en items
+			Materia materia = gMateria.getById(getPlanilla.getIdMateria()); 
+			PlanillaTrimestralDocenteDTO planillaDevolver = new PlanillaTrimestralDocenteDTO(); //Elemento a devolver vacío 
+			if(materia==null){
+				vEx.addMensajeError("No se pudo encontrar la materia solicitada.");
+				throw vEx;
+			}
+			List<DetallePlanillaTrimestralDocenteDTO> detalle = new ArrayList<DetallePlanillaTrimestralDocenteDTO>(); //este es el detalle de la planilla de docente
+			for(ItemPlanillaTrimestralDTO itemPadre: itemPlanilla){
+				for(MateriaNotaDTO mnotaDTO: itemPadre.getNotas()){
+					if (mnotaDTO.getMateria().equals(materia.getNombre())){
+						DetallePlanillaTrimestralDocenteDTO elemento = new DetallePlanillaTrimestralDocenteDTO(); //creo el elemento y después lo agrego al detalle
+						elemento.setAlumno(itemPadre.getAlumno());
+						elemento.setNota(mnotaDTO.getNota());
+						detalle.add(elemento);
+					}
+				}
+			}
+			//Busco docente titular y suplente (no se para que todavía, para mi no tiene motivo)
+			//ServicioAcademico sAcademico = new ServicioAcademico();
+			//MateriaDTO mDTO = new MateriaDTO();
+			//mDTO = sAcademico.getMateriaDTO(materia.getIdMateria());
+			//ServicioDocente sDocente = new ServicioDocente();
+			//sDocente.ge
+			//Lleno el elemento a devolver
+			planillaDevolver.setAnio(getPlanilla.getAnio());
+			planillaDevolver.setCurso(getPlanilla.getCurso());
+			planillaDevolver.setIdMateria(getPlanilla.getIdMateria());
+			planillaDevolver.setTrimestre(getPlanilla.getTrimestre());
+			planillaDevolver.setPlanilla(detalle);
+			return null;
+		}catch(ValidacionException vEx){
+			return null;
+		}catch(Exception ex){
+			return null;
 		}
 	}
 }
