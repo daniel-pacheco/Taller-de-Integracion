@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import ar.com.santalucia.dominio.dto.DocenteMateriasDTO;
+import ar.com.santalucia.dominio.dto.MateriaDTO;
 import ar.com.santalucia.dominio.modelo.sistema.login.Login;
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.dominio.modelo.usuarios.info.Domicilio;
@@ -625,8 +626,8 @@ public class ServicioDocenteEndpoint {
 		Long usuarioDni;
 		Personal docente = new Personal();
 		try {
-			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			setInstance();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			if (nuevoToken == null) {
 				usuarioDni = Long.valueOf(ServicioLogin.obtenerIdentificacionUsuario(rolIn, token));
 				docente = servicioDocente.getUsuarioByDni(usuarioDni);
@@ -645,6 +646,34 @@ public class ServicioDocenteEndpoint {
 			return Response.ok(docente).header("auth0", nuevoToken).build();
 		}
 	}
+	
+	@GET
+	@Path("/materiasDictadas/{idU:[0-9][0-9]*}")
+	public Response obtenerMateriasDictadas(@PathParam("idU") final Long idUsuario,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token){
+		if (!rolIn.equals(Login.DOCENTE)) {
+			return Response.status(Status.FORBIDDEN).build();
+		}
+		String nuevoToken = new String();
+		List<MateriaDTO> listado = new ArrayList<MateriaDTO>();
+		try{
+			setInstance();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
+			listado = servicioDocente.ObtenerMateriasDictadas(idUsuario);
+			if(nuevoToken == null) {
+				return Response.ok(listado).build();
+			} else {
+				return Response.ok(listado).header("auth0", nuevoToken).build();
+			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+		} catch (Exception ex) {
+			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
+		}
+		
+	}
+	
 }
 
 

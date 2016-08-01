@@ -130,4 +130,66 @@ public class MateriaDTO {
 		this.idMateria = idMateria;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((anio == null) ? 0 : anio.hashCode());
+		result = prime * result + ((area == null) ? 0 : area.hashCode());
+		result = prime * result + ((descripcion == null) ? 0 : descripcion.hashCode());
+		result = prime * result + ((docenteSuplente == null) ? 0 : docenteSuplente.hashCode());
+		result = prime * result + ((docenteTitular == null) ? 0 : docenteTitular.hashCode());
+		result = prime * result + ((idMateria == null) ? 0 : idMateria.hashCode());
+		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MateriaDTO other = (MateriaDTO) obj;
+		if (anio == null) {
+			if (other.anio != null)
+				return false;
+		} else if (!anio.equals(other.anio))
+			return false;
+		if (area == null) {
+			if (other.area != null)
+				return false;
+		} else if (!area.equals(other.area))
+			return false;
+		if (descripcion == null) {
+			if (other.descripcion != null)
+				return false;
+		} else if (!descripcion.equals(other.descripcion))
+			return false;
+		if (docenteSuplente == null) {
+			if (other.docenteSuplente != null)
+				return false;
+		} else if (!docenteSuplente.equals(other.docenteSuplente))
+			return false;
+		if (docenteTitular == null) {
+			if (other.docenteTitular != null)
+				return false;
+		} else if (!docenteTitular.equals(other.docenteTitular))
+			return false;
+		if (idMateria == null) {
+			if (other.idMateria != null)
+				return false;
+		} else if (!idMateria.equals(other.idMateria))
+			return false;
+		if (nombre == null) {
+			if (other.nombre != null)
+				return false;
+		} else if (!nombre.equals(other.nombre))
+			return false;
+		return true;
+	}
+
+	
 }
