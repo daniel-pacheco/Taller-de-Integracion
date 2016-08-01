@@ -1,6 +1,5 @@
 package ar.com.santalucia.servicio;
 
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -219,6 +218,17 @@ public class ServicioConfiguracion {
 			}
 		}else{
 			throw new Exception("Periodo con fecha de fin inferior al periodo comparado.");
+		}
+	}
+	
+	
+	public Boolean generarBackup() throws Exception {
+		Runtime app = Runtime.getRuntime();
+		try {
+			app.exec("cmd.exe /C start c:\\users\\eric\\desktop\\test_backup_mysql\\test_backup.bat");
+			return true;
+		} catch (Exception ex) {
+			throw new Exception("Error al generar el backup: " + ex.getMessage());
 		}
 	}
 	

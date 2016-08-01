@@ -57,4 +57,11 @@
 		<nature>org.jboss.tools.ws.jaxrs.nature</nature>
 		<nature>org.jboss.tools.cdi.core.cdinature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>src/ar/com/santalucia/accesodatos/persistencia/backup</name>
+			<type>1</type>
+			<location>C:/Users/Eric/Desktop/test_backup_mysql/test_backup.bat</location>
+		</link>
+	</linkedResources>
 </projectDescription>

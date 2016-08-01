@@ -712,11 +712,24 @@ public class ServicioDesempenioEndpoint {
 	
 	@PUT
 	@Path("/planillaTrimestral")
-	public Response procesarPlanillaTrimestral(PlanillaTrimestralDTO planillaTrimestralDTO){
+	public Response procesarPlanillaTrimestral(PlanillaTrimestralDTO planillaTrimestralDTO,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
+		String nuevoToken = new String();
 		try {
 			setInstance();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			servicioDesempenio.procesarPlanillaTrimestral(planillaTrimestralDTO);
-			return Response.ok(true).build();
+			if (nuevoToken == null) {
+				return Response.ok(true).build();
+			} else {
+				return Response.ok(true).header("auth0", nuevoToken).build();
+			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -837,11 +850,24 @@ public class ServicioDesempenioEndpoint {
 	 */
 	@PUT
 	@Path("/planillaTrimestralDoc")
-	public Response procesarPlanillaTrimestral(PlanillaTrimestralDocenteDTO planillaTrimestralDTO){
+	public Response procesarPlanillaTrimestral(PlanillaTrimestralDocenteDTO planillaTrimestralDTO,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DOCENTE)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
+		String nuevoToken = new String();
 		try {
 			setInstance();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			servicioDesempenio.procesarPlanillaTrimestralDocente(planillaTrimestralDTO);
-			return Response.ok(true).build();
+			if (nuevoToken == null) {
+				return Response.ok(true).build();
+			} else {
+				return Response.ok(true).header("auth0", nuevoToken).build();
+			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
