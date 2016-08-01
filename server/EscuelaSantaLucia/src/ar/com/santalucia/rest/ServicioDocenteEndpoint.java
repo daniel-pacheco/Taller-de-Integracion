@@ -648,7 +648,7 @@ public class ServicioDocenteEndpoint {
 	}
 	
 	@GET
-	@Path("/materiasDictadas/{idU:[0-9][0-9]*}")
+	@Path("/listAllMinByDoc/{idU:[0-9][0-9]*}")
 	public Response obtenerMateriasDictadas(@PathParam("idU") final Long idUsuario,
 			@HeaderParam("rol") final String rolIn,
 			@HeaderParam("auth0") final String token){
