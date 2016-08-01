@@ -15,7 +15,7 @@ angular.module('clientAppApp')
 	});
 })
 
-.controller('DocenteMiCuentaCtrl', function ($scope, $state) {
+.controller('DocenteMiCuentaCtrl', ['$scope', function ($scope) {
 	
 	$scope.titulo = 'Mi Cuenta';
 	$scope.docente = {};
@@ -66,4 +66,4 @@ $scope.passwords = {};
 $scope.passwords.passNuevo = '';
 $scope.passwords.passNuevoConf = '';
 
-})
+}])

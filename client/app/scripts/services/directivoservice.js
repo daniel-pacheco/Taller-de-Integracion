@@ -8,7 +8,7 @@
  * Service in the clientAppApp.
  */
 angular.module('clientAppApp')
-  .service('directivoService', function ($http, SERVER) {
+  .service('directivoService', ['$http', 'SERVER', function ($http, SERVER) {
     // AngularJS will instantiate a singleton by calling "new" on this function
 
     var server = SERVER.address;/*'http://localhost:8080/'; 'http://192.168.1.8:8080/';//EscuelaSantaLucia/rest/sAlumno/listAll //http://localhost:8080/EscuelaSantaLucia/rest/sAlumno/listAll'*/
@@ -40,4 +40,4 @@ angular.module('clientAppApp')
     	return $http.put(server + sDirectivo + expectParam, directivo);
     };
 
-  });
+  }]);

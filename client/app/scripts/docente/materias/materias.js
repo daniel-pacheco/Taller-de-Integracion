@@ -22,7 +22,7 @@
  		}
  	});
  })
- .controller('DocenteMateriasCtrl', function ($scope, academicoService, docenteService, exportTableService, ModalService, ObjectsFactory, spinnerService, primerTrimData, todosLosTrimData) {
+ .controller('DocenteMateriasCtrl', ['$scope', 'academicoService', 'docenteService', 'exportTableService', 'ModalService', 'ObjectsFactory', 'spinnerService', 'primerTrimData', 'todosLosTrimData', function ($scope, academicoService, docenteService, exportTableService, ModalService, ObjectsFactory, spinnerService, primerTrimData, todosLosTrimData) {
 
 //-- [Seccion]
 //-- [Seccion] variables
@@ -278,4 +278,4 @@ $scope.saveEditNota = function (copiaListaNotas){
 }
 
 
-});
+}]);

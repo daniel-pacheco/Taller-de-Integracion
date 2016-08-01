@@ -19,7 +19,7 @@
     }
   });
 })
- .controller('LoginCtrl', function ($scope, $state, $http, loginService, USER_ROLES, LANDING_ROUTES, spinnerService, ModalService) {
+ .controller('LoginCtrl', ['$scope', '$state', 'loginService', 'ModalService', 'spinnerService', 'USER_ROLES', 'LANDING_ROUTES', function ($scope, $state, loginService, ModalService, spinnerService, USER_ROLES, LANDING_ROUTES) {
   //-- [Seccion]
   //-- [Seccion] variables
 
@@ -112,4 +112,4 @@
       spinnerService.hide('loginSpinner');
     });
   };
-});
+}]);

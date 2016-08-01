@@ -1,7 +1,7 @@
 angular.module('clientAppApp')
 .controller('telefonoAvanzadoModalController', [
-  '$scope', '$element', 'title', 'listaTelefonos', 'close', 'ObjectsFactory', 'CONTACTOS',
-  function($scope, $element, title, listaTelefonos, close, ObjectsFactory, CONTACTOS) {//acá se inyecta las variables necesarias y luego la función close
+  '$element', '$scope', 'close', 'listaTelefonos', 'ObjectsFactory', 'title', 'CONTACTOS',
+  function($element, $scope, close, listaTelefonos, ObjectsFactory, title, CONTACTOS) {//acá se inyecta las variables necesarias y luego la función close
 
     $scope.copiaListaTelefonos = angular.copy (listaTelefonos);
     $scope.title = title;

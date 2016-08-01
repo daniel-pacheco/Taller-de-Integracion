@@ -241,7 +241,7 @@ public class ServicioAcademicoEndpoint {
 	@GET
 	@Path("/anio/listAllMin")
 	public Response getAniosDTO(@HeaderParam("rol") final String rolIn, @HeaderParam("auth0") final String token) {
-		if (!rolIn.equals(Login.DIRECTIVO)) {
+		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.DOCENTE)) {
 			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
 		}
 		ArrayList<AnioDTO> aniosDTO = new ArrayList<AnioDTO>();
@@ -487,7 +487,7 @@ public class ServicioAcademicoEndpoint {
 	@GET
 	@Path("/mat/listAllMin")
 	public Response getMateriasDTO(@HeaderParam("rol") final String rolIn, @HeaderParam("auth0") final String token) {
-		if (!rolIn.equals(Login.DIRECTIVO)) {
+		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.DOCENTE)) {
 			return Response.status(Status.FORBIDDEN).build();
 		}
 		ArrayList<MateriaDTO> materiasDTO = new ArrayList<MateriaDTO>();

@@ -8,7 +8,7 @@
  * Service in the clientAppApp.
  */
  angular.module('clientAppApp')
- .service('academicoService', function ($http, SERVER) {
+ .service('academicoService', ['$http', 'SERVER', function ($http, SERVER) {
     // AngularJS will instantiate a singleton by calling "new" on this function
 
     var server = SERVER.address;
@@ -147,4 +147,4 @@
         return $http.delete(server + sAcademico + deleteMesa + idMesa);
     }
 
-});
+}]);

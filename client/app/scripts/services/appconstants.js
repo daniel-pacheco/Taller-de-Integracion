@@ -9,7 +9,7 @@
  */
  angular.module('clientAppApp')
  .constant('SERVER', {
- 	// address: 'http://192.168.0.100:8080/',
+ 	// address: 'http://192.168.1.27:8080/',
  	address: 'http://localhost:8080/',
  	sAlumno: 'EscuelaSantaLucia/rest/sAlumno/',
  	sAcademico: 'EscuelaSantaLucia/rest/sAcademico/',
@@ -32,6 +32,11 @@
  	docente: 'DOCENTE'
  })
 
+ .constant('MENU_ADMIN',{ //la dirección relativa entre los estados anidados se separa por .
+ 	configuracion: ['.configuracion', 'Configuracion']
+ 	// micuenta: ['.micuenta', 'Mi Cuenta']
+ })
+
  .constant('MENU_ALUMNO',{ //la dirección relativa entre los estados anidados se separa por .
  	operaciones: ['.operaciones', 'Operaciones'],
  	micuenta: ['.micuenta', 'Mi Cuenta']
@@ -46,7 +51,7 @@
  })
 
 .constant('LANDING_ROUTES',{ //la dirección relativa entre los estados anidados se separa por .
-	ADMINISTRADOR: 'administrador.principal',
+	ADMINISTRADOR: 'administrador.configuracion',
 	DOCENTE: 'docente.materias',
 	ALUMNO: 'alumno.operaciones',
 	DIRECTIVO: 'directivo.alumnado'

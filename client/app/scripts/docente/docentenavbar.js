@@ -24,7 +24,7 @@
  		}
  	});
  })
- .controller('DocenteNavBarCtrl', function ($scope, MENU_DOCENTE) {
+ .controller('DocenteNavBarCtrl', ['$scope', 'MENU_DOCENTE', function ($scope, MENU_DOCENTE) {
 
  	$scope.menuDocente = MENU_DOCENTE;
  	
@@ -36,5 +36,5 @@
  		"title": "Despedirse",   
  	};
 
- });
+ }]);
  

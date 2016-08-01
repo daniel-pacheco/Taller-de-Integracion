@@ -8,7 +8,7 @@
  * Service in the clientAppApp.
  */
 angular.module('clientAppApp')
-  .service('desempenioService', function ($http, SERVER) {
+  .service('desempenioService', ['$http', 'SERVER', function ($http, SERVER) {
     // AngularJS will instantiate a singleton by calling "new" on this function
 
     var server = SERVER.address;
@@ -51,4 +51,4 @@ angular.module('clientAppApp')
         return $http.put(server + sDesempenio + planillaTrimestral, planillaTrimDTO);
 
     }
-});
+}]);
