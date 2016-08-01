@@ -486,7 +486,7 @@ public class ServicioAcademicoEndpoint {
 	 */
 	@GET
 	@Path("/mat/listAllMin")
-	public Response getMateriasDTO(@HeaderParam("rol") final String rolIn, @HeaderParam("auth") final String token) {
+	public Response getMateriasDTO(@HeaderParam("rol") final String rolIn, @HeaderParam("auth0") final String token) {
 		if (!rolIn.equals(Login.DIRECTIVO)) {
 			return Response.status(Status.FORBIDDEN).build();
 		}

@@ -9,23 +9,23 @@
  */
 
  angular.module('clientAppApp')
-.config(function($stateProvider, USER_ROLES) {
-	$stateProvider
-	.state('alumno.operaciones', {
-		url: '/operaciones',
-		templateUrl: 'scripts/alumno/operaciones/operaciones.html',
-		controller: 'AlumnoOperacionesCtrl',
-		data: {
-			pageTitle: 'Operaciones',
-			authorizedRoles: [
+ .config(function($stateProvider, USER_ROLES) {
+ 	$stateProvider
+ 	.state('alumno.operaciones', {
+ 		url: '/operaciones',
+ 		templateUrl: 'scripts/alumno/operaciones/operaciones.html',
+ 		controller: 'AlumnoOperacionesCtrl',
+ 		data: {
+ 			pageTitle: 'Operaciones',
+ 			authorizedRoles: [
  			USER_ROLES.admin,
  			USER_ROLES.alumno]
-		}
-	});
-})
+ 		}
+ 	});
+ })
 
-.controller('AlumnoOperacionesCtrl', ['$state', '$scope', 'alumnoService', 'desempenioService', 'ModalService', 'spinnerService', function ($state, $scope, alumnoService, desempenioService, ModalService, spinnerService) {
- 
+ .controller('AlumnoOperacionesCtrl', ['$state', '$scope', 'alumnoService', 'desempenioService', 'ModalService', 'spinnerService', function ($state, $scope, alumnoService, desempenioService, ModalService, spinnerService) {
+
 //-- [operaciones]
 //-- [operaciones] variables
 $scope.titulo = 'Operaciones';
@@ -63,7 +63,6 @@ $scope.seleccionar = function (id){
 		break;
 		case 'examenes':
 		$scope.subtitle = "Exámenes";
-		$scope.listaMesas = mesasData;
 		$scope.examenes = true;
 		setActiveAlu(2);
 		break;
@@ -175,27 +174,27 @@ $scope.confirmSolicitarCert = function(certificado){
 
 $scope.calcTotalInasistencias = function(arreglo){
 
-  $scope.totalIn.length = 0;
-  $scope.totalInJ.length = 0;
-  $scope.totalInI.length = 0;
-  $scope.totalInJ[0] = 0;
-  $scope.totalInI[0] = 0;
-  
-  arreglo.forEach(function(value, index, array){
-    var rdo = 0;
+	$scope.totalIn.length = 0;
+	$scope.totalInJ.length = 0;
+	$scope.totalInI.length = 0;
+	$scope.totalInJ[0] = 0;
+	$scope.totalInI[0] = 0;
 
-    if (index > 0) {
-      rdo = $scope.totalIn[index - 1];
-    };
+	arreglo.forEach(function(value, index, array){
+		var rdo = 0;
 
-    $scope.totalIn.push((parseFloat(value.cantidad) + parseFloat(rdo)).toFixed(2));
+		if (index > 0) {
+			rdo = $scope.totalIn[index - 1];
+		};
 
-    if(value.justificada){
-        $scope.totalInJ.push((parseFloat(value.cantidad) + parseFloat(_.last($scope.totalInJ))).toFixed(2));
-      }else {
-        $scope.totalInI.push((parseFloat(value.cantidad) + parseFloat(_.last($scope.totalInI))).toFixed(2));
-      }
-    });
+		$scope.totalIn.push((parseFloat(value.cantidad) + parseFloat(rdo)).toFixed(2));
+
+		if(value.justificada){
+			$scope.totalInJ.push((parseFloat(value.cantidad) + parseFloat(_.last($scope.totalInJ))).toFixed(2));
+		}else {
+			$scope.totalInI.push((parseFloat(value.cantidad) + parseFloat(_.last($scope.totalInI))).toFixed(2));
+		}
+	});
 };
 
 //-- [operaciones/desempenio] service calls
@@ -246,6 +245,23 @@ function initCall () {
 	})
 }; 
 
+$scope.getLibCalificaciones = function () {
+	if (!_.includes($scope.multiplePanels.activePanels, (2))) {
+		spinnerService.show('searchOperacionesSpinner');
+		desempenioService.getBoletinCalif($scope.alumno.idUsuario)
+		.then(
+			function(response) {
+			// console.log(response);
+			$scope.libCalificaciones = response.data;
+		},
+		function(response){
+			showServerError(response);
+		})
+		.finally(function(){
+			spinnerService.hide('searchOperacionesSpinner');
+		})
+	}
+};
 //-- [operaciones/sub-seccion]
 //-- [operaciones/sub-seccion] variables
 //-- [operaciones/sub-seccion] Form Management

@@ -52,9 +52,9 @@ $scope.seleccionar = function(id) {
     $scope.subtitle = "Listado";
     $scope.listado = true;
     setActiveAlu(1);
-    searchAnio();
+/*    searchAnio();
     searchDocente();//Esta lista de docentes deberia tener solo el docente y el ID
-    searchArea();
+    searchArea();*/
     listAllMaterias();
     break;
     case 'nuevaMateria':
@@ -234,9 +234,9 @@ function listAllMaterias() {
     spinnerService.hide('searchMateriaSpinner');
   });
 };
-$scope.$on('$viewContentLoaded', function(){
+/*$scope.$on('$viewContentLoaded', function(){
   listAllMaterias(); //cambiar esto cuando se pueda elegir el año
-});
+});*/
 
 
 function getMateriaById(materia) {

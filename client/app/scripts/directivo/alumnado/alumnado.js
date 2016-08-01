@@ -211,7 +211,7 @@ $scope.showModalLibreta = function(alumno){//esta deberia ser una funcion que pi
 	.then(function(response){
 		boletinCalif = response.data;
 
-		console.log(boletinCalif);
+		//console.log(boletinCalif);
 
 		ModalService.showModal({
 			templateUrl: 'scripts/directivo/alumnado/modal/showLibretaAlumno.tpl.html',

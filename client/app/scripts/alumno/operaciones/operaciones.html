@@ -82,7 +82,7 @@
 														<th class="col-md-2">Fecha</th>
 														<th class="col-md-2">Inasistencia a</th>
 														<th class="col-md-1">Faltas</th>
-														<th class="col-md-1">Justif</th>
+														<th class="col-md-1">Justificada</th>
 														<th class="col-md-1">Total</th>
 													</tr>
 												</thead>
@@ -98,7 +98,10 @@
 															<div>{{inasistencia.cantidad}}</div>
 														</td>
 														<td>
-															<div>{{inasistencia.justificada}}</div>
+															<div>
+																<span class="glyphicon glyphicon-ok" ng-show="{{inasistencia.justificada}}" bs-tooltip="tooltip.tooltipJustif"></span>
+																<span class="glyphicon glyphicon-remove" ng-show="!{{inasistencia.justificada}}" bs-tooltip="tooltip.tooltipInjustif"></span>
+															</div>
 														</td>
 														<td>
 															<div>{{totalIn[$index]}}</div>
@@ -134,10 +137,9 @@
 					</div>
 				</div>
 				<div class="panel panel-default">
-					<div class="panel-heading" style="cursor: pointer" ng-click="downGlyphiconPrevias = !downGlyphiconPrevias" bs-collapse-toggle>
+					<div class="panel-heading" style="cursor: pointer" ng-click="" bs-collapse-toggle>
 						<div class="panel-title">
-							Materias previas
-							<div style="float: right" ng-class="{ 'glyphicon glyphicon-chevron-down': !downGlyphiconPrevias,'glyphicon glyphicon-chevron-up': downGlyphiconPrevias }"></div>
+							<span ng-class="_.includes(multiplePanels.activePanels, 1)? 'glyphicon glyphicon-chevron-up': 'glyphicon glyphicon-chevron-down'"></span>Materias previas
 						</div>
 					</div>
 					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
@@ -176,21 +178,20 @@
 					</div>
 				</div>
 				<div class="panel panel-default">
-					<div class="panel-heading" style="cursor: pointer" ng-click="downGlyphiconNotas = !downGlyphiconNotas" bs-collapse-toggle>
+					<div class="panel-heading" style="cursor: pointer" ng-click="getLibCalificaciones()" bs-collapse-toggle>
 						<div class="panel-title">
-							Notas
-							<div style="float: right" ng-class="{ 'glyphicon glyphicon-chevron-down': !downGlyphiconNotas,'glyphicon glyphicon-chevron-up': downGlyphiconNotas }"></div>
+							<span ng-class="_.includes(multiplePanels.activePanels, 2)? 'glyphicon glyphicon-chevron-up': 'glyphicon glyphicon-chevron-down'"></span>Notas
 						</div>
 					</div>
 					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
 						<div class="panel-body">
 							<div class="container">
 
-								<label class="col-md-1">Nombre: </label>
-								<span class="col-md-4">{{libCalificaciones.nombre}} {{libCalificaciones.apellido}}</span>
+								<label class="col-lg-1">Nombre: </label>
+								<span class="col-lg-4">{{libCalificaciones.nombre}} {{libCalificaciones.apellido}}</span>
 
-								<label class="col-md-1">DNI: </label>
-								<span class="col-md-2">{{libCalificaciones.DNIUsuario}}</span>
+								<label class="col-lg-1">DNI: </label>
+								<span class="col-lg-2">{{libCalificaciones.nroDocumento}}</span>
 
 								<div class="row">
 
@@ -198,139 +199,165 @@
 									<div class="col-md-11 box-margin-lib personal-info">
 										<div class="form-horizontal margin-lib">
 											<div class="form-group">
-												<label class="col-md-1">A&ntilde;o: </label>
-												<span class="col-md-1">{{libCalificaciones.ano}}</span>
+												<label class="col-lg-1">A&ntilde;o: </label>
+												<span class="col-lg-1">{{libCalificaciones.anio}}</span>
 
-												<label class="col-md-1">Divisi&oacute;n: </label>
-												<span class="col-md-1">{{libCalificaciones.division}}</span>
+												<label class="col-lg-1">Divisi&oacute;n: </label>
+												<span class="col-lg-1">{{libCalificaciones.curso}}</span>
 
-												<label class="col-md-1">Turno: </label>
-												<span class="col-md-2">{{libCalificaciones.turno}}</span>
+									<!-- <label class="col-lg-1">Turno: </label>
+									<span class="col-lg-2">{{libCalificaciones.turno}}</span> -->
 
-												<label class="col-md-2">A&ntilde;o Escolar: </label>
-												<span class="col-md-2">{{libCalificaciones.anoEscolar}}</span>
-											</div>
-										</div>
-									</div>
+									<label class="col-lg-2">A&ntilde;o Escolar: </label>
+									<span class="col-lg-2">{{libCalificaciones.cicloLectivo}}</span>
 								</div>
-								<!-- edit form column -->
-								<div class="row" style="margin-top: 10px;">
-									<div class="col-md-11 box-margin-lib personal-info table-responsive">
-										<table class="table table-hover table-striped table-condensed">
-											<thead>
-												<tr class="info">
-													<th>Espacio Curricular</th>
-													<th>1° Trim.</th>
-													<th>2° Trim.</th>
-													<th>3° Trim.</th>
-													<th>Calific. Final</th>
-													<th>Eval Dic.</th>
-													<th>Eval Feb.</th>
-													<th>Calif Definitiva</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr ng-repeat="libreta in libCalificaciones.notas">
-													<td>{{libreta.Materia}}</td>
-													<td class="text-center" ng-class="{ 'desaprobado': {{libreta.NotaPrimT}} < 6 }"><!-- Esto del color lo pueden querer personalizable -->{{libreta.NotaPrimT}}</td>
-													<td class="text-center">{{libreta.NotaSeguT}}</td>
-													<td class="text-center">{{libreta.NotaTercT}}</td>
-													<td class="text-center">{{libreta.NotaFinal}}</td>
-													<td class="text-center">{{libreta.EvalDic}}</td>
-													<td class="text-center">{{libreta.EvalFeb}}</td>
-													<td class="text-center">{{libreta.EvalDef}}</td>
-												</tr>
-												<tfoot>
-													<tr>
-														<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-													</tr>
-													<tr>
-														<td>Inasistencias {{libCalificaciones.Inasistencias[0].tipo}}</td>
-														<td class="text-center">{{libCalificaciones.Inasistencias[0].PrimerTrim}}</td>
-														<td class="text-center">{{libCalificaciones.Inasistencias[0].SegundoTrim}}</td>
-														<td class="text-center">{{libCalificaciones.Inasistencias[0].TercerTrim}}</td>
-														<td class="text-center"></td>
-														<td class="text-center"></td>
-														<td class="text-center"></td>
-														<td class="text-center"></td>
-													</tr>
-													<tr>
-														<td>Inasistencias {{libCalificaciones.Inasistencias[1].tipo}}</td>
-														<td class="text-center">{{libCalificaciones.Inasistencias[1].PrimerTrim}}</td>
-														<td class="text-center">{{libCalificaciones.Inasistencias[1].SegundoTrim}}</td>
-														<td class="text-center">{{libCalificaciones.Inasistencias[1].TercerTrim}}</td>
-														<td class="text-center"></td>
-														<td class="text-center"></td>
-														<td class="text-center"></td>
-														<td class="text-center"></td>
-													</tr>
-
-													<tr>
-														<td>{{libCalificaciones.Inasistencias[2].tipo}}</td>
-														<td class="text-center">{{libCalificaciones.Inasistencias[2].AdvertDiscPrimerT}}</td>
-														<td class="text-center">{{libCalificaciones.Inasistencias[2].AdvertDiscSegunT}}</td>
-														<td class="text-center">{{libCalificaciones.Inasistencias[2].AdvertDiscTercerT}}</td>
-														<td class="text-center">{{libCalificaciones.Inasistencias[2].AdvertDiscTotales}}</td>
-														<td class="text-center"></td>
-														<td class="text-center"></td>
-														<td class="text-center"></td>
-													</tr>							
-												</tfoot>		
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</div>						
+							</div>
 						</div>
 					</div>
-				</div>
-			</div>			
-		</fieldset>
+					<!-- edit form column -->
+					<div class="row" style="margin-top: 10px;">
+						<div class="col-md-11 box-margin-lib personal-info table-responsive">
+							<table class="table table-hover table-striped table-condensed">
+								<thead>
+									<tr class="info">
+										<th>Espacio Curricular</th>
+										<th>1° Trim.</th>
+										<th>2° Trim.</th>
+										<th>3° Trim.</th>
+										<th>Calific. Final</th>
+										<th>Eval Dic.</th>
+										<th>Eval Feb.</th>
+										<th>Calif Definitiva</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="nota in libCalificaciones.listaNotas">
+										<td>{{nota.materia}}</td>
+										<td class="text-center" ng-class="{ 'desaprobado': {{nota.notaTrim1}} < 6 }">{{nota.notaTrim1}}</td>
+										<td class="text-center" ng-class="{ 'desaprobado': {{nota.notaTrim2}} < 6 }">{{nota.notaTrim2}}</td>
+										<td class="text-center" ng-class="{ 'desaprobado': {{nota.notaTrim3}} < 6 }">{{nota.notaTrim3}}</td>
+										<td class="text-center" ng-class="{ 'desaprobado': {{nota.notaFinal}} < 6 }">{{nota.notaFinal}}</td>
+										<td class="text-center">{{nota.EvalDic}} cuando esten disponibles  </td>
+										<td class="text-center">{{nota.EvalFeb}}estos campos hay que agregar</td>
+										<td class="text-center">{{nota.EvalDef}} sus nombres al modal</td>
+									</tr>
+									<tfoot>
+										<tr>
+											<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+										</tr>
+
+										<tr>
+											<td>Inasistencias Justificadas</td>
+											<td class="text-center">{{libCalificaciones.detalleInasistencias.justificadasTrim1}}</td>
+											<td class="text-center">{{libCalificaciones.detalleInasistencias.justificadasTrim2}}</td>
+											<td class="text-center">{{libCalificaciones.detalleInasistencias.justificadasTrim3}}</td>
+											<td class="text-center"></td>
+											<td class="text-center"></td>
+											<td class="text-center"></td>
+											<td class="text-center"></td>
+										</tr>
+
+										<tr>
+											<td>Inasistencias Injustificadas</td>
+											<td class="text-center">{{libCalificaciones.detalleInasistencias.injustificadasTrim1}}</td>
+											<td class="text-center">{{libCalificaciones.detalleInasistencias.injustificadasTrim2}}</td>
+											<td class="text-center">{{libCalificaciones.detalleInasistencias.injustificadasTrim3}}</td>
+											<td class="text-center"></td>
+											<td class="text-center"></td>
+											<td class="text-center"></td>
+											<td class="text-center"></td>
+										</tr>							
+									</tfoot>		
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>						
+			</div>
+		</div>
 	</div>
-	<div ng-show="examenes">
-		<fieldset>
-			<h1>{{subtitle}}<small>: Eleg&iacute; un tipo de operaci&oacute;n</small></h1>
-			<hr>	
-			<div class="col-md-11">	
+</div>			
+</fieldset>
+</div>
+<div ng-show="examenes">
+	<fieldset>
+		<h1>{{subtitle}}<small>: Eleg&iacute; un tipo de operaci&oacute;n</small></h1>
+		<hr>	
+		<div class="col-md-11">	
+			<table class="table table-hover table-striped">
+				<thead>
+					<tr>
+						<th class="col-md-1" data-sortable="true">Materia</th>
+						<th class="col-md-1">A&ntilde;o</th>
+						<th class="col-md-1">Fecha</th>
+						<th class="col-md-2" data-sortable="true">Horario</th>
+						<th class="col-md-4">Docentes</th>
+						<th class="col-md-1">Inscripto</th>
+						<th class="col-md-2">Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="mesa in listaMesas | orderBy:'fechaHoraInicio'">
+						<td>
+							{{mesa.materia.nombre}}
+						</td>
+						<td>
+							{{mesa.materia.anio}} {{mesa.materia.division}}
+						</td>
+						<td>
+							{{mesa.fechaHoraInicio | amDateFormat:'DD/MM/YYYY'}}
+						</td>
+						<td>
+							de {{mesa.fechaHoraInicio | amDateFormat:'HH:mm'}} a {{mesa.fechaHoraFin | amDateFormat:'HH:mm'}} 
+						</td>
+						<td>
+							<span ng-repeat="docente in mesa.integrantesTribunal" style="width: 30%">{{docente}}, </span>
+						</td>
+						<td>
+							<span ng-if="mesa.inscripto" data-animation="am-flip-x" class="glyphicon glyphicon-thumbs-up"></span>
+							<span ng-if="!mesa.inscripto" data-animation="am-flip-x" class="glyphicon glyphicon-thumbs-down"></span>
+						</td>
+						<td>
+							<button ng-if="!mesa.inscripto" class="btn btn-success btn-xs" bs-tooltip="tooltip.tooltipRegister" ng-click="register(mesa)">
+								<span>Inscribirse</span>
+							</button>
+							<button ng-if="mesa.inscripto" class="btn btn-danger btn-xs" bs-tooltip="tooltip.tooltipUnregister" ng-click="unregister(mesa)">
+								<span>Desinscribirse</span>
+							</button>
+						</td> 
+					</tr>
+				</tbody>
+
+			</table>
+		</div>
+	</fieldset>
+</div>
+<div ng-show="certificados">
+	<fieldset>
+		<h1>{{subtitle}}<small>: Eleg&iacute; el certificado que desees solicitar</small></h1>
+		<hr>
+		<div class="container">
+			<div class="col-md-8">	
 				<table class="table table-hover table-striped">
 					<thead>
 						<tr>
-							<th class="col-md-1" data-sortable="true">Materia</th>
-							<th class="col-md-1">A&ntilde;o</th>
-							<th class="col-md-1">Fecha</th>
-							<th class="col-md-2" data-sortable="true">Horario</th>
-							<th class="col-md-4">Docentes</th>
-							<th class="col-md-1">Inscripto</th>
-							<th class="col-md-2">Acciones</th>
+							<th class="col-md-2" data-sortable="true">Certificado</th>
+							<th class="col-md-1">Solicitado</th>
+							<th class="col-md-1">Solicitar</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="mesa in listaMesas | orderBy:'fechaHoraInicio'">
+						<tr ng-repeat="certificado in listaCertificados | orderBy:'fechaHoraInicio'">
 							<td>
-								{{mesa.materia.nombre}}
+								{{certificado.nombre}}
 							</td>
 							<td>
-								{{mesa.materia.anio}} {{mesa.materia.division}}
+								<span ng-if="certificado.solicitado" data-animation="am-flip-x" bs-tooltip="tooltip.tooltipCertifSolicitado" class="glyphicon glyphicon-thumbs-up"></span>
+								<span ng-if="!certificado.solicitado" data-animation="am-flip-x" bs-tooltip="tooltip.tooltipCertifNoSolicitado" class="glyphicon glyphicon-thumbs-down"></span>
 							</td>
 							<td>
-								{{mesa.fechaHoraInicio | amDateFormat:'DD/MM/YYYY'}}
-							</td>
-							<td>
-								de {{mesa.fechaHoraInicio | amDateFormat:'HH:mm'}} a {{mesa.fechaHoraFin | amDateFormat:'HH:mm'}} 
-							</td>
-							<td>
-								<span ng-repeat="docente in mesa.integrantesTribunal" style="width: 30%">{{docente}}, </span>
-							</td>
-							<td>
-								<span ng-if="mesa.inscripto" data-animation="am-flip-x" class="glyphicon glyphicon-thumbs-up"></span>
-								<span ng-if="!mesa.inscripto" data-animation="am-flip-x" class="glyphicon glyphicon-thumbs-down"></span>
-							</td>
-							<td>
-								<button ng-if="!mesa.inscripto" class="btn btn-success btn-xs" bs-tooltip="tooltip.tooltipRegister" ng-click="register(mesa)">
-									<span>Inscribirse</span>
-								</button>
-								<button ng-if="mesa.inscripto" class="btn btn-danger btn-xs" bs-tooltip="tooltip.tooltipUnregister" ng-click="unregister(mesa)">
-									<span>Desinscribirse</span>
+								<button class="btn btn-success btn-xs" bs-tooltip="tooltip.tooltipCertif" ng-click="solicitarCert(certificado)" ng-class="{ 'disabled': certificado.solicitado }">
+									<span>Solicitar</span>
 								</button>
 							</td> 
 						</tr>
@@ -338,42 +365,7 @@
 
 				</table>
 			</div>
-		</fieldset>
-	</div>
-	<div ng-show="certificados">
-		<fieldset>
-			<h1>{{subtitle}}<small>: Eleg&iacute; el certificado que desees solicitar</small></h1>
-			<hr>
-			<div class="container">
-				<div class="col-md-8">	
-					<table class="table table-hover table-striped">
-						<thead>
-							<tr>
-								<th class="col-md-2" data-sortable="true">Certificado</th>
-								<th class="col-md-1">Solicitado</th>
-								<th class="col-md-1">Solicitar</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr ng-repeat="certificado in listaCertificados | orderBy:'fechaHoraInicio'">
-								<td>
-									{{certificado.nombre}}
-								</td>
-								<td>
-									<span ng-if="certificado.solicitado" data-animation="am-flip-x" bs-tooltip="tooltip.tooltipCertifSolicitado" class="glyphicon glyphicon-thumbs-up"></span>
-									<span ng-if="!certificado.solicitado" data-animation="am-flip-x" bs-tooltip="tooltip.tooltipCertifNoSolicitado" class="glyphicon glyphicon-thumbs-down"></span>
-								</td>
-								<td>
-									<button class="btn btn-success btn-xs" bs-tooltip="tooltip.tooltipCertif" ng-click="solicitarCert(certificado)" ng-class="{ 'disabled': certificado.solicitado }">
-										<span>Solicitar</span>
-									</button>
-								</td> 
-							</tr>
-						</tbody>
-
-					</table>
-				</div>
-			</div>
-		</fieldset>
-	</div>
+		</div>
+	</fieldset>
+</div>
 </div>
