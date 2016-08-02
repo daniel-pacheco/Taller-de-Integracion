@@ -22,7 +22,7 @@
  		}
  	});
  })
- .controller('DocenteMateriasCtrl', ['$scope', 'academicoService', 'docenteService', 'exportTableService', 'ModalService', 'ObjectsFactory', 'spinnerService', 'primerTrimData', 'todosLosTrimData', function ($scope, academicoService, docenteService, exportTableService, ModalService, ObjectsFactory, spinnerService, primerTrimData, todosLosTrimData) {
+ .controller('DocenteMateriasCtrl', ['$scope', 'academicoService', 'desempenioService', 'docenteService', 'exportTableService', 'ModalService', 'ObjectsFactory', 'spinnerService', 'primerTrimData', 'todosLosTrimData', function ($scope, academicoService, desempenioService, docenteService, exportTableService, ModalService, ObjectsFactory, spinnerService, primerTrimData, todosLosTrimData) {
 
 //-- [Seccion]
 //-- [Seccion] variables
@@ -34,10 +34,12 @@ $scope.titulo = 'Materias';
 //-- [Seccion] Form Management
 
 $scope.tooltip = {
-  tooltipExport: {
-    'title': 'Exportar para impresión'
-  }
+	tooltipExport: {
+		'title': 'Exportar para impresión'
+	}
 };
+
+$scope.planillas = {};
 
 $scope.listaPlantillasTrim = false;
 
@@ -52,13 +54,13 @@ $scope.setActive = function(menuItem) {
  		// hacerQueSePuedaElegirElCursoParaHacerInitDelDTODePlanilla(menuItem, anio );
  	};
 
-$scope.toggleListaPlantillasTrim = function (param){
-	$scope.listaPlantillasTrim = param;
-};
+ 	$scope.toggleListaPlantillasTrim = function (param){
+ 		$scope.listaPlantillasTrim = param;
+ 	};
 
-$scope.resetAdministrarTable = function(){
+ 	$scope.resetAdministrarTable = function(){
 
-};
+ 	};
 //-- [Seccion] filters
 //-- [Seccion] modals
 //-- [Seccion] utils (spinners, mensajes impresion etc)
@@ -129,9 +131,9 @@ function getMyData () {
 	});	
 };
 
-function listAllMaterias() {
+function listAllMaterias(idDocente) {
 	spinnerService.show('searchMatDocenteSpinner');
-	academicoService.matGetAllMin()
+	docenteService.getAllMatMinByDoc(idDocente)
 	.then(function(response){
 		$scope.listaMaterias = response.data;
 	},
@@ -165,8 +167,8 @@ function listAllAnios() {
 function initPlanillaTrimDTO(trim){
 	var planillaTrimDTO = ObjectsFactory.newPlanillaTrimDTO();
 
-	planillaTrimDTO.materia = $scope.selectedMAteria.idMateria;
-	planillaTrimDTO.anio = selectAnioByName($scope.selectedMAteria.anio).idAnio;
+	planillaTrimDTO.idMateria = $scope.selectedMAteria.idMateria;
+	planillaTrimDTO.anio = $scope.selectedMAteria.anio; //selectAnioByName($scope.selectedMAteria.anio).idAnio;
 	planillaTrimDTO.trimestre = trim;
 	planillaTrimDTO.curso = $scope.dropDownSelectedCurso.division;
 
@@ -177,18 +179,22 @@ function initPlanillaTrimDTO(trim){
 
 $scope.getPlanillas = function(trim) {
 
-	// spinnerService.show('searchMatDocenteSpinner');
-	initPlanillaTrimDTO(trim);
-  desempenioService.getplanillatrimestral(initPlanillaTrimDTO(trim)) //no existe aun
-  .then(function(response){
-  	$scope.planillas = response.data;
-  },
-  function(response){
-  	showServerError (response);
-  })
-  .finally(function(){
-  	spinnerService.hide('searchMatDocenteSpinner')
-  });
+	if (!_.includes($scope.multiplePanels.activePanels, (trim-1))) { //evita que haga el llamado al cerrar la pestaña del trimestre
+		spinnerService.show('searchMatDocenteSpinner');
+	// initPlanillaTrimDTO(trim);
+		desempenioService.getPlanillaTrimestralDoc(initPlanillaTrimDTO(trim)) //no existe aun
+		.then(function(response){
+			if (trim == 1) { $scope.planillas.planilla1 = response.data.planilla; };
+			if (trim == 2) { $scope.planillas.planilla2 = response.data.planilla; };
+			if (trim == 3) { $scope.planillas.planilla3 = response.data.planilla; };
+		},
+		function(response){
+			showServerError (response);
+		})
+		.finally(function(){
+			spinnerService.hide('searchMatDocenteSpinner')
+		});
+	};
 };
 
 //----------------------------------
@@ -273,9 +279,42 @@ $scope.createCopy = function(lista){
 	$scope.copiaLista = angular.copy(lista);
 }
 
-$scope.saveEditNota = function (copiaListaNotas){
-	$scope.planillaPrimerTrim.listaTrimestre = copiaListaNotas;
+function initSavePlanillaDTO (lista, trim) {
+	var planillaTrimDTO = ObjectsFactory.newPlanillaTrimDTO();
+
+	planillaTrimDTO.idMateria = $scope.selectedMAteria.idMateria;
+	planillaTrimDTO.anio = $scope.selectedMAteria.anio; //selectAnioByName($scope.selectedMAteria.anio).idAnio;
+	planillaTrimDTO.trimestre = trim;
+	planillaTrimDTO.curso = $scope.dropDownSelectedCurso.division;
+	planillaTrimDTO.idDocenteTitular = myData.idUsuario;
+	planillaTrimDTO.idDocenteTitular = null;
+	planillaTrimDTO.planilla = lista;
+
+	console.log(planillaTrimDTO);
+
+	return planillaTrimDTO;
 }
+
+$scope.saveEditNota = function (copiaListaNotas, trim){
+	// if (trim == 1) { $scope.planillas.planilla1 = angular.copy(copiaListaNotas); console.log($scope.planillas.planilla1);};
+ //  	if (trim == 2) { $scope.planillas.planilla2 = copiaListaNotas; };
+ //  	if (trim == 3) { $scope.planillas.planilla3 = copiaListaNotas; };
+
+ spinnerService.show('searchMatDocenteSpinner');
+	// initPlanillaTrimDTO(trim);
+  desempenioService.updatePlanillaTrimestralDoc(initSavePlanillaDTO(copiaListaNotas, trim)) //no existe aun
+  .then(function(response){
+  	showServerSuccess('Las notas se han actualizado con éxito. ', response);
+  	$scope.getPlanillas(trim);
+  },
+  function(response){
+  	showServerError (response);
+  })
+  .finally(function(){
+  	spinnerService.hide('searchMatDocenteSpinner')
+  });
+};
+// };
 
 
 }]);

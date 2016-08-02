@@ -504,7 +504,19 @@ public class ServicioAcademico {
 		}
 	}
 	
-	
+	public MateriaDTO getMateriaDTO(Long idMateria) throws Exception{
+		try{
+			List<MateriaDTO> listadoCompleto = getMateriasDTO();
+			for(MateriaDTO mDTO : listadoCompleto){
+				if(mDTO.getIdMateria().equals(idMateria)){
+					return mDTO;
+				}
+			}
+			return null;
+		}catch (Exception ex){
+			throw ex;
+		}
+	}
 	
 	public Boolean asignarDocentesAMateria(Personal docenteTitular, Personal docenteSuplente, Long idMateria) throws Exception { // EN ENDPOINT
 		// TODO

@@ -20,6 +20,8 @@ angular.module('clientAppApp')
     var updateBoletinInasistencia = 'inasistencia/procesar';
 
     var planillaTrimestral = 'planillaTrimestral';
+    var planillaTrimestralDoc = 'planillaTrimestralDoc';
+
 
     //-- calificaciones
 
@@ -49,6 +51,13 @@ angular.module('clientAppApp')
 
     this.updatePlanillaTrimestral = function (planillaTrimDTO){
         return $http.put(server + sDesempenio + planillaTrimestral, planillaTrimDTO);
+    };
 
-    }
+    this.getPlanillaTrimestralDoc = function (planillaTrimDTODoc){
+        return $http.post(server + sDesempenio + planillaTrimestralDoc, planillaTrimDTODoc);
+    };
+
+    this.updatePlanillaTrimestralDoc = function (planillaTrimDTODoc){
+        return $http.put(server + sDesempenio + planillaTrimestralDoc, planillaTrimDTODoc);
+    };
 }]);
