@@ -13,6 +13,7 @@
  	address: 'http://localhost:8080/',
  	sAlumno: 'EscuelaSantaLucia/rest/sAlumno/',
  	sAcademico: 'EscuelaSantaLucia/rest/sAcademico/',
+ 	sConfiguracion: 'EscuelaSantaLucia/rest/sConfiguracion/',
  	sDesempenio: 'EscuelaSantaLucia/rest/sDesempenio/',
  	sDirectivo: 'EscuelaSantaLucia/rest/sDirectivo/',
  	sDocente: 'EscuelaSantaLucia/rest/sDocente/',
@@ -83,8 +84,8 @@
  	CONCEPTO:["Clases", "Ed. Física", "Llegada tarde", "Se retira", "Otro"],
  	VALORES: [0.25, 0.5, 0.75, 1.0],
  	JUSTIFICADA: [
- 		["Injustificada", false],
-	 	["Justificada", true]
+ 	["Injustificada", false],
+ 	["Justificada", true]
  	]
  })
 
@@ -93,6 +94,21 @@
  	MAIL: ["Propio", "Padre", "Madre", "Otro"],
  	TELEFONOD: ["Celular", "Casa", "Conyuge", "Otro"],
  	MAILD: ["Personal", "Conyuge", "Otro"]
+ })
+
+
+ .constant('PARAM_CONFIG',{
+ 	COMIENZO_ACADEMICO: ['COMIENZO_ACADEMICO' ,1],
+ 	FIN_ACADEMICO: ['FIN_ACADEMICO', 2],
+ 	COMIENZO_TRIM_1: ['COMIENZO_TRIM_1', 3],
+ 	FIN_TRIM_1: ['FIN_TRIM_1', 4], 	
+ 	COMIENZO_TRIM_2: ['COMIENZO_TRIM_2', 5],
+ 	FIN_TRIM_2: ['FIN_TRIM_2', 6],
+ 	COMIENZO_TRIM_3: ['COMIENZO_TRIM_3', 7],
+ 	FIN_TRIM_3: ['FIN_TRIM_3', 8],
+ 	LIMITE_DIAS_INSCRIP: ['LIMITE_DIAS_INSCRIP', 9],
+ 	VIS_DIAS_LLAMADO: ['VIS_DIAS_LLAMADO', 10],
+ 	VIS_LLAMADO: ['VIS_LLAMADO', 11]
  })
 
  .constant('DESEMP_LIMITES', {

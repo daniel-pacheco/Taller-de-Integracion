@@ -18,8 +18,8 @@
 				<a href="">Men&uacute; Configuraci&oacute;n</a>
 			</li>
 			<hr style="margin: 2px 0;">
-			<li ng-class="{active : activeMenuIzqAlu === 1}" data-target="#modals">
-				<a href="" ng-click="seleccionar('item1')">Item 1</a>
+			<li ng-class="{active : activeMenuIzqConfig === 1}" data-target="#modals">
+				<a href="" ng-click="seleccionar('item1')">Configuraci&oacute;n general</a>
 			</li>
 			<li>
 				<img class="col-md-10" style="position: relative; margin-top: 100%;" src="./images/logo.jpg">
@@ -39,7 +39,243 @@
 		</div>
 		<div class="please-wait-small">Aguarde por favor...</div>
 	</spinner>
-	<div>
-		{{configTitle}}
+	<div id="configGeneral" ng-show="configGeneral">  <!--lista centrada -->
+		<fieldset>
+			<h1>{{subtitle}}: <small>Ingrese los datos para configurar el sistema y haga clic en guardar cuando finalice</small></h1>
+			<hr>
+			<form class="form-horizontal media" name="formConfig" novalidate>
+				<div class="formulario media-body">
+					<div class="col-md-12 personal-info">
+
+						<div class="alert alert-warning alert-dismissible" role="alert">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<span class="glyphicon glyphicon-asterisk small"></span>Campos obligatorios
+						</div>
+
+						<div class="form-group" ng-form="comienzoAcademicoForm" ng-class="{ 'has-error': comienzoAcademicoForm.comienzoAcademico.$touched && comienzoAcademicoForm.comienzoAcademico.$invalid }">
+							<div class="col-md-3 control-label">
+								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Comienzo a&ntilde;o acad&eacute;mico:</label>
+							</div>
+							<div class="col-md-2">
+								<input name="comienzoAcademico" class="form-control" placeholder="dd/mm/aaaa" ng-model="comienzoAcademicoObj.valor" max="" type="date" step="1" required/>
+							</div>
+							<div class="col-md-1">
+								<input type="button" class="btn btn-primary" value="Guardar" ng-click="updateParamConfig(comienzoAcademicoObj)" ng-disabled="!comienzoAcademicoForm.$valid">
+							</div>
+							<div class="col-md-6 control-label" style="text-align: left;">
+								<p class="text-muted"><span class="glyphicon glyphicon-info-sign"></span> {{comienzoAcademicoObj.descripcion}}</p>
+							</div>
+							<div ng-messages="comienzoAcademicoForm.comienzoAcademico.$error" class="col-md-offset-3" ng-if="comienzoAcademicoForm.comienzoAcademico.$touched && comienzoAcademicoForm.comienzoAcademico.$invalid">
+								<div ng-message="required" class="help-block">Complete este campo</div>
+								<div ng-message="date" class="help-block">Formato inv&aacute;lido</div>
+							</div>
+						</div><!-- /form-group-->
+
+						<div class="form-group" ng-form="finAcademicoForm" ng-class="{ 'has-error': finAcademicoForm.finAcademico.$touched && finAcademicoForm.finAcademico.$invalid }">
+							<div class="col-md-3 control-label">
+								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Fin a&ntilde;o acad&eacute;mico:</label>
+							</div>
+							<div class="col-md-2">
+								<input name="finAcademico" class="form-control" placeholder="dd/mm/aaaa" ng-model="finAcademicoObj.valor" max="" type="date" step="1" required/>
+							</div>
+							<div class="col-md-1">
+								<input type="button" class="btn btn-primary" value="Guardar" ng-click="updateParamConfig(finAcademicoObj)" ng-disabled="!finAcademicoForm.$valid">
+							</div>
+							<div class="col-md-6 control-label" style="text-align: left;">
+								<p class="text-muted"><span class="glyphicon glyphicon-info-sign"></span> {{finAcademicoObj.descripcion}}</p>
+							</div>
+							<div ng-messages="finAcademicoForm.finAcademico.$error" class="col-md-offset-3" ng-if="finAcademicoForm.finAcademico.$touched && finAcademicoForm.finAcademico.$invalid">
+								<div ng-message="required" class="help-block">Complete este campo</div>
+								<div ng-message="date" class="help-block">Formato inv&aacute;lido</div>
+							</div>
+						</div><!-- /form-group-->
+
+						<div class="form-group" ng-form="comienzoTrim1Form" ng-class="{ 'has-error': comienzoTrim1Form.comienzoTrim1.$touched && comienzoTrim1Form.comienzoTrim1.$invalid }">
+							<div class="col-md-3 control-label">
+								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Comienzo 1° trimestre:</label>
+							</div>
+							<div class="col-md-2">
+								<input name="comienzoTrim1" class="form-control" placeholder="dd/mm/aaaa" ng-model="comienzoTrim1Obj.valor" max="" type="date" step="1" required/>
+							</div>
+							<div class="col-md-1">
+								<input type="button" class="btn btn-primary" value="Guardar" ng-click="updateParamConfig(comienzoTrim1Obj)" ng-disabled="!comienzoTrim1Form.$valid">
+							</div>
+							<div class="col-md-6 control-label" style="text-align: left;">
+								<p class="text-muted"><span class="glyphicon glyphicon-info-sign"></span> {{comienzoTrim1Obj.descripcion}}</p>
+							</div>
+							<div ng-messages="comienzoTrim1Form.comienzoTrim1.$error" class="col-md-offset-3" ng-if="comienzoTrim1Form.comienzoTrim1.$touched && comienzoTrim1Form.comienzoTrim1.$invalid">
+								<div ng-message="required" class="help-block">Complete este campo</div>
+								<div ng-message="date" class="help-block">Formato inv&aacute;lido</div>
+							</div>
+						</div><!-- /form-group-->
+
+						<div class="form-group" ng-form="finTrim1Form" ng-class="{ 'has-error': finTrim1Form.finTrim1.$touched && finTrim1Form.finTrim1.$invalid }">
+							<div class="col-md-3 control-label">
+								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Fin 1° trimestre:</label>
+							</div>
+							<div class="col-md-2">
+								<input name="finTrim1" class="form-control" placeholder="dd/mm/aaaa" ng-model="finTrim1Obj.valor" max="" type="date" step="1" required/>
+							</div>
+							<div class="col-md-1">
+								<input type="button" class="btn btn-primary" value="Guardar" ng-click="updateParamConfig(finTrim1Obj)" ng-disabled="!finTrim1Form.$valid">
+							</div>
+							<div class="col-md-6 control-label" style="text-align: left;">
+								<p class="text-muted"><span class="glyphicon glyphicon-info-sign"></span> {{finTrim1Obj.descripcion}}</p>
+							</div>
+							<div ng-messages="finTrim1Form.finTrim1.$error" class="col-md-offset-3" ng-if="finTrim1Form.finTrim1.$touched && finTrim1Form.finTrim1.$invalid">
+								<div ng-message="required" class="help-block">Complete este campo</div>
+								<div ng-message="date" class="help-block">Formato inv&aacute;lido</div>
+							</div>
+						</div><!-- /form-group-->
+
+						<div class="form-group" ng-form="comienzoTrim2Form" ng-class="{ 'has-error': comienzoTrim2Form.comienzoTrim2.$touched && comienzoTrim2Form.comienzoTrim2.$invalid }">
+							<div class="col-md-3 control-label">
+								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Comienzo 2° trimestre:</label>
+							</div>
+							<div class="col-md-2">
+								<input name="comienzoTrim2" class="form-control" placeholder="dd/mm/aaaa" ng-model="comienzoTrim2Obj.valor" max="" type="date" step="1" required/>
+							</div>
+							<div class="col-md-1">
+								<input type="button" class="btn btn-primary" value="Guardar" ng-click="updateParamConfig(comienzoTrim2Obj)" ng-disabled="!comienzoTrim2Form.$valid">
+							</div>
+							<div class="col-md-6 control-label" style="text-align: left;">
+								<p class="text-muted"><span class="glyphicon glyphicon-info-sign"></span> {{comienzoTrim2Obj.descripcion}}</p>
+							</div>
+							<div ng-messages="comienzoTrim2Form.comienzoTrim2.$error" class="col-md-offset-3" ng-if="comienzoTrim2Form.comienzoTrim2.$touched && comienzoTrim2Form.comienzoTrim2.$invalid">
+								<div ng-message="required" class="help-block">Complete este campo</div>
+								<div ng-message="date" class="help-block">Formato inv&aacute;lido</div>
+							</div>
+						</div><!-- /form-group-->
+
+						<div class="form-group" ng-form="finTrim2Form" ng-class="{ 'has-error': finTrim2Form.finTrim2.$touched && finTrim2Form.finTrim2.$invalid }">
+							<div class="col-md-3 control-label">
+								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Fin 2° trimestre:</label>
+							</div>
+							<div class="col-md-2">
+								<input name="finTrim2" class="form-control" placeholder="dd/mm/aaaa" ng-model="finTrim2Obj.valor" max="" type="date" step="1" required/>
+							</div>
+							<div class="col-md-1">
+								<input type="button" class="btn btn-primary" value="Guardar" ng-click="updateParamConfig(finTrim2Obj)" ng-disabled="!finTrim2Form.$valid">
+							</div>
+							<div class="col-md-6 control-label" style="text-align: left;">
+								<p class="text-muted"><span class="glyphicon glyphicon-info-sign"></span> {{finTrim2Obj.descripcion}}</p>
+							</div>
+							<div ng-messages="finTrim2Form.finTrim2.$error" class="col-md-offset-3" ng-if="finTrim2Form.finTrim2.$touched && finTrim2Form.finTrim2.$invalid">
+								<div ng-message="required" class="help-block">Complete este campo</div>
+								<div ng-message="date" class="help-block">Formato inv&aacute;lido</div>
+							</div>
+						</div><!-- /form-group-->
+
+						<div class="form-group" ng-form="comienzoTrim3Form" ng-class="{ 'has-error': comienzoTrim3Form.comienzoTrim3.$touched && comienzoTrim3Form.comienzoTrim3.$invalid }">
+							<div class="col-md-3 control-label">
+								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Comienzo 3° trimestre:</label>
+							</div>
+							<div class="col-md-2">
+								<input name="comienzoTrim3" class="form-control" placeholder="dd/mm/aaaa" ng-model="comienzoTrim3Obj.valor" max="" type="date" step="1" required/>
+							</div>
+							<div class="col-md-1">
+								<input type="button" class="btn btn-primary" value="Guardar" ng-click="updateParamConfig(comienzoTrim3Obj)" ng-disabled="!comienzoTrim3Form.$valid">
+							</div>
+							<div class="col-md-6 control-label" style="text-align: left;">
+								<p class="text-muted"><span class="glyphicon glyphicon-info-sign"></span> {{comienzoTrim3Obj.descripcion}}</p>
+							</div>
+							<div ng-messages="comienzoTrim3Form.comienzoTrim3.$error" class="col-md-offset-3" ng-if="comienzoTrim3Form.comienzoTrim3.$touched && comienzoTrim3Form.comienzoTrim3.$invalid">
+								<div ng-message="required" class="help-block">Complete este campo</div>
+								<div ng-message="date" class="help-block">Formato inv&aacute;lido</div>
+							</div>
+						</div><!-- /form-group-->
+
+
+						<div class="form-group" ng-form="finTrim3Form" ng-class="{ 'has-error': finTrim3Form.finTrim3.$touched && finTrim3Form.finTrim3.$invalid }">
+							<div class="col-md-3 control-label">
+								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Fin 3° trimestre:</label>
+							</div>
+							<div class="col-md-2">
+								<input name="finTrim3" class="form-control" placeholder="dd/mm/aaaa" ng-model="finTrim3Obj.valor" max="" type="date" step="1" required/>
+							</div>
+							<div class="col-md-1">
+								<input type="button" class="btn btn-primary" value="Guardar" ng-click="updateParamConfig(finTrim3Obj)" ng-disabled="!finTrim3Form.$valid">
+							</div>
+							<div class="col-md-6 control-label" style="text-align: left;">
+								<p class="text-muted"><span class="glyphicon glyphicon-info-sign"></span> {{finTrim3Obj.descripcion}}</p>
+							</div>
+							<div ng-messages="finTrim3Form.finTrim3.$error" class="col-md-offset-3" ng-if="finTrim3Form.finTrim3.$touched && finTrim3Form.finTrim3.$invalid">
+								<div ng-message="required" class="help-block">Complete este campo</div>
+								<div ng-message="date" class="help-block">Formato inv&aacute;lido</div>
+							</div>
+						</div><!-- /form-group-->
+
+						<div class="form-group" ng-form="limiteDiasInscripForm" ng-class="{ 'has-error': limiteDiasInscripForm.limiteDiasInscrip.$touched && limiteDiasInscripForm.limiteDiasInscrip.$invalid }">
+							<div class="col-md-3 control-label">
+								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> L&iacute;mite d&iacute;as de inscripci&oacute;n:</label>
+							</div>
+							<div class="col-md-2">
+								<input name="limiteDiasInscrip" class="form-control" placeholder="2" ng-model="limiteDiasInscripObj.valor" max="" type="number" required/>
+							</div>
+							<div class="col-md-1">
+								<input type="button" class="btn btn-primary" value="Guardar" ng-click="updateParamConfig(limiteDiasInscripObj)" ng-disabled="!limiteDiasInscripForm.$valid">
+							</div>
+							<div class="col-md-6 control-label" style="text-align: left;">
+								<p class="text-muted"><span class="glyphicon glyphicon-info-sign"></span> {{limiteDiasInscripObj.descripcion}}</p>
+							</div>
+							<div ng-messages="limiteDiasInscripForm.limiteDiasInscrip.$error" class="col-md-offset-3" ng-if="limiteDiasInscripForm.limiteDiasInscrip.$touched && limiteDiasInscripForm.limiteDiasInscrip.$invalid">
+								<div ng-message="required" class="help-block">Complete este campo</div>
+								<div ng-message="type" class="help-block">Formato inv&aacute;lido</div>
+							</div>
+						</div><!-- /form-group-->
+
+						<div class="form-group" ng-form="visDiasLlamadoForm" ng-class="{ 'has-error': visDiasLlamadoForm.visDiasLlamado.$touched && visDiasLlamadoForm.visDiasLlamado.$invalid }">
+							<div class="col-md-3 control-label">
+								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> D&iacute;as para inscribirse:</label>
+							</div>
+							<div class="col-md-2">
+								<input name="visDiasLlamado" class="form-control" placeholder="7" ng-model="visDiasLlamadoObj.valor" max="" type="number" required/>
+							</div>
+							<div class="col-md-1">
+								<input type="button" class="btn btn-primary" value="Guardar" ng-click="updateParamConfig(visDiasLlamadoObj)" ng-disabled="!visDiasLlamadoForm.$valid">
+							</div>
+							<div class="col-md-6 control-label" style="text-align: left;">
+								<p class="text-muted"><span class="glyphicon glyphicon-info-sign"></span> {{visDiasLlamadoObj.descripcion}}</p>
+							</div>
+							<div ng-messages="visDiasLlamadoForm.visDiasLlamado.$error" class="col-md-offset-3" ng-if="visDiasLlamadoForm.visDiasLlamado.$touched && visDiasLlamadoForm.visDiasLlamado.$invalid">
+								<div ng-message="required" class="help-block">Complete este campo</div>
+								<div ng-message="type" class="help-block">Formato inv&aacute;lido</div>
+							</div>
+						</div><!-- /form-group-->
+
+						<div class="form-group" ng-form="visLlamadoForm" ng-class="{ 'has-error': visLlamadoForm.visLlamado.$touched && visLlamadoForm.visLlamado.$invalid }">
+							<div class="col-md-3 control-label">
+								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Habilitar llamado:</label>
+							</div>
+							<div class="col-md-2">
+								<select class="form-control" ng-model="visLlamadoObj.valor" name="visLlamado" required>
+									<option value="true" selected>Si</option>
+									<option value="false">No</option>
+								</select> 
+							</div>
+							<div class="col-md-1">
+								<input type="button" class="btn btn-primary" value="Guardar" ng-click="updateParamConfig(visLlamadoObj)" ng-disabled="!visLlamadoForm.$valid">
+							</div>
+							<div class="col-md-6 control-label" style="text-align: left;">
+								<p class="text-muted"><span class="glyphicon glyphicon-info-sign"></span> {{visLlamadoObj.descripcion}}</p>
+							</div>
+							<div ng-messages="visLlamadoForm.visLlamado.$error" class="col-md-offset-3" ng-if="visLlamadoForm.visLlamado.$touched && visLlamadoForm.visLlamado.$invalid">
+								<div ng-message="required" class="help-block">Complete este campo</div>
+								<div ng-message="date" class="help-block">Formato inv&aacute;lido</div>
+							</div>
+						</div><!-- /form-group-->
+
+						<div class="form-group">
+							<div class="col-md-4 col-md-offset-2">
+								<a type="button" class="btn btn-success btn-block" ng-click="getAllConfig()" data-dismiss="modal"><span class="glyphicon glyphicon-refresh"></span> Actualizar</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</fieldset>
 	</div>
+
 </div>

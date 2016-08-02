@@ -238,8 +238,8 @@ var newPlanillaTrimUpdateDTO = function(){
 var newMesa = function(){
   var mesa= {
     "idLlamado" : null,
-    "fechaHoraInicio" : "mmm dd, aaaa hh:mm:ss AM/PM",
-    "fechaHoraFin" : "mmm dd, aaaa hh:mm:ss AM/PM",
+    "fechaHoraInicio" : '',
+    "fechaHoraFin" : '',
     "idMateria" : null,
     "tribunalDoc1" : "",
     "tribunalDoc2" : "",
@@ -253,8 +253,8 @@ var newLlamado = function(){
     "idLlamado": null,
     "descripcion": "",
     "listaMesas": null,
-    "fechaInicio": "mmm dd, aaaa hh:mm:ss AM/PM",
-    "fechaFin": "mmm dd, aaaa hh:mm:ss AM/PM"
+    "fechaInicio": '',
+    "fechaFin": ''
   };
   return llamado;
 };
@@ -314,20 +314,30 @@ var newLlamado = function(){
     return historicoPorMateria;
   };
 
-var newDesempenioAlumno = function(){
-  var desempenioAlumno = {
-    nombre:'',
-    apellido: '',
-    nroDocumento: '',
-    primerTrimDesap: 0,
-    segundoTrimDesap: 0,
-    tercerTrimDesap: 0,
-    totalDesap: 0,
-    totalAp: 0,
-    totalInasist: 0
+  var newDesempenioAlumno = function(){
+    var desempenioAlumno = {
+      nombre:'',
+      apellido: '',
+      nroDocumento: '',
+      primerTrimDesap: 0,
+      segundoTrimDesap: 0,
+      tercerTrimDesap: 0,
+      totalDesap: 0,
+      totalAp: 0,
+      totalInasist: 0
+    };
+    return desempenioAlumno;
   };
-  return desempenioAlumno;
-};
+
+  var newParamConfiguracion = function() {
+    var ParamConfiguracion = {
+      "idParametroConfiguracion" : null,
+      "nombre": '',
+      "valor" : '',
+      "descripcion": ""
+    };
+    return ParamConfiguracion;
+  }
 
   return {
     newAlumno: newAlumno,
@@ -351,6 +361,9 @@ var newDesempenioAlumno = function(){
     newMesa: newMesa,
     newLlamado: newLlamado,
     newEspecialidad: newEspecialidad,
+
+    //-- Configuracion
+    newParamConfiguracion: newParamConfiguracion,
 
     //-- Estadisticas
 

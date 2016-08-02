@@ -26,10 +26,12 @@
  .controller('AdminNavBarCtrl', ['$scope', 'MENU_ADMIN', function ($scope, MENU_ADMIN) {
 
  	$scope.menuAdmin = MENU_ADMIN;
- 	
+
  	$scope.setActive = function(menuItem) {
  		$scope.activeMenu = menuItem;
  	};
+
+ 	$scope.setActive (['.configuracion', 'Configuracion']);
 
  	$scope.popover = {
  		"title": "Despedirse",   
