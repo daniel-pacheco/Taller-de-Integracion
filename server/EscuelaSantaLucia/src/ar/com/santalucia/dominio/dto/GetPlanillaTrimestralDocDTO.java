@@ -5,7 +5,7 @@ package ar.com.santalucia.dominio.dto;
  *
  */
 public class GetPlanillaTrimestralDocDTO {
-	private Integer idMateria;
+	private Long idMateria;
 	private Integer trimestre;
 	private String anio;
 	private String curso;
@@ -15,7 +15,7 @@ public class GetPlanillaTrimestralDocDTO {
 		super();
 	}
 
-	public GetPlanillaTrimestralDocDTO(Integer idMateria, Integer trimestre,
+	public GetPlanillaTrimestralDocDTO(Long idMateria, Integer trimestre,
 			String anio, String curso, Integer cicloLectivo) {
 		super();
 		this.idMateria = idMateria;
@@ -25,11 +25,11 @@ public class GetPlanillaTrimestralDocDTO {
 		this.cicloLectivo = cicloLectivo;
 	}
 
-	public Integer getIdMateria() {
+	public Long getIdMateria() {
 		return idMateria;
 	}
 
-	public void setIdMateria(Integer idMateria) {
+	public void setIdMateria(Long idMateria) {
 		this.idMateria = idMateria;
 	}
 

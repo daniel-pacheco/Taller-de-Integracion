@@ -388,23 +388,33 @@ public class ServicioDocente extends ServicioUsuario<Personal> {
 		}
 	}
 
-	public List<MateriaDTO> ObtenerMateriasDictadas(Long idPersonal) throws Exception{
+	public List<MateriaDTO> ObtenerMateriasDictadas(Long idPersonal) throws ValidacionException, Exception{
 		// Solicitar el listado completo de DTO de materias
 		// Buscar el personal para comparar los string
 		// poner las coincidencias en un set y luego devolver una lista
 		try{
+			ValidacionException vEx = new ValidacionException();
 			ServicioAcademico sAcademico = new ServicioAcademico();
-			
-			List<DocenteMateriasDTO> listadoCompleto = listDocentesMateriasDTO();
-			List<MateriaDTO> listadoDevolver = new ArrayList<MateriaDTO>();
-			for(DocenteMateriasDTO dmDTO : listadoCompleto){
-				
+			Personal docente = getUsuario(idPersonal); //OBTENER EL PERSONAL
+			if(docente == null){
+				vEx.addMensajeError("No se encontró el docente.");
+				throw vEx;
 			}
+			List<MateriaDTO> listadoCompleto = sAcademico.getMateriasDTO();
+			Set<MateriaDTO> listadoIntermedio = new HashSet<MateriaDTO>();
+			List<MateriaDTO> listadoDevolver = new ArrayList<MateriaDTO>();
+			for(MateriaDTO dmDTO : listadoCompleto){ // lleno el set de materias que dicata el docente (set para filtrar) 
+				if( dmDTO.getDocenteTitular().equals(docente.toString()) || dmDTO.getDocenteSuplente().equals(docente.toString()) ){
+					listadoIntermedio.add(dmDTO);
+				}
+			}
+			listadoDevolver.addAll(listadoIntermedio); // Paso a lista lo que resulta del set
+			return listadoDevolver;
+		}catch(ValidacionException vEx){
+			throw vEx;
 		}catch(Exception ex){
-			
+			throw ex;
 		}
-		
-		
-		return null;
 	}
+	
 }
