@@ -36,6 +36,9 @@
     //   $state.go('login');
     // });
 
+ $urlRouterProvider.when('/', '/login');
+ $urlRouterProvider.when('', '/login');
+
  $urlRouterProvider.otherwise(function ($injector, $location, $state) {
 
     event.preventDefault();
@@ -90,5 +93,4 @@
     //                 //pegarle al servid
     //               });
 
-  });
-  
+});

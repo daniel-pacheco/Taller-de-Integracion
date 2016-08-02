@@ -23,8 +23,7 @@ module.exports = function(config) {
     files: [
       // bower:js
       'bower_components/jquery/dist/jquery.js',
-      'bower_components/tableExport.jquery.plugin/jquery.base64.js',
-      'bower_components/tableExport.jquery.plugin/tableExport.js',
+      'bower_components/jquery-dist/jquery.min.js',
       'bower_components/angular/angular.js',
       'bower_components/angular-animate/angular-animate.js',
       'bower_components/angular-cookies/angular-cookies.js',
@@ -48,6 +47,8 @@ module.exports = function(config) {
       'bower_components/ng-img-crop/compile/minified/ng-img-crop.js',
       'bower_components/angular-spinners/dist/angular-spinners.min.js',
       'bower_components/lodash/lodash.js',
+      'bower_components/tableExportJquery/jquery.base64.js',
+      'bower_components/tableExportJquery/tableExport.js',
       // endbower
       "app/scripts/**/*.js",
       "test/mock/**/*.js",

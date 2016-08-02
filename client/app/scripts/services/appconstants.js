@@ -63,7 +63,7 @@
  	docente: ['.docente', 'Personal'],
  	anio: ['.anio', 'Año'],
  	llamados: ['.llamados', 'Llamados'],
- 	desemp1: ['.desemp', 'Desempeño1'],
+ 	// desemp1: ['.desemp', 'Desempeño1'],
  	desemp: ['.desempenio', 'Desempeño'],
  	micuenta: ['.micuenta', 'Mi Cuenta'],
  	test: ['.test', '']

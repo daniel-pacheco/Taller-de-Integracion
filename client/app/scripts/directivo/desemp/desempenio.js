@@ -53,11 +53,14 @@ $scope.seleccionar = function (opcion){
 		$scope.activeMenuIzq = opcion;
 		$scope.todos = true;
 		$scope.title = 'Cuadro de Honor: ';
+		$scope.resetAdministrarTable();
 
 	} else {
-		$scope.activeMenuIzq = opcion;
+		$scope.activeMenuIzq = opcion.nombre;
+		$scope.dropDownSelectedAnio = opcion;
 		$scope.porAnio = true;
 		$scope.title = 'Desempeño anual: ';
+		$scope.resetAdministrarTable();
 	};
 	
 };
@@ -150,6 +153,9 @@ $scope.$on('$viewContentLoaded', function(){
 	getAnios();
 });
 
+$scope.resetAdministrarTable = function(){
+	$scope.showPlanilla = false;
+};
 
 //-- [Desempenio/Todos]
 //-- [Desempenio/Todos] variables

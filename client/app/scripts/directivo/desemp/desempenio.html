@@ -25,10 +25,10 @@
 						<a href="" ng-click="seleccionar('todos')">Todos</a>
 					</li>
 					<li ng-repeat="anio in listaAnios" ng-class="{active : activeMenuIzq === anio.nombre}" data-target="#modals">
-						<a href="" ng-click="seleccionar(anio.nombre)">{{anio.nombre}}</a>
+						<a href="" ng-click="seleccionar(anio)">{{anio.nombre}}</a>
 					</li>				
 					<li>
-						<img class="col-md-10" style="position: relative; margin-top: 100%;" src="./images/logo.jpg">
+						<img class="col-md-10" style="position: relative" src="./images/logo.jpg">
 					</li>
 				</ul>
 			</div>
@@ -98,31 +98,27 @@
 		</div>
 		<div id="porAnio" ng-show="porAnio">
 			<fieldset>
-				<h1>{{title}} <small>Total de alumnos de XXXXX año</small></h1>
+				<h1>{{title}} <small>Total de alumnos de {{activeMenuIzq}}</small></h1>
 				<hr>		<!-- <button ng-click="resetList()">reset list</button> -->
 				<div class="panel panel-default">
 					<div class="panel-heading">
-					<!--	<label>Filtrar por materia: </label>
-						<select name="dropDownSelectAnio" ng-change="drawGraphics('porAnio')" class="form-control-inline" ng-model="dropDownSelectedAnio" ng-options="anio.nombre for anio in listaAnios">
-							<option value="" disabled selected>Seleccione una opci&oacute;n</option>
-						</select>
-						<select name="dropDownSelectAnio" ng-change="drawGraphics('porAnio')" class="form-control-inline" ng-model="dropDownSelectedAnio" ng-options="curso.idCurso as curso.division for curso in dropDownSelectedAnio.listaCursos">
-							<option value="" disabled selected>Seleccione una opci&oacute;n</option>
-						</select> -->
-						<label for="dropDownSelectAnio">A&ntilde;o: </label> 
+						<!-- <label for="dropDownSelectAnio">A&ntilde;o: </label> 
 						<select name="dropDownSelectAnio" ng-change="resetAdministrarTable()" class="form-control-inline" ng-model="dropDownSelectedAnio" ng-options="anio.nombre for anio in listaAnios">
 							<option value="" disabled selected>Seleccione un a&ntilde;o</option>
-						</select>
-						<label for="dropDownSelectCurso">Divisi&oacute;n: </label> 
-						<select name="dropDownSelectCurso" ng-change="resetAdministrarTable()" class="form-control-inline" ng-model="dropDownSelectedCurso" ng-options="'Division: ' + curso.division + ' Turno: ' + curso.turno for curso in dropDownSelectedAnio.listaCursos">
-							<option value="" disabled selected>Seleccione una divisi&oacute;n</option>
-						</select>
-						<button class="btn btn-default" ng-click="drawGraphics('porAnio')">Aceptar</button>
+						</select> -->
+						<form name="formSelectCurso">
+							<label for="dropDownSelectCurso">Divisi&oacute;n: </label> 
+							<select name="dropDownSelectCurso" ng-change="resetAdministrarTable()" class="form-control-inline" ng-model="dropDownSelectedCurso" ng-options="'Division: ' + curso.division + ' Turno: ' + curso.turno for curso in dropDownSelectedAnio.listaCursos" required>
+								<option value="" disabled selected>Seleccione una divisi&oacute;n</option>
+							</select>
+							<button class="btn btn-default" ng-click="showPlanilla = true; drawGraphics('porAnio')" ng-disabled="!formSelectCurso.$valid">Aceptar</button>
+						</form>
+
 						<button class="btn btn-default pull-right" ng-click="exportAction('dir-planilla-desempenio')" bs-tooltip="tooltip.tooltipExport">Exportar</button>
 					</div>
 				</div>
 				<br>
-				<div ng-if="dropDownSelectedCurso">
+				<div ng-if="showPlanilla">
 					<h3>PLanilla de desempeño: {{dropDownSelectedAnio.nombre}} - {{dropDownSelectedCurso.division}} </h3>
 					<hr>				
 					<table class="table table-hover table-striped table-condensed" export-table="dir-planilla-desempenio">
