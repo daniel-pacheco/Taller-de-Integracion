@@ -43,7 +43,7 @@
 					<select name="dropDownSelectCurso" ng-change="resetAdministrarTable(); toggleListaPlantillasTrim(false)" class="form-control-inline" ng-model="dropDownSelectedCurso" ng-options="'Division: ' + curso.division + ' Turno: ' + curso.turno for curso in dropDownSelectedAnio.listaCursos" required>
 						<option value="" disabled selected>Seleccione una divisi&oacute;n</option>
 					</select>
-					<button class="btn btn-default" ng-click="toggleListaPlantillasTrim(true)" bs-tooltip="tooltip.tooltipExport" ng-disabled="!formSelectCurso.$valid">Buscar</button>
+					<button class="btn btn-default" ng-click="toggleListaPlantillasTrim(true)" ng-disabled="!formSelectCurso.$valid">Buscar</button>
 				</form>
 			</div>
 		</div>
@@ -74,91 +74,147 @@
 										</tr>
 										<th class="col-md-2">
 											<div ng-show="!colocarNota">
-												<button type="button" class="btn btn-default btn-block btn-xs" style="float: top" ng-click="colocarNota=!colocarNota; createCopy(planillaPrimerTrim.listaTrimestre)">Editar Planilla</button>
+												<button type="button" class="btn btn-default btn-block btn-xs" style="float: top" ng-click="colocarNota=!colocarNota; createCopy(planillas.planilla1)">Editar Planilla</button>
 												<button type="button" class="btn btn-default btn-block btn-xs" ng-click="exportAction('doc-primer-trim')" style="float: top">Exportar Tabla</button>
 											</div>
 											<div ng-show="colocarNota">
 												<button type="button" class="btn btn-danger btn-block btn-md" style="float: top" ng-click="colocarNota=!colocarNota">Cancelar Edici&oacute;n</button>
-												<button type="button" class="btn btn-primary btn-block btn-md" style="float: top" ng-click="colocarNota=!colocarNota; saveEditNota(copiaLista)">Finalizar Edici&oacute;n</button>
+												<button type="button" class="btn btn-primary btn-block btn-md" style="float: top" ng-click="colocarNota=!colocarNota; saveEditNota(copiaLista, 1)">Finalizar Edici&oacute;n</button>
 											</div>
 										</th>
 										<th class="col-md-2" style="vertical-align: middle; text-align: center;">Primer trimestre</th>
-										<th class="col-md-2" style="vertical-align: middle; text-align: center;">Calif anual</th>
+										<!-- <th class="col-md-2" style="vertical-align: middle; text-align: center;">Calif anual</th> -->
 									</tr>
 								</thead>
 								<tbody>
 									<tr ng-repeat="lista in copiaLista" ng-show="colocarNota">
-										<td class="col-md-3">{{$index+1}} - {{lista.alumno}}</td>
-										<td><input ng-model="lista.primerTrim" type="number" class="form-control" style="width: 48px; height: 27px; margin: auto" placeholder="-"></td>
-										<td style="vertical-align: middle; text-align: center;">{{lista.califAnual}}</td>
+										<td class="col-md-6">{{$index+1}} - {{lista.alumno}}</td>
+										<td class="col-md-3"><input ng-model="lista.nota" type="number" class="form-control" style="width: 48px; height: 27px; margin: auto" placeholder="-"></td>
+										<!-- <td style="vertical-align: middle; text-align: center;">{{lista.califAnual}}</td> -->
 									</tr>
-									<tr ng-repeat="lista in planillaPrimerTrim.listaTrimestre"  ng-show="!colocarNota">
-										<td class="col-md-3">{{$index+1}} - {{lista.alumno}}</td>
-										<td style="vertical-align: middle; text-align: center;">{{lista.primerTrim}}</td>
-										<td style="vertical-align: middle; text-align: center;">{{lista.califAnual}}</td>
+									<tr ng-repeat="lista in planillas.planilla1"  ng-show="!colocarNota">
+										<td class="col-md-6">{{$index+1}} - {{lista.alumno}}</td>
+										<td class="col-md-3" style="vertical-align: middle; text-align: center;">{{lista.nota}}</td>
+										<!-- <td style="vertical-align: middle; text-align: center;">{{lista.califAnual}}</td> -->
 									</tr>
 								</tbody>
 							</table>
 							<div ng-show="colocarNota" class="col-md-7 col-md-offset-1" style="margin-top:10px">
 								<button type="button" class="btn btn-danger btn-md" ng-click="colocarNota=!colocarNota">Cancelar Edici&oacute;n</button>
-								<button type="button" class="btn btn-primary btn-md" ng-click="colocarNota=!colocarNota; saveEditNota(copiaLista)">Finalizar Edici&oacute;n</button>
+								<button type="button" class="btn btn-primary btn-md" ng-click="colocarNota=!colocarNota; saveEditNota(copiaLista, 1)">Finalizar Edici&oacute;n</button>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="panel panel-default">
-					<div class="panel-heading" style="cursor: pointer" ng-click="cargarPlanilla(2); downGlyphiconSegundoTri = !downGlyphiconSegundoTri" bs-collapse-toggle>
+					<div class="panel-heading" style="cursor: pointer" ng-click="getPlanillas(2); downGlyphiconSegundoTri = !downGlyphiconSegundoTri" bs-collapse-toggle>
 						<div class="panel-title">
 							<span ng-class="_.includes(multiplePanels.activePanels, 1)? 'glyphicon glyphicon-chevron-up': 'glyphicon glyphicon-chevron-down'"></span> Segundo Trimestre
 						</div>
 					</div>
 					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
 						<div class="panel-body form-group table-responsive">
-							<table class="table-hover table-striped table-condensed table-bordered">
+							<div class="alert alert-warning alert-dismissible col-md-7" role="alert">
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								Presione "Editar planilla" para asignar/editar las notas y luego haga click en "Finalizar Edici&oacute;n" para guardar los cambios realizados
+							</div>
+							<table class="table-hover table-striped table-condensed table-bordered col-md-6" export-table="doc-segundo-trim">
 								<thead>
-									<tr style="height: 95px; position: relative;" class="affix" data-offset-top="-60">
-										<th class="col-md-3">
-											<button type="button" class="btn btn-success btn-block btn-md" style="float: top">Editar Plantilla</button>
+									<tr>
+										<tr style="visibility: hidden">
+											<th>{{selectedMAteria.nombre}}</th>
+											<th>{{selectedMAteria.anio}}</th>
+											<th>{{dropDownSelectedCurso.division}}</th>
+										</tr>
+										<th class="col-md-2">
+											<div ng-show="!colocarNota">
+												<button type="button" class="btn btn-default btn-block btn-xs" style="float: top" ng-click="colocarNota=!colocarNota; createCopy(planillas.planilla2)">Editar Planilla</button>
+												<button type="button" class="btn btn-default btn-block btn-xs" ng-click="exportAction('doc-segundo-trim')" style="float: top">Exportar Tabla</button>
+											</div>
+											<div ng-show="colocarNota">
+												<button type="button" class="btn btn-danger btn-block btn-md" style="float: top" ng-click="colocarNota=!colocarNota">Cancelar Edici&oacute;n</button>
+												<button type="button" class="btn btn-primary btn-block btn-md" style="float: top" ng-click="colocarNota=!colocarNota; saveEditNota(copiaLista, 2)">Finalizar Edici&oacute;n</button>
+											</div>
 										</th>
-										<th class="Rotate-90 col-md-1" ng-repeat="mate in planillaSegundoTrim.listaTrimestres[0].notas" style="vertical-align: middle; padding: inherit;">{{mate.materia}}</th>	<!--Esto toma del primer alumno la lista de materias y las muestra en el head-->
+										<th class="col-md-2" style="vertical-align: middle; text-align: center;">Primer trimestre</th>
+										<!-- <th class="col-md-2" style="vertical-align: middle; text-align: center;">Calif anual</th> -->
 									</tr>
 								</thead>
 								<tbody>
-									<tr ng-repeat="lista in planillaSegundoTrim.listaTrimestres">
-										<td class="col-md-3">{{$index+1}} - {{lista.alumno}}</td>
-										<!-- <td ng-repeat="nota in lista.notas"><input ng-model="nota.nota" type="text" class="form-control" style="width: 48px; height: 27px; margin: auto"></td> -->
-										<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">{{nota.nota}}</td>
+									<tr ng-repeat="lista in copiaLista" ng-show="colocarNota">
+										<td class="col-md-6">{{$index+1}} - {{lista.alumno}}</td>
+										<td class="col-md-3"><input ng-model="lista.nota" type="number" class="form-control" style="width: 48px; height: 27px; margin: auto" placeholder="-"></td>
+										<!-- <td style="vertical-align: middle; text-align: center;">{{lista.califAnual}}</td> -->
+									</tr>
+									<tr ng-repeat="lista in planillas.planilla2"  ng-show="!colocarNota">
+										<td class="col-md-6">{{$index+1}} - {{lista.alumno}}</td>
+										<td class="col-md-3" style="vertical-align: middle; text-align: center;">{{lista.nota}}</td>
+										<!-- <td style="vertical-align: middle; text-align: center;">{{lista.califAnual}}</td> -->
 									</tr>
 								</tbody>
 							</table>
+							<div ng-show="colocarNota" class="col-md-7 col-md-offset-1" style="margin-top:10px">
+								<button type="button" class="btn btn-danger btn-md" ng-click="colocarNota=!colocarNota">Cancelar Edici&oacute;n</button>
+								<button type="button" class="btn btn-primary btn-md" ng-click="colocarNota=!colocarNota; saveEditNota(copiaLista, 2)">Finalizar Edici&oacute;n</button>
+							</div>
 						</div>
 					</div>
 				</div>
 				<div class="panel panel-default">
-					<div class="panel-heading" style="cursor: pointer" ng-click="cargarPlanilla(3); downGlyphiconTercerTri = !downGlyphiconTercerTri" bs-collapse-toggle>
+					<div class="panel-heading" style="cursor: pointer" ng-click="getPlanillas(3); downGlyphiconTercerTri = !downGlyphiconTercerTri" bs-collapse-toggle>
 						<div class="panel-title">
 							<span ng-class="_.includes(multiplePanels.activePanels, 2)? 'glyphicon glyphicon-chevron-up': 'glyphicon glyphicon-chevron-down'"></span> Tercer Trimestre
 						</div>
 					</div>
 					<div class="panel-collapse" role="tabpanel" bs-collapse-target>
 						<div class="panel-body form-group table-responsive">
-							<table class="table-hover table-striped table-condensed table-bordered">
+							<div class="alert alert-warning alert-dismissible col-md-7" role="alert">
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								Presione "Editar planilla" para asignar/editar las notas y luego haga click en "Finalizar Edici&oacute;n" para guardar los cambios realizados
+							</div>
+							<table class="table-hover table-striped table-condensed table-bordered col-md-6" export-table="doc-tercer-trim">
 								<thead>
-									<tr style="height: 95px; position: relative;" class="affix" data-offset-top="-60">
-										<th class="col-md-3">
-											<button type="button" class="btn btn-success btn-block btn-md" style="float: top">Editar Plantilla</button>
+									<tr>
+										<tr style="visibility: hidden">
+											<th>{{selectedMAteria.nombre}}</th>
+											<th>{{selectedMAteria.anio}}</th>
+											<th>{{dropDownSelectedCurso.division}}</th>
+										</tr>
+										<th class="col-md-2">
+											<div ng-show="!colocarNota">
+												<button type="button" class="btn btn-default btn-block btn-xs" style="float: top" ng-click="colocarNota=!colocarNota; createCopy(planillas.planilla3)">Editar Planilla</button>
+												<button type="button" class="btn btn-default btn-block btn-xs" ng-click="exportAction('doc-tercer-trim')" style="float: top">Exportar Tabla</button>
+											</div>
+											<div ng-show="colocarNota">
+												<button type="button" class="btn btn-danger btn-block btn-md" style="float: top" ng-click="colocarNota=!colocarNota">Cancelar Edici&oacute;n</button>
+												<button type="button" class="btn btn-primary btn-block btn-md" style="float: top" ng-click="colocarNota=!colocarNota; saveEditNota(copiaLista, 3)">Finalizar Edici&oacute;n</button>
+											</div>
 										</th>
-										<th class="Rotate-90 col-md-1" ng-repeat="mate in planillaTercerTrim.listaTrimestres[0].notas" style="vertical-align: middle; padding: inherit;">{{mate.materia}}</th>	<!--Esto toma del primer alumno la lista de materias y las muestra en el head-->
+										<th class="col-md-2" style="vertical-align: middle; text-align: center;">Primer trimestre</th>
+										<!-- <th class="col-md-2" style="vertical-align: middle; text-align: center;">Calif anual</th> -->
 									</tr>
 								</thead>
 								<tbody>
-									<tr ng-repeat="lista in planillaTercerTrim.listaTrimestres">
-										<td class="col-md-3">{{$index+1}} - {{lista.alumno}}</td>
-										<!-- <td ng-repeat="nota in lista.notas"><input ng-model="nota.nota" type="text" class="form-control" style="width: 48px; height: 27px; margin: auto"></td> -->
-										<td ng-repeat="nota in lista.notas" style="vertical-align: middle; text-align: center;">{{nota.nota}}</td>
+									<tr ng-repeat="lista in copiaLista" ng-show="colocarNota">
+										<td class="col-md-6">{{$index+1}} - {{lista.alumno}}</td>
+										<td class="col-md-3"><input ng-model="lista.nota" type="number" class="form-control" style="width: 48px; height: 27px; margin: auto" placeholder="-"></td>
+										<!-- <td style="vertical-align: middle; text-align: center;">{{lista.califAnual}}</td> -->
+									</tr>
+									<tr ng-repeat="lista in planillas.planilla3"  ng-show="!colocarNota">
+										<td class="col-md-6">{{$index+1}} - {{lista.alumno}}</td>
+										<td class="col-md-3" style="vertical-align: middle; text-align: center;">{{lista.nota}}</td>
+										<!-- <td style="vertical-align: middle; text-align: center;">{{lista.califAnual}}</td> -->
 									</tr>
 								</tbody>
 							</table>
+							<div ng-show="colocarNota" class="col-md-7 col-md-offset-1" style="margin-top:10px">
+								<button type="button" class="btn btn-danger btn-md" ng-click="colocarNota=!colocarNota">Cancelar Edici&oacute;n</button>
+								<button type="button" class="btn btn-primary btn-md" ng-click="colocarNota=!colocarNota; saveEditNota(copiaLista, 3)">Finalizar Edici&oacute;n</button>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -218,7 +274,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="panel panel-default">
+			<!--	<div class="panel panel-default">
 					<div class="panel-heading" style="cursor: pointer" ng-click="cargarPlanilla('todos'); downGlyphiconTodos = !downGlyphiconTodos" bs-collapse-toggle>
 						<div class="panel-title">
 							<span ng-class="_.includes(multiplePanels.activePanels, 5)? 'glyphicon glyphicon-chevron-up': 'glyphicon glyphicon-chevron-down'"></span> Todos los conceptos
@@ -261,7 +317,7 @@
 									<tr>{{filteredAlumnos}}</tr>
 									<tr class="centerTable" ng-repeat="alumno in filteredAlumnos = (planillaTodos.listaTrimestres | filter:filtro)">
 										<td class="col-md-3">{{$index+1}} - {{alumno.alumno}}</td>
-										<!-- <td ng-repeat="nota in lista.notas"><input ng-model="nota.nota" type="text" class="form-control" style="width: 48px; height: 27px; margin: auto"></td> -->
+										<td ng-repeat="nota in lista.notas"><input ng-model="nota.nota" type="text" class="form-control" style="width: 48px; height: 27px; margin: auto"></td>
 										<td ng-class="{'desaprobado': alumno.primerTrim < 6}">{{alumno.primerTrim}}</td>
 										<td ng-class="{'desaprobado': alumno.segundoTrim < 6}">{{alumno.segundoTrim}}</td>
 										<td ng-class="{'desaprobado': alumno.tercerTrim < 6}">{{alumno.tercerTrim}}</td>
@@ -274,7 +330,7 @@
 							</table>
 						</div>
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</div>
 	</fieldset>

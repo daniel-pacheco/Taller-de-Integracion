@@ -20,7 +20,8 @@
     var listAll = 'listAll';
     var listAllMin = 'listAllMin';
     var myData = 'DatosPersonales';
-    var deleteByDni = 'deleteByDni/'
+    var deleteByDni = 'deleteByDni/';
+    var listAllMinByDoc = 'listAllMinByDoc/';
 
     this.getById = function (id) {
     	return $http.get(server + sDocente + expectParam + id);
@@ -52,6 +53,10 @@
 
     this.delByDni = function(dni){      
       return $http.delete(server + sDocente + expectParam + deleteByDni + dni);
+    };
+
+    this.getAllMatMinByDoc = function (idDocente) {
+        return $http.get(server + sDocente + listAllMinByDoc + idDocente);
     };
 
 }]);    
