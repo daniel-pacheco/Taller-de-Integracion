@@ -45,8 +45,8 @@
 
  .constant('MENU_DOCENTE',{ //la dirección relativa entre los estados anidados se separa por .
  	materias: ['.materias', 'Materias'],
- 	notas: ['.notas', 'Notas'],
- 	aula: ['.aula', 'Aula'],
+ 	// notas: ['.notas', 'Notas'],
+ 	// aula: ['.aula', 'Aula'],
  	micuenta: ['.micuenta', 'Mi Cuenta'],
  })
 

@@ -27,6 +27,15 @@
 </div>
 
 <div class="col-md-10">
+	<spinner name="searchDocenteSpinner" ng-cloak="">
+		<div class="overlay"></div>
+		<div class="spinner-small">			            
+			<div>
+				<div class="ng-include: './views/templates/defaultspinner.html'"></div>
+			</div>
+		</div>
+		<div class="please-wait-small">Aguarde por favor...</div>
+	</spinner>
 	<div ng-show="misDatos">
 		<fieldset>
 			<h1>{{subtitle}}: <small>Informaci&oacute;n personal del usuario.</small></h1>
@@ -89,7 +98,7 @@
 					</div>
 					<div class="form-group">
 						<div class="col-lg-7">
-							<a type="button" class="btn btn-success btn-block" ng-click="initCall()" data-dismiss="modal"><span class="glyphicon glyphicon-edit"></span> Editar perfil</a>
+							<a type="button" class="btn btn-success btn-block" ng-click="initCall()" data-dismiss="modal"><span class="glyphicon glyphicon-edit"></span> Reecargar Datos</a>
 						</div>
 					</div>
 				</form>
