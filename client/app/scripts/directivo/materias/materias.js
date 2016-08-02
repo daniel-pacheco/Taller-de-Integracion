@@ -22,7 +22,7 @@
     }
   });
 })
-  .controller('MateriasCtrl', ['$scope', 'academicoService', 'docenteService', 'exportTableService', 'ModalService', 'ObjectsFactory', 'spinnerService' ,function ($scope, academicoService, docenteService, exportTableService, ModalService, ObjectsFactory, spinnerService) {
+ .controller('MateriasCtrl', ['$scope', 'academicoService', 'docenteService', 'exportTableService', 'ModalService', 'ObjectsFactory', 'spinnerService' ,function ($scope, academicoService, docenteService, exportTableService, ModalService, ObjectsFactory, spinnerService) {
 
 //-- [Materias]
 //-- [Materias] variables
@@ -46,9 +46,12 @@ var setActiveAlu = function(menuItemAlu) {
 };
 
 $scope.seleccionar = function(id) {
+  $scope.listado = false;
+  $scope.showNuevaMateria = false;
+  $scope.showEditMateriaMenuIzq = false;
+
   switch (id){
     case 'listado':
-    $scope.showNuevaMateria = false;
     $scope.subtitle = "Listado";
     $scope.listado = true;
     setActiveAlu(1);
@@ -59,7 +62,6 @@ $scope.seleccionar = function(id) {
     break;
     case 'nuevaMateria':
     $scope.formMat.$setUntouched();
-    $scope.listado = false;
     $scope.subtitle = "Nueva materia";
     $scope.showNuevaMateria = true;
     $scope.nuevaMateria = new ObjectsFactory.newMateria();
@@ -69,11 +71,14 @@ $scope.seleccionar = function(id) {
     setActiveAlu(2);
     break;
     case 'editar':
-    $scope.listado = false;
     $scope.showNuevaMateria = true;
+    $scope.showEditMateriaMenuIzq = true;
+    $scope.subtitle = "Editar materia";
+    $scope.nuevaMateria = new ObjectsFactory.newMateria();
+    searchDocente();//Esta lista de docentes deberia tener solo el docente y el ID 
     searchArea();
     searchAnio();
-    setActiveAlu(2);
+    setActiveAlu(3);
     break;
 
   }
@@ -206,7 +211,6 @@ $scope.editMateria = function(materia){
 var editMateria = function(materia, materiaFull) {
   $scope.seleccionar('editar');
   // var materiaFull = materia;
-
   $scope.nuevaMateria.nombreMateria = materiaFull.nombre;
   $scope.nuevaMateria.descripcion = materiaFull.descripcion;
   $scope.nuevaMateria.idMateria = materiaFull.idMateria;

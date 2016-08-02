@@ -302,8 +302,8 @@
 											<label for="">Teléfono:</label>
 										</div>
 										<div class="col-md-5">
-											<input name="listaTelefono" class="form-control" ng-model="nuevoTelefonoSimple.nroTelefono" maxlength="10" placeholder="4353535" type="tel" ng-show="!mostrarListaTelefonos">
-											<select multiple class="form-control" ng-show="mostrarListaTelefonos">
+											<input name="listaTelefono" class="form-control" ng-model="nuevoTelefonoSimple.nroTelefono" maxlength="10" placeholder="4353535" type="tel" ng-if="!mostrarListaTelefonos">
+											<select multiple class="form-control" ng-if="mostrarListaTelefonos">
 												<option ng-repeat="telefono in nuevoDocente.listaTelefonos">{{telefono.caracteristica}}-{{telefono.nroTelefono}}({{telefono.tipoTelefono}})</option>
 											</select> 
 											<div ng-messages="formDoc.listaTelefono.$error" ng-if="formDoc.listaTelefono.$touched && formDoc.listaTelefono.$invalid">
@@ -322,8 +322,8 @@
 											<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Mail:</label>
 										</div>
 										<div class="col-md-7">
-											<input class="form-control" name="dirMail" type="email" ng-model="nuevoMailSimple.direccionMail" required placeholder="nombre@dominio.com" ng-show="!mostrarListaMails"/>
-											<select multiple class="form-control" ng-show="mostrarListaMails">
+											<input class="form-control" name="dirMail" type="email" ng-model="nuevoMailSimple.direccionMail" required placeholder="nombre@dominio.com" ng-if="!mostrarListaMails"/>
+											<select multiple class="form-control" ng-if="mostrarListaMails">
 												<option ng-repeat="mail in nuevoDocente.listaMails">{{mail.direccionMail}} ({{mail.tipoMail}})</option>
 											</select>
 											<div ng-messages="formDoc.dirMail.$error" ng-if="formDoc.dirMail.$touched && formDoc.dirMail.$invalid">

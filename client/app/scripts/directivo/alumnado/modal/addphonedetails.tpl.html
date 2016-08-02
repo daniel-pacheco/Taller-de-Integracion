@@ -42,8 +42,7 @@
 										<td>
 											<div ng-if="!telefono.show">{{telefono.tipoTelefono}}</div>
 											<div ng-if="telefono.show" ng-class="{ 'has-error': formRow.tipoTelefono.$touched && formRow.tipoTelefono.$invalid }">
-												<select name="tipoTelefono"  class="form-control" ng-model="copiaTelefono.tipoTelefono">
-													<option ng-repeat="contacto in contactosOptions.TELEFONO" value="contacto">{{contacto}}</option>
+												<select name="tipoTelefono"  class="form-control" ng-model="copiaTelefono.tipoTelefono" required ng-options="contacto for contacto in contactosOptions.TELEFONO">
 												</select>
 											</div>
 										</td>
@@ -87,9 +86,8 @@
 								</div>
 							</div>
 							<div class="form-group col-md-3" ng-class="{ 'has-error': form.tipoTelefono.$touched && form.tipoTelefono.$invalid }">
-								<select name="tipoTelefono"  class="form-control" ng-model="nuevoTelefono.tipoTelefono" required>
+								<select name="tipoTelefono"  class="form-control" ng-model="nuevoTelefono.tipoTelefono" required ng-options="contacto for contacto in contactosOptions.TELEFONO">
 									<option value="" disabled selected>Tipo</option>
-									<option ng-repeat="contacto in contactosOptions.TELEFONO" value="contacto">{{contacto}}</option>
 								</select>
 								<div ng-messages="form.tipoTelefono.$error" ng-if="form.tipoTelefono.$touched && form.tipoTelefono.$invalid">
 									<div ng-message="pattern" class="help-block" style="position: fixed;">Formato invalido</div>

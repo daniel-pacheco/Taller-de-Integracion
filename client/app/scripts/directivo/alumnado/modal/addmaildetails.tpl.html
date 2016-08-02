@@ -35,11 +35,9 @@
 										<td>
 											<div ng-if="!mail.show">{{mail.tipoMail}}</div>
 											<div ng-if="mail.show" ng-class="{ 'has-error': formRow.tipoMail.$touched && formRow.tipoMail.$invalid }">
-												<select name="tipoMail"  class="form-control" ng-model="copiaMail.tipoMail">
-													<option ng-repeat="contacto in contactosOptions.MAIL" value="contacto">{{contacto}}</option>
+												<select name="tipoMail"  class="form-control" ng-model="copiaMail.tipoMail" required ng-options="contacto for contacto in contactosOptions.MAIL">
 												</select>
 											</div>
-
 										</td>
 										
 										<td>
@@ -74,9 +72,8 @@
 									</div>
 								</div>
 								<div class="form-group col-md-3" ng-class="{ 'has-error': form.tipoMail.$touched && form.tipoMail.$invalid }">
-									<select name="tipoMail"  class="form-control" ng-model="nuevoMail.tipoMail" required>
+									<select name="tipoMail"  class="form-control" ng-model="nuevoMail.tipoMail" required ng-options="contacto for contacto in contactosOptions.MAIL">
 										<option value="" disabled selected>Tipo</option>
-										<option ng-repeat="contacto in contactosOptions.MAIL" value="contacto">{{contacto}}</option>
 									</select>
 									<div ng-messages="form.tipoMail.$error" ng-if="form.tipoMail.$touched && form.tipoMail.$invalid">
 										<div ng-message="pattern" class="help-block" style="position: fixed;">Formato invalido</div>
