@@ -232,4 +232,14 @@ public class ServicioConfiguracion {
 		}
 	}
 	
+	public Boolean restaurarBase() throws Exception {
+		Runtime app = Runtime.getRuntime();
+		try {
+			app.exec("cmd.exe /C start c:\\users\\eric\\desktop\\test_backup_mysql\\test_restore.bat");
+			return true;
+		} catch (Exception ex) {
+			throw new Exception("Error al restaurar el backup: " + ex.getMessage());
+		}
+	}
+	
 }
