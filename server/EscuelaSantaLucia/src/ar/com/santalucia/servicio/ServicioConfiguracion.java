@@ -15,11 +15,6 @@ import ar.com.santalucia.excepciones.ValidacionException;
 
 public class ServicioConfiguracion {
 	private static GestorParametroConfiguracion gConfiguracion;
-
-	public ServicioConfiguracion(GestorParametroConfiguracion gConfiguracion) {
-		super();
-		this.gConfiguracion = gConfiguracion;
-	}
 	
 	public ServicioConfiguracion() throws Exception {
 		// TODO Auto-generated constructor stub
