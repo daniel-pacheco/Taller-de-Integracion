@@ -1535,6 +1535,29 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 	
+	@GET
+	@Path("/listLlamadosMin")
+	public Response listarLlamadosMin(
+		@HeaderParam("rol") final String rolIn,
+		@HeaderParam("auth0") final String token){
+		if (!rolIn.equals(Login.DIRECTIVO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
+		String nuevoToken = new String();
+		try{
+			setInstance();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
+			if (nuevoToken == null) {
+				return Response.ok(servicioAcademico.listarLlamados()).build();
+			} else {
+				return Response.ok(servicioAcademico.listarLlamados()).header("auth0", nuevoToken).build();
+			}
+		} catch(ValidacionException vEx) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(new FrontMessage(vEx.getMensajesError().toString(),FrontMessage.INFO)).build();
+		} catch(Exception ex) {
+			return Response.serverError().entity(new FrontMessage("Ocurrió un problema al intentar listar los llamados.",FrontMessage.CRITICAL)).build();
+		}
+	}
 	
 }
 	
