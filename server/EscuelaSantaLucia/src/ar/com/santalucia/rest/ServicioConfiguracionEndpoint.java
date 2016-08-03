@@ -4,6 +4,7 @@
 package ar.com.santalucia.rest;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,6 +67,19 @@ public class ServicioConfiguracionEndpoint {
 			return Response.ok(ex).build();
 		}
 		return Response.ok(parametro.getIdParametroConfiguracion()).build();
+	}
+	
+	@GET
+	@Path("/parametroListAll/")
+	public Response getParametroById(){
+		List<ParametroConfiguracion> parametros = new ArrayList<ParametroConfiguracion>();
+		try{
+			setInstance();
+			parametros = servicioConfiguracion.listAllParametros();
+		}catch(Exception ex){
+			return Response.ok(ex).build();
+		}
+		return Response.ok(parametros).build();
 	}
 	
 	@DELETE

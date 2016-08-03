@@ -41,9 +41,11 @@ import ar.com.santalucia.dominio.dto.DetallePreviaDTO;
 import ar.com.santalucia.dominio.dto.InscripcionConsultaDTO;
 import ar.com.santalucia.dominio.dto.InscripcionConsultaV2DTO;
 import ar.com.santalucia.dominio.dto.InscripcionConsultaV2Detalle;
+import ar.com.santalucia.dominio.dto.LlamadoDTO;
 import ar.com.santalucia.dominio.dto.MateriaAltaDTO;
 import ar.com.santalucia.dominio.dto.MateriaDTO;
 import ar.com.santalucia.dominio.dto.MesaAltaDTO;
+import ar.com.santalucia.dominio.dto.MesaDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Area;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
@@ -1579,6 +1581,37 @@ public class ServicioAcademico {
 		return 0;
 	}
 	
+	/**
+	 * Devuelve un listado de llamado en formato DTO
+	 * @return
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	public List<LlamadoDTO> listarLlamados() throws ValidacionException, Exception{
+		try{
+			List<Llamado> llamados = new ArrayList<Llamado>();
+			llamados = gLlamado.List();  //
+			for(Llamado ll : llamados){
+				MesaDTO mDTO = new MesaDTO();
+				for(Mesa mesa: ll.getListaMesas()){
+					mDTO.setFechaHoraFin(mesa.getFechaHoraFin());
+					mDTO.setFechaHoraInicio(mesa.getFechaHoraInicio());
+					mDTO.setIdMateria(mesa.getMateria().getIdMateria());
+					mDTO.setIdMesa(mesa.getIdMesa());
+					mDTO.setMateria(mesa.getMateria().getNombre());
+					for(Personal p : mesa.getIntegrantesTribunal()){
+						//if mesa.getIntegrantesTribunal().size() 
+					}
+				}
+				
+			}
+		}catch(ValidacionException vEx){
+			
+		}catch(Exception ex){
+			
+		}
+		return null;
+	}
 	
 	public void closeSession() throws Exception { 
 		gAnio.closeSession();

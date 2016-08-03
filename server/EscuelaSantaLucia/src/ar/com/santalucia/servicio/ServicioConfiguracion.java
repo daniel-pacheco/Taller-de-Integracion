@@ -91,6 +91,14 @@ public class ServicioConfiguracion {
 		}
 	}
 	
+	public List<ParametroConfiguracion> listAllParametros() throws Exception{
+		try{
+			return gConfiguracion.getByExample(new ParametroConfiguracion(null,null,null,null));
+		}catch(Exception ex){
+			throw new Exception("No se pudo obtener el listado de PARÁMETROS: " + ex.getMessage());
+		}
+	}
+	
 	/**
 	 * Valida la coherencia de las fechas de los trimestres comprendidas en el año academico 
 	 */
