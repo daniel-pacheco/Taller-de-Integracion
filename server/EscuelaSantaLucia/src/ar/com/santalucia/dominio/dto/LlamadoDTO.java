@@ -6,7 +6,7 @@ import java.util.List;
 public class LlamadoDTO {
 	private Long idLlamado;
 	private String descripcion;
-	private String vigente;
+	private Boolean vigente;
 	private Date fechaInicio;
 	private Date fechaFin;
 	private List<MesaDTO>listaMesas;
@@ -15,7 +15,7 @@ public class LlamadoDTO {
 		super();
 	}
 
-	public LlamadoDTO(Long idLlamado, String descripcion, String vigente, Date fechaInicio, Date fechaFin,
+	public LlamadoDTO(Long idLlamado, String descripcion, Boolean vigente, Date fechaInicio, Date fechaFin,
 			List<MesaDTO> listaMesas) {
 		super();
 		this.idLlamado = idLlamado;
@@ -42,11 +42,11 @@ public class LlamadoDTO {
 		this.descripcion = descripcion;
 	}
 
-	public String getVigente() {
+	public Boolean getVigente() {
 		return vigente;
 	}
 
-	public void setVigente(String vigente) {
+	public void setVigente(Boolean vigente) {
 		this.vigente = vigente;
 	}
 
