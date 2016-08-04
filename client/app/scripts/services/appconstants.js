@@ -96,7 +96,7 @@
  	MAILD: ["Personal", "Conyuge", "Otro"]
  })
 
-
+/*
  .constant('PARAM_CONFIG',{
  	COMIENZO_ACADEMICO: ['COMIENZO_ACADEMICO' ,1],
  	FIN_ACADEMICO: ['FIN_ACADEMICO', 2],
@@ -109,7 +109,7 @@
  	LIMITE_DIAS_INSCRIP: ['LIMITE_DIAS_INSCRIP', 9],
  	VIS_DIAS_LLAMADO: ['VIS_DIAS_LLAMADO', 10],
  	VIS_LLAMADO: ['VIS_LLAMADO', 11]
- })
+ })*/
 
  .constant('DESEMP_LIMITES', {
 	ins: [0, 4], //[,)

@@ -59,7 +59,7 @@
 								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Comienzo a&ntilde;o acad&eacute;mico:</label>
 							</div>
 							<div class="col-md-2">
-								<input name="comienzoAcademico" class="form-control" placeholder="dd/mm/aaaa" ng-model="comienzoAcademicoObj.valor" max="" type="date" step="1" required/>
+								<input name="comienzoAcademico" class="form-control" placeholder="dd/mm/aaaa" ng-model="comienzoAcademicoObj.valor" max="{{finAcademicoObj.valor}}" type="date" step="1" required/>
 							</div>
 							<div class="col-md-1">
 								<input type="button" class="btn btn-primary" value="Guardar" ng-click="updateParamConfig(comienzoAcademicoObj)" ng-disabled="!comienzoAcademicoForm.$valid">
@@ -70,6 +70,7 @@
 							<div ng-messages="comienzoAcademicoForm.comienzoAcademico.$error" class="col-md-offset-3" ng-if="comienzoAcademicoForm.comienzoAcademico.$touched && comienzoAcademicoForm.comienzoAcademico.$invalid">
 								<div ng-message="required" class="help-block">Complete este campo</div>
 								<div ng-message="date" class="help-block">Formato inv&aacute;lido</div>
+								<div ng-message="max" class="help-block">Debe ser anterior al Fin de a&ntilde;o acad&eacute;mico</div>
 							</div>
 						</div><!-- /form-group-->
 
@@ -78,7 +79,7 @@
 								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Fin a&ntilde;o acad&eacute;mico:</label>
 							</div>
 							<div class="col-md-2">
-								<input name="finAcademico" class="form-control" placeholder="dd/mm/aaaa" ng-model="finAcademicoObj.valor" max="" type="date" step="1" required/>
+								<input name="finAcademico" class="form-control" placeholder="dd/mm/aaaa" ng-model="finAcademicoObj.valor" min="{{comienzoAcademicoObj.valor}}" type="date" step="1" required/>
 							</div>
 							<div class="col-md-1">
 								<input type="button" class="btn btn-primary" value="Guardar" ng-click="updateParamConfig(finAcademicoObj)" ng-disabled="!finAcademicoForm.$valid">
@@ -89,6 +90,7 @@
 							<div ng-messages="finAcademicoForm.finAcademico.$error" class="col-md-offset-3" ng-if="finAcademicoForm.finAcademico.$touched && finAcademicoForm.finAcademico.$invalid">
 								<div ng-message="required" class="help-block">Complete este campo</div>
 								<div ng-message="date" class="help-block">Formato inv&aacute;lido</div>
+								<div ng-message="min" class="help-block">Debe ser posterior al Comienzo de a&ntilde;o acad&eacute;mico</div>
 							</div>
 						</div><!-- /form-group-->
 
@@ -97,7 +99,7 @@
 								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Comienzo 1° trimestre:</label>
 							</div>
 							<div class="col-md-2">
-								<input name="comienzoTrim1" class="form-control" placeholder="dd/mm/aaaa" ng-model="comienzoTrim1Obj.valor" max="" type="date" step="1" required/>
+								<input name="comienzoTrim1" class="form-control" placeholder="dd/mm/aaaa" ng-model="comienzoTrim1Obj.valor" min="{{comienzoAcademicoObj.valor}}" max="{{finTrim1Obj.valor}}" type="date" step="1" required/>
 							</div>
 							<div class="col-md-1">
 								<input type="button" class="btn btn-primary" value="Guardar" ng-click="updateParamConfig(comienzoTrim1Obj)" ng-disabled="!comienzoTrim1Form.$valid">
@@ -108,6 +110,8 @@
 							<div ng-messages="comienzoTrim1Form.comienzoTrim1.$error" class="col-md-offset-3" ng-if="comienzoTrim1Form.comienzoTrim1.$touched && comienzoTrim1Form.comienzoTrim1.$invalid">
 								<div ng-message="required" class="help-block">Complete este campo</div>
 								<div ng-message="date" class="help-block">Formato inv&aacute;lido</div>
+								<div ng-message="min" class="help-block">Debe ser posterior al Comienzo de a&ntilde;o acad&eacute;mico</div>
+								<div ng-message="max" class="help-block">Formato anterior al Fin del 1° trimestre</div>
 							</div>
 						</div><!-- /form-group-->
 
@@ -116,7 +120,7 @@
 								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Fin 1° trimestre:</label>
 							</div>
 							<div class="col-md-2">
-								<input name="finTrim1" class="form-control" placeholder="dd/mm/aaaa" ng-model="finTrim1Obj.valor" max="" type="date" step="1" required/>
+								<input name="finTrim1" class="form-control" placeholder="dd/mm/aaaa" ng-model="finTrim1Obj.valor" min="{{comienzoTrim1Obj.valor}}" max="{{comienzoTrim2Obj.valor}}" type="date" step="1" required/>
 							</div>
 							<div class="col-md-1">
 								<input type="button" class="btn btn-primary" value="Guardar" ng-click="updateParamConfig(finTrim1Obj)" ng-disabled="!finTrim1Form.$valid">
@@ -127,6 +131,8 @@
 							<div ng-messages="finTrim1Form.finTrim1.$error" class="col-md-offset-3" ng-if="finTrim1Form.finTrim1.$touched && finTrim1Form.finTrim1.$invalid">
 								<div ng-message="required" class="help-block">Complete este campo</div>
 								<div ng-message="date" class="help-block">Formato inv&aacute;lido</div>
+								<div ng-message="min" class="help-block">Debe ser posterior al comienzo del 1° trimestre</div>
+								<div ng-message="max" class="help-block">Debe ser anterior al comienzo del 2° trimestre</div>
 							</div>
 						</div><!-- /form-group-->
 
@@ -135,7 +141,7 @@
 								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Comienzo 2° trimestre:</label>
 							</div>
 							<div class="col-md-2">
-								<input name="comienzoTrim2" class="form-control" placeholder="dd/mm/aaaa" ng-model="comienzoTrim2Obj.valor" max="" type="date" step="1" required/>
+								<input name="comienzoTrim2" class="form-control" placeholder="dd/mm/aaaa" ng-model="comienzoTrim2Obj.valor" min="{{finTrim1Obj.valor}}" max="{{finTrim2Obj.valor}}" type="date" step="1" required/>
 							</div>
 							<div class="col-md-1">
 								<input type="button" class="btn btn-primary" value="Guardar" ng-click="updateParamConfig(comienzoTrim2Obj)" ng-disabled="!comienzoTrim2Form.$valid">
@@ -146,6 +152,8 @@
 							<div ng-messages="comienzoTrim2Form.comienzoTrim2.$error" class="col-md-offset-3" ng-if="comienzoTrim2Form.comienzoTrim2.$touched && comienzoTrim2Form.comienzoTrim2.$invalid">
 								<div ng-message="required" class="help-block">Complete este campo</div>
 								<div ng-message="date" class="help-block">Formato inv&aacute;lido</div>
+								<div ng-message="min" class="help-block">Debe ser posterior al fin del 1 trimestre</div>
+								<div ng-message="max" class="help-block">Debe ser anterior al fin del 2 trimestre</div>
 							</div>
 						</div><!-- /form-group-->
 
@@ -154,7 +162,7 @@
 								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Fin 2° trimestre:</label>
 							</div>
 							<div class="col-md-2">
-								<input name="finTrim2" class="form-control" placeholder="dd/mm/aaaa" ng-model="finTrim2Obj.valor" max="" type="date" step="1" required/>
+								<input name="finTrim2" class="form-control" placeholder="dd/mm/aaaa" ng-model="finTrim2Obj.valor" min="{{comienzoTrim2Obj.valor}}" max="{{comienzoTrim3Obj.valor}}" type="date" step="1" required/>
 							</div>
 							<div class="col-md-1">
 								<input type="button" class="btn btn-primary" value="Guardar" ng-click="updateParamConfig(finTrim2Obj)" ng-disabled="!finTrim2Form.$valid">
@@ -165,6 +173,8 @@
 							<div ng-messages="finTrim2Form.finTrim2.$error" class="col-md-offset-3" ng-if="finTrim2Form.finTrim2.$touched && finTrim2Form.finTrim2.$invalid">
 								<div ng-message="required" class="help-block">Complete este campo</div>
 								<div ng-message="date" class="help-block">Formato inv&aacute;lido</div>
+								<div ng-message="min" class="help-block">Debe ser posterior al comienzo del 2° trimestre</div>
+								<div ng-message="max" class="help-block">Debe ser anterior al comienzo del 3° trimestre</div>
 							</div>
 						</div><!-- /form-group-->
 
@@ -173,7 +183,7 @@
 								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Comienzo 3° trimestre:</label>
 							</div>
 							<div class="col-md-2">
-								<input name="comienzoTrim3" class="form-control" placeholder="dd/mm/aaaa" ng-model="comienzoTrim3Obj.valor" max="" type="date" step="1" required/>
+								<input name="comienzoTrim3" class="form-control" placeholder="dd/mm/aaaa" ng-model="comienzoTrim3Obj.valor" min="{{finTrim2Obj.valor}}" max="{{finTrim3Obj.valor}}" type="date" step="1" required/>
 							</div>
 							<div class="col-md-1">
 								<input type="button" class="btn btn-primary" value="Guardar" ng-click="updateParamConfig(comienzoTrim3Obj)" ng-disabled="!comienzoTrim3Form.$valid">
@@ -184,6 +194,8 @@
 							<div ng-messages="comienzoTrim3Form.comienzoTrim3.$error" class="col-md-offset-3" ng-if="comienzoTrim3Form.comienzoTrim3.$touched && comienzoTrim3Form.comienzoTrim3.$invalid">
 								<div ng-message="required" class="help-block">Complete este campo</div>
 								<div ng-message="date" class="help-block">Formato inv&aacute;lido</div>
+								<div ng-message="min" class="help-block">Debe ser posterior al fin del 2° trimestre</div>
+								<div ng-message="max" class="help-block">Debe ser anterior al fin del 3° trimestre</div>
 							</div>
 						</div><!-- /form-group-->
 
@@ -193,7 +205,7 @@
 								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Fin 3° trimestre:</label>
 							</div>
 							<div class="col-md-2">
-								<input name="finTrim3" class="form-control" placeholder="dd/mm/aaaa" ng-model="finTrim3Obj.valor" max="" type="date" step="1" required/>
+								<input name="finTrim3" class="form-control" placeholder="dd/mm/aaaa" ng-model="finTrim3Obj.valor" min="{{comienzoTrim3Obj.valor}}" max="{{finAcademicoObj.valor}}" type="date" step="1" required/>
 							</div>
 							<div class="col-md-1">
 								<input type="button" class="btn btn-primary" value="Guardar" ng-click="updateParamConfig(finTrim3Obj)" ng-disabled="!finTrim3Form.$valid">
@@ -204,6 +216,8 @@
 							<div ng-messages="finTrim3Form.finTrim3.$error" class="col-md-offset-3" ng-if="finTrim3Form.finTrim3.$touched && finTrim3Form.finTrim3.$invalid">
 								<div ng-message="required" class="help-block">Complete este campo</div>
 								<div ng-message="date" class="help-block">Formato inv&aacute;lido</div>
+								<div ng-message="min" class="help-block">Debe ser posterior al comienzo del 3° trimestre</div>
+								<div ng-message="max" class="help-block">Debe ser anterior al Fin del a&ntilde;o acad&eacute;mico</div>
 							</div>
 						</div><!-- /form-group-->
 
@@ -222,7 +236,7 @@
 							</div>
 							<div ng-messages="limiteDiasInscripForm.limiteDiasInscrip.$error" class="col-md-offset-3" ng-if="limiteDiasInscripForm.limiteDiasInscrip.$touched && limiteDiasInscripForm.limiteDiasInscrip.$invalid">
 								<div ng-message="required" class="help-block">Complete este campo</div>
-								<div ng-message="type" class="help-block">Formato inv&aacute;lido</div>
+								<div ng-message="number" class="help-block">Solo n&uacute;meros</div>
 							</div>
 						</div><!-- /form-group-->
 
@@ -241,7 +255,7 @@
 							</div>
 							<div ng-messages="visDiasLlamadoForm.visDiasLlamado.$error" class="col-md-offset-3" ng-if="visDiasLlamadoForm.visDiasLlamado.$touched && visDiasLlamadoForm.visDiasLlamado.$invalid">
 								<div ng-message="required" class="help-block">Complete este campo</div>
-								<div ng-message="type" class="help-block">Formato inv&aacute;lido</div>
+								<div ng-message="number" class="help-block">Solo n&uacute;meros</div>
 							</div>
 						</div><!-- /form-group-->
 
