@@ -29,7 +29,6 @@ module.exports = function(config) {
       'bower_components/angular-cookies/angular-cookies.js',
       'bower_components/angular-messages/angular-messages.js',
       'bower_components/angular-mocks/angular-mocks.js',
-      'bower_components/angular-modal-service/dst/angular-modal-service.js',
       'bower_components/moment/moment.js',
       'bower_components/angular-moment/angular-moment.js',
       'bower_components/angular-resource/angular-resource.js',
@@ -49,6 +48,7 @@ module.exports = function(config) {
       'bower_components/lodash/lodash.js',
       'bower_components/tableExportJquery/jquery.base64.js',
       'bower_components/tableExportJquery/tableExport.js',
+      'bower_components/angular-modal-service/dst/angular-modal-service.js',
       // endbower
       "app/scripts/**/*.js",
       "test/mock/**/*.js",

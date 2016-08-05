@@ -22,7 +22,7 @@
     }
   });
 })
- .controller('MateriasCtrl', ['$scope', 'academicoService', 'docenteService', 'exportTableService', 'ModalService', 'ObjectsFactory', 'spinnerService' ,function ($scope, academicoService, docenteService, exportTableService, ModalService, ObjectsFactory, spinnerService) {
+ .controller('MateriasCtrl', ['$q', '$scope', 'academicoService', 'docenteService', 'exportTableService', 'ModalService', 'ObjectsFactory', 'spinnerService' ,function ($q, $scope, academicoService, docenteService, exportTableService, ModalService, ObjectsFactory, spinnerService) {
 
 //-- [Materias]
 //-- [Materias] variables
@@ -55,9 +55,6 @@ $scope.seleccionar = function(id) {
     $scope.subtitle = "Listado";
     $scope.listado = true;
     setActiveAlu(1);
-/*    searchAnio();
-    searchDocente();//Esta lista de docentes deberia tener solo el docente y el ID
-    searchArea();*/
     listAllMaterias();
     break;
     case 'nuevaMateria':
@@ -74,10 +71,6 @@ $scope.seleccionar = function(id) {
     $scope.showNuevaMateria = true;
     $scope.showEditMateriaMenuIzq = true;
     $scope.subtitle = "Editar materia";
-    $scope.nuevaMateria = new ObjectsFactory.newMateria();
-    searchDocente();//Esta lista de docentes deberia tener solo el docente y el ID 
-    searchArea();
-    searchAnio();
     setActiveAlu(3);
     break;
 
@@ -197,20 +190,28 @@ $scope.eliminarMateria = function(materia){
   };
 };
 
-
-
 //-- [Materias/Listado] 
 //-- [Materias/Listado] variables
 $scope.listaMaterias = [];
 //-- [Materias/Listado] Form Management
 
-$scope.editMateria = function(materia){
-  getMateriaById(materia);
-};
+function initMateriaEdit(materia, materiaFull) {
 
-var editMateria = function(materia, materiaFull) {
-  $scope.seleccionar('editar');
-  // var materiaFull = materia;
+  $scope.nuevaMateria = new ObjectsFactory.newMateria();
+  $q.all([
+    searchDocente(), //Esta lista de docentes deberia tener solo el docente y el ID 
+    searchArea(),
+    searchAnio()
+    ]).then(function(data) {
+      editMateria(materia, materiaFull);
+    });    
+  };
+
+  $scope.editMateria = function(materia){
+    getMateriaById(materia);
+  };
+
+  var editMateria = function(materia, materiaFull) {
   $scope.nuevaMateria.nombreMateria = materiaFull.nombre;
   $scope.nuevaMateria.descripcion = materiaFull.descripcion;
   $scope.nuevaMateria.idMateria = materiaFull.idMateria;
@@ -218,7 +219,7 @@ var editMateria = function(materia, materiaFull) {
   $scope.nuevaMateria.area = _.find($scope.listaAreas, ['nombre', materia.area]).idArea;
   $scope.nuevaMateria.idDocenteTitular = materia.docenteTitular? materiaFull.docenteTitular.idUsuario: null;
   $scope.nuevaMateria.idDocenteSuplente = materia.docenteSuplente? materiaFull.docenteSuplente.idUsuario: null;
-
+  $scope.seleccionar('editar');
 };
 
 //-- [Materias/Listado] filters
@@ -238,16 +239,12 @@ function listAllMaterias() {
     spinnerService.hide('searchMateriaSpinner');
   });
 };
-/*$scope.$on('$viewContentLoaded', function(){
-  listAllMaterias(); //cambiar esto cuando se pueda elegir el año
-});*/
-
 
 function getMateriaById(materia) {
   spinnerService.show('searchMateriaSpinner');
   academicoService.matGetById(materia.idMateria)
   .then(function(response){
-    editMateria(materia, response.data);
+    initMateriaEdit(materia, response.data);
   },
   function(response){
     showServerError(response);
@@ -256,7 +253,6 @@ function getMateriaById(materia) {
     spinnerService.hide('searchMateriaSpinner');
   });
 };
-
 
 //-- [Materias/Nueva] 
 //-- [Materias/Nueva] variables
@@ -298,8 +294,11 @@ $scope.agregarMateria = function (mat) {
 
 function searchDocente() {
 
+  var promise = {};
+
   spinnerService.show('searchMateriaSpinner');
-  docenteService.getAllMin()  
+  promise = docenteService.getAllMin();
+  promise
   .then(function(response){
     $scope.listaDocentes = response.data;
   },
@@ -308,12 +307,18 @@ function searchDocente() {
  })
   .finally(function(){
     spinnerService.hide('searchMateriaSpinner');
-  });  
+  });
+
+  return promise;  
 };
 
 function searchAnio() {
+
+  var promise = {};
+
   spinnerService.show('searchMateriaSpinner');
-  academicoService.anioGetAllMin()
+  promise = academicoService.anioGetAllMin();
+  promise
   .then(function(response){
     $scope.listaAnios = response.data;
   },
@@ -323,11 +328,16 @@ function searchAnio() {
   .finally(function(){
     spinnerService.hide('searchMateriaSpinner')
   });
+  return promise;
 };
 
 function searchArea() {
+
+  var promise = {};
+
   spinnerService.show('searchMateriaSpinner');
-  academicoService.areaGetAll()
+  promise = academicoService.areaGetAll();
+  promise
   .then(
     function(response){
       $scope.listaAreas = response.data;
@@ -338,6 +348,7 @@ function searchArea() {
   .finally(function(){
     spinnerService.hide('searchMateriaSpinner');
   });
+  return promise;  
 };
 
 function addArea(area) {
