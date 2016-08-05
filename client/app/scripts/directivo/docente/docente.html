@@ -122,7 +122,9 @@
 												<td>{{materia.area}}</td>
 												<td>{{materia.condicion}}</td>
 												<td ng-if="button.radio == 'doc'">
-													<span ng-click="comfirmDesvincularDocente(docente.idUsuario, materia.condicion, materia.idMateria)" data-animation="am-flip-x" bs-tooltip="tooltip.tooltipDesasignar" style="width:25%; cursor: pointer" class="glyphicon glyphicon-remove-circle"></span>
+													<button class="btn btn-default btn-xs" ng-click="comfirmDesvincularDocente(docente.idUsuario, materia.condicion, materia.idMateria)" data-animation="am-flip-x"  bs-tooltip="tooltip.tooltipDesasignar" style="width: 25%">
+														<span class="glyphicon glyphicon-remove-circle"></span> <!-- style="width:25%; cursor: pointer"  -->
+													</button>
 												</td>
 											</tr>
 										</tbody>
