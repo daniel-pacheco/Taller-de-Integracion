@@ -1,9 +1,18 @@
 package ar.com.santalucia.servicio;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.hibernate.cfg.Configuration;
+
+import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
 import ar.com.santalucia.aplicacion.gestor.sistema.configuracion.GestorParametroConfiguracion;
 import ar.com.santalucia.dominio.modelo.sistema.configuracion.ParametroConfiguracion;
 import ar.com.santalucia.excepciones.ValidacionException;
@@ -15,11 +24,6 @@ import ar.com.santalucia.excepciones.ValidacionException;
 
 public class ServicioConfiguracion {
 	private static GestorParametroConfiguracion gConfiguracion;
-
-	public ServicioConfiguracion(GestorParametroConfiguracion gConfiguracion) {
-		super();
-		this.gConfiguracion = gConfiguracion;
-	}
 	
 	public ServicioConfiguracion() throws Exception {
 		// TODO Auto-generated constructor stub
@@ -86,6 +90,14 @@ public class ServicioConfiguracion {
 	public List<ParametroConfiguracion> getParametros(ParametroConfiguracion parametroConfiguracion) throws Exception{
 		try{
 			return gConfiguracion.getByExample(parametroConfiguracion);
+		}catch(Exception ex){
+			throw new Exception("No se pudo obtener el listado de PARÁMETROS: " + ex.getMessage());
+		}
+	}
+	
+	public List<ParametroConfiguracion> listAllParametros() throws Exception{
+		try{
+			return gConfiguracion.getByExample(new ParametroConfiguracion(null,null,null,null));
 		}catch(Exception ex){
 			throw new Exception("No se pudo obtener el listado de PARÁMETROS: " + ex.getMessage());
 		}
@@ -222,13 +234,82 @@ public class ServicioConfiguracion {
 	}
 	
 	
-	public Boolean generarBackup() throws Exception {
+	public Boolean generarBackup() throws IOException, Exception {
+		ValidacionException vEx = new ValidacionException();
+		Runtime app = Runtime.getRuntime();
+		Configuration configFile = new Configuration();
+		try {
+			HibernateUtil.getHibConfig();
+		} catch (Exception e) {
+			throw new Exception("Error al conectar con la base de datos: " + e.getMessage());
+		}
+		
+		String fechaHora = generarFechaArchivo();
+		Map<String, String> parametros = new HashMap<String, String>();
+		try {
+			parametros.put("host", " --host=localhost");
+			parametros.put("port", " --port=3306");
+			parametros.put("user", " --user=" + configFile.getProperty("hibernate.connection.username"));
+			parametros.put("password", " --password=" + configFile.getProperty("hibernate.connection.password"));
+			parametros.put("fileOut", " --result-file=\"C:\\Users\\Eric\\Desktop\\test_backup_mysql\\backup_escuelabd_" + fechaHora + ".backup\" ");
+			parametros.put("exe", "c:\\users\\eric\\desktop\\test_backup_mysql\\mysqldump.exe");
+			parametros.put("base", " " + configFile.getProperty("hibernate.connection.url").substring(28));
+		} catch (Exception e) {
+			vEx.addMensajeError("Error en la lectura de la configuración");
+			throw vEx;
+		}
+		
+		File rutaArchivo = new File("c:/users/eric/desktop/test_backup_mysql/test_backup2.bat");
+		if (!rutaArchivo.exists()) {
+			rutaArchivo.createNewFile();
+		} 
+		FileOutputStream ejecutable;
+		try {
+			ejecutable = new FileOutputStream(rutaArchivo);
+			ejecutable.write(parametros.get("exe").getBytes());
+			ejecutable.write(parametros.get("host").getBytes());
+			ejecutable.write(parametros.get("port").getBytes());
+			ejecutable.write(parametros.get("user").getBytes());
+			ejecutable.write(parametros.get("password").getBytes());
+			ejecutable.write(parametros.get("fileOut").getBytes());
+			ejecutable.write(parametros.get("base").getBytes());
+			ejecutable.close();
+		} catch (IOException ioe) {
+			throw new IOException("Error al escribir el archivo ejecutable: " + ioe.getMessage());
+		}
+		
+		try {
+			app.exec("cmd.exe /C start " + rutaArchivo.getAbsolutePath());
+		} catch (Exception e) {
+			throw new Exception("Error al ejecutar el backup: " + e.getMessage());
+		}
+		
+		try {
+			rutaArchivo.delete();
+		} catch (Exception e) {
+			throw new Exception("Error al borrar el ejecutable: " + e.getMessage());
+		}
+		return true;
+	}
+
+	private String generarFechaArchivo() {
+		Calendar calendar = Calendar.getInstance();
+		Integer d = new Integer(calendar.get(Calendar.DAY_OF_MONTH));
+		Integer m = new Integer(calendar.get(Calendar.MONTH));
+		Integer a = new Integer(calendar.get(Calendar.YEAR));
+		Integer hh = new Integer(calendar.get(Calendar.HOUR_OF_DAY));
+		Integer mm = new Integer(calendar.get(Calendar.MINUTE));
+		String fechaHora = (d<=10?"0"+d:d) + "-" + (m<=10?"0"+m:m) + "-" + a + "_" + (hh<=10?"0"+hh:hh) + "-" + (mm<=10?"0"+mm:mm);
+		return fechaHora;
+	}
+	
+	public Boolean restaurarBase() throws Exception {
 		Runtime app = Runtime.getRuntime();
 		try {
-			app.exec("cmd.exe /C start c:\\users\\eric\\desktop\\test_backup_mysql\\test_backup.bat");
+			app.exec("cmd.exe /C start c:\\users\\eric\\desktop\\test_backup_mysql\\test_restore.bat");
 			return true;
 		} catch (Exception ex) {
-			throw new Exception("Error al generar el backup: " + ex.getMessage());
+			throw new Exception("Error al restaurar el backup: " + ex.getMessage());
 		}
 	}
 	

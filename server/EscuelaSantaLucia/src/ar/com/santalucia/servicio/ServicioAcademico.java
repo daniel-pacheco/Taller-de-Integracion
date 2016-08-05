@@ -41,9 +41,11 @@ import ar.com.santalucia.dominio.dto.DetallePreviaDTO;
 import ar.com.santalucia.dominio.dto.InscripcionConsultaDTO;
 import ar.com.santalucia.dominio.dto.InscripcionConsultaV2DTO;
 import ar.com.santalucia.dominio.dto.InscripcionConsultaV2Detalle;
+import ar.com.santalucia.dominio.dto.LlamadoDTO;
 import ar.com.santalucia.dominio.dto.MateriaAltaDTO;
 import ar.com.santalucia.dominio.dto.MateriaDTO;
 import ar.com.santalucia.dominio.dto.MesaAltaDTO;
+import ar.com.santalucia.dominio.dto.MesaDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Area;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
@@ -1579,6 +1581,69 @@ public class ServicioAcademico {
 		return 0;
 	}
 	
+	/**
+	 * Devuelve un listado de llamado en formato DTO
+	 * @return
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	public List<LlamadoDTO> listarLlamados() throws ValidacionException, Exception{
+		try{
+			List<LlamadoDTO> llamadosDTO = new ArrayList<LlamadoDTO>();
+			List<Llamado> llamados = new ArrayList<Llamado>();
+			llamados = gLlamado.List();  //
+			for(Llamado ll : llamados){
+				LlamadoDTO llamadoDTO = new LlamadoDTO();
+				List<MesaDTO> mesasDTO = new ArrayList<MesaDTO>();
+				for(Mesa mesa: ll.getListaMesas()){
+					MesaDTO mDTO = new MesaDTO();
+					mDTO.setFechaHoraFin(mesa.getFechaHoraFin());
+					mDTO.setFechaHoraInicio(mesa.getFechaHoraInicio());
+					mDTO.setIdMateria(mesa.getMateria().getIdMateria());
+					mDTO.setIdMesa(mesa.getIdMesa());
+					mDTO.setMateria(mesa.getMateria().getNombre());
+					Set<Personal> personal = mesa.getIntegrantesTribunal();
+					Integer count = 0;
+					for (Personal p : personal){  // Cargo los integrantes de tribunal
+						count = count+1;
+						switch (count) {
+						case 1:
+							mDTO.setIdTribunal1(p.getIdUsuario());
+							mDTO.setNombreTribunal1(p.toString());
+							break;
+						case 2:
+							mDTO.setIdTribunal2(p.getIdUsuario());
+							mDTO.setNombreTribunal2(p.toString());
+							break;
+						case 3:
+							mDTO.setIdTribunal3(p.getIdUsuario());
+							mDTO.setNombreTribunal3(p.toString());
+							break;
+						}
+					}
+					mesasDTO.add(mDTO);
+				}
+				llamadoDTO.setDescripcion(ll.getDescripcion());
+				llamadoDTO.setFechaFin(ll.getFechaFin());
+				llamadoDTO.setFechaInicio(ll.getFechaInicio());
+				llamadoDTO.setListaMesas(mesasDTO);
+				llamadoDTO.setVigente(false);
+				llamadoDTO.setIdLlamado(ll.getIdLlamado());
+				llamadosDTO.add(llamadoDTO);
+			}
+		Llamado llamadoVigente = encontrarLlamadoVigente();
+		if (llamadoVigente != null){
+			for(LlamadoDTO ll : llamadosDTO){
+				if(ll.getIdLlamado().equals(llamadoVigente.getIdLlamado())){  //Seteo en true si el llamado encontrado está vigente
+					ll.setVigente(true);
+				}
+			}
+		}
+		return llamadosDTO;
+		}catch(Exception ex){
+			throw ex;
+		}
+	}
 	
 	public void closeSession() throws Exception { 
 		gAnio.closeSession();

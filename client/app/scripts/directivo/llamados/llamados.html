@@ -87,10 +87,10 @@
 						<td data-toggle="collapse" data-target="#{{llamado.idLlamado}}" class="accordion-toggle" ng-click="downGlyphiconIna = !downGlyphiconIna" style="cursor: pointer;">{{llamado.fechaInicio| amDateFormat:'DD/MM/YYYY'}}</td>
 						<td data-toggle="collapse" data-target="#{{llamado.idLlamado}}" class="accordion-toggle" ng-click="downGlyphiconIna = !downGlyphiconIna" style="cursor: poidLlamadointer;">{{llamado.fechaFin| amDateFormat:'DD/MM/YYYY'}}</td>
 						<td>
-							<!-- <button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipProfile" ng-click="showModalProfile(docente.nroDocumento)" style="width: 30%">
-								<span data-animation="am-flip-x" class="glyphicon glyphicon-user"></span>
+							<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipEdit" ng-click="" style="width: 30%">
+								<span class="glyphicon glyphicon-edit"></span>
 							</button>
-							<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipExport" ng-click="exportAction(docente.nroDocumento)" style="width: 30%">
+							<!--<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipExport" ng-click="exportAction(docente.nroDocumento)" style="width: 30%">
 								<span class="glyphicon glyphicon-print"></span>
 							</button> -->
 							<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipDelete" ng-click="confirmDeleteLlamado(llamado)" style="width: 30%">
@@ -109,26 +109,24 @@
 											<th>Fecha</th>
 											<th>Horario</th>
 											<th>Docentes</th>
-											<th>Condici&oacute;n</th>
 											<th>Acciones</th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr ng-repeat="mesa in llamado.listaMesas">
-											<td>{{mesa.materia.nombre}}</td>
+											<td>{{mesa.Materia}}</td>
 											<td>{{mesa.anio}}</td>
 											<td>{{mesa.fechaHoraInicio | amDateFormat:'DD/MM/YYYY'}}</td>
 											<td>de {{mesa.fechaHoraInicio| amDateFormat:'hh:mm'}} a {{mesa.fechaHoraFin| amDateFormat:'hh:mm'}}</td>
-											<td>{{mesa.integrantesTribunal[0].nombre}}, {{mesa.integrantesTribunal[1].nombre}}</td>
-											<td>{{materia.condicion}}</td>
+											<td>{{mesa.nombreTribunal1}}, {{mesa.nombreTribunal2}}, {{mesa.nombreTribunal3}}</td>
 											<td>
-												<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipDelete" ng-click="confirmDeleteMesa(mesa)" style="width: 30%">
+												<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipEdit" ng-click="" style="width: 45%">
+													<span class="glyphicon glyphicon-edit"></span>
+												</button>
+												<button class="btn btn-default btn-xs" bs-tooltip="tooltip.tooltipDelete" ng-click="confirmDeleteMesa(mesa)" style="width: 45%">
 													<span data-animation="am-flip-x" class="glyphicon glyphicon-trash"></span>
 												</button>
-												<!-- <button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipExport" ng-click="exportAction(docente.nroDocumento)" style="width: 30%">
-													<span class="glyphicon glyphicon-print"></span>
-												</button>
-												<button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipDelete" ng-click="deleteLlamado(llamado)" style="width: 30%">
+												<!-- <button class="btn btn-default btn-xs"  bs-tooltip="tooltip.tooltipDelete" ng-click="deleteLlamado(llamado)" style="width: 30%">
 													<span class="glyphicon glyphicon-trash"></span>
 												</button> -->
 											</td>
@@ -259,7 +257,7 @@
 								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label> Materia:</label>
 							</div>
 							<div class="col-md-4">
-								<select class="form-control" ng-model="nuevaMesaObj.selectedMateria" ng-options="materia.idMateria as materia.nombre for materia in materias" name="materia" required>
+								<select class="form-control" ng-model="nuevaMesaObj.selectedMateria" ng-options="materia.nombre for materia in materias | filter:materia.anio=nuevaMesaObj.selectedAnio.nombre" name="materia" required>
 									<option value="" disabled selected>Seleccione una materia</option>
 								</select> 
 							</div>

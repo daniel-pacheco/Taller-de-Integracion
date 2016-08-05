@@ -3,7 +3,9 @@
  */
 package ar.com.santalucia.rest;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,6 +21,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import ar.com.santalucia.dominio.modelo.sistema.configuracion.ParametroConfiguracion;
+import ar.com.santalucia.excepciones.ValidacionException;
 import ar.com.santalucia.servicio.Inicializador;
 import ar.com.santalucia.servicio.ServicioConfiguracion;
 
@@ -68,6 +71,19 @@ public class ServicioConfiguracionEndpoint {
 		return Response.ok(parametro.getIdParametroConfiguracion()).build();
 	}
 	
+	@GET
+	@Path("/parametroListAll/")
+	public Response getParametroById(){
+		List<ParametroConfiguracion> parametros = new ArrayList<ParametroConfiguracion>();
+		try{
+			setInstance();
+			parametros = servicioConfiguracion.listAllParametros();
+		}catch(Exception ex){
+			return Response.ok(ex).build();
+		}
+		return Response.ok(parametros).build();
+	}
+	
 	@DELETE
 	@Path("/parametro/{id:[0-9][0-9]*}")
 	public Response deleteParametroById(@PathParam("id") final Long id){
@@ -111,6 +127,14 @@ public class ServicioConfiguracionEndpoint {
 		try {
 			setInstance();
 			return Response.ok(servicioConfiguracion.generarBackup()).build();
+		} catch (IOException ioe) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage(ioe.getMessage(), FrontMessage.INFO))
+					.build();
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO))
+					.build();
 		} catch (Exception ex) {
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
 				.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
