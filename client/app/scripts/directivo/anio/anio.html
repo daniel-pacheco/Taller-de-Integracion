@@ -135,18 +135,27 @@
 							<div class="col-md-3">
 								<input class="form-control" placeholder="Nombre" name="nombre" type="text"
 								maxlength="25" required pattern="[A-zÀ-ú,.!?°\-_ 0-9]*" ng-model="nuevoAnioObj.nombre">
-							</div>
-							<div class="col-md-2">
-								<input class="form-control" placeholder="N° de orden" name="orden" type="number"
-								maxlength="2" required pattern="[0-9]*" ng-model="nuevoAnioObj.orden">
-							</div>
+							</div>							
 							<div ng-messages="formAnio.nombre.$error" ng-if="formAnio.nombre.$touched && formAnio.nombre.$invalid">
 								<div ng-message="pattern" class="help-block">Formato invalido</div>
 								<div ng-message="required" class="help-block">Complete este campo</div>
 							</div>
+						</div><!-- /form-group-->
+
+						<div class="form-group" ng-class="{ 'has-error': formAnio.orden.$touched && formAnio.orden.$invalid || _.find(anios, {'orden':nuevoAnioObj.orden})}">
+							<div class="col-md-4 control-label">
+								<span class="glyphicon glyphicon-asterisk alert-warning small"></span><label>N° de orden:</label>
+							</div>
+							<div class="col-md-1">
+								<input class="form-control" placeholder="--" name="orden" type="number"
+								maxlength="2" required pattern="[0-9]*" ng-model="nuevoAnioObj.orden">
+							</div>
 							<div ng-messages="formAnio.orden.$error" ng-if="formAnio.orden.$touched && formAnio.orden.$invalid">
 								<div ng-message="pattern" class="help-block">Formato invalido</div>
 								<div ng-message="required" class="help-block">Complete este campo</div>
+							</div>
+							<div ng-if="formAnio.orden.$touched && _.find(anios, {'orden':nuevoAnioObj.orden})">
+								<div class="help-block">N° de orden utilizado</div>
 							</div>
 						</div><!-- /form-group-->
 
