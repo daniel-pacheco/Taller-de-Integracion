@@ -100,7 +100,7 @@ public class ServicioDocenteEndpoint {
 				return Response.serverError().entity(new FrontMessage("No ha sido posible localizar el elemento solicitado.",FrontMessage.INFO)).build();
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
@@ -135,7 +135,7 @@ public class ServicioDocenteEndpoint {
 				return Response.serverError().entity(new FrontMessage("No se ha encontrado el Docente",FrontMessage.INFO)).build();
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch(Exception ex) {
 			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
@@ -180,7 +180,7 @@ public class ServicioDocenteEndpoint {
 				return Response.ok(telefonos).header("auth0", nuevoToken).build();
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -222,7 +222,7 @@ public class ServicioDocenteEndpoint {
 				return Response.ok(mails).header("auth0", nuevoToken).build();
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -264,7 +264,7 @@ public class ServicioDocenteEndpoint {
 				return Response.ok(titulos).header("auth0", nuevoToken).build();
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -305,7 +305,7 @@ public class ServicioDocenteEndpoint {
 				return Response.ok(docente).header("auth0", nuevoToken).build();
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -339,7 +339,7 @@ public class ServicioDocenteEndpoint {
 			try {
 				nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			} catch (ValidacionException vEx) {
-				return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+				return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 			}
 			servicioDocente.addUsuario(docente);
 			if (nuevoToken == null) {
@@ -471,6 +471,8 @@ public class ServicioDocenteEndpoint {
 			}else{
 				return Response.serverError().entity(new FrontMessage ("No se ha podido eliminar el docente", FrontMessage.INFO)).build();
 			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// ex.printStackTrace();
 			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
@@ -505,6 +507,8 @@ public class ServicioDocenteEndpoint {
 				}
 			}
 			return Response.serverError().entity(new FrontMessage("No se pudo eliminar el docente.",FrontMessage.INFO)).build();
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// ex.printStackTrace();
 			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
@@ -604,6 +608,8 @@ public class ServicioDocenteEndpoint {
 					return Response.ok(docentesDTO).header("auth0", nuevoToken).build();
 				}
 			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
@@ -636,7 +642,7 @@ public class ServicioDocenteEndpoint {
 				docente = servicioDocente.getUsuarioByDni(usuarioDni);
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
@@ -667,7 +673,7 @@ public class ServicioDocenteEndpoint {
 				return Response.ok(listado).header("auth0", nuevoToken).build();
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}

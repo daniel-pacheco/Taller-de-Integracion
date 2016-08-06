@@ -127,10 +127,6 @@ public class ServicioConfiguracionEndpoint {
 		try {
 			setInstance();
 			return Response.ok(servicioConfiguracion.generarBackup()).build();
-		} catch (IOException ioe) {
-			return Response.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(new FrontMessage(ioe.getMessage(), FrontMessage.INFO))
-					.build();
 		} catch (ValidacionException vEx) {
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
 					.entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO))
@@ -142,4 +138,23 @@ public class ServicioConfiguracionEndpoint {
 				.build();
 		}
 	}
+	
+	@POST
+	@Path("/backup/restore")
+	public Response restaurarBackup() {
+		try {
+			setInstance();
+			return Response.ok(servicioConfiguracion.restaurarBase()).build();
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO))
+					.build();
+		} catch (Exception ex) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+				.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+						FrontMessage.CRITICAL))
+				.build();
+		}
+	}
+	
 }

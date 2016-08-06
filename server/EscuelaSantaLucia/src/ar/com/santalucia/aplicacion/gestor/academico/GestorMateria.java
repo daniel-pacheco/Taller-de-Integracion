@@ -40,18 +40,9 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 	@Override
 	public void add(Materia object) throws Exception {
 		try {
-			this.validar(object);
+			//this.validar(object);
 			setSession();
 			setTransaction();
-			/*
-			if (object.getDocenteTitular() != null) { // creo que está de más...
-				if (object.getDocenteTitular().getIdUsuario() == null) {
-					GDocente.add(object.getDocenteTitular());
-				} 
-			}
-			setSession();
-			setTransaction();
-			*/
 			materiaDAO.persist(object);
 			sesionDeHilo.getTransaction().commit();
 		} catch (ValidacionException ex) {
@@ -67,7 +58,7 @@ public class GestorMateria extends Gestor<Materia> implements IValidacionMateria
 	@Override
 	public void modify(Materia object) throws Exception {
 		try {
-			this.validar(object);
+			//this.validar(object);
 			setSession();
 			setTransaction();
 			materiaDAO.attachDirty(object);
