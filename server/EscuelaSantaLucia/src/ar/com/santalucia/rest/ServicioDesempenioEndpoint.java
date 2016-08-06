@@ -85,7 +85,7 @@ public class ServicioDesempenioEndpoint {
 				return Response.ok(boletinNotas.getIdBoletinNotas()).header("auth0", nuevoToken).build();
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -122,7 +122,7 @@ public class ServicioDesempenioEndpoint {
 				return Response.ok(servicioDesempenio.deleteBoletinNotas(boletinNotas)).header("auth0", nuevoToken).build();
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -164,7 +164,7 @@ public class ServicioDesempenioEndpoint {
 				return Response.ok(boletinNotas).header("auth0", nuevoToken).build();
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -206,7 +206,7 @@ public class ServicioDesempenioEndpoint {
 				return Response.ok(boletinDTO).header("auth0", nuevoToken).build();
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -263,7 +263,7 @@ public class ServicioDesempenioEndpoint {
 				return Response.ok(resultado).header("auth0", nuevoToken).build();
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -298,7 +298,7 @@ public class ServicioDesempenioEndpoint {
 				return Response.ok(servicioDesempenio.addBoletinHistorico(boletinHistorico)).header("auth0", nuevoToken).build();
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -586,7 +586,7 @@ public class ServicioDesempenioEndpoint {
 				}
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -661,7 +661,7 @@ public class ServicioDesempenioEndpoint {
 				return Response.ok(boletinInasistenciasDTO).header("auth0", nuevoToken).build();
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// return Response.ok(ex).build();
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -698,7 +698,7 @@ public class ServicioDesempenioEndpoint {
 						.header("auth0", nuevoToken).build();
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (InasistenciaException iEx) {
 			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(iEx.getInasistenciasInvalidas()).build();
 		} catch (Exception ex) {
@@ -729,7 +729,7 @@ public class ServicioDesempenioEndpoint {
 				return Response.ok(true).header("auth0", nuevoToken).build();
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -757,7 +757,7 @@ public class ServicioDesempenioEndpoint {
 			try {
 				nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			} catch (ValidacionException vEx) {
-				return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+				return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 			}
 			if (nuevoToken == null) {
 				return Response.ok(servicioDesempenio.ObtenerArregloPasajeDTO()).build();
@@ -833,7 +833,7 @@ public class ServicioDesempenioEndpoint {
 				return Response.ok(planilla).header("auth0", nuevoToken).build();
 			}
 		}catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -867,7 +867,7 @@ public class ServicioDesempenioEndpoint {
 				return Response.ok(true).header("auth0", nuevoToken).build();
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)

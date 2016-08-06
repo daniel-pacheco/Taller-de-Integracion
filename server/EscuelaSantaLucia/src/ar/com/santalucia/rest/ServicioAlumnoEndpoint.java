@@ -98,7 +98,7 @@ public class ServicioAlumnoEndpoint{
 			@HeaderParam("rol") final String rolIn, 
 			@HeaderParam("auth0") final String token) {
 		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.DOCENTE)) {
-			return Response.status(Status.UNAUTHORIZED).build();
+			return Response.status(Status.FORBIDDEN).build();
 		}
 		String nuevoToken = new String();
 		Alumno alumno = new Alumno();
@@ -120,7 +120,7 @@ public class ServicioAlumnoEndpoint{
 //			default:
 //				break;
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch(Exception ex) {
 			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
@@ -214,7 +214,7 @@ public class ServicioAlumnoEndpoint{
 //				break;
 //			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
@@ -263,7 +263,7 @@ public class ServicioAlumnoEndpoint{
 //			default:
 //				break;
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -316,7 +316,7 @@ public class ServicioAlumnoEndpoint{
 //			default:
 //				break;
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -365,7 +365,7 @@ public class ServicioAlumnoEndpoint{
 		//			default:
 		//				break;
 		} catch (ValidacionException vEx) {
-				return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+				return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -402,7 +402,7 @@ public class ServicioAlumnoEndpoint{
 			try {
 				nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			} catch (ValidacionException vEx) {
-				return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+				return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 			}
 			setInstance();
 			servicioAlumno.addUsuario(alumno);
@@ -521,7 +521,7 @@ public class ServicioAlumnoEndpoint{
 						.build();
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
@@ -557,7 +557,7 @@ public class ServicioAlumnoEndpoint{
 						.build();
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -662,7 +662,7 @@ public class ServicioAlumnoEndpoint{
 				return Response.ok(servicioAlumno.listAlumnosDTO()).header("auth0", nuevoToken).build();
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
@@ -730,13 +730,16 @@ public class ServicioAlumnoEndpoint{
 	public Response listAlumnosActAnioDTO(@PathParam("idAnio") final Long idAnio,
 			@HeaderParam("rol") final String rolIn,
 			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
 		String nuevoToken = new String();
 		try {
 			setInstance();
 			try {
 				nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			} catch (ValidacionException vEx) {
-				return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+				return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 			}
 			if (nuevoToken == null) {
 				return Response.ok(servicioAlumno.listAlumnosActivosAnioDTO(idAnio)).build();

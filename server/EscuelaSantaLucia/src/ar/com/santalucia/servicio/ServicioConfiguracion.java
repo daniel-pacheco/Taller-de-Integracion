@@ -234,62 +234,43 @@ public class ServicioConfiguracion {
 	}
 	
 	
-	public Boolean generarBackup() throws IOException, Exception {
+	public Boolean generarBackup() throws IOException, ValidacionException, Exception {
+		String exeMysql = "C:/Program Files/MySQL/MySQL Server 5.7/bin/mysqldump.exe";
 		ValidacionException vEx = new ValidacionException();
 		Runtime app = Runtime.getRuntime();
-		Configuration configFile = new Configuration();
-		try {
-			HibernateUtil.getHibConfig();
-		} catch (Exception e) {
-			throw new Exception("Error al conectar con la base de datos: " + e.getMessage());
-		}
+		Configuration configFile = HibernateUtil.getHibConfig();
 		
 		String fechaHora = generarFechaArchivo();
 		Map<String, String> parametros = new HashMap<String, String>();
 		try {
-			parametros.put("host", " --host=localhost");
-			parametros.put("port", " --port=3306");
-			parametros.put("user", " --user=" + configFile.getProperty("hibernate.connection.username"));
-			parametros.put("password", " --password=" + configFile.getProperty("hibernate.connection.password"));
-			parametros.put("fileOut", " --result-file=\"C:\\Users\\Eric\\Desktop\\test_backup_mysql\\backup_escuelabd_" + fechaHora + ".backup\" ");
-			parametros.put("exe", "c:\\users\\eric\\desktop\\test_backup_mysql\\mysqldump.exe");
+			parametros.put("host", "localhost");
+			parametros.put("port", "3306");
+			parametros.put("user", configFile.getProperty("hibernate.connection.username"));
+			parametros.put("password", configFile.getProperty("hibernate.connection.password"));
+			parametros.put("fileOut", "C:/Users/Eric/Desktop/test_backup_mysql/backup_escuelabd_" + fechaHora + ".backup ");
+			parametros.put("exe", exeMysql);
 			parametros.put("base", " " + configFile.getProperty("hibernate.connection.url").substring(28));
 		} catch (Exception e) {
 			vEx.addMensajeError("Error en la lectura de la configuración");
 			throw vEx;
 		}
 		
-		File rutaArchivo = new File("c:/users/eric/desktop/test_backup_mysql/test_backup2.bat");
-		if (!rutaArchivo.exists()) {
-			rutaArchivo.createNewFile();
-		} 
-		FileOutputStream ejecutable;
 		try {
-			ejecutable = new FileOutputStream(rutaArchivo);
-			ejecutable.write(parametros.get("exe").getBytes());
-			ejecutable.write(parametros.get("host").getBytes());
-			ejecutable.write(parametros.get("port").getBytes());
-			ejecutable.write(parametros.get("user").getBytes());
-			ejecutable.write(parametros.get("password").getBytes());
-			ejecutable.write(parametros.get("fileOut").getBytes());
-			ejecutable.write(parametros.get("base").getBytes());
-			ejecutable.close();
-		} catch (IOException ioe) {
-			throw new IOException("Error al escribir el archivo ejecutable: " + ioe.getMessage());
-		}
-		
-		try {
-			app.exec("cmd.exe /C start " + rutaArchivo.getAbsolutePath());
+			Process proceso = app.exec(exeMysql
+					+ " --host=" + parametros.get("host")
+					+ " --port=" + parametros.get("port")
+					+ " --user=" + parametros.get("user")
+					+ " --password=" + parametros.get("password")
+					+ " --result-file=" + parametros.get("fileOut")
+					+ " " + parametros.get("base"));
+			if (proceso.waitFor() == 0) {
+				return true;
+			} else {
+				throw new Exception("Error del proceso");
+			}
 		} catch (Exception e) {
-			throw new Exception("Error al ejecutar el backup: " + e.getMessage());
+			throw new Exception("Error al generar el backup: " + e.getMessage());
 		}
-		
-		try {
-			rutaArchivo.delete();
-		} catch (Exception e) {
-			throw new Exception("Error al borrar el ejecutable: " + e.getMessage());
-		}
-		return true;
 	}
 
 	private String generarFechaArchivo() {
@@ -299,17 +280,46 @@ public class ServicioConfiguracion {
 		Integer a = new Integer(calendar.get(Calendar.YEAR));
 		Integer hh = new Integer(calendar.get(Calendar.HOUR_OF_DAY));
 		Integer mm = new Integer(calendar.get(Calendar.MINUTE));
-		String fechaHora = (d<=10?"0"+d:d) + "-" + (m<=10?"0"+m:m) + "-" + a + "_" + (hh<=10?"0"+hh:hh) + "-" + (mm<=10?"0"+mm:mm);
+		String fechaHora = a + "-" + (m<=10?"0"+m:m) + "-" + (d<=10?"0"+d:d) + "_" + (hh<=10?"0"+hh:hh) + "-" + (mm<=10?"0"+mm:mm);
 		return fechaHora;
 	}
 	
 	public Boolean restaurarBase() throws Exception {
+		//String exeMysql = "\"C:\\Program Files\\MySQL\\MySQL Server 5.7\\bin\\mysql.exe\"";
+		String exeMysql = "C:/Program Files/MySQL/MySQL Server 5.7/bin/mysql.exe";
+		ValidacionException vEx = new ValidacionException();
 		Runtime app = Runtime.getRuntime();
+		Configuration configFile = HibernateUtil.getHibConfig();
+		
+		Map<String, String> parametros = new HashMap<String, String>();
 		try {
-			app.exec("cmd.exe /C start c:\\users\\eric\\desktop\\test_backup_mysql\\test_restore.bat");
-			return true;
-		} catch (Exception ex) {
-			throw new Exception("Error al restaurar el backup: " + ex.getMessage());
+			//parametros.put("host", "localhost");
+			//parametros.put("port", "3306");
+			parametros.put("user", configFile.getProperty("hibernate.connection.username"));
+			parametros.put("password", configFile.getProperty("hibernate.connection.password"));
+			//parametros.put("fileOut", "C:/Users/Eric/Desktop/test_backup_mysql/backup_escuelabd_" + fechaHora + ".backup ");
+			parametros.put("exe", exeMysql);
+			parametros.put("base", configFile.getProperty("hibernate.connection.url").substring(28));
+			parametros.put("backupFile", "\"C:\\Users\\Eric\\Desktop\\test_backup_mysql\\backup_escuelabd_2016-07-05_17-52.backup\"");
+		} catch (Exception e) {
+			vEx.addMensajeError("Error en la lectura de la configuración");
+			throw vEx;
+		}
+		
+		try {
+			String comando = exeMysql 
+					+ " --user=" + parametros.get("user") 
+					+ " --password=" + parametros.get("password")
+					+ " " + parametros.get("base")
+					+ " < " + parametros.get("backupFile");
+			Process proceso = app.exec(comando);
+			if (proceso.waitFor() == 0) {
+				return true;
+			} else {
+				throw new Exception("Error del proceso");
+			}
+		} catch (Exception e) {
+			throw new Exception("Error al restaurar el backup: " + e.getMessage());
 		}
 	}
 	
