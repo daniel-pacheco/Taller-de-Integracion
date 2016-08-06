@@ -1,0 +1,33 @@
+<div class="aside" tabindex="-1" role="dialog">
+  <div class="aside-dialog">
+    <div class="aside-content">
+      <div class="aside-header">
+        <button type="button" class="close" ng-click="$hide()">&times;</button>
+        <h4 class="aside-title">Mi cuenta</h4>
+      </div>
+      <div class="aside-body">
+
+        <ul class="nav bs-sidenav">
+          <li bs-scrollspy data-target="#getting-started">
+            <a href="">{{titulo}}</a>
+          </li>
+          <hr style="margin: 2px 0;">
+          <li ng-class="{active : activeMenuIzqAlu === 1}" data-target="#modals">
+            <a href="" ng-click="seleccionar('misDatos'); $hide()">Mis Datos</a>
+          </li>
+          <li ng-class="{active : activeMenuIzqAlu === 2}" data-target="#actualizarMisDatos">
+            <a href="" ng-click="seleccionar('actualizarMisDatos'); $hide()">Actualizar Mis Datos</a>
+          </li>
+          <li ng-class="{active : activeMenuIzqAlu === 3}" data-target="#cambiarPass">
+            <a href="" ng-click="seleccionar('cambiarPass'); $hide()">Cambiar Contrase&ntilde;a</a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+    <div class="aside-footer">
+      <button type="button" class="btn btn-default" ng-click="$hide()">Cerrar</button>
+    </div>
+  </div>
+</div>
+</div>
