@@ -84,7 +84,6 @@ $scope.seleccionar = function (id) {
 
 $scope.$on('$viewContentLoaded', function(){
   $scope.seleccionar("listado");
-  //getLlamados();//Here your view content is fully loaded !!
 });
 
 $scope.tooltip = {
@@ -158,13 +157,14 @@ function showServerSuccess (message, response){
 };
 
 
-//Order list
+//Order list Llamado
 $scope.predicate = 'fechaInicio';
 $scope.reverse = false;
 $scope.orderLlamado = function(predicate) {
   $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
   $scope.predicate = predicate;
 };
+
 //-- [Llamado] service calls
 
 
@@ -180,7 +180,7 @@ function initMesa(mesaMin){
   mesa.idLlamado = mesaMin.periodo.idLlamado;
   mesa.fechaHoraInicio = setFechaHora(mesaMin.horaInicio);
   mesa.fechaHoraFin = setFechaHora(mesaMin.horaFin);
-  mesa.idMateria = mesaMin.selectedMateria;
+  mesa.idMateria = mesaMin.selectedMateria.idMateria;
   mesa.tribunalDoc1 = mesaMin.docentes[0];
   mesa.tribunalDoc2 = mesaMin.docentes[1];
   mesa.tribunalDoc3 = mesaMin.docentes[2];
@@ -219,7 +219,7 @@ function getAnios() {
   });
 };
 
-function getMaterias() {
+function getMaterias () {
   spinnerService.show('searchLlamadoSpinner');
   academicoService.matGetAllMin()
   .then(
@@ -320,19 +320,25 @@ $scope.confirmDeleteLlamado = function(llamado) {
 $scope.confirmDeleteMesa = function(mesa) {
   var fechaMesa = new Date(mesa.fechaHoraInicio)
   fechaMesa = fechaMesa.getDate() + "/" + (fechaMesa.getMonth()+1) + "/" + fechaMesa.getFullYear();
-  $scope.confirmModal("¿Desea eliminar la mesa de " + mesa.materia.nombre + " de " + mesa.anio + " del día " + fechaMesa + "?", deleteMesa, mesa.idMesa);
+  $scope.confirmModal("¿Desea eliminar la mesa de " + mesa.Materia + " de " + mesa.anio + " del día " + fechaMesa + "?", deleteMesa, mesa.idMesa);
 }
 
+function asignarAnioMesa(arrayListaMateriasMin, listaMesas){
+  angular.forEach(listaMesas, function(item){
+    item.anio = _.find(arrayListaMateriasMin, ['nombre', item.Materia]).anio;
+  });
+};
 //-- [Llamado/Listado] service calls
 function getLlamados() {
   spinnerService.show('searchLlamadoSpinner');
-  academicoService.llamadoGetAll()
+  academicoService.llamadoGetAllMin()
   .then(
     function(response){
       $scope.llamados = response.data;
       angular.forEach($scope.llamados, function (item) {
         item.fechaInicio = new Date(item.fechaInicio);
         item.fechaFin = new Date(item.fechaFin);
+        getMateriasMin(item.listaMesas);//es para asignar el anio a cada mesa
       });
     },
     function(response){
@@ -379,7 +385,20 @@ function deleteMesa(idMesa) {
   });
 };
 
-
+function getMateriasMin (listaMesas){
+  spinnerService.show('searchLlamadoSpinner');
+  academicoService.matGetAllMin()
+  .then(
+    function(response){
+      asignarAnioMesa(response.data, listaMesas);
+    },
+    function(response){
+      showServerError(response);
+    })
+  .finally(function(){
+    spinnerService.hide('searchLlamadoSpinner');
+  })
+};
 //-- [Llamado/inscripcion]
 //-- [Llamado/inscripcion] variables
 //-- [Llamado/inscripcion] Form Management

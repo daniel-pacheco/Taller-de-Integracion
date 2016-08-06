@@ -33,6 +33,11 @@ $scope.titulo = 'Operaciones';
 //-- [operaciones] Form Management
 
 $scope.tooltip = {
+	tooltipJustif : {
+		'title' : 'Justificada'
+	}, tooltipInjustif : {
+		'title' : 'Injustificada'
+	},
 	tooltipRegister : {
 		'title' : 'Inscribirse a la mesa'
 	},

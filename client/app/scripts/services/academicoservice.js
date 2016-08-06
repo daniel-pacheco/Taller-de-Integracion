@@ -32,6 +32,7 @@
 
     var putLlamado = "llm/";
     var llamadosGetAll = "listAll";
+    var llamadoGetAllMin = "listLlamadosMin";
     var deleteLlamado = "llm/"; 
 
     var putMesa = "mesa/";
@@ -87,7 +88,7 @@
         return $http.get(server + sAcademico + especialidadesGetAll);
     };
 
-     this.especialidadPutNew = function (especialidadObj) {
+    this.especialidadPutNew = function (especialidadObj) {
         return $http.put(server + sAcademico + putEspecialidad, especialidadObj);
     };
 
@@ -101,6 +102,10 @@
 
     this.llamadoGetAll = function () {
         return $http.get(server + sAcademico + putLlamado + llamadosGetAll);
+    };
+
+    this.llamadoGetAllMin = function () {
+        return $http.get(server + sAcademico + llamadoGetAllMin);
     };
 
     this.llamadoDelete = function (idLlamado) {
