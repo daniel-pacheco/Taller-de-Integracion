@@ -39,4 +39,11 @@
  		"title": "Despedirse"   
  	};
 
+ 	//tooltips
+ 	$scope.tooltip = {
+ 		tooltipAuthors : {
+ 			'title' : 'ericpennachini <br> daniel-pacheco <br>  MartinHerrlein <br>  mauricioarielramirez'
+ 		}
+ 	};
+
  }]);

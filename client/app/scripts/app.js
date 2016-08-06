@@ -89,8 +89,11 @@
 
     });
 
-    // $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-    //                 //pegarle al servid
-    //               });
+    $rootScope.$on(AUTH_EVENTS.notAuthorized, function (){//event, toState, toParams, fromState, fromParams) {
+          event.preventDefault();
+          loginService.logout();
+          $state.go('login');
+    });
+
 
 });
