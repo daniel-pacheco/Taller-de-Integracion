@@ -430,16 +430,20 @@ public class ServicioAcademico {
 		// BUSQUEDA DE DOCENTES (POR ID)
 		if(materiaAltaDTO.getIdDocenteTitular() != null){
 			docenteTitular = (Personal) gDocente.getById(materiaAltaDTO.getIdDocenteTitular());
+			materiaAux.setDocenteTitular(docenteTitular);
+		}else{
+			materiaAux.setDocenteTitular(null);
 		}
 		if (materiaAltaDTO.getIdDocenteSuplente() != null){
 			docenteSuplente = (Personal) gDocente.getById(materiaAltaDTO.getIdDocenteSuplente());
+			materiaAux.setDocenteSuplente(docenteSuplente);
+		}else{
+			materiaAux.setDocenteSuplente(null);
 		}
 		// ARMO LA MATERIA PARA PERSISTIR
 		materiaAux.setIdMateria(materiaAltaDTO.getIdMateria());			//PUEDE SER NULL O VENIR CON VALOR (MODIFY)
 		materiaAux.setNombre(materiaAltaDTO.getNombreMateria());
 		materiaAux.setDescripcion(materiaAltaDTO.getDescripcion());
-		materiaAux.setDocenteTitular(docenteTitular);
-		materiaAux.setDocenteSuplente(docenteSuplente);
 		materiaAux.setArea(areaAux);
 		materiaAux.setActivo(materiaAltaDTO.getActivo());
 		if(materiaAux.getIdMateria() != null){						// SI YA EXISTE LA MATERIA
