@@ -155,7 +155,7 @@ $scope.showMessage = function(mesagge, title, isGood) { //todo ok recibe true si
 };
 
 function showServerError (response){
-  console.log(response);
+  // console.log(response);
   var msg = '';
 
   if (response.statusText) {
@@ -169,7 +169,7 @@ function showServerError (response){
 };
 
 function showServerSuccess (message, response){
-  console.log(response);
+  // console.log(response);
   var msg = message;
 
   if ( response && response.data) {
@@ -407,11 +407,11 @@ $scope.requiredPassPutDirectivo = function(docente) {
       alumnoService.getById(result) //llamada a validar el DNI
       .then(function(response){
         // spinnerService.show('searchDocenteSpinner');
-        console.log(response);
+        // console.log(response);
         putNewDirectivo(docente);
       }, function(response){
         showServerError(response)
-        console.log(response);
+        // console.log(response);
       })
       .finally(function(){
         // spinnerService.hide('searchDocenteSpinner');
@@ -433,11 +433,11 @@ $scope.requiredPassDeleteDirectivo = function(docente) {
       alumnoService.getById(result) //llamada a validar el DNI
       .then(function(response){
         // spinnerService.show('searchDocenteSpinner');
-        console.log(response);
+        // console.log(response);
         eliminarDirectivo(docente);
       }, function(response){
         showServerError(response);
-        console.log(response);
+        // console.log(response);
       })
       .finally(function(){
         // spinnerService.hide('searchDocenteSpinner');
@@ -529,11 +529,11 @@ var putNewDocente = function (docente){
 };
 
 var putNewDirectivo = function (directivo){
-  console.log ('putDirectivo');
+  // console.log ('putDirectivo');
   spinnerService.show('searchDocenteSpinner');
   directivoService.putNew(directivo)
   .then(function(response){
-    console.log(response);
+    // console.log(response);
     showServerSuccess('El directivo se ha dado de alta con éxito. ID n°: ', response);
     $scope.clearFormDoc();
   },

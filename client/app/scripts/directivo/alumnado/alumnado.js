@@ -274,7 +274,7 @@ $scope.showMessage = function(mesagge, title, isGood) { //todo ok recibe true si
 };
 
 function showServerError (response){
-	console.log(response);
+	// console.log(response);
 	var msg = '';
 
 	if (response.statusText) {
@@ -288,7 +288,7 @@ function showServerError (response){
 };
 
 function showServerSuccess (message, response){
-	console.log(response);
+	// console.log(response);
 	var msg = message;
 	
 	if ( response && response.data) {
@@ -463,14 +463,13 @@ $scope.search = function (option, dni) {
 				spinnerService.show('searchSpinner');
 				alumnoService.getByDniMin($scope.searchByDni)
 				.then(function(response){
-					console.log(response);
+					// console.log(response);
 					$scope.alumnoData.length = 0;
 					$scope.alumnoData.push(response.data);
 					showListFilter();
 				},
 				function(response){
-					console.log(response);
-				// alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText + " - " + response.data.mensaje + " " + response.data.severidad);
+					// console.log(response);
 				showServerError(response);
 				hideListFilter();					
 			})
@@ -662,7 +661,7 @@ function initPlanillaTrimDTO(trim) { // para get
 	planillaTrimDTO.curso = $scope.dropDownSelectedCurso.division;
 	planillaTrimDTO.cicloLectivo = 2016;
 
-	console.log(planillaTrimDTO);
+	// console.log(planillaTrimDTO);
 
 	return planillaTrimDTO;
 };
@@ -674,7 +673,7 @@ function initPlanillaTrimUpdateDTO(trim, planilla) { // para put
 	planillaTrimUpdateDTO.planilla = planilla;
 	planillaTrimUpdateDTO.cicloLectivo = 2015;
 
-	console.log(planillaTrimUpdateDTO);
+	// console.log(planillaTrimUpdateDTO);
 
 	return planillaTrimUpdateDTO;
 };
@@ -686,7 +685,7 @@ $scope.resetPlanillaTrimDTO = function() {
 	$scope.planillas = {};
 	planillaTrimDTO = ObjectsFactory.newPlanillaTrimDTO();
 
-	console.log(planillaTrimDTO);
+	// console.log(planillaTrimDTO);
 
 };
 
@@ -714,7 +713,7 @@ function orderByMateria(planilla, materiasArrayBool){
 	angular.forEach(planilla[0].notas, function(item){
 		materiasArrayBool.push(false);
 	});
-	console.log(materiasArrayBool);
+	// console.log(materiasArrayBool);
 	return planilla;
 };
 
@@ -753,37 +752,6 @@ $scope.getPlanillaTrimestre = function(trim) {
 	};
 };
 
-
-$scope.metralleta = function(){
-	var aux = [];
-	for (var i = 0; i < 100; i++) {
-		alumnoService.getAllMin()
-		.then(function(response){
-			console.log('alumno: '+ i + ' ');
-			console.log(response.data);
-			aux.push(response.data);
-		},
-		function(response){
-			// alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
-			console.log('error en el alumno: ' + i);
-		})
-		.finally(function(){});
-
-		academicoService.anioGetAllMin()
-		.then(
-			function(response){
-				console.log('anio: '+ i + ' ');
-				console.log(response.data);
-				aux.push(response.data);
-			},
-			function(response){
-				console.log('error en el anio: ' + i);
-			})
-		.finally(function(){
-		});
-	};
-	console.log(aux);
-};
 //---------------------------------
 
 }]);

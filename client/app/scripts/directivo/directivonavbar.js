@@ -36,10 +36,16 @@
  	$scope.popover = {
  		"title": "Despedirse",   
  	};
-
 	$scope.popoverHelp = {
  		"title": "Ayuda",   
- 	}; 	
+ 	}; 
+
+ 	//tooltips
+ 	$scope.tooltip = {
+ 		tooltipAuthors : {
+ 			'title' : 'ericpennachini <br> daniel-pacheco <br>  MartinHerrlein <br>  mauricioarielramirez <br> <b>soporte.sgsa@gmail.com</b>'
+ 		}
+ 	};
 
  }]);
  

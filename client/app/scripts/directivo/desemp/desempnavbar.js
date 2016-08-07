@@ -81,7 +81,7 @@
   $scope.year = yearSelect;
 };
 $scope.activeMateria = function(materiaSelect) {
-  console.log(materiaSelect);
+  // console.log(materiaSelect);
   $scope.materia = materiaSelect;
   this.sendMessage(materiaSelect);
 

@@ -132,7 +132,7 @@ public class ServicioDirectivoEndpoint {
 				return Response.serverError().entity(new FrontMessage("No ha sido posible localizar el elemento solicitado.",FrontMessage.INFO)).build();
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
@@ -177,7 +177,7 @@ public class ServicioDirectivoEndpoint {
 				return Response.ok(telefonos).header("auth0", nuevoToken).build();
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
 					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
@@ -218,7 +218,7 @@ public class ServicioDirectivoEndpoint {
 				return Response.ok(mails).header("auth0", nuevoToken).build();
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
 					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
@@ -259,7 +259,7 @@ public class ServicioDirectivoEndpoint {
 				return Response.ok(titulos).header("auth0", nuevoToken).build();
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
 					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
@@ -300,7 +300,7 @@ public class ServicioDirectivoEndpoint {
 				return Response.ok(personal).header("auth0", nuevoToken).build();
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
 					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
@@ -333,7 +333,7 @@ public class ServicioDirectivoEndpoint {
 			try {
 				nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			} catch (ValidacionException vEx) {
-				return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+				return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 			}
 			servicioDirectivo.addUsuario(personal);
 			return Response.ok(personal.getIdUsuario()).build();
@@ -472,7 +472,7 @@ public class ServicioDirectivoEndpoint {
 				return Response.ok(exito).header("auth0", nuevoToken).build();
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -604,7 +604,7 @@ public class ServicioDirectivoEndpoint {
 				directivo = servicioDirectivo.getUsuarioByDni(usuarioDni);
 			}
 		} catch (ValidacionException vEx) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			return Response.serverError().entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.",FrontMessage.CRITICAL)).build();
 		}
@@ -643,6 +643,8 @@ public class ServicioDirectivoEndpoint {
 			} else {
 				return Response.ok(listaDirectivosDTO).header("auth0", nuevoToken).build();
 			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)

@@ -119,7 +119,7 @@ function getMyData () {
 	spinnerService.show('searchMatDocenteSpinner');
 	docenteService.getMyData().then(
 		function(response) {
-			console.log(response);
+			// console.log(response);
 			myData = response.data;
 		listAllMaterias(myData.idUsuario); //cambiar esto cuando se pueda elegir el año
 	},
@@ -172,7 +172,7 @@ function initPlanillaTrimDTO(trim){
 	planillaTrimDTO.trimestre = trim;
 	planillaTrimDTO.curso = $scope.dropDownSelectedCurso.division;
 
-	console.log(planillaTrimDTO);
+	// console.log(planillaTrimDTO);
 
 	return planillaTrimDTO;
 };
@@ -290,7 +290,7 @@ function initSavePlanillaDTO (lista, trim) {
 	planillaTrimDTO.idDocenteTitular = null;
 	planillaTrimDTO.planilla = lista;
 
-	console.log(planillaTrimDTO);
+	// console.log(planillaTrimDTO);
 
 	return planillaTrimDTO;
 }

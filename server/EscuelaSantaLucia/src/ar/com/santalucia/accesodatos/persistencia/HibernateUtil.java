@@ -12,15 +12,21 @@ import org.hibernate.service.ServiceRegistryBuilder;
 public class HibernateUtil {
 	
     private static SessionFactory sessionFactory;
+    private static Configuration hibConfig;
     
-    public static synchronized void buildSessionFactory() {
+    public static Configuration getHibConfig() {
+    	buildSessionFactory();
+		return hibConfig;
+	}
+
+	public static synchronized void buildSessionFactory() {
         if (sessionFactory == null) {
-            Configuration configuration = new Configuration();
-            configuration.configure("/ar/com/santalucia/accesodatos/persistencia/hibernate.cfg.xml");
-            //configuration.configure("/ar/com/santalucia/accesodatos/persistencia/backConfig.cfg.xml");
-            configuration.setProperty("hibernate.current_session_context_class", "thread");
-           ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();
-           sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+	        hibConfig = new Configuration();
+	        hibConfig.configure("/ar/com/santalucia/accesodatos/persistencia/hibernate.cfg.xml");
+	        //configuration.configure("/ar/com/santalucia/accesodatos/persistencia/backConfig.cfg.xml");
+	        hibConfig.setProperty("hibernate.current_session_context_class", "thread");
+	        ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().applySettings(hibConfig.getProperties()).buildServiceRegistry();
+	        sessionFactory = hibConfig.buildSessionFactory(serviceRegistry);
        }
    }
 

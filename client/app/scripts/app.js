@@ -60,14 +60,6 @@
 
     $rootScope.$on('$stateChangeStart', function (event, next, nextParams, fromState) {
 
-      // if (loginService.isAuthenticated()) {
-      //   if (next.name !== 'login') {
-      //     event.preventDefault();
-      //     $state.go('login');
-      //     $rootScope.$broadcast(AUTH_EVENTS.notAthenticated);
-      //   };
-      // };
-
       if ('data' in next && 'authorizedRoles' in next.data) { // agregar call q le pegue al back
         var authorizedRoles = next.data.authorizedRoles;
         if (!loginService.isAuthorized(authorizedRoles)) {
@@ -84,13 +76,13 @@
           $rootScope.$broadcast(AUTH_EVENTS.notAthenticated);
         };
       };
-
-      
-
     });
 
-    // $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-    //                 //pegarle al servid
-    //               });
+    $rootScope.$on(AUTH_EVENTS.notAthenticated, function (){//event, toState, toParams, fromState, fromParams) {
+          event.preventDefault();
+          loginService.logout();
+          $state.go('login');
+    });
+
 
 });

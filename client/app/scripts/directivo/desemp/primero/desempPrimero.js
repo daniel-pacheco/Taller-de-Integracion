@@ -19,7 +19,7 @@ angular.module('clientAppApp')
     $scope.$on("myEvent",function () {
         var message = modalService.get();
 
-        console.log('my event occurred: ' + message);
+        // console.log('my event occurred: ' + message);
 
 
         if (message !== 'Todos' && $scope.todos === true) {
@@ -102,7 +102,7 @@ addDiezMaterias($scope.statsAnioCurso);
 addTrimestres($scope.statsAnioCurso);
 //-- fin llegada del objeto
 
-console.log($scope.statsAnioCurso);
+// console.log($scope.statsAnioCurso);
 
 
 //graficas generales (no especifican materia)
@@ -319,7 +319,7 @@ $scope.estadisticaPorMateria.cantAlumnos = modalService.getRandomInt(15, 30);
 addNotas($scope.estadisticaPorMateria);
 addHistoricos($scope.estadisticaPorMateria);
 
-console.log($scope.estadisticaPorMateria);
+// console.log($scope.estadisticaPorMateria);
 
 
 
@@ -356,7 +356,7 @@ function listarRendimientoMateria(stats, index, array){
 }
 
 $scope.estadisticaPorMateria.notas.forEach(listarRendimientoMateria);
-console.log($scope.rendimiento);
+// console.log($scope.rendimiento);
 
 //-- historicos por materia
 $scope.historicoCiclos = [];

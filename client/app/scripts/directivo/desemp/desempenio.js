@@ -110,7 +110,7 @@ $scope.showMessage = function(mesagge, title, isGood) { //todo ok recibe true si
 };
 
 function showServerError (response){
-	console.log(response);
+	// console.log(response);
 	var msg = '';
 
 	if (response.statusText) {
@@ -124,7 +124,7 @@ function showServerError (response){
 };
 
 function showServerSuccess (message, response){
-	console.log(response);
+	// console.log(response);
 	var msg = message;
 	
 	if ( response && response.data) {
@@ -609,7 +609,7 @@ angular.forEach($scope.listaDesempenioAnioCursoMateria, function(element, key){
 	$scope.listaDesaprobados.push(element.desaprobados);
 });
 
-console.log($scope.listaDesempenioAnioCursoMateria);
+// console.log($scope.listaDesempenioAnioCursoMateria);
 };
 
 loadListaDesempenioAnioCursoMateria($scope.listaBoletines);
@@ -646,7 +646,7 @@ function loadListaDesempenioAnioCurso(listaBoletines) {
 		$scope.listaDesempenioAnioCurso.push(desempenioAlu);
 	});
 
-console.log($scope.listaDesempenioAnioCurso);
+// console.log($scope.listaDesempenioAnioCurso);
 };
 
 loadListaDesempenioAnioCurso($scope.listaBoletines);

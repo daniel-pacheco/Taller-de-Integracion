@@ -57,7 +57,7 @@
   };
 
   function showServerError (response){
-    console.log(response);
+    // console.log(response);
     var msg = '';
 
     if (response.statusText) {
@@ -71,7 +71,7 @@
   };
 
   function showServerSuccess (message, response){
-    console.log(response);
+    // console.log(response);
     var msg = message;
 
     if ( response && response.data) {

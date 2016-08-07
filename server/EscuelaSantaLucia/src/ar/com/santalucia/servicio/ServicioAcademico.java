@@ -404,6 +404,7 @@ public class ServicioAcademico {
 	
 	
 	public Boolean addMateria(MateriaAltaDTO materiaAltaDTO) throws Exception {
+		ValidacionException vEx = new ValidacionException();
 		// DECLARO AUXILIARES
 		Area areaAux = new Area();
 		Anio anioAux = new Anio();
@@ -414,24 +415,35 @@ public class ServicioAcademico {
 		// VERIFICO EXISTENCIA DEL ANIO. SI NO SE ENCUENTRA LANZO UNA EXCEPCIÓN 
 		anioAux = gAnio.getById(materiaAltaDTO.getIdAnio());
 		if (anioAux == null){
-			throw new Exception("SERVICIO: No se pudo dar de alta la materia. No se encontró el año.");
+			vEx.addMensajeError("SERVICIO: No se pudo dar de alta la materia. No se encontró el año.");
+			throw vEx;
 		}
 		// TOMO EL AREA, SI ES NULL, CARGA NULL Y NO HAY PROBLEMA
 		areaAux = materiaAltaDTO.getArea();
-
+		
+		//VERIFICO PROBLEMAS CON EL NOMBRE DE MATERIA
+		if(existeMateriaEnAnio(materiaAltaDTO.getNombreMateria(), materiaAltaDTO.getIdAnio())){
+			vEx.addMensajeError("El nombre de materia ya existe para el año especificado.");
+			throw vEx;
+		}
+		
 		// BUSQUEDA DE DOCENTES (POR ID)
 		if(materiaAltaDTO.getIdDocenteTitular() != null){
 			docenteTitular = (Personal) gDocente.getById(materiaAltaDTO.getIdDocenteTitular());
+			materiaAux.setDocenteTitular(docenteTitular);
+		}else{
+			materiaAux.setDocenteTitular(null);
 		}
 		if (materiaAltaDTO.getIdDocenteSuplente() != null){
 			docenteSuplente = (Personal) gDocente.getById(materiaAltaDTO.getIdDocenteSuplente());
+			materiaAux.setDocenteSuplente(docenteSuplente);
+		}else{
+			materiaAux.setDocenteSuplente(null);
 		}
 		// ARMO LA MATERIA PARA PERSISTIR
 		materiaAux.setIdMateria(materiaAltaDTO.getIdMateria());			//PUEDE SER NULL O VENIR CON VALOR (MODIFY)
 		materiaAux.setNombre(materiaAltaDTO.getNombreMateria());
 		materiaAux.setDescripcion(materiaAltaDTO.getDescripcion());
-		materiaAux.setDocenteTitular(docenteTitular);
-		materiaAux.setDocenteSuplente(docenteSuplente);
 		materiaAux.setArea(areaAux);
 		materiaAux.setActivo(materiaAltaDTO.getActivo());
 		if(materiaAux.getIdMateria() != null){						// SI YA EXISTE LA MATERIA
@@ -446,6 +458,36 @@ public class ServicioAcademico {
 			asignarMateriaAAnio(materiaAux, materiaAltaDTO.getIdAnio());
 			return true;
 		} 
+	}
+	
+	/**
+	 * Determina si existe el nombre de una materia o no en un Año.
+	 * @param materia
+	 * @param idAnio
+	 * @return
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	private Boolean existeMateriaEnAnio(String materia, Long idAnio) throws ValidacionException, Exception{
+		try{
+			ValidacionException vEx = new ValidacionException();
+			Anio anio = this.getAnio(idAnio);
+			if (anio == null){
+				vEx.addMensajeError("No se pudo encontrar el año.");
+				throw vEx;
+			}
+			Set<Materia> listaMaterias = anio.getListaMaterias(); 
+			for(Materia m : listaMaterias){
+				if (m.getNombre().equals(materia)){
+					return true;
+				}
+			}
+			return false;
+		}catch(ValidacionException vEx){
+			throw vEx;
+		}catch(Exception ex){
+			throw ex;
+		}
 	}
 	
 	public Boolean deleteMateria(Materia materia) throws Exception { // EN ENDPOINT
@@ -1644,6 +1686,10 @@ public class ServicioAcademico {
 			throw ex;
 		}
 	}
+	
+	//public void ObtenerInscripcionDTO()
+	
+	//public void listarInscripcionesDTO()
 	
 	public void closeSession() throws Exception { 
 		gAnio.closeSession();

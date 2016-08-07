@@ -3,6 +3,7 @@
  */
 package ar.com.santalucia.rest;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -20,6 +21,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import ar.com.santalucia.dominio.modelo.sistema.configuracion.ParametroConfiguracion;
+import ar.com.santalucia.excepciones.ValidacionException;
 import ar.com.santalucia.servicio.Inicializador;
 import ar.com.santalucia.servicio.ServicioConfiguracion;
 
@@ -125,6 +127,10 @@ public class ServicioConfiguracionEndpoint {
 		try {
 			setInstance();
 			return Response.ok(servicioConfiguracion.generarBackup()).build();
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO))
+					.build();
 		} catch (Exception ex) {
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
 				.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
@@ -132,4 +138,23 @@ public class ServicioConfiguracionEndpoint {
 				.build();
 		}
 	}
+	
+	@POST
+	@Path("/backup/restore")
+	public Response restaurarBackup() {
+		try {
+			setInstance();
+			return Response.ok(servicioConfiguracion.restaurarBase_bat()).build();
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO))
+					.build();
+		} catch (Exception ex) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+				.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+						FrontMessage.CRITICAL))
+				.build();
+		}
+	}
+	
 }
