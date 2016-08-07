@@ -284,9 +284,55 @@ public class ServicioConfiguracion {
 		return fechaHora;
 	}
 	
-	public Boolean restaurarBase() throws Exception {
+	public Boolean restaurarBase_bat() throws Exception {
+		//String exeMysql = "C:\\Program Files\\MySQL\\MySQL Server 5.7\\bin\\mysql.exe";
+		String exeMysql = "C:\\Users\\Eric\\Desktop\\test_backup_mysql\\mysql.exe";
+		ValidacionException vEx = new ValidacionException();
+		Runtime app = Runtime.getRuntime();
+		Configuration configFile = HibernateUtil.getHibConfig();
+		
+		Map<String, String> parametros = new HashMap<String, String>();
+		try {
+			parametros.put("user", configFile.getProperty("hibernate.connection.username"));
+			parametros.put("password", configFile.getProperty("hibernate.connection.password"));
+			parametros.put("exe", exeMysql);
+			parametros.put("base", configFile.getProperty("hibernate.connection.url").substring(28));
+			parametros.put("backupFile", "\"C:\\Users\\Eric\\Desktop\\test_backup_mysql\\backup_escuelabd_2016-07-07_12-09.backup\"");
+		} catch (Exception e) {
+			vEx.addMensajeError("Error en la lectura de la configuración");
+			throw vEx;
+		}
+		
+		File file = new File("c:/users/eric/desktop/test_backup_mysql/test_restore2.bat");
+		if (!file.exists()) {
+			file.createNewFile();
+		} 
+		FileOutputStream file2 = new FileOutputStream(file);
+		file2.write(parametros.get("exe").getBytes());
+		file2.write((" --user=" + parametros.get("user")).getBytes());
+		file2.write((" --password=" + parametros.get("password")).getBytes());
+		file2.write((" --database=" + parametros.get("base")).getBytes());
+		file2.write(" < ".getBytes());
+		file2.write(parametros.get("backupFile").getBytes());
+		file2.close();
+		
+		try {
+			Process proceso = app.exec(file.getAbsolutePath());
+			if (proceso.waitFor() == 0) {
+				file.delete();
+				return true;
+			} else {
+				throw new Exception("Error del proceso");
+			}
+		} catch (Exception e) {
+			throw new Exception("Error al restaurar el backup: " + e.getMessage());
+		}
+	}
+	
+	public Boolean restaurarBase_noBat() throws Exception {
 		//String exeMysql = "\"C:\\Program Files\\MySQL\\MySQL Server 5.7\\bin\\mysql.exe\"";
-		String exeMysql = "C:/Program Files/MySQL/MySQL Server 5.7/bin/mysql.exe";
+		String exeMysql = "C:\\Users\\Eric\\Desktop\\test_backup_mysql\\mysql.exe";
+		//String exeMysql = "C:/Program Files/MySQL/MySQL Server 5.7/bin/mysql.exe";
 		ValidacionException vEx = new ValidacionException();
 		Runtime app = Runtime.getRuntime();
 		Configuration configFile = HibernateUtil.getHibConfig();
@@ -310,7 +356,7 @@ public class ServicioConfiguracion {
 			String comando = exeMysql 
 					+ " --user=" + parametros.get("user") 
 					+ " --password=" + parametros.get("password")
-					+ " " + parametros.get("base")
+					+ " --database=" + parametros.get("base")
 					+ " < " + parametros.get("backupFile");
 			Process proceso = app.exec(comando);
 			if (proceso.waitFor() == 0) {

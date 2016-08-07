@@ -144,7 +144,7 @@ public class ServicioConfiguracionEndpoint {
 	public Response restaurarBackup() {
 		try {
 			setInstance();
-			return Response.ok(servicioConfiguracion.restaurarBase()).build();
+			return Response.ok(servicioConfiguracion.restaurarBase_bat()).build();
 		} catch (ValidacionException vEx) {
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
 					.entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO))
