@@ -34,11 +34,11 @@
     window.sessionStorage.setItem('LOCAL_TOKEN_KEY', token);
     window.sessionStorage.setItem('USER_ROLE', role);    
     
-    console.log(
-      window.sessionStorage.getItem('USER_NAME') + ' ' +
-      window.sessionStorage.getItem('LOCAL_TOKEN_KEY') + ' ' +
-      window.sessionStorage.getItem('USER_ROLE')
-      );
+    // console.log(
+    //   window.sessionStorage.getItem('USER_NAME') + ' ' +
+    //   window.sessionStorage.getItem('LOCAL_TOKEN_KEY') + ' ' +
+    //   window.sessionStorage.getItem('USER_ROLE')
+    //   );
 
     useCredentials(name, token, role);
   };
@@ -70,14 +70,14 @@
 
     $http.post(server + sLogin + 'login', [name, pw, role])
     .success(function(data, status, headers, config){
-      console.log(headers('auth0'));
-      console.log(status);
+      // console.log(headers('auth0'));
+      // console.log(status);
       storeUserCredentials(name, headers('auth0'), role);
       deferred.resolve('Success!');
     })
     .error(function(data, status, headers, config) {
       storeUserCredentials("", "", "ADMINISTRADOR");
-      console.log(status);
+      // console.log(status);
       deferred.reject('Error!');
     })
     .finally(function(){

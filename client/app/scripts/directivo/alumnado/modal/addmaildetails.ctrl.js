@@ -42,7 +42,7 @@ angular.module('clientAppApp')
     $scope.copiaMail = angular.copy (mail);
   }
   $scope.saveEditMail = function (position){
-    console.log(position);
+    // console.log(position);
     $scope.copiaListaMails[position].direccionMail = $scope.copiaMail.direccionMail;
     $scope.copiaListaMails[position].tipoMail = $scope.copiaMail.tipoMail;
   }

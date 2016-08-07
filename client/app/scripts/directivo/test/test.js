@@ -95,6 +95,37 @@ $scope.validar = function() {
 
 };
 
+$scope.metralleta = function(){
+  var aux = [];
+  for (var i = 0; i < 100; i++) {
+    alumnoService.getAllMin()
+    .then(function(response){
+      console.log('alumno: '+ i + ' ');
+      console.log(response.data);
+      aux.push(response.data);
+    },
+    function(response){
+      // alert('Se ha producido un error al intentar cotactar al servidor: ' + response.statusText);
+      console.log('error en el alumno: ' + i);
+    })
+    .finally(function(){});
+
+    academicoService.anioGetAllMin()
+    .then(
+      function(response){
+        console.log('anio: '+ i + ' ');
+        console.log(response.data);
+        aux.push(response.data);
+      },
+      function(response){
+        console.log('error en el anio: ' + i);
+      })
+    .finally(function(){
+    });
+  };
+  console.log(aux);
+};
+
 
 }]);
 

@@ -146,7 +146,7 @@ $scope.showMessage = function(mesagge, title, isGood) { //todo ok recibe true si
 };
 
 function showServerError (response){
-  console.log(response);
+  // console.log(response);
   var msg = '';
 
   if (response.statusText) {
@@ -160,7 +160,7 @@ function showServerError (response){
 };
 
 function showServerSuccess (message, response){
-  console.log(response);
+  // console.log(response);
   var msg = message;
 
   if (response.data) {

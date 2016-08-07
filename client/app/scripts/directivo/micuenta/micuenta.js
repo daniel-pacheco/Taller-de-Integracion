@@ -78,7 +78,7 @@ function setActiveAlu (menuItemAlu) {
 	};
 
 	function showServerError (response){
-		console.log(response);
+		// console.log(response);
 		var msg = '';
 
 		if (response.statusText) {
@@ -92,7 +92,7 @@ function setActiveAlu (menuItemAlu) {
 	};
 
 	function showServerSuccess (message, response){
-		console.log(response);
+		// console.log(response);
 		var msg = message;
 
 		if (response.data) {
@@ -112,7 +112,7 @@ function setActiveAlu (menuItemAlu) {
 //-- [Mi cuenta/Mis datos] service calls
 $scope.initCall = function() {
 	directivoService.getMyData().then(function(response) {
-		console.log(response);
+		// console.log(response);
 		$scope.directivo = response.data;
 	},
 	function(response){

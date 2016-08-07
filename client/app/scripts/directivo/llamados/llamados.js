@@ -278,7 +278,7 @@ function initLlamado(llamadoMin){
   llamado.descripcion = llamadoMin.descripcion;
   llamado.fechaInicio = llamadoMin.fechaInicioLlamado;
   llamado.fechaFin = llamadoMin.fechaFinLlamado;
-  console.log(llamado);
+  // console.log(llamado);
   return llamado;
 };
 //-- [Llamado/nuevo Llamado] service calls
