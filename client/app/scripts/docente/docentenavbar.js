@@ -24,9 +24,10 @@
  		}
  	});
  })
- .controller('DocenteNavBarCtrl', ['$scope', 'MENU_DOCENTE', function ($scope, MENU_DOCENTE) {
+ .controller('DocenteNavBarCtrl', ['$scope', 'MENU_DOCENTE', 'MANUAL', function ($scope, MENU_DOCENTE, MANUAL) {
 
  	$scope.menuDocente = MENU_DOCENTE;
+ 	$scope.manual = MANUAL.DOCENTE;
  	
  	$scope.setActive = function(menuItem) {
  		$scope.activeMenu = menuItem;

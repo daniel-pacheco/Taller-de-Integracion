@@ -24,9 +24,10 @@
  		}
  	});
  })
- .controller('AlumnoNavBarCtrl', ['$scope', 'MENU_ALUMNO', function ($scope, MENU_ALUMNO) {
+ .controller('AlumnoNavBarCtrl', ['$scope', 'MENU_ALUMNO', 'MANUAL', function ($scope, MENU_ALUMNO, MANUAL) {
 
  	$scope.menuAlumno = MENU_ALUMNO;
+ 	$scope.manual = MANUAL.ALUMNO 
 
 
  	$scope.setActive = function(menuItem) {

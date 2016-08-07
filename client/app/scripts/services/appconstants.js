@@ -9,7 +9,7 @@
  */
  angular.module('clientAppApp')
  .constant('SERVER', {
- 	// address: 'http://192.168.1.27:8080/',
+ 	//address: 'http://192.168.1.8:8080/',
  	address: 'http://localhost:8080/',
  	sAlumno: 'EscuelaSantaLucia/rest/sAlumno/',
  	sAcademico: 'EscuelaSantaLucia/rest/sAcademico/',
@@ -96,6 +96,12 @@
  	MAILD: ["Personal", "Conyuge", "Otro"]
  })
 
+ .constant('MANUAL',{
+ 	ALUMNO: 'https://drive.google.com/file/d/0B3zCRcWbTMf1Sk9oWjZWOEZmVE0/preview',
+ 	DIRECTIVO: 'https://drive.google.com/file/d/0B3zCRcWbTMf1Sk9oWjZWOEZmVE0/preview',
+ 	DOCENTE: 'https://drive.google.com/file/d/0B3zCRcWbTMf1Sk9oWjZWOEZmVE0/preview',
+ 	ADMINISTRADOR: 'https://drive.google.com/file/d/0B3zCRcWbTMf1Sk9oWjZWOEZmVE0/preview'
+ })
 /*
  .constant('PARAM_CONFIG',{
  	COMIENZO_ACADEMICO: ['COMIENZO_ACADEMICO' ,1],
@@ -111,11 +117,11 @@
  	VIS_LLAMADO: ['VIS_LLAMADO', 11]
  })*/
 
- .constant('DESEMP_LIMITES', {
-	ins: [0, 4], //[,)
-	reg: [4, 6], //[,)
- bien: [6,8],
- mBien: [8,9],
- exc: [9,10]
+.constant('DESEMP_LIMITES', {
+	ins: [0, 4],
+	reg: [4, 6],
+	bien: [6,8],
+	mBien: [8,9],
+	exc: [9,10]
 })
- .constant('appConstants', 42);
+.constant('appConstants', 42);

@@ -20,9 +20,12 @@
           </li>
         </ul>            
         <ul class="navbar-nav saludo" style="float: right;">
-          <span bs-tooltip="tooltip.tooltipProfile" class="glyphicon glyphicon-user" ></span>
-          <span class="saludo">Hola {{credentials.userRole}} {{credentials.userName}}</span>
-          <!--  -->
+          <!-- <span bs-tooltip="tooltip.tooltipProfile" class="glyphicon glyphicon-user" ></span>-->
+          <span class="saludo">{{credentials.userRole}} {{credentials.userName}}</span>
+
+          <a ng-href="{{manual}}" style="text-decoration:none;" target="_blank">
+            <span title="{{popoverHelp.title}}" bs-tooltip="tooltip.tooltipProfile" class="glyphicon glyphicon-question-sign" style="margin-right: 5px; font-size: 24px; vertical-align: middle; cursor: pointer;"></span>
+          </a>
 
           <button type="button" class="btn btn-danger" title="{{popover.title}}" data-content="{{popover.content}}" data-animation="am-flip-x" data-auto-close="1" data-template-url="/views/templates/logout.tpl.html" data-placement="bottom" bs-popover><span data-type="info" data-placement="bottom" bs-tooltip="tooltip.tooltipLogout" class="glyphicon glyphicon-off" data-animation="am-fade-and-scale"></span>
           </button>

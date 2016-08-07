@@ -23,10 +23,11 @@
  		}
  	});
  })
- .controller('AdminNavBarCtrl', ['$scope', 'MENU_ADMIN', function ($scope, MENU_ADMIN) {
+ .controller('AdminNavBarCtrl', ['$scope', 'MENU_ADMIN', 'MANUAL', function ($scope, MENU_ADMIN, MANUAL) {
 
  	$scope.menuAdmin = MENU_ADMIN;
-
+ 	$scope.manual = MANUAL.ADMINISTRADOR;
+ 	
  	$scope.setActive = function(menuItem) {
  		$scope.activeMenu = menuItem;
  	};

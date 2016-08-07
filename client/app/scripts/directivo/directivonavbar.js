@@ -24,9 +24,10 @@
  		}
  	});
  })
- .controller('DirectivoNavBarCtrl', ['$scope', 'MENU_DIRECTIVO', function ($scope, MENU_DIRECTIVO) {
+ .controller('DirectivoNavBarCtrl', ['$scope', 'MENU_DIRECTIVO', 'MANUAL', function ($scope, MENU_DIRECTIVO, MANUAL) {
 
  	$scope.menuDirectivo = MENU_DIRECTIVO;
+ 	$scope.manual = MANUAL.DIRECTIVO;
  	
  	$scope.setActive = function(menuItem) {
  		$scope.activeMenu = menuItem;
@@ -35,6 +36,10 @@
  	$scope.popover = {
  		"title": "Despedirse",   
  	};
+
+	$scope.popoverHelp = {
+ 		"title": "Ayuda",   
+ 	}; 	
 
  }]);
  
