@@ -23,7 +23,8 @@
  .constant('AUTH_EVENTS', {
  	notAuthenticated: 'auth-not-authenticated',
  	notAuthorized: 'auth-not-authorized',
- 	notFound: 'url-not-found'
+ 	notFound: 'url-not-found',
+ 	internalError: 'internal-error'
  })
  
  .constant('USER_ROLES', {

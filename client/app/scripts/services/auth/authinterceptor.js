@@ -28,7 +28,8 @@
     responseError: function (response) {
       $rootScope.$broadcast({
         401: AUTH_EVENTS.notAuthenticated,
-        403: AUTH_EVENTS.notAuthorized
+        403: AUTH_EVENTS.notAuthorized,
+        500: AUTH_EVENTS.internalError
       }[response.status], response);
 
       return $q.reject(response);
