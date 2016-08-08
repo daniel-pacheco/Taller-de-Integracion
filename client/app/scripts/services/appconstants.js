@@ -98,10 +98,10 @@
  })
 
  .constant('MANUAL',{
- 	ALUMNO: 'https://drive.google.com/file/d/0B3zCRcWbTMf1MVNucDlfWEowczA/view?usp=sharing',
- 	DIRECTIVO: 'https://drive.google.com/file/d/0B3zCRcWbTMf1MVNucDlfWEowczA/view?usp=sharing',
- 	DOCENTE: 'https://drive.google.com/file/d/0B3zCRcWbTMf1MVNucDlfWEowczA/view?usp=sharing',
- 	ADMINISTRADOR: 'https://drive.google.com/file/d/0B3zCRcWbTMf1MVNucDlfWEowczA/view?usp=sharing'
+ 	ALUMNO: 'https://drive.google.com/file/d/0B3zCRcWbTMf1Sk9oWjZWOEZmVE0/view?usp=sharing',
+ 	DIRECTIVO: 'https://drive.google.com/file/d/0B3zCRcWbTMf1Sk9oWjZWOEZmVE0/view?usp=sharing',
+ 	DOCENTE: 'https://drive.google.com/file/d/0B3zCRcWbTMf1Sk9oWjZWOEZmVE0/view?usp=sharing',
+ 	ADMINISTRADOR: 'https://drive.google.com/file/d/0B3zCRcWbTMf1Sk9oWjZWOEZmVE0/view?usp=sharing'
  })
 /*
  .constant('PARAM_CONFIG',{
