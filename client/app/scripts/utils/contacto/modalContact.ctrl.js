@@ -1,9 +1,7 @@
 angular.module('clientAppApp')
-.controller('modalConfirmController', [
-  '$scope', '$element','mensaje','close',
-  function($scope, $element, mensaje, close) {//acá se inyecta las variables necesarias y luego la función close
-
-  $scope.mensaje = mensaje; 
+.controller('modalContactoController', [
+  '$scope', '$element','close',
+  function($scope, $element, close) {//acá se inyecta las variables necesarias y luego la función close
   
   $scope.close = function(confirm) {
     close(confirm, 500); 

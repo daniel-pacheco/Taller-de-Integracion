@@ -1,20 +1,14 @@
 <div class="popover" tabindex="-1">
-  <div class="arrow"></div>
-  <div class="popover-title" ng-bind="title" ng-show="title"></div>
-  <div class="popover-content"> <p style="color: #000">¿Desea cerrar sesión?</p>
-		  <button type="button" class="btn btn-danger" ng-click="$hide()">No</button>
-	      <button type="button" class="btn btn-primary" autofocus ng-click="logOut()">Si</button>
-	      <hr>
-	      <div bs-tooltip="tooltip.tooltipAuthors" data-html="true">
-	      	<p>@utores: ginthub.com/ </p>
-	      	<!-- <p>ericpennachini</p>
-	      	<p>daniel-pacheco</p>
-	      	<p>MartinHerrlein</p>
-	      	<p>mauricioarielramirez</p>
-	      	<p>orange023</p> -->
-	      </div>
-  </div>
+	<div class="arrow"></div>
+	<div class="popover-title" ng-bind="title" ng-show="title"></div>
+	<div class="popover-content"> <!-- <p style="color: #000">¿Desea cerrar sesión?</p> -->
+		<!-- <button type="button" class="btn btn-danger" ng-click="$hide()">No</button> -->
+		<button type="button" class="btn btn-danger btn-block" autofocus ng-click="logOut()">Cerrar sesión</button>
+		<hr>
+		<div data-html="true">
+			<button class="btn btn-default  btn-block btn-xs" ng-click="acercaDeModal()">Acerca de</button>
+		</div>
+	</div>
 </div>
-	     
 
-	     
+
