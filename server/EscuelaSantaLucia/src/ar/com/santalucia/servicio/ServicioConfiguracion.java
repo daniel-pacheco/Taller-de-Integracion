@@ -3,14 +3,25 @@ package ar.com.santalucia.servicio;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchService;
+import java.nio.file.WatchEvent.Kind;
+import java.nio.file.WatchEvent.Modifier;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.hibernate.cfg.Configuration;
+
+import com.sun.faces.facelets.util.Path;
 
 import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
 import ar.com.santalucia.aplicacion.gestor.sistema.configuracion.GestorParametroConfiguracion;
@@ -235,7 +246,19 @@ public class ServicioConfiguracion {
 	
 	
 	public Boolean generarBackup() throws IOException, ValidacionException, Exception {
-		String exeMysql = "C:/Program Files/MySQL/MySQL Server 5.7/bin/mysqldump.exe";
+		ParametroConfiguracion par = getParametro("RUTA_BACKUP");
+		//String exeMysql = "C:/Program Files/MySQL/MySQL Server 5.7/bin/mysqldump.exe";
+		//String exeMysql = "C:/Users/Eric/Desktop/test_backup_mysql/mysqldump.exe";
+		// checkeo primero que la ruta especificada para el backup exista
+		File rutaBackup = new File(par.getValor());
+		if (!rutaBackup.exists()) {
+			ValidacionException vEx = new ValidacionException();
+			vEx.addMensajeError("No se encuentra la carpeta destinada para el backup. "
+					+ "Asegurese que la carpeta especificada existe y luego intente de nuevo la operación.");
+			throw vEx;
+		}
+
+		String exeMysql = par.getValor() + "/mysqldump.exe";
 		ValidacionException vEx = new ValidacionException();
 		Runtime app = Runtime.getRuntime();
 		Configuration configFile = HibernateUtil.getHibConfig();
@@ -247,7 +270,7 @@ public class ServicioConfiguracion {
 			parametros.put("port", "3306");
 			parametros.put("user", configFile.getProperty("hibernate.connection.username"));
 			parametros.put("password", configFile.getProperty("hibernate.connection.password"));
-			parametros.put("fileOut", "C:/Users/Eric/Desktop/test_backup_mysql/backup_escuelabd_" + fechaHora + ".backup ");
+			parametros.put("fileOut", par.getValor() + "/backup_escuelabd_" + fechaHora + ".backup ");
 			parametros.put("exe", exeMysql);
 			parametros.put("base", " " + configFile.getProperty("hibernate.connection.url").substring(28));
 		} catch (Exception e) {
@@ -269,7 +292,7 @@ public class ServicioConfiguracion {
 				throw new Exception("Error del proceso");
 			}
 		} catch (Exception e) {
-			throw new Exception("Error al generar el backup: " + e.getMessage());
+			throw new Exception("Error al generar el backup");
 		}
 	}
 
@@ -280,13 +303,22 @@ public class ServicioConfiguracion {
 		Integer a = new Integer(calendar.get(Calendar.YEAR));
 		Integer hh = new Integer(calendar.get(Calendar.HOUR_OF_DAY));
 		Integer mm = new Integer(calendar.get(Calendar.MINUTE));
-		String fechaHora = a + "-" + (m<=10?"0"+m:m) + "-" + (d<=10?"0"+d:d) + "_" + (hh<=10?"0"+hh:hh) + "-" + (mm<=10?"0"+mm:mm);
+		String fechaHora = a + "-" + (m<10?"0"+m:m) + "-" + (d<10?"0"+d:d) + "_" + (hh<10?"0"+hh:hh) + "-" + (mm<10?"0"+mm:mm);
 		return fechaHora;
 	}
 	
-	public Boolean restaurarBase_bat() throws Exception {
+	public Boolean restaurarBase_bat(String pathArchivoBackup) throws Exception {
 		//String exeMysql = "C:\\Program Files\\MySQL\\MySQL Server 5.7\\bin\\mysql.exe";
-		String exeMysql = "C:\\Users\\Eric\\Desktop\\test_backup_mysql\\mysql.exe";
+		//String exeMysql = "C:\\Users\\Eric\\Desktop\\test_backup_mysql\\mysql.exe";
+		ParametroConfiguracion par = getParametro("RUTA_BACKUP");
+		String pathExeMysql = par.getValor() + "/mysql.exe";
+		File exeMysql = new File(pathExeMysql);
+		if (!exeMysql.exists()) {
+			ValidacionException vEx = new ValidacionException();
+			vEx.addMensajeError("No se encuentra la carpeta destinada para el backup. "
+					+ "Asegurese que la carpeta especificada existe y luego intente de nuevo la operación.");
+			throw vEx;
+		}
 		ValidacionException vEx = new ValidacionException();
 		Runtime app = Runtime.getRuntime();
 		Configuration configFile = HibernateUtil.getHibConfig();
@@ -295,15 +327,15 @@ public class ServicioConfiguracion {
 		try {
 			parametros.put("user", configFile.getProperty("hibernate.connection.username"));
 			parametros.put("password", configFile.getProperty("hibernate.connection.password"));
-			parametros.put("exe", exeMysql);
+			parametros.put("exe", pathExeMysql);
 			parametros.put("base", configFile.getProperty("hibernate.connection.url").substring(28));
-			parametros.put("backupFile", "\"C:\\Users\\Eric\\Desktop\\test_backup_mysql\\backup_escuelabd_2016-07-07_12-09.backup\"");
+			parametros.put("backupFile", pathArchivoBackup);
 		} catch (Exception e) {
 			vEx.addMensajeError("Error en la lectura de la configuración");
 			throw vEx;
 		}
 		
-		File file = new File("c:/users/eric/desktop/test_backup_mysql/test_restore2.bat");
+		File file = new File(par.getValor() + "/restore.bat");
 		if (!file.exists()) {
 			file.createNewFile();
 		} 
