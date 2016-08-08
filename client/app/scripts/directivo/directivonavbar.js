@@ -24,9 +24,10 @@
  		}
  	});
  })
- .controller('DirectivoNavBarCtrl', ['$scope', 'MENU_DIRECTIVO', function ($scope, MENU_DIRECTIVO) {
+ .controller('DirectivoNavBarCtrl', ['$scope', 'MENU_DIRECTIVO', 'MANUAL', 'ModalService',function ($scope, MENU_DIRECTIVO, MANUAL, ModalService) {
 
  	$scope.menuDirectivo = MENU_DIRECTIVO;
+ 	$scope.manual = MANUAL.DIRECTIVO;
  	
  	$scope.setActive = function(menuItem) {
  		$scope.activeMenu = menuItem;
@@ -35,12 +36,23 @@
  	$scope.popover = {
  		"title": "Despedirse",   
  	};
+ 	$scope.popoverHelp = {
+ 		"title": "Ayuda",   
+ 	}; 
 
- 	//tooltips
- 	$scope.tooltip = {
- 		tooltipAuthors : {
- 			'title' : 'ericpennachini <br> daniel-pacheco <br>  MartinHerrlein <br>  mauricioarielramirez <br> <b>soporte.sgsa@gmail.com</b>'
- 		}
+ 	$scope.acercaDeModal = function() {
+ 		ModalService.showModal({
+ 			templateUrl: 'scripts/utils/contacto/modalContact.tpl.html',
+ 			controller: 'modalContactoController',
+ 			inputs: {
+ 				
+ 			}
+ 		}).then(function(modal) {
+ 			modal.element.modal();
+ 			modal.close.then(function(result){
+ 				
+ 			});
+ 		});
  	};
 
  }]);

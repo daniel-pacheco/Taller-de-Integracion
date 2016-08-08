@@ -24,9 +24,10 @@
  		}
  	});
  })
- .controller('DocenteNavBarCtrl', ['$scope', 'MENU_DOCENTE', function ($scope, MENU_DOCENTE) {
+ .controller('DocenteNavBarCtrl', ['$scope', 'MENU_DOCENTE', 'MANUAL', 'ModalService',function ($scope, MENU_DOCENTE, MANUAL, ModalService) {
 
  	$scope.menuDocente = MENU_DOCENTE;
+ 	$scope.manual = MANUAL.DOCENTE;
  	
  	$scope.setActive = function(menuItem) {
  		$scope.activeMenu = menuItem;
@@ -35,12 +36,23 @@
  	$scope.popover = {
  		"title": "Despedirse",   
  	};
+ 	$scope.popoverHelp = {
+ 		"title": "Ayuda",   
+ 	}; 
 
- 	//tooltips
- 	$scope.tooltip = {
- 		tooltipAuthors : {
- 			'title' : 'ericpennachini <br> daniel-pacheco <br>  MartinHerrlein <br>  mauricioarielramirez'
- 		}
+ 	$scope.acercaDeModal = function() {
+ 		ModalService.showModal({
+ 			templateUrl: 'scripts/utils/contacto/modalContact.tpl.html',
+ 			controller: 'modalContactoController',
+ 			inputs: {
+ 				
+ 			}
+ 		}).then(function(modal) {
+ 			modal.element.modal();
+ 			modal.close.then(function(result){
+ 				
+ 			});
+ 		});
  	};
 
  }]);

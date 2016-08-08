@@ -141,10 +141,12 @@ public class ServicioConfiguracionEndpoint {
 	
 	@POST
 	@Path("/backup/restore")
-	public Response restaurarBackup() {
+	public Response restaurarBackup(String path) {
 		try {
 			setInstance();
-			return Response.ok(servicioConfiguracion.restaurarBase()).build();
+			// ruta que se tiene que pasar como parámetro
+			// String ruta = "C:/backup/backup_escuelabd_2016-07-08_00-08.backup";
+			return Response.ok(servicioConfiguracion.restaurarBase_bat(path)).build();
 		} catch (ValidacionException vEx) {
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
 					.entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO))

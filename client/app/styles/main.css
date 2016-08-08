@@ -313,11 +313,9 @@ input, button, select, textarea {
   padding: 1%;
 }
 
-.saludo {
+.saludo, .saludo > a {
   color: #CCC;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-right: 20px;
+  padding: 7px 0px;
 }
 
 .nav > .active > a {

@@ -33,7 +33,7 @@
 									</div>
 									<div class="form-group" ng-if="docente.listaTelefonos"> <!-- por si la lista es vacía no se muestra -->
 										<label class="col-lg-4">Telefonos: </label> <!--cambiar por ng-repeat docente.listaTelefonos[$index].nroTelefono-->
-										<span class="col-lg-5">{{docente.listaTelefonos[0].nroTelefono}} - {{docente.listaTelefonos[1].nroTelefono}}</span>
+										<span ng-repeat="telefono in docente.listaTelefonos" class="col-lg-5">{{telefono.nroTelefono}}({{telefono.tipoTelefono}})</span>
 									</div>
 									<div class="form-group">
 										<label class="col-lg-4">Domicilio: </label>
@@ -41,11 +41,15 @@
 									</div>
 									<div class="form-group"> <!-- poner ng-if=docente.listaMails -->
 										<label class="col-lg-4">Correo electr&oacute;nico: </label>  <!--cambiar por ng-repeat -->
-										<span class="col-lg-5">{{docente.listaMails[0].direccionMail}}</span>
+										<span ng-repeat="mail in docente.listaMails" class="col-lg-5">{{mail.direccionMail}}({{mail.tipoMail}})</span>
 									</div>
 									<div class="form-group">
 										<label class="col-lg-4">CUIL: </label>
 										<span class="col-lg-5">{{docente.cuil}}</span>
+									</div>
+									<div class="form-group">
+										<label class="col-lg-4">T&iacute;tulo: </label>
+										<span ng-repeat="titulo in docente.listaTitulos" class="col-lg-5">{{titulo.nombreTitulo}}</span>
 									</div>
 									<div class="form-group">
 										<div class="col-lg-7">
