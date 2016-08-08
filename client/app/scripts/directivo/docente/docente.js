@@ -514,8 +514,7 @@ $scope.newDocente = function(personal){
   };
 
   if (personal.rolDirectivo) {
-    putNewDirectivo(personal); 
-    //$scope.requiredPassPutDirectivo(personal);
+    $scope.requiredPassPutDirectivo(personal);
   } else {
     putNewDocente(personal);
   };

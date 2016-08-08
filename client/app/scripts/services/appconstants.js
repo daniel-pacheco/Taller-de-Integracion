@@ -9,7 +9,7 @@
  */
  angular.module('clientAppApp')
  .constant('SERVER', {
- 	address: 'http://192.168.2.100:8080/',
+ 	address: 'http://PROYECTOR-PC:8080/',
  	//address: 'http://localhost:8080/',
  	sAlumno: 'EscuelaSantaLucia/rest/sAlumno/',
  	sAcademico: 'EscuelaSantaLucia/rest/sAcademico/',
