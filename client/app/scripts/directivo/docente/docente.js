@@ -20,28 +20,28 @@
       authorizedRoles: [
       USER_ROLES.admin,
       USER_ROLES.directivo]
- 		}
- 	});
+    }
+  });
  })
  // .controller('DocenteCtrl', function ($scope, docenteData, $timeout, ModalService, SERVER, ObjectsFactory, $alert, docenteService, alumnoService, directivoService, modalService, spinnerService, exportTableService, academicoService) {
-.controller('DocenteCtrl',['$scope', 'academicoService', 'alumnoService', 'directivoService', 'docenteService', 'exportTableService', 'ModalService', 'modalService', 'ObjectsFactory', 'SERVER', 'spinnerService' , function ($scope, academicoService, alumnoService, directivoService, docenteService, exportTableService, ModalService, modalService, ObjectsFactory, SERVER, spinnerService) {
-  $scope.tooltip = {
-    tooltipProfile : {
-      'title' : 'Perfil'
-    },
-    tooltipDelete : {
-      'title' : 'Eliminar'
-    },    
-    tooltipEdit : {
-      'title' : 'Editar'
-    },
-    tooltipExport: {
-      'title': 'Exportar para impresión'
-    },
-    tooltipDesasignar: {
-      'title': 'Desasignar docente de materia'
-    }
-  };
+  .controller('DocenteCtrl',['$scope', 'academicoService', 'alumnoService', 'directivoService', 'docenteService', 'exportTableService', 'ModalService', 'modalService', 'ObjectsFactory', 'SERVER', 'spinnerService' , function ($scope, academicoService, alumnoService, directivoService, docenteService, exportTableService, ModalService, modalService, ObjectsFactory, SERVER, spinnerService) {
+    $scope.tooltip = {
+      tooltipProfile : {
+        'title' : 'Perfil'
+      },
+      tooltipDelete : {
+        'title' : 'Eliminar'
+      },    
+      tooltipEdit : {
+        'title' : 'Editar'
+      },
+      tooltipExport: {
+        'title': 'Exportar para impresión'
+      },
+      tooltipDesasignar: {
+        'title': 'Desasignar docente de materia'
+      }
+    };
 
 
 //-- [docente]
@@ -88,11 +88,17 @@ $scope.seleccionar('listado');
 $scope.editProfile = function(docente) {  
   // $scope.nuevoDocente = angular.copy(docente);
   $scope.nuevoDocente = _.clone(docente);
+  $scope.nuevoTelefonoSimple = ObjectsFactory.newTelefono();
+  $scope.nuevoMailSimple = ObjectsFactory.newMail();
+  $scope.nuevoTituloSimple = ObjectsFactory.newTitulo();
   $scope.nuevoDocente.fechaNacimiento = new Date(docente.fechaNacimiento);
   $scope.seleccionar('editDocente');
   $scope.mostrarListaMails = $scope.nuevoDocente.listaMails.length > 0? true: false;
   $scope.mostrarListaTelefonos = $scope.nuevoDocente.listaTelefonos.length > 0? true: false;
   $scope.mostrarListaTitulos = $scope.nuevoDocente.listaTitulos.length > 0? true: false;
+  $scope.nuevoDocente.sexo = $scope.nuevoDocente.sexo == "Masculino"? "M":"F";
+  $scope.cuilTail = ($scope.nuevoDocente.cuil.toString()).substr(-1);
+  $scope.cuilHead = ($scope.nuevoDocente.cuil.toString()).substr(0,2);
   
 };
 
@@ -476,22 +482,23 @@ function eliminarDocente (docente){
   };
 };
 
-  function eliminarDirectivo (docente){
+function eliminarDirectivo (docente){
 
-    spinnerService.show('searchDocenteSpinner');
-    directivoService.delByDni(docente.nroDocumento)
-    .then(function(response){
-      showServerSuccess('directivo con dni: ' + docente.nroDocumento + ' eliminado con exito. ', response);
-      $scope.search();
-    },function(response){
-      showServerError(response);
-    })
-    .finally(function(){
-      spinnerService.hide('searchDocenteSpinner');
-    });
+  spinnerService.show('searchDocenteSpinner');
+  directivoService.delByDni(docente.nroDocumento)
+  .then(function(response){
+    showServerSuccess('directivo con dni: ' + docente.nroDocumento + ' eliminado con exito. ', response);
+    $scope.search();
+  },function(response){
+    showServerError(response);
+  })
+  .finally(function(){
+    spinnerService.hide('searchDocenteSpinner');
+  });
 };
 
 $scope.newDocente = function(personal){
+  
   personal.nombreUsuario = modalService.makeId(5);
   personal.cuil = $scope.cuilHead + personal.nroDocumento + $scope.cuilTail;
   if ($scope.nuevoTelefonoSimple.nroTelefono && !_.includes(personal.listaTelefonos, $scope.nuevoTelefonoSimple)) { //solo hace el pushsi el telefono no se encuentra en la lista
@@ -514,17 +521,20 @@ $scope.newDocente = function(personal){
 };
 
 var putNewDocente = function (docente){
-  spinnerService.show('putPersonalSpinner');
+  spinnerService.show('searchDocenteSpinner');
   docenteService.putNew(docente)
   .then(function(response){
     $scope.clearFormDoc();
     showServerSuccess('El docente se ha dado de alta con éxito. ID n°: ', response);
+    if ($scope.showEditProfileMenuIzq){
+      $scope.seleccionar('listado');
+    }
   },
   function(response){
     showServerError(response);
   })
   .finally(function(){
-    spinnerService.hide('putPersonalSpinner');
+    spinnerService.hide('searchDocenteSpinner');
   });
 };
 

@@ -105,6 +105,7 @@ $scope.editProfile = function(alumno) {
 	$scope.nuevoAlumno.fechaNacimiento = new Date(alumno.fechaNacimiento);
 	$scope.mostrarListaMails = $scope.nuevoAlumno.listaMails.length > 0? true: false;
 	$scope.mostrarListaTelefonos = $scope.nuevoAlumno.listaTelefonos.length > 0? true: false;
+	$scope.nuevoAlumno.sexo = $scope.nuevoAlumno.sexo == "Masculino"? "M":"F";
 	$scope.seleccionar('editar');
 };
 
@@ -470,9 +471,9 @@ $scope.search = function (option, dni) {
 				},
 				function(response){
 					// console.log(response);
-				showServerError(response);
-				hideListFilter();					
-			})
+					showServerError(response);
+					hideListFilter();					
+				})
 				.finally(function(){spinnerService.hide('searchSpinner')});
 			} 
 		};
@@ -565,6 +566,10 @@ $scope.newAlumno = function (alumno){
 	alumnoService.putNew(alumno)
 	.then(function(response){
 		showServerSuccess('El alumno se ha dado de alta con éxito. ID n°: ', response);
+		if ($scope.showEditProfileMenuIzq){
+			$scope.search($scope.dropDownSearchValue, $scope.searchByDni);
+			$scope.seleccionar('listado');
+		}
 		$scope.clearFormAlu();
 	},
 	function(response){
