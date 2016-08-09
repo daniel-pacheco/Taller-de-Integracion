@@ -330,7 +330,7 @@ public class ServicioDocenteEndpoint {
 	public Response update(final Personal docente,
 			@HeaderParam("rol") final String rolIn,
 			@HeaderParam("auth0") final String token) {
-		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.ADMINISTRADOR)) {
+		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.ADMINISTRADOR) && !rolIn.equals(Login.DOCENTE)) {
 			return Response.status(Status.FORBIDDEN).build();
 		}
 		String nuevoToken = new String();
@@ -588,7 +588,7 @@ public class ServicioDocenteEndpoint {
 	@GET
 	@Path("/listAllMin")
 	public Response listDocentesMateriasDTO(@HeaderParam("rol") final String rolIn, @HeaderParam("auth0") final String token) {
-		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.ADMINISTRADOR)) {
+		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.ADMINISTRADOR) && !rolIn.equals(Login.DOCENTE)) {
 			return Response.status(Status.FORBIDDEN).build();
 		}
 		String nuevoToken = new String();
@@ -658,7 +658,7 @@ public class ServicioDocenteEndpoint {
 	public Response obtenerMateriasDictadas(@PathParam("idU") final Long idUsuario,
 			@HeaderParam("rol") final String rolIn,
 			@HeaderParam("auth0") final String token){
-		if (!rolIn.equals(Login.DOCENTE)) {
+		if (!rolIn.equals(Login.DOCENTE) && !rolIn.equals(Login.DIRECTIVO)) {
 			return Response.status(Status.FORBIDDEN).build();
 		}
 		String nuevoToken = new String();

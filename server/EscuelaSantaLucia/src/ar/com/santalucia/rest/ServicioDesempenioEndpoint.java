@@ -71,7 +71,7 @@ public class ServicioDesempenioEndpoint {
 	public Response updateBoletinNotas(BoletinNotas boletinNotas,
 			@HeaderParam("rol") final String rolIn,
 			@HeaderParam("auth0") final String token) {
-		if (!rolIn.equals(Login.DIRECTIVO)) {
+		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.DOCENTE)) {
 			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
 		}
 		String nuevoToken = new String();
@@ -641,7 +641,7 @@ public class ServicioDesempenioEndpoint {
 	public Response getBoletinInasistenciasDTObyDni(@PathParam("dni") Long dniAlumno,
 			@HeaderParam("rol") final String rolIn,
 			@HeaderParam("auth0") final String token) {
-		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.ALUMNO)) {
+		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.ALUMNO) && !rolIn.equals(Login.DOCENTE)) {
 			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
 		}
 		BoletinInasistenciasDTO boletinInasistenciasDTO = new BoletinInasistenciasDTO();
@@ -782,6 +782,9 @@ public class ServicioDesempenioEndpoint {
 	public Response listaPasajeAlumnosDTO(final GetListaPasajeAlumnosDTO getListaDTO,
 			@HeaderParam("rol") final String rolIn,
 			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
 		String nuevoToken = new String();
 		try {
 			setInstance();

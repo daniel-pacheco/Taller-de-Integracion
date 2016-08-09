@@ -439,7 +439,7 @@ public class ServicioDirectivoEndpoint {
 	}
 	
 	/**
-	 * Rol de acceso: ADMINISTRADOR
+	 * Rol de acceso: DIRECTIVO - ADMINISTRADOR
 	 * Utilice este método para eliminar un directivo. Además de eliminar el directivo, también se eliminan los datos adicionales (teléfono, mail, titulo y domicilio).
 	 * @param id
 	 * @return Response ok (Status 200) con true si el resultado es exitoso o la excepción generada.<br>
@@ -450,7 +450,7 @@ public class ServicioDirectivoEndpoint {
 	public Response deleteDirectivoById(@PathParam("id") final Long id,
 			@HeaderParam("rol") final String rolIn,
 			@HeaderParam("auth0") final String token) {
-		if (!rolIn.equals(Login.ADMINISTRADOR)) {
+		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.ADMINISTRADOR)) {
 			return Response.status(Status.FORBIDDEN).build();
 		}
 		Boolean exito = false;
@@ -483,7 +483,7 @@ public class ServicioDirectivoEndpoint {
 	}
 	
 	/**
-	 * Rol de acceso: ADMINISTRADOR
+	 * Rol de acceso: DIRECTIVO - ADMINISTRADOR
 	 * Elimina un directivo de manera lógica proporcionando el DNI
 	 * @param dni
 	 * @return
@@ -493,7 +493,7 @@ public class ServicioDirectivoEndpoint {
 	public Response deleteDirectivoByDni(@PathParam("dni") final Long dni,
 			@HeaderParam("rol") final String rolIn,
 			@HeaderParam("auth0") final String token) {
-		if (!rolIn.equals(Login.ADMINISTRADOR)) {
+		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.ADMINISTRADOR)) {
 			return Response.status(Status.FORBIDDEN).build();
 		}
 		Boolean exito = false;
