@@ -52,13 +52,13 @@ public class ServicioConfiguracion {
 			
 		} 
 		catch (Exception ex) {
-			throw new Exception("No se pudo dar de alta el parï¿½metro: " + ex.getMessage());
+			throw new Exception("No se pudo dar de alta el parámetro: " + ex.getMessage());
 		}
 		return true;
 	}
 	
 	/**
-	 * Agrega varios parï¿½metros a la vez
+	 * Agrega varios parámetros a la vez
 	 * @param parametrosConfig
 	 * @return
 	 */
@@ -74,7 +74,7 @@ public class ServicioConfiguracion {
 		try{
 			gConfiguracion.delete(parametroConfiguracion);
 		} catch (Exception ex) {
-			throw new Exception("No se pudo eliminar el PARï¿½METRO: " + ex.getMessage());
+			throw new Exception("No se pudo eliminar el PARÁMETRO: " + ex.getMessage());
 		}
 		return true;
 	}
@@ -83,7 +83,7 @@ public class ServicioConfiguracion {
 		try {
 			return gConfiguracion.getById(idParametro);
 		} catch(Exception ex) {
-			throw new Exception("No se pudo obtener el PARï¿½METRO: " + ex.getMessage());
+			throw new Exception("No se pudo obtener el PARÁMETRO: " + ex.getMessage());
 		}
 	}
 	
@@ -94,7 +94,7 @@ public class ServicioConfiguracion {
 			}
 			return gConfiguracion.getByExample(new ParametroConfiguracion(null,nombreParametro,null,null)).get(0);
 		}catch(Exception ex){
-			throw new Exception("No se pudo obtener el PARï¿½METRO: " + ex.getMessage());
+			throw new Exception("No se pudo obtener el PARÁMETRO: " + ex.getMessage());
 		}
 	}
 	
@@ -102,7 +102,7 @@ public class ServicioConfiguracion {
 		try{
 			return gConfiguracion.getByExample(parametroConfiguracion);
 		}catch(Exception ex){
-			throw new Exception("No se pudo obtener el listado de PARï¿½METROS: " + ex.getMessage());
+			throw new Exception("No se pudo obtener el listado de PARÁMETROS: " + ex.getMessage());
 		}
 	}
 	
@@ -110,15 +110,15 @@ public class ServicioConfiguracion {
 		try{
 			return gConfiguracion.getByExample(new ParametroConfiguracion(null,null,null,null));
 		}catch(Exception ex){
-			throw new Exception("No se pudo obtener el listado de PARï¿½METROS: " + ex.getMessage());
+			throw new Exception("No se pudo obtener el listado de PARÁMETROS: " + ex.getMessage());
 		}
 	}
 	
 	/**
-	 * Valida la coherencia de las fechas de los trimestres comprendidas en el aï¿½o academico 
+	 * Valida la coherencia de las fechas de los trimestres comprendidas en el año academico 
 	 */
 	private void validarFechasTrimestre(List<ParametroConfiguracion> parametrosConfig) throws Exception{
-		/* Capturo los parï¿½metros de fecha que me interesan para validar*/
+		/* Capturo los parámetros de fecha que me interesan para validar*/
 		Calendar COMIENZO_ACADEMICO = Calendar.getInstance();
 		Calendar FIN_ACADEMICO      = Calendar.getInstance();
 		Calendar COMIENZO_TRIM_1    = Calendar.getInstance();
@@ -162,9 +162,9 @@ public class ServicioConfiguracion {
 		Calendar calendar2 = Calendar.getInstance();
 		calendar.setTime(COMIENZO_ACADEMICO);
 		calendar2.setTime(FIN_ACADEMICO);*/
-		if(COMIENZO_ACADEMICO.before(FIN_ACADEMICO)){ // Si el inicio del aï¿½o estï¿½ antes que el fin
+		if(COMIENZO_ACADEMICO.before(FIN_ACADEMICO)){ // Si el inicio del año está antes que el fin
 			//calendar.setTime(COMIENZO_TRIM_1);
-			if( (COMIENZO_TRIM_1.before(FIN_TRIM_1)) && ( COMIENZO_TRIM_1.equals(COMIENZO_ACADEMICO) || COMIENZO_TRIM_1.after(COMIENZO_ACADEMICO) ) ){ // Si el inicio del primer trimestre estï¿½ antes que su fin y el inicio es igual o mayor al comienzo del aï¿½i
+			if( (COMIENZO_TRIM_1.before(FIN_TRIM_1)) && ( COMIENZO_TRIM_1.equals(COMIENZO_ACADEMICO) || COMIENZO_TRIM_1.after(COMIENZO_ACADEMICO) ) ){ // Si el inicio del primer trimestre está antes que su fin y el inicio es igual o mayor al comienzo del añi
 				//calendar.setTime(COMIENZO_TRIM_2);
 				if ( COMIENZO_TRIM_2.before(FIN_TRIM_2) && ( COMIENZO_TRIM_2.equals(FIN_TRIM_1) || COMIENZO_TRIM_2.after(FIN_TRIM_1) ) ){
 					//calendar.setTime(COMIENZO_TRIM_3);
@@ -174,33 +174,33 @@ public class ServicioConfiguracion {
 							return;
 						}else{
 							throw new Exception ("Fin de trimestre 3 fuera de rango");
-							//Falla si el fin del trimestre 3 es mayor a el fin del aï¿½o academico
+							//Falla si el fin del trimestre 3 es mayor a el fin del año academico
 						}
 					}else{
 						//Falla en trimestre 3. Fecha fin es mayor a fecha inicio o se solapa con el trimestre 2
-						throw new Exception ("Rango de fecha de trimestre 3 invï¿½lida");
+						throw new Exception ("Rango de fecha de trimestre 3 inválida");
 					}
 				}else{
 					//Falla en trimestre 2. Fecha fin es mayor a fecha inicio o se solapa con el trimestre 1
-					throw new Exception ("Rango de fecha de trimestre 2 invï¿½lida");
+					throw new Exception ("Rango de fecha de trimestre 2 inválida");
 				}
 			}else{
-				// Falla en trimeste 1. Fecha fin es mayor a fecha inicio o se super comienza antes que el aï¿½o acadï¿½mico
-				throw new Exception ("Rango de fecha de trimestre 1 invï¿½lida o fuera de rango");
+				// Falla en trimeste 1. Fecha fin es mayor a fecha inicio o se super comienza antes que el año académico
+				throw new Exception ("Rango de fecha de trimestre 1 inválida o fuera de rango");
 			}
 		}else{
-			throw new Exception ("La fecha de finalizaciï¿½n de ciclo debe ser mayor al inicio");
+			throw new Exception ("La fecha de finalización de ciclo debe ser mayor al inicio");
 		}
 	}
 	
 	/**
-	 * Determina si el periodo calificado como menor estï¿½ comprendido dentro de los lï¿½mites del periodo mayor.<br>
-	 * Es posible utilizar un parï¿½metro vï¿½lido de configuracion como COMIENZO_ACADEMICO.
+	 * Determina si el periodo calificado como menor está comprendido dentro de los límites del periodo mayor.<br>
+	 * Es posible utilizar un parámetro válido de configuracion como COMIENZO_ACADEMICO.
 	 * @param fecha1 Fecha de inicio del periodo menor.
 	 * @param fecha2 Fecha de fin del periodo menor.
-	 * @param parametro (Opcional) Nombre de parï¿½metro vï¿½lido para utilizar una periodo de fechas predefinidas de configuraciï¿½n. Establecer null si no se utiliza este parï¿½metro.  
-	 * @param periodo1 (Opcional) Fecha de inicio del periodo mayor. Establecer null si no se utiliza este parï¿½metro. 
-	 * @param periodo2 (Opcional) Fecha de fin del periodo mayor. Establecer null si no se utiliza este parï¿½metro.
+	 * @param parametro (Opcional) Nombre de parámetro válido para utilizar una periodo de fechas predefinidas de configuración. Establecer null si no se utiliza este parámetro.  
+	 * @param periodo1 (Opcional) Fecha de inicio del periodo mayor. Establecer null si no se utiliza este parámetro. 
+	 * @param periodo2 (Opcional) Fecha de fin del periodo mayor. Establecer null si no se utiliza este parámetro.
 	 * @throws Exception
 	 */
 	public static void comprendidoEnPeriodo(Date fecha1, Date fecha2, String parametro, Date periodo1, Date periodo2) throws Exception{
@@ -246,7 +246,7 @@ public class ServicioConfiguracion {
 	
 	
 	public Boolean generarBackup() throws IOException, ValidacionException, Exception {
-		ParametroConfiguracion par = getParametro("RUTA_BACKUP");
+		ParametroConfiguracion par = getParametro("DIR_BACKUP");
 		//String exeMysql = "C:/Program Files/MySQL/MySQL Server 5.7/bin/mysqldump.exe";
 		//String exeMysql = "C:/Users/Eric/Desktop/test_backup_mysql/mysqldump.exe";
 		// checkeo primero que la ruta especificada para el backup exista
@@ -254,7 +254,7 @@ public class ServicioConfiguracion {
 		if (!rutaBackup.exists() || rutaBackup.equals("")) {
 			ValidacionException vEx = new ValidacionException();
 			vEx.addMensajeError("No se encuentra la carpeta destinada para el backup. "
-					+ "Asegurese que la carpeta especificada existe y luego intente de nuevo la operaciï¿½n.");
+					+ "Asegurese que la carpeta especificada existe y luego intente de nuevo la operación.");
 			throw vEx;
 		}
 
@@ -274,7 +274,7 @@ public class ServicioConfiguracion {
 			parametros.put("exe", exeMysql);
 			parametros.put("base", " " + configFile.getProperty("hibernate.connection.url").substring(28));
 		} catch (Exception e) {
-			vEx.addMensajeError("Error en la lectura de la configuraciï¿½n");
+			vEx.addMensajeError("Error en la lectura de la configuración");
 			throw vEx;
 		}
 		
@@ -310,13 +310,13 @@ public class ServicioConfiguracion {
 	public Boolean restaurarBase_bat(String pathArchivoBackup) throws Exception {
 		//String exeMysql = "C:\\Program Files\\MySQL\\MySQL Server 5.7\\bin\\mysql.exe";
 		//String exeMysql = "C:\\Users\\Eric\\Desktop\\test_backup_mysql\\mysql.exe";
-		ParametroConfiguracion par = getParametro("RUTA_BACKUP");
+		ParametroConfiguracion par = getParametro("DIR_BACKUP");
 		String pathExeMysql = par.getValor() + "/mysql.exe";
 		File exeMysql = new File(pathExeMysql);
 		if (!exeMysql.exists()) {
 			ValidacionException vEx = new ValidacionException();
 			vEx.addMensajeError("No se encuentra la carpeta destinada para el backup. "
-					+ "Asegurese que la carpeta especificada existe y luego intente de nuevo la operaciï¿½n.");
+					+ "Asegurese que la carpeta especificada existe y luego intente de nuevo la operación.");
 			throw vEx;
 		}
 		ValidacionException vEx = new ValidacionException();
@@ -331,7 +331,7 @@ public class ServicioConfiguracion {
 			parametros.put("base", configFile.getProperty("hibernate.connection.url").substring(28));
 			parametros.put("backupFile", pathArchivoBackup);
 		} catch (Exception e) {
-			vEx.addMensajeError("Error en la lectura de la configuraciï¿½n");
+			vEx.addMensajeError("Error en la lectura de la configuracin");
 			throw vEx;
 		}
 		
@@ -380,7 +380,7 @@ public class ServicioConfiguracion {
 			parametros.put("base", configFile.getProperty("hibernate.connection.url").substring(28));
 			parametros.put("backupFile", "\"C:\\Users\\Eric\\Desktop\\test_backup_mysql\\backup_escuelabd_2016-07-05_17-52.backup\"");
 		} catch (Exception e) {
-			vEx.addMensajeError("Error en la lectura de la configuraciï¿½n");
+			vEx.addMensajeError("Error en la lectura de la configuración");
 			throw vEx;
 		}
 		
