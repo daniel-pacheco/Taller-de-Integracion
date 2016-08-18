@@ -446,7 +446,7 @@ public class ServicioAcademico {
 						gTrimestre.delete(t);
 					}
 				}
-				for (Nota nd : boletinNotas.getListaNotasExamen()) {
+				for (Nota nd : notasFinalesBoletin) {
 					if (nd.getMateria().equals(materia)) {
 						boletinNotas.getListaNotasExamen().remove(nd);
 						gNota.delete(nd);
