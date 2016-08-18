@@ -40,12 +40,19 @@ var setActiveLlamado = function(menuItemLlamado) {
 };
 
 $scope.seleccionar = function (id) {
+
+  if ($scope.showEditLlamadoMenuIzq){
+    $scope.clearFormLlamado();
+  };
+
   $scope.nuevaMesa = false;
   $scope.listado = false;
   $scope.inscripcion = false;
   $scope.gestionarLlamados = false;
   $scope.calificar = false;
   $scope.nuevoLlamado = false;
+  $scope.showEditLlamadoMenuIzq = false;
+  $scope.showEditMesaMenuIzq = false;
 
   switch (id){
     case 'nuevaMesa':
@@ -57,8 +64,9 @@ $scope.seleccionar = function (id) {
     case 'listado':
     $scope.listado = true;
     $scope.subtitle = 'Listado';
-    setActiveLlamado(2);  
+    setActiveLlamado(2); 
     getLlamados();
+    $scope.clearFormMesa(); 
     break;
     case 'inscripcion':
     $scope.inscripcion = true;
@@ -79,6 +87,19 @@ $scope.seleccionar = function (id) {
     $scope.nuevoLlamado = true;
     $scope.subtitle = 'Nuevo llamado';
     setActiveLlamado(6);
+    break;
+    case 'editarLlamado':
+    $scope.nuevoLlamado = true;
+    $scope.subtitle = 'Editar llamado';
+    $scope.showEditLlamadoMenuIzq = true;
+    setActiveLlamado(7);
+    break;
+    case 'editarMesa':
+    $scope.nuevaMesa = true;
+    $scope.subtitle = 'Editar mesa';
+    $scope.showEditMesaMenuIzq = true;
+    setActiveLlamado(8);
+    break;
   }
 };
 
@@ -177,10 +198,11 @@ $scope.orderLlamado = function(predicate) {
 //-- [Llamado/Nueva mesa] utils
 function initMesa(mesaMin){
   var mesa = ObjectsFactory.newMesa();
+  mesa.idMesa = mesaMin.idMesa;
   mesa.idLlamado = mesaMin.periodo.idLlamado;
   mesa.fechaHoraInicio = setFechaHora(mesaMin.horaInicio);
   mesa.fechaHoraFin = setFechaHora(mesaMin.horaFin);
-  mesa.idMateria = mesaMin.selectedMateria.idMateria;
+  mesa.idMateria = mesaMin.selectedMateria;
   mesa.tribunalDoc1 = mesaMin.docentes[0];
   mesa.tribunalDoc2 = mesaMin.docentes[1];
   mesa.tribunalDoc3 = mesaMin.docentes[2];
@@ -235,8 +257,10 @@ function getMaterias () {
 };
 
 function getDocentes() {
+  var promise = {};
+
   spinnerService.show('searchLlamadoSpinner');
-  docenteService.getAllMin()  
+  promise = docenteService.getAllMin()  
   .then(function(response){
     $scope.listaDocentes = response.data;
   },
@@ -249,8 +273,10 @@ function getDocentes() {
 };
 
 $scope.newMesa = function(mesaMin) {
+
   var mesa = initMesa(mesaMin);
   spinnerService.show('searchLlamadoSpinner');
+
   academicoService.mesaPutNew(mesa)
   .then(
     function(response){
@@ -278,6 +304,8 @@ function initLlamado(llamadoMin){
   llamado.descripcion = llamadoMin.descripcion;
   llamado.fechaInicio = llamadoMin.fechaInicioLlamado;
   llamado.fechaFin = llamadoMin.fechaFinLlamado;
+  llamado.idLlamado = llamadoMin.idLlamado;
+  llamado.listaMesas = llamadoMin.listaMesas;
   // console.log(llamado);
   return llamado;
 };
@@ -289,6 +317,9 @@ $scope.newLlamado = function(llamadoMin) {
   .then(
     function(response){
       showServerSuccess('El llamado se ha dado de alta de alta con éxito ',response.data);
+      if ($scope.showEditLlamadoMenuIzq) {//si estaba editando vuelve a listado
+        $scope.seleccionar('listado');
+      }
       $scope.clearFormLlamado();
       getLlamados();
     },
@@ -308,9 +339,40 @@ $scope.clearFormLlamado = function(){
 //-- [Llamado/Listado]
 //-- [Llamado/Listado] variables
 //-- [Llamado/Listado] Form Management
+
+$scope.editLlamado = function(llamado){
+  $scope.nuevoLlamadoObj = ObjectsFactory.newLlamado();
+  $scope.nuevoLlamadoObj.idLlamado = llamado.idLlamado;
+  $scope.nuevoLlamadoObj.descripcion = llamado.descripcion;
+  $scope.nuevoLlamadoObj.fechaFinLlamado = new Date(llamado.fechaFin);
+  $scope.nuevoLlamadoObj.fechaInicioLlamado = new Date(llamado.fechaInicio);
+  $scope.nuevoLlamadoObj.listaMesas = llamado.listaMesas;
+  $scope.seleccionar('editarLlamado');
+};
+
+$scope.editMesa = function(mesa, idLlamado){
+
+  //$scope.clearFormMesa();
+  $scope.nuevaMesaObj = ObjectsFactory.newMesa();
+  $scope.nuevaMesaObj.periodo = _.find($scope.llamados, ['idLlamado', idLlamado]);
+  $scope.nuevaMesaObj.idMesa = mesa.idMesa;
+  $scope.nuevaMesaObj.selectedAnio = mesa.anio;
+  $scope.nuevaMesaObj.fechaMesa = new Date(mesa.fechaHoraInicio);
+  $scope.nuevaMesaObj.horaInicio = new Date(mesa.fechaHoraInicio);
+  $scope.nuevaMesaObj.horaFin = new Date(mesa.fechaHoraFin);
+  $scope.nuevaMesaObj.selectedMateria = mesa.idMateria;
+  $scope.nuevaMesaObj.docentes = [];
+  (mesa.idTribunal1 != undefined) ? searchDocenteById(mesa.idTribunal1) : null;
+  (mesa.idTribunal2 != undefined) ? searchDocenteById(mesa.idTribunal2) : null;
+  (mesa.idTribunal3 != undefined) ? searchDocenteById(mesa.idTribunal3): null;
+  $scope.seleccionar('editarMesa');
+};
 //-- [Llamado/Listado] filters
 //-- [Llamado/Listado] modals
 //-- [Llamado/Listado] utils
+function searchDocenteById(idDocente){
+  $scope.nuevaMesaObj.docentes.push((_.find($scope.listaDocentes, ['idUsuario', idDocente])).nroDocumento);
+};
 
 $scope.confirmDeleteLlamado = function(llamado) {
   var fechaLlamado = new Date(llamado.fechaInicio);
