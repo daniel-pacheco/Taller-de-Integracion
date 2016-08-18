@@ -44,6 +44,9 @@ $scope.seleccionar = function (id) {
   if ($scope.showEditLlamadoMenuIzq){
     $scope.clearFormLlamado();
   };
+  if ($scope.showEditMesaMenuIzq){
+    $scope.clearFormMesa(); 
+  };
 
   $scope.nuevaMesa = false;
   $scope.listado = false;
@@ -66,7 +69,6 @@ $scope.seleccionar = function (id) {
     $scope.subtitle = 'Listado';
     setActiveLlamado(2); 
     getLlamados();
-    $scope.clearFormMesa(); 
     break;
     case 'inscripcion':
     $scope.inscripcion = true;
@@ -105,6 +107,8 @@ $scope.seleccionar = function (id) {
 
 $scope.$on('$viewContentLoaded', function(){
   $scope.seleccionar("listado");
+  $scope.clearFormMesa();
+  
 });
 
 $scope.tooltip = {
@@ -350,9 +354,10 @@ $scope.editLlamado = function(llamado){
   $scope.seleccionar('editarLlamado');
 };
 
+
+
 $scope.editMesa = function(mesa, idLlamado){
 
-  //$scope.clearFormMesa();
   $scope.nuevaMesaObj = ObjectsFactory.newMesa();
   $scope.nuevaMesaObj.periodo = _.find($scope.llamados, ['idLlamado', idLlamado]);
   $scope.nuevaMesaObj.idMesa = mesa.idMesa;
