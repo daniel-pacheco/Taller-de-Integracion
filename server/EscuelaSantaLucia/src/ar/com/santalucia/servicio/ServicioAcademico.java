@@ -305,6 +305,8 @@ public class ServicioAcademico {
 	
 	public Boolean asignarAlumnoACurso(Alumno alumno, Long idCurso) throws Exception{ 			//EN ENDPOINT
 		try {
+			// También habria que hacer un método adicional para alterar el boletin (cuando se agreguen o se quiten materias del año)
+			// que se podria llamar cada vez que se cree una materia nueva detectando el evento en el servicio
 			Curso curso = gCurso.getById(idCurso);
 			Set<Alumno> alumnos = curso.getListaAlumnos();
 			alumnos.add(alumno);
@@ -315,42 +317,147 @@ public class ServicioAcademico {
 			alumnosCursoGenerico.remove(alumno);	 // Puede requerir sobrecarga de de equals()
 			cursoGenerico.setListaAlumnos(alumnosCursoGenerico);
 			gCurso.modify(cursoGenerico);
+
 			// agregar boletin de notas
+			crearBoletinNotas(curso, alumno);
+			
+			// agregar boletin de inasistencias
+			crearBoletinInasistencias(curso, alumno);
+			
+			return true;
+		} catch(Exception ex) {
+			throw new Exception("No se pudo asignar el ALUMNO al CURSO: " + ex.getMessage());
+		}
+	}
+	
+	/**
+	 * Crear el boletin del alumno
+	 * @param curso
+	 * @param alumno
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	private void crearBoletinNotas(Curso curso, Alumno alumno) throws ValidacionException, Exception{
+		try{
 			Anio anio = this.cursoPerteneceAnio(curso);
 			Set<Materia> materias = anio.getListaMaterias();
 			BoletinNotas boletinNotas = (BoletinNotas) ServicioDesempenio
 					.encontrarBoletinDeAlumno(alumno, ServicioDesempenio.BUSCAR_BOLETIN_NOTAS);
-			if (boletinNotas == null) {
-				boletinNotas = new BoletinNotas();
-				boletinNotas.setPropietario(alumno);
-				boletinNotas.setCicloLectivo(Integer.valueOf(anio.getCicloLectivo()));
-				inicializarBoletinNotas(boletinNotas, materias);
+			//SI SE ENCUENTRA UN BOLETÍN, SE ELIMINA
+			if (boletinNotas != null) {
+				gBoletinNotas.delete(boletinNotas);
 			}
+			boletinNotas = new BoletinNotas();
+			boletinNotas.setPropietario(alumno);
+			boletinNotas.setCicloLectivo(Integer.valueOf(anio.getCicloLectivo()));
 			boletinNotas.setAnio(anio.getNombre());
 			boletinNotas.setCurso(curso.getDivision().toString());
+			inicializarBoletinNotas(boletinNotas, materias);
 			if (boletinNotas.getIdBoletinNotas() == null) {
 				gBoletinNotas.add(boletinNotas);
 			} else {
 				gBoletinNotas.modify(boletinNotas);
 			}
-			// agregar boletin de inasistencias
-			BoletinInasistencias boletinInasistencias = (BoletinInasistencias) ServicioDesempenio
-					.encontrarBoletinDeAlumno(alumno, ServicioDesempenio.BUSCAR_BOLETIN_INASISTENCIAS);
-			if (boletinInasistencias == null) {
-				boletinInasistencias = new BoletinInasistencias();
-				boletinInasistencias.setPropietario(alumno);
+		}catch (ValidacionException vEx){
+			throw vEx;
+		}catch(Exception ex){
+			throw ex;
+		}
+	}
+	
+	/**
+	 * Crea un boletín de inasistencias
+	 * @param curso
+	 * @param alumno
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	private void crearBoletinInasistencias(Curso curso, Alumno alumno) throws ValidacionException, Exception{
+	try{
+		Anio anio = this.cursoPerteneceAnio(curso);
+		BoletinInasistencias boletinInasistencias = (BoletinInasistencias) ServicioDesempenio
+				.encontrarBoletinDeAlumno(alumno, ServicioDesempenio.BUSCAR_BOLETIN_INASISTENCIAS);
+		if (boletinInasistencias == null) {
+			boletinInasistencias = new BoletinInasistencias();
+			boletinInasistencias.setPropietario(alumno);
+		}
+		boletinInasistencias.setAnio(anio.getNombre());
+		boletinInasistencias.setCurso(curso.getDivision().toString());
+		boletinInasistencias.setActivo(true);
+		if (boletinInasistencias.getIdBoletinInasistencias() == null) {
+			gBoletinInasistencias.add(boletinInasistencias);
+		} else {
+			gBoletinInasistencias.modify(boletinInasistencias);
+		}
+		}catch (ValidacionException vEx){
+			throw vEx;
+		}catch(Exception ex){
+			throw ex;
+		}
+	}
+	
+	/**
+	 * Actualiza el boletin de notas en caso de se haya realizado una modificacion de materia (Agregar/Quitar)
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	private void actualizarBoletinNotas(Materia materia) throws ValidacionException, Exception{
+		//Localizar todos lo boletines de el año en el cual se insertó la materia
+		//Por cada boletin, llamara a inicializarBoletinNotas con el set de materias con un elemento
+		try{
+			Anio anio = encontrarAnioDeMateria(materia);
+			ServicioAlumno sAlumno = new ServicioAlumno();
+			List<AlumnoDTO> alumnos = sAlumno.listAlumnosActivosAnioDTO(anio.getIdAnio());
+			Set<Materia> materiaSet = new HashSet<Materia>();
+			materiaSet.add(materia);
+			for(AlumnoDTO aDTO : alumnos){
+				Alumno alumno = sAlumno.getUsuario(aDTO.getIdUsuario());
+				BoletinNotas boletinNotas = (BoletinNotas) ServicioDesempenio.encontrarBoletinDeAlumno(alumno, ServicioDesempenio.BUSCAR_BOLETIN_NOTAS);
+				inicializarBoletinNotas(boletinNotas,materiaSet);
 			}
-			boletinInasistencias.setAnio(anio.getNombre());
-			boletinInasistencias.setCurso(curso.getDivision().toString());
-			boletinInasistencias.setActivo(true);
-			if (boletinInasistencias.getIdBoletinInasistencias() == null) {
-				gBoletinInasistencias.add(boletinInasistencias);
-			} else {
-				gBoletinInasistencias.modify(boletinInasistencias);
+		}catch(ValidacionException vEx){
+			throw vEx;
+		}catch(Exception ex){
+			throw ex;
+		}
+	}
+	
+	/**
+	 * Actualiza el boletin de notas en caso de que se haya quitado una materia.  
+	 * @param materia
+	 * @return
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	private void actualizarBoletinNotasBaja(Materia materia) throws ValidacionException, Exception {
+		try {
+			Anio anio = encontrarAnioDeMateria(materia);
+			ServicioAlumno sAlumno = new ServicioAlumno();
+			List<AlumnoDTO> alumnos = sAlumno.listAlumnosActivosAnioDTO(anio.getIdAnio());
+			for (AlumnoDTO aDTO : alumnos) {
+				Alumno alumno = sAlumno.getUsuario(aDTO.getIdUsuario());
+				BoletinNotas boletinNotas = (BoletinNotas) ServicioDesempenio.encontrarBoletinDeAlumno(alumno, ServicioDesempenio.BUSCAR_BOLETIN_NOTAS);
+				Set<Trimestre> trimestresBoletin = boletinNotas.getListaTrimestres();
+				Set<Nota> notasFinalesBoletin = boletinNotas.getListaNotasExamen();
+				for (Trimestre t : trimestresBoletin) {
+					if (t.getMateria().equals(materia)) {
+						boletinNotas.getListaTrimestres().remove(t);
+						gNota.delete(t.getNotaFinal());
+						gTrimestre.delete(t);
+					}
+				}
+				for (Nota nd : notasFinalesBoletin) {
+					if (nd.getMateria().equals(materia)) {
+						boletinNotas.getListaNotasExamen().remove(nd);
+						gNota.delete(nd);
+					}
+				}
+				gBoletinNotas.modify(boletinNotas);
 			}
-			return true;
-		} catch(Exception ex) {
-			throw new Exception("No se pudo asignar el ALUMNO al CURSO: " + ex.getMessage());
+		} catch(ValidacionException vEx) {
+			throw vEx;
+		}catch(Exception ex){
+			throw ex;
 		}
 	}
 	
@@ -371,6 +478,7 @@ public class ServicioAcademico {
 			} 
 		}
 	}
+	
 	
 
 	public Boolean desvincularAlumnoDeCurso(Alumno alumno, Long idCurso) throws Exception { // EN ENDPOINT
@@ -456,6 +564,7 @@ public class ServicioAcademico {
 		}else{														// SI NO EXISTE LA MATERIA CREO Y VINCULO
 			gMateria.add(materiaAux);
 			asignarMateriaAAnio(materiaAux, materiaAltaDTO.getIdAnio());
+			actualizarBoletinNotas(materiaAux);
 			return true;
 		} 
 	}
@@ -493,6 +602,7 @@ public class ServicioAcademico {
 	public Boolean deleteMateria(Materia materia) throws Exception { // EN ENDPOINT
 		try {
 			gMateria.delete(materia);
+			actualizarBoletinNotasBaja(materia);
 			return true;
 		} catch (Exception ex) {
 			throw new Exception("No se pudo eliminar la MATERIA: " + ex.getMessage());
@@ -1376,7 +1486,7 @@ public class ServicioAcademico {
 		Set<Materia>listaMateria = new HashSet<Materia>();
 		Anio anioExample = new Anio();  //Establezco un ejemplo de anio
 		anioExample.setActivo(true);
-		listaAnio = getAnios(anioExample); // :O tendría que ser listAnio() y que traiga solo los activos;
+		listaAnio = getAnios(anioExample); 
 		for(Anio a:listaAnio){
 			listaMateria = a.getListaMaterias();
 			for(Materia m:listaMateria){
