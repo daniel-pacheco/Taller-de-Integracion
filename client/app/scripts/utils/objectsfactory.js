@@ -237,6 +237,7 @@ var newPlanillaTrimUpdateDTO = function(){
 
 var newMesa = function(){
   var mesa= {
+    "idMesa": null,
     "idLlamado" : null,
     "fechaHoraInicio" : '',
     "fechaHoraFin" : '',
@@ -252,7 +253,7 @@ var newLlamado = function(){
   var llamado = {
     "idLlamado": null,
     "descripcion": "",
-    "listaMesas": null,
+    "listaMesas": [],
     "fechaInicio": '',
     "fechaFin": ''
   };

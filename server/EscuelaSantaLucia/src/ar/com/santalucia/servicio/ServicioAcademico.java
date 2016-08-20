@@ -140,6 +140,7 @@ public class ServicioAcademico {
 			}														// Fin Bloque verificación de especialidad
 			
 			if (anio.getIdAnio() == null) {
+				anio.setCicloLectivo(ServicioConfiguracion.getParametro("CICLO_LECTIVO").getValor());
 				gAnio.add(anio);
 			}
 			else {
@@ -377,10 +378,11 @@ public class ServicioAcademico {
 		Anio anio = this.cursoPerteneceAnio(curso);
 		BoletinInasistencias boletinInasistencias = (BoletinInasistencias) ServicioDesempenio
 				.encontrarBoletinDeAlumno(alumno, ServicioDesempenio.BUSCAR_BOLETIN_INASISTENCIAS);
-		if (boletinInasistencias == null) {
-			boletinInasistencias = new BoletinInasistencias();
-			boletinInasistencias.setPropietario(alumno);
+		if (boletinInasistencias != null) {
+			gBoletinInasistencias.delete(boletinInasistencias);
 		}
+		boletinInasistencias = new BoletinInasistencias();
+		boletinInasistencias.setPropietario(alumno);
 		boletinInasistencias.setAnio(anio.getNombre());
 		boletinInasistencias.setCurso(curso.getDivision().toString());
 		boletinInasistencias.setActivo(true);
@@ -463,6 +465,7 @@ public class ServicioAcademico {
 			throw ex;
 		}
 	}
+
 	
 	private void inicializarBoletinNotas(BoletinNotas boletinNotas, Set<Materia> materias) throws Exception {
 		for (int i = 0; i < 3; i++) {
@@ -954,9 +957,13 @@ public class ServicioAcademico {
 				tribunal.add(docente3);
 				mesa.setIntegrantesTribunal(tribunal);
 				mesa.setMateria(materia);
-				gMesa.add(mesa);
-				llamado.getListaMesas().add(mesa);
-				gLlamado.modify(llamado);
+				if (mesaAltaDTO.getIdMesa() == null){
+					gMesa.add(mesa);
+					llamado.getListaMesas().add(mesa);
+					gLlamado.modify(llamado);
+				}else{
+					gMesa.modify(mesa);
+				}
 			}else{
 				ValidacionException ex = new ValidacionException();
 				ex.addMensajeError("No se encontró el llamado.");

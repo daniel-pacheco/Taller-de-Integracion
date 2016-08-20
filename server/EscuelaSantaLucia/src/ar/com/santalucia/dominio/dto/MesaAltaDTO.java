@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class MesaAltaDTO {
 	private Long idLlamado;
+	private Long idMesa;
 	private Date fechaHoraInicio;
 	private Date fechaHoraFin;
 	private Long idMateria;
@@ -11,14 +12,25 @@ public class MesaAltaDTO {
 	private Long tribunalDoc2;
 	private Long tribunalDoc3;
 	
+	public Long getIdMesa() {
+		return idMesa;
+	}
+
+	public void setIdMesa(Long idMesa) {
+		this.idMesa = idMesa;
+	}
+
+
+	
 	public MesaAltaDTO() {
 		super();
 	}
 
-	public MesaAltaDTO(Long idLlamado, Date fechaHoraInicio, Date fechaHoraFin, Long idMateria, Long tribunalDoc1,
+	public MesaAltaDTO(Long idLlamado, Long idMesa, Date fechaHoraInicio, Date fechaHoraFin, Long idMateria, Long tribunalDoc1,
 			Long tribunalDoc2, Long tribunalDoc3) {
 		super();
 		this.idLlamado = idLlamado;
+		this.idMesa = idMesa;
 		this.fechaHoraInicio = fechaHoraInicio;
 		this.fechaHoraFin = fechaHoraFin;
 		this.idMateria = idMateria;
