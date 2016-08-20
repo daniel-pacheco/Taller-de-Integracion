@@ -953,9 +953,13 @@ public class ServicioAcademico {
 				tribunal.add(docente3);
 				mesa.setIntegrantesTribunal(tribunal);
 				mesa.setMateria(materia);
-				gMesa.add(mesa);
-				llamado.getListaMesas().add(mesa);
-				gLlamado.modify(llamado);
+				if (mesaAltaDTO.getIdMesa() == null){
+					gMesa.add(mesa);
+					llamado.getListaMesas().add(mesa);
+					gLlamado.modify(llamado);
+				}else{
+					gMesa.modify(mesa);
+				}
 			}else{
 				ValidacionException ex = new ValidacionException();
 				ex.addMensajeError("No se encontró el llamado.");
