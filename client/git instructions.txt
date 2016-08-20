@@ -1,5 +1,6 @@
 instalar nodejs
 abrir consola
+entrar a la carpeta Taller-De-Integracion/client
 npm install
 npm instal -g bower
 npm instal -g grunt

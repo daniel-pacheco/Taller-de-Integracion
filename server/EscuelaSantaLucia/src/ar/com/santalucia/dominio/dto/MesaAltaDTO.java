@@ -7,6 +7,11 @@ public class MesaAltaDTO {
 	private Long idMesa;
 	private Date fechaHoraInicio;
 	private Date fechaHoraFin;
+	private Long idMateria;
+	private Long tribunalDoc1;
+	private Long tribunalDoc2;
+	private Long tribunalDoc3;
+	
 	public Long getIdMesa() {
 		return idMesa;
 	}
@@ -15,10 +20,7 @@ public class MesaAltaDTO {
 		this.idMesa = idMesa;
 	}
 
-	private Long idMateria;
-	private Long tribunalDoc1;
-	private Long tribunalDoc2;
-	private Long tribunalDoc3;
+
 	
 	public MesaAltaDTO() {
 		super();
