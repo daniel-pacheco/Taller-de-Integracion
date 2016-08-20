@@ -414,6 +414,7 @@ public class ServicioAcademico {
 				Alumno alumno = sAlumno.getUsuario(aDTO.getIdUsuario());
 				BoletinNotas boletinNotas = (BoletinNotas) ServicioDesempenio.encontrarBoletinDeAlumno(alumno, ServicioDesempenio.BUSCAR_BOLETIN_NOTAS);
 				inicializarBoletinNotas(boletinNotas,materiaSet);
+				gBoletinNotas.modify(boletinNotas);
 			}
 		}catch(ValidacionException vEx){
 			throw vEx;
@@ -437,13 +438,15 @@ public class ServicioAcademico {
 			for (AlumnoDTO aDTO : alumnos) {
 				Alumno alumno = sAlumno.getUsuario(aDTO.getIdUsuario());
 				BoletinNotas boletinNotas = (BoletinNotas) ServicioDesempenio.encontrarBoletinDeAlumno(alumno, ServicioDesempenio.BUSCAR_BOLETIN_NOTAS);
-				Set<Trimestre> trimestresBoletin = boletinNotas.getListaTrimestres();
-				Set<Nota> notasFinalesBoletin = boletinNotas.getListaNotasExamen();
+				Set<Trimestre> trimestresBoletin = new HashSet<Trimestre>();
+				trimestresBoletin.addAll(boletinNotas.getListaTrimestres());
+				Set<Nota> notasFinalesBoletin = new HashSet<Nota>();
+				notasFinalesBoletin.addAll(boletinNotas.getListaNotasExamen());
 				for (Trimestre t : trimestresBoletin) {
 					if (t.getMateria().equals(materia)) {
 						boletinNotas.getListaTrimestres().remove(t);
-						gNota.delete(t.getNotaFinal());
 						gTrimestre.delete(t);
+						gNota.delete(t.getNotaFinal());
 					}
 				}
 				for (Nota nd : notasFinalesBoletin) {
@@ -601,8 +604,8 @@ public class ServicioAcademico {
 	
 	public Boolean deleteMateria(Materia materia) throws Exception { // EN ENDPOINT
 		try {
-			gMateria.delete(materia);
 			actualizarBoletinNotasBaja(materia);
+			gMateria.delete(materia);
 			return true;
 		} catch (Exception ex) {
 			throw new Exception("No se pudo eliminar la MATERIA: " + ex.getMessage());
