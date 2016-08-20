@@ -251,7 +251,7 @@ public class ServicioConfiguracion {
 		//String exeMysql = "C:/Users/Eric/Desktop/test_backup_mysql/mysqldump.exe";
 		// checkeo primero que la ruta especificada para el backup exista
 		File rutaBackup = new File(par.getValor());
-		if (!rutaBackup.exists()) {
+		if (!rutaBackup.exists() || rutaBackup.equals("")) {
 			ValidacionException vEx = new ValidacionException();
 			vEx.addMensajeError("No se encuentra la carpeta destinada para el backup. "
 					+ "Asegurese que la carpeta especificada existe y luego intente de nuevo la operación.");
@@ -310,7 +310,7 @@ public class ServicioConfiguracion {
 	public Boolean restaurarBase_bat(String pathArchivoBackup) throws Exception {
 		//String exeMysql = "C:\\Program Files\\MySQL\\MySQL Server 5.7\\bin\\mysql.exe";
 		//String exeMysql = "C:\\Users\\Eric\\Desktop\\test_backup_mysql\\mysql.exe";
-		ParametroConfiguracion par = getParametro("RUTA_BACKUP");
+		ParametroConfiguracion par = getParametro("DIR_BACKUP");
 		String pathExeMysql = par.getValor() + "/mysql.exe";
 		File exeMysql = new File(pathExeMysql);
 		if (!exeMysql.exists()) {
@@ -331,7 +331,7 @@ public class ServicioConfiguracion {
 			parametros.put("base", configFile.getProperty("hibernate.connection.url").substring(28));
 			parametros.put("backupFile", pathArchivoBackup);
 		} catch (Exception e) {
-			vEx.addMensajeError("Error en la lectura de la configuración");
+			vEx.addMensajeError("Error en la lectura de la configuracin");
 			throw vEx;
 		}
 		
