@@ -246,7 +246,7 @@ public class ServicioConfiguracion {
 	
 	
 	public Boolean generarBackup() throws IOException, ValidacionException, Exception {
-		ParametroConfiguracion par = getParametro("RUTA_BACKUP");
+		ParametroConfiguracion par = getParametro("DIR_BACKUP");
 		//String exeMysql = "C:/Program Files/MySQL/MySQL Server 5.7/bin/mysqldump.exe";
 		//String exeMysql = "C:/Users/Eric/Desktop/test_backup_mysql/mysqldump.exe";
 		// checkeo primero que la ruta especificada para el backup exista

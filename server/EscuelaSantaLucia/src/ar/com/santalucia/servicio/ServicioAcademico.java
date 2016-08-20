@@ -140,6 +140,7 @@ public class ServicioAcademico {
 			}														// Fin Bloque verificación de especialidad
 			
 			if (anio.getIdAnio() == null) {
+				anio.setCicloLectivo(ServicioConfiguracion.getParametro("CICLO_LECTIVO").getValor());
 				gAnio.add(anio);
 			}
 			else {
@@ -377,10 +378,11 @@ public class ServicioAcademico {
 		Anio anio = this.cursoPerteneceAnio(curso);
 		BoletinInasistencias boletinInasistencias = (BoletinInasistencias) ServicioDesempenio
 				.encontrarBoletinDeAlumno(alumno, ServicioDesempenio.BUSCAR_BOLETIN_INASISTENCIAS);
-		if (boletinInasistencias == null) {
-			boletinInasistencias = new BoletinInasistencias();
-			boletinInasistencias.setPropietario(alumno);
+		if (boletinInasistencias != null) {
+			gBoletinInasistencias.delete(boletinInasistencias);
 		}
+		boletinInasistencias = new BoletinInasistencias();
+		boletinInasistencias.setPropietario(alumno);
 		boletinInasistencias.setAnio(anio.getNombre());
 		boletinInasistencias.setCurso(curso.getDivision().toString());
 		boletinInasistencias.setActivo(true);
