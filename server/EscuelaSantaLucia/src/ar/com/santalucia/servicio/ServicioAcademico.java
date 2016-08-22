@@ -75,7 +75,7 @@ import ar.com.santalucia.rest.FrontMessage;
  *
  */
 
-// Último modificador: Ariel Ramirez @ 02-07-2016
+// Último modificador: Ariel Ramirez @ 22-08-2016
 
 public class ServicioAcademico {
 
@@ -536,9 +536,16 @@ public class ServicioAcademico {
 		areaAux = materiaAltaDTO.getArea();
 		
 		//VERIFICO PROBLEMAS CON EL NOMBRE DE MATERIA
-		if(existeMateriaEnAnio(materiaAltaDTO.getNombreMateria(), materiaAltaDTO.getIdAnio())){
-			vEx.addMensajeError("El nombre de materia ya existe para el año especificado.");
-			throw vEx;
+		if(materiaAltaDTO.getIdMateria() == null){                                                   // COMPRUEBA SOLO PARA CASOS DE ALTA NUEVA
+			if(existeMateriaEnAnio(materiaAltaDTO.getNombreMateria(), materiaAltaDTO.getIdAnio())){
+				vEx.addMensajeError("El nombre de materia ya existe para el año especificado.");
+				throw vEx;
+			}
+		}else{
+			if(!existeMateriaEnAnio(materiaAltaDTO.getNombreMateria(), materiaAltaDTO.getIdAnio())){
+				vEx.addMensajeError("No se puede modificar una materia inexistente.");
+				throw vEx;
+			}
 		}
 		
 		// BUSQUEDA DE DOCENTES (POR ID)
