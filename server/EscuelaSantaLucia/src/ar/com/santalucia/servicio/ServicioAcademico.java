@@ -933,45 +933,71 @@ public class ServicioAcademico {
 	
 	public Boolean addMesa(MesaAltaDTO mesaAltaDTO) throws Exception{
 		try{
+			ValidacionException vEx = new ValidacionException();
+			Mesa mesaPersis = null;
 			Llamado llamado = gLlamado.getById(mesaAltaDTO.getIdLlamado());
 			if(llamado!=null && !(llamado.getIdLlamado() == null)){
+				// Verifico que la emsa esté comprendido en el periodo del llamado
 				ServicioConfiguracion.comprendidoEnPeriodo(mesaAltaDTO.getFechaHoraInicio(), mesaAltaDTO.getFechaHoraFin(), null, llamado.getFechaInicio(), llamado.getFechaFin());
+				//Busco los personal docente
 				Personal docente1 = gDocente.getByExample(new Personal(mesaAltaDTO.getTribunalDoc1(),null,null,null,null,null,null,null,null,null,null,true,null,null,null,null)).get(0);
 				Personal docente2 = gDocente.getByExample(new Personal(mesaAltaDTO.getTribunalDoc2(),null,null,null,null,null,null,null,null,null,null,true,null,null,null,null)).get(0);
 				Personal docente3 = gDocente.getByExample(new Personal(mesaAltaDTO.getTribunalDoc3(),null,null,null,null,null,null,null,null,null,null,true,null,null,null,null)).get(0);
+				// Localizo la materia
 				Materia materia = gMateria.getById(mesaAltaDTO.getIdMateria());
+				if (materia == null){
+					vEx.addMensajeError("No existe la materia especificada.");
+					throw vEx;
+				}
+				// Verifico entre las mesas del llamado si existe 
 				Set<Mesa> mesasLlamado = llamado.getListaMesas();
 				for(Mesa m : mesasLlamado){
 					if(m.getMateria().equals(materia)){
-						ValidacionException ex = new ValidacionException();
-						ex.addMensajeError("Ya existe la mesa en el llamado.");
-						throw ex;
+						mesaPersis = m;
+						break;
 					}
 				}
-				Mesa mesa = new Mesa();
-				mesa.setFechaHoraInicio(mesaAltaDTO.getFechaHoraInicio());
-				mesa.setFechaHoraFin(mesaAltaDTO.getFechaHoraFin());
-				Set<Personal> tribunal = new HashSet<Personal>();
-				tribunal.add(docente1);
-				tribunal.add(docente2);
-				tribunal.add(docente3);
-				mesa.setIntegrantesTribunal(tribunal);
-				mesa.setMateria(materia);
-				if (mesaAltaDTO.getIdMesa() == null){
+				//Pregunto que hacer segun la operación 
+				if(mesaAltaDTO.getIdMesa() == null){  					// Mesa viene para ser nueva 
+					if(mesaPersis != null){
+						vEx.addMensajeError("La mesa ya existe.");		// Si ya existe corto la ejecución
+						throw vEx;
+					}
+					// Preparo la entidad mesa a dar de alta y establezco los valores
+					Mesa mesa = new Mesa();
+					mesa.setFechaHoraInicio(mesaAltaDTO.getFechaHoraInicio());
+					mesa.setFechaHoraFin(mesaAltaDTO.getFechaHoraFin());
+					Set<Personal> tribunal = new HashSet<Personal>();
+					tribunal.add(docente1);
+					tribunal.add(docente2);
+					tribunal.add(docente3);
+					mesa.setIntegrantesTribunal(tribunal);
+					mesa.setMateria(materia);
 					gMesa.add(mesa);
 					llamado.getListaMesas().add(mesa);
 					gLlamado.modify(llamado);
-				}else{
-					gMesa.modify(mesa);
+				}else{ 													//Mesa viene para modificar
+					if (mesaPersis == null){
+						vEx.addMensajeError("No se puede modificar una mesa inexistente.");  //Si no existe corto la ejecución
+						throw vEx;
+					}
+					mesaPersis.setFechaHoraInicio(mesaAltaDTO.getFechaHoraInicio());
+					mesaPersis.setFechaHoraFin(mesaAltaDTO.getFechaHoraFin());
+					Set<Personal> tribunal = new HashSet<Personal>();
+					tribunal.add(docente1);
+					tribunal.add(docente2);
+					tribunal.add(docente3);
+					mesaPersis.setIntegrantesTribunal(tribunal);
+					mesaPersis.setMateria(materia);
+					gMesa.modify(mesaPersis);
 				}
 			}else{
-				ValidacionException ex = new ValidacionException();
-				ex.addMensajeError("No se encontró el llamado.");
-				throw ex;
+				vEx.addMensajeError("No se encontró el llamado.");
+				throw vEx;
 			}
-		}catch(ValidacionException ex){
-			ex.addMensajeError("Ocurrió un problema al intentar crear una mesa y asociarla al llamado.");
-			throw ex;
+		}catch(ValidacionException vEx){
+			vEx.addMensajeError("Ocurrió un problema al intentar crear una mesa y asociarla al llamado.");
+			throw vEx;
 		}catch(Exception ex){
 			throw ex;
 		}
