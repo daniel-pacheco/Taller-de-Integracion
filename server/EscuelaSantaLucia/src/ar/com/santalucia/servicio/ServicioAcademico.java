@@ -75,7 +75,7 @@ import ar.com.santalucia.rest.FrontMessage;
  *
  */
 
-// Último modificador: Ariel Ramirez @ 02-07-2016
+// Último modificador: Ariel Ramirez @ 22-08-2016
 
 public class ServicioAcademico {
 
@@ -416,6 +416,7 @@ public class ServicioAcademico {
 				Alumno alumno = sAlumno.getUsuario(aDTO.getIdUsuario());
 				BoletinNotas boletinNotas = (BoletinNotas) ServicioDesempenio.encontrarBoletinDeAlumno(alumno, ServicioDesempenio.BUSCAR_BOLETIN_NOTAS);
 				inicializarBoletinNotas(boletinNotas,materiaSet);
+				gBoletinNotas.modify(boletinNotas);
 			}
 		}catch(ValidacionException vEx){
 			throw vEx;
@@ -439,13 +440,15 @@ public class ServicioAcademico {
 			for (AlumnoDTO aDTO : alumnos) {
 				Alumno alumno = sAlumno.getUsuario(aDTO.getIdUsuario());
 				BoletinNotas boletinNotas = (BoletinNotas) ServicioDesempenio.encontrarBoletinDeAlumno(alumno, ServicioDesempenio.BUSCAR_BOLETIN_NOTAS);
-				Set<Trimestre> trimestresBoletin = boletinNotas.getListaTrimestres();
-				Set<Nota> notasFinalesBoletin = boletinNotas.getListaNotasExamen();
+				Set<Trimestre> trimestresBoletin = new HashSet<Trimestre>();
+				trimestresBoletin.addAll(boletinNotas.getListaTrimestres());
+				Set<Nota> notasFinalesBoletin = new HashSet<Nota>();
+				notasFinalesBoletin.addAll(boletinNotas.getListaNotasExamen());
 				for (Trimestre t : trimestresBoletin) {
 					if (t.getMateria().equals(materia)) {
 						boletinNotas.getListaTrimestres().remove(t);
-						gNota.delete(t.getNotaFinal());
 						gTrimestre.delete(t);
+						gNota.delete(t.getNotaFinal());
 					}
 				}
 				for (Nota nd : notasFinalesBoletin) {
@@ -462,6 +465,7 @@ public class ServicioAcademico {
 			throw ex;
 		}
 	}
+
 	
 	private void inicializarBoletinNotas(BoletinNotas boletinNotas, Set<Materia> materias) throws Exception {
 		for (int i = 0; i < 3; i++) {
@@ -532,9 +536,16 @@ public class ServicioAcademico {
 		areaAux = materiaAltaDTO.getArea();
 		
 		//VERIFICO PROBLEMAS CON EL NOMBRE DE MATERIA
-		if(existeMateriaEnAnio(materiaAltaDTO.getNombreMateria(), materiaAltaDTO.getIdAnio())){
-			vEx.addMensajeError("El nombre de materia ya existe para el año especificado.");
-			throw vEx;
+		if(materiaAltaDTO.getIdMateria() == null){                                                   // COMPRUEBA SOLO PARA CASOS DE ALTA NUEVA
+			if(existeMateriaEnAnio(materiaAltaDTO.getNombreMateria(), materiaAltaDTO.getIdAnio())){
+				vEx.addMensajeError("El nombre de materia ya existe para el año especificado.");
+				throw vEx;
+			}
+		}else{
+			if(!existeMateriaEnAnio(materiaAltaDTO.getNombreMateria(), materiaAltaDTO.getIdAnio())){
+				vEx.addMensajeError("No se puede modificar una materia inexistente.");
+				throw vEx;
+			}
 		}
 		
 		// BUSQUEDA DE DOCENTES (POR ID)
@@ -603,8 +614,8 @@ public class ServicioAcademico {
 	
 	public Boolean deleteMateria(Materia materia) throws Exception { // EN ENDPOINT
 		try {
-			gMateria.delete(materia);
 			actualizarBoletinNotasBaja(materia);
+			gMateria.delete(materia);
 			return true;
 		} catch (Exception ex) {
 			throw new Exception("No se pudo eliminar la MATERIA: " + ex.getMessage());
@@ -929,45 +940,71 @@ public class ServicioAcademico {
 	
 	public Boolean addMesa(MesaAltaDTO mesaAltaDTO) throws Exception{
 		try{
+			ValidacionException vEx = new ValidacionException();
+			Mesa mesaPersis = null;
 			Llamado llamado = gLlamado.getById(mesaAltaDTO.getIdLlamado());
 			if(llamado!=null && !(llamado.getIdLlamado() == null)){
+				// Verifico que la emsa esté comprendido en el periodo del llamado
 				ServicioConfiguracion.comprendidoEnPeriodo(mesaAltaDTO.getFechaHoraInicio(), mesaAltaDTO.getFechaHoraFin(), null, llamado.getFechaInicio(), llamado.getFechaFin());
+				//Busco los personal docente
 				Personal docente1 = gDocente.getByExample(new Personal(mesaAltaDTO.getTribunalDoc1(),null,null,null,null,null,null,null,null,null,null,true,null,null,null,null)).get(0);
 				Personal docente2 = gDocente.getByExample(new Personal(mesaAltaDTO.getTribunalDoc2(),null,null,null,null,null,null,null,null,null,null,true,null,null,null,null)).get(0);
 				Personal docente3 = gDocente.getByExample(new Personal(mesaAltaDTO.getTribunalDoc3(),null,null,null,null,null,null,null,null,null,null,true,null,null,null,null)).get(0);
+				// Localizo la materia
 				Materia materia = gMateria.getById(mesaAltaDTO.getIdMateria());
+				if (materia == null){
+					vEx.addMensajeError("No existe la materia especificada.");
+					throw vEx;
+				}
+				// Verifico entre las mesas del llamado si existe 
 				Set<Mesa> mesasLlamado = llamado.getListaMesas();
 				for(Mesa m : mesasLlamado){
 					if(m.getMateria().equals(materia)){
-						ValidacionException ex = new ValidacionException();
-						ex.addMensajeError("Ya existe la mesa en el llamado.");
-						throw ex;
+						mesaPersis = m;
+						break;
 					}
 				}
-				Mesa mesa = new Mesa();
-				mesa.setFechaHoraInicio(mesaAltaDTO.getFechaHoraInicio());
-				mesa.setFechaHoraFin(mesaAltaDTO.getFechaHoraFin());
-				Set<Personal> tribunal = new HashSet<Personal>();
-				tribunal.add(docente1);
-				tribunal.add(docente2);
-				tribunal.add(docente3);
-				mesa.setIntegrantesTribunal(tribunal);
-				mesa.setMateria(materia);
-				if (mesaAltaDTO.getIdMesa() == null){
+				//Pregunto que hacer segun la operación 
+				if(mesaAltaDTO.getIdMesa() == null){  					// Mesa viene para ser nueva 
+					if(mesaPersis != null){
+						vEx.addMensajeError("La mesa ya existe.");		// Si ya existe corto la ejecución
+						throw vEx;
+					}
+					// Preparo la entidad mesa a dar de alta y establezco los valores
+					Mesa mesa = new Mesa();
+					mesa.setFechaHoraInicio(mesaAltaDTO.getFechaHoraInicio());
+					mesa.setFechaHoraFin(mesaAltaDTO.getFechaHoraFin());
+					Set<Personal> tribunal = new HashSet<Personal>();
+					tribunal.add(docente1);
+					tribunal.add(docente2);
+					tribunal.add(docente3);
+					mesa.setIntegrantesTribunal(tribunal);
+					mesa.setMateria(materia);
 					gMesa.add(mesa);
 					llamado.getListaMesas().add(mesa);
 					gLlamado.modify(llamado);
-				}else{
-					gMesa.modify(mesa);
+				}else{ 													//Mesa viene para modificar
+					if (mesaPersis == null){
+						vEx.addMensajeError("No se puede modificar una mesa inexistente.");  //Si no existe corto la ejecución
+						throw vEx;
+					}
+					mesaPersis.setFechaHoraInicio(mesaAltaDTO.getFechaHoraInicio());
+					mesaPersis.setFechaHoraFin(mesaAltaDTO.getFechaHoraFin());
+					Set<Personal> tribunal = new HashSet<Personal>();
+					tribunal.add(docente1);
+					tribunal.add(docente2);
+					tribunal.add(docente3);
+					mesaPersis.setIntegrantesTribunal(tribunal);
+					mesaPersis.setMateria(materia);
+					gMesa.modify(mesaPersis);
 				}
 			}else{
-				ValidacionException ex = new ValidacionException();
-				ex.addMensajeError("No se encontró el llamado.");
-				throw ex;
+				vEx.addMensajeError("No se encontró el llamado.");
+				throw vEx;
 			}
-		}catch(ValidacionException ex){
-			ex.addMensajeError("Ocurrió un problema al intentar crear una mesa y asociarla al llamado.");
-			throw ex;
+		}catch(ValidacionException vEx){
+			vEx.addMensajeError("Ocurrió un problema al intentar crear una mesa y asociarla al llamado.");
+			throw vEx;
 		}catch(Exception ex){
 			throw ex;
 		}
