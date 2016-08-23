@@ -409,7 +409,8 @@ public class ServicioAcademico {
 		try{
 			Anio anio = encontrarAnioDeMateria(materia);
 			ServicioAlumno sAlumno = new ServicioAlumno();
-			List<AlumnoDTO> alumnos = sAlumno.listAlumnosActivosAnioDTO(anio.getIdAnio());
+			List<AlumnoDTO> alumnos =  new ArrayList<AlumnoDTO>();
+			alumnos = sAlumno.listAlumnosActivosAnioDTO(anio.getIdAnio());
 			Set<Materia> materiaSet = new HashSet<Materia>();
 			materiaSet.add(materia);
 			for(AlumnoDTO aDTO : alumnos){
@@ -1298,6 +1299,10 @@ public class ServicioAcademico {
 			throw ex;
 		}
 	}
+	
+	/*public void calificar () throws ValidacionException, Exception{
+		
+	}*/
 	
 	public Boolean asignarMesaALlamado(Mesa mesa, Long idLlamado) throws Exception { // EN ENDPOINT
 		//TODO
