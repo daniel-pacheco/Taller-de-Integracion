@@ -212,15 +212,15 @@ function initMateriaEdit(materia, materiaFull) {
   };
 
   var editMateria = function(materia, materiaFull) {
-  $scope.nuevaMateria.nombreMateria = materiaFull.nombre;
-  $scope.nuevaMateria.descripcion = materiaFull.descripcion;
-  $scope.nuevaMateria.idMateria = materiaFull.idMateria;
-  $scope.nuevaMateria.idAnio = _.find($scope.listaAnios, ['nombre', materia.anio]).idAnio;
-  $scope.nuevaMateria.area = _.find($scope.listaAreas, ['nombre', materia.area]).idArea;
-  $scope.nuevaMateria.idDocenteTitular = materia.docenteTitular? materiaFull.docenteTitular.idUsuario: null;
-  $scope.nuevaMateria.idDocenteSuplente = materia.docenteSuplente? materiaFull.docenteSuplente.idUsuario: null;
-  $scope.seleccionar('editar');
-};
+    $scope.nuevaMateria.nombreMateria = materiaFull.nombre;
+    $scope.nuevaMateria.descripcion = materiaFull.descripcion;
+    $scope.nuevaMateria.idMateria = materiaFull.idMateria;
+    $scope.nuevaMateria.idAnio = _.find($scope.listaAnios, ['nombre', materia.anio]).idAnio;
+    $scope.nuevaMateria.area = _.find($scope.listaAreas, ['nombre', materia.area]).idArea;
+    $scope.nuevaMateria.idDocenteTitular = materia.docenteTitular? materiaFull.docenteTitular.idUsuario: null;
+    $scope.nuevaMateria.idDocenteSuplente = materia.docenteSuplente? materiaFull.docenteSuplente.idUsuario: null;
+    $scope.seleccionar('editar');
+  };
 
 //-- [Materias/Listado] filters
 //-- [Materias/Listado] modals
@@ -279,10 +279,13 @@ $scope.agregarMateria = function (mat) {
   academicoService.materiaPutNew(mat)
   .then(
     function(response){
-      showServerSuccess('La materia se ha dado de alta con éxito', response);
       $scope.formMat.$setUntouched();
       $scope.nuevaMateria = ObjectsFactory.newMateria();
       listAllMaterias();
+      if ($scope.showEditMateriaMenuIzq){
+        showServerSuccess('La materia se ha modificado con éxito', response);
+        $scope.seleccionar('listado');
+      } else showServerSuccess('La materia se ha dado de alta con éxito', response);
     },
     function(response){
       showServerError(response);

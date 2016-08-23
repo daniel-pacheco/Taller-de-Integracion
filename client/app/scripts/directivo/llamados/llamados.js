@@ -106,9 +106,8 @@ $scope.seleccionar = function (id) {
 };
 
 $scope.$on('$viewContentLoaded', function(){
-  $scope.seleccionar("listado");
-  $scope.clearFormMesa();
-  
+  //$scope.clearFormMesa();
+  $scope.seleccionar("listado");  
 });
 
 $scope.tooltip = {
@@ -284,8 +283,12 @@ $scope.newMesa = function(mesaMin) {
   academicoService.mesaPutNew(mesa)
   .then(
     function(response){
-      showServerSuccess('La mesa se ha dado de alta de alta con éxito',response.data);
       $scope.clearFormMesa();
+      if ($scope.showEditMesaMenuIzq){
+        $scope.seleccionar('listado'); 
+        showServerSuccess('La mesa se ha modificado con éxito',response.data);
+      } else showServerSuccess('La mesa se ha dado de alta de alta con éxito',response.data);
+      
     },
     function(response){
       showServerError(response);
@@ -392,7 +395,7 @@ $scope.confirmDeleteMesa = function(mesa) {
 
 function asignarAnioMesa(arrayListaMateriasMin, listaMesas){
   angular.forEach(listaMesas, function(item){
-    item.anio = _.find(arrayListaMateriasMin, ['nombre', item.Materia]).anio;
+    item.anio = _.find(arrayListaMateriasMin, ['idMateria', item.idMateria]).anio;
   });
 };
 //-- [Llamado/Listado] service calls
