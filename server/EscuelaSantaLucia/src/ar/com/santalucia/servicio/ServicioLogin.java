@@ -35,14 +35,17 @@ import ar.com.santalucia.rest.FrontMessage;
  */
 public class ServicioLogin {
 	private GestorLogin gLogin;
+	private MailServer mailServer;
 	
 	private static String FIRMA_AL = "xdfGtrhjsvSDyoplasdcdsegilyEscuelaSantaLucia-uyfFdHhdKfLYGYHheraqw3543543523fwSFA";
 	private static String FIRMA_DO = "xdfGtrh545612342554gdsdagnsdcdsegily.EscuelaSantaLucia-uyfFdHhdKfLYGYHher.4567886ewr3543523fwSFA";
 	private static String FIRMA_DIR = "qqwdopvjijhrntreugbeugb8890834.EscuelaSantaLucia-uyfFdHhdKfLYGYHher.aqw3dfsghDSFHYRjtyjTKcqw3erdqwecfa<QA";
 	private static String FIRMA_AD = "SERHGERHHET$#/$ergdsfgds4356SFSRDF2#&#$.EscuelaSantaLucia-uyfFdHhdKfLYGYHher.aqw3543543523fwSFAaREWTER45dbsdgbqwt3$";
 	
+	
 	public ServicioLogin() throws Exception{
-			gLogin = new GestorLogin();		
+			gLogin = new GestorLogin();	
+			mailServer = new MailServer();
 		}
 	
 	/**
@@ -152,51 +155,26 @@ public class ServicioLogin {
 	public Boolean recuperarClave(Long dniUsuario, String rol, String mail) throws ValidacionException, Exception {
 		try {
 			verificarMail(dniUsuario, rol, mail);
-			MailServer mailServer = new MailServer();
 			Boolean resLogin = mailServer.login();
 			
 			Login loginUsuario = new Login();
 			ArrayList<Login> listaLogin = gLogin.getByExample(new Login(null,dniUsuario,null,null,null,rol,null));
 			loginUsuario = listaLogin.get(0);
-			Usuario usuario;
-			String nuevaClave = "";
-			switch (rol) {
-			case Login.ALUMNO:
-				ServicioAlumno sAlumno = new ServicioAlumno();
-				usuario = new Alumno();
-				usuario = sAlumno.getUsuarioByDni(dniUsuario);
-				nuevaClave = generarStringRandom(6);
-				break;
-			case Login.DOCENTE:
-				ServicioDocente sDocente = new ServicioDocente();
-				usuario = new Personal();
-				usuario = sDocente.getUsuarioByDni(dniUsuario);
-				nuevaClave = generarStringRandom(10);
-				break;
-			case Login.DIRECTIVO:
-				ServicioDirectivo sDirectivo = new ServicioDirectivo();
-				usuario = new Personal();
-				usuario = sDirectivo.getUsuarioByDni(dniUsuario);
-				nuevaClave = generarStringRandom(10);
-				break;
-			case Login.ADMINISTRADOR:
-				// ¿?
-				usuario = new Administrador();
-				break;	
-			default:
-				usuario = new Usuario();
-			}
+			Usuario usuario = devolverUsuarioSegunRol(rol, dniUsuario);
+			String nuevaClave = generarStringRandom(8);
 			
 			loginUsuario.setClave(gLogin.encriptar(nuevaClave));
 			gLogin.modify(loginUsuario);
 			
-			String subject = "<<TEST>> Recuperación de contraseña de usuario " + rol;
-			String message = "<<TEST>> \nSentimos que haya olvidado o perdido su contraseña de acceso al sistema. "
-					+ "A continuación adjuntamos la contraseña que usted tiene actualmente para que pueda volver a ingresar: \n\n"
-					+ nuevaClave + "\n\n"
+			String subject = "S.G.S.A. (soporte) - Recuperación de clave de acceso - usuario: " + dniUsuario + ", rol: " + rol;
+			String message = "Sentimos que haya olvidado o perdido su contraseña de acceso al sistema. "
+					+ "A continuación le proporcionamos una clave generada automáticamente para que pueda volver a ingresar: "
+					+ "\n\n" + nuevaClave + "\n\n"
+					+ "Recuerde que puede cambiar esta clave desde el apartado 'Mi Cuenta' de su perfil en la aplicación.\n"
 					+ "Si usted no reconoce este email y usted nunca pidió la recuperación de la contraseña, póngase inmediatamente "
-					+ "en contacto con el administrador del sistema. \n\n"
-					+ "Gracias!";
+					+ "en contacto con el administrador, a la siguiente dirección: "
+					+ "\n\nsoporte.sgsa@gmail.com"
+					+ "Gracias por utilizar S.G.S.A.!";
 			
 			for (Mail m : usuario.getListaMails()) {
 				mailServer.sendMessage(m.getDireccionMail(), subject, message);
@@ -209,6 +187,86 @@ public class ServicioLogin {
 			throw new Exception("Hubo un error al enviar el email con la contraseña: " + e.getMessage());
 		}
 	}
+	
+	/**
+	 * Recibe datos del usuario para cambiar su clave, y también la clave actual y la nueva. Luego envía
+	 * una notificación a los correos del usuario.
+	 * @param dniUsuario
+	 * @param rol
+	 * @param contraseñaActual
+	 * @param contraseñaNueva
+	 * @return
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	public Boolean cambiarContraseña(Long dniUsuario, String rol, String contraseñaActual, String contraseñaNueva) 
+			throws ValidacionException, Exception {
+		ValidacionException vEx = new ValidacionException();
+		try {
+			Login loginAModificar = gLogin.getByExample(new Login(null, dniUsuario, null, null, null, rol, null)).get(0);
+			if (loginAModificar.getClave().equals(contraseñaActual)) {
+				loginAModificar.setClave(contraseñaNueva);
+				gLogin.modify(loginAModificar);
+				// generar mail para enviar a los mails del usuario
+				Usuario usuarioModificaClave = devolverUsuarioSegunRol(rol, dniUsuario);
+				// notifica a los mails del usuario sobre el cambio de contraseña
+				String subject = "S.G.S.A. (soporte) - Cambio de contraseña de usuario: " + dniUsuario + ", rol: " + rol;
+				String message = "Se notifica que el usuario " + dniUsuario + " con rol " + rol 
+						+ " ha generado una nueva contraseña de acceso al sistema S.G.S.A.\n"
+						+ "Si usted no reconoce este email y usted nunca pidió la recuperación de la contraseña, póngase inmediatamente "
+						+ "en contacto con el administrador, a la siguiente dirección: "
+						+ "\n\nsoporte.sgsa@gmail.com"
+						+ "Gracias por utilizar S.G.S.A.!";
+				for (Mail m : usuarioModificaClave.getListaMails()) {
+					mailServer.sendMessage(m.getDireccionMail(), subject, message);
+				}
+			} else {
+				vEx.addMensajeError("Clave actual incorrecta");
+				throw vEx;
+			}
+		} catch (Exception ex) {
+			throw new Exception("Ha ocurrido un error al modificar la contraseña: " + ex.getMessage());
+		}
+		return true;
+	}
+	
+	/**
+	 * Devuelve un usuario (alumno, personal, administrador o usuario por defecto) de acuerdo al rol
+	 * y dni de usuario que se pasan.
+	 * @param rol
+	 * @param dniUsuario
+	 * @return
+	 * @throws Exception
+	 */
+	private Usuario devolverUsuarioSegunRol(String rol, Long dniUsuario) throws Exception {
+		Usuario usuario;
+		switch (rol) {
+		case Login.ALUMNO:
+			ServicioAlumno sAlumno = new ServicioAlumno();
+			usuario = new Alumno();
+			usuario = sAlumno.getUsuarioByDni(dniUsuario);
+			break;
+		case Login.DOCENTE:
+			ServicioDocente sDocente = new ServicioDocente();
+			usuario = new Personal();
+			usuario = sDocente.getUsuarioByDni(dniUsuario);
+			break;
+		case Login.DIRECTIVO:
+			ServicioDirectivo sDirectivo = new ServicioDirectivo();
+			usuario = new Personal();
+			usuario = sDirectivo.getUsuarioByDni(dniUsuario);
+			break;
+		case Login.ADMINISTRADOR:
+			// ¿?
+			usuario = new Administrador();
+			break;	
+		default:
+			usuario = new Usuario();
+		}
+		
+		return usuario;
+	}
+	
 	
 	/**
 	 * Comprueba que el usuario que intenta recuperar la calve conozca un mail propio.
