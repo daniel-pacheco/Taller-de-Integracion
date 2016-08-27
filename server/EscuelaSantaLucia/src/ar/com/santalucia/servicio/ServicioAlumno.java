@@ -396,10 +396,6 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 					listadoDevolver.add(aDTO);
 				}
 			}
-			if(listadoDevolver.size() == 0){
-				vEx.addMensajeError("El año no tiene alumnos");
-				throw vEx;
-			}
 			return listadoDevolver;
 		}catch(ValidacionException vEx){
 			throw vEx;
