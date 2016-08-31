@@ -203,9 +203,10 @@ public class ServicioLogin {
 			throws ValidacionException, Exception {
 		ValidacionException vEx = new ValidacionException();
 		try {
+			Boolean resLogin = mailServer.login();
 			Login loginAModificar = gLogin.getByExample(new Login(null, dniUsuario, null, null, null, rol, null)).get(0);
 			if (loginAModificar.getClave().equals(contraseñaActual)) {
-				loginAModificar.setClave(contraseñaNueva);
+				loginAModificar.setClave(gLogin.encriptar(contraseñaNueva));
 				gLogin.modify(loginAModificar);
 				// generar mail para enviar a los mails del usuario
 				Usuario usuarioModificaClave = devolverUsuarioSegunRol(rol, dniUsuario);

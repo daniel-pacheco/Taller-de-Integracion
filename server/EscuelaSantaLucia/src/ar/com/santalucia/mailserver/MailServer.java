@@ -25,7 +25,7 @@ public class MailServer {
 		// this.password = "santaluciaescuela2016";
 		this.username = "soporte.sgsa@gmail.com";
 		this.password = "linuxalpoder";
-		this.from = "escuelasantalucia.info@gmail.com";
+		this.from = "soporte.sgsa@gmail.com";
 		// seteo de propiedades (host, port, ...)
 		this.setProps();
 	}
