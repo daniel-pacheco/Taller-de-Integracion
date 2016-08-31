@@ -120,7 +120,7 @@ public class ServicioLoginEndpoint {
 
 	/**
 	 * Rol de acceso: TODOS
-	 * Recibe un objeto del siguiente tipo [dniUsuario, "claveActual", "claveNueva"]
+	 * Recibe un objeto del siguiente tipo ["dniUsuario", "claveActual", "claveNueva"]
 	 * @param parametros
 	 * @param rolIn
 	 * @param token
@@ -143,7 +143,7 @@ public class ServicioLoginEndpoint {
 			} catch (ValidacionException vEx) {
 				return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 			}
-			resultado = servicioLogin.cambiarContraseña(Long.getLong(parametros[0]), rolIn, parametros[1].toString(), parametros[2].toString());
+			resultado = servicioLogin.cambiarContraseña(parametros[0], rolIn, parametros[1].toString(), parametros[2].toString());
 			if (nuevoToken == null) {
 				return Response.ok(resultado).build();
 			} else {

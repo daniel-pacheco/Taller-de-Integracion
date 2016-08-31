@@ -174,7 +174,7 @@ public class ServicioLogin {
 					+ "Si usted no reconoce este email y usted nunca pidió la recuperación de la contraseña, póngase inmediatamente "
 					+ "en contacto con el administrador, a la siguiente dirección: "
 					+ "\n\nsoporte.sgsa@gmail.com"
-					+ "Gracias por utilizar S.G.S.A.!";
+					+ "\n\nGracias por utilizar S.G.S.A.!";
 			
 			for (Mail m : usuario.getListaMails()) {
 				mailServer.sendMessage(m.getDireccionMail(), subject, message);
@@ -199,25 +199,25 @@ public class ServicioLogin {
 	 * @throws ValidacionException
 	 * @throws Exception
 	 */
-	public Boolean cambiarContraseña(Long dniUsuario, String rol, String contraseñaActual, String contraseñaNueva) 
+	public Boolean cambiarContraseña(String dniUsuario, String rol, String contraseñaActual, String contraseñaNueva) 
 			throws ValidacionException, Exception {
 		ValidacionException vEx = new ValidacionException();
 		try {
 			Boolean resLogin = mailServer.login();
-			Login loginAModificar = gLogin.getByExample(new Login(null, dniUsuario, null, null, null, rol, null)).get(0);
-			if (loginAModificar.getClave().equals(contraseñaActual)) {
+			Login loginAModificar = gLogin.getByExample(new Login(null, Long.getLong(dniUsuario), null, null, null, rol, null)).get(0);
+			if (loginAModificar.getClave().equals(gLogin.encriptar(contraseñaActual))) {
 				loginAModificar.setClave(gLogin.encriptar(contraseñaNueva));
 				gLogin.modify(loginAModificar);
 				// generar mail para enviar a los mails del usuario
-				Usuario usuarioModificaClave = devolverUsuarioSegunRol(rol, dniUsuario);
+				Usuario usuarioModificaClave = devolverUsuarioSegunRol(rol, Long.getLong(dniUsuario));
 				// notifica a los mails del usuario sobre el cambio de contraseña
 				String subject = "S.G.S.A. (soporte) - Cambio de contraseña de usuario: " + dniUsuario + ", rol: " + rol;
 				String message = "Se notifica que el usuario " + dniUsuario + " con rol " + rol 
 						+ " ha generado una nueva contraseña de acceso al sistema S.G.S.A.\n"
-						+ "Si usted no reconoce este email y usted nunca pidió la recuperación de la contraseña, póngase inmediatamente "
+						+ "Si usted no reconoce este email y usted nunca efectuó el cambio de la contraseña, póngase inmediatamente "
 						+ "en contacto con el administrador, a la siguiente dirección: "
 						+ "\n\nsoporte.sgsa@gmail.com"
-						+ "Gracias por utilizar S.G.S.A.!";
+						+ "\n\nGracias por utilizar S.G.S.A.!";
 				for (Mail m : usuarioModificaClave.getListaMails()) {
 					mailServer.sendMessage(m.getDireccionMail(), subject, message);
 				}
