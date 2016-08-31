@@ -53,7 +53,6 @@ public class GestorLogin extends Gestor<Login> {
 		try{
 			setSession();
 			setTransaction();
-			object.setClave(encriptar(object.getClave()));
 			loginDAO.attachDirty(object);
 			sesionDeHilo.getTransaction().commit();
 		}catch(Exception ex){
