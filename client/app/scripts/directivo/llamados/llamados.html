@@ -352,8 +352,8 @@
 						<label>DNI: </label>
 						<!-- <input class="form-control-inline" name="dni" type="text" placeholder="35123123" maxlength="8" required pattern="\d{8,8}" ng-model="filterByName">
 						<button class="btn btn-default" ng-click="" title="Ver mesas disponibles" ng-disabled="!consultMesas.$valid">Ver mesas</button> esto es para cuando reciba DNI-->
-						<input class="form-control-inline" name="ID" type="text" placeholder="35123123" maxlength="8" required ng-model="dni">
-						<button class="btn btn-default" ng-click="getMesas(dni)" title="Ver mesas disponibles">Ver mesas</button>
+						<input class="form-control-inline" name="dni" type="text" placeholder="35123123" maxlength="8" required ng-model="dni">
+						<button class="btn btn-default" ng-click="getMesas(dni)" title="Ver mesas disponibles" ng-disabled="!consultMesas.dni.$valid">Ver mesas</button>
 						<label>Número de inscripci&oacute;n: </label>
 						<input class="form-control-inline" name="nroInscipcion" type="text" placeholder="123" maxlength="8" required pattern="\d{1,8}" ng-model="nroInscipcion">
 						<button class="btn btn-default" ng-click="" title="Ver comprobante de inscripción" ng-disabled="!consultMesas.nroInscipcion.$valid">Consultar</button>

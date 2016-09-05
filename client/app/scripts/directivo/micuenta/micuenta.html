@@ -26,230 +26,238 @@
 	</div>
 </div>
 
-<div class="col-md-10">
-	<div ng-show="misDatos">
-		<fieldset>
-			<h1>{{subtitle}}: <small>Informaci&oacute;n personal del usuario.</small></h1>
-			<hr>		
-			<!-- edit form column -->
-			<div class="col-md-6 personal-info">
-				<form class="form-horizontal" role="form">
-					<div class="form-group">
-						<label class="col-lg-4">DNI: </label>
-						<span class="col-lg-3">{{directivo.nroDocumento}}</span>
-					</div>
-					<div class="form-group">
-						<label class="col-lg-4">CUIL: </label>
-						<span class="col-lg-3">{{directivo.cuil}}</span>
-					</div>
-					<div class="form-group">
-						<label class="col-lg-4">Apellido: </label>
-						<span class="col-lg-3">{{directivo.apellido}}</span>
-					</div>
-					<div class="form-group">
-						<label class="col-lg-4">Nombre: </label>
-						<span type="text" class="col-lg-5">{{directivo.nombre}}</span>
-					</div>
-					<div class="form-group">
-						<label class="col-lg-4">Estudios: </label>
-						<span class="col-lg-5">
-							<div ng-repeat="titulo in directivo.listaTitulos">
-								{{titulo.nombreTitulo}} - {{telefono.descripcionTitulo}}
-							</div>
-						</span>
-					</div>
-					<div class="form-group">
-						<label class="col-lg-4">Telefonos: </label>
-						<span class="col-lg-5">
-							<div ng-repeat="telefono in directivo.listaTelefonos">
-								{{telefono.caracteristica}} - {{telefono.nroTelefono}} ({{telefono.tipoTelefono}})
-							</div>
-						</span>
-					</div>
-					<div class="form-group">
-						<label class="col-lg-4">Sexo: </label>
-						<span type="text" class="col-lg-5">{{directivo.sexo}}</span>
-					</div>
-					<div class="form-group">
-						<label class="col-lg-4">Fecha de nacimiento: </label>
-						<span type="text" class="col-lg-5">{{directivo.fechaNacimiento | amDateFormat:'DD/MM/YYYY'}}</span>
-					</div>
-					<div class="form-group">
-						<label class="col-lg-4">Domicilio: </label>
-						<span class="col-lg-5" ng-if="!directivo.detailsDomicilio">{{directivo.domicilio.calle}} {{directivo.domicilio.numero}}
-							<div class="glyphicon glyphicon-option-horizontal" style="vertical-align: bottom; cursor:pointer;" ng-click="directivo.detailsDomicilio=true" bs-tooltip="tooltip.tooltipDetailsDom"></div>
-						</span>
-						<span class="col-lg-8" ng-if="directivo.detailsDomicilio">
-							<label>Calle: </label> <span>{{directivo.domicilio.calle}}</span>
-							<label> N°: </label> <span>{{directivo.domicilio.numero}}</span></br>
-							<label>Piso: </label> <span>{{directivo.domicilio.piso}}</span>
-							<label> Localidad: </label> <span>{{directivo.domicilio.localidad}}</span></br>
-							<label>Departamento: </label> <span>{{directivo.domicilio.dpto}}</span></br>
-							<label>Departamento: </label> <span>{{directivo.domicilio.departamento}}</span></br>
-							<label>Provincia: </label> <span>{{directivo.domicilio.provincia}}</span>
-							<label> CP: </label> <span>{{directivo.domicilio.codigoPostal}}</span></br>
-							<label>Barrio: </label> <span>{{directivo.domicilio.barrio}}</span></br>
-						</span>
-					</div>
-					<div class="form-group">
-						<label class="col-lg-4">Correo electr&oacute;nico: </label>
-						<span class="col-lg-8">
-							<div ng-repeat="mail in directivo.listaMails">
-								{{mail.direccionMail}} ({{mail.tipoMail}})
-							</div>
-						</span>
-					</div>
-					<div class="form-group">
-						<div class="col-lg-7">
-							<button type="button" class="btn btn-success btn-block" ng-click="initCall()" data-dismiss="modal"><span class="glyphicon glyphicon-refresh"></span> Actualizar </button>
-						</div>
-					</div>
-				</form>
-			</div>
-
-			<!-- right column -->
-			<div class="col-md-4">
-				<div class="text-center">
-					<img class="pull-left" style="float:left" src="./images/placeholder-user-photo.png" class="avatar img-circle" alt="./images/placeholder-user-photo.png" height="300" width="300"><!-- //placehold.it/300 -->
-				</div>
-			</div>
-		</fieldset>
+<spinner name="miCuentaDirectivoSpinner" ng-cloak="">
+	<div class="overlay"></div>
+	<div class="spinner-small">			            
+		<div>
+			<div class="ng-include: './views/templates/defaultspinner.html'"></div>
+		</div>
 	</div>
+	<div class="please-wait-small">Aguarde por favor...</div>
+</spinner>
 
-	<div ng-show="actualizarMisDatos">
-		<fieldset>
-			<h1>{{subtitle}}: <small>Cambie la imagen de perfil o la direcci&oacute;n de Mail actual.</small></h1>
-			<hr>
-			<div class="formulario media-body">
-				<div class="row" style="padding-bottom: 30px">
-					<div class="col-md-3 col-md-offset-3">
-						<button style="align:center" class="btn btn-default" ngf-select ng-model="picFile" accept="image/*" ngf-max-size="2MB" ngf-min-height="100" style="margin: 5px auto">Examinar</button>
-						<div ngf-drop ng-model="picFile" ngf-pattern="image/*" class="cropArea"><!--{{picFile}}-->
-							<img-crop style="max-height: 150px; max-width: 150px;" image="picFile  | ngfDataUrl" result-image="croppedDataUrl" ng-init="croppedDataUrl=''"></img-crop>
+<div ng-show="misDatos">
+	<fieldset>
+		<h1>{{subtitle}}: <small>Informaci&oacute;n personal del usuario.</small></h1>
+		<hr>		
+		<!-- edit form column -->
+		<div class="col-md-6 personal-info">
+			<form class="form-horizontal" role="form">
+				<div class="form-group">
+					<label class="col-lg-4">DNI: </label>
+					<span class="col-lg-3">{{directivo.nroDocumento}}</span>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-4">CUIL: </label>
+					<span class="col-lg-3">{{directivo.cuil}}</span>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-4">Apellido: </label>
+					<span class="col-lg-3">{{directivo.apellido}}</span>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-4">Nombre: </label>
+					<span type="text" class="col-lg-5">{{directivo.nombre}}</span>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-4">Estudios: </label>
+					<span class="col-lg-5">
+						<div ng-repeat="titulo in directivo.listaTitulos">
+							{{titulo.nombreTitulo}} - {{telefono.descripcionTitulo}}
 						</div>
+					</span>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-4">Telefonos: </label>
+					<span class="col-lg-5">
+						<div ng-repeat="telefono in directivo.listaTelefonos">
+							{{telefono.caracteristica}} - {{telefono.nroTelefono}} ({{telefono.tipoTelefono}})
+						</div>
+					</span>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-4">Sexo: </label>
+					<span type="text" class="col-lg-5">{{directivo.sexo}}</span>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-4">Fecha de nacimiento: </label>
+					<span type="text" class="col-lg-5">{{directivo.fechaNacimiento | amDateFormat:'DD/MM/YYYY'}}</span>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-4">Domicilio: </label>
+					<span class="col-lg-5" ng-if="!directivo.detailsDomicilio">{{directivo.domicilio.calle}} {{directivo.domicilio.numero}}
+						<div class="glyphicon glyphicon-option-horizontal" style="vertical-align: bottom; cursor:pointer;" ng-click="directivo.detailsDomicilio=true" bs-tooltip="tooltip.tooltipDetailsDom"></div>
+					</span>
+					<span class="col-lg-8" ng-if="directivo.detailsDomicilio">
+						<label>Calle: </label> <span>{{directivo.domicilio.calle}}</span>
+						<label> N°: </label> <span>{{directivo.domicilio.numero}}</span></br>
+						<label>Piso: </label> <span>{{directivo.domicilio.piso}}</span>
+						<label> Localidad: </label> <span>{{directivo.domicilio.localidad}}</span></br>
+						<label>Departamento: </label> <span>{{directivo.domicilio.dpto}}</span></br>
+						<label>Departamento: </label> <span>{{directivo.domicilio.departamento}}</span></br>
+						<label>Provincia: </label> <span>{{directivo.domicilio.provincia}}</span>
+						<label> CP: </label> <span>{{directivo.domicilio.codigoPostal}}</span></br>
+						<label>Barrio: </label> <span>{{directivo.domicilio.barrio}}</span></br>
+					</span>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-4">Correo electr&oacute;nico: </label>
+					<span class="col-lg-8">
+						<div ng-repeat="mail in directivo.listaMails">
+							{{mail.direccionMail}} ({{mail.tipoMail}})
+						</div>
+					</span>
+				</div>
+				<div class="form-group">
+					<div class="col-lg-7">
+						<button type="button" class="btn btn-success btn-block" ng-click="initCall()" data-dismiss="modal"><span class="glyphicon glyphicon-refresh"></span> Actualizar </button>
 					</div>
 				</div>
-				<input class="btn btn-primary col-md-offset-5" ng-click="" type="submit" name="" value="Guardar"/>
-				<form class="form-horizontal media" name="formModifMail" novalidate>
-					<div class="row">
-						<div class="col-md-8 personal-info"> 
-							<div class="form-group" ng-class="{ 'has-error': formModifMail.mailActual.$touched && formModifMail.mailActual.$invalid }">
-								<div class="col-sm-3 control-label">
-									<label for="mailActual"><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Mail actual:</label>
-								</div>
-								<div class="col-sm-4">
-									<input id="mailActual" name="mailActual" type="email" class="form-control" placeholder="mail@dominio.com" ng-model="mails.mailActual" maxlength="255" required/>
-									<div ng-messages="formModifMail.mailActual.$error" ng-if="formModifMail.mailActual.$touched && formModifMail.mailActual.$invalid">
-										<div ng-message="email" class="help-block">Formato invalido</div>
-										<div ng-message="required" class="help-block">Complete este campo</div>
-									</div>
-								</div>
-							</div>
-							<!-- /form-group-->
-							<div class="form-group" ng-class="{ 'has-error': formModifMail.mailNuevo.$touched && formModifMail.mailNuevo.$invalid }">
-								<div class="col-sm-3 control-label">
-									<label for="mailNuevo"><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Mail nuevo:</label>
-								</div>
-								<div class="col-sm-4">
-									<input id="mailNuevo" name="mailNuevo" type="email" class="form-control" placeholder="mail@dominio.com" ng-model="mails.mailNuevo" maxlength="255" required/>
-									<div ng-messages="formModifMail.mailNuevo.$error" ng-if="formModifMail.mailNuevo.$touched && formModifMail.mailNuevo.$invalid">
-										<div ng-message="email" class="help-block">Formato invalido</div>
-										<div ng-message="required" class="help-block">Complete este campo</div>
-									</div>
-								</div>
-							</div>
-							<!-- /form-group-->
-							<div class="form-group" ng-class="{ 'has-error': formModifMail.mailNuevoConf.$touched && formModifMail.mailNuevoConf.$invalid }">
-								<div class="col-sm-3 control-label">
-									<label for="mailNuevoConf"><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Mail nuevo:</label>
-								</div>
-								<div class="col-sm-4">
-									<input id="mailNuevoConf" name="mailNuevoConf" type="email" class="form-control" placeholder="mail@dominio.com" maxlength="255" ng-model="mails.mailNuevoConf" pw-check="mailNuevo" required/>
-									<div ng-messages="formModifMail.mailNuevoConf.$error" ng-if="formModifMail.mailNuevoConf.$touched && formModifMail.mailNuevoConf.$invalid">
-										<div ng-message="email" class="help-block">Formato invalido</div>
-										<div ng-message="required" class="help-block">Complete este campo</div>
-										<span class="msg-error" ng-show="myForm.pw2.$error.pwmatch">Passwords don't match.</span>
-									</div>
-									<div ng-messages="formModifMail.mailNuevoConf.$error" ng-if="formModifMail.mailNuevoConf.$touched && formModifMail.mailNuevoConf.$invalid">
-										<div ng-messages="pwmatch" class="help-block" >Los emails no coninciden.</div>
-									</div>
-								</div>
-							</div>
-							<!-- /form-group-->
-						</div>
-					</div><!--row-->
-					<div class="form-group">
-						<input class="btn btn-primary col-md-offset-3" ng-click="" type="submit" name="" value="Guardar" ng-disabled="!formModifMail.$valid"/>
-					</div>
-				</form>
-			</div>
-		</fieldset>
-	</div>
-	<div ng-show="cambiarPass">
-		<fieldset>
-			<h1>{{subtitle}}: <small>Cambie la contrase&ntilde;a de la cuenta actual.</small></h1>
-			<hr>
-			<div class="formulario media-body">
-				<form class="form-horizontal media" name="formModifPass" novalidate>
-					<div class="row">
-						<div class="col-md-8 personal-info"> 
-							<div class="alert alert-warning alert-dismissible" role="alert">
-								<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-								<span class="glyphicon glyphicon-asterisk small"></span>Campos obligatorios
-							</div>
-							<div class="form-group" ng-class="{ 'has-error': formModifPass.passActual.$touched && formModifPass.passActual.$invalid }">
-								<div class="col-md-3 control-label">
-									<label for="passActual"><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Clave actual:</label>
-								</div>
-								<div class="col-md-4">
-									<input id="passActual" name="passActual" type="password" class="form-control" placeholder="Contraseña" maxlength="255" required/>
-									<div ng-messages="formModifPass.passActual.$error" ng-if="formModifPass.passActual.$touched && formModifPass.passActual.$invalid">
-										<div ng-message="passActual" class="help-block">Formato invalido</div>
-										<div ng-message="required" class="help-block">Complete este campo</div>
-									</div>
-								</div>
-							</div>
-							<!-- /form-group-->
-							<div class="form-group" ng-class="{ 'has-error': formModifPass.passNuevo.$touched && formModifPass.passNuevo.$invalid }">
-								<div class="col-md-3 control-label">
-									<label for="mailNuevo"><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Clave nueva:</label>
-								</div>
-								<div class="col-md-4">
-									<input id="passNuevo" name="passNuevo" type="password" class="form-control" placeholder="Contraseña" maxlength="255" ng-model="passwords.passNuevo" required/>
-									<div ng-messages="formModifPass.passNuevo.$error" ng-if="formModifPass.passNuevo.$touched && formModifPass.passNuevo.$invalid">
-										<div ng-message="passNuevo" class="help-block">Formato invalido</div>
-										<div ng-message="required" class="help-block">Complete este campo</div>
-									</div>
-								</div>
-							</div>
-							<!-- /form-group-->
-							<div class="form-group" ng-class="{ 'has-error': formModifPass.passNuevoConf.$touched && formModifPass.passNuevoConf.$invalid }">
-								<div class="col-md-3 control-label">
-									<label for="mailNuevoConf"><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Confirmar Clave :</label>
-								</div>
-								<div class="col-md-4">
-									<input id="passNuevoConf" name="passNuevoConf" type="password" class="form-control" placeholder="Contraseña" maxlength="255" pw-check="passNuevo" ng-model="passwords.passNuevoConf" required/>
-									<div ng-messages="formModifPass.passNuevoConf.$error" ng-if="formModifPass.passNuevoConf.$touched && formModifPass.passNuevoConf.$invalid">
-										<div ng-message="passNuevoConf" class="help-block">Formato invalido</div>
-										<div ng-message="required" class="help-block">Complete este campo</div>
-									</div>
-									<div ng-messages="formModifPass.passNuevoConf.$error" ng-if="formModifPass.passNuevoConf.$touched && formModifPass.passNuevoConf.$invalid">
-										<div ng-messages="pwmatch" class="help-block" >Los passwords no coninciden.</div>
-									</div>
-								</div>
-							</div>
-							<!-- /form-group-->
-							<div class="form-group">
-								<div class="col-md-1 col-md-offset-3">
-									<input class="btn btn-primary" ng-click="" type="submit" name="" value="Guardar" ng-disabled="!formModifPass.$valid"/>
-								</div>
-							</div>
-							<!-- /form-group-->
-						</div>
-					</div><!--row-->
-				</form>
-			</div>
-		</fieldset>
-	</div>
+			</form>
+		</div>
 
+		<!-- right column -->
+		<div class="col-md-4">
+			<div class="text-center">
+				<img class="pull-left" style="float:left" src="./images/placeholder-user-photo.png" class="avatar img-circle" alt="./images/placeholder-user-photo.png" height="300" width="300"><!-- //placehold.it/300 -->
+			</div>
+		</div>
+	</fieldset>
 </div>
+
+<div ng-show="actualizarMisDatos">
+	<fieldset>
+		<h1>{{subtitle}}: <small>Cambie la imagen de perfil o la direcci&oacute;n de Mail actual.</small></h1>
+		<hr>
+		<div class="formulario media-body">
+			<div class="row" style="padding-bottom: 30px">
+				<div class="col-md-3 col-md-offset-3">
+					<button style="align:center" class="btn btn-default" ngf-select ng-model="picFile" accept="image/*" ngf-max-size="2MB" ngf-min-height="100" style="margin: 5px auto">Examinar</button>
+					<div ngf-drop ng-model="picFile" ngf-pattern="image/*" class="cropArea"><!--{{picFile}}-->
+						<img-crop style="max-height: 150px; max-width: 150px;" image="picFile  | ngfDataUrl" result-image="croppedDataUrl" ng-init="croppedDataUrl=''"></img-crop>
+					</div>
+				</div>
+			</div>
+			<input class="btn btn-primary col-md-offset-5" ng-click="" type="submit" name="" value="Guardar"/>
+			<form class="form-horizontal media" name="formModifMail" novalidate>
+				<div class="row">
+					<div class="col-md-8 personal-info"> 
+						<div class="form-group" ng-class="{ 'has-error': formModifMail.mailActual.$touched && formModifMail.mailActual.$invalid }">
+							<div class="col-sm-3 control-label">
+								<label for="mailActual"><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Mail actual:</label>
+							</div>
+							<div class="col-sm-4">
+								<input id="mailActual" name="mailActual" type="email" class="form-control" placeholder="mail@dominio.com" ng-model="mails.mailActual" maxlength="255" required/>
+								<div ng-messages="formModifMail.mailActual.$error" ng-if="formModifMail.mailActual.$touched && formModifMail.mailActual.$invalid">
+									<div ng-message="email" class="help-block">Formato invalido</div>
+									<div ng-message="required" class="help-block">Complete este campo</div>
+								</div>
+							</div>
+						</div>
+						<!-- /form-group-->
+						<div class="form-group" ng-class="{ 'has-error': formModifMail.mailNuevo.$touched && formModifMail.mailNuevo.$invalid }">
+							<div class="col-sm-3 control-label">
+								<label for="mailNuevo"><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Mail nuevo:</label>
+							</div>
+							<div class="col-sm-4">
+								<input id="mailNuevo" name="mailNuevo" type="email" class="form-control" placeholder="mail@dominio.com" ng-model="mails.mailNuevo" maxlength="255" required/>
+								<div ng-messages="formModifMail.mailNuevo.$error" ng-if="formModifMail.mailNuevo.$touched && formModifMail.mailNuevo.$invalid">
+									<div ng-message="email" class="help-block">Formato invalido</div>
+									<div ng-message="required" class="help-block">Complete este campo</div>
+								</div>
+							</div>
+						</div>
+						<!-- /form-group-->
+						<div class="form-group" ng-class="{ 'has-error': formModifMail.mailNuevoConf.$touched && formModifMail.mailNuevoConf.$invalid }">
+							<div class="col-sm-3 control-label">
+								<label for="mailNuevoConf"><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Mail nuevo:</label>
+							</div>
+							<div class="col-sm-4">
+								<input id="mailNuevoConf" name="mailNuevoConf" type="email" class="form-control" placeholder="mail@dominio.com" maxlength="255" ng-model="mails.mailNuevoConf" pw-check="mailNuevo" required/>
+								<div ng-messages="formModifMail.mailNuevoConf.$error" ng-if="formModifMail.mailNuevoConf.$touched && formModifMail.mailNuevoConf.$invalid">
+									<div ng-message="email" class="help-block">Formato invalido</div>
+									<div ng-message="required" class="help-block">Complete este campo</div>
+									<span class="msg-error" ng-show="myForm.pw2.$error.pwmatch">Passwords don't match.</span>
+								</div>
+								<div ng-messages="formModifMail.mailNuevoConf.$error" ng-if="formModifMail.mailNuevoConf.$touched && formModifMail.mailNuevoConf.$invalid">
+									<div ng-messages="pwmatch" class="help-block" >Los emails no coninciden.</div>
+								</div>
+							</div>
+						</div>
+						<!-- /form-group-->
+					</div>
+				</div><!--row-->
+				<div class="form-group">
+					<input class="btn btn-primary col-md-offset-3" ng-click="" type="submit" name="" value="Guardar" ng-disabled="!formModifMail.$valid"/>
+				</div>
+			</form>
+		</div>
+	</fieldset>
+</div>
+<div ng-show="cambiarPass">
+	<fieldset>
+		<h1>{{subtitle}}: <small>Cambie la contrase&ntilde;a de la cuenta actual.</small></h1>
+		<hr>
+		<div class="formulario media-body">
+			<form class="form-horizontal media" name="formModifPass">
+				<div class="row">
+					<div class="col-md-8 personal-info"> 
+						<div class="alert alert-warning alert-dismissible" role="alert">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<span class="glyphicon glyphicon-asterisk small"></span>Campos obligatorios
+						</div>
+						<div class="form-group" ng-class="{ 'has-error': formModifPass.passActual.$touched && formModifPass.passActual.$invalid }">
+							<div class="col-md-3 control-label">
+								<label for="passActual"><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Clave actual:</label>
+							</div>
+							<div class="col-md-4">
+								<input id="passActual" name="passActual" type="password" ng-model="passwords.passActual" class="form-control" placeholder="Contraseña" maxlength="255" required/>
+								<div ng-messages="formModifPass.passActual.$error" ng-if="formModifPass.passActual.$touched && formModifPass.passActual.$invalid">
+									<div ng-message="passActual" class="help-block">Formato invalido</div>
+									<div ng-message="required" class="help-block">Complete este campo</div>
+								</div>
+							</div>
+						</div>
+						<!-- /form-group-->
+						<div class="form-group" ng-class="{ 'has-error': formModifPass.passNuevo.$touched && formModifPass.passNuevo.$invalid }">
+							<div class="col-md-3 control-label">
+								<label for="mailNuevo"><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Clave nueva:</label>
+							</div>
+							<div class="col-md-4">
+								<input id="passNuevo" name="passNuevo" type="password" class="form-control" placeholder="Contraseña" maxlength="255" ng-model="passwords.passNuevo" required/>
+								<div ng-messages="formModifPass.passNuevo.$error" ng-if="formModifPass.passNuevo.$touched && formModifPass.passNuevo.$invalid">
+									<div ng-message="passNuevo" class="help-block">Formato invalido</div>
+									<div ng-message="required" class="help-block">Complete este campo</div>
+								</div>
+							</div>
+						</div>
+						<!-- /form-group-->
+						<div class="form-group" ng-class="{ 'has-error': formModifPass.passNuevoConf.$touched && formModifPass.passNuevoConf.$invalid }">
+							<div class="col-md-3 control-label">
+								<label for="mailNuevoConf"><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Confirmar Clave :</label>
+							</div>
+							<div class="col-md-4">
+								<input id="passNuevoConf" name="passNuevoConf" type="password" class="form-control" placeholder="Contraseña" maxlength="255" pw-check="passNuevo" ng-model="passwords.passNuevoConf" required/>
+								<div ng-messages="formModifPass.passNuevoConf.$error" ng-if="formModifPass.passNuevoConf.$touched && formModifPass.passNuevoConf.$invalid">
+									<div ng-message="passNuevoConf" class="help-block">Formato invalido</div>
+									<div ng-message="required" class="help-block">Complete este campo</div>
+								</div>
+								<div ng-messages="formModifPass.passNuevoConf.$error" ng-if="formModifPass.passNuevoConf.$touched && formModifPass.passNuevoConf.$invalid">
+									<div ng-messages="pwmatch" class="help-block" >Los passwords no coninciden.</div>
+								</div>
+							</div>
+						</div>
+						<!-- /form-group-->
+						<div class="form-group">
+							<div class="col-md-1 col-md-offset-3">
+								<input class="btn btn-primary" ng-click="changePass()" type="submit" name="" value="Guardar" ng-disabled="!formModifPass.$valid"/>
+							</div>
+						</div>
+						<!-- /form-group-->
+					</div>
+				</div><!--row-->
+			</form>
+		</div>
+	</fieldset>
+</div>
+
