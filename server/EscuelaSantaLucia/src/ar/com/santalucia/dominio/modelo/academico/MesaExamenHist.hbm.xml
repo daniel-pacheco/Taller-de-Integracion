@@ -8,8 +8,8 @@
             <column name="IDMESAEXAMENHIST" />
             <generator class="identity" />
         </id>
-        <property name="nroActa" type="java.lang.String">
-            <column name="NROACTA" />
+        <property name="idActaVolanteExamen" type="java.lang.Long">
+            <column name="IDACTAVOLANTEEXAMEN" />
         </property>
         <property name="nota" type="java.lang.Float">
             <column name="NOTA" />
@@ -76,6 +76,9 @@
         </property>
         <property name="anioEquivalencia" type="java.lang.String">
             <column name="ANIOEQUIVALENCIA" />
+        </property>
+        <property name="estado" type="java.lang.Boolean">
+            <column name="ESTADO" />
         </property>
     </class>
 </hibernate-mapping>
