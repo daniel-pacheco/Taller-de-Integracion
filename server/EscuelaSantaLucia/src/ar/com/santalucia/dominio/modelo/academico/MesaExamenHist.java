@@ -12,11 +12,11 @@ import ar.com.santalucia.dominio.modelo.desempenio.Nota;
  *
  */
 
-// Ultimo modificador: Ariel Ramirez @ 06-05-2016 21:25
+// Ultimo modificador: Ariel Ramirez @ 23-08-2016
 
 public class MesaExamenHist {
 	private Long idMesaExamenHist;
-	private String nroActa;
+	private Long idActaVolanteExamen;
 	private Float nota;
 	private Boolean asistencia;
 	private Date fechaInscripcion;
@@ -39,19 +39,19 @@ public class MesaExamenHist {
 	private Date fechaHoraFinMesa;
 	private String nombreEquivalencia;
 	private String anioEquivalencia;
+	private Boolean estado;
 
 	public MesaExamenHist() {
 		super();
 	}
 
-	public MesaExamenHist(Long idMesaExamen, String nroActa, Float nota, Boolean asistencia, Date fechaInscripcion,
+	public MesaExamenHist(Long idMesaExamen, Float nota, Boolean asistencia, Date fechaInscripcion,
 			String nombreMateria, Long dniDocente1, String nombreDocente1, String apellidoDocente1, Long dniDocente2,
 			String nombreDocente2, String apellidoDocente2, Long dniDocente3, String nombreDocente3,
 			String apellidoDocente3, Long dniAlumno, String nombreAlumno, String apellidoAlumno, Date horaInicioMesa,
 			Date horaFinMesa) {
 		super();
 		this.idMesaExamenHist = idMesaExamen;
-		this.nroActa = nroActa;
 		this.nota = nota;
 		this.asistencia = asistencia;
 		this.fechaInscripcion = fechaInscripcion;
@@ -78,14 +78,6 @@ public class MesaExamenHist {
 
 	public void setIdMesaExamenHist(Long idMesaExamenHist) {
 		this.idMesaExamenHist = idMesaExamenHist;
-	}
-
-	public String getNroActa() {
-		return nroActa;
-	}
-
-	public void setNroActa(String nroActa) {
-		this.nroActa = nroActa;
 	}
 
 	public Float getNota() {
@@ -262,6 +254,22 @@ public class MesaExamenHist {
 
 	public void setAnioEquivalencia(String anioEquivalencia) {
 		this.anioEquivalencia = anioEquivalencia;
+	}
+
+	public Long getIdActaVolanteExamen() {
+		return idActaVolanteExamen;
+	}
+
+	public void setIdActaVolanteExamen(Long idActaVolanteExamen) {
+		this.idActaVolanteExamen = idActaVolanteExamen;
+	}
+
+	public Boolean getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Boolean estado) {
+		this.estado = estado;
 	}
 
 }
