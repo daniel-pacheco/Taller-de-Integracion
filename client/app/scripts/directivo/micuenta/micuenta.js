@@ -100,6 +100,23 @@ function setActiveAlu (menuItemAlu) {
 		};      
 		$scope.showMessage(msg, 'Operación exitosa' , true);
 	};
+
+	
+$scope.confirmModal = function(mesagge, funcion, parametro) { //este confirm recibe una funcion y un parametro para que despues de confirmar se pueda llamar a la funcion que se necesite
+	ModalService.showModal({
+		templateUrl: 'scripts/utils/confirm/modalConfirm.tpl.html',
+		controller: 'modalConfirmController',
+		inputs: {
+			mensaje: mesagge,
+		}
+	}).then(function(modal) {
+		modal.element.modal();
+		modal.close.then(function(result){
+			funcion(parametro);
+		});
+	});
+};
+
 //-- [Mi cuenta] utils
 //-- [Mi cuenta] service calls
 
@@ -123,13 +140,17 @@ $scope.initCall = function() {
 
 //-- [Mi cuenta/cambiar contrasenia]
 //-- [Mi cuenta/cambiar contrasenia] variables
-    var cambiarPassData = [];
+var cambiarPassData = [];
 //-- [Mi cuenta/cambiar contrasenia] Form Management
+$scope.confirmChangePass = function() {
+	var params;
+	$scope.confirmModal('¿Realmente desea cambiar la contraseña ? ', changePass, params);
+}
 //-- [Mi cuenta/cambiar contrasenia] filters
 //-- [Mi cuenta/cambiar contrasenia] modals
 //-- [Mi cuenta/cambiar contrasenia] utils
 //-- [Mi cuenta/cambiar contrasenia] service calls
-$scope.changePass = function () {
+function changePass() {
 
 	cambiarPassData[0] = $scope.directivo.nroDocumento;
 	cambiarPassData[1] = $scope.passwords.passActual;
@@ -138,7 +159,7 @@ $scope.changePass = function () {
 	spinnerService.show('miCuentaDirectivoSpinner');
 	loginService.cambiarPass(cambiarPassData)
 	.then(function(response){
-		showServerSuccess('Contraseña cambiada con éxito',response);
+		showServerSuccess('Contraseña cambiada con éxito.',response);
 		$scope.formModifPass.$setUntouched();
 		$scope.passwords = {};
 	},
