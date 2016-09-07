@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.com.santalucia.dominio.dto.RecuperarClaveDTO;
+import ar.com.santalucia.dominio.modelo.sistema.login.Login;
 import ar.com.santalucia.excepciones.LoginError;
 import ar.com.santalucia.excepciones.ValidacionException;
 import ar.com.santalucia.servicio.ServicioLogin;
@@ -117,4 +118,45 @@ public class ServicioLoginEndpoint {
 		}
 	}
 
+	/**
+	 * Rol de acceso: TODOS
+	 * Recibe un objeto del siguiente tipo ["dniUsuario", "claveActual", "claveNueva"]
+	 * @param parametros
+	 * @param rolIn
+	 * @param token
+	 * @return
+	 */
+	@POST
+	@Path("/cambiarClave")
+	public Response cambiarContraseña(final String[] parametros,
+			@HeaderParam("rol") final String rolIn, 
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.DOCENTE) && !rolIn.equals(Login.ADMINISTRADOR) && !rolIn.equals(Login.ALUMNO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
+		Boolean resultado = false;
+		String nuevoToken = new String();
+		try {
+			setInstance();
+			try {
+				nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
+			} catch (ValidacionException vEx) {
+				return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+			}
+			resultado = servicioLogin.cambiarContraseña(parametros[0], rolIn, parametros[1].toString(), parametros[2].toString());
+			if (nuevoToken == null) {
+				return Response.ok(resultado).build();
+			} else {
+				return Response.ok(resultado).header("auth0", nuevoToken).build();
+			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.CONFLICT).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+		} catch (Exception ex) {
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
+		}
+	}
 }

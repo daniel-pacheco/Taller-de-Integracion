@@ -21,11 +21,11 @@ public class MailServer {
 
 	public MailServer() {
 		super();
-//		this.username = "ericdp_0591@hotmail.com";
-//		this.password = "mglatu";
-		this.username = "escuelasantalucia.info@gmail.com";
-		this.password = "santaluciaescuela2016";
-		this.from = "escuelasantalucia.info@gmail.com";
+		// this.username = "escuelasantalucia.info@gmail.com";
+		// this.password = "santaluciaescuela2016";
+		this.username = "soporte.sgsa@gmail.com";
+		this.password = "linuxalpoder";
+		this.from = "soporte.sgsa@gmail.com";
 		// seteo de propiedades (host, port, ...)
 		this.setProps();
 	}

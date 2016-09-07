@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 23-ago-2016 19:33:58 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="ar.com.santalucia.dominio.modelo.academico.ActaVolanteExamenes" table="ACTAVOLANTEEXAMENES">
+        <id name="idActaVolanteExamen" type="java.lang.Long">
+            <column name="IDACTAVOLANTEEXAMEN" />
+            <generator class="identity" />
+        </id>
+        <property name="idMesa" type="java.lang.Long">
+            <column name="IDMESA" />
+        </property>
+         <property name="nombreMesa" type="java.lang.String">
+            <column name="NOMBREMESA" />
+        </property>
+        <property name="idLlamado" type="java.lang.Long">
+            <column name="IDLLAMADO" />
+        </property>
+         <property name="nombreLlamado" type="java.lang.String">
+            <column name="NOMBRELLAMADO" />
+        </property>
+        <property name="fechaMesa" type="java.util.Date">
+            <column name="FECHAMESA" />
+        </property>
+        <property name="horaInicio" type="java.util.Date">
+            <column name="HORAINICIO" />
+        </property>
+        <property name="horaFin" type="java.util.Date">
+            <column name="HORAFIN" />
+        </property>
+        <many-to-one name="tribunal1" class="ar.com.santalucia.dominio.modelo.usuarios.Personal" fetch="join">
+            <column name="TRIBUNAL1" />
+        </many-to-one>
+        <many-to-one name="tribunal2" class="ar.com.santalucia.dominio.modelo.usuarios.Personal" fetch="join">
+            <column name="TRIBUNAL2" />
+        </many-to-one>
+        <many-to-one name="tribunal3" class="ar.com.santalucia.dominio.modelo.usuarios.Personal" fetch="join">
+            <column name="TRIBUNAL3" />
+        </many-to-one>
+        <property name="cicloLectivo" type="java.lang.Integer">
+            <column name="CICLOLECTIVO" />
+        </property>
+        <list name="detalles" inverse="false" table="DETALLEVOLANTE" lazy="true">
+            <key>
+                <column name="IDACTAVOLANTE" />
+            </key>
+            <list-index></list-index>
+            <one-to-many class="ar.com.santalucia.dominio.modelo.academico.DetalleVolante" />
+        </list>
+        <property name="estado" type="java.lang.Boolean">
+            <column name="ESTADO" />
+        </property>
+        <property name="modificable" type="java.lang.Boolean">
+            <column name="MODIFICABLE" />
+        </property>
+    </class>
+</hibernate-mapping>

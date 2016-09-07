@@ -23,15 +23,12 @@
  		}
  	});
  })
- .controller('AlumnadoCtrl', [ '$scope', '$timeout', 'academicoService', 'alumnoService', 'desempenioService', 'exportTableService', 'modalService', 'ModalService', 'ObjectsFactory', 'spinnerService', 'Upload' ,function ($scope, $timeout, academicoService, alumnoService, desempenioService, exportTableService, modalService, ModalService, ObjectsFactory, spinnerService, Upload) { 	
+ .controller('AlumnadoCtrl', [ '$scope', '$timeout', 'academicoService', 'alumnoService', 'configuracionService', 'desempenioService', 'exportTableService', 'modalService', 'ModalService', 'ObjectsFactory', 'spinnerService', 'Upload' ,function ($scope, $timeout, academicoService, alumnoService, configuracionService, desempenioService, exportTableService, modalService, ModalService, ObjectsFactory, spinnerService, Upload) { 	
 //-- [Alumnado]
 //-- [Alumnado] variables
 
 $scope.listado = true;
 $scope.listFilterIsEnabled = false;
-
-$scope.fromDate = '';
-$scope.untilDate = ''; // para inasistenciasmodal
 
 //-- [Alumnado] Form Management
 
@@ -170,6 +167,19 @@ $scope.showModalInasistencias = function(alumno){//esta deberia ser una funcion 
 
 	var boletinInasistencias = {};
 
+	var primerTrimestre = [];
+	var segundoTrimestre = [];
+	var tercerTrimestre = [];
+
+	primerTrimestre.push(_.find($scope.configParametros, ['nombre', "COMIENZO_TRIM_1"]));
+	primerTrimestre.push(_.find($scope.configParametros, ['nombre', "FIN_TRIM_1"]));
+
+	segundoTrimestre.push(_.find($scope.configParametros, ['nombre', "COMIENZO_TRIM_2"]));
+	segundoTrimestre.push(_.find($scope.configParametros, ['nombre', "FIN_TRIM_2"]));
+	
+	tercerTrimestre.push(_.find($scope.configParametros, ['nombre', "COMIENZO_TRIM_3"]));
+	tercerTrimestre.push(_.find($scope.configParametros, ['nombre', "FIN_TRIM_3"]));
+
 	desempenioService.getBoletinInasistByDni(alumno)
 	.then(function(response){
 		boletinInasistencias = response.data;
@@ -180,8 +190,9 @@ $scope.showModalInasistencias = function(alumno){//esta deberia ser una funcion 
 			inputs: {
 				title: "Boletín de inasistencias",
 				libInasistencias: boletinInasistencias,
-				fromDate: $scope.fromDate,
-				untilDate: $scope.untilDate,
+				datePrimerTrimestre: primerTrimestre,
+				dateSegundoTrimestre: segundoTrimestre,
+				dateTercerTrimestre: tercerTrimestre,
 			}
 		}).then(function(modal) {
 			modal.element.modal();
@@ -190,9 +201,7 @@ $scope.showModalInasistencias = function(alumno){//esta deberia ser una funcion 
 				//console.log(boletinInasistencias);
 				if(result.modif){
 					updateBoletinInasistencias(boletinInasistencias);
-				}
-				$scope.fromDate = result.fromDate;
-				$scope.untilDate = result.untilDate;				
+				}				
 			});
 		});
 	},
@@ -299,6 +308,21 @@ function showServerSuccess (message, response){
 };
 
 //-- [Alumnado] service calls
+
+function getAllConfig() {
+	spinnerService.show('searchSpinner');
+	configuracionService.getParametroConfigAll()
+	.then(
+		function(response){
+			$scope.configParametros = response.data;
+		},
+		function(response){
+			showServerError (response);
+		})
+	.finally(function(){
+		spinnerService.hide('searchSpinner')
+	});
+};
 
 //----------------------------------
 
@@ -454,6 +478,7 @@ function getAnios() {
 };
 $scope.$on('$viewContentLoaded', function(){
 	getAnios();
+	getAllConfig();
 });
 
 $scope.search = function (option, dni) {
