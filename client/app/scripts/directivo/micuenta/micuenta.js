@@ -22,7 +22,7 @@
  	});
  })
 
- .controller('DirectivoMiCuentaCtrl', ['$scope', 'directivoService', 'ModalService', function ($scope, directivoService, ModalService) {
+ .controller('DirectivoMiCuentaCtrl', ['$scope', 'directivoService', 'loginService', 'ModalService', 'spinnerService', function ($scope, directivoService, loginService, ModalService, spinnerService) {
 
 //-- [Mi cuenta]
 //-- [Mi cuenta] variables
@@ -54,7 +54,7 @@ $scope.seleccionar = function (id){
 }
 
 $scope.$on('$viewContentLoaded', function(){
-$scope.seleccionar("misDatos");
+	$scope.seleccionar("misDatos");
 });
 
 function setActiveAlu (menuItemAlu) {
@@ -100,6 +100,23 @@ function setActiveAlu (menuItemAlu) {
 		};      
 		$scope.showMessage(msg, 'Operación exitosa' , true);
 	};
+
+	
+$scope.confirmModal = function(mesagge, funcion, parametro) { //este confirm recibe una funcion y un parametro para que despues de confirmar se pueda llamar a la funcion que se necesite
+	ModalService.showModal({
+		templateUrl: 'scripts/utils/confirm/modalConfirm.tpl.html',
+		controller: 'modalConfirmController',
+		inputs: {
+			mensaje: mesagge,
+		}
+	}).then(function(modal) {
+		modal.element.modal();
+		modal.close.then(function(result){
+			funcion(parametro);
+		});
+	});
+};
+
 //-- [Mi cuenta] utils
 //-- [Mi cuenta] service calls
 
@@ -121,6 +138,39 @@ $scope.initCall = function() {
 };
 	$scope.initCall(); //carga los datos desde la BD
 
+//-- [Mi cuenta/cambiar contrasenia]
+//-- [Mi cuenta/cambiar contrasenia] variables
+var cambiarPassData = [];
+//-- [Mi cuenta/cambiar contrasenia] Form Management
+$scope.confirmChangePass = function() {
+	var params;
+	$scope.confirmModal('¿Realmente desea cambiar la contraseña ? ', changePass, params);
+}
+//-- [Mi cuenta/cambiar contrasenia] filters
+//-- [Mi cuenta/cambiar contrasenia] modals
+//-- [Mi cuenta/cambiar contrasenia] utils
+//-- [Mi cuenta/cambiar contrasenia] service calls
+function changePass() {
+
+	cambiarPassData[0] = $scope.directivo.nroDocumento;
+	cambiarPassData[1] = $scope.passwords.passActual;
+	cambiarPassData[2] = $scope.passwords.passNuevo;
+
+	spinnerService.show('miCuentaDirectivoSpinner');
+	loginService.cambiarPass(cambiarPassData)
+	.then(function(response){
+		showServerSuccess('Contraseña cambiada con éxito.',response);
+		$scope.formModifPass.$setUntouched();
+		$scope.passwords = {};
+	},
+	function(response){
+		showServerError(response);
+	})
+	.finally(function(){
+		spinnerService.hide('miCuentaDirectivoSpinner');
+	});
+};
+
 //-- [Mi cuenta/sub-seccion]
 //-- [Mi cuenta/sub-seccion] variables
 //-- [Mi cuenta/sub-seccion] Form Management
@@ -128,7 +178,6 @@ $scope.initCall = function() {
 //-- [Mi cuenta/sub-seccion] modals
 //-- [Mi cuenta/sub-seccion] utils
 //-- [Mi cuenta/sub-seccion] service calls
-
 
 
 

@@ -18,6 +18,7 @@
   var sLogin = SERVER.login;
   var recoverPassword = 'recuperarClave/';
   var validateCred = 'validar/';
+  var cambiarClave = 'cambiarClave/';
   
   function loadUserCredentials() {
     var token = window.sessionStorage.getItem('LOCAL_TOKEN_KEY');
@@ -40,14 +41,14 @@
     //   window.sessionStorage.getItem('USER_ROLE')
     //   );
 
-    useCredentials(name, token, role);
-  };
-  
-  function useCredentials(name, token, role) {
-    userName = name;
-    isAuthenticated = true;
-    authToken = token;
-    userRole = role; 
+useCredentials(name, token, role);
+};
+
+function useCredentials(name, token, role) {
+  userName = name;
+  isAuthenticated = true;
+  authToken = token;
+  userRole = role; 
     // Set the token as header for your requests!
     $http.defaults.headers.common['auth0'] = token;//auth0 le dicen los pibes
     $http.defaults.headers.common['rol'] = role;
@@ -131,23 +132,28 @@
     return $http.post(server + sLogin + recoverPassword, credenciales);
   };
 
-function getUserName() {
-  return window.sessionStorage.getItem('USER_NAME');
-};
+  var cambiarPass = function(cambiarData) {
+    return $http.post(server + sLogin + cambiarClave, cambiarData);
+  };
 
-function getUserRole() {
-  return window.sessionStorage.getItem('USER_ROLE');
-};
+  function getUserName() {
+    return window.sessionStorage.getItem('USER_NAME');
+  };
+
+  function getUserRole() {
+    return window.sessionStorage.getItem('USER_ROLE');
+  };
   
-function getAuthToken() {
-  return window.sessionStorage.getItem('LOCAL_TOKEN_KEY');
-};
+  function getAuthToken() {
+    return window.sessionStorage.getItem('LOCAL_TOKEN_KEY');
+  };
 
-function getIsAutenticated() {
-  return isAuthenticated;
-};
+  function getIsAutenticated() {
+    return isAuthenticated;
+  };
 
   return {
+    cambiarPass : cambiarPass,
     changePassword: changePassword,
     login: login,
     logout: logout,
