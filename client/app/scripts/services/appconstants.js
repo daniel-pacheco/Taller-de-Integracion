@@ -18,13 +18,14 @@
  	sDesempenio: 'EscuelaSantaLucia/rest/sDesempenio/',
  	sDirectivo: 'EscuelaSantaLucia/rest/sDirectivo/',
  	sDocente: 'EscuelaSantaLucia/rest/sDocente/',
- 	login: 'EscuelaSantaLucia/rest/sLogin/',
+ 	login: 'EscuelaSantaLucia/rest/sLogin/'
  })
 
  .constant('AUTH_EVENTS', {
  	notAuthenticated: 'auth-not-authenticated',
  	notAuthorized: 'auth-not-authorized',
  	notFound: 'url-not-found',
+ 	conflict: 'http-conflict',
  	internalError: 'internal-error'
  })
  

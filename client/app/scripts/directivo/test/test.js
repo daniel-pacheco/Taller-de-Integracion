@@ -19,14 +19,14 @@
       }
   });
 })
- .controller('DirectivoTestCtrl', ['$scope', '$timeout', 'alumnoData', 'loginService', 'ModalService', 'spinnerService', 'Upload', function ($scope, $timeout, alumnoData, loginService, ModalService, spinnerService, Upload) {
+ .controller('DirectivoTestCtrl', ['$scope', '$timeout', 'loginService', 'ModalService', 'spinnerService', 'Upload', function ($scope, $timeout, loginService, ModalService, spinnerService, Upload) {
     this.awesomeThings = [
     'HTML5 Boilerplate',
     'AngularJS',
     'Karma'
     ];
 
-$scope.alumnoData = alumnoData;
+// $scope.alumnoData = alumnoData;
 
 $scope.login = function () {
     spinnerService.show('html5spinner');

@@ -24,7 +24,7 @@
 	});
 })
 
-.controller('AlumnoMiCuentaCtrl', ['$state', '$scope', 'alumnoData', 'alumnoService', 'ModalService', 'spinnerService', function ($state, $scope, alumnoData, alumnoService, ModalService, spinnerService) {
+.controller('AlumnoMiCuentaCtrl', ['$state', '$scope', 'alumnoService', 'ModalService', 'spinnerService', function ($state, $scope, alumnoService, ModalService, spinnerService) {
 	
 //-- [Mi cuenta]
 //-- [Mi cuenta] variables

@@ -29,6 +29,8 @@
       $rootScope.$broadcast({
         401: AUTH_EVENTS.notAuthenticated,
         403: AUTH_EVENTS.notAuthorized,
+        404: AUTH_EVENTS.notFound,
+        409: AUTH_EVENTS.conflict,
         500: AUTH_EVENTS.internalError
       }[response.status], response);
 
