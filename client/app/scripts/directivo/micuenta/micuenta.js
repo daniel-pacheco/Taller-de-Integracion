@@ -55,6 +55,7 @@ $scope.seleccionar = function (id){
 
 $scope.$on('$viewContentLoaded', function(){
 	$scope.seleccionar("misDatos");
+	$scope.initCall(); //carga los datos desde la BD
 });
 
 function setActiveAlu (menuItemAlu) {
@@ -128,15 +129,21 @@ $scope.confirmModal = function(mesagge, funcion, parametro) { //este confirm rec
 //-- [Mi cuenta/Mis datos] utils
 //-- [Mi cuenta/Mis datos] service calls
 $scope.initCall = function() {
-	directivoService.getMyData().then(function(response) {
-		// console.log(response);
-		$scope.directivo = response.data;
-	},
-	function(response){
-		showServerError('Ha ocurrido un error al contactar al servidor ' + response.statusText);
+	spinnerService.show('searchMicuentaSpinner');
+	directivoService.getMyData()
+	.then(
+		function(response) {
+			// console.log(response);
+			$scope.directivo = response.data;
+		},
+		function(response){
+			showServerError('Ha ocurrido un error al contactar al servidor ' + response.statusText);
+		})
+	.finally(function(){
+		spinnerService.hide('searchMicuentaSpinner');
 	});
 };
-	$scope.initCall(); //carga los datos desde la BD
+	
 
 //-- [Mi cuenta/cambiar contrasenia]
 //-- [Mi cuenta/cambiar contrasenia] variables
@@ -144,7 +151,7 @@ var cambiarPassData = [];
 //-- [Mi cuenta/cambiar contrasenia] Form Management
 $scope.confirmChangePass = function() {
 	var params;
-	$scope.confirmModal('¿Realmente desea cambiar la contraseña ? ', changePass, params);
+	$scope.confirmModal('¿Realmente desea cambiar la contraseña? ', changePass, params);
 }
 //-- [Mi cuenta/cambiar contrasenia] filters
 //-- [Mi cuenta/cambiar contrasenia] modals
@@ -156,7 +163,7 @@ function changePass() {
 	cambiarPassData[1] = $scope.passwords.passActual;
 	cambiarPassData[2] = $scope.passwords.passNuevo;
 
-	spinnerService.show('miCuentaDirectivoSpinner');
+	spinnerService.show('searchMicuentaSpinner');
 	loginService.cambiarPass(cambiarPassData)
 	.then(function(response){
 		showServerSuccess('Contraseña cambiada con éxito.',response);
@@ -167,7 +174,7 @@ function changePass() {
 		showServerError(response);
 	})
 	.finally(function(){
-		spinnerService.hide('miCuentaDirectivoSpinner');
+		spinnerService.hide('searchMicuentaSpinner');
 	});
 };
 

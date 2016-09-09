@@ -15,7 +15,7 @@ angular.module('clientAppApp')
 	});
 })
 
-.controller('DocenteMiCuentaCtrl', ['$scope', 'docenteService', 'ModalService', 'spinnerService', function ($scope, docenteService, ModalService, spinnerService) {
+.controller('DocenteMiCuentaCtrl', ['$scope', 'docenteService', 'loginService', 'ModalService', 'spinnerService', function ($scope, docenteService, loginService, ModalService, spinnerService) {
 	
 	$scope.titulo = 'Mi Cuenta';
 	$scope.docente = {};
@@ -140,6 +140,38 @@ $scope.initCall = function() {
 
 //-- variables
 
+//-- [Mi cuenta/cambiar contrasenia]
+//-- [Mi cuenta/cambiar contrasenia] variables
+var cambiarPassData = [];
+//-- [Mi cuenta/cambiar contrasenia] Form Management
+$scope.confirmChangePass = function() {
+	var params;
+	$scope.confirmModal('¿Realmente desea cambiar la contraseña? ', changePass, params);
+}
+//-- [Mi cuenta/cambiar contrasenia] filters
+//-- [Mi cuenta/cambiar contrasenia] modals
+//-- [Mi cuenta/cambiar contrasenia] utils
+//-- [Mi cuenta/cambiar contrasenia] service calls
+function changePass() {
+
+	cambiarPassData[0] = $scope.docente.nroDocumento;
+	cambiarPassData[1] = $scope.passwords.passActual;
+	cambiarPassData[2] = $scope.passwords.passNuevo;
+
+	spinnerService.show('searchMicuentaSpinner');
+	loginService.cambiarPass(cambiarPassData)
+	.then(function(response){
+		showServerSuccess('Contraseña cambiada con éxito.',response);
+		$scope.formModifPass.$setUntouched();
+		$scope.passwords = {};
+	},
+	function(response){
+		showServerError(response);
+	})
+	.finally(function(){
+		spinnerService.hide('searchMicuentaSpinner');
+	});
+};
 
 //-- variables
 $scope.mails = {};

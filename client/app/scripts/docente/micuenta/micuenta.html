@@ -36,6 +36,7 @@
 		</div>
 		<div class="please-wait-small">Aguarde por favor...</div>
 	</spinner>
+
 	<div ng-show="misDatos">
 		<fieldset>
 			<h1>{{subtitle}}: <small>Informaci&oacute;n personal del usuario.</small></h1>
@@ -195,7 +196,7 @@
 									<label for="passActual"><span class="glyphicon glyphicon-asterisk alert-warning small"></span> Clave actual:</label>
 								</div>
 								<div class="col-sm-4">
-									<input id="passActual" name="passActual" type="password" class="form-control" placeholder="Contraseña" maxlength="255" required/>
+									<input id="passActual" name="passActual" type="password" ng-model="passwords.passActual" class="form-control" placeholder="Contraseña" maxlength="255" required/>
 									<div ng-messages="formModifPass.passActual.$error" ng-if="formModifPass.passActual.$touched && formModifPass.passActual.$invalid">
 										<div ng-message="passActual" class="help-block">Formato invalido</div>
 										<div ng-message="required" class="help-block">Complete este campo</div>
@@ -234,7 +235,7 @@
 							<!-- /form-group-->
 							<div class="form-group">
 								<div class="col-md-1 col-md-offset-3">
-									<input class="btn btn-primary" ng-click="" type="submit" name="" value="Guardar" ng-disabled="!formModifPass.$valid"/>
+									<input class="btn btn-primary" ng-click="confirmChangePass()" type="submit" name="" value="Guardar" ng-disabled="!formModifPass.$valid"/>
 								</div>
 							</div>				
 							<!-- /form-group-->
