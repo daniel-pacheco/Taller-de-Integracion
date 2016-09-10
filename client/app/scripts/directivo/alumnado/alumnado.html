@@ -89,22 +89,30 @@
 				</div>
 				<div></div>
 				<table class="table table-hover table-striped" export-table="dir-listado-alumnos"> <!-- se usa ng-class para sacarle el export-table cuando no esta mostrandose esta tabla -->
-					<thead>
+					<thead class="orderHead">
 						<tr>
 							<th></th>
-							<th>Apellido</th>
-							<th>Nombre</th>
+							<th ng-click="orderDocente('nombre')" role="button">Nombre
+								<span class="sortorder" ng-show="predicate === 'nombre'" ng-class="{reverse:reverse}"></span>
+							</th>
+							<th ng-click="orderDocente('apellido')" role="button">Apellido
+								<span class="sortorder" ng-show="predicate === 'apellido'" ng-class="{reverse:reverse}"></span>
+							</th>
 							<th>DNI</th>
-							<th>A&ntilde;o</th>
-							<th>Curso</th>
+							<th ng-click="orderDocente('anio')" role="button">A&ntilde;o
+								<span class="sortorder" ng-show="predicate === 'anio'" ng-class="{reverse:reverse}"></span>
+							</th>
+							<th ng-click="orderDocente('curso')" role="button">Curso
+								<span class="sortorder" ng-show="predicate === 'curso'" ng-class="{reverse:reverse}"></span>
+							</th>
 							<th>Acciones</th>						
 						</tr>
 					</thead>
 					<tbody style="overflow-y: scroll; overflow-x: scroll">
-						<tr ng-repeat="alumno in alumnoData | filter:alumnoFilter | filter:dropDownAnioValue " ng-style="alumno.selected && {'background-color': '#ddd'}">
+						<tr ng-repeat="alumno in alumnoData |  orderBy:predicate:reverse | filter:alumnoFilter | filter:dropDownAnioValue " ng-style="alumno.selected && {'background-color': '#ddd'}">
 							<td ng-click="seleccionarCheckbox(alumno)"><input type="checkbox" ng-init="true" ng-model="selectAlumno" ng-checked="alumno.selected"></td>
-							<td ng-click="seleccionarCheckbox(alumno)">{{alumno.apellido}}</td>
 							<td ng-click="seleccionarCheckbox(alumno)">{{alumno.nombre}}</td>
+							<td ng-click="seleccionarCheckbox(alumno)">{{alumno.apellido}}</td>
 							<td ng-click="seleccionarCheckbox(alumno)">{{alumno.nroDocumento}}</td>
 							<td ng-click="seleccionarCheckbox(alumno)">{{alumno.anio}}</td>
 							<td ng-click="seleccionarCheckbox(alumno)">{{alumno.curso}}</td>

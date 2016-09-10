@@ -396,6 +396,13 @@ function hideListFilter(){
 };
 
 //-- [Anio/Listado] filters
+//-- Order list
+$scope.predicate = 'nombre';
+$scope.reverse = true;
+$scope.orderDocente = function(predicate) {
+  $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+  $scope.predicate = predicate;
+};
 //-- [Anio/Listado] modals
 
 //modals
