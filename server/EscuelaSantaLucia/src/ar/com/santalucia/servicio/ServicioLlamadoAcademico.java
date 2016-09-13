@@ -12,14 +12,9 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
 import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
-import ar.com.santalucia.aplicacion.gestor.academico.GestorAnio;
-import ar.com.santalucia.aplicacion.gestor.academico.GestorArea;
-import ar.com.santalucia.aplicacion.gestor.academico.GestorCurso;
-import ar.com.santalucia.aplicacion.gestor.academico.GestorEspecialidad;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorInscripcion;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorLlamado;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMateria;
-import ar.com.santalucia.aplicacion.gestor.academico.GestorMateriaHist;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMesa;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMesaExamenHist;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinNotasHist;

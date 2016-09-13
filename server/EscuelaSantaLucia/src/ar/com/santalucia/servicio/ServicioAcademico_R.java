@@ -1,72 +1,31 @@
 package ar.com.santalucia.servicio;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
-import org.hibernate.SQLQuery;
-import org.hibernate.Session;
-
-import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorAnio;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorArea;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorCurso;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorEspecialidad;
-import ar.com.santalucia.aplicacion.gestor.academico.GestorInscripcion;
-import ar.com.santalucia.aplicacion.gestor.academico.GestorLlamado;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMateria;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMateriaHist;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMesa;
-import ar.com.santalucia.aplicacion.gestor.academico.GestorMesaExamenHist;
-import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinInasistencias;
-import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinNotas;
-import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinNotasHist;
-import ar.com.santalucia.aplicacion.gestor.desempenio.GestorInasistencia;
-import ar.com.santalucia.aplicacion.gestor.desempenio.GestorNota;
-import ar.com.santalucia.aplicacion.gestor.desempenio.GestorTrimestre;
-import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
-import ar.com.santalucia.dominio.dto.AlumnoDTO;
 import ar.com.santalucia.dominio.dto.AnioDTO;
 import ar.com.santalucia.dominio.dto.CursoDTO;
-import ar.com.santalucia.dominio.dto.DetallePreviaDTO;
-import ar.com.santalucia.dominio.dto.InscripcionConsultaDTO;
-import ar.com.santalucia.dominio.dto.InscripcionConsultaV2DTO;
-import ar.com.santalucia.dominio.dto.InscripcionConsultaV2Detalle;
-import ar.com.santalucia.dominio.dto.LlamadoDTO;
 import ar.com.santalucia.dominio.dto.MateriaAltaDTO;
 import ar.com.santalucia.dominio.dto.MateriaDTO;
-import ar.com.santalucia.dominio.dto.MesaAltaDTO;
-import ar.com.santalucia.dominio.dto.MesaDTO;
-import ar.com.santalucia.dominio.modelo.academico.ActaVolanteExamenes;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Area;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
 import ar.com.santalucia.dominio.modelo.academico.Especialidad;
-import ar.com.santalucia.dominio.modelo.academico.Inscripcion;
-import ar.com.santalucia.dominio.modelo.academico.Llamado;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
 import ar.com.santalucia.dominio.modelo.academico.MateriaHist;
 import ar.com.santalucia.dominio.modelo.academico.Mesa;
-import ar.com.santalucia.dominio.modelo.academico.MesaExamenHist;
-import ar.com.santalucia.dominio.modelo.desempenio.BoletinInasistencias;
-import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotas;
-import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotasHist;
-import ar.com.santalucia.dominio.modelo.desempenio.MateriaNotasBoletin;
-import ar.com.santalucia.dominio.modelo.desempenio.Nota;
-import ar.com.santalucia.dominio.modelo.desempenio.Trimestre;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 import ar.com.santalucia.excepciones.ValidacionException;
-import ar.com.santalucia.rest.FrontMessage;
 
 /**
  * Clase servicio para gestión académica. Engloba Anio, Curso, alumnos y
@@ -85,7 +44,6 @@ public class ServicioAcademico_R {
 	private GestorMateria gMateria;
 	private GestorArea gArea;
 	private GestorPersonal gDocente;
-	private GestorLlamado gLlamado;
 	private GestorMesa gMesa;
 	private GestorMateriaHist gMateriaHistorica;
 	private GestorEspecialidad gEspecialidad;
@@ -97,7 +55,6 @@ public class ServicioAcademico_R {
 			gMateria = new GestorMateria();
 			gArea = new GestorArea();
 			gDocente = new GestorPersonal();
-			gLlamado = new GestorLlamado();
 			gMesa = new GestorMesa();
 			gMateriaHistorica = new GestorMateriaHist();
 			gEspecialidad = new GestorEspecialidad();
