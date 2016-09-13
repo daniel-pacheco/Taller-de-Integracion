@@ -46,6 +46,7 @@ import ar.com.santalucia.dominio.dto.MateriaAltaDTO;
 import ar.com.santalucia.dominio.dto.MateriaDTO;
 import ar.com.santalucia.dominio.dto.MesaAltaDTO;
 import ar.com.santalucia.dominio.dto.MesaDTO;
+import ar.com.santalucia.dominio.modelo.academico.ActaVolanteExamenes;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Area;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
@@ -259,19 +260,6 @@ public class ServicioAcademico {
 			throw new Exception("No se pudo agregar el curso al AÑO: " + ex.getMessage());
 		}
 	}
- 
-	/*
-	public Boolean modifyCurso(Curso curso) throws Exception {			//CANDIDATO A SUPRIMIR PORQUE addCurso TIENE LÓGICA NECESARIA PARA MODIFICAR
-		// TODO
-		// Usar el gestor de curso y pasar el curso modificado
-		try {
-			gCurso.modify(curso);
-			return true;
-		} catch (Exception ex) {
-			throw new Exception("Servicio: no se pudo modificar el curso. " + ex.getMessage());
-		}
-	}
-	*/
 
 	public Boolean deleteCurso(Curso curso) throws Exception { 	// EN ENDPOINT
 		// TODO
@@ -315,7 +303,7 @@ public class ServicioAcademico {
 			gCurso.modify(curso);
 			Curso cursoGenerico = gCurso.getByDivision('0');
 			Set<Alumno> alumnosCursoGenerico = cursoGenerico.getListaAlumnos();
-			alumnosCursoGenerico.remove(alumno);	 // Puede requerir sobrecarga de de equals()
+			alumnosCursoGenerico.remove(alumno);
 			cursoGenerico.setListaAlumnos(alumnosCursoGenerico);
 			gCurso.modify(cursoGenerico);
 
@@ -538,13 +526,13 @@ public class ServicioAcademico {
 		
 		//VERIFICO PROBLEMAS CON EL NOMBRE DE MATERIA
 		if(materiaAltaDTO.getIdMateria() == null){                                                   // COMPRUEBA SOLO PARA CASOS DE ALTA NUEVA
-			if(existeMateriaEnAnio(materiaAltaDTO.getNombreMateria(), materiaAltaDTO.getIdAnio())){
+			if(existeMateriaEnAnio(false,materiaAltaDTO.getNombreMateria(), materiaAltaDTO.getIdAnio())){
 				vEx.addMensajeError("El nombre de materia ya existe para el año especificado.");
 				throw vEx;
 			}
 		}else{
-			if(!existeMateriaEnAnio(materiaAltaDTO.getNombreMateria(), materiaAltaDTO.getIdAnio())){
-				vEx.addMensajeError("No se puede modificar una materia inexistente.");
+			if(existeMateriaEnAnio(true,materiaAltaDTO.getNombreMateria(), materiaAltaDTO.getIdAnio())){
+				vEx.addMensajeError("El nombre de materia ya existe para el año especificado.");
 				throw vEx;
 			}
 		}
@@ -591,9 +579,10 @@ public class ServicioAcademico {
 	 * @throws ValidacionException
 	 * @throws Exception
 	 */
-	private Boolean existeMateriaEnAnio(String materia, Long idAnio) throws ValidacionException, Exception{
+	private Boolean existeMateriaEnAnio(Boolean modificacion, String materia, Long idAnio) throws ValidacionException, Exception{
 		try{
 			ValidacionException vEx = new ValidacionException();
+			Integer contador = 0;
 			Anio anio = this.getAnio(idAnio);
 			if (anio == null){
 				vEx.addMensajeError("No se pudo encontrar el año.");
@@ -602,10 +591,14 @@ public class ServicioAcademico {
 			Set<Materia> listaMaterias = anio.getListaMaterias(); 
 			for(Materia m : listaMaterias){
 				if (m.getNombre().equals(materia)){
-					return true;
+					contador++;
 				}
 			}
-			return false;
+			if(modificacion == false){
+				return (contador>=1 ? true : false);	
+			}else{
+				return (contador>=2 ? true : false);	
+			}
 		}catch(ValidacionException vEx){
 			throw vEx;
 		}catch(Exception ex){
@@ -1012,6 +1005,53 @@ public class ServicioAcademico {
 		return true;
 	}
 	
+	/**
+	 * Genera una entidad Acta Volante Examen sin detalles, asociada a una mesa 
+	 * @param idLlamado
+	 * @param idMesa
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	public void generarActaVolanteExamen(Long idLlamado, Long idMesa) throws ValidacionException, Exception{
+		try{
+			ValidacionException vEx = new ValidacionException();
+			ActaVolanteExamenes actaVolanteExamen = new ActaVolanteExamenes();
+			Llamado llamado = new Llamado();
+			Mesa mesa = new Mesa();
+			llamado = getLlamado(idLlamado);       //Localizar llamado y validar 
+			if (llamado.getIdLlamado() == null){
+				vEx.addMensajeError("No se pudo encontrar el llamado.");
+				throw vEx;
+			}
+			mesa = gMesa.getById(idMesa);         //Localizar mesa y validar
+			if(mesa.getIdMesa() == null){
+				vEx.addMensajeError("No se pudo encontrar la mesa");
+				throw vEx;
+			}
+			
+			List<Personal> tribunal = new ArrayList<Personal>(); //tomo los docentes del tribunal de la mesa
+			tribunal.addAll(mesa.getIntegrantesTribunal());
+			
+			actaVolanteExamen.setCicloLectivo(Integer.valueOf(ServicioConfiguracion.getParametro("CICLO_LECTIVO").getValor()));
+			actaVolanteExamen.setEstado(true);
+			actaVolanteExamen.setIdLlamado(llamado.getIdLlamado());
+			actaVolanteExamen.setNombreLlamado(llamado.getDescripcion());
+			actaVolanteExamen.setIdMesa(mesa.getIdMesa());
+			actaVolanteExamen.setNombreMesa(mesa.getMateria().getNombre());
+			actaVolanteExamen.setFechaMesa(mesa.getFechaHoraInicio());
+			actaVolanteExamen.setHoraFin(mesa.getFechaHoraFin());
+			actaVolanteExamen.setTribunal1(tribunal.get(0));
+			actaVolanteExamen.setTribunal2(tribunal.get(1));
+			actaVolanteExamen.setTribunal3(tribunal.get(2));
+			actaVolanteExamen.setModificable(true);
+			actaVolanteExamen.setEstado(true);
+		}catch(ValidacionException vEx){
+			throw vEx;
+		}catch(Exception ex){
+			throw new Exception("No se pudo crear el Acta Volante de Examen." + ex.getMessage());
+		}
+	}
+	
 	public Mesa getMesa(Long idMesa) throws Exception { // EN ENDPOINT
 		try {
 			return gMesa.getById(idMesa);
@@ -1304,63 +1344,63 @@ public class ServicioAcademico {
 		
 	}*/
 	
-	public Boolean asignarMesaALlamado(Mesa mesa, Long idLlamado) throws Exception { // EN ENDPOINT
-		//TODO
-		try {
-			Llamado llamado = gLlamado.getById(idLlamado);
-			Set<Mesa> mesas = llamado.getListaMesas();
-			mesas.add(mesa);
-			llamado.setListaMesas(mesas);
-			gLlamado.modify(llamado);
-			return true;
-		} catch (Exception ex) {
-			throw new Exception("No se pudo asignar la MESA al LLAMADO: " + ex.getMessage());
-		}
-	}
+	//public Boolean asignarMesaALlamado(Mesa mesa, Long idLlamado) throws Exception { // EN ENDPOINT
+	//	//TODO
+	//	try {
+	//		Llamado llamado = gLlamado.getById(idLlamado);
+	//		Set<Mesa> mesas = llamado.getListaMesas();
+	//		mesas.add(mesa);
+	//		llamado.setListaMesas(mesas);
+	//		gLlamado.modify(llamado);
+	//		return true;
+	//	} catch (Exception ex) {
+	//		throw new Exception("No se pudo asignar la MESA al LLAMADO: " + ex.getMessage());
+	//	}
+	//}
 	
-	public Boolean desvincularMesaDeLlamado(Mesa mesa, Long idLlamado) throws Exception { // EN ENDPOINT
-		//TODO
-		try {
-			Llamado llamado = gLlamado.getById(idLlamado);
-			Set<Mesa> mesas = llamado.getListaMesas();
-			mesas.remove(mesa);
-			llamado.setListaMesas(mesas);
-			gLlamado.modify(llamado);
-			return true;
-		} catch (Exception ex) {
-			throw new Exception("No se pudo asignar la MESA al LLAMADO: " + ex.getMessage());
-		}
-	}
+	//public Boolean desvincularMesaDeLlamado(Mesa mesa, Long idLlamado) throws Exception { // EN ENDPOINT
+	//	//TODO
+	//	try {
+	//		Llamado llamado = gLlamado.getById(idLlamado);
+	//		Set<Mesa> mesas = llamado.getListaMesas();
+	//		mesas.remove(mesa);
+	//		llamado.setListaMesas(mesas);
+	//		gLlamado.modify(llamado);
+	//		return true;
+	//	} catch (Exception ex) {
+	//		throw new Exception("No se pudo asignar la MESA al LLAMADO: " + ex.getMessage());
+	//	}
+	//}
 	
-	public Boolean asignarDocenteAMesa(Personal personal, Long idMesa) throws Exception { // EN ENDPOINT
-		try {
-			Mesa mesa = gMesa.getById(idMesa);
-			Set<Personal> docentes = mesa.getIntegrantesTribunal();
-			docentes.add(personal);
-			mesa.setIntegrantesTribunal(docentes);
-			gMesa.modify(mesa);
-			return true;
-		} catch (ValidacionException ex) {
-			throw ex;
-		} catch (Exception ex) {
-			throw new Exception("No se pudo asignar el DOCENTE al tribunal de la MESA: " + ex.getMessage());
-		}
-	}
+	//public Boolean asignarDocenteAMesa(Personal personal, Long idMesa) throws Exception { // EN ENDPOINT
+	//	try {
+	//		Mesa mesa = gMesa.getById(idMesa);
+	//		Set<Personal> docentes = mesa.getIntegrantesTribunal();
+	//		docentes.add(personal);
+	//		mesa.setIntegrantesTribunal(docentes);
+	//		gMesa.modify(mesa);
+	//		return true;
+	//	} catch (ValidacionException ex) {
+	//		throw ex;
+	//	} catch (Exception ex) {
+	//		throw new Exception("No se pudo asignar el DOCENTE al tribunal de la MESA: " + ex.getMessage());
+	//	}
+	//}
 	
-	public Boolean desvincularDocenteDeMesa(Personal personal, Long idMesa) throws Exception { // EN ENDPOINT
-		try {
-			Mesa mesa = gMesa.getById(idMesa);
-			Set<Personal> docentes = mesa.getIntegrantesTribunal();
-			docentes.remove(personal);
-			mesa.setIntegrantesTribunal(docentes);
-			gMesa.modify(mesa);
-			return true;
-		} catch (ValidacionException ex) {
-			throw ex;
-		} catch (Exception ex) {
-			throw new Exception("No se pudo desvincular el DOCENTE del tribunal de la MESA: " + ex.getMessage());
-		}
-	}
+	//public Boolean desvincularDocenteDeMesa(Personal personal, Long idMesa) throws Exception { // EN ENDPOINT
+	//	try {
+	//		Mesa mesa = gMesa.getById(idMesa);
+	//		Set<Personal> docentes = mesa.getIntegrantesTribunal();
+	//		docentes.remove(personal);
+	//		mesa.setIntegrantesTribunal(docentes);
+	//		gMesa.modify(mesa);
+	//		return true;
+	//	} catch (ValidacionException ex) {
+	//		throw ex;
+	//	} catch (Exception ex) {
+	//		throw new Exception("No se pudo desvincular el DOCENTE del tribunal de la MESA: " + ex.getMessage());
+	//	}
+	//}
 	
 	public Boolean asignarMateriaAMesa(Materia materia, Long idMesa) throws Exception { // EN ENDPOINT
 		try {

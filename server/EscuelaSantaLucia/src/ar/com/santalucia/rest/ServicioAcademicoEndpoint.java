@@ -1206,7 +1206,7 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 
-	@POST
+	/*@POST
 	@Path("/mes/asign")
 	public Response asignarMesaALlamado(JsonPack jsonPack) {
 		try {
@@ -1274,7 +1274,7 @@ public class ServicioAcademicoEndpoint {
 							FrontMessage.CRITICAL))
 					.build();
 		}
-	}
+	}*/
 	
 	@POST
 	@Path("/mes/asignMat")
