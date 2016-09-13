@@ -634,6 +634,89 @@ public class ServicioLlamadoAcademico {
 		}
 	}
 	
+	//public void ObtenerInscripcionDTO()
+	
+	//public void listarInscripcionesDTO()
+	
+	public Boolean addLlamado(Llamado llamado) throws Exception { // EN ENDPOINT
+		try {
+			ServicioConfiguracion.comprendidoEnPeriodo(llamado.getFechaInicio(), llamado.getFechaFin(),null,null,null);
+			if (llamado.getIdLlamado() == null) {
+				gLlamado.add(llamado);
+			}
+			else {
+				gLlamado.modify(llamado);
+			}
+		} catch (ValidacionException ex) {
+			throw ex;			
+		} catch (Exception ex) {
+			throw new Exception("No se pudo dar de alta el LLAMADO: " + ex.getMessage());
+		}
+		return true;
+	}
+	
+	public Boolean deleteLlamado(Llamado llamado) throws Exception{ // EN ENDPOINT
+		try {
+			gLlamado.delete(llamado);
+		} catch (Exception ex) {
+			throw new Exception("No se pudo eliminar el LLAMADO: " + ex.getMessage());
+		}
+		return true;
+	}
+
+	public Llamado getLlamado(Long idLlamado) throws Exception { // EN ENDPOINT
+		try {
+			return gLlamado.getById(idLlamado);
+		} catch (Exception ex) {
+			throw new Exception("No se pudo obtener el LLAMADO: " + ex.getMessage());
+		}
+	}
+	
+	public Llamado getLlamado(String descLlamado) throws Exception{
+		return getLlamados(new Llamado(null,descLlamado,null,null,null)).get(0);
+	}
+	
+	public ArrayList<Llamado> getLlamados(Llamado example) throws Exception{ // EN ENDPOINT
+		try {
+			return gLlamado.getByExample(example);
+		} catch (Exception ex) {
+			throw new Exception("No se pudo obtener el listado de LLAMADOS: " + ex.getMessage());
+		}
+	}
+	
+	// ---------------------- MÉTODOS AUXILIARES PRIVADOS, PÚBLICOS y PACKAGE ---------------------------------------
+	
+	/**
+	 * Devuelve el código de la siguiente inscripcion.
+	 * @param idLlamado
+	 * @return
+	 */
+	private Integer codigoSiguienteInscripcion(Long idLlamado) throws Exception{
+		try {
+			String sql = new String();
+			sql = "SELECT MAX(INSCRIPCION.CODIGO) AS VALOR FROM INSCRIPCION WHERE IDLLAMADO = " + idLlamado;
+			Session sessAux = null;
+			if ((sessAux == null) || (!sessAux.isOpen())) {
+				sessAux = HibernateUtil.getSessionFactory().openSession();	
+			}
+			if (!sessAux.getTransaction().isActive()) {
+				sessAux.beginTransaction();
+			}
+			SQLQuery consulta = sessAux.createSQLQuery(sql);
+			Integer result = (Integer) consulta.uniqueResult();
+			
+			if ( result == null ){
+				return 1;
+			}else{
+				return result + 1;
+			}
+		} catch (Exception ex) {
+			// TODO Auto-generated catch block
+			ex.printStackTrace();
+		}
+		return 0;
+	}
+	
 	/**
 	 * Encuentra el llamado vigente a la fecha según la fecha actual del servidor.
 	 * @return
@@ -702,36 +785,6 @@ public class ServicioLlamadoAcademico {
 			throw ex;
 		}
 		return null;
-	} 
-	/**
-	 * Devuelve el código de la siguiente inscripcion.
-	 * @param idLlamado
-	 * @return
-	 */
-	private Integer codigoSiguienteInscripcion(Long idLlamado) throws Exception{
-		try {
-			String sql = new String();
-			sql = "SELECT MAX(INSCRIPCION.CODIGO) AS VALOR FROM INSCRIPCION WHERE IDLLAMADO = " + idLlamado;
-			Session sessAux = null;
-			if ((sessAux == null) || (!sessAux.isOpen())) {
-				sessAux = HibernateUtil.getSessionFactory().openSession();	
-			}
-			if (!sessAux.getTransaction().isActive()) {
-				sessAux.beginTransaction();
-			}
-			SQLQuery consulta = sessAux.createSQLQuery(sql);
-			Integer result = (Integer) consulta.uniqueResult();
-			
-			if ( result == null ){
-				return 1;
-			}else{
-				return result + 1;
-			}
-		} catch (Exception ex) {
-			// TODO Auto-generated catch block
-			ex.printStackTrace();
-		}
-		return 0;
 	}
 	
 	/**
@@ -752,49 +805,4 @@ public class ServicioLlamadoAcademico {
 		return (ArrayList<MesaExamenHist>) gMEHist.getByExample(ejemplo);
 	}
 	
-	public Boolean addLlamado(Llamado llamado) throws Exception { // EN ENDPOINT
-		try {
-			ServicioConfiguracion.comprendidoEnPeriodo(llamado.getFechaInicio(), llamado.getFechaFin(),null,null,null);
-			if (llamado.getIdLlamado() == null) {
-				gLlamado.add(llamado);
-			}
-			else {
-				gLlamado.modify(llamado);
-			}
-		} catch (ValidacionException ex) {
-			throw ex;			
-		} catch (Exception ex) {
-			throw new Exception("No se pudo dar de alta el LLAMADO: " + ex.getMessage());
-		}
-		return true;
-	}
-	
-	public Boolean deleteLlamado(Llamado llamado) throws Exception{ // EN ENDPOINT
-		try {
-			gLlamado.delete(llamado);
-		} catch (Exception ex) {
-			throw new Exception("No se pudo eliminar el LLAMADO: " + ex.getMessage());
-		}
-		return true;
-	}
-
-	public Llamado getLlamado(Long idLlamado) throws Exception { // EN ENDPOINT
-		try {
-			return gLlamado.getById(idLlamado);
-		} catch (Exception ex) {
-			throw new Exception("No se pudo obtener el LLAMADO: " + ex.getMessage());
-		}
-	}
-	
-	public Llamado getLlamado(String descLlamado) throws Exception{
-		return getLlamados(new Llamado(null,descLlamado,null,null,null)).get(0);
-	}
-	
-	public ArrayList<Llamado> getLlamados(Llamado example) throws Exception{ // EN ENDPOINT
-		try {
-			return gLlamado.getByExample(example);
-		} catch (Exception ex) {
-			throw new Exception("No se pudo obtener el listado de LLAMADOS: " + ex.getMessage());
-		}
-	}
 }

@@ -232,15 +232,7 @@ public class ServicioAcademico {
 	}
 	
 
-	public Boolean addCurso(Curso curso, Long idAnio) throws Exception { // CANDIDATO A SUPRIMIR
-		// TODO
-		// 1 - Obtener el objeto año
-		// 2 - Extraemos el listado de curso
-		// 3 - Crear el objeto curso nuevo
-		// 4 - Agregar el curso al listado
-		// 5 - Modificar el año con el nuevo listado de curso
-		// 6 - LLamar a modify del gestor del año con el año que se le agregó el
-		// curso
+	public Boolean addCurso(Curso curso, Long idAnio) throws Exception { 
 		try {
 			if (curso.getIdCurso() == null) {
 				Anio anio = new Anio();

@@ -34,8 +34,11 @@ import ar.com.santalucia.dominio.modelo.academico.Mesa;
 import ar.com.santalucia.dominio.modelo.sistema.login.Login;
 import ar.com.santalucia.excepciones.ValidacionException;
 import ar.com.santalucia.servicio.ServicioAcademico;
+import ar.com.santalucia.servicio.ServicioAcademico_R;
+import ar.com.santalucia.servicio.ServicioAlumnadoAcademico;
 import ar.com.santalucia.servicio.ServicioAlumno;
 import ar.com.santalucia.servicio.ServicioDocente;
+import ar.com.santalucia.servicio.ServicioLlamadoAcademico;
 import ar.com.santalucia.servicio.ServicioLogin;
 
 /**
@@ -62,7 +65,9 @@ import ar.com.santalucia.servicio.ServicioLogin;
 @Consumes("application/json")
 public class ServicioAcademicoEndpoint {
 
-	private ServicioAcademico servicioAcademico = null;
+	private ServicioAcademico_R servicioAcademico = null;
+	private ServicioAlumnadoAcademico servicioAlumnadoAcademico = null;
+	private ServicioLlamadoAcademico servicioLlamadoAcademico = null;
 	
 	/**
 	 * Instancia un objeto ServicioAcademico si no existe
@@ -71,7 +76,9 @@ public class ServicioAcademicoEndpoint {
 	private void setInstance() throws Exception {
 		if (servicioAcademico == null) {
 			try {
-				servicioAcademico = new ServicioAcademico();
+				servicioAcademico = new ServicioAcademico_R();
+				servicioAlumnadoAcademico = new ServicioAlumnadoAcademico();
+				servicioLlamadoAcademico = new ServicioLlamadoAcademico();
 			} catch (Exception ex) {
 				throw ex;
 			}
@@ -694,7 +701,7 @@ public class ServicioAcademicoEndpoint {
 			setInstance();
 			ServicioAlumno servicioAlumno = new ServicioAlumno();
 			//[0]idAlumno [1]idCurso
-			boolean resultado = servicioAcademico.asignarAlumnoACurso(servicioAlumno.getUsuario(jsonPack.getValues().elementAt(0)), jsonPack.getValues().elementAt(1));
+			boolean resultado = servicioAlumnadoAcademico.asignarAlumnoACurso(servicioAlumno.getUsuario(jsonPack.getValues().elementAt(0)), jsonPack.getValues().elementAt(1));
 			return Response.ok(resultado).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
@@ -717,7 +724,7 @@ public class ServicioAcademicoEndpoint {
 		try {
 			setInstance();
 			ServicioAlumno servicioAlumno = new ServicioAlumno();
-			boolean resultado = servicioAcademico.desvincularAlumnoDeCurso(servicioAlumno.getUsuario(jsonPack.getValues().elementAt(0)), jsonPack.getValues().elementAt(1));
+			boolean resultado = servicioAlumnadoAcademico.desvincularAlumnoDeCurso(servicioAlumno.getUsuario(jsonPack.getValues().elementAt(0)), jsonPack.getValues().elementAt(1));
 			return Response.ok(resultado).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
@@ -835,7 +842,7 @@ public class ServicioAcademicoEndpoint {
 		try {
 			setInstance();
 			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
-			servicioAcademico.addLlamado(llamado);
+			servicioLlamadoAcademico.addLlamado(llamado);
 			if (nuevoToken == null) {
 				return Response.ok(llamado.getIdLlamado()).build();
 			} else {
@@ -865,7 +872,7 @@ public class ServicioAcademicoEndpoint {
 		
 		try {
 			setInstance();
-			return Response.ok(servicioAcademico.deleteLlamado(servicioAcademico.getLlamado(idLlamado))).build();
+			return Response.ok(servicioLlamadoAcademico.deleteLlamado(servicioLlamadoAcademico.getLlamado(idLlamado))).build();
 		} catch (Exception ex) {
 			// TODO: volcar 'ex' en LOG y/o mostrar por consola
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -881,7 +888,7 @@ public class ServicioAcademicoEndpoint {
 		Llamado llamado = new Llamado();
 		try {
 			setInstance();
-			llamado = servicioAcademico.getLlamado(descLlamado);
+			llamado = servicioLlamadoAcademico.getLlamado(descLlamado);
 			if (llamado == null) {
 				return Response.status(Status.NOT_FOUND)
 						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
@@ -903,7 +910,7 @@ public class ServicioAcademicoEndpoint {
 		Llamado llamado = new Llamado();
 		try {
 			setInstance();
-			llamado = servicioAcademico.getLlamado(idL);
+			llamado = servicioLlamadoAcademico.getLlamado(idL);
 			if (llamado == null) {
 				return Response.status(Status.NOT_FOUND)
 						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
@@ -925,7 +932,7 @@ public class ServicioAcademicoEndpoint {
 		ArrayList<Llamado> llamados = new ArrayList<Llamado>();
 		try {
 			setInstance();
-			llamados = servicioAcademico.getLlamados(new Llamado());
+			llamados = servicioLlamadoAcademico.getLlamados(new Llamado());
 			if (llamados.size() == 0) {
 				return Response.status(Status.NOT_FOUND)
 						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
@@ -959,7 +966,7 @@ public class ServicioAcademicoEndpoint {
 		try {
 			setInstance();
 			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
-			previas = servicioAcademico.getPreviasDesaprobadas(doc);
+			previas = servicioLlamadoAcademico.getPreviasDesaprobadas(doc);
 			if (previas.size() == 0) {
 				return Response.status(Status.NOT_FOUND)
 						.entity(new FrontMessage("No se encontraron previas", FrontMessage.INFO))
@@ -999,7 +1006,7 @@ public class ServicioAcademicoEndpoint {
 		try {
 			setInstance();
 			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
-			previas = servicioAcademico.getPrevias(doc);
+			previas = servicioLlamadoAcademico.getPrevias(doc);
 			if (previas.size() == 0) {
 				return Response.status(Status.NOT_FOUND)
 						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
@@ -1039,9 +1046,9 @@ public class ServicioAcademicoEndpoint {
 			setInstance();
 			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			if (nuevoToken == null) {
-				return Response.ok(servicioAcademico.addMesa(mesaAltaDTO)).build();
+				return Response.ok(servicioLlamadoAcademico.addMesa(mesaAltaDTO)).build();
 			} else {
-				return Response.ok(servicioAcademico.addMesa(mesaAltaDTO)).header("auth0", nuevoToken).build();
+				return Response.ok(servicioLlamadoAcademico.addMesa(mesaAltaDTO)).header("auth0", nuevoToken).build();
 			}
 		} catch (ValidacionException vEx) {
 			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
@@ -1281,7 +1288,7 @@ public class ServicioAcademicoEndpoint {
 	public Response asignarMateriaAMesa(JsonPack jsonPack) {
 		try {
 			setInstance();
-			return Response.ok(servicioAcademico.asignarMateriaAMesa(
+			return Response.ok(servicioLlamadoAcademico.asignarMateriaAMesa(
 					servicioAcademico.getMateria(jsonPack.getValues().elementAt(0)), 
 					jsonPack.getValues().elementAt(1))).build();
 		} catch (Exception ex) {
@@ -1298,7 +1305,7 @@ public class ServicioAcademicoEndpoint {
 	public Response desvincularMateriaDeMesa(JsonPack jsonPack) {
 		try {
 			setInstance();
-			return Response.ok(servicioAcademico.desvincularMateriaDeMesa(
+			return Response.ok(servicioLlamadoAcademico.desvincularMateriaDeMesa(
 					servicioAcademico.getMateria(jsonPack.getValues().elementAt(0)), 
 					jsonPack.getValues().elementAt(1))).build();
 		} catch (Exception ex) {
@@ -1333,7 +1340,7 @@ public class ServicioAcademicoEndpoint {
 			} catch (ValidacionException vEx) {
 				return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 			}
-			exito = servicioAcademico.addInscripcion(elementos[0],elementos[1]);
+			exito = servicioLlamadoAcademico.addInscripcion(elementos[0],elementos[1]);
 			if (nuevoToken == null) {
 				return Response.ok(exito).build();
 			} else {
@@ -1369,7 +1376,7 @@ public class ServicioAcademicoEndpoint {
 			} catch (ValidacionException vEx) {
 				return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 			}
-			exito = servicioAcademico.deleteInscripcion(elementos[0],elementos[1]);
+			exito = servicioLlamadoAcademico.deleteInscripcion(elementos[0],elementos[1]);
 			if (nuevoToken == null) {
 				return Response.ok(exito).build();
 			} else {
@@ -1405,9 +1412,9 @@ public class ServicioAcademicoEndpoint {
 				return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
 			}
 			if (nuevoToken == null) {
-				return Response.ok(servicioAcademico.listarInscribiblesV2(dniAlumno)).build();
+				return Response.ok(servicioLlamadoAcademico.listarInscribiblesV2(dniAlumno)).build();
 			} else {
-				return Response.ok(servicioAcademico.listarInscribiblesV2(dniAlumno)).header("auth0", nuevoToken).build();
+				return Response.ok(servicioLlamadoAcademico.listarInscribiblesV2(dniAlumno)).header("auth0", nuevoToken).build();
 			}
 		} catch(ValidacionException ex) {
 			return Response.status(Status.CONFLICT).entity(new FrontMessage(ex.getMensajesError().get(0),FrontMessage.INFO)).build();
@@ -1559,9 +1566,9 @@ public class ServicioAcademicoEndpoint {
 			setInstance();
 			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			if (nuevoToken == null) {
-				return Response.ok(servicioAcademico.listarLlamados()).build();
+				return Response.ok(servicioLlamadoAcademico.listarLlamados()).build();
 			} else {
-				return Response.ok(servicioAcademico.listarLlamados()).header("auth0", nuevoToken).build();
+				return Response.ok(servicioLlamadoAcademico.listarLlamados()).header("auth0", nuevoToken).build();
 			}
 		} catch (ValidacionException vEx) {
 			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();

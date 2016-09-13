@@ -214,24 +214,6 @@ public class ServicioAlumnadoAcademico {
 		}
 	}
 
-	private void inicializarBoletinNotas(BoletinNotas boletinNotas, Set<Materia> materias) throws Exception {
-		for (int i = 0; i < 3; i++) {
-			for (Materia m : materias) {
-				Nota n = new Nota(null, "", Calendar.getInstance().getTime(), 0F, m, Nota.NOTA_FINAL_TRIMESTRAL);
-				gNota.add(n);
-				Trimestre t = new Trimestre(null, i+1, null, null, n, m);
-				gTrimestre.add(t);
-				boletinNotas.getListaTrimestres().add(t);
-				Nota nfd = new Nota(null,null,Calendar.getInstance().getTime(),0F,m,Nota.DICIEMBRE); 
-				gNota.add(nfd);
-				Nota nfm = new Nota(null,null,Calendar.getInstance().getTime(),0F,m,Nota.MARZO); 
-				gNota.add(nfm);
-				boletinNotas.getListaNotasExamen().add(nfd);
-				boletinNotas.getListaNotasExamen().add(nfm);
-			} 
-		}
-	}
-
 	public Boolean desvincularAlumnoDeCurso(Alumno alumno, Long idCurso) throws Exception { // EN ENDPOINT
 		try{
 			Curso cursoGenerico = gCurso.getByDivision('0');
@@ -262,6 +244,24 @@ public class ServicioAlumnadoAcademico {
 	
 	
 	// ---------------------- MÉTODOS AUXILIARES PRIVADOS, PÚBLICOS y PACKAGE ---------------------------------------
+	
+	private void inicializarBoletinNotas(BoletinNotas boletinNotas, Set<Materia> materias) throws Exception {
+		for (int i = 0; i < 3; i++) {
+			for (Materia m : materias) {
+				Nota n = new Nota(null, "", Calendar.getInstance().getTime(), 0F, m, Nota.NOTA_FINAL_TRIMESTRAL);
+				gNota.add(n);
+				Trimestre t = new Trimestre(null, i+1, null, null, n, m);
+				gTrimestre.add(t);
+				boletinNotas.getListaTrimestres().add(t);
+				Nota nfd = new Nota(null,null,Calendar.getInstance().getTime(),0F,m,Nota.DICIEMBRE); 
+				gNota.add(nfd);
+				Nota nfm = new Nota(null,null,Calendar.getInstance().getTime(),0F,m,Nota.MARZO); 
+				gNota.add(nfm);
+				boletinNotas.getListaNotasExamen().add(nfd);
+				boletinNotas.getListaNotasExamen().add(nfm);
+			} 
+		}
+	}
 	
 	private Anio cursoPerteneceAnio(Curso curso) throws Exception {
 		List<Anio> listaAnio = new ArrayList<Anio>();

@@ -135,8 +135,7 @@ public class ServicioAcademico_R {
 			throw new Exception("No se pudo obtener la lista de AÑOS: " + ex.getMessage());
 		}
 	}
-	
-	
+		
 	public ArrayList<AnioDTO> getAniosDTO() throws Exception {
 		try {
 			ArrayList<Anio> listaAniosPersis = gAnio.getByExample(new Anio());
@@ -170,15 +169,7 @@ public class ServicioAcademico_R {
 	}
 	
 
-	public Boolean addCurso(Curso curso, Long idAnio) throws Exception { // CANDIDATO A SUPRIMIR
-		// TODO
-		// 1 - Obtener el objeto año
-		// 2 - Extraemos el listado de curso
-		// 3 - Crear el objeto curso nuevo
-		// 4 - Agregar el curso al listado
-		// 5 - Modificar el año con el nuevo listado de curso
-		// 6 - LLamar a modify del gestor del año con el año que se le agregó el
-		// curso
+	public Boolean addCurso(Curso curso, Long idAnio) throws Exception { 
 		try {
 			if (curso.getIdCurso() == null) {
 				Anio anio = new Anio();
@@ -290,41 +281,6 @@ public class ServicioAcademico_R {
 			sAlumnadoAcademico.actualizarBoletinNotas(materiaAux);
 			return true;
 		} 
-	}
-	
-	/**
-	 * Determina si existe el nombre de una materia o no en un Año.
-	 * @param materia
-	 * @param idAnio
-	 * @return
-	 * @throws ValidacionException
-	 * @throws Exception
-	 */
-	private Boolean existeMateriaEnAnio(Boolean modificacion, String materia, Long idAnio) throws ValidacionException, Exception{
-		try{
-			ValidacionException vEx = new ValidacionException();
-			Integer contador = 0;
-			Anio anio = this.getAnio(idAnio);
-			if (anio == null){
-				vEx.addMensajeError("No se pudo encontrar el año.");
-				throw vEx;
-			}
-			Set<Materia> listaMaterias = anio.getListaMaterias(); 
-			for(Materia m : listaMaterias){
-				if (m.getNombre().equals(materia)){
-					contador++;
-				}
-			}
-			if(modificacion == false){
-				return (contador>=1 ? true : false);	
-			}else{
-				return (contador>=2 ? true : false);	
-			}
-		}catch(ValidacionException vEx){
-			throw vEx;
-		}catch(Exception ex){
-			throw ex;
-		}
 	}
 	
 	public Boolean deleteMateria(Materia materia) throws Exception { // EN ENDPOINT
@@ -564,35 +520,6 @@ public class ServicioAcademico_R {
 		}
 	}
 
-	
-	/**
-	 * Verifica si una especialidad está siendo ocupada por algún año.
-	 * @param especialidad
-	 * @throws Exception
-	 * @throws ValidacionException
-	 */
-	private void especialidadOcupada(Especialidad especialidad) throws Exception, ValidacionException{
-		try{
-			ValidacionException vEx = new ValidacionException();
-			List<Anio> listadoAnio = gAnio.getByExample(new Anio(null,null,null,null,null,null,null,null,true));
-			if(listadoAnio!= null && listadoAnio.size() > 0){
-				for (Anio a : listadoAnio){
-					if(a.getEspecialidad().equals(especialidad)){
-						vEx.addMensajeError(a.getNombre());
-					}
-				}
-			}
-			if(vEx.getMensajesError().size() > 0){
-				throw vEx;
-			}
-		}catch(ValidacionException vEx){
-			throw vEx;
-		}catch(Exception ex){
-			throw ex;
-		}
-	}
-	
-	
 	//SUPRIMIR ? 12-09-2016
 	public Boolean addMesa(Mesa mesa) throws Exception{ // EN ENDPOINT
 		try {
@@ -633,10 +560,7 @@ public class ServicioAcademico_R {
 		}
 		return true;
 	}
-	
-	
-	
-	
+
 	// ##### MÉTODOS AUXILIARES #####
 	
 	/**
@@ -717,8 +641,6 @@ public class ServicioAcademico_R {
 		return anioAux;
 	}
 	
-	
-	
 	private Long materiaPerteneceAnio(Materia materia) throws Exception{
 		// Devolver el año al que pertenece la materia
 		// Obtener los años activo
@@ -794,12 +716,70 @@ public class ServicioAcademico_R {
 		return 0;
 	}
 	
-	//public void ObtenerInscripcionDTO()
-	
-	//public void listarInscripcionesDTO()
-	
 	public void closeSession() throws Exception { 
 		gAnio.closeSession();
+	}
+	
+	/**
+	 * Determina si existe el nombre de una materia o no en un Año.
+	 * @param materia
+	 * @param idAnio
+	 * @return
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	private Boolean existeMateriaEnAnio(Boolean modificacion, String materia, Long idAnio) throws ValidacionException, Exception{
+		try{
+			ValidacionException vEx = new ValidacionException();
+			Integer contador = 0;
+			Anio anio = this.getAnio(idAnio);
+			if (anio == null){
+				vEx.addMensajeError("No se pudo encontrar el año.");
+				throw vEx;
+			}
+			Set<Materia> listaMaterias = anio.getListaMaterias(); 
+			for(Materia m : listaMaterias){
+				if (m.getNombre().equals(materia)){
+					contador++;
+				}
+			}
+			if(modificacion == false){
+				return (contador>=1 ? true : false);	
+			}else{
+				return (contador>=2 ? true : false);	
+			}
+		}catch(ValidacionException vEx){
+			throw vEx;
+		}catch(Exception ex){
+			throw ex;
+		}
+	}
+	
+	/**
+	 * Verifica si una especialidad está siendo ocupada por algún año.
+	 * @param especialidad
+	 * @throws Exception
+	 * @throws ValidacionException
+	 */
+	private void especialidadOcupada(Especialidad especialidad) throws Exception, ValidacionException{
+		try{
+			ValidacionException vEx = new ValidacionException();
+			List<Anio> listadoAnio = gAnio.getByExample(new Anio(null,null,null,null,null,null,null,null,true));
+			if(listadoAnio!= null && listadoAnio.size() > 0){
+				for (Anio a : listadoAnio){
+					if(a.getEspecialidad().equals(especialidad)){
+						vEx.addMensajeError(a.getNombre());
+					}
+				}
+			}
+			if(vEx.getMensajesError().size() > 0){
+				throw vEx;
+			}
+		}catch(ValidacionException vEx){
+			throw vEx;
+		}catch(Exception ex){
+			throw ex;
+		}
 	}
 	
 }
