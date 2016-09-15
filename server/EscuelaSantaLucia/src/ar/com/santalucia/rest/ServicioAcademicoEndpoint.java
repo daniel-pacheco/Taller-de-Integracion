@@ -34,7 +34,6 @@ import ar.com.santalucia.dominio.modelo.academico.Mesa;
 import ar.com.santalucia.dominio.modelo.sistema.login.Login;
 import ar.com.santalucia.excepciones.ValidacionException;
 import ar.com.santalucia.servicio.ServicioAcademico;
-import ar.com.santalucia.servicio.ServicioAcademico_R;
 import ar.com.santalucia.servicio.ServicioAlumnadoAcademico;
 import ar.com.santalucia.servicio.ServicioAlumno;
 import ar.com.santalucia.servicio.ServicioDocente;
@@ -65,7 +64,7 @@ import ar.com.santalucia.servicio.ServicioLogin;
 @Consumes("application/json")
 public class ServicioAcademicoEndpoint {
 
-	private ServicioAcademico_R servicioAcademico = null;
+	private ServicioAcademico servicioAcademico = null;
 	private ServicioAlumnadoAcademico servicioAlumnadoAcademico = null;
 	private ServicioLlamadoAcademico servicioLlamadoAcademico = null;
 	
@@ -76,7 +75,7 @@ public class ServicioAcademicoEndpoint {
 	private void setInstance() throws Exception {
 		if (servicioAcademico == null) {
 			try {
-				servicioAcademico = new ServicioAcademico_R();
+				servicioAcademico = new ServicioAcademico();
 				servicioAlumnadoAcademico = new ServicioAlumnadoAcademico();
 				servicioLlamadoAcademico = new ServicioLlamadoAcademico();
 			} catch (Exception ex) {

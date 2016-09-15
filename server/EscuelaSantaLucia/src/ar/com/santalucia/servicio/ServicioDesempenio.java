@@ -840,7 +840,7 @@ public class ServicioDesempenio {
 			}
 			Set<Alumno> listaAlumnosCurso = cursoBuscar.getListaAlumnos();
 			ListaPasajeAlumnosDTO listaPasajeAlumnosDTO = new ListaPasajeAlumnosDTO();
-			ServicioAcademico sAcad = new ServicioAcademico();
+			ServicioLlamadoAcademico sAcad = new ServicioLlamadoAcademico();
 			for (Alumno a : listaAlumnosCurso) {
 				PasajeAlumnosDTO pasajeAlumnoDTO = new PasajeAlumnosDTO();
 				pasajeAlumnoDTO.setIdUsuario(a.getIdUsuario());

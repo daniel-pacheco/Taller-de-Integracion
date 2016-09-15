@@ -233,6 +233,7 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 			// Obtenemos la entidad anio con un getbyexample
 			// Recorremos los curso en busca del id de curso (lo hago coincidir con el nombre)
 			// obtenemos el id y llamamo a desvinbcularalumnodecurso
+			ServicioAlumnadoAcademico sAlumnadoAcademico = new ServicioAlumnadoAcademico();
 			ServicioAcademico sAcademico = new ServicioAcademico();
 			Curso curso = new Curso();
 			AlumnoDTO aux = getAlumnoByDniMin(usuario.getNroDocumento());
@@ -249,7 +250,7 @@ public class ServicioAlumno extends ServicioUsuario<Alumno>  {
 					}
 				}
 				if (!curso.getDivision().equals(null) ){
-					sAcademico.desvincularAlumnoDeCurso(usuario, curso.getIdCurso());
+					sAlumnadoAcademico.desvincularAlumnoDeCurso(usuario, curso.getIdCurso());
 				}else{
 					throw new Exception("No se encontró el curso para desvincular al alumno " +usuario.getNroDocumento());
 				}
