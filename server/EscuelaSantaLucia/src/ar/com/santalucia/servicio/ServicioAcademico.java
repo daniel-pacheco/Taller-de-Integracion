@@ -124,9 +124,9 @@ public class ServicioAcademico {
 		}
 	}
 
-	public List<Anio> list() throws Exception{				// EN ENDPOINT
+	/*public List<Anio> list() throws Exception{				// PARA BORRAR
 		return getAnios(new Anio());
-	} 
+	} */
 	
 	public List<Anio> getAnios(Anio example) throws Exception { // EN ENDPOINT
 		try {
@@ -521,7 +521,7 @@ public class ServicioAcademico {
 	}
 
 	//SUPRIMIR ? 12-09-2016
-	public Boolean addMesa(Mesa mesa) throws Exception{ // EN ENDPOINT
+	/*public Boolean addMesa(Mesa mesa) throws Exception{ // EN ENDPOINT
 		try {
 			if (mesa.getIdMesa() == null) {
 				gMesa.add(mesa);
@@ -534,7 +534,7 @@ public class ServicioAcademico {
 			throw new Exception("No se pudo dar de alta la MESA: " + ex.getMessage());
 		}
 		return true;
-	}
+	}*/
 	
 	public Mesa getMesa(Long idMesa) throws Exception { // EN ENDPOINT
 		try {
@@ -542,7 +542,7 @@ public class ServicioAcademico {
 		} catch (Exception ex) {
 			throw new Exception("No se pudo obtner la MESA: " + ex.getMessage());
 		}
-	}
+	}/*
 	
 	public List<Mesa> getMesas(Mesa example) throws Exception{ // EN ENDPOINT
 		try {
@@ -550,7 +550,7 @@ public class ServicioAcademico {
 		} catch (Exception ex) {
 			throw new Exception("No se pudo obtner las MESAS: " + ex.getMessage());
 		}
-	}
+	}*/
 	
 	public Boolean deleteMesa(Mesa mesa) throws Exception { // EN ENDPOINT
 		try {
@@ -645,8 +645,7 @@ public class ServicioAcademico {
 		// Devolver el año al que pertenece la materia
 		// Obtener los años activo
 		// Eecorrer las materias y devolver el id de año (si se encuentra)
-		List<Anio>listaAnio = new ArrayList<Anio>();
-		List<Materia> listaMateria = new ArrayList<Materia>(); 
+		List<Anio>listaAnio = new ArrayList<Anio>(); 
 		listaAnio = gAnio.getByExample(new Anio(null,null,null,null,null,null, null, null, true));
 		for(Anio a: listaAnio){
 			if(a.getListaMaterias().contains(materia)){
@@ -654,18 +653,6 @@ public class ServicioAcademico {
 			}
 		}
 		return 0L; // DEVUELVE 0 SI LA MATERIA NO PERTENECE A UN ANIO
-	}
-	
-	private Anio cursoPerteneceAnio(Curso curso) throws Exception {
-		List<Anio> listaAnio = new ArrayList<Anio>();
-		List<Curso> listaCurso = new ArrayList<Curso>(); 
-		listaAnio = gAnio.getByExample(new Anio(null,null,null,null,null,null, null, null, true));
-		for (Anio a: listaAnio) {
-			if(a.getListaCursos().contains(curso)){
-				return a;
-			}
-		}
-		return null;
 	}
 	
 	/**

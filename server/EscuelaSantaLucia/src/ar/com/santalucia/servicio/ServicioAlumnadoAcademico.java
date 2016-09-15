@@ -265,7 +265,6 @@ public class ServicioAlumnadoAcademico {
 	
 	private Anio cursoPerteneceAnio(Curso curso) throws Exception {
 		List<Anio> listaAnio = new ArrayList<Anio>();
-		List<Curso> listaCurso = new ArrayList<Curso>(); 
 		listaAnio = gAnio.getByExample(new Anio(null,null,null,null,null,null, null, null, true));
 		for (Anio a: listaAnio) {
 			if(a.getListaCursos().contains(curso)){
