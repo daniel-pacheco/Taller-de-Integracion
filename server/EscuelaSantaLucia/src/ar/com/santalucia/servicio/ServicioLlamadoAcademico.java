@@ -72,7 +72,12 @@ public class ServicioLlamadoAcademico {
 					+ ex.getMessage());
 		}
 	}
-
+ 	/**
+ 	 * Agrega o modifica una mesa. En este método se hacen las llamadas a GenerarActaVolante() y ActualizarActaVolante() para nuevas mesas o actualización respectivamente
+ 	 * @param mesaAltaDTO
+ 	 * @return
+ 	 * @throws Exception
+ 	 */
  	public Boolean addMesa(MesaAltaDTO mesaAltaDTO) throws Exception{
 		try{
 			ValidacionException vEx = new ValidacionException();
@@ -118,6 +123,7 @@ public class ServicioLlamadoAcademico {
 					gMesa.add(mesa);
 					llamado.getListaMesas().add(mesa);
 					gLlamado.modify(llamado);
+					//generarActaVolanteExamen(llamado.getIdLlamado(), mesa.getIdMesa());
 				}else{ 													//Mesa viene para modificar
 					if (mesaPersis == null){
 						vEx.addMensajeError("No se puede modificar una mesa inexistente.");  //Si no existe corto la ejecución
@@ -132,6 +138,7 @@ public class ServicioLlamadoAcademico {
 					mesaPersis.setIntegrantesTribunal(tribunal);
 					mesaPersis.setMateria(materia);
 					gMesa.modify(mesaPersis);
+					//ActualizarActaVolante(llamado, mesaPersis, tribunal);
 				}
 			}else{
 				vEx.addMensajeError("No se encontró el llamado.");
@@ -594,6 +601,8 @@ public class ServicioLlamadoAcademico {
 	
 	//public void listarInscripcionesDTO()
 	
+	
+	
 	public Boolean addLlamado(Llamado llamado) throws Exception { // EN ENDPOINT
 		try {
 			ServicioConfiguracion.comprendidoEnPeriodo(llamado.getFechaInicio(), llamado.getFechaFin(),null,null,null);
@@ -639,8 +648,6 @@ public class ServicioLlamadoAcademico {
 			throw new Exception("No se pudo obtener el listado de LLAMADOS: " + ex.getMessage());
 		}
 	}
-	
-	/*------------------------------- MÉTODOS PRIVADOS Y O AUXILIARES ------------------------------------------*/
 	
 	// ---------------------- MÉTODOS AUXILIARES PRIVADOS, PÚBLICOS y PACKAGE ---------------------------------------
 	
@@ -764,7 +771,7 @@ public class ServicioLlamadoAcademico {
 	}
 	
 	/**
-	 * Genera una entidad Acta Volante Examen sin detalles, asociada a una mesa 
+	 * Genera una entidad Acta Volante Examen sin detalles, asociada a una mesa
 	 * @param idLlamado
 	 * @param idMesa
 	 * @throws ValidacionException
@@ -833,29 +840,45 @@ public class ServicioLlamadoAcademico {
 		}
 	}
 	
-	private void ActualizarActaVolante(Llamado llamado, Mesa mesa, List<Personal> tribunal) throws ValidacionException, Exception{
+	/**
+	 * Actualiza la entidad Acta Volante de Examenes asociada al llamado y mesa solicitada.<br>
+	 * En caso de que el estado del Acta no permita modificacion (modificable = false), se solicitará la creación de un nuevo Acta.
+	 * @param llamado
+	 * @param mesa
+	 * @param tribunal
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	private void ActualizarActaVolante(Llamado llamado, Mesa mesa, Set<Personal> tribunal) throws ValidacionException, Exception{
 		try {
 			ValidacionException vEx = new ValidacionException();
-			ActaVolanteExamenes actaVolanteExamenes = null;
-			actaVolanteExamenes = localizarActaVolanteExamen(llamado.getIdLlamado(), mesa.getIdMesa());
-			if (actaVolanteExamenes == null){
+			ActaVolanteExamenes actaVolanteExamenesPersistente = null;
+			ActaVolanteExamenes actaVolanteExamenes = new ActaVolanteExamenes();
+			List<Personal> tribunalList = new ArrayList<Personal>();
+			tribunalList.addAll(tribunal);
+			actaVolanteExamenesPersistente = localizarActaVolanteExamen(llamado.getIdLlamado(), mesa.getIdMesa());
+			if (actaVolanteExamenesPersistente == null){
 				vEx.addMensajeError("No se encontró el acta volante asociado con el llamado "+llamado.getIdLlamado().toString() +" y la mesa "+mesa.getIdMesa());
 				throw vEx;
 			}
-			actaVolanteExamenes.setCicloLectivo(Integer.valueOf(ServicioConfiguracion.getParametro("CICLO_LECTIVO").getValor()));
-			actaVolanteExamenes.setEstado(true);
-			actaVolanteExamenes.setIdLlamado(llamado.getIdLlamado());
-			actaVolanteExamenes.setNombreLlamado(llamado.getDescripcion());
-			actaVolanteExamenes.setIdMesa(mesa.getIdMesa());
-			actaVolanteExamenes.setNombreMesa(mesa.getMateria().getNombre());
-			actaVolanteExamenes.setFechaMesa(mesa.getFechaHoraInicio());
-			actaVolanteExamenes.setHoraFin(mesa.getFechaHoraFin());
-			actaVolanteExamenes.setTribunal1(tribunal.get(0));
-			actaVolanteExamenes.setTribunal2(tribunal.get(1));
-			actaVolanteExamenes.setTribunal3(tribunal.get(2));
-			actaVolanteExamenes.setModificable(true);
-			actaVolanteExamenes.setEstado(true);
-			gActaVolanteExamenes.modify(actaVolanteExamenes);
+			if (actaVolanteExamenesPersistente.getModificable() == true){
+				actaVolanteExamenes.setCicloLectivo(Integer.valueOf(ServicioConfiguracion.getParametro("CICLO_LECTIVO").getValor()));
+				actaVolanteExamenes.setEstado(true);
+				actaVolanteExamenes.setIdLlamado(llamado.getIdLlamado());
+				actaVolanteExamenes.setNombreLlamado(llamado.getDescripcion());
+				actaVolanteExamenes.setIdMesa(mesa.getIdMesa());
+				actaVolanteExamenes.setNombreMesa(mesa.getMateria().getNombre());
+				actaVolanteExamenes.setFechaMesa(mesa.getFechaHoraInicio());
+				actaVolanteExamenes.setHoraFin(mesa.getFechaHoraFin());
+				actaVolanteExamenes.setTribunal1(tribunalList.get(0));
+				actaVolanteExamenes.setTribunal2(tribunalList.get(1));
+				actaVolanteExamenes.setTribunal3(tribunalList.get(2));
+				actaVolanteExamenes.setModificable(true);
+				actaVolanteExamenes.setEstado(true);
+				gActaVolanteExamenes.modify(actaVolanteExamenes);
+			}else{
+				generarActaVolanteExamen(llamado.getIdLlamado(), mesa.getIdMesa());
+			}	
 		} catch (ValidacionException vEx) {
 			throw vEx;
 		} catch (Exception ex){
