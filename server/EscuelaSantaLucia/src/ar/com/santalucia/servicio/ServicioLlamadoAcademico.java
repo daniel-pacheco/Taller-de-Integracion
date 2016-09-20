@@ -27,6 +27,9 @@ import ar.com.santalucia.dominio.dto.InscripcionConsultaV2DTO;
 import ar.com.santalucia.dominio.dto.InscripcionConsultaV2Detalle;
 import ar.com.santalucia.dominio.dto.LlamadoDTO;
 import ar.com.santalucia.dominio.dto.MateriaDTO;
+import ar.com.santalucia.dominio.dto.MenuActaVolanteDTO;
+import ar.com.santalucia.dominio.dto.MenuActaVolanteLlamadoDTO;
+import ar.com.santalucia.dominio.dto.MenuActaVolanteMesaDTO;
 import ar.com.santalucia.dominio.dto.MesaAltaDTO;
 import ar.com.santalucia.dominio.dto.MesaDTO;
 import ar.com.santalucia.dominio.modelo.academico.ActaVolanteExamenes;
@@ -646,6 +649,42 @@ public class ServicioLlamadoAcademico {
 			return gLlamado.getByExample(example);
 		} catch (Exception ex) {
 			throw new Exception("No se pudo obtener el listado de LLAMADOS: " + ex.getMessage());
+		}
+	}
+	
+	/**
+	 * Devuelve el contenido del menú seleccionable en la ventana de calificación de Mesas.
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	public void devolverListadoMenuActaVolante() throws ValidacionException, Exception{
+		
+		
+	}
+	
+	/**
+	 * Recorre las actas volantes disponibles y devuelve los datos para cargar en el menú seleccionable.  
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	public void obtenerListadoMenuActaVolante() throws ValidacionException, Exception{
+		MenuActaVolanteDTO menuActaVolanteDTO = new MenuActaVolanteDTO();
+		MenuActaVolanteLlamadoDTO menuActaVolanteLlamadoDTO = new MenuActaVolanteLlamadoDTO();
+		List<MenuActaVolanteMesaDTO> menuActaVolanteMesaDTO = new ArrayList<MenuActaVolanteMesaDTO>();
+		Set<Integer> cicloLectivo = new HashSet<Integer>();
+		List<ActaVolanteExamenes> listadoActaVolante = null;
+		listadoActaVolante = gActaVolanteExamenes.getByExample(new ActaVolanteExamenes(null,null,null,null,null,null,null,null,null,null,null,null,null,true,null));
+		
+		for (ActaVolanteExamenes actas : listadoActaVolante){ //Obtengo todos los ciclos lectivos
+			if (cicloLectivo.add(actas.getCicloLectivo())){
+				menuActaVolanteDTO.setCicloLectivo(actas.getCicloLectivo());
+			}
+		}
+		
+		listadoActaVolante = null;
+		Set<String> llamados = new HashSet<String>();
+		for(Integer ciclo : cicloLectivo){
+			listadoActaVolante = gActaVolanteExamenes.getByExample(new ActaVolanteExamenes(null,null,null,null,null,null,null,null,null,null,null,ciclo,null,true,null));
 		}
 	}
 	
