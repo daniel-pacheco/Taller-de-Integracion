@@ -20,6 +20,7 @@ import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinNotas;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinNotasHist;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorInasistencia;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorNota;
+import ar.com.santalucia.aplicacion.gestor.desempenio.GestorRegistroPasajeAlumnos;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorTrimestre;
 import ar.com.santalucia.aplicacion.gestor.sistema.configuracion.GestorParametroConfiguracion;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
@@ -75,6 +76,7 @@ public class ServicioDesempenio {
 	private GestorInasistencia gInasistencia;
 	private GestorBoletinInasistencias gBoletinInasistencias;
 	private GestorParametroConfiguracion gParametroConfiguracion;
+	private GestorRegistroPasajeAlumnos gRegistroPasajeAlumnos;
 	
 	public static String BUSCAR_BOLETIN_NOTAS = "bn";
 	public static String BUSCAR_BOLETIN_INASISTENCIAS = "bi";
@@ -91,6 +93,7 @@ public class ServicioDesempenio {
 			gInasistencia = new GestorInasistencia();
 			gBoletinInasistencias = new GestorBoletinInasistencias();
 			gParametroConfiguracion = new GestorParametroConfiguracion();
+			gRegistroPasajeAlumnos = new GestorRegistroPasajeAlumnos();
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un problema al inicializar el servicio de operaciones básicas: "
 					+ ex.getMessage());
