@@ -36,7 +36,6 @@ import ar.com.santalucia.dominio.dto.ListaPasajeAlumnosDTO;
 import ar.com.santalucia.dominio.dto.MateriaDTO;
 import ar.com.santalucia.dominio.dto.MateriaNotaDTO;
 import ar.com.santalucia.dominio.dto.PasajeAlumnosDTO;
-import ar.com.santalucia.dominio.dto.PasajeEntradaDTO;
 import ar.com.santalucia.dominio.dto.PlanillaNotasBoletinDTO;
 import ar.com.santalucia.dominio.dto.PlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.dto.PlanillaTrimestralDocenteDTO;
@@ -49,6 +48,7 @@ import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotasHist;
 import ar.com.santalucia.dominio.modelo.desempenio.Inasistencia;
 import ar.com.santalucia.dominio.modelo.desempenio.MateriaNotasBoletin;
 import ar.com.santalucia.dominio.modelo.desempenio.Nota;
+import ar.com.santalucia.dominio.modelo.desempenio.RegistroPasajeAlumnos;
 import ar.com.santalucia.dominio.modelo.desempenio.Trimestre;
 import ar.com.santalucia.dominio.modelo.sistema.configuracion.ParametroConfiguracion;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
@@ -799,6 +799,9 @@ public class ServicioDesempenio {
 		}
 	}
 	
+	
+	/*------ <<BEGIN>> PROCESO DEL PASAJE DE ALUMNOS -----------------*/
+	
 	/**
 	 * Devuelve un listado de DTO para la pantalla del pasaje de alumnos, por anio.
 	 * @param anio
@@ -916,27 +919,45 @@ public class ServicioDesempenio {
 	 * @param listado
 	 * @return
 	 */
-	public Boolean ProcesarPromocion(List<PasajeEntradaDTO> pasajeDTOin) throws Exception{
-		try{
+	public Boolean ProcesarPromocion(List<RegistroPasajeAlumnos> pasajeDTOin) throws Exception {
+		try {
 			ServicioAcademico sAcademico = new ServicioAcademico();
+			ServicioAlumnadoAcademico sAlumnado = new ServicioAlumnadoAcademico();
 			List<AnioDTO> todosLosAnios = sAcademico.getAniosDTO();
-		}catch(ValidacionException ex){
+			//this.validarCoherencia(pasajeDTOin);
+			
+			for (RegistroPasajeAlumnos peDTO : pasajeDTOin) {
+				Alumno alumnoObtenido = (Alumno) gAlumno.getById(peDTO.getIdAlumno());
+				BoletinNotas boletinNotasAlumno = (BoletinNotas) this.encontrarBoletinDeAlumno(alumnoObtenido, this.BUSCAR_BOLETIN_NOTAS);
+				// ver si se va a usar el boletin de inasistencias
+				// >> pasar boletín a histórico
+				this.pasarAHistorico(boletinNotasAlumno);
+				// nulleo el boletín porque puede llegar a dar problemas cuando entre al IF
+				boletinNotasAlumno = null;
+//				if (peDTO.getPromociona() == true) {
+//					// >> desvincular alumno de curso y vincularlo al nuevo
+//					sAlumnado.desvincularAlumnoDeCurso(alumnoObtenido, peDTO.getIdCursoActual());
+//					sAlumnado.asignarAlumnoACurso(alumnoObtenido, peDTO.getIdCursoSiguiente());
+//				} else {
+//					Curso cursoDeAlumno = sAcademico.getCurso(peDTO.getIdCursoSiguiente());
+//				}
+				sAlumnado.desvincularAlumnoDeCurso(alumnoObtenido, peDTO.getIdCursoActual());
+				sAlumnado.asignarAlumnoACurso(alumnoObtenido, peDTO.getIdCursoSiguiente());
+			}
+			return true;
+		} catch(ValidacionException ex) {
 			throw ex;
-		}catch(Exception ex){
+		} catch(Exception ex) {
 			throw ex;
 		}
-		
-		
-		
-		return true;
 	}
 	
-	private void ValidarCoherencia(List<PasajeEntradaDTO> pasajeDTOin) throws Exception{
+	private void validarCoherencia(List<RegistroPasajeAlumnos> pasajeDTOin) throws Exception{
 		ServicioAcademico sAcademico = new ServicioAcademico();
 		List<AnioDTO> todosLosAnios = sAcademico.getAniosDTO();
 		Integer ordenActual, ordenSiguiente = 0;
 		try{
-			for(PasajeEntradaDTO p : pasajeDTOin){
+			for(RegistroPasajeAlumnos p : pasajeDTOin){
 				ordenActual = sAcademico.ObtenerOrdenAnio(p.getIdAnioActual());
 				ordenSiguiente = sAcademico.ObtenerOrdenAnioCurso(p.getIdCursoSiguiente());
 				if(true){
@@ -949,6 +970,9 @@ public class ServicioDesempenio {
 			throw ex;
 		}
 	}
+	
+	/*------ <<END>> PROCESO DEL PASAJE DE ALUMNOS -----------------*/
+	
 	
 	/**
 	 * Devuelve una planilla trimestral para uso del docente.

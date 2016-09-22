@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 21/09/2016 19:48:19 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="ar.com.santalucia.dominio.modelo.desempenio.RegistroPasajeAlumnos" table="REGISTROPASAJEALUMNOS">
+        <id name="idRPA" type="java.lang.Long">
+            <column name="IDRPA" />
+            <generator class="identity" />
+        </id>
+        <property name="idAlumno" type="java.lang.Long">
+            <column name="IDALUMNO" />
+        </property>
+        <property name="idAnioActual" type="java.lang.Long">
+            <column name="IDANIOACTUAL" />
+        </property>
+        <property name="idCursoActual" type="java.lang.Long">
+            <column name="IDCURSOACTUAL" />
+        </property>
+        <property name="idCursoSiguiente" type="java.lang.Long">
+            <column name="IDCURSOSIGUIENTE" />
+        </property>
+        <property name="procesado" type="java.lang.Boolean">
+            <column name="PROCESADO" />
+        </property>
+    </class>
+</hibernate-mapping>
