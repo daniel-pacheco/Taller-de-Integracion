@@ -148,7 +148,8 @@ $scope.showModalProfile = function(alumnoDni){
 			controller: 'showProfileAlumnoModalController',
 			inputs: {
 				title: "Perfil",
-				alumno: alumno
+				alumno: alumno,
+				ModalService: ModalService
 			}
 		}).then(function(modal) {
 			modal.element.modal();
@@ -328,7 +329,7 @@ function getAllConfig() {
 
 //-- [Anio/Listado]
 //-- [Anio/Listado] variables
-
+$scope.listAlumnosInasistencia = [];
 // $scope.dropDownSearchOptions = ['Primero', 'Segundo', 'Tercero', 'Cuarto', 'Quinto', 'Sexto', '5to año'];
 $scope.dropDownSearchValue = '';
 
@@ -350,29 +351,73 @@ $scope.searchByDni = undefined;
 
 //-- [Anio/Listado] Form Management
 
-$scope.editarNotas=true;
+$scope.editarNotas = true;
+
+
+var count = 0;
 
 $scope.seleccionarCheckbox = function(alumno) {//al presionar un td de la lista de alumnos pone checkbox en true y muestra boton colocar inasistencias
-	var count = 0;
 
 	if (alumno.selected) {
 		count--;
 		alumno.selected = false;
+		$scope.listAlumnosInasistencia.splice($scope.listAlumnosInasistencia.indexOf(alumno),1);
+		//console.log($scope.listAlumnosInasistencia);
 	}
 	else  {
 		count++;
 		alumno.selected = true;
+		$scope.listAlumnosInasistencia.push(alumno);
+		//console.log($scope.listAlumnosInasistencia);
+
 	}
 	if (count > 0) {
 		$scope.mostrarBtnInasistencias = true;
-	} else $scope.mostrarBtnInasistencias = false
+	} else $scope.mostrarBtnInasistencias = false;
 };
 
 $scope.unCheckAll = function () {
 	angular.forEach($scope.alumnoData, function (item) {
 		item.selected = false;
 	});
+	$scope.listAlumnosInasistencia = [];
 	$scope.mostrarBtnInasistencias = false;
+	count = 0;
+};
+
+$scope.multiplesInasistencias = function (){
+
+	ModalService.showModal({
+		templateUrl: 'scripts/directivo/alumnado/modal/showInasistenciasMultiples.tpl.html',
+		controller: 'showInasistenciasMultiplesModalController',
+		inputs: {
+			title: "Colocar inasistencias",
+			alumnoData: $scope.listAlumnosInasistencia,
+			count: count,
+		}
+	}).then(function(modal) {
+		modal.element.modal();
+		modal.close.then(function(result){
+			if (result.seleccionados > 0) {
+				$scope.mostrarBtnInasistencias = true;
+			} else {
+				$scope.mostrarBtnInasistencias = false;
+				}
+			$scope.listAlumnosInasistencia = result.listAluIna;
+			count = result.count;
+			if (result.guardo) {
+				//llamar al service que pone inasistencias con result.nuevaInasistencia y a la funcion $scope.unCheckAll()
+					var listadoDNIAlumnos = [];
+				    angular.forEach(result.listAluIna, function (item) {
+  						listadoDNIAlumnos.push(item.nroDocumento);
+					});
+				result.nuevaInasistencia.alumnos = listadoDNIAlumnos;
+				console.log(result.nuevaInasistencia);
+				$scope.unCheckAll();
+				spinnerService.hide('searchSpinner');
+			}
+		});
+	});
 };
 
 var clearList = function(){
@@ -400,8 +445,8 @@ function hideListFilter(){
 $scope.predicate = 'nombre';
 $scope.reverse = true;
 $scope.orderDocente = function(predicate) {
-  $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
-  $scope.predicate = predicate;
+	$scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+	$scope.predicate = predicate;
 };
 //-- [Anio/Listado] modals
 
@@ -747,7 +792,7 @@ function orderByMateria(planilla, materiasArrayBool){
 	angular.forEach(planilla, function (item) {
 		item.notas = _.sortBy(item.notas, function(value){return value.materia;});
 	});
-	angular.forEach(planilla[0].notas, function(item){
+	angular.forEach(planilla[0].notas, function (item){
 		materiasArrayBool.push(false);
 	});
 	// console.log(materiasArrayBool);
