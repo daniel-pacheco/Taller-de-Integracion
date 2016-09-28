@@ -34,7 +34,6 @@ import ar.com.santalucia.dominio.modelo.academico.Mesa;
 import ar.com.santalucia.dominio.modelo.sistema.login.Login;
 import ar.com.santalucia.excepciones.ValidacionException;
 import ar.com.santalucia.servicio.ServicioAcademico;
-import ar.com.santalucia.servicio.ServicioAcademico_R;
 import ar.com.santalucia.servicio.ServicioAlumnadoAcademico;
 import ar.com.santalucia.servicio.ServicioAlumno;
 import ar.com.santalucia.servicio.ServicioDocente;
@@ -65,7 +64,7 @@ import ar.com.santalucia.servicio.ServicioLogin;
 @Consumes("application/json")
 public class ServicioAcademicoEndpoint {
 
-	private ServicioAcademico_R servicioAcademico = null;
+	private ServicioAcademico servicioAcademico = null;
 	private ServicioAlumnadoAcademico servicioAlumnadoAcademico = null;
 	private ServicioLlamadoAcademico servicioLlamadoAcademico = null;
 	
@@ -76,7 +75,7 @@ public class ServicioAcademicoEndpoint {
 	private void setInstance() throws Exception {
 		if (servicioAcademico == null) {
 			try {
-				servicioAcademico = new ServicioAcademico_R();
+				servicioAcademico = new ServicioAcademico();
 				servicioAlumnadoAcademico = new ServicioAlumnadoAcademico();
 				servicioLlamadoAcademico = new ServicioLlamadoAcademico();
 			} catch (Exception ex) {
@@ -1061,39 +1060,39 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 	
-	/**
-	 * Rol de acceso: DIRECTIVO
-	 * @param mesa
-	 * @return
-	 */
-	@PUT
-	@Path("/mes/")
-	public Response updateMesa(Mesa mesa,
-			@HeaderParam("rol") final String rolIn,
-			@HeaderParam("auth0") final String token) {
-		if (!rolIn.equals(Login.DIRECTIVO)) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
-		}
-		String nuevoToken = new String();
-		try {
-			setInstance();
-			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
-			servicioAcademico.addMesa(mesa);
-			if (nuevoToken == null) {
-				return Response.ok(mesa.getIdMesa()).build();
-			} else {
-				return Response.ok(mesa.getIdMesa()).header("auth0", nuevoToken).build();
-			}
-		} catch (ValidacionException vEx) {
-			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
-		} catch (Exception ex) {
-			// TODO: volcar 'ex' en LOG y/o mostrar por consola
-			return Response.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
-							FrontMessage.CRITICAL))
-					.build();
-		}
-	}
+//	/**
+//	 * Rol de acceso: DIRECTIVO
+//	 * @param mesa
+//	 * @return
+//	 */
+//	@PUT
+//	@Path("/mes/")
+//	public Response updateMesa(Mesa mesa,
+//			@HeaderParam("rol") final String rolIn,
+//			@HeaderParam("auth0") final String token) {
+//		if (!rolIn.equals(Login.DIRECTIVO)) {
+//			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+//		}
+//		String nuevoToken = new String();
+//		try {
+//			setInstance();
+//			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
+//			servicioAcademico.addMesa(mesa);
+//			if (nuevoToken == null) {
+//				return Response.ok(mesa.getIdMesa()).build();
+//			} else {
+//				return Response.ok(mesa.getIdMesa()).header("auth0", nuevoToken).build();
+//			}
+//		} catch (ValidacionException vEx) {
+//			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+//		} catch (Exception ex) {
+//			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+//			return Response.status(Status.INTERNAL_SERVER_ERROR)
+//					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+//							FrontMessage.CRITICAL))
+//					.build();
+//		}
+//	}
 
 	/**
 	 * Rol de acceso: DIRECTIVO
@@ -1174,44 +1173,44 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 
-	/**
-	 * Rol de acceso: DIRECTIVO 
-	 * @param rolIn
-	 * @param token
-	 * @return
-	 */
-	@GET
-	@Path("/mes/listAll")
-	public Response mesaListAll(@HeaderParam("rol") final String rolIn, @HeaderParam("auth0") final String token) {
-		if (!rolIn.equals(Login.DIRECTIVO)) {
-			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
-		}
-		List<Mesa> mesas = new ArrayList<Mesa>();
-		String nuevoToken = new String();
-		try {
-			setInstance();
-			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
-			mesas = servicioAcademico.getMesas(new Mesa());
-			if (mesas.size() == 0) {
-				return Response.status(Status.NOT_FOUND)
-						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
-						.build();
-			}
-			if (nuevoToken == null) {
-				return Response.ok(mesas).build();
-			} else {
-				return Response.ok(mesas).header("auth0", nuevoToken).build();
-			}
-		} catch (ValidacionException vEx) {
-			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
-		} catch (Exception ex) {
-			// TODO: volcar 'ex' en LOG y/o mostrar por consola
-			return Response.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
-							FrontMessage.CRITICAL))
-					.build();
-		}
-	}
+//	/**
+//	 * Rol de acceso: DIRECTIVO 
+//	 * @param rolIn
+//	 * @param token
+//	 * @return
+//	 */
+//	@GET
+//	@Path("/mes/listAll")
+//	public Response mesaListAll(@HeaderParam("rol") final String rolIn, @HeaderParam("auth0") final String token) {
+//		if (!rolIn.equals(Login.DIRECTIVO)) {
+//			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+//		}
+//		List<Mesa> mesas = new ArrayList<Mesa>();
+//		String nuevoToken = new String();
+//		try {
+//			setInstance();
+//			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
+//			mesas = servicioAcademico.getMesas(new Mesa());
+//			if (mesas.size() == 0) {
+//				return Response.status(Status.NOT_FOUND)
+//						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
+//						.build();
+//			}
+//			if (nuevoToken == null) {
+//				return Response.ok(mesas).build();
+//			} else {
+//				return Response.ok(mesas).header("auth0", nuevoToken).build();
+//			}
+//		} catch (ValidacionException vEx) {
+//			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+//		} catch (Exception ex) {
+//			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+//			return Response.status(Status.INTERNAL_SERVER_ERROR)
+//					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+//							FrontMessage.CRITICAL))
+//					.build();
+//		}
+//	}
 
 	/*@POST
 	@Path("/mes/asign")

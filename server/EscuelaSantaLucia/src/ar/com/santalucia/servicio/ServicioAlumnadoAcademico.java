@@ -85,7 +85,7 @@ public class ServicioAlumnadoAcademico {
 	 * @throws ValidacionException
 	 * @throws Exception
 	 */
-	private void crearBoletinNotas(Curso curso, Alumno alumno) throws ValidacionException, Exception{
+	void crearBoletinNotas(Curso curso, Alumno alumno) throws ValidacionException, Exception{
 		try{
 			Anio anio = this.cursoPerteneceAnio(curso);
 			Set<Materia> materias = anio.getListaMaterias();
@@ -120,7 +120,7 @@ public class ServicioAlumnadoAcademico {
 	 * @throws ValidacionException
 	 * @throws Exception
 	 */
-	private void crearBoletinInasistencias(Curso curso, Alumno alumno) throws ValidacionException, Exception{
+	void crearBoletinInasistencias(Curso curso, Alumno alumno) throws ValidacionException, Exception{
 	try{
 		Anio anio = this.cursoPerteneceAnio(curso);
 		BoletinInasistencias boletinInasistencias = (BoletinInasistencias) ServicioDesempenio
@@ -265,7 +265,6 @@ public class ServicioAlumnadoAcademico {
 	
 	private Anio cursoPerteneceAnio(Curso curso) throws Exception {
 		List<Anio> listaAnio = new ArrayList<Anio>();
-		List<Curso> listaCurso = new ArrayList<Curso>(); 
 		listaAnio = gAnio.getByExample(new Anio(null,null,null,null,null,null, null, null, true));
 		for (Anio a: listaAnio) {
 			if(a.getListaCursos().contains(curso)){

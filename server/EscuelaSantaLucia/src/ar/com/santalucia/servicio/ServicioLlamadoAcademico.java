@@ -12,6 +12,7 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
 import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
+import ar.com.santalucia.aplicacion.gestor.academico.GestorActaVolanteExamenes;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorInscripcion;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorLlamado;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMateria;
@@ -20,15 +21,21 @@ import ar.com.santalucia.aplicacion.gestor.academico.GestorMesaExamenHist;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinNotasHist;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
+import ar.com.santalucia.dominio.dto.ActaVolanteExamenesDTO;
+import ar.com.santalucia.dominio.dto.DetalleActaVolanteDTO;
 import ar.com.santalucia.dominio.dto.DetallePreviaDTO;
 import ar.com.santalucia.dominio.dto.InscripcionConsultaDTO;
 import ar.com.santalucia.dominio.dto.InscripcionConsultaV2DTO;
 import ar.com.santalucia.dominio.dto.InscripcionConsultaV2Detalle;
 import ar.com.santalucia.dominio.dto.LlamadoDTO;
 import ar.com.santalucia.dominio.dto.MateriaDTO;
+import ar.com.santalucia.dominio.dto.MenuActaVolanteDTO;
+import ar.com.santalucia.dominio.dto.MenuActaVolanteLlamadoDTO;
+import ar.com.santalucia.dominio.dto.MenuActaVolanteMesaDTO;
 import ar.com.santalucia.dominio.dto.MesaAltaDTO;
 import ar.com.santalucia.dominio.dto.MesaDTO;
 import ar.com.santalucia.dominio.modelo.academico.ActaVolanteExamenes;
+import ar.com.santalucia.dominio.modelo.academico.DetalleVolante;
 import ar.com.santalucia.dominio.modelo.academico.Inscripcion;
 import ar.com.santalucia.dominio.modelo.academico.Llamado;
 import ar.com.santalucia.dominio.modelo.academico.Materia;
@@ -53,6 +60,7 @@ public class ServicioLlamadoAcademico {
 	private GestorMesaExamenHist gMEHist;
 	private GestorBoletinNotasHist gBoletinHist;
 	private GestorInscripcion gInscripcion;
+	private GestorActaVolanteExamenes gActaVolanteExamenes;
 
  	public ServicioLlamadoAcademico() throws Exception {
 		try {
@@ -64,12 +72,18 @@ public class ServicioLlamadoAcademico {
 			gMEHist = new GestorMesaExamenHist();
 			gBoletinHist = new GestorBoletinNotasHist();
 			gInscripcion = new GestorInscripcion();
+			gActaVolanteExamenes = new GestorActaVolanteExamenes();
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un problema al inicializar el servicio de operaciones básicas: "
 					+ ex.getMessage());
 		}
 	}
-
+ 	/**
+ 	 * Agrega o modifica una mesa. En este método se hacen las llamadas a GenerarActaVolante() y ActualizarActaVolante() para nuevas mesas o actualización respectivamente
+ 	 * @param mesaAltaDTO
+ 	 * @return
+ 	 * @throws Exception
+ 	 */
  	public Boolean addMesa(MesaAltaDTO mesaAltaDTO) throws Exception{
 		try{
 			ValidacionException vEx = new ValidacionException();
@@ -115,6 +129,7 @@ public class ServicioLlamadoAcademico {
 					gMesa.add(mesa);
 					llamado.getListaMesas().add(mesa);
 					gLlamado.modify(llamado);
+					//generarActaVolanteExamen(llamado.getIdLlamado(), mesa.getIdMesa());
 				}else{ 													//Mesa viene para modificar
 					if (mesaPersis == null){
 						vEx.addMensajeError("No se puede modificar una mesa inexistente.");  //Si no existe corto la ejecución
@@ -129,6 +144,7 @@ public class ServicioLlamadoAcademico {
 					mesaPersis.setIntegrantesTribunal(tribunal);
 					mesaPersis.setMateria(materia);
 					gMesa.modify(mesaPersis);
+					//ActualizarActaVolante(llamado, mesaPersis, tribunal);
 				}
 			}else{
 				vEx.addMensajeError("No se encontró el llamado.");
@@ -141,53 +157,6 @@ public class ServicioLlamadoAcademico {
 			throw ex;
 		}
 		return true;
-	}
-
- 	/**
-	 * Genera una entidad Acta Volante Examen sin detalles, asociada a una mesa 
-	 * @param idLlamado
-	 * @param idMesa
-	 * @throws ValidacionException
-	 * @throws Exception
-	 */
-	public void generarActaVolanteExamen(Long idLlamado, Long idMesa) throws ValidacionException, Exception{
-		try{
-			ValidacionException vEx = new ValidacionException();
-			ActaVolanteExamenes actaVolanteExamen = new ActaVolanteExamenes();
-			Llamado llamado = new Llamado();
-			Mesa mesa = new Mesa();
-			llamado = getLlamado(idLlamado);       //Localizar llamado y validar 
-			if (llamado.getIdLlamado() == null){
-				vEx.addMensajeError("No se pudo encontrar el llamado.");
-				throw vEx;
-			}
-			mesa = gMesa.getById(idMesa);         //Localizar mesa y validar
-			if(mesa.getIdMesa() == null){
-				vEx.addMensajeError("No se pudo encontrar la mesa");
-				throw vEx;
-			}
-			
-			List<Personal> tribunal = new ArrayList<Personal>(); //tomo los docentes del tribunal de la mesa
-			tribunal.addAll(mesa.getIntegrantesTribunal());
-			
-			actaVolanteExamen.setCicloLectivo(Integer.valueOf(ServicioConfiguracion.getParametro("CICLO_LECTIVO").getValor()));
-			actaVolanteExamen.setEstado(true);
-			actaVolanteExamen.setIdLlamado(llamado.getIdLlamado());
-			actaVolanteExamen.setNombreLlamado(llamado.getDescripcion());
-			actaVolanteExamen.setIdMesa(mesa.getIdMesa());
-			actaVolanteExamen.setNombreMesa(mesa.getMateria().getNombre());
-			actaVolanteExamen.setFechaMesa(mesa.getFechaHoraInicio());
-			actaVolanteExamen.setHoraFin(mesa.getFechaHoraFin());
-			actaVolanteExamen.setTribunal1(tribunal.get(0));
-			actaVolanteExamen.setTribunal2(tribunal.get(1));
-			actaVolanteExamen.setTribunal3(tribunal.get(2));
-			actaVolanteExamen.setModificable(true);
-			actaVolanteExamen.setEstado(true);
-		}catch(ValidacionException vEx){
-			throw vEx;
-		}catch(Exception ex){
-			throw new Exception("No se pudo crear el Acta Volante de Examen." + ex.getMessage());
-		}
 	}
 
 	/**
@@ -638,6 +607,8 @@ public class ServicioLlamadoAcademico {
 	
 	//public void listarInscripcionesDTO()
 	
+	
+	
 	public Boolean addLlamado(Llamado llamado) throws Exception { // EN ENDPOINT
 		try {
 			ServicioConfiguracion.comprendidoEnPeriodo(llamado.getFechaInicio(), llamado.getFechaFin(),null,null,null);
@@ -684,6 +655,76 @@ public class ServicioLlamadoAcademico {
 		}
 	}
 	
+	/**
+	 * Devuelve el contenido del menú seleccionable en la ventana de calificación de Mesas.
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	public List<MenuActaVolanteDTO> devolverListadoMenuActaVolante() throws ValidacionException, Exception{
+		return obtenerListadoMenuActaVolante();
+	}
+	
+	/**
+	 * Recorre las actas volantes disponibles y devuelve los datos para cargar en el menú seleccionable.  
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	public List<MenuActaVolanteDTO> obtenerListadoMenuActaVolante() throws ValidacionException, Exception{
+		ValidacionException vEx = new ValidacionException();
+		List<ActaVolanteExamenes> listaActaVolante = new ArrayList<ActaVolanteExamenes>();
+		Set<Integer>ciclosLectivos = new HashSet<Integer>(); // Auxiliar Set
+		List<MenuActaVolanteDTO> menuActaVolanteExamenesDTO = new ArrayList<MenuActaVolanteDTO>(); 
+		listaActaVolante = gActaVolanteExamenes.getByExample(new ActaVolanteExamenes(null,null,null,null,null,null,null,null,null,null,null,null,null,true,null));
+		if (listaActaVolante.size() == 0){ vEx.addMensajeError("No hay actas volantes que mostrar"); throw vEx;}
+		for (ActaVolanteExamenes actaVolante : listaActaVolante){
+			if (ciclosLectivos.add(actaVolante.getCicloLectivo())){
+				menuActaVolanteExamenesDTO.add(new MenuActaVolanteDTO(actaVolante.getCicloLectivo(),null));
+			}
+		}
+		for(MenuActaVolanteDTO menuActaVolanteDTO : menuActaVolanteExamenesDTO){
+			menuActaVolanteDTO.setLlamadosActaDTO(obtenerActaVolanteLlamadoDTO(menuActaVolanteDTO.getCicloLectivo()));
+		}
+		return menuActaVolanteExamenesDTO;
+	}
+	
+	/**
+	 * Carga y devuelve un DTO ActaVolanteExamenesDTO solicitado por medio del id de ActaVolante
+	 * @param idActaVolante
+	 * @return
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	public ActaVolanteExamenesDTO getActaVolanteDTO(Long idActaVolante) throws ValidacionException, Exception{
+		try{
+			ActaVolanteExamenesDTO actaVolanteExamenDTO = new ActaVolanteExamenesDTO();
+			ActaVolanteExamenes actaVolanteExamen = new ActaVolanteExamenes();
+			List<DetalleActaVolanteDTO> detalleActaVolanteDTO = new ArrayList<DetalleActaVolanteDTO>();
+			actaVolanteExamen = gActaVolanteExamenes.getById(idActaVolante);
+			for(DetalleVolante detalleVolante : actaVolanteExamen.getDetalles()){
+				DetalleActaVolanteDTO detalleVolanteDTO = new DetalleActaVolanteDTO();
+				detalleVolanteDTO.setAlumno(detalleVolante.getAlumno().toString());
+				detalleVolanteDTO.setAsistencia(detalleVolante.getAsistencia());
+				detalleVolanteDTO.setIdDetalleVolante(detalleVolante.getIdDetalleVolante());
+				detalleVolanteDTO.setNota(detalleVolante.getNota());
+				detalleActaVolanteDTO.add(detalleVolanteDTO);
+			}
+			actaVolanteExamenDTO.setDatosTribunal1(actaVolanteExamen.getTribunal1().toString());
+			actaVolanteExamenDTO.setDatosTribunal2(actaVolanteExamen.getTribunal2().toString());
+			actaVolanteExamenDTO.setDatosTribunal3(actaVolanteExamen.getTribunal3().toString());
+			actaVolanteExamenDTO.setDetalleActaVolante(detalleActaVolanteDTO);
+			actaVolanteExamenDTO.setFechaMesa(actaVolanteExamen.getFechaMesa());
+			actaVolanteExamenDTO.setHoraFin(actaVolanteExamen.getHoraFin());
+			actaVolanteExamenDTO.setHoraInicio(actaVolanteExamen.getHoraInicio());
+			actaVolanteExamenDTO.setIdActaVolanteExamen(actaVolanteExamen.getIdActaVolanteExamen());
+			actaVolanteExamenDTO.setNombreLlamado(actaVolanteExamen.getNombreLlamado());
+			actaVolanteExamenDTO.setNombreMesa(actaVolanteExamen.getNombreMesa());
+			return actaVolanteExamenDTO;
+		}catch(ValidacionException vEx){
+			throw vEx;
+		}catch(Exception ex){
+			throw ex;
+		}
+	}
 	// ---------------------- MÉTODOS AUXILIARES PRIVADOS, PÚBLICOS y PACKAGE ---------------------------------------
 	
 	/**
@@ -805,4 +846,163 @@ public class ServicioLlamadoAcademico {
 		return (ArrayList<MesaExamenHist>) gMEHist.getByExample(ejemplo);
 	}
 	
+	/**
+	 * Genera una entidad Acta Volante Examen sin detalles, asociada a una mesa
+	 * @param idLlamado
+	 * @param idMesa
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	private void generarActaVolanteExamen(Long idLlamado, Long idMesa) throws ValidacionException, Exception{
+		try{
+			ValidacionException vEx = new ValidacionException();
+			ActaVolanteExamenes actaVolanteExamen = new ActaVolanteExamenes();
+			Llamado llamado = new Llamado();
+			Mesa mesa = new Mesa();
+			llamado = getLlamado(idLlamado);       //Localizar llamado y validar 
+			if (llamado.getIdLlamado() == null){
+				vEx.addMensajeError("No se pudo encontrar el llamado.");
+				throw vEx;
+			}
+			mesa = gMesa.getById(idMesa);         //Localizar mesa y validar
+			if(mesa.getIdMesa() == null){
+				vEx.addMensajeError("No se pudo encontrar la mesa");
+				throw vEx;
+			}
+			List<Personal> tribunal = new ArrayList<Personal>(); //tomo los docentes del tribunal de la mesa
+			tribunal.addAll(mesa.getIntegrantesTribunal());
+			actaVolanteExamen.setCicloLectivo(Integer.valueOf(ServicioConfiguracion.getParametro("CICLO_LECTIVO").getValor()));
+			actaVolanteExamen.setEstado(true);
+			actaVolanteExamen.setIdLlamado(llamado.getIdLlamado());
+			actaVolanteExamen.setNombreLlamado(llamado.getDescripcion());
+			actaVolanteExamen.setIdMesa(mesa.getIdMesa());
+			actaVolanteExamen.setNombreMesa(mesa.getMateria().getNombre());
+			actaVolanteExamen.setFechaMesa(mesa.getFechaHoraInicio());
+			actaVolanteExamen.setHoraFin(mesa.getFechaHoraFin());
+			actaVolanteExamen.setTribunal1(tribunal.get(0));
+			actaVolanteExamen.setTribunal2(tribunal.get(1));
+			actaVolanteExamen.setTribunal3(tribunal.get(2));
+			actaVolanteExamen.setModificable(true);
+			actaVolanteExamen.setEstado(true);
+			gActaVolanteExamenes.add(actaVolanteExamen);
+		}catch(ValidacionException vEx){
+			throw vEx;
+		}catch(Exception ex){
+			throw new Exception("No se pudo crear el Acta Volante de Examen." + ex.getMessage());
+		}
+	}
+	
+	/**
+	 * Localiza una entidad ActaVolanteExamenes
+	 * @param idLlamado
+	 * @param idMesa
+	 * @return
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	private ActaVolanteExamenes localizarActaVolanteExamen(Long idLlamado, Long idMesa) throws ValidacionException, Exception{
+		try{
+			ValidacionException vEx = new ValidacionException();
+			List<ActaVolanteExamenes> listaActaVolanteExamenes = new ArrayList<ActaVolanteExamenes>();
+			listaActaVolanteExamenes = gActaVolanteExamenes.getByExample(new ActaVolanteExamenes(null,idLlamado,null,idMesa,null,null,null,null,null,null,null,null,null,true,null)); 
+			if (listaActaVolanteExamenes.size() > 1){
+				vEx.addMensajeError("Ocurrió un error al recuperarel Acta Volante de Examen. Resultado mayor a 1");
+			}
+			return listaActaVolanteExamenes.get(0);
+		}catch(ValidacionException vEx){
+			throw vEx;
+		}catch(Exception ex){
+			throw ex;
+		}
+	}
+	
+	/**
+	 * Actualiza la entidad Acta Volante de Examenes asociada al llamado y mesa solicitada.<br>
+	 * En caso de que el estado del Acta no permita modificacion (modificable = false), se solicitará la creación de un nuevo Acta.
+	 * @param llamado
+	 * @param mesa
+	 * @param tribunal
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	private void ActualizarActaVolante(Llamado llamado, Mesa mesa, Set<Personal> tribunal) throws ValidacionException, Exception{
+		try {
+			ValidacionException vEx = new ValidacionException();
+			ActaVolanteExamenes actaVolanteExamenesPersistente = null;
+			ActaVolanteExamenes actaVolanteExamenes = new ActaVolanteExamenes();
+			List<Personal> tribunalList = new ArrayList<Personal>();
+			tribunalList.addAll(tribunal);
+			actaVolanteExamenesPersistente = localizarActaVolanteExamen(llamado.getIdLlamado(), mesa.getIdMesa());
+			if (actaVolanteExamenesPersistente == null){
+				vEx.addMensajeError("No se encontró el acta volante asociado con el llamado "+llamado.getIdLlamado().toString() +" y la mesa "+mesa.getIdMesa());
+				throw vEx;
+			}
+			if (actaVolanteExamenesPersistente.getModificable() == true){
+				actaVolanteExamenes.setCicloLectivo(Integer.valueOf(ServicioConfiguracion.getParametro("CICLO_LECTIVO").getValor()));
+				actaVolanteExamenes.setEstado(true);
+				actaVolanteExamenes.setIdLlamado(llamado.getIdLlamado());
+				actaVolanteExamenes.setNombreLlamado(llamado.getDescripcion());
+				actaVolanteExamenes.setIdMesa(mesa.getIdMesa());
+				actaVolanteExamenes.setNombreMesa(mesa.getMateria().getNombre());
+				actaVolanteExamenes.setFechaMesa(mesa.getFechaHoraInicio());
+				actaVolanteExamenes.setHoraFin(mesa.getFechaHoraFin());
+				actaVolanteExamenes.setTribunal1(tribunalList.get(0));
+				actaVolanteExamenes.setTribunal2(tribunalList.get(1));
+				actaVolanteExamenes.setTribunal3(tribunalList.get(2));
+				actaVolanteExamenes.setModificable(true);
+				actaVolanteExamenes.setEstado(true);
+				gActaVolanteExamenes.modify(actaVolanteExamenes);
+			}else{
+				generarActaVolanteExamen(llamado.getIdLlamado(), mesa.getIdMesa());
+			}	
+		} catch (ValidacionException vEx) {
+			throw vEx;
+		} catch (Exception ex){
+			throw ex;
+		}
+	}
+	
+	/**
+	 * Obtiene todos los llamados del Acta Volante para un ciclo lectivo específico. Este método es usado por obtenerListadoMenuActaVolante() 
+	 * @param cicloLectivo
+	 * @return
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	private List<MenuActaVolanteLlamadoDTO> obtenerActaVolanteLlamadoDTO(Integer cicloLectivo) throws ValidacionException, Exception{
+		List<ActaVolanteExamenes> listaActaVolante = new ArrayList<ActaVolanteExamenes>();
+		Set<String> llamados = new HashSet<String>(); // Auxiliar Set
+		listaActaVolante = gActaVolanteExamenes.getByExample(new ActaVolanteExamenes(null,null,null,null,null,null,null,null,null,null,null,cicloLectivo,null,true,null)); //Localiza las actas volantes para un ciclo lectivo
+		List<MenuActaVolanteLlamadoDTO>listaLlamadosActaVolante = new ArrayList<MenuActaVolanteLlamadoDTO>();
+		for(ActaVolanteExamenes actaVolante : listaActaVolante){
+			if(llamados.add(actaVolante.getNombreLlamado())){
+				listaLlamadosActaVolante.add(new MenuActaVolanteLlamadoDTO(actaVolante.getNombreLlamado(),null));
+			}
+		}
+		for (MenuActaVolanteLlamadoDTO menuActaVolanteLlamadoDTO : listaLlamadosActaVolante){
+			menuActaVolanteLlamadoDTO.setMesas(obtenerVolanteMesaDTO(cicloLectivo, menuActaVolanteLlamadoDTO.getNombreLlamado()));
+		}
+		return listaLlamadosActaVolante;
+	}
+		
+	/**
+	 * Obtiene todas las mesas del Acta Volante para un ciclo Lectivo y Llamado específico. Este método es utilizado por obtenerActaVolanteLlamadoDTO(Integer cicloLectivo)
+	 * @param cicloLectivo
+	 * @param nombreLlamado
+	 * @return
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	private List<MenuActaVolanteMesaDTO> obtenerVolanteMesaDTO(Integer cicloLectivo, String nombreLlamado) throws ValidacionException, Exception{
+		List<ActaVolanteExamenes> listaActaVolante = new ArrayList<ActaVolanteExamenes>();
+		Set<String> mesas = new HashSet<String>(); // Auxiliar Set
+		List<MenuActaVolanteMesaDTO> listaMesaActaVolante = new ArrayList<MenuActaVolanteMesaDTO> ();
+		listaActaVolante = gActaVolanteExamenes.getByExample(new ActaVolanteExamenes(null,null,nombreLlamado,null,null,null,null,null,null,null,null,cicloLectivo,null,true,null)); //Localiza las actas volantes para un ciclo lectivo
+		for(ActaVolanteExamenes actaVolante : listaActaVolante){
+			if(mesas.add(actaVolante.getNombreMesa())){
+				listaMesaActaVolante.add(new MenuActaVolanteMesaDTO(actaVolante.getNombreMesa(),actaVolante.getIdActaVolanteExamen()));
+			}
+		}
+		return listaMesaActaVolante;
+	}
 }
