@@ -5,13 +5,13 @@
 Trabajar offline
 <!DOCTYPE hibernate-configuration SYSTEM "classpath://org/hibernate/hibernate-configuration-3.0.dtd">  -->
 <hibernate-configuration>
- <session-factory name="">
+ <session-factory>
   <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
   <!-- acceso remoto 
    <property name="hibernate.connection.password">remoto</property> 
    <property name="hibernate.connection.url">jdbc:mysql://dominiotestariel.ddns.net:3306/escuelabd</property> 
    <property name="hibernate.connection.username">remoto</property> -->
-  <property name="hibernate.connection.password">root</property>
+  <property name="hibernate.connection.password">linuxalpoder</property>
   <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/escuelabd</property>
   <property name="hibernate.connection.username">root</property>
   <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
@@ -57,15 +57,6 @@ Trabajar offline
   <mapping class="ar.com.santalucia.dominio.modelo.academico.Area" resource="ar/com/santalucia/dominio/modelo/academico/Area.hbm.xml"/>
   <mapping class="ar.com.santalucia.dominio.modelo.usuarios.Personal" resource="ar/com/santalucia/dominio/modelo/usuarios/Personal.hbm.xml"/>
   <mapping class="ar.com.santalucia.dominio.modelo.sistema.login.Login" resource="ar/com/santalucia/dominio/modelo/sistema/login/Login.hbm.xml"/>
-  <!-- <mapping
-   class="ar.com.santalucia.dominio.modelo.aulavirtual.AulaVirtual" resource="ar/com/santalucia/dominio/modelo/aulavirtual/AulaVirtual.hbm.xml"/>
-  <mapping
-   class="ar.com.santalucia.dominio.modelo.aulavirtual.ConfiguracionEntrega" resource="ar/com/santalucia/dominio/modelo/aulavirtual/ConfiguracionEntrega.hbm.xml"/>
-  <mapping class="ar.com.santalucia.dominio.modelo.aulavirtual.Entrega" resource="ar/com/santalucia/dominio/modelo/aulavirtual/Entrega.hbm.xml"/>
-  <mapping class="ar.com.santalucia.dominio.modelo.aulavirtual.Muro" resource="ar/com/santalucia/dominio/modelo/aulavirtual/Muro.hbm.xml"/>
-  <mapping
-   class="ar.com.santalucia.dominio.modelo.aulavirtual.Publicacion" resource="ar/com/santalucia/dominio/modelo/aulavirtual/Publicacion.hbm.xml"/>
-  <mapping class="ar.com.santalucia.dominio.modelo.aulavirtual.Recurso" resource="ar/com/santalucia/dominio/modelo/aulavirtual/Recurso.hbm.xml"/> -->
   <mapping
    class="ar.com.santalucia.dominio.modelo.desempenio.BoletinNotasHist" resource="ar/com/santalucia/dominio/modelo/desempenio/BoletinNotasHist.hbm.xml"/>
   <mapping
@@ -78,5 +69,9 @@ Trabajar offline
    class="ar.com.santalucia.dominio.modelo.academico.Especialidad" resource="ar/com/santalucia/dominio/modelo/academico/Especialidad.hbm.xml"/>
   <mapping
    class="ar.com.santalucia.dominio.modelo.desempenio.RegistroPasajeAlumnos" resource="ar/com/santalucia/dominio/modelo/desempenio/RegistroPasajeAlumnos.hbm.xml"/>
+  <mapping
+   class="ar.com.santalucia.dominio.modelo.academico.ActaVolanteExamenes" resource="ar/com/santalucia/dominio/modelo/academico/ActaVolanteExamenes.hbm.xml"/>
+  <mapping
+   class="ar.com.santalucia.dominio.modelo.academico.DetalleVolante" resource="ar/com/santalucia/dominio/modelo/academico/DetalleVolante.hbm.xml"/>
  </session-factory>
 </hibernate-configuration>

@@ -24,6 +24,7 @@ import ar.com.santalucia.dominio.dto.DetallePreviaDTO;
 import ar.com.santalucia.dominio.dto.MateriaAltaDTO;
 import ar.com.santalucia.dominio.dto.MateriaDTO;
 import ar.com.santalucia.dominio.dto.MesaAltaDTO;
+import ar.com.santalucia.dominio.dto.MesaDTO;
 import ar.com.santalucia.dominio.modelo.academico.Anio;
 import ar.com.santalucia.dominio.modelo.academico.Area;
 import ar.com.santalucia.dominio.modelo.academico.Curso;
@@ -1027,7 +1028,7 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 
-	/**
+	/** TESTING MODO, nuevoToken = null
 	 * Rol de acceso: DIRECTIVO
 	 * @param mesaAltaDTO
 	 * @return
@@ -1131,6 +1132,48 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 
+	/**
+	 * Rol de acceso: DIRECTIVO - ALUMNO
+	 * @param idMe
+	 * @param rolIn
+	 * @param token
+	 * @return
+	 */
+	@GET
+	@Path("/mesDTO/{idMe:[0-9][0-9]*}")
+	public Response getMesaDTOById(@PathParam("idMe") Long idMe,
+			@HeaderParam("rol") final String rolIn,
+			@HeaderParam("auth0") final String token) {
+		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.ALUMNO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
+		MesaDTO mesaDTO = new MesaDTO();
+		String nuevoToken = new String();
+		try {
+			setInstance();
+			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
+			mesaDTO = servicioLlamadoAcademico.getMesaDTO(idMe);
+			if (mesaDTO == null) {
+				return Response.status(Status.NOT_FOUND)
+						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
+						.build();
+			}
+			if (nuevoToken == null) {
+				return Response.ok(mesaDTO).build();
+			} else {
+				return Response.ok(mesaDTO).header("auth0", nuevoToken).build();
+			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+		} catch (Exception ex) {
+			// TODO: volcar 'ex' en LOG y/o mostrar por consola
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
+		}
+	}
+	
 	/**
 	 * Rol de acceso: DIRECTIVO - ALUMNO
 	 * @param idMe

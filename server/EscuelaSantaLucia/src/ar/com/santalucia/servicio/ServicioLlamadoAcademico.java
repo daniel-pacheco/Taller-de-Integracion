@@ -129,7 +129,7 @@ public class ServicioLlamadoAcademico {
 					gMesa.add(mesa);
 					llamado.getListaMesas().add(mesa);
 					gLlamado.modify(llamado);
-					//generarActaVolanteExamen(llamado.getIdLlamado(), mesa.getIdMesa());
+					generarActaVolanteExamen(llamado.getIdLlamado(), mesa.getIdMesa());
 				}else{ 													//Mesa viene para modificar
 					if (mesaPersis == null){
 						vEx.addMensajeError("No se puede modificar una mesa inexistente.");  //Si no existe corto la ejecución
@@ -144,7 +144,7 @@ public class ServicioLlamadoAcademico {
 					mesaPersis.setIntegrantesTribunal(tribunal);
 					mesaPersis.setMateria(materia);
 					gMesa.modify(mesaPersis);
-					//ActualizarActaVolante(llamado, mesaPersis, tribunal);
+					ActualizarActaVolante(llamado, mesaPersis, tribunal);
 				}
 			}else{
 				vEx.addMensajeError("No se encontró el llamado.");
@@ -603,6 +603,39 @@ public class ServicioLlamadoAcademico {
 		}
 	}
 	
+	/**
+	 * Devuelve un DTO de Mesa dado un ID de mesa
+	 * @param idMesa
+	 * @return
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	public MesaDTO getMesaDTO(Long idMesa) throws ValidacionException,Exception{
+		try{
+			Mesa mesa = new Mesa();
+			MesaDTO mesaDTO = new MesaDTO(); 
+			mesa = gMesa.getById(idMesa);
+			List<Personal> tribunal = new ArrayList<Personal>();
+			tribunal.addAll(mesa.getIntegrantesTribunal());
+			mesaDTO.setIdMesa(mesa.getIdMesa());
+			mesaDTO.setIdMateria(mesa.getMateria().getIdMateria());
+			mesaDTO.setIdTribunal1(tribunal.get(0).getIdUsuario());
+			mesaDTO.setIdTribunal2(tribunal.get(1).getIdUsuario());
+			mesaDTO.setIdTribunal3(tribunal.get(2).getIdUsuario());
+			mesaDTO.setMateria(mesa.getMateria().getNombre());
+			mesaDTO.setNombreTribunal1(tribunal.get(0).toString());
+			mesaDTO.setNombreTribunal2(tribunal.get(1).toString());
+			mesaDTO.setNombreTribunal3(tribunal.get(2).toString());
+			mesaDTO.setFechaHoraFin(mesa.getFechaHoraFin());
+			mesaDTO.setFechaHoraInicio(mesa.getFechaHoraInicio());
+			return mesaDTO;
+		}catch(ValidacionException vEx){
+			throw vEx;
+		}catch (Exception ex){
+			throw ex;
+		}
+	}
+	
 	//public void ObtenerInscripcionDTO()
 	
 	//public void listarInscripcionesDTO()
@@ -878,6 +911,7 @@ public class ServicioLlamadoAcademico {
 			actaVolanteExamen.setIdMesa(mesa.getIdMesa());
 			actaVolanteExamen.setNombreMesa(mesa.getMateria().getNombre());
 			actaVolanteExamen.setFechaMesa(mesa.getFechaHoraInicio());
+			actaVolanteExamen.setHoraInicio(mesa.getFechaHoraInicio());
 			actaVolanteExamen.setHoraFin(mesa.getFechaHoraFin());
 			actaVolanteExamen.setTribunal1(tribunal.get(0));
 			actaVolanteExamen.setTribunal2(tribunal.get(1));
@@ -893,7 +927,7 @@ public class ServicioLlamadoAcademico {
 	}
 	
 	/**
-	 * Localiza una entidad ActaVolanteExamenes
+	 * Localiza una entidad ActaVolanteExamenes. Es utilizado por AddMesa, en modificar.
 	 * @param idLlamado
 	 * @param idMesa
 	 * @return
@@ -906,9 +940,27 @@ public class ServicioLlamadoAcademico {
 			List<ActaVolanteExamenes> listaActaVolanteExamenes = new ArrayList<ActaVolanteExamenes>();
 			listaActaVolanteExamenes = gActaVolanteExamenes.getByExample(new ActaVolanteExamenes(null,idLlamado,null,idMesa,null,null,null,null,null,null,null,null,null,true,null)); 
 			if (listaActaVolanteExamenes.size() > 1){
-				vEx.addMensajeError("Ocurrió un error al recuperarel Acta Volante de Examen. Resultado mayor a 1");
+				vEx.addMensajeError("Ocurrió un error al recuperar el Acta Volante de Examen. Resultado mayor a 1");
+				throw vEx;
 			}
 			return listaActaVolanteExamenes.get(0);
+		}catch(ValidacionException vEx){
+			throw vEx;
+		}catch(Exception ex){
+			throw ex;
+		}
+	}
+	
+	/**
+	 * Coloca en estado cancelado un Acta Volante de Examenes
+	 * @param actaVolanteExamenes
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	private void cancelarActaVolante(ActaVolanteExamenes actaVolanteExamenes) throws ValidacionException, Exception{
+		try{
+			actaVolanteExamenes.setEstado(false);
+			gActaVolanteExamenes.modify(actaVolanteExamenes);
 		}catch(ValidacionException vEx){
 			throw vEx;
 		}catch(Exception ex){
@@ -929,7 +981,6 @@ public class ServicioLlamadoAcademico {
 		try {
 			ValidacionException vEx = new ValidacionException();
 			ActaVolanteExamenes actaVolanteExamenesPersistente = null;
-			ActaVolanteExamenes actaVolanteExamenes = new ActaVolanteExamenes();
 			List<Personal> tribunalList = new ArrayList<Personal>();
 			tribunalList.addAll(tribunal);
 			actaVolanteExamenesPersistente = localizarActaVolanteExamen(llamado.getIdLlamado(), mesa.getIdMesa());
@@ -938,22 +989,27 @@ public class ServicioLlamadoAcademico {
 				throw vEx;
 			}
 			if (actaVolanteExamenesPersistente.getModificable() == true){
-				actaVolanteExamenes.setCicloLectivo(Integer.valueOf(ServicioConfiguracion.getParametro("CICLO_LECTIVO").getValor()));
-				actaVolanteExamenes.setEstado(true);
-				actaVolanteExamenes.setIdLlamado(llamado.getIdLlamado());
-				actaVolanteExamenes.setNombreLlamado(llamado.getDescripcion());
-				actaVolanteExamenes.setIdMesa(mesa.getIdMesa());
-				actaVolanteExamenes.setNombreMesa(mesa.getMateria().getNombre());
-				actaVolanteExamenes.setFechaMesa(mesa.getFechaHoraInicio());
-				actaVolanteExamenes.setHoraFin(mesa.getFechaHoraFin());
-				actaVolanteExamenes.setTribunal1(tribunalList.get(0));
-				actaVolanteExamenes.setTribunal2(tribunalList.get(1));
-				actaVolanteExamenes.setTribunal3(tribunalList.get(2));
-				actaVolanteExamenes.setModificable(true);
-				actaVolanteExamenes.setEstado(true);
-				gActaVolanteExamenes.modify(actaVolanteExamenes);
+				actaVolanteExamenesPersistente.setCicloLectivo(Integer.valueOf(ServicioConfiguracion.getParametro("CICLO_LECTIVO").getValor()));
+				actaVolanteExamenesPersistente.setEstado(true);
+				actaVolanteExamenesPersistente.setIdLlamado(llamado.getIdLlamado());
+				actaVolanteExamenesPersistente.setNombreLlamado(llamado.getDescripcion());
+				actaVolanteExamenesPersistente.setIdMesa(mesa.getIdMesa());
+				actaVolanteExamenesPersistente.setNombreMesa(mesa.getMateria().getNombre());
+				actaVolanteExamenesPersistente.setFechaMesa(mesa.getFechaHoraInicio());
+				actaVolanteExamenesPersistente.setHoraInicio(mesa.getFechaHoraInicio());
+				actaVolanteExamenesPersistente.setHoraFin(mesa.getFechaHoraFin());
+				actaVolanteExamenesPersistente.setTribunal1(tribunalList.get(0));
+				actaVolanteExamenesPersistente.setTribunal2(tribunalList.get(1));
+				actaVolanteExamenesPersistente.setTribunal3(tribunalList.get(2));
+				actaVolanteExamenesPersistente.setModificable(true);
+				actaVolanteExamenesPersistente.setEstado(true);
+				gActaVolanteExamenes.modify(actaVolanteExamenesPersistente);
 			}else{
+				ActaVolanteExamenes nuevoActaVolanteExamenes = new ActaVolanteExamenes();   // Cancelar, copiar el detalle y generar el nuevo acta
+				cancelarActaVolante (actaVolanteExamenesPersistente);
 				generarActaVolanteExamen(llamado.getIdLlamado(), mesa.getIdMesa());
+				nuevoActaVolanteExamenes = localizarActaVolanteExamen(llamado.getIdLlamado(), mesa.getIdMesa());
+				nuevoActaVolanteExamenes.setDetalles(actaVolanteExamenesPersistente.getDetalles());
 			}	
 		} catch (ValidacionException vEx) {
 			throw vEx;

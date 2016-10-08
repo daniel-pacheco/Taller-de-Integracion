@@ -43,7 +43,7 @@
         </property>
         <list name="detalles" inverse="false" table="DETALLEVOLANTE" lazy="true">
             <key>
-                <column name="IDACTAVOLANTE" />
+                <column name="IDDETALLEVOLANTE" />
             </key>
             <list-index></list-index>
             <one-to-many class="ar.com.santalucia.dominio.modelo.academico.DetalleVolante" />
