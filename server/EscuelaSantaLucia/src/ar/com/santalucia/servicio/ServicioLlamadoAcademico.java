@@ -13,6 +13,7 @@ import org.hibernate.Session;
 
 import ar.com.santalucia.accesodatos.persistencia.HibernateUtil;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorActaVolanteExamenes;
+import ar.com.santalucia.aplicacion.gestor.academico.GestorDetalleVolante;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorInscripcion;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorLlamado;
 import ar.com.santalucia.aplicacion.gestor.academico.GestorMateria;
@@ -61,6 +62,7 @@ public class ServicioLlamadoAcademico {
 	private GestorBoletinNotasHist gBoletinHist;
 	private GestorInscripcion gInscripcion;
 	private GestorActaVolanteExamenes gActaVolanteExamenes;
+	private GestorDetalleVolante gDetalleVolante;
 
  	public ServicioLlamadoAcademico() throws Exception {
 		try {
@@ -73,6 +75,7 @@ public class ServicioLlamadoAcademico {
 			gBoletinHist = new GestorBoletinNotasHist();
 			gInscripcion = new GestorInscripcion();
 			gActaVolanteExamenes = new GestorActaVolanteExamenes();
+			gDetalleVolante = new GestorDetalleVolante();
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un problema al inicializar el servicio de operaciones básicas: "
 					+ ex.getMessage());
@@ -158,7 +161,36 @@ public class ServicioLlamadoAcademico {
 		}
 		return true;
 	}
-
+ 	
+ 	/**
+ 	 * Obtiene una entidad Mesa completa dado su id.
+ 	 * @param idMesa
+ 	 * @return
+ 	 * @throws Exception
+ 	 */
+ 	public Mesa getMesa(Long idMesa) throws Exception { // EN ENDPOINT
+		try {
+			return gMesa.getById(idMesa);
+		} catch (Exception ex) {
+			throw new Exception("No se pudo obtner la MESA: " + ex.getMessage());
+		}
+	}
+ 	
+ 	/**
+ 	 * Elimina físicamente una Mesa dado su id.
+ 	 * @param mesa
+ 	 * @return
+ 	 * @throws Exception
+ 	 */
+ 	public Boolean deleteMesa(Mesa mesa) throws Exception {
+		try {
+			gMesa.delete(mesa);
+		} catch (Exception ex) {
+			throw new Exception("No se pudo eliminar la MESA: " + ex.getMessage());
+		}
+		return true;
+	}
+ 	
 	/**
 	 * Agrega una inscripción a mesa (No agrega una entidad inscripción al menos que sea necesario)<br>
 	 * Quita y agrega elementos del listado de Mesa de la entidad Inscripción si este existe.<br>
@@ -182,7 +214,6 @@ public class ServicioLlamadoAcademico {
 			Calendar fechaLlamadoFin = Calendar.getInstance();
 			Llamado llamado = encontrarLlamadoVigente();  //Encuentra el llamado solo si está en periodo vigente de inscripcion
 			
-			
 			if (llamado != null){
 				Inscripcion inscripcion = buscarInscripcion(idAlumno, llamado.getIdLlamado());
 				if (inscripcion == null){
@@ -200,10 +231,12 @@ public class ServicioLlamadoAcademico {
 						listaMesa.add(mesa);			
 						inscripcion.setListaMesas(listaMesa);
 						gInscripcion.modify(inscripcion);   //Aca se vincula la inscripcion con la mesa
+						agregarDetalleDeActaVolante(idMesa, llamado.getIdLlamado(), idAlumno);
 					}
 				}else{
 					inscripcion.getListaMesas().add(mesa);
 					gInscripcion.modify(inscripcion);
+					agregarDetalleDeActaVolante(idMesa, llamado.getIdLlamado(), idAlumno);
 				}
 			}else{
 				ValidacionException ex = new ValidacionException();
@@ -250,6 +283,7 @@ public class ServicioLlamadoAcademico {
 							inscripcion.setListaMesas(listaMesa);
 							gInscripcion.modify(inscripcion);
 						}
+						quitarDetalleDeActaVolante(idMesa, llamado.getIdLlamado(), idAlumno);
 					}
 				}else{
 					ValidacionException ex = new ValidacionException();
@@ -266,7 +300,7 @@ public class ServicioLlamadoAcademico {
 		}
 		return true;
 	}
-	
+		
 	/**
 	 * Lista las mesas a la que el alumno puede inscribirse, teniendo en cuenta las amterias previas del mismo.
 	 * @param idAlumno
@@ -635,13 +669,7 @@ public class ServicioLlamadoAcademico {
 			throw ex;
 		}
 	}
-	
-	//public void ObtenerInscripcionDTO()
-	
-	//public void listarInscripcionesDTO()
-	
-	
-	
+
 	public Boolean addLlamado(Llamado llamado) throws Exception { // EN ENDPOINT
 		try {
 			ServicioConfiguracion.comprendidoEnPeriodo(llamado.getFechaInicio(), llamado.getFechaFin(),null,null,null);
@@ -728,7 +756,7 @@ public class ServicioLlamadoAcademico {
 	 * @throws Exception
 	 */
 	public ActaVolanteExamenesDTO getActaVolanteDTO(Long idActaVolante) throws ValidacionException, Exception{
-		try{
+		try {
 			ActaVolanteExamenesDTO actaVolanteExamenDTO = new ActaVolanteExamenesDTO();
 			ActaVolanteExamenes actaVolanteExamen = new ActaVolanteExamenes();
 			List<DetalleActaVolanteDTO> detalleActaVolanteDTO = new ArrayList<DetalleActaVolanteDTO>();
@@ -738,7 +766,7 @@ public class ServicioLlamadoAcademico {
 				detalleVolanteDTO.setAlumno(detalleVolante.getAlumno().toString());
 				detalleVolanteDTO.setAsistencia(detalleVolante.getAsistencia());
 				detalleVolanteDTO.setIdDetalleVolante(detalleVolante.getIdDetalleVolante());
-				detalleVolanteDTO.setNota(detalleVolante.getNota());
+				detalleVolanteDTO.setNota(detalleVolante.getNota()==null ? 0 : detalleVolante.getNota()); 
 				detalleActaVolanteDTO.add(detalleVolanteDTO);
 			}
 			actaVolanteExamenDTO.setDatosTribunal1(actaVolanteExamen.getTribunal1().toString());
@@ -758,6 +786,8 @@ public class ServicioLlamadoAcademico {
 			throw ex;
 		}
 	}
+	
+	
 	// ---------------------- MÉTODOS AUXILIARES PRIVADOS, PÚBLICOS y PACKAGE ---------------------------------------
 	
 	/**
@@ -1061,4 +1091,71 @@ public class ServicioLlamadoAcademico {
 		}
 		return listaMesaActaVolante;
 	}
+	
+	/**
+	 * Agrega un elemento DetalleVolante al ActaVolanteExamenes según llamado y mesa, una vez finalizada la inscripción del alumno.
+	 * @param idMesa
+	 * @param idLlamado
+	 * @param idAlumno
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	private void agregarDetalleDeActaVolante(Long idMesa, Long idLlamado, Long idAlumno) throws ValidacionException, Exception{
+		try{
+			ActaVolanteExamenes actaVolante = new ActaVolanteExamenes();
+			DetalleVolante detalleVolante = new DetalleVolante();
+			actaVolante = localizarActaVolanteExamen(idLlamado, idMesa);
+			detalleVolante.setAlumno((Alumno)gAlumno.getById(idAlumno));
+			detalleVolante.setAsistencia(false);
+			detalleVolante.setNota(null);
+			gDetalleVolante.add(detalleVolante);
+			actaVolante.getDetalles().add(detalleVolante);
+			gActaVolanteExamenes.modify(actaVolante);
+		}catch(ValidacionException vEx){
+			throw vEx;
+		}catch(Exception ex){
+			throw ex;
+		}
+	}
+	
+	/**
+	 * Localiza, elimina un item de Detalle del Acta Volante de Examen y modifica la relación ActaVolante - Detalle.
+	 * @param idMesa
+	 * @param idLlamado
+	 * @param idAlumno
+	 * @throws ValidacionException
+	 * @throws Exception
+	 */
+	private void quitarDetalleDeActaVolante(Long idMesa, Long idLlamado, Long idAlumno) throws ValidacionException, Exception{
+		try{
+			ActaVolanteExamenes actaVolante = new ActaVolanteExamenes();
+			Set<DetalleVolante> detallesAux = new HashSet<DetalleVolante>();
+			Long idDetalle = null;
+			actaVolante = localizarActaVolanteExamen(idLlamado, idMesa);
+			detallesAux = actaVolante.getDetalles();
+			for(DetalleVolante d : detallesAux){
+				if(d.getAlumno().equals(gAlumno.getById(idAlumno))){
+					detallesAux.remove(d);
+					idDetalle = d.getIdDetalleVolante();
+					break;
+				}
+			}
+			if(idDetalle == null){
+				ValidacionException vEx = new ValidacionException();
+				vEx.addMensajeError("No se pudo eliminar el detalle del Acta Volante de Examen.");
+				throw vEx;
+			}else{
+				gDetalleVolante.delete(gDetalleVolante.getById(idDetalle));
+				actaVolante.setDetalles(null);
+				actaVolante.setDetalles(detallesAux);
+				gActaVolanteExamenes.modify(actaVolante);
+			}
+			gActaVolanteExamenes.modify(actaVolante);
+		}catch(ValidacionException vEx){
+			throw vEx;
+		}catch(Exception ex){
+			throw ex;
+		}
+	}
+
 }

@@ -41,18 +41,17 @@
         <property name="cicloLectivo" type="java.lang.Integer">
             <column name="CICLOLECTIVO" />
         </property>
-        <list name="detalles" inverse="false" table="DETALLEVOLANTE" lazy="true">
-            <key>
-                <column name="IDDETALLEVOLANTE" />
-            </key>
-            <list-index></list-index>
-            <one-to-many class="ar.com.santalucia.dominio.modelo.academico.DetalleVolante" />
-        </list>
         <property name="estado" type="java.lang.Boolean">
             <column name="ESTADO" />
         </property>
         <property name="modificable" type="java.lang.Boolean">
             <column name="MODIFICABLE" />
         </property>
+        <set name="detalles" table="DETALLEVOLANTE" inverse="false" lazy="false">
+            <key>
+                <column name="ACTAVOLANTEEXAMENES" />
+            </key>
+            <one-to-many class="ar.com.santalucia.dominio.modelo.academico.DetalleVolante" />
+        </set>
     </class>
 </hibernate-mapping>

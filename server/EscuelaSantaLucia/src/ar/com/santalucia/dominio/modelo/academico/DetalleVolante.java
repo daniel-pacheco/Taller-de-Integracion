@@ -56,5 +56,30 @@ public class DetalleVolante {
 	public void setNota(Float nota) {
 		this.nota = nota;
 	}
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((idDetalleVolante == null) ? 0 : idDetalleVolante.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DetalleVolante other = (DetalleVolante) obj;
+		if (idDetalleVolante == null) {
+			if (other.idDetalleVolante != null)
+				return false;
+		} else if (!idDetalleVolante.equals(other.idDetalleVolante))
+			return false;
+		return true;
+	}
+
 }

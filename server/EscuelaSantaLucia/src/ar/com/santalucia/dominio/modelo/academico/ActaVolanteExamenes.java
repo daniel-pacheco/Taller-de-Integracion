@@ -2,6 +2,7 @@ package ar.com.santalucia.dominio.modelo.academico;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import ar.com.santalucia.dominio.modelo.usuarios.Personal;
 
@@ -23,7 +24,7 @@ public class ActaVolanteExamenes {
 	private Personal tribunal2;
 	private Personal tribunal3;
 	private Integer cicloLectivo;
-	private List<DetalleVolante> detalles;
+	private Set<DetalleVolante> detalles;
 	private Boolean estado;
 	private Boolean modificable;
 	
@@ -33,7 +34,7 @@ public class ActaVolanteExamenes {
 
 	public ActaVolanteExamenes(Long idActaVolanteExamen, Long idLlamado,String nombreLlamado, Long idMesa, String nombreMesa, Date fechaMesa, Date horaInicio,
 			Date horaFin, Personal tribunal1, Personal tribunal2, Personal tribunal3, Integer cicloLectivo,
-			List<DetalleVolante> detalles, Boolean estado, Boolean modificable) {
+			Set<DetalleVolante> detalles, Boolean estado, Boolean modificable) {
 		super();
 		this.idActaVolanteExamen = idActaVolanteExamen;
 		this.idLlamado = idLlamado;
@@ -132,11 +133,11 @@ public class ActaVolanteExamenes {
 		this.cicloLectivo = cicloLectivo;
 	}
 
-	public List<DetalleVolante> getDetalles() {
+	public Set<DetalleVolante> getDetalles() {
 		return detalles;
 	}
 
-	public void setDetalles(List<DetalleVolante> detalles) {
+	public void setDetalles(Set<DetalleVolante> detalles) {
 		this.detalles = detalles;
 	}
 

@@ -1028,7 +1028,7 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 
-	/** TESTING MODO, nuevoToken = null
+	/** 
 	 * Rol de acceso: DIRECTIVO
 	 * @param mesaAltaDTO
 	 * @return
@@ -1115,7 +1115,7 @@ public class ServicioAcademicoEndpoint {
 		try {
 			setInstance();
 			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
-			exito = servicioAcademico.deleteMesa(servicioAcademico.getMesa(idMe));
+			exito = servicioLlamadoAcademico.deleteMesa(servicioLlamadoAcademico.getMesa(idMe));
 			if (nuevoToken == null) {
 				return Response.ok(exito).build();
 			} else {
@@ -1194,7 +1194,7 @@ public class ServicioAcademicoEndpoint {
 		try {
 			setInstance();
 			nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
-			mesa = servicioAcademico.getMesa(idMe);
+			mesa = servicioLlamadoAcademico.getMesa(idMe);
 			if (mesa == null) {
 				return Response.status(Status.NOT_FOUND)
 						.entity(new FrontMessage("No encontrado", FrontMessage.INFO))
@@ -1359,7 +1359,7 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 	
-	/**
+	/** TEST MODE
 	 * Rol de acceso: DIRECTIVO - ALUMNO
 	 * Agrega una inscripción a mesa de un alumno.<br>
 	 * @param elementos [idMesa, idAlumno]
@@ -1377,11 +1377,11 @@ public class ServicioAcademicoEndpoint {
 		Boolean exito = false;
 		try {
 			setInstance();
-			try {
+			/*try {
 				nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			} catch (ValidacionException vEx) {
 				return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
-			}
+			}*/
 			exito = servicioLlamadoAcademico.addInscripcion(elementos[0],elementos[1]);
 			if (nuevoToken == null) {
 				return Response.ok(exito).build();
@@ -1409,15 +1409,15 @@ public class ServicioAcademicoEndpoint {
 		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.ALUMNO)) {
 			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
 		}
-		String nuevoToken = new String();
+		String nuevoToken = new String(); nuevoToken = null;
 		Boolean exito = false;
 		try {
 			setInstance();
-			try {
+			/*try {
 				nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			} catch (ValidacionException vEx) {
 				return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
-			}
+			}*/
 			exito = servicioLlamadoAcademico.deleteInscripcion(elementos[0],elementos[1]);
 			if (nuevoToken == null) {
 				return Response.ok(exito).build();
@@ -1431,7 +1431,7 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 	
-	/**
+	/** TEST MODE
 	 * Rol de acceso: DIRECTIVO - ALUMNO
 	 * Busca el detalle de las mesas a la cual el alumno puede inscribirse.
 	 * @param dniAlumno
@@ -1445,14 +1445,14 @@ public class ServicioAcademicoEndpoint {
 		if (!rolIn.equals(Login.DIRECTIVO) && !rolIn.equals(Login.ALUMNO)) {
 			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
 		}
-		String nuevoToken = new String();
+		String nuevoToken = null;//new String();
 		try {
 			setInstance();
-			try {
+			/*try {
 				nuevoToken = ServicioLogin.comprobarCredenciales(rolIn, token);
 			} catch (ValidacionException vEx) {
 				return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
-			}
+			}*/
 			if (nuevoToken == null) {
 				return Response.ok(servicioLlamadoAcademico.listarInscribiblesV2(dniAlumno)).build();
 			} else {
@@ -1619,6 +1619,42 @@ public class ServicioAcademicoEndpoint {
 		}
 	}
 	
+	@GET
+	@Path("/getFiltrosCalificacion")
+	public Response getFiltrosCalificacion(
+		@HeaderParam("rol") final String rolIn,
+		@HeaderParam("auth0") final String token){
+		if (!rolIn.equals(Login.ALUMNO)) {
+			return Response.status(Status.FORBIDDEN).entity(new FrontMessage("Acceso no autorizado", FrontMessage.INFO)).build();
+		}
+		String nuevoToken = new String();
+		try{
+			setInstance();
+			nuevoToken = null; //ServicioLogin.comprobarCredenciales(rolIn, token);
+			if (nuevoToken == null) {
+				return Response.ok(servicioLlamadoAcademico.obtenerListadoMenuActaVolante()).build();
+			} else {
+				return Response.ok(servicioLlamadoAcademico.obtenerListadoMenuActaVolante()).header("auth0", nuevoToken).build();
+			}
+		} catch (ValidacionException vEx) {
+			return Response.status(Status.UNAUTHORIZED).entity(new FrontMessage(vEx.getMessage(), FrontMessage.INFO)).build();
+		} catch(Exception ex) {
+			return Response.serverError().entity(new FrontMessage("Ocurrió un problema al intentar listar los llamados.",FrontMessage.CRITICAL)).build();
+		}
+	}
+	
+	@GET
+	@Path("/getActaVolante/{idAV:[0-9][0-9]*}")
+	public Response getActaVolanteDTO(@PathParam("idAV") final Long idActaVolante) {
+		try {
+			setInstance();
+			return Response.ok(servicioLlamadoAcademico.getActaVolanteDTO(idActaVolante)).build();
+		} catch (ValidacionException e) {
+			return Response.serverError().build();
+		} catch (Exception e) {
+			return Response.serverError().build();
+		}
+	}
 }
 	
 

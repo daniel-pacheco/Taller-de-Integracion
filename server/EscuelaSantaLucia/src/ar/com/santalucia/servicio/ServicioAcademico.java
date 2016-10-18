@@ -536,13 +536,7 @@ public class ServicioAcademico {
 		return true;
 	}*/
 	
-	public Mesa getMesa(Long idMesa) throws Exception { // EN ENDPOINT
-		try {
-			return gMesa.getById(idMesa);
-		} catch (Exception ex) {
-			throw new Exception("No se pudo obtner la MESA: " + ex.getMessage());
-		}
-	}/*
+	/*
 	
 	public List<Mesa> getMesas(Mesa example) throws Exception{ // EN ENDPOINT
 		try {
@@ -552,14 +546,7 @@ public class ServicioAcademico {
 		}
 	}*/
 	
-	public Boolean deleteMesa(Mesa mesa) throws Exception { // EN ENDPOINT
-		try {
-			gMesa.delete(mesa);
-		} catch (Exception ex) {
-			throw new Exception("No se pudo eliminar la MESA: " + ex.getMessage());
-		}
-		return true;
-	}
+	
 
 	// ##### MÉTODOS AUXILIARES #####
 	
