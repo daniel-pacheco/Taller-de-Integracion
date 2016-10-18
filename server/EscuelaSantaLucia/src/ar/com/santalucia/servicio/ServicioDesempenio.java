@@ -884,31 +884,37 @@ public class ServicioDesempenio {
 	}
 	
 	/**
-	 * Genera una lista de ListaPasajeAlumnoDTO usando listaAlumnosPasajeCurso(anio,especialidad,curso) <br>
 	 * Obtiene todos los ListaPasajeAlumnoDTO de la totalidad de años existentes.
-	 * @return
+	 * Si el proceso del pasaje de alumnos quedó anteriormente sin terminar, este método
+	 * devuelve null.
+	 * 
+	 * <b>
+	 * En el caso del proceso sin terminar, el front tendría que llamar posteriormente al método
+	 * procesarPromocion enviando 'null' como parámetro.
+	 * </b>
+	 * 
+	 * @return List<ListaPasajeAlumnosDTO>, o <b>null</b> si el proceso no se terminó.
 	 */
 	public List<ListaPasajeAlumnosDTO> ObtenerArregloPasajeDTO() throws ValidacionException, Exception{
-		try{
-		// Obtener todos los años con especialidad y curso;
-		// Por cada año-especialidad-curso llamar a listaAlumnosPasajeCurso y encadenar los resultados entre todos los años
-			Long contadorEntes = 0L; // Cuenta cada combinación anio-especialidad-curso
+		try {
+			if (ServicioConfiguracion.getParametro("PASAJE_ALUMNOS_EN_PROGRESO").getValor().equals("true")) {
+				return null;
+			}
 			List<ListaPasajeAlumnosDTO> listaCompleta = new ArrayList<ListaPasajeAlumnosDTO>();
 			ServicioAcademico sAcademico = new ServicioAcademico();
 			List<AnioDTO> aniosDTO = sAcademico.getAniosDTO();
-			for(AnioDTO aDTO: aniosDTO){
-				for(CursoDTO cDTO: aDTO.getListaCursos()){
+			for(AnioDTO aDTO: aniosDTO) {
+				for(CursoDTO cDTO: aDTO.getListaCursos()) {
 					listaCompleta.add(listaAlumnosPasajeCurso(aDTO.getNombre(),aDTO.getEspecialidad(),cDTO.getDivision()));
-					contadorEntes = contadorEntes + cDTO.getCantAlu();
 				}
 			}
-		if(listaCompleta.size() == 0 || listaCompleta.size() != contadorEntes){
-			ValidacionException vEx = new ValidacionException();
-			vEx.addMensajeError("Ocurrió un problema: la lista generada está incompleta.");
-			throw vEx;
-		}
-		
-		return listaCompleta;
+			if(listaCompleta.size() == 0) {
+				ValidacionException vEx = new ValidacionException();
+				vEx.addMensajeError("Ocurrió un problema: la lista generada está incompleta.");
+				throw vEx;
+			}
+			
+			return listaCompleta;
 		
 		}catch(ValidacionException ex){
 			throw ex;
@@ -918,35 +924,39 @@ public class ServicioDesempenio {
 	}
 	
 	/**
-	 * Llama a los métodos encargados de generar una promoción, repetincia o graduación según sea el caso del alumno procesado.
+	 * 
 	 * @param listado
 	 * @return
 	 */
-	public Boolean ProcesarPromocion(List<RegistroPasajeAlumnos> pasajeDTOin) throws Exception {
+	public Boolean procesarPromocion(List<RegistroPasajeAlumnos> pasajeDTOin) throws Exception {
 		try {
-			ServicioAcademico sAcademico = new ServicioAcademico();
 			ServicioAlumnadoAcademico sAlumnado = new ServicioAlumnadoAcademico();
-			List<AnioDTO> todosLosAnios = sAcademico.getAniosDTO();
+			List<RegistroPasajeAlumnos> resultadoCargaRpa = this.verificarRPA(pasajeDTOin);
+			List<RegistroPasajeAlumnos> resultadoFinal = (resultadoCargaRpa == null ? pasajeDTOin : resultadoCargaRpa);
 			//this.validarCoherencia(pasajeDTOin);
-			
-			for (RegistroPasajeAlumnos peDTO : pasajeDTOin) {
-				Alumno alumnoObtenido = (Alumno) gAlumno.getById(peDTO.getIdAlumno());
-				BoletinNotas boletinNotasAlumno = (BoletinNotas) this.encontrarBoletinDeAlumno(alumnoObtenido, this.BUSCAR_BOLETIN_NOTAS);
+			// se setea el parametro en 'true' para indicar que el proceso inició
+			ParametroConfiguracion p = ServicioConfiguracion.getParametro("PASAJE_ALUMNOS_EN_PROGRESO");
+			p.setValor("true");
+			ServicioConfiguracion.addParametro(p);
+			for (RegistroPasajeAlumnos rpa : resultadoFinal) {
+				Alumno alumnoObtenido = (Alumno) gAlumno.getById(rpa.getIdAlumno());
+				BoletinNotas boletinNotasAlumno = (BoletinNotas) ServicioDesempenio.encontrarBoletinDeAlumno(alumnoObtenido, this.BUSCAR_BOLETIN_NOTAS);
 				// ver si se va a usar el boletin de inasistencias
 				// >> pasar boletín a histórico
 				this.pasarAHistorico(boletinNotasAlumno);
 				// nulleo el boletín porque puede llegar a dar problemas cuando entre al IF
 				boletinNotasAlumno = null;
-//				if (peDTO.getPromociona() == true) {
-//					// >> desvincular alumno de curso y vincularlo al nuevo
-//					sAlumnado.desvincularAlumnoDeCurso(alumnoObtenido, peDTO.getIdCursoActual());
-//					sAlumnado.asignarAlumnoACurso(alumnoObtenido, peDTO.getIdCursoSiguiente());
-//				} else {
-//					Curso cursoDeAlumno = sAcademico.getCurso(peDTO.getIdCursoSiguiente());
-//				}
-				sAlumnado.desvincularAlumnoDeCurso(alumnoObtenido, peDTO.getIdCursoActual());
-				sAlumnado.asignarAlumnoACurso(alumnoObtenido, peDTO.getIdCursoSiguiente());
+				sAlumnado.desvincularAlumnoDeCurso(alumnoObtenido, rpa.getIdCursoActual());
+				sAlumnado.asignarAlumnoACurso(alumnoObtenido, rpa.getIdCursoSiguiente());
+				rpa.setProcesado(true);
+				gRegistroPasajeAlumnos.modify(rpa);
 			}
+			// se setea el parametro en 'false' para indicar que el proceso finalizó
+			ParametroConfiguracion p2 = ServicioConfiguracion.getParametro("PASAJE_ALUMNOS_EN_PROGRESO");
+			p2.setValor("false");
+			ServicioConfiguracion.addParametro(p2);
+			// eliminar datos de la tabla registro
+			borrarRPA();
 			return true;
 		} catch(ValidacionException ex) {
 			throw ex;
@@ -955,6 +965,44 @@ public class ServicioDesempenio {
 		}
 	}
 	
+	private void borrarRPA() throws Exception {
+		try {
+			List<RegistroPasajeAlumnos> todosRPA = gRegistroPasajeAlumnos.List();
+			for (RegistroPasajeAlumnos rpa : todosRPA) {
+				gRegistroPasajeAlumnos.delete(rpa);
+			}
+		} catch (Exception ex) {
+			throw ex;
+		}
+	}
+	
+	/**
+	 * cargarRPA: carga los registros para pasar los alumnos. Además controla que en la tabla de estos registros
+	 * no haya algo cargado (significaría que el proceso quedó a "a mitad de camino"). Devuelve el listado con los que
+	 * quedaron sin procesar o null en el caso de que no haya registros guardados 
+	 * (es decir, el proceso se realizó correctamente).
+	 * @param pasajeDTOin
+	 * @return List<RegistroPasajeAlumno> (o null)
+	 * @throws Exception
+	 */
+	private List<RegistroPasajeAlumnos> verificarRPA(List<RegistroPasajeAlumnos> pasajeDTOin) throws Exception {
+		List<RegistroPasajeAlumnos> rpaSinProcesar = new ArrayList<RegistroPasajeAlumnos>();
+		RegistroPasajeAlumnos rpaExample = new RegistroPasajeAlumnos();
+		rpaExample.setProcesado(false);
+		rpaSinProcesar = gRegistroPasajeAlumnos.getByExample(rpaExample);
+		// si hay elementos en la lista, es porque el proceso de pasaje de alumnos en algún momento
+		// falló, y no se borró el registro.
+		if (rpaSinProcesar.size() > 0) {
+			return rpaSinProcesar; 
+		} else {
+			// cargo el registro en la base de datos y retorno true
+			for (RegistroPasajeAlumnos rpa : pasajeDTOin) {
+				gRegistroPasajeAlumnos.add(rpa);
+			}
+			return null;
+		}
+	}
+
 	private void validarCoherencia(List<RegistroPasajeAlumnos> pasajeDTOin) throws Exception{
 		ServicioAcademico sAcademico = new ServicioAcademico();
 		List<AnioDTO> todosLosAnios = sAcademico.getAniosDTO();

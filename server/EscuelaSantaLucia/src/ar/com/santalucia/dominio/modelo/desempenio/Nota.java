@@ -13,7 +13,6 @@ import ar.com.santalucia.dominio.modelo.academico.Materia;
  */
 
 public class Nota {
-
 	private Long idNota;
 	private String descripcion;
 	private Date fecha;
@@ -22,7 +21,7 @@ public class Nota {
 	private String tipo;
 	
 	public static final String EXAMEN = "Examen";
-	public static final String TRABAJO_PRACTICO = "Trabajo práctico";
+	public static final String TRABAJO_PRACTICO = "Trabajo prï¿½ctico";
 	public static final String CONCEPTO = "Concepto";
 	public static final String NOTA_FINAL_TRIMESTRAL = "Nota final trimestral";
 	public static final String DICIEMBRE = "Diciembre";

@@ -41,7 +41,7 @@ public class ServicioConfiguracion {
 		gConfiguracion = new GestorParametroConfiguracion();
 	}
 
-	public Boolean addParametro(ParametroConfiguracion parametroConfiguracion) throws Exception{
+	public static Boolean addParametro(ParametroConfiguracion parametroConfiguracion) throws Exception{
 		try {
 			if (parametroConfiguracion.getIdParametroConfiguracion() == null) {
 				gConfiguracion.add(parametroConfiguracion);
