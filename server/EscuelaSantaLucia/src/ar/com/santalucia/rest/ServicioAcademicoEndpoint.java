@@ -1655,6 +1655,17 @@ public class ServicioAcademicoEndpoint {
 			return Response.serverError().build();
 		}
 	}
+	
+	@POST
+	@Path("/generarCbteInscripcion/")
+	public Response generarComprobanteInscripcionMesa(final Long[] datos) {
+		try {
+			setInstance();
+			return Response.ok(servicioLlamadoAcademico.generarComprobanteInscripcionMesa(datos[0], datos[1], datos[2])).build();
+		} catch (Exception ex) {
+			return Response.serverError().build();
+		}
+	}
 }
 	
 

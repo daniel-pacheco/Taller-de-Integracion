@@ -23,6 +23,7 @@ import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinNotasHist;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorPersonal;
 import ar.com.santalucia.dominio.dto.ActaVolanteExamenesDTO;
+import ar.com.santalucia.dominio.dto.ComprobanteInscripcionMesaDTO;
 import ar.com.santalucia.dominio.dto.DetalleActaVolanteDTO;
 import ar.com.santalucia.dominio.dto.DetallePreviaDTO;
 import ar.com.santalucia.dominio.dto.InscripcionConsultaDTO;
@@ -787,6 +788,37 @@ public class ServicioLlamadoAcademico {
 		}
 	}
 	
+	public ComprobanteInscripcionMesaDTO generarComprobanteInscripcionMesa(Long idAlumno, Long idMesa, Long idLlamado) throws Exception {
+		ServicioAcademico sAcademico = new ServicioAcademico();
+		ComprobanteInscripcionMesaDTO cbte = new ComprobanteInscripcionMesaDTO();
+		Inscripcion inscripcion = new Inscripcion();
+		inscripcion = buscarInscripcion(idAlumno, idLlamado);
+		Mesa mesa = new Mesa();
+		
+		for (Mesa m : inscripcion.getListaMesas()) {
+			if (m.getIdMesa().equals(idMesa)) {
+				mesa = m;
+				break;
+			}
+		}
+		cbte.setAnio(sAcademico.getMateriaDTO(mesa.getMateria().getIdMateria()).getAnio());
+		cbte.setMateria(mesa.getMateria().getNombre());
+		cbte.setFechaHoraInicioMesa(mesa.getFechaHoraInicio());
+		cbte.setFechaHoraFinMesa(mesa.getFechaHoraFin());
+		Alumno alumno = (Alumno) gAlumno.getById(idAlumno);
+		cbte.setNombreAlumno(alumno.getNombre());
+		cbte.setApellidoAlumno(alumno.getApellido());
+		cbte.setDniAlumno(alumno.getNroDocumento());
+		Llamado llamado = gLlamado.getById(idLlamado);
+		cbte.setPeriodo(llamado.getDescripcion());
+		
+		cbte.setFechaHoraActual(Calendar.getInstance().getTime());
+		
+		// generar en endpoint el usuario que lo genera
+		
+		return cbte;
+	}
+	
 	
 	// ---------------------- MÉTODOS AUXILIARES PRIVADOS, PÚBLICOS y PACKAGE ---------------------------------------
 	
@@ -1158,4 +1190,5 @@ public class ServicioLlamadoAcademico {
 		}
 	}
 
+	
 }
