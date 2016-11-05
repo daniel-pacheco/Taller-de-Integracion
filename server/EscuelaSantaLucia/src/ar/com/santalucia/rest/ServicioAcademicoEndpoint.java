@@ -19,6 +19,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import ar.com.santalucia.dominio.dto.ActaVolanteExamenesDTO;
 import ar.com.santalucia.dominio.dto.AnioDTO;
 import ar.com.santalucia.dominio.dto.DetallePreviaDTO;
 import ar.com.santalucia.dominio.dto.MateriaAltaDTO;
@@ -1662,6 +1663,17 @@ public class ServicioAcademicoEndpoint {
 		try {
 			setInstance();
 			return Response.ok(servicioLlamadoAcademico.generarComprobanteInscripcionMesa(datos[0], datos[1], datos[2])).build();
+		} catch (Exception ex) {
+			return Response.serverError().build();
+		}
+	}
+	
+	@POST
+	@Path("/calificarMesa/")
+	public Response calificarMesa(ActaVolanteExamenesDTO actaVolanteExamenesDTO) {
+		try {
+			setInstance();
+			return Response.ok(servicioLlamadoAcademico.calificarEnMesa(actaVolanteExamenesDTO, 0L)).build();
 		} catch (Exception ex) {
 			return Response.serverError().build();
 		}

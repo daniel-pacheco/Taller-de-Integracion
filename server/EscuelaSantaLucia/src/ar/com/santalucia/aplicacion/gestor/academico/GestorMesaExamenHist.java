@@ -50,7 +50,22 @@ public class GestorMesaExamenHist extends Gestor<MesaExamenHist>
 	}
 
 	@Override
-	public void modify(MesaExamenHist object) throws Exception {}
+	public void modify(MesaExamenHist object) throws Exception {
+		try {
+			this.validar(object);
+			setSession();
+			setTransaction();
+			mesaExamenHistDAO.attachDirty(object);
+			sesionDeHilo.getTransaction().commit();
+		} catch (ValidacionException ex) {
+			throw ex;
+		} catch (Exception ex) {
+			setSession();
+			setTransaction();
+			sesionDeHilo.getTransaction().rollback();
+			throw new Exception("Ha ocurrido un problema al eliminar la MESAEXAMENHIST: " + ex.getMessage());
+		}
+	}
 
 	@Override
 	public void delete(MesaExamenHist object) throws Exception {}

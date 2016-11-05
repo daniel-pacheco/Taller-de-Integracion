@@ -12,11 +12,12 @@ import ar.com.santalucia.dominio.modelo.desempenio.Nota;
  *
  */
 
-// Ultimo modificador: Ariel Ramirez @ 23-08-2016
+// Ultimo modificador: Ariel Ramirez @ 24-10-2016
 
 public class MesaExamenHist {
 	private Long idMesaExamenHist;
 	private Long idActaVolanteExamen;
+	private Long idDetalleActaVolante;
 	private Float nota;
 	private Boolean asistencia;
 	private Date fechaInscripcion;
@@ -45,17 +46,22 @@ public class MesaExamenHist {
 		super();
 	}
 
-	public MesaExamenHist(Long idMesaExamen, Float nota, Boolean asistencia, Date fechaInscripcion,
-			String nombreMateria, Long dniDocente1, String nombreDocente1, String apellidoDocente1, Long dniDocente2,
-			String nombreDocente2, String apellidoDocente2, Long dniDocente3, String nombreDocente3,
-			String apellidoDocente3, Long dniAlumno, String nombreAlumno, String apellidoAlumno, Date horaInicioMesa,
-			Date horaFinMesa) {
+	public MesaExamenHist(Long idMesaExamenHist, Long idActaVolanteExamen, Long idDetalleActaVolante, Float nota,
+			Boolean asistencia, Date fechaInscripcion, String nombreMateria, String anio, Integer cicloLectivoMateria,
+			Long dniDocente1, String nombreDocente1, String apellidoDocente1, Long dniDocente2, String nombreDocente2,
+			String apellidoDocente2, Long dniDocente3, String nombreDocente3, String apellidoDocente3, Long dniAlumno,
+			String nombreAlumno, String apellidoAlumno, Date fechaHoraInicioMesa, Date fechaHoraFinMesa,
+			String nombreEquivalencia, String anioEquivalencia, Boolean estado) {
 		super();
-		this.idMesaExamenHist = idMesaExamen;
+		this.idMesaExamenHist = idMesaExamenHist;
+		this.idActaVolanteExamen = idActaVolanteExamen;
+		this.idDetalleActaVolante = idDetalleActaVolante;
 		this.nota = nota;
 		this.asistencia = asistencia;
 		this.fechaInscripcion = fechaInscripcion;
 		this.nombreMateria = nombreMateria;
+		this.anio = anio;
+		this.cicloLectivoMateria = cicloLectivoMateria;
 		this.dniDocente1 = dniDocente1;
 		this.nombreDocente1 = nombreDocente1;
 		this.apellidoDocente1 = apellidoDocente1;
@@ -68,8 +74,11 @@ public class MesaExamenHist {
 		this.dniAlumno = dniAlumno;
 		this.nombreAlumno = nombreAlumno;
 		this.apellidoAlumno = apellidoAlumno;
-		this.setFechaHoraInicioMesa(horaInicioMesa);
-		this.setFechaHoraFinMesa(horaFinMesa);
+		this.fechaHoraInicioMesa = fechaHoraInicioMesa;
+		this.fechaHoraFinMesa = fechaHoraFinMesa;
+		this.nombreEquivalencia = nombreEquivalencia;
+		this.anioEquivalencia = anioEquivalencia;
+		this.estado = estado;
 	}
 
 	public Long getIdMesaExamenHist() {
@@ -270,6 +279,14 @@ public class MesaExamenHist {
 
 	public void setEstado(Boolean estado) {
 		this.estado = estado;
+	}
+
+	public Long getIdDetalleActaVolante() {
+		return idDetalleActaVolante;
+	}
+
+	public void setIdDetalleActaVolante(Long idDetalleActaVolante) {
+		this.idDetalleActaVolante = idDetalleActaVolante;
 	}
 
 }

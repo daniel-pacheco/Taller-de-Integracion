@@ -20,6 +20,7 @@ public class ActaVolanteExamenes {
 	private Date fechaMesa;
 	private Date horaInicio;
 	private Date horaFin;
+	private String anio;
 	private Personal tribunal1;
 	private Personal tribunal2;
 	private Personal tribunal3;
@@ -33,7 +34,7 @@ public class ActaVolanteExamenes {
 	}
 
 	public ActaVolanteExamenes(Long idActaVolanteExamen, Long idLlamado,String nombreLlamado, Long idMesa, String nombreMesa, Date fechaMesa, Date horaInicio,
-			Date horaFin, Personal tribunal1, Personal tribunal2, Personal tribunal3, Integer cicloLectivo,
+			Date horaFin, String anio, Personal tribunal1, Personal tribunal2, Personal tribunal3, Integer cicloLectivo,
 			Set<DetalleVolante> detalles, Boolean estado, Boolean modificable) {
 		super();
 		this.idActaVolanteExamen = idActaVolanteExamen;
@@ -44,6 +45,7 @@ public class ActaVolanteExamenes {
 		this.fechaMesa = fechaMesa;
 		this.horaInicio = horaInicio;
 		this.horaFin = horaFin;
+		this.anio = anio;
 		this.tribunal1 = tribunal1;
 		this.tribunal2 = tribunal2;
 		this.tribunal3 = tribunal3;
@@ -171,6 +173,14 @@ public class ActaVolanteExamenes {
 
 	public void setNombreMesa(String nombreMesa) {
 		this.nombreMesa = nombreMesa;
+	}
+
+	public String getAnio() {
+		return anio;
+	}
+
+	public void setAnio(String anio) {
+		this.anio = anio;
 	}
 	
 }

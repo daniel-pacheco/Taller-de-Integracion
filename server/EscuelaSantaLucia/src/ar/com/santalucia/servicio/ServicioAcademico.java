@@ -628,7 +628,7 @@ public class ServicioAcademico {
 		return anioAux;
 	}
 	
-	private Long materiaPerteneceAnio(Materia materia) throws Exception{
+	Long materiaPerteneceAnio(Materia materia) throws Exception{
 		// Devolver el año al que pertenece la materia
 		// Obtener los años activo
 		// Eecorrer las materias y devolver el id de año (si se encuentra)
@@ -702,7 +702,7 @@ public class ServicioAcademico {
 	 * @throws ValidacionException
 	 * @throws Exception
 	 */
-	private Boolean existeMateriaEnAnio(Boolean modificacion, String materia, Long idAnio) throws ValidacionException, Exception{
+	 private Boolean existeMateriaEnAnio(Boolean modificacion, String materia, Long idAnio) throws ValidacionException, Exception{
 		try{
 			ValidacionException vEx = new ValidacionException();
 			Integer contador = 0;
