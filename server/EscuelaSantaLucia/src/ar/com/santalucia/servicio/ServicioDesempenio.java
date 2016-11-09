@@ -933,29 +933,22 @@ public class ServicioDesempenio {
 			ServicioAlumnadoAcademico sAlumnado = new ServicioAlumnadoAcademico();
 			List<RegistroPasajeAlumnos> resultadoCargaRpa = this.verificarRPA(pasajeDTOin);
 			List<RegistroPasajeAlumnos> resultadoFinal = (resultadoCargaRpa == null ? pasajeDTOin : resultadoCargaRpa);
-			//this.validarCoherencia(pasajeDTOin);
-			// se setea el parametro en 'true' para indicar que el proceso inició
 			ParametroConfiguracion p = ServicioConfiguracion.getParametro("PASAJE_ALUMNOS_EN_PROGRESO");
 			p.setValor("true");
 			ServicioConfiguracion.addParametro(p);
 			for (RegistroPasajeAlumnos rpa : resultadoFinal) {
 				Alumno alumnoObtenido = (Alumno) gAlumno.getById(rpa.getIdAlumno());
 				BoletinNotas boletinNotasAlumno = (BoletinNotas) ServicioDesempenio.encontrarBoletinDeAlumno(alumnoObtenido, this.BUSCAR_BOLETIN_NOTAS);
-				// ver si se va a usar el boletin de inasistencias
-				// >> pasar boletín a histórico
 				this.pasarAHistorico(boletinNotasAlumno);
-				// nulleo el boletín porque puede llegar a dar problemas cuando entre al IF
 				boletinNotasAlumno = null;
 				sAlumnado.desvincularAlumnoDeCurso(alumnoObtenido, rpa.getIdCursoActual());
 				sAlumnado.asignarAlumnoACurso(alumnoObtenido, rpa.getIdCursoSiguiente());
 				rpa.setProcesado(true);
 				gRegistroPasajeAlumnos.modify(rpa);
 			}
-			// se setea el parametro en 'false' para indicar que el proceso finalizó
 			ParametroConfiguracion p2 = ServicioConfiguracion.getParametro("PASAJE_ALUMNOS_EN_PROGRESO");
 			p2.setValor("false");
 			ServicioConfiguracion.addParametro(p2);
-			// eliminar datos de la tabla registro
 			borrarRPA();
 			return true;
 		} catch(ValidacionException ex) {
