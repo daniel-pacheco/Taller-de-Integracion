@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -236,12 +237,12 @@ public class ServicioLlamadoAcademico {
 						listaMesa.add(mesa);			
 						inscripcion.setListaMesas(listaMesa);
 						gInscripcion.modify(inscripcion);   //Aca se vincula la inscripcion con la mesa
-						agregarDetalleDeActaVolante(idMesa, llamado.getIdLlamado(), idAlumno);
+						agregarDetalleDeActaVolante(idMesa, llamado.getIdLlamado(), idAlumno, inscripcion.getFecha());
 					}
 				}else{
 					inscripcion.getListaMesas().add(mesa);
 					gInscripcion.modify(inscripcion);
-					agregarDetalleDeActaVolante(idMesa, llamado.getIdLlamado(), idAlumno);
+					agregarDetalleDeActaVolante(idMesa, llamado.getIdLlamado(), idAlumno, fechaActual.getTime());
 				}
 			}else{
 				ValidacionException ex = new ValidacionException();
@@ -254,7 +255,6 @@ public class ServicioLlamadoAcademico {
 		}
 		catch (Exception ex) {
 			throw new Exception("No se pudo agregar la Inscripcion: " + ex.getMessage());
-			//e.printStackTrace();
 		}
 		return true;
 	}
@@ -846,7 +846,9 @@ public class ServicioLlamadoAcademico {
 			volcarDatosAHistoricos(actaVolanteNuevo);
 			actaVolante.setModificable(false);
 			actaVolante.setEstado(false);
-			gActaVolanteExamenes.modify(actaVolante);
+			//gActaVolanteExamenes.modify(actaVolante);
+			gActaVolanteExamenes.delete(actaVolante); //elimino acta volantes viejos, la info está en histórico
+			
 			return true;
 		}catch(ValidacionException vEx){
 			throw vEx;
@@ -1003,7 +1005,6 @@ public class ServicioLlamadoAcademico {
 			List<Personal> tribunal = new ArrayList<Personal>(); //tomo los docentes del tribunal de la mesa
 			tribunal.addAll(mesa.getIntegrantesTribunal());
 			actaVolanteExamen.setCicloLectivo(Integer.valueOf(ServicioConfiguracion.getParametro("CICLO_LECTIVO").getValor()));
-			actaVolanteExamen.setEstado(true);
 			actaVolanteExamen.setIdLlamado(llamado.getIdLlamado());
 			actaVolanteExamen.setNombreLlamado(llamado.getDescripcion());
 			actaVolanteExamen.setIdMesa(mesa.getIdMesa());
@@ -1195,7 +1196,7 @@ public class ServicioLlamadoAcademico {
 	 * @throws ValidacionException
 	 * @throws Exception
 	 */
-	private void agregarDetalleDeActaVolante(Long idMesa, Long idLlamado, Long idAlumno) throws ValidacionException, Exception{
+	private void agregarDetalleDeActaVolante(Long idMesa, Long idLlamado, Long idAlumno, Date fechaInscripcion) throws ValidacionException, Exception{
 		try{
 			ActaVolanteExamenes actaVolante = new ActaVolanteExamenes();
 			DetalleVolante detalleVolante = new DetalleVolante();
@@ -1203,6 +1204,7 @@ public class ServicioLlamadoAcademico {
 			detalleVolante.setAlumno((Alumno)gAlumno.getById(idAlumno));
 			detalleVolante.setAsistencia(false);
 			detalleVolante.setNota(null);
+			detalleVolante.setFechaInscripcion(fechaInscripcion);
 			gDetalleVolante.add(detalleVolante);
 			actaVolante.getDetalles().add(detalleVolante);
 			gActaVolanteExamenes.modify(actaVolante);
@@ -1297,10 +1299,7 @@ public class ServicioLlamadoAcademico {
 				List<MesaExamenHist> mesaExamenHist = new ArrayList<MesaExamenHist>();
 				mesaExamenHist=gMEHist.getByExample(new MesaExamenHist(null, idActaVolante, idDetalle.getIdDetalleVolante(), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, true));
 				for (MesaExamenHist mesaHist : mesaExamenHist){
-					//MesaExamenHist mesaHistAux = new MesaExamenHist();
-					//mesaHistAux = mesaHist; 	//Copia para evitar Unmodificable random collection...
 					mesaHist.setEstado(false);
-					//mesaHistAux.setEstado(false);
 					gMEHist.modify(mesaHist);
 				}
 			}
@@ -1341,6 +1340,7 @@ public class ServicioLlamadoAcademico {
 				nuevoDetalle.setIdDetalleVolante(null);
 				nuevoDetalle.setAsistencia(det.getAsistencia());
 				nuevoDetalle.setNota(det.getNota());
+				nuevoDetalle.setFechaInscripcion(detallePreexistente.getFechaInscripcion());
 				gDetalleVolante.add(nuevoDetalle);
 				nuevosDetalles.add(nuevoDetalle);
 				gDetalleVolante.deleteById(det.getIdDetalleVolante()); // Elimina los detalles ya viejos
@@ -1375,6 +1375,7 @@ public class ServicioLlamadoAcademico {
 				registroHistorico.setDniAlumno(detalle.getAlumno().getNroDocumento());
 				registroHistorico.setNota(detalle.getNota());
 				registroHistorico.setAsistencia(detalle.getAsistencia());
+				registroHistorico.setFechaInscripcion(detalle.getFechaInscripcion());
 				registroHistorico.setDniDocente1(actaVolanteExamen.getTribunal1().getNroDocumento());
 				registroHistorico.setApellidoDocente1(actaVolanteExamen.getTribunal1().getApellido());
 				registroHistorico.setNombreDocente1(actaVolanteExamen.getTribunal1().getNombre());

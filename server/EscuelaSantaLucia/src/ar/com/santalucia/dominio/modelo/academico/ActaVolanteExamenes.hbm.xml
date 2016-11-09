@@ -41,7 +41,7 @@
         <property name="cicloLectivo" type="java.lang.Integer">
             <column name="CICLOLECTIVO" />
         </property>
-        <property name="anio" type="java.lang.Integer">
+        <property name="anio" type="java.lang.String">
             <column name="ANIO" />
         </property>
         <property name="estado" type="java.lang.Boolean">

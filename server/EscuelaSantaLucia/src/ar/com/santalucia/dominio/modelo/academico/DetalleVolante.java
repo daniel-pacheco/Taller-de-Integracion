@@ -1,5 +1,7 @@
 package ar.com.santalucia.dominio.modelo.academico;
 
+import java.util.Date;
+
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
 
 /**
@@ -12,17 +14,19 @@ public class DetalleVolante {
 	private Alumno alumno;
 	private Boolean asistencia;
 	private Float nota;
+	private Date fechaInscripcion;
 	
 	public DetalleVolante() {
 		super();
 	}
 
-	public DetalleVolante(Long idDetalleVolante, Alumno alumno, Boolean asistencia, Float nota) {
+	public DetalleVolante(Long idDetalleVolante, Alumno alumno, Boolean asistencia, Float nota, Date fechaInscripcion) {
 		super();
 		this.idDetalleVolante = idDetalleVolante;
 		this.alumno = alumno;
 		this.asistencia = asistencia;
 		this.nota = nota;
+		this.fechaInscripcion = fechaInscripcion;
 	}
 
 	public Long getIdDetalleVolante() {
@@ -80,6 +84,14 @@ public class DetalleVolante {
 		} else if (!idDetalleVolante.equals(other.idDetalleVolante))
 			return false;
 		return true;
+	}
+
+	public Date getFechaInscripcion() {
+		return fechaInscripcion;
+	}
+
+	public void setFechaInscripcion(Date fechaInscripcion) {
+		this.fechaInscripcion = fechaInscripcion;
 	}
 
 }
