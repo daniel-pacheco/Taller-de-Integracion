@@ -1,0 +1,120 @@
+<div class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" style="width: 65%; margin: inherint inherint">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">{{title}}: <small>Realice la accion que desee y presione guardar para concretar los cambios</small></h4>
+			</div>
+			
+			<div class="modal-body">
+				<div class="container">
+
+					<div class="row" style="margin-top: 10px;">
+						<div class="col-md-11 box-margin-lib personal-info table-responsive">
+							<table class="table table-hover table-striped" export-table="dir-listado-alumnos"> <!-- se usa ng-class para sacarle el export-table cuando no esta mostrandose esta tabla -->
+								<thead class="orderHead">
+									<tr>
+										<th></th>
+										<th ng-click="orderDocente('nombre')" role="button">Nombre
+											<span class="sortorder" ng-show="predicate === 'nombre'" ng-class="{reverse:reverse}"></span>
+										</th>
+										<th ng-click="orderDocente('apellido')" role="button">Apellido
+											<span class="sortorder" ng-show="predicate === 'apellido'" ng-class="{reverse:reverse}"></span>
+										</th>
+										<th>DNI</th>
+										<th ng-click="orderDocente('anio')" role="button">A&ntilde;o
+											<span class="sortorder" ng-show="predicate === 'anio'" ng-class="{reverse:reverse}"></span>
+										</th>
+										<th ng-click="orderDocente('curso')" role="button">Curso
+											<span class="sortorder" ng-show="predicate === 'curso'" ng-class="{reverse:reverse}"></span>
+										</th>
+									</tr>
+								</thead>
+								<tbody style="overflow-y: scroll; overflow-x: scroll">
+									<tr ng-repeat="alumno in alumnoData |  orderBy:predicate:reverse | filter:alumnoFilter | filter:dropDownAnioValue " ng-style="alumno.selected && {'background-color': '#ddd'}">
+										<td ng-click="seleccionarCheckbox(alumno)"><input type="checkbox" ng-init="true" ng-model="selectAlumno" ng-checked="alumno.selected"></td>
+										<td ng-click="seleccionarCheckbox(alumno)">{{alumno.nombre}}</td>
+										<td ng-click="seleccionarCheckbox(alumno)">{{alumno.apellido}}</td>
+										<td ng-click="seleccionarCheckbox(alumno)">{{alumno.nroDocumento}}</td>
+										<td ng-click="seleccionarCheckbox(alumno)">{{alumno.anio}}</td>
+										<td ng-click="seleccionarCheckbox(alumno)">{{alumno.curso}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<form class="form-horizontal media" name="form" ng-submit="addInasistencia()">
+						<div class="media-body">
+							<div class="row">	
+								<div class="col-md-10">
+									<div class="alert alert-warning alert-dismissible" role="alert">
+										<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+										<span class="glyphicon glyphicon-asterisk small"></span>Campos obligatorios
+									</div>
+									<div class="form-group col-md-10" ng-class="{ 'has-error': form.fecha.$touched && form.fecha.$invalid }">
+										<div class="col-md-4 control-label">
+											<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span>  Fecha:</label>
+										</div>
+										<div class="col-md-6">
+											<input type="date" name="fecha" class="form-control validate" ng-model="nuevaInasistencia.fecha" value="inasistencia.fecha | amDateFormat:'DD/MM/YYYY'" placeholder="10/10/1010" maxlength="10" required/>
+											<div ng-messages="form.fecha.$error" ng-if="form.fecha.$touched && form.fecha.$invalid">
+												<div ng-message="pattern" class="help-block">Formato invalido</div>
+												<div ng-message="required" class="help-block">Complete este campo</div>
+											</div>
+										</div>
+									</div>
+									<div class="form-group  col-md-10" ng-class="{ 'has-error': form.concepto.$touched && form.concepto.$invalid }">
+										<div class="col-md-4 control-label">
+											<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span>  Concepto:</label>
+										</div>
+										<div class="col-md-6">
+											<select class="dropdown-toggle form-control" name="concepto" ng-model="nuevaInasistencia.concepto" required>
+												<option value="" disabled selected>Concepto</option>
+												<option ng-repeat="option in inasistenciasOptions.CONCEPTO" value="{{option}}">{{option}}</option>
+											</select>
+											<div ng-messages="form.concepto.$error" ng-if="form.concepto.$touched && form.concepto.$invalid">
+												<div ng-message="required" class="help-block">Complete este campo</div>
+											</div>
+										</div>
+									</div>
+									<div class="form-group  col-md-10" ng-class="{ 'has-error': form.cantidad.$touched && form.cantidad.$invalid }">
+										<div class="col-md-4 control-label">
+											<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span>  Valor:</label>
+										</div>
+										<div class="col-md-6">
+											<select class="dropdown-toggle form-control" name="cantidad" ng-model="nuevaInasistencia.cantidad" required ng-options="valor as valor for valor in inasistenciasOptions.VALORES">
+												<option value="" disabled selected>Valor</option>
+											</select>
+											<div ng-messages="form.cantidad.$error" ng-if="form.cantidad.$touched && form.cantidad.$invalid">
+												<div ng-message="required" class="help-block">Complete este campo</div>
+											</div>
+										</div>
+									</div>
+									<div class="form-group col-md-10" ng-class="{ 'has-error': form.justificada.$touched && form.justificada.$invalid }">
+										<div class="col-md-4 control-label">
+											<label for=""><span class="glyphicon glyphicon-asterisk alert-warning small"></span>  Justificada:</label>
+										</div>
+										<div class="col-md-6">
+											<select class="dropdown-toggle form-control" name="justificada" ng-model="nuevaInasistencia.justificada" required ng-options="justificada[1] as justificada[0] for justificada in inasistenciasOptions.JUSTIFICADA">
+												<option value="" disabled selected>Justif.</option>									
+											</select>
+											<div ng-messages="form.justificada.$error" ng-if="form.justificada.$touched && form.justificada.$invalid">
+												<div ng-message="required" class="help-block">Complete este campo</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="" class="btn btn-danger" data-dismiss="modal" ng-click="close(false)">Cerrar</button>
+				<button type="" class="btn btn-primary" data-dismiss="modal" autofocus ng-disabled="!form.$valid" ng-click="close(true)">Guardar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+

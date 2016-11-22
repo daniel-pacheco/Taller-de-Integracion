@@ -536,13 +536,7 @@ public class ServicioAcademico {
 		return true;
 	}*/
 	
-	public Mesa getMesa(Long idMesa) throws Exception { // EN ENDPOINT
-		try {
-			return gMesa.getById(idMesa);
-		} catch (Exception ex) {
-			throw new Exception("No se pudo obtner la MESA: " + ex.getMessage());
-		}
-	}/*
+	/*
 	
 	public List<Mesa> getMesas(Mesa example) throws Exception{ // EN ENDPOINT
 		try {
@@ -552,14 +546,7 @@ public class ServicioAcademico {
 		}
 	}*/
 	
-	public Boolean deleteMesa(Mesa mesa) throws Exception { // EN ENDPOINT
-		try {
-			gMesa.delete(mesa);
-		} catch (Exception ex) {
-			throw new Exception("No se pudo eliminar la MESA: " + ex.getMessage());
-		}
-		return true;
-	}
+	
 
 	// ##### MÉTODOS AUXILIARES #####
 	
@@ -641,7 +628,7 @@ public class ServicioAcademico {
 		return anioAux;
 	}
 	
-	private Long materiaPerteneceAnio(Materia materia) throws Exception{
+	Long materiaPerteneceAnio(Materia materia) throws Exception{
 		// Devolver el año al que pertenece la materia
 		// Obtener los años activo
 		// Eecorrer las materias y devolver el id de año (si se encuentra)
@@ -715,7 +702,7 @@ public class ServicioAcademico {
 	 * @throws ValidacionException
 	 * @throws Exception
 	 */
-	private Boolean existeMateriaEnAnio(Boolean modificacion, String materia, Long idAnio) throws ValidacionException, Exception{
+	 private Boolean existeMateriaEnAnio(Boolean modificacion, String materia, Long idAnio) throws ValidacionException, Exception{
 		try{
 			ValidacionException vEx = new ValidacionException();
 			Integer contador = 0;

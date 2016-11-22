@@ -58,6 +58,20 @@ public class GestorDetalleVolante extends Gestor<DetalleVolante> implements ILis
 			throw new Exception("Ha ocurrido un problema al eliminar el Detalle de Volante: " + ex.getMessage());
 		}
 	}
+	
+	/**
+	 * Llama a delete indirectamente buscando primero la entidad por Id
+	 * @param idDetalleVolante
+	 * @throws Exception
+	 */
+	public void deleteById(Long idDetalleVolante) throws Exception{
+		try{
+			DetalleVolante detalle = getById(idDetalleVolante);
+			delete(detalle);
+		}catch(Exception ex){
+			throw ex;
+		}
+	}
 
 	@Override
 	public DetalleVolante getById(Long id) throws Exception {

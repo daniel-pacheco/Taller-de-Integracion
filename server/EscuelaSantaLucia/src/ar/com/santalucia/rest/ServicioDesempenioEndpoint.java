@@ -28,6 +28,7 @@ import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotas;
 import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotasHist;
 import ar.com.santalucia.dominio.modelo.desempenio.Inasistencia;
 import ar.com.santalucia.dominio.modelo.desempenio.Nota;
+import ar.com.santalucia.dominio.modelo.desempenio.RegistroPasajeAlumnos;
 import ar.com.santalucia.dominio.modelo.desempenio.Trimestre;
 import ar.com.santalucia.dominio.modelo.sistema.login.Login;
 import ar.com.santalucia.excepciones.InasistenciaException;
@@ -808,6 +809,24 @@ public class ServicioDesempenioEndpoint {
 				.build();
 		}
 	}
+	
+	@POST	
+	@Path("/procesarPromocion/")
+	public Response procesarPromocion(final List<RegistroPasajeAlumnos> arregloRPA) {
+//			@HeaderParam("rol") final String rolIn,
+//			@HeaderParam("auth0") final String token) {
+		try {
+			setInstance();
+			return Response.ok(servicioDesempenio.procesarPromocion(arregloRPA)).build();
+		} catch (Exception e) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new FrontMessage("Ha ocurrido un problema interno. Vuelva a intentar la operación más tarde.", 
+							FrontMessage.CRITICAL))
+					.build();
+		}
+	}
+	
+	
 	
 	/**
 	 * Devuelve una planilla trimestral para docente

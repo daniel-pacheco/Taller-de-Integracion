@@ -85,7 +85,7 @@ public class ServicioAlumnadoAcademico {
 	 * @throws ValidacionException
 	 * @throws Exception
 	 */
-	private void crearBoletinNotas(Curso curso, Alumno alumno) throws ValidacionException, Exception{
+	void crearBoletinNotas(Curso curso, Alumno alumno) throws ValidacionException, Exception{
 		try{
 			Anio anio = this.cursoPerteneceAnio(curso);
 			Set<Materia> materias = anio.getListaMaterias();
@@ -120,7 +120,7 @@ public class ServicioAlumnadoAcademico {
 	 * @throws ValidacionException
 	 * @throws Exception
 	 */
-	private void crearBoletinInasistencias(Curso curso, Alumno alumno) throws ValidacionException, Exception{
+	void crearBoletinInasistencias(Curso curso, Alumno alumno) throws ValidacionException, Exception{
 	try{
 		Anio anio = this.cursoPerteneceAnio(curso);
 		BoletinInasistencias boletinInasistencias = (BoletinInasistencias) ServicioDesempenio

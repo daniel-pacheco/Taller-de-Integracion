@@ -20,6 +20,7 @@ import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinNotas;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorBoletinNotasHist;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorInasistencia;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorNota;
+import ar.com.santalucia.aplicacion.gestor.desempenio.GestorRegistroPasajeAlumnos;
 import ar.com.santalucia.aplicacion.gestor.desempenio.GestorTrimestre;
 import ar.com.santalucia.aplicacion.gestor.sistema.configuracion.GestorParametroConfiguracion;
 import ar.com.santalucia.aplicacion.gestor.usuario.GestorAlumno;
@@ -36,7 +37,6 @@ import ar.com.santalucia.dominio.dto.ListaPasajeAlumnosDTO;
 import ar.com.santalucia.dominio.dto.MateriaDTO;
 import ar.com.santalucia.dominio.dto.MateriaNotaDTO;
 import ar.com.santalucia.dominio.dto.PasajeAlumnosDTO;
-import ar.com.santalucia.dominio.dto.PasajeEntradaDTO;
 import ar.com.santalucia.dominio.dto.PlanillaNotasBoletinDTO;
 import ar.com.santalucia.dominio.dto.PlanillaTrimestralDTO;
 import ar.com.santalucia.dominio.dto.PlanillaTrimestralDocenteDTO;
@@ -49,6 +49,7 @@ import ar.com.santalucia.dominio.modelo.desempenio.BoletinNotasHist;
 import ar.com.santalucia.dominio.modelo.desempenio.Inasistencia;
 import ar.com.santalucia.dominio.modelo.desempenio.MateriaNotasBoletin;
 import ar.com.santalucia.dominio.modelo.desempenio.Nota;
+import ar.com.santalucia.dominio.modelo.desempenio.RegistroPasajeAlumnos;
 import ar.com.santalucia.dominio.modelo.desempenio.Trimestre;
 import ar.com.santalucia.dominio.modelo.sistema.configuracion.ParametroConfiguracion;
 import ar.com.santalucia.dominio.modelo.usuarios.Alumno;
@@ -75,6 +76,7 @@ public class ServicioDesempenio {
 	private GestorInasistencia gInasistencia;
 	private GestorBoletinInasistencias gBoletinInasistencias;
 	private GestorParametroConfiguracion gParametroConfiguracion;
+	private GestorRegistroPasajeAlumnos gRegistroPasajeAlumnos;
 	
 	public static String BUSCAR_BOLETIN_NOTAS = "bn";
 	public static String BUSCAR_BOLETIN_INASISTENCIAS = "bi";
@@ -91,6 +93,7 @@ public class ServicioDesempenio {
 			gInasistencia = new GestorInasistencia();
 			gBoletinInasistencias = new GestorBoletinInasistencias();
 			gParametroConfiguracion = new GestorParametroConfiguracion();
+			gRegistroPasajeAlumnos = new GestorRegistroPasajeAlumnos();
 		} catch (Exception ex) {
 			throw new Exception("Ha ocurrido un problema al inicializar el servicio de operaciones básicas: "
 					+ ex.getMessage());
@@ -799,6 +802,9 @@ public class ServicioDesempenio {
 		}
 	}
 	
+	
+	/*------ <<BEGIN>> PROCESO DEL PASAJE DE ALUMNOS -----------------*/
+	
 	/**
 	 * Devuelve un listado de DTO para la pantalla del pasaje de alumnos, por anio.
 	 * @param anio
@@ -878,31 +884,37 @@ public class ServicioDesempenio {
 	}
 	
 	/**
-	 * Genera una lista de ListaPasajeAlumnoDTO usando listaAlumnosPasajeCurso(anio,especialidad,curso) <br>
 	 * Obtiene todos los ListaPasajeAlumnoDTO de la totalidad de años existentes.
-	 * @return
+	 * Si el proceso del pasaje de alumnos quedó anteriormente sin terminar, este método
+	 * devuelve null.
+	 * 
+	 * <b>
+	 * En el caso del proceso sin terminar, el front tendría que llamar posteriormente al método
+	 * procesarPromocion enviando 'null' como parámetro.
+	 * </b>
+	 * 
+	 * @return List<ListaPasajeAlumnosDTO>, o <b>null</b> si el proceso no se terminó.
 	 */
 	public List<ListaPasajeAlumnosDTO> ObtenerArregloPasajeDTO() throws ValidacionException, Exception{
-		try{
-		// Obtener todos los años con especialidad y curso;
-		// Por cada año-especialidad-curso llamar a listaAlumnosPasajeCurso y encadenar los resultados entre todos los años
-			Long contadorEntes = 0L; // Cuenta cada combinación anio-especialidad-curso
+		try {
+			if (ServicioConfiguracion.getParametro("PASAJE_ALUMNOS_EN_PROGRESO").getValor().equals("true")) {
+				return null;
+			}
 			List<ListaPasajeAlumnosDTO> listaCompleta = new ArrayList<ListaPasajeAlumnosDTO>();
 			ServicioAcademico sAcademico = new ServicioAcademico();
 			List<AnioDTO> aniosDTO = sAcademico.getAniosDTO();
-			for(AnioDTO aDTO: aniosDTO){
-				for(CursoDTO cDTO: aDTO.getListaCursos()){
+			for(AnioDTO aDTO: aniosDTO) {
+				for(CursoDTO cDTO: aDTO.getListaCursos()) {
 					listaCompleta.add(listaAlumnosPasajeCurso(aDTO.getNombre(),aDTO.getEspecialidad(),cDTO.getDivision()));
-					contadorEntes = contadorEntes + cDTO.getCantAlu();
 				}
 			}
-		if(listaCompleta.size() == 0 || listaCompleta.size() != contadorEntes){
-			ValidacionException vEx = new ValidacionException();
-			vEx.addMensajeError("Ocurrió un problema: la lista generada está incompleta.");
-			throw vEx;
-		}
-		
-		return listaCompleta;
+			if(listaCompleta.size() == 0) {
+				ValidacionException vEx = new ValidacionException();
+				vEx.addMensajeError("Ocurrió un problema: la lista generada está incompleta.");
+				throw vEx;
+			}
+			
+			return listaCompleta;
 		
 		}catch(ValidacionException ex){
 			throw ex;
@@ -912,31 +924,84 @@ public class ServicioDesempenio {
 	}
 	
 	/**
-	 * Llama a los métodos encargados de generar una promoción, repetincia o graduación según sea el caso del alumno procesado.
+	 * 
 	 * @param listado
 	 * @return
 	 */
-	public Boolean ProcesarPromocion(List<PasajeEntradaDTO> pasajeDTOin) throws Exception{
-		try{
-			ServicioAcademico sAcademico = new ServicioAcademico();
-			List<AnioDTO> todosLosAnios = sAcademico.getAniosDTO();
-		}catch(ValidacionException ex){
+	public Boolean procesarPromocion(List<RegistroPasajeAlumnos> pasajeDTOin) throws Exception {
+		try {
+			ServicioAlumnadoAcademico sAlumnado = new ServicioAlumnadoAcademico();
+			List<RegistroPasajeAlumnos> resultadoCargaRpa = this.verificarRPA(pasajeDTOin);
+			List<RegistroPasajeAlumnos> resultadoFinal = (resultadoCargaRpa == null ? pasajeDTOin : resultadoCargaRpa);
+			ParametroConfiguracion p = ServicioConfiguracion.getParametro("PASAJE_ALUMNOS_EN_PROGRESO");
+			p.setValor("true");
+			ServicioConfiguracion.addParametro(p);
+			for (RegistroPasajeAlumnos rpa : resultadoFinal) {
+				Alumno alumnoObtenido = (Alumno) gAlumno.getById(rpa.getIdAlumno());
+				BoletinNotas boletinNotasAlumno = (BoletinNotas) ServicioDesempenio.encontrarBoletinDeAlumno(alumnoObtenido, this.BUSCAR_BOLETIN_NOTAS);
+				this.pasarAHistorico(boletinNotasAlumno);
+				boletinNotasAlumno = null;
+				sAlumnado.desvincularAlumnoDeCurso(alumnoObtenido, rpa.getIdCursoActual());
+				sAlumnado.asignarAlumnoACurso(alumnoObtenido, rpa.getIdCursoSiguiente());
+				rpa.setProcesado(true);
+				gRegistroPasajeAlumnos.modify(rpa);
+			}
+			ParametroConfiguracion p2 = ServicioConfiguracion.getParametro("PASAJE_ALUMNOS_EN_PROGRESO");
+			p2.setValor("false");
+			ServicioConfiguracion.addParametro(p2);
+			borrarRPA();
+			return true;
+		} catch(ValidacionException ex) {
 			throw ex;
-		}catch(Exception ex){
+		} catch(Exception ex) {
 			throw ex;
 		}
-		
-		
-		
-		return true;
 	}
 	
-	private void ValidarCoherencia(List<PasajeEntradaDTO> pasajeDTOin) throws Exception{
+	private void borrarRPA() throws Exception {
+		try {
+			List<RegistroPasajeAlumnos> todosRPA = gRegistroPasajeAlumnos.List();
+			for (RegistroPasajeAlumnos rpa : todosRPA) {
+				gRegistroPasajeAlumnos.delete(rpa);
+			}
+		} catch (Exception ex) {
+			throw ex;
+		}
+	}
+	
+	/**
+	 * cargarRPA: carga los registros para pasar los alumnos. Además controla que en la tabla de estos registros
+	 * no haya algo cargado (significaría que el proceso quedó a "a mitad de camino"). Devuelve el listado con los que
+	 * quedaron sin procesar o null en el caso de que no haya registros guardados 
+	 * (es decir, el proceso se realizó correctamente).
+	 * @param pasajeDTOin
+	 * @return List<RegistroPasajeAlumno> (o null)
+	 * @throws Exception
+	 */
+	private List<RegistroPasajeAlumnos> verificarRPA(List<RegistroPasajeAlumnos> pasajeDTOin) throws Exception {
+		List<RegistroPasajeAlumnos> rpaSinProcesar = new ArrayList<RegistroPasajeAlumnos>();
+		RegistroPasajeAlumnos rpaExample = new RegistroPasajeAlumnos();
+		rpaExample.setProcesado(false);
+		rpaSinProcesar = gRegistroPasajeAlumnos.getByExample(rpaExample);
+		// si hay elementos en la lista, es porque el proceso de pasaje de alumnos en algún momento
+		// falló, y no se borró el registro.
+		if (rpaSinProcesar.size() > 0) {
+			return rpaSinProcesar; 
+		} else {
+			// cargo el registro en la base de datos y retorno true
+			for (RegistroPasajeAlumnos rpa : pasajeDTOin) {
+				gRegistroPasajeAlumnos.add(rpa);
+			}
+			return null;
+		}
+	}
+
+	private void validarCoherencia(List<RegistroPasajeAlumnos> pasajeDTOin) throws Exception{
 		ServicioAcademico sAcademico = new ServicioAcademico();
 		List<AnioDTO> todosLosAnios = sAcademico.getAniosDTO();
 		Integer ordenActual, ordenSiguiente = 0;
 		try{
-			for(PasajeEntradaDTO p : pasajeDTOin){
+			for(RegistroPasajeAlumnos p : pasajeDTOin){
 				ordenActual = sAcademico.ObtenerOrdenAnio(p.getIdAnioActual());
 				ordenSiguiente = sAcademico.ObtenerOrdenAnioCurso(p.getIdCursoSiguiente());
 				if(true){
@@ -949,6 +1014,9 @@ public class ServicioDesempenio {
 			throw ex;
 		}
 	}
+	
+	/*------ <<END>> PROCESO DEL PASAJE DE ALUMNOS -----------------*/
+	
 	
 	/**
 	 * Devuelve una planilla trimestral para uso del docente.

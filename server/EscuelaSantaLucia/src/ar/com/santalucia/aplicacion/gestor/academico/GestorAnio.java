@@ -124,7 +124,7 @@ public class GestorAnio extends Gestor<Anio> implements IValidacionAnio, IListab
 		try {
 			setSession();
 			setTransaction();
-			ArrayList<Anio> listaAniosDevolver = (ArrayList<Anio>) anioDAO.findByExample((Anio) example);
+			ArrayList<Anio> listaAniosDevolver = (ArrayList<Anio>) anioDAO.findByExample(example);
 			sesionDeHilo.getTransaction().commit();
 			return listaAniosDevolver;
 		} catch (Exception ex) {

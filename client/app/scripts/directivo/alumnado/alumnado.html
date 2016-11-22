@@ -85,7 +85,7 @@
 				</div>
 				<div ng-show="mostrarBtnInasistencias" class="affix" role="complementary" data-offset-top="-60" bs-affix style="position: relative; text-align: center;">
 					<button ng-click="unCheckAll()"class="btn btn-info">Desmarcar Todos</button>
-					<button class="btn btn-warning" ng-click="metralleta()">Colocar Inasistencias</button>
+					<button class="btn btn-warning" ng-click="multiplesInasistencias()">Colocar Inasistencias</button>
 				</div>
 				<div></div>
 				<table class="table table-hover table-striped" export-table="dir-listado-alumnos"> <!-- se usa ng-class para sacarle el export-table cuando no esta mostrandose esta tabla -->
@@ -108,6 +108,7 @@
 							<th>Acciones</th>						
 						</tr>
 					</thead>
+					{{alumnoFilter}}
 					<tbody style="overflow-y: scroll; overflow-x: scroll">
 						<tr ng-repeat="alumno in alumnoData |  orderBy:predicate:reverse | filter:alumnoFilter | filter:dropDownAnioValue " ng-style="alumno.selected && {'background-color': '#ddd'}">
 							<td ng-click="seleccionarCheckbox(alumno)"><input type="checkbox" ng-init="true" ng-model="selectAlumno" ng-checked="alumno.selected"></td>
@@ -146,7 +147,7 @@
 			<h1>{{subtitle}}: <small>Ingrese los datos para crear un nuevo perfil
 				de alumno y haga clic en guardar cuando finalice</small></h1>
 				<hr>
-				<form class="form-horizontal media" name="formAlu" novalidate>
+				<form class="form-horizontal media" name="formAlu">
 					<div class="media-body">
 						<!-- <div class="container"> Pachec: probar esto en la resolución grande -->
 						<div class="row">

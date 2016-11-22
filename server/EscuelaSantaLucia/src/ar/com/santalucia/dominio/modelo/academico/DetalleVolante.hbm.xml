@@ -17,5 +17,8 @@
         <property name="nota" type="java.lang.Float">
             <column name="NOTA" />
         </property>
+        <property name="fechaInscripcion" type="java.util.Date">
+            <column name="FECHAINSCRIPCION" />
+        </property>
     </class>
 </hibernate-mapping>

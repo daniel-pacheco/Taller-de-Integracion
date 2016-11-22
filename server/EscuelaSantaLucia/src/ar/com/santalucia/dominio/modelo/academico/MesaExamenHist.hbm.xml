@@ -11,6 +11,9 @@
         <property name="idActaVolanteExamen" type="java.lang.Long">
             <column name="IDACTAVOLANTEEXAMEN" />
         </property>
+         <property name="idDetalleActaVolante" type="java.lang.Long">
+            <column name="IDDETALLEACTAVOLANTE" />
+        </property>
         <property name="nota" type="java.lang.Float">
             <column name="NOTA" />
         </property>

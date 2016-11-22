@@ -66,7 +66,7 @@ public class GestorActaVolanteExamenes extends Gestor<ActaVolanteExamenes> imple
 		}
 		
 	}
-
+	
 	@Override
 	public ActaVolanteExamenes getById(Long id) throws Exception {
 		try{
